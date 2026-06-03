@@ -40,8 +40,9 @@ development_status:
   0-3-setup-app-logger: done
   0-4-setup-failure-types-either-pattern: done
   0-4bis-bootstrap-ios-cross-platform: done  # AC3/AC4 validation iOS sim deferred a prochaine session Mac
-  0-5-setup-dio-retry-connectivity: in-progress
-  0-6-setup-firebase-android-ios: backlog
+  # 0-5-setup-dio-retry-connectivity : retiree 2026-06-04 suite a ADR-012 (Firebase AI Logic remplace Claude+Dio streaming).
+  # PR #8 deja mergee sur main, code supprime dans la PR refonte Firebase AI Logic.
+  0-6-setup-firebase-android-ios-firebase-ai: backlog  # renommee 2026-06-04 : +firebase_ai package
   0-7-setup-cache-offline-firestore: backlog
   0-8-setup-app-check: backlog
   0-9-setup-firestore-rules-initiales: backlog

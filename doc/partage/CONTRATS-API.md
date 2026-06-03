@@ -6,6 +6,21 @@
 
 ---
 
+> ## ⚠️ Mise à jour majeure — 2026-06-04 ([ADR-012](../../project_manage/planning-artifacts/architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md))
+>
+> Suite à l'adoption de **Firebase AI Logic (Gemini)** côté client à la place de Claude côté serveur, **3 contrats IA sont retirés du catalogue** et **1 contrat nouveau est ajouté** :
+>
+> | Contrat | Statut | Remplacement |
+> |---|---|---|
+> | `askTutor` (Phase 6 Mode 3) | **Supprimé** | Appel client `firebase_ai.generateContentStream(...)` |
+> | `chatMessage` (Phase 6 Chat IA) | **Supprimé** | Appel client `firebase_ai.generateContentStream(...)` |
+> | `correctMode1` (Phase 3 Mode 1 photo) | **Supprimé** | Appel client `firebase_ai.generateContent([Content.image(...), Content.text(...)])` |
+> | `consumeCredits` (nouveau, ADR-012) | **Ajouté** | Cf. spec ci-dessous (à compléter à Phase 3) |
+>
+> Les sections détaillées de `askTutor`, `chatMessage`, `correctMode1` sont conservées plus bas comme **référence historique** mais ne sont plus implémentées. Toute contradiction se résout en faveur de l'ADR-012.
+
+---
+
 ## Pourquoi ce document existe
 
 L'app mobile, la console admin et la landing appellent toutes les **mêmes Cloud Functions**. Si le contrat (nom, forme de l'entrée, forme de la sortie, codes d'erreur) diverge d'un côté à l'autre, **les clients cassent en silence**.
@@ -38,9 +53,10 @@ Chaque contrat est documenté avec :
 |---|---|---|---|
 | `completeExercise` | onCall | Phase 3 (Mode 2) | 🟡 |
 | `submitQuiz` | onCall | Phase 3 | 🟡 |
-| `askTutor` | onCall streaming | Phase 6 (Mode 3) | 🟡 |
-| `chatMessage` | onCall streaming | Phase 6 | 🟡 |
-| `correctMode1` | onCall | Phase 3 | 🟡 |
+| ~~`askTutor`~~ | ~~onCall streaming~~ | ~~Phase 6 (Mode 3)~~ | ❌ Supprimé ADR-012 |
+| ~~`chatMessage`~~ | ~~onCall streaming~~ | ~~Phase 6~~ | ❌ Supprimé ADR-012 |
+| ~~`correctMode1`~~ | ~~onCall~~ | ~~Phase 3~~ | ❌ Supprimé ADR-012 |
+| `consumeCredits` (nouveau, ADR-012) | onCall | Phase 3 (Mode 1) | 🟡 — à figer |
 | `createSubscription` | onCall | Phase 4 | 🟡 |
 | `purchaseCredits` | onCall | Phase 4 | 🟡 |
 | `paymentWebhook` | onRequest | Phase 4 | 🟡 |
@@ -130,7 +146,50 @@ type QuizAnswer =
 
 ---
 
-### `correctMode1` 🟡
+### `consumeCredits` 🟡 (nouveau ADR-012)
+
+**Type** : `onCall`
+**Streaming** : non
+**Auth requise** : oui (`request.auth.uid`)
+**App Check** : oui
+
+**Rôle** : appelée par le client **AVANT** un appel `firebase_ai` qui coûte des crédits (Mode 1 photo, génération coûteuse). Vérifie le solde, débite atomiquement, applique l'idempotence par `sessionId`. Sans succès retourné par cette fonction, le client ne doit PAS lancer l'appel Gemini.
+
+**Entrée** :
+
+```typescript
+interface ConsumeCreditsRequest {
+  action: "mode1_correction" | "mode3_tutor" | "chat_message" | "exam_correction";
+  sessionId: string;                       // idempotence (même session = pas de double débit)
+  cost: number;                            // coût en crédits, vérifié serveur-side (le client ne décide pas)
+  metadata?: Record<string, string>;       // optionnel : payload léger pour traçabilité (exerciseId, etc.)
+}
+```
+
+**Sortie** :
+
+```typescript
+interface ConsumeCreditsResponse {
+  allowed: boolean;                        // true = client peut appeler firebase_ai
+  remaining: number;                       // solde crédits après débit
+  reason?: "insufficient_credits" | "quota_exceeded" | "feature_premium_only" | "exam_mode_locked";
+  paywallCta?: { plan: "premium_monthly" | "credits_pack_25"; price: string };  // si !allowed et raison commerciale
+}
+```
+
+**Codes d'erreur** : `failed-precondition` (idempotence détectée, retourne l'état précédent), `unauthenticated`, `unavailable`.
+
+**Implications mobile** : appel synchrone bloquant **avant** chaque `firebase_ai.generateContent(...)`. Si `allowed: false`, afficher le paywall ou l'erreur ; ne **jamais** appeler `firebase_ai` sans `allowed: true`.
+
+**Implications backend** : transaction Firestore atomique sur `users/{uid}/credits` + écriture trace dans `users/{uid}/iaUsage/{sessionId}` (idempotence). Pas d'appel IA depuis cette function — elle ne fait QUE débiter.
+
+> Spec posée par ADR-012 mais à figer en Story P3 (Mode 1) qui sera la première à la consommer.
+
+---
+
+### ~~`correctMode1`~~ 🟡 ❌ Supprimé ADR-012 (référence historique)
+
+> Cette section est conservée pour mémoire mais le contrat n'est plus implémenté. Mode 1 utilise désormais `consumeCredits` (ci-dessus) + appel client `firebase_ai.generateContent([Content.image(storageUri ou bytes), Content.text(énoncé + system prompt)])`. Voir [ADR-012](../../project_manage/planning-artifacts/architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md).
 
 **Type** : `onCall`
 **Streaming** : non (la correction IA est synchrone côté Function — Claude répond en quelques secondes)
@@ -295,7 +354,9 @@ interface CheckPremiumAccessResponse {
 
 ## Contrats — Phase 6 (IA & partage)
 
-### `askTutor` 🟡 (Mode 3, streaming)
+### ~~`askTutor`~~ 🟡 ❌ Supprimé ADR-012 (référence historique)
+
+> Cette section est conservée pour mémoire. Mode 3 utilise désormais `consumeCredits` + appel client `firebase_ai.generateContentStream(...)`. Voir [ADR-012](../../project_manage/planning-artifacts/architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md).
 
 **Type** : `onCall` streaming
 **Auth requise** : oui
@@ -324,7 +385,9 @@ Le flux émet des deltas de texte au fur et à mesure que Claude génère. Le mo
 
 ---
 
-### `chatMessage` 🟡 (Chat M6, streaming)
+### ~~`chatMessage`~~ 🟡 ❌ Supprimé ADR-012 (référence historique)
+
+> Cette section est conservée pour mémoire. Chat IA utilise désormais `consumeCredits` (ou vérification quota) + appel client `firebase_ai.generateContentStream(...)` avec historique de conversation injecté côté client. Voir [ADR-012](../../project_manage/planning-artifacts/architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md).
 
 **Type** : `onCall` streaming
 **Auth requise** : oui

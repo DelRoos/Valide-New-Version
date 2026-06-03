@@ -292,7 +292,7 @@ Un utilisateur peut soumettre sa réponse en **texte** ou en **photo** d'un brou
 - Soumettre une réponse texte → reçoit une correction avec les 4 catégories d'étiquettes.
 - Soumettre une photo : l'image est **compressée côté client** (WebP) avant upload Storage.
 - La correction comporte des renvois cliquables vers les portions de cours pertinentes.
-- L'appel à l'IA passe par la Cloud Function `correctMode1` — la clé Claude n'est jamais dans l'app.
+- L'appel à l'IA passe par **Firebase AI Logic (Gemini)** côté client, protégé par App Check + Firebase Auth (cf. ADR-012). **Aucune clé d'API IA n'a besoin d'être protégée côté backend.** La vérification crédits + débit reste serveur-side via la Cloud Function `consumeCredits` appelée **avant** la requête `firebase_ai`.
 
 **Out of Scope :**
 
@@ -709,7 +709,7 @@ Ces NFRs s'appliquent à toutes les features de §4. Elles dérivent **directeme
 - **NFR-9 — Vrai verrou d'accès aux features premium dans les règles Firestore.** Le check Flutter local est une optimisation UX, pas un verrou.
 - **NFR-10 — App Check actif sur toutes les Cloud Functions sensibles** (`enforceAppCheck: true`).
 - **NFR-11 — Webhook agrégateur vérifié signature avant toute action.**
-- **NFR-12 — Aucun secret dans l'app mobile.** La clé Claude API et les secrets de signature webhook vivent **uniquement** côté backend (Secret Manager).
+- **NFR-12 — Aucun secret dans l'app mobile.** L'IA passe par **Firebase AI Logic (Gemini)**, protégée par App Check + Auth — **aucune clé API IA à stocker côté backend** (cf. ADR-012). Les secrets serveur restants (signature webhook agrégateur, etc.) vivent **uniquement** côté backend (Secret Manager).
 - **NFR-13 — Cohérence des écritures liées garantie par transaction atomique unique côté serveur** (santé + niveau + points + marque d'idempotence dans le même `runTransaction`).
 - **NFR-14 — Application bilingue intégrale.** Tout texte affiché à l'élève doit être disponible dans les deux langues ; pas de chaîne en dur dans le code.
 - **NFR-15 — Couverture des contraintes connectivité.** Toute action réseau doit avoir un retry avec backoff exponentiel (Dio), un message d'erreur clair en cas d'échec, et un état restituable si l'utilisateur revient plus tard.
@@ -727,7 +727,7 @@ Ces NFRs s'appliquent à toutes les features de §4. Elles dérivent **directeme
 - **Typographie** : Nunito Sans (sans-serif chaude, lisible sur petits écrans), JetBrains Mono pour le code ; échelles définies dans le Design System.
 - **Voix de l'app** : amical mais pas familier, encourageant sans être condescendant, factuel sur les résultats. Pas d'émoji intempestif (gardé pour les notifications de réussite). En français : tutoiement par défaut (élève) ; en anglais : ton équivalent informel direct.
 - **Ton des messages d'erreur** : clair, factuel, jamais technique. « Pas de connexion internet » plutôt que « Network error 503 ». Toujours proposer une action (« réessayer », « revenir plus tard »).
-- **Posture de l'IA** : pédagogique, jamais autoritaire. Pas de réponse directe sur les exercices ; oriente vers la démarche.
+- **Posture de l'IA** : pédagogique, jamais autoritaire. Pas de réponse directe sur les exercices ; oriente vers la démarche. **Cadrage par system prompt Gemini** (cf. ADR-012) avec tests adversariaux pour vérifier qu'elle ne « donne pas la réponse » sous pression. À détailler en E3 / E6.
 
 ---
 
@@ -802,7 +802,7 @@ L'inclusion d'iOS et de la tablette dès la V1 augmente l'effort Foundation (P0)
 
 ### 15.3 Cost
 
-- **Coût IA** : chaque appel à Claude est facturé. Protection : App Check + crédits utilisateur + quota chat + limite tokens par requête.
+- **Coût IA** : chaque appel à **Firebase AI Logic (Gemini)** est facturé. Protection : App Check (obligatoire, enforce Story 0.8) + crédits utilisateur débités serveur-side avant chaque appel coûteux (`consumeCredits`) + quota chat + limite tokens par requête + quota Firebase AI Logic par user/jour fixé en Console.
 - **Coût Firestore** : facturation à la lecture de document. Protection : cache offline, pas de relecture en boucle, modèles statiques (cours) versionnés peu fréquemment.
 - **Coût Storage** : photos Mode 1 compressées en WebP avant upload.
 
@@ -814,7 +814,7 @@ Trois forces convergent en 2026 qui rendent ce produit livrable et nécessaire m
 
 1. **Pénétration smartphone croissante** : ~40 % des élèves du secondaire ont accès à un smartphone (souvent partagé en famille), contre ~25 % en 2022. Le segment milieu de gamme (Tecno, Infinix, Itel, Samsung Galaxy A) est devenu accessible (~50 000 — 100 000 FCFA).
 2. **Mobile Money mature** : MTN MoMo et Orange Money sont les méthodes de paiement dominantes des jeunes adultes. Les agrégateurs (Tranzak, Campay, MyCoolPay) ont stabilisé leurs APIs et webhooks signés depuis 2024-2025.
-3. **Stack IA accessible** : la disponibilité de Claude (Anthropic) avec des modèles 4.x qui gèrent natif maths/sciences/conversation pédagogique en deux langues. Coût/token suffisamment bas pour un freemium viable.
+3. **Stack IA accessible** : la disponibilité de **Firebase AI Logic** (Gemini, via SDK Flutter `firebase_ai`) qui gère natif maths/sciences/conversation pédagogique en deux langues, streaming intégré client-side, sécurité par App Check sans clé API serveur à protéger. Coût/token suffisamment bas pour un freemium viable.
 
 Inversement, attendre 6-12 mois supplémentaires laisse le terrain à des concurrents internationaux qui pourraient pivoter sur le Cameroun (apps EdTech panafricaines en levée). **Le MVP en 6 semaines vise précisément cette fenêtre.**
 

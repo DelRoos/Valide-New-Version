@@ -1464,8 +1464,9 @@ TESTS
 | État & injection | `flutter_riverpod`, `riverpod_annotation` | Gestion d'état + injection de dépendances |
 | Navigation | `go_router` | Routes + deep links + gardes |
 | Backend | `firebase_core`, `firebase_auth`, `cloud_firestore`, `firebase_storage`, `cloud_functions`, `firebase_messaging`, `firebase_analytics`, `firebase_crashlytics`, `firebase_remote_config`, `firebase_app_check` | Données, auth, logique serveur, push, mesure, sécurité |
+| **IA** | **`firebase_ai`** | **Appels Gemini (text + multimodal + streaming) directement client-side via Firebase AI Logic — sécurité par App Check + Auth, pas de clé API à protéger côté serveur (cf. ADR-012)** |
 | Cache | (natif Firestore) | Aucun paquet : cache offline Firebase |
-| Réseau | `dio` | Client HTTP (retry, intercepteurs) |
+| ~~Réseau~~ | ~~`dio`~~ | ~~Retiré 2026-06-04 (ADR-012)~~ : les SDK Firebase (`cloud_functions`, `firebase_storage`, `firebase_ai`) gèrent leur propre couche HTTP avec retry intégré. Pas d'usage HTTP custom prévu en V1 — `dio` ré-introduit si besoin émerge. |
 | **Logging** | **`logger`** | **Logs structurés — wrappé dans AppLogger** |
 | Erreurs fonctionnelles | `fpdart` | `Either<Failure, T>` |
 | Modèles immutables | `freezed`, `freezed_annotation` | Entités, sealed classes, états |
