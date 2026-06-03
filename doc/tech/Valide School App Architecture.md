@@ -766,8 +766,12 @@ La solution : transporter le résultat de toute opération dans un objet `Either
 
 ### 10.2 Le catalogue des Failures (dans `core/`)
 
+Implémenté en Story 0.4. Hiérarchie minimale alignée sur le pipeline BMAD (epic 0) :
+
 ```dart
 // core/error/failures.dart
+import 'dart:async';
+import 'dart:io';
 import 'package:equatable/equatable.dart';
 
 sealed class Failure extends Equatable {
@@ -775,27 +779,41 @@ sealed class Failure extends Equatable {
   final String message;
   @override
   List<Object?> get props => [message];
+
+  // Helper de traduction Exception → Failure.
+  // À enrichir : Story 0.5 (DioException), Story 0.6 (FirebaseException/FirebaseAuthException).
+  static Failure from(Object exception) {
+    if (exception is TimeoutException) return const NetworkFailure();
+    if (exception is SocketException) return const NetworkFailure();
+    return const UnknownFailure();
+  }
 }
 
-class ServerFailure extends Failure {
-  const ServerFailure(super.message);
-}
 class NetworkFailure extends Failure {
   const NetworkFailure() : super('Pas de connexion internet');
 }
-class NotFoundFailure extends Failure {
-  const NotFoundFailure(super.message);
-}
 class AuthFailure extends Failure {
-  const AuthFailure(super.message);
+  const AuthFailure([super.message = 'Authentification refusée']);
 }
-class AccessDeniedFailure extends Failure {
-  const AccessDeniedFailure() : super('Abonnement premium requis');
+class ServerFailure extends Failure {
+  const ServerFailure({required this.code, String message = '...'}) : super(message);
+  final int code;
+}
+class CacheFailure extends Failure {
+  const CacheFailure([super.message = 'Échec du cache local']);
+}
+class ValidationFailure extends Failure {
+  const ValidationFailure({required this.field, required this.reason})
+      : super('Champ « $field » invalide : $reason');
+  final String field;
+  final String reason;
 }
 class UnknownFailure extends Failure {
   const UnknownFailure() : super('Une erreur inattendue est survenue');
 }
 ```
+
+> Les `Failure` ne portent **jamais** la `Exception` source : on évite qu'une exception remonte par accident jusqu'à l'UI. Si un besoin métier l'exige plus tard (ex. `NotFoundFailure`, `AccessDeniedFailure` pour le paywall), elles seront ajoutées à la hiérarchie dans la story concernée.
 
 ### 10.3 Les exceptions internes (dans `core/`, confinées à `data`)
 
