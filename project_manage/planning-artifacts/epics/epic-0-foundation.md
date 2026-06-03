@@ -13,7 +13,7 @@ sourceArtifacts:
   - doc/tech/Valide School Package Architecture.md
   - doc/partage/BASE-DE-DONNEES.md
   - ADRs/ADR-001 à ADR-010
-storyCount: 22  # +Story 0.4bis ajoutee 2026-06-04 (ADR-011)
+storyCount: 21  # +Story 0.4bis (ADR-011), -Story 0.5 Dio (ADR-012) — 2026-06-04
 ---
 
 # Epic 0 — Foundation & Bootstrap
@@ -392,80 +392,46 @@ Story 0.1 a été faite avec `flutter create --platforms=android` — il n'y a p
 
 ---
 
-### Story 0.5 : Setup Dio + retry + connectivity_plus
+### ~~Story 0.5 : Setup Dio + retry + connectivity_plus~~
 
-**Statut** : Draft
-**Sprint** : P0 (semaine 0)
-**Dépendances** : Story 0.3, Story 0.4
-**Estimation** : M (~4-5h)
-
-**As a** dev Flutter,
-**I want** un `DioClient` central avec interceptors retry/logging et un `NetworkInfo` qui expose la connectivité,
-**so that** NFR-15 (couverture connectivité instable) soit appliquée systématiquement et que tout appel HTTP soit tracé.
-
-#### Contexte technique
-
-Marché cible = connectivité fluctuante (cf. SPEC). Pattern retry Dio : 3 tentatives backoff exponentiel (500ms, 1s, 2s) sur 5xx + timeouts ; PAS de retry sur 4xx (sauf 429). `connectivity_plus` expose un stream consommé par un provider Riverpod. `dio_smart_retry` ou implémentation interceptor manuel — au choix dev, mais privilégier le custom pour ne pas ajouter de dépendance fragile.
-
-À noter : Dio n'est utilisé que pour appels HTTP **non Firebase** (Cloud Functions custom appelées directement, certaines APIs externes). Les appels Firebase passent par les SDK Firebase (Story 0.6).
-
-#### Acceptance Criteria
-
-**AC1 — Packages ajoutés**
-**Given** `pubspec.yaml`
-**When** on ajoute `dio` et `connectivity_plus` aux dernières stables
-**Then** `flutter pub get` réussit
-
-**AC2 — `DioClient` créé**
-**Given** `lib/core/network/dio_client.dart`
-**When** on instancie `DioClient`
-**Then** il expose une `Dio` avec base URL configurable (env), timeout 30s
-**And** un interceptor de log qui appelle `AppLogger.d/i/w/e` (pas de log du body si > 1 KB)
-
-**AC3 — Retry interceptor implémenté**
-**Given** un endpoint qui renvoie 503 deux fois puis 200
-**When** on `dioClient.get('/test')`
-**Then** la requête réussit en 3 tentatives au total (backoff 500ms, 1s)
-**And** un log `AppLogger.w` indique chaque retry avec le délai
-**And** un test unitaire avec mock `Dio` valide ce comportement
-
-**AC4 — `NetworkInfo` provider exposé**
-**Given** `lib/core/network/network_info.dart`
-**When** on `ref.watch(networkInfoProvider).status`
-**Then** on reçoit `online | offline | unknown` (basé sur `Connectivity().checkConnectivity()`)
-**And** le stream émet à chaque changement
-
-#### Definition of Done
-
-- [ ] Tests unitaires : retry (3 cas : 503→503→200, 503×4, 200 direct) + NetworkInfo (2 cas mock)
-- [ ] PR ≤ 350 lignes diff
-- [ ] Commit `feat(core): DioClient avec retry et NetworkInfo`
-
-#### Notes pour Amelia
-
-- Ne pas mettre la base URL en dur — utilise `--dart-define=API_BASE_URL=...` et lis via `String.fromEnvironment` dans `core/utils/env.dart` (à créer dans cette story).
-- Le retry interceptor doit propager `DioException` après épuisement (l'app la traduira en `NetworkFailure` via Story 0.4).
-- N'ajoute PAS `pretty_dio_logger` ou autre — `AppLogger` suffit.
+> **RETIRÉE le 2026-06-04 suite à [ADR-012](../architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md)** (Firebase AI Logic remplace Claude).
+>
+> Cette story avait été initialement créée car le streaming des réponses IA (Mode 3 `askTutor`, Chat IA `chatMessage`) devait passer par une Cloud Function HTTP `onRequest` consommée en streaming via Dio (le SDK `cloud_functions` Flutter ne supporte pas le streaming d'une `onCall`).
+>
+> Avec **Firebase AI Logic** (Gemini), le streaming est natif côté client via `firebase_ai.generateContentStream()` — aucun besoin de Cloud Function intermédiaire pour l'IA, donc aucun besoin de HTTP client custom. Les autres usages potentiels de Dio (APIs externes, upload Mode 1) sont couverts par les SDK Firebase (`firebase_storage`, `cloud_functions` pour `onCall` non-IA).
+>
+> **`connectivity_plus`** sera ré-introduit si besoin d'afficher un indicateur "Hors ligne" — au moment où une story aval en aura besoin (probablement E2 navigation contenu). Pas d'urgence.
+>
+> **NFR-15** (couverture connectivité instable) est désormais satisfaite par :
+>
+> - Le cache offline natif de Firestore (couvre 90 % des cas).
+> - Le retry interne du SDK `cloud_functions` (paramètre `timeout` + erreurs typées).
+> - Le retry interne du SDK `firebase_storage` (uploads / downloads avec resumable).
+> - Le retry interne du SDK `firebase_ai` (à vérifier en Story 0.6).
+>
+> **Numérotation** : la story 0.5 reste réservée (pour ne pas re-numéroter les autres). En cas de besoin futur HTTP custom, on créera `0.5bis-...`.
 
 ---
 
-### Story 0.6 : Setup Firebase Android + iOS (Auth, Firestore, Storage, Functions, FCM, Crashlytics, Analytics, Remote Config, App Check)
+### Story 0.6 : Setup Firebase Android + iOS (Auth, Firestore, Storage, Functions, FCM, Crashlytics, Analytics, Remote Config, App Check, **Firebase AI Logic**)
 
 **Statut** : Draft
 **Sprint** : P0 (semaine 0-1)
 **Dépendances** : Story 0.2, Story 0.4bis (bootstrap iOS)
-**Estimation** : L+ (~10-12h, dont 5h admin Firebase Console pour 2 plateformes + signing iOS)
+**Estimation** : L++ (~12-14h, +2h pour ajout Firebase AI Logic vs L+ initial)
 **Risque** : Demande accès Firebase Console + compte Apple Developer (certificats, Bundle ID provisionning).
 
 **As a** tech lead,
-**I want** Firebase intégré sur Android **et iOS** avec tous les modules nécessaires initialisés en lazy-load au plus près de leur usage,
-**so that** les epics suivants puissent consommer Auth/Firestore/Functions/FCM sur les deux plateformes sans setup supplémentaire et que NFR-3 (lazy-load) + NFR-16 (cross-platform) soient respectées.
+**I want** Firebase intégré sur Android **et iOS** avec tous les modules nécessaires (Auth/Firestore/Storage/Functions/FCM/Crashlytics/Analytics/Remote Config/App Check **+ Firebase AI Logic pour Gemini**) initialisés en lazy-load au plus près de leur usage,
+**so that** les epics suivants puissent consommer Auth/Firestore/Functions/FCM/IA sur les deux plateformes sans setup supplémentaire et que NFR-3 (lazy-load) + NFR-16 (cross-platform) soient respectées.
 
 #### Contexte technique
 
-ADR-003 acte Firebase comme backend complet. ADR-011 (2026-06-04) acte le scope cross-platform V1. Cette story configure **Android ET iOS** dans le même projet Firebase. FlutterFire CLI est utilisé pour générer `firebase_options.dart` avec les deux plateformes. La région cible Cloud Functions est `europe-west1` (à confirmer après Story 0.20 R3). L'initialisation Crashlytics est faite au `main()` ; les autres modules sont init lazy (Auth quand l'écran login s'ouvre, Firestore quand premier provider Firestore est lu, etc.).
+ADR-003 acte Firebase comme backend complet. ADR-011 (2026-06-04) acte le scope cross-platform V1. **ADR-012 (2026-06-04) acte Firebase AI Logic (Gemini) à la place de Claude — tous les appels IA sont client-side via `firebase_ai`, plus de Cloud Function IA, plus de clé Anthropic à protéger.**
 
-App Check est ajouté ici mais activé en mode debug provider seulement (Story 0.8 activera `enforceAppCheck: true`). Côté iOS, App Check utilise **DeviceCheck** (debug : `AppCheck.debugProvider`).
+Cette story configure **Android ET iOS** dans le même projet Firebase. FlutterFire CLI est utilisé pour générer `firebase_options.dart` avec les deux plateformes. La région cible Cloud Functions est `europe-west1` (à confirmer après Story 0.20 R3). L'initialisation Crashlytics est faite au `main()` ; les autres modules (y compris Firebase AI Logic) sont init lazy.
+
+App Check est ajouté ici mais activé en mode debug provider seulement (Story 0.8 activera `enforceAppCheck: true`). Côté iOS, App Check utilise **DeviceCheck** (debug : `AppCheck.debugProvider`). **App Check protège aussi les appels Firebase AI Logic** (c'est ce qui remplace la clé API serveur dans le modèle de sécurité).
 
 #### Acceptance Criteria
 
@@ -503,6 +469,16 @@ App Check est ajouté ici mais activé en mode debug provider seulement (Story 0
 **Then** un crash apparaît dans Crashlytics Console dans les 5 minutes **pour les builds Android et iOS** (vérifier le filtre par plateforme dans la Console)
 **And** le crash est marqué `non-fatal: false`
 
+**AC6 — Firebase AI Logic (Gemini) câblé et smoke-test OK**
+**Given** le package `firebase_ai` ajouté au `pubspec.yaml` (dernière stable compatible Firebase Core retenue)
+**When** on crée un provider Riverpod lazy `firebaseAIProvider` qui expose `FirebaseAI.googleAI(model: 'gemini-2.5-flash')` (ou modèle équivalent stable au moment du dev)
+**Then** un smoke test sur une route debug `/_ai_smoke` fait `model.generateContent([Content.text('Bonjour')])` et affiche la réponse à l'écran
+**And** un second smoke test fait `model.generateContentStream(...)` et affiche le streaming progressivement
+**And** Firebase AI Logic est activé dans la Firebase Console (onglet « Build → AI Logic ») avec le provider Gemini Developer API choisi
+**And** App Check est requis (debug provider OK pour cette story, enforce viendra Story 0.8)
+**And** un `AppLogger.i('AI Logic smoke: tokens=$tokenCount latency=${latency}ms')` confirme le bon fonctionnement
+**And** la route `/_ai_smoke` sera retirée en clôture E0 (Story 0.21) — sentinelle de régression possible à conserver
+
 #### Definition of Done
 
 - [ ] `google-services.json` ET `GoogleService-Info.plist` placés (en CI : restitués depuis secrets GitHub Actions encodés base64)
@@ -512,8 +488,9 @@ App Check est ajouté ici mais activé en mode debug provider seulement (Story 0
 - [ ] Build iOS `flutter build ios --debug --no-codesign` réussit
 - [ ] App lance sur émulateur Android ET simulateur iOS (cf. AC3)
 - [ ] Crashlytics console montre un crash test sur les 2 plateformes (cf. AC5)
-- [ ] Commit `feat(core): integration Firebase Android et iOS avec lazy-load des modules`
-- [ ] `flutter pub get` réussit avec FlutterFire packages aux versions du `firebase_options.dart`
+- [ ] Firebase AI Logic activé Console + smoke tests sync et streaming OK (cf. AC6)
+- [ ] Commit `feat(core): integration Firebase Android et iOS avec lazy-load des modules et Firebase AI Logic`
+- [ ] `flutter pub get` réussit avec FlutterFire packages + `firebase_ai` aux versions du `firebase_options.dart`
 
 #### Notes pour Amelia
 
@@ -527,6 +504,14 @@ App Check est ajouté ici mais activé en mode debug provider seulement (Story 0
   - `Info.plist` : `NSCameraUsageDescription` (pour Mode 1 photo, même si la story Mode 1 vient plus tard — anticiper le wording FR/EN), `NSUserTrackingUsageDescription` si Analytics IDFA utilisé (à vérifier).
   - Provisioning : utiliser un certificat développeur Apple pour le build debug ; le release sera couvert par Story 0.17 (CI macOS).
 - **Hook AppLogger.e() → Crashlytics** : ajouter dans `app_logger.dart` un forward optionnel vers `FirebaseCrashlytics.instance.recordError()` quand le service est disponible (initialisé). Cette story est le moment où on branche ce forward (TODO laissé en Story 0.3 mentionnant cette story).
+- **Firebase AI Logic** :
+  - **Provider** : choisir le **Gemini Developer API** (gratuit avec quota raisonnable) pour le développement et la V1. Migrer vers **Vertex AI Gemini API** si l'on a besoin d'enterprise (SLA, contrôle régional, etc.) — décision plus tard, pas en P0.
+  - **Modèle initial** : `gemini-2.5-flash` (rapide, bon marché, suffisant pour les cas pédagogiques). Affiner après mesures qualité en E3 / E6.
+  - **Package** : `firebase_ai` (pas `firebase_vertexai` qui est l'ancien nom). Vérifier la version stable au moment du dev (probablement ^2.x ou ^3.x en juin 2026).
+  - **App Check obligatoire pour Firebase AI Logic** : sans App Check actif, Firebase AI Logic refuse les requêtes en mode enforce. En Story 0.6 le debug provider suffit ; Story 0.8 activera l'enforce.
+  - **Pas de Cloud Function IA** : suite à ADR-012, les anciennes Cloud Functions `askTutor`, `chatMessage`, `correctMode1` ne sont **PAS** créées. Toute la logique IA vit côté client.
+  - **Vérification crédits** (Mode 1 photo, quotas chat) : reste serveur-side via Cloud Functions `consumeCredits` et `checkPremiumAccess`. Le client doit appeler ces functions **AVANT** d'appeler `firebase_ai`. Cela sera détaillé en E3/E6, pas en P0.
+  - **Quota Firebase AI Logic** : à figer en Story 0.6 ou plus tard via Firebase Console (quota par jour, par user — mécanisme à explorer).
 
 ---
 

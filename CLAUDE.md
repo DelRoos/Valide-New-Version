@@ -171,8 +171,9 @@ Et pour les modes (`Fast` / `Coaching`) :
 ### Sécurité
 
 1. **Aucun secret dans le code**, aucun secret dans les commits (même supprimés ensuite), aucun secret dans les logs, aucun secret dans les screenshots.
-2. **La clé Claude API et les secrets agrégateurs vivent côté backend uniquement.** Ne propose JAMAIS de les mettre dans l'app mobile.
-3. **Le vrai verrou d'accès est côté serveur** (règles Firestore + Cloud Function). Le check Flutter sur le statut premium est une **optimisation UX**, pas un verrou.
+2. **Les secrets serveur** (signature webhook agrégateur, éventuelles clés tierces backend) **vivent côté backend uniquement** (Secret Manager). Ne propose JAMAIS de les mettre dans l'app mobile.
+3. **L'IA passe par Firebase AI Logic (Gemini)** — pas de clé API à protéger côté backend pour l'IA. La sécurité des appels IA repose sur **App Check + Firebase Auth** (cf. ADR-012 et NFR-12 du PRD).
+4. **Le vrai verrou d'accès est côté serveur** (règles Firestore + Cloud Function). Le check Flutter sur le statut premium est une **optimisation UX**, pas un verrou.
 
 ### Surface partagée [`doc/partage/`](doc/partage/)
 

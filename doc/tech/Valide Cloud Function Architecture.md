@@ -5,6 +5,20 @@
 **Public de ce document :** toute personne qui développe le backend, y compris quelqu'un qui n'a aucun contexte préalable et n'a pas lu le guide mobile.
 **Statut :** document de référence autonome. Tout ce qui est nécessaire pour écrire des Cloud Functions conformes s'y trouve.
 
+> ## ⚠️ MISE À JOUR MAJEURE — 2026-06-04 (ADR-012)
+>
+> **Le projet utilise désormais Firebase AI Logic (Gemini) côté client, à la place de Claude (Anthropic) côté serveur.**
+>
+> **Conséquences sur ce document** :
+>
+> - Les Cloud Functions **`askTutor`**, **`chatMessage`**, **`correctMode1`** **ne sont PLUS créées** — les appels IA sont faits directement par l'app via `firebase_ai.generateContentStream(...)` ou `generateContent(...)`. Voir [ADR-012](../../project_manage/planning-artifacts/architecture/adrs/ADR-012-firebase-ai-logic-replace-claude.md).
+> - La section § 11 « Le contrat IA — tout ce qui touche au modèle Claude » est **historiquement obsolète mais conservée comme référence** (en cas de retour en arrière, ou de nouveau use case nécessitant un proxy serveur). Elle ne reflète plus le pattern en cours.
+> - Les **secrets serveur** restants concernent uniquement les **agrégateurs de paiement Mobile Money** (clés de signature webhook). La clé IA n'existe plus côté serveur.
+> - Une nouvelle Cloud Function **`consumeCredits`** sera créée (E3 / E6) pour débiter les crédits **avant** chaque appel `firebase_ai` significatif (Mode 1 photo, génération coûteuse). Le client doit l'appeler en pré-vol.
+> - Le tableau § 4.4 des contrats Cloud Functions doit être lu **en retirant askTutor / chatMessage / correctMode1**.
+>
+> Ce document sera réécrit intégralement dans une story dédiée (probablement E3 ou E6 au moment d'implémenter Mode 1, Mode 3, Chat IA). En attendant, **toute contradiction se résout en faveur de l'ADR-012**.
+
 ---
 
 ## Comment utiliser ce document
@@ -214,13 +228,16 @@ sequenceDiagram
 
 Voici les Cloud Functions du périmètre « tout le sensible », avec leur contrat. C'est la table de référence partagée entre l'app et le serveur.
 
+> **Mise à jour 2026-06-04 (ADR-012)** : `askTutor`, `chatMessage`, `correctMode1` (les 3 lignes IA) sont **retirées du périmètre Cloud Functions**. L'IA passe désormais par `firebase_ai` (Gemini) côté client. Une nouvelle entrée `consumeCredits` est introduite pour débiter les crédits avant chaque appel `firebase_ai` significatif.
+
 | Function | Type | L'app envoie | Le serveur renvoie | Domaine |
 |---|---|---|---|---|
 | `completeExercise` | onCall | `{ exerciseId, sessionId, stepStatuses }` | `{ score, impacts[], pointsAwarded }` | Alimentation |
 | `submitQuiz` | onCall | `{ quizId, sessionId, answers }` | `{ score, impacts[], pointsAwarded }` | Alimentation |
-| `askTutor` | onCall (streaming) | `{ exerciseId, stepIndex, studentWork }` | flux de texte (réponse du tuteur) | IA Mode 3 |
-| `chatMessage` | onCall (streaming) | `{ conversationId, message, context }` | flux de texte + diagrammes | IA chat M6 |
-| `correctMode1` | onCall | `{ exerciseId, submission }` (coûte des crédits) | `{ correction, creditsSpent }` | IA Mode 1 |
+| ~~`askTutor`~~ | ~~onCall (streaming)~~ | — | — | **Supprimée (ADR-012)** — remplacée par appel client `firebase_ai.generateContentStream(...)` Mode 3 |
+| ~~`chatMessage`~~ | ~~onCall (streaming)~~ | — | — | **Supprimée (ADR-012)** — remplacée par appel client `firebase_ai.generateContentStream(...)` Chat IA |
+| ~~`correctMode1`~~ | ~~onCall~~ | — | — | **Supprimée (ADR-012)** — remplacée par appel client `firebase_ai.generateContent([Content.image(...), Content.text(...)])` Mode 1 photo |
+| `consumeCredits` (nouveau, ADR-012) | onCall | `{ action, sessionId, cost }` (idempotent par `sessionId`) | `{ remaining, allowed: bool, reason? }` | Crédits / IA — appelée AVANT chaque `firebase_ai` significatif |
 | `createSubscription` | onCall | `{ plan }` | `{ paymentUrl, intentId }` | Paiement |
 | `purchaseCredits` | onCall | `{ packId }` | `{ paymentUrl, intentId }` | Paiement |
 | `paymentWebhook` | onRequest | (appelé par l'agrégateur) | `200 OK` | Paiement |
