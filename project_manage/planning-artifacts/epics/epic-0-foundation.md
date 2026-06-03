@@ -96,17 +96,18 @@ Versions à utiliser : **Flutter stable la plus récente disponible au moment de
 
 #### Acceptance Criteria
 
-**AC1 — Projet créé**
-**Given** un dépôt git vide à la racine du projet
-**When** la commande `flutter create --org app.valide --project-name valide_school --platforms android --org app.valide .` est exécutée et adaptée à la structure
-**Then** le dossier `lib/` existe avec `main.dart` qui affiche `Valide` au lancement
-**And** `flutter run` lance l'app sur émulateur Android sans erreur
+**AC1 — Projet créé dans `mobile_app/`**
+**Given** un dépôt git existant à la racine du projet
+**When** la commande `flutter create --org com.valideStartup --project-name valide_school --platforms android .` est exécutée et le projet placé dans `mobile_app/` (cf. CLAUDE.md § Structure du dépôt)
+**Then** `mobile_app/lib/main.dart` existe et affiche `Valide School` au lancement
+**And** `cd mobile_app && flutter run` lance l'app sur émulateur Android sans erreur
+**And** `mobile_app/android/app/build.gradle.kts` a `applicationId = "com.valideStartup.valideSchool"` (camelCase, patché depuis le défaut snake_case)
 
 **AC2 — Structure clean architecture créée**
 **Given** le projet créé
-**When** on liste `lib/`
-**Then** les dossiers vides suivants existent : `lib/core/{di,error,logging,network,theme,widgets,utils}`, `lib/features/`, `lib/l10n/`, avec un `.gitkeep` dans chaque
-**And** un `lib/main.dart` minimal initialise `runApp(const ValideApp())`
+**When** on liste `mobile_app/lib/`
+**Then** les dossiers vides suivants existent : `mobile_app/lib/core/{di,error,logging,network,theme,widgets,utils}`, `mobile_app/lib/features/`, `mobile_app/lib/l10n/`, avec un `.gitkeep` dans chaque
+**And** un `mobile_app/lib/main.dart` minimal initialise `runApp(const ValideApp())`
 
 **AC3 — pubspec versionné et propre**
 **Given** le `pubspec.yaml` initial

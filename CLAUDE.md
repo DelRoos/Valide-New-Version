@@ -14,6 +14,35 @@
 
 ---
 
+## Structure du dépôt
+
+```text
+.
+├── mobile_app/             # ← Projet Flutter (toutes commandes flutter à lancer ici)
+│   ├── lib/                # code Dart (clean architecture : core/ + features/)
+│   ├── android/            # configuration Android (Gradle, manifests)
+│   ├── test/               # tests Flutter
+│   ├── pubspec.yaml        # dépendances Flutter
+│   └── analysis_options.yaml
+├── doc/                    # documentation projet (tech, métier, partage, tools)
+├── project_manage/         # planification BMAD (SPEC, PRD, UX, architecture, epics, stories)
+├── _bmad/                  # installation BMAD v6.8.0
+├── .claude/                # skills BMAD chargées dans Claude Code
+├── .github/                # templates PR + issues
+├── CLAUDE.md               # ce fichier — règles non négociables
+├── README.md
+└── (futur : firebase.json, .firebaserc, firestore.rules, firestore.indexes.json, storage.rules)
+                            # ↑ configs Firebase au niveau racine
+                            # (utilisées par firebase deploy, partagées avec backend)
+```
+
+**Règle de localisation** :
+- Tout chemin commençant par `lib/`, `android/`, `pubspec.yaml`, `test/` dans la doc ou une story = relatif à `mobile_app/`.
+- Les configs Firebase (`firebase.json`, `.firebaserc`, `firestore.rules`, `firestore.indexes.json`, `storage.rules`) vivent au niveau **racine** du dépôt, pas dans `mobile_app/`. Justification : ces fichiers configurent le projet Firebase entier (Firestore, Storage, Functions, Hosting) et sont déployés via `firebase deploy` indépendamment du build Flutter. Le mobile consomme leurs effets (règles d'accès, indexes) mais ne les contient pas.
+- Les artefacts Firebase **spécifiques au client mobile** (`google-services.json`, `firebase_options.dart`) vivent dans `mobile_app/android/app/` et `mobile_app/lib/` respectivement.
+
+---
+
 ## RÈGLE ABSOLUE — Tout passe par BMAD
 
 > **Tu ne contournes JAMAIS le pipeline BMAD.** Aucune exception, même sous pression de productivité.

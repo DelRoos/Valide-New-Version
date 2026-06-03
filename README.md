@@ -8,9 +8,18 @@
 
 ## Démarrage rapide
 
-1. Lis le [guide de contribution](doc/tools/CONTRIBUTING.md) avant tout — il décrit le workflow, les conventions, et l'onboarding.
-2. Suis le setup pas à pas dans la section 15 du guide.
-3. Lance l'app : `flutter run`.
+**Prérequis** : Flutter 3.41.x stable, Dart 3.11.x, Android SDK + un device/émulateur.
+
+```bash
+git clone https://github.com/DelRoos/Valide-New-Version.git valide
+cd valide/mobile_app
+flutter pub get
+flutter run
+```
+
+> Toutes les commandes `flutter` se lancent depuis `mobile_app/`. La structure du dépôt est décrite dans [CLAUDE.md § Structure du dépôt](CLAUDE.md#structure-du-dépôt).
+
+Lis ensuite le [guide de contribution](doc/tools/CONTRIBUTING.md) — workflow, conventions, revue.
 
 ---
 
@@ -31,7 +40,7 @@
 
 ## Statut
 
-🟡 **Phase de documentation** — le code mobile n'a pas encore démarré. Les spécifications produit, l'architecture et la surface partagée sont posées.
+🟢 **Phase de développement P0** — bootstrap Flutter en cours (Epic 0 Foundation). Voir [`project_manage/implementation-artifacts/sprint-status.yaml`](project_manage/implementation-artifacts/sprint-status.yaml) pour le suivi des stories.
 
 ---
 
@@ -39,7 +48,7 @@
 
 | Domaine | Choix |
 |---|---|
-| Framework | Flutter (iOS + Android, base unique) |
+| Framework | Flutter (Android V1 ; iOS post-MVP) |
 | State | Riverpod |
 | Navigation | go_router |
 | Backend client | Firebase (Auth, Firestore, Storage, Functions, Messaging, Analytics, Crashlytics, Remote Config, App Check) |
