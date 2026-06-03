@@ -1,5 +1,5 @@
 # generated: 2026-06-03
-# last_updated: 2026-06-03
+# last_updated: 2026-06-04
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -24,7 +24,7 @@
 #   - done: Retrospective has been completed
 
 generated: 2026-06-03
-last_updated: 2026-06-03
+last_updated: 2026-06-04
 project: Valide School MVP
 project_key: VALIDE
 tracking_system: file-system
@@ -36,8 +36,8 @@ development_status:
   # ======================
   epic-0: in-progress
   0-1-bootstrap-projet-flutter: done
-  0-2-setup-architecture-state-routing: in-progress
-  0-3-setup-app-logger: backlog
+  0-2-setup-architecture-state-routing: done
+  0-3-setup-app-logger: in-progress
   0-4-setup-failure-types-either-pattern: backlog
   0-5-setup-dio-retry-connectivity: backlog
   0-6-setup-firebase-android: backlog
