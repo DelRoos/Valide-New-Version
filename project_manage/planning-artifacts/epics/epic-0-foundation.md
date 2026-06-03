@@ -638,7 +638,15 @@ Couleurs clés : primaire `#2563EB`, ink `#0F172A`, succès vert, warning ambre,
 **Then** `AppSpacing.s1..s10..s16` (valeurs 4/8/12/16/20/24/32/40/48/64), `AppRadius.xs..pill` (6/9/11/14/16/18/999), `AppElevation.soft/mid/brand`
 **And** chaque valeur match DESIGN.md
 
-**AC5 — ThemeData consommable**
+**AC5 — Motion tokens**
+**Given** une classe `AppMotion` dans `tokens.dart`
+**When** on liste les tokens
+**Then** sont définis : `AppMotion.instant` (0 ms), `AppMotion.fast` (120 ms), `AppMotion.standard` (200 ms), `AppMotion.emphasis` (300 ms), `AppMotion.celebration` (600 ms)
+**And** les easings `AppMotion.standardOut` (`Curves.easeOut`), `standardIn` (`Curves.easeIn`), `emphasized` (`Curves.easeOutCubic`)
+**And** `AppMotion.stagger` (50 ms)
+**And** chaque valeur correspond au tableau « Motion tokens » de DESIGN.md § Animations & motion
+
+**AC6 — ThemeData consommable**
 **Given** un `appTheme = buildLightTheme()` dans `lib/core/theme/app_theme.dart`
 **When** appliqué à `MaterialApp.router(theme: appTheme)`
 **Then** un `Text('test', style: AppTypography.body)` rend en Nunito Sans (placeholder font si Story 0.11 pas faite — accepter Material default temporairement)
@@ -647,6 +655,7 @@ Couleurs clés : primaire `#2563EB`, ink `#0F172A`, succès vert, warning ambre,
 #### Definition of Done
 
 - [ ] Tests widget : 1 test qui rend `MaterialApp(theme: appTheme)` et lit la couleur primaire effective
+- [ ] Tests unitaires : 1 test qui vérifie les durations motion (au moins `fast`, `standard`, `emphasis`)
 - [ ] PR ≤ 400 lignes diff (tokens nombreux mais structurés)
 - [ ] Commit `feat(theme): design tokens alignes sur DESIGN.md`
 
@@ -655,6 +664,7 @@ Couleurs clés : primaire `#2563EB`, ink `#0F172A`, succès vert, warning ambre,
 - N'ajoute PAS de tokens absents de DESIGN.md même s'ils semblent utiles — toute extension passe par mise à jour DESIGN.md d'abord.
 - Les tokens spacing utilisent `double` (pas `int`) — compatible `flutter_screenutil` `.w` plus tard.
 - N'utilise PAS `Color.fromARGB` — utilise `Color(0xFF2563EB)` (`0xFF` + hex sans `#`).
+- Les motion tokens sont exposés en `Duration` (pas en `int`) : `static const fast = Duration(milliseconds: 120);`.
 
 ---
 
@@ -801,6 +811,8 @@ Icônes : `lucide_icons` (line, stroke-width 2, cf. DESIGN.md).
 **And** state `loading: true` affiche spinner inline + label « Envoi… »
 **And** state `disabled: true` réduit opacité 50% et `onPressed` ignoré
 **And** touch target effectif ≥ 48dp (vérifié par test)
+**And** au tap : anim `tap feedback` (scale 0.96→1.0 + opacity 0.7→1.0, durée `AppMotion.fast`) + `HapticFeedback.lightImpact()` sur `primary` / `HapticFeedback.selectionClick()` sur `secondary` (cf. EXPERIENCE.md § Multisensoriel)
+**And** si `Profil.vibrationsEnabled == false`, le haptic est skip (Story 0.14 expose le `HapticService`)
 
 **AC2 — `AppInput`**
 **Given** `lib/core/widgets/app_input.dart`
@@ -825,12 +837,14 @@ Icônes : `lucide_icons` (line, stroke-width 2, cf. DESIGN.md).
 **When** on construit avec 3 tabs `['Tout', 'En cours', 'Fini']`
 **Then** rend un container `AppRadius.lg`, item actif fond blanc + texte primary, items inactifs texte ink-soft
 **And** un `onTabSelected` callback est appelé au tap
+**And** l'indicateur actif glisse avec une `AnimatedAlign` de durée `AppMotion.fast` (120 ms) entre les pills + `HapticFeedback.selectionClick()` au switch
 
 **AC6 — `AppProgressBar`**
 **Given** `lib/core/widgets/app_progress_bar.dart`
 **When** on construit `AppProgressBar(value: 0.4, label: '4/10')`
 **Then** rend une barre 8.h, `AppRadius.xs`, fill `AppColors.primary` à 40%
 **And** un label caption optionnel en-dessous
+**And** transition de `value` animée avec `AnimatedContainer` durée `AppMotion.emphasis` (300 ms), easing `AppMotion.emphasized`
 
 **AC7 — `AppIconButton`**
 **Given** `lib/core/widgets/app_icon_button.dart`
@@ -853,20 +867,24 @@ Icônes : `lucide_icons` (line, stroke-width 2, cf. DESIGN.md).
 
 ---
 
-### Story 0.14 : Composants UX feedback (Toast, Modale, BottomSheet, EmptyState, Skeleton, Spinner, Encadré)
+### Story 0.14 : Composants UX feedback + services Haptic & Audio (Toast, Modale, BottomSheet, EmptyState, Skeleton, Spinner, Encadré, célébrations)
 
 **Statut** : Draft
 **Sprint** : P0 (semaine 1)
 **Dépendances** : Story 0.13
-**Estimation** : L (~8h)
+**Estimation** : L+ (~10-12h — +haptic/audio services et célébrations animées)
 
 **As a** dev Flutter,
-**I want** les composants de feedback (toast, modale, bottom sheet, empty state, skeleton, spinner, encadré info/warning/error) dans `lib/core/widgets/`,
-**so that** les patterns UX (UX-DR-8 à UX-DR-14) soient implémentés une seule fois et réutilisables.
+**I want** les composants de feedback (toast, modale, bottom sheet, empty state, skeleton, spinner, encadré info/warning/error) **plus** les services `HapticService` et `AudioService` **plus** les overlays célébration (success checkmark, error shake, level-up bloom) dans `lib/core/widgets/` et `lib/core/feedback/`,
+**so that** les patterns UX (UX-DR-8 à UX-DR-14) et la couche multisensorielle (EXPERIENCE.md § Multisensoriel, DESIGN.md § Audio + Haptics) soient implémentés une seule fois et réutilisables.
 
 #### Contexte technique
 
-EXPERIENCE.md § Patterns état + patterns feedback. Chaque composant suit les specs DESIGN.md exactes (timings, couleurs, comportements).
+- EXPERIENCE.md § Patterns état + Multisensoriel + Emotional Posture.
+- DESIGN.md § Animations & motion + Audio + Haptics (catalogue complet).
+- Services audio + haptic exposés via providers Riverpod, settings Profil (sons/vibrations ON par défaut, persistés en `SharedPreferences`) — le slot setting est créé ici, l'écran Profil le consomme en E1.
+- **Coupures globales** appliquées par les services (mode silencieux, batterie < 15 %, Mode Examen, prefs utilisateur) — cf. table « Coupures globales » EXPERIENCE.md.
+- Assets audio : ≤ 12 sons, total ≤ 500 KB, en `assets/audio/*.ogg`, déclarés dans `pubspec.yaml`.
 
 #### Acceptance Criteria
 
@@ -912,18 +930,49 @@ EXPERIENCE.md § Patterns état + patterns feedback. Chaque composant suit les s
 **Then** padding 16.w, bordure gauche 4px `AppColors.warning`, bg `AppColors.warningSoft`, texte ink-warning
 **And** un slot `actions` optionnel pour bouton
 
+**AC8 — `HapticService` (`lib/core/feedback/haptic_service.dart`)**
+**Given** un service exposé via `hapticServiceProvider` (Riverpod)
+**When** on appelle `ref.read(hapticServiceProvider).light()` (ou `selection`, `medium`, `heavy`, `success`, `error`)
+**Then** la méthode invoque le preset `HapticFeedback.*` correspondant (cf. DESIGN.md § Haptics catalogue)
+**And** elle no-op si l'une des conditions suivantes est vraie : pref utilisateur `vibrationsEnabled == false`, Mode Examen actif, batterie < 15 %
+**And** les séquences `success` et `error` enchainent les presets avec les delays documentés (100 ms / 80 ms)
+**And** tests unitaires : 6 cas (un par méthode) + 4 cas coupure (pref off, examen, batterie low, batterie normale = appel passe)
+
+**AC9 — `AudioService` (`lib/core/feedback/audio_service.dart`)**
+**Given** un service exposé via `audioServiceProvider` (Riverpod)
+**When** on appelle `ref.read(audioServiceProvider).play(AppSfx.successSoft)` (enum des 12 sons du catalogue)
+**Then** le son OGG correspondant est joué via `audioplayers` ou `soundpool` (à arbitrer)
+**And** il no-op si l'une des conditions suivantes est vraie : pref utilisateur `soundsEnabled == false`, Mode Examen actif, mode silencieux Android détecté
+**And** un son qui se joue déjà n'empêche pas le suivant (`stop` + `play` immédiat sur le même slot)
+**And** tests unitaires : 1 par condition de coupure + 1 happy path (le service délègue bien au player)
+
+**AC10 — Overlays célébration animés**
+**Given** trois widgets dans `lib/core/widgets/feedback/` : `SuccessCheckmarkOverlay`, `ErrorShakeWrapper`, `LevelUpBloomOverlay`
+**When** on appelle `SuccessCheckmarkOverlay.show(context)` (ou équivalent)
+**Then** l'animation correspondante joue (cf. DESIGN.md § Catalogue d'animations) avec `flutter_animate` + tokens `AppMotion`
+**And** le widget orchestre l'appel au `HapticService` et `AudioService` en parallèle de l'anim (un seul point d'appel pour l'orchestration)
+**And** si `MediaQuery.disableAnimations == true`, fallback sur affichage statique (icône + texte, pas d'anim)
+
 #### Definition of Done
 
-- [ ] 7 tests widget (1 par composant)
-- [ ] Démo gallery enrichie (`/_gallery`)
-- [ ] PR ≤ 400 lignes diff
-- [ ] Commit `feat(widgets): composants UX feedback (toast, modal, sheet, empty, skeleton, spinner, alert)`
+- [ ] 10 tests widget/unitaires (7 composants + 3 services/overlays)
+- [ ] Démo gallery enrichie (`/_gallery`) avec section « Multisensoriel » qui permet de déclencher chaque preset
+- [ ] Assets audio placeholders en place (silence OGG si on n'a pas encore les vrais sons — Story P0 séparée optionnelle pour la production des sons)
+- [ ] `pubspec.yaml` déclare les 12 assets `assets/audio/*.ogg`
+- [ ] Setting Profil `(soundsEnabled, vibrationsEnabled)` exposé en `SharedPreferences` via un `feedbackPrefsProvider` (consommé en E1 par l'écran Profil)
+- [ ] PR ≤ 500 lignes diff (taille augmentée vs autres stories à cause des 3 ajouts services/overlays)
+- [ ] Commit `feat(widgets): composants feedback + services haptic/audio + overlays celebration`
 
 #### Notes pour Amelia
 
-- Toast : utilise `OverlayEntry` ou `flutter/material.dart` `ScaffoldMessenger.of(context).showSnackBar()` adapté (préférer Overlay pour respecter le style ink).
+- Toast : utilise `OverlayEntry` ou `ScaffoldMessenger.of(context).showSnackBar()` adapté (préférer Overlay pour respecter le style ink).
 - Skeleton shimmer : `shimmer` package ou implémentation maison `AnimationController` — au choix.
 - Modale et BottomSheet : `showDialog` et `showModalBottomSheet` Material avec wrappers stylés.
+- **Détection mode silencieux Android** : pas d'API Flutter native simple — utiliser `vibration` package (qui expose la détection) ou implémenter via `MethodChannel` ciblé. Si trop complexe pour P0 : fallback = on respecte uniquement le setting utilisateur, on ne détecte pas le ringer mode.
+- **Détection batterie** : package `battery_plus`. À ajouter ici ou wrapper dans un `DeviceStateService` à part — au choix.
+- **Production des sons** : hors scope dev. Si les vrais sons ne sont pas disponibles, livre des placeholders `silence.ogg` (8 KB chacun) avec un TODO Story future pour la production audio.
+- **Tests audio** : ne pas tester le rendu sonore réel — mocker le `AudioPlayer` et vérifier les appels.
+- **Performance Mode Examen** : le check « est-on en mode examen » se fait via un `examModeProvider` (créé dans E6 → en attendant, stub à `false` avec TODO).
 
 ---
 

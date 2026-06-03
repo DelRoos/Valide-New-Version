@@ -411,10 +411,122 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 
 ### Animations & motion
 
-- **Durées** : 120 ms (changements d'état rapide, hover), 200 ms (transitions standard, sheet slide), 400-700 ms (célébrations).
-- **Easing** : standard `ease-out` pour les entrées, `ease-in` pour les sorties. Pas de `ease-in-out` sauf cas particulier.
-- **Anims réservées** : `spin` pour spinners, `shimmer` pour skeletons, `blink` pour curseur, `pulse` pour célébrations (montée de niveau, badge gagné).
-- **Respect du système d'accessibilité** : si « réduire les animations » est actif, désactiver `pulse` et `shimmer` (remplacer par état statique).
+**Posture motion** : *Micro-interactions partout, transitions sobres*. Tout élément interactif réagit visuellement au tap ; chaque changement d'état est animé ; les transitions inter-écrans restent standard pour ne pas alourdir le perçu sur téléphones modestes.
+
+**Cible perf** : 60 fps sur Android Go (entrée de gamme). Si on ne peut pas tenir 60 fps sur un animation, on simplifie ou on bascule en statique.
+
+#### Motion tokens (à implémenter en Story 0.10)
+
+| Token | Valeur | Usage |
+|---|---|---|
+| `motion.duration.instant` | 0 ms | Désactivation animations (système ou flag premium dégradé) |
+| `motion.duration.fast` | 120 ms | Changements d'état atomiques (pressed → released, focus, switch toggle) |
+| `motion.duration.standard` | 200 ms | Transitions composants (sheet slide, fade-in modale, page transition standard) |
+| `motion.duration.emphasis` | 300 ms | Entrée d'un écran clé, ouverture overlay important |
+| `motion.duration.celebration` | 400-700 ms | Célébrations (badge gagné, level up, paiement réussi, bonne réponse Mode 1) |
+| `motion.easing.standardOut` | `Curves.easeOut` | Entrées d'éléments |
+| `motion.easing.standardIn` | `Curves.easeIn` | Sorties d'éléments |
+| `motion.easing.emphasized` | `Curves.easeOutCubic` | Célébrations, hero |
+| `motion.stagger` | 50 ms | Délai inter-élément dans une liste qui fade-in |
+
+#### Catalogue d'animations Valide School
+
+| Pattern | Quand | Durée | Note |
+|---|---|---|---|
+| **Tap feedback** | Tap sur n'importe quel élément interactif | `fast` (120 ms) | Scale 0.96 → 1.0 + opacity 0.7 → 1.0. Implémenté au niveau atom (Story 0.13) |
+| **Fade-in stagger** | Apparition d'une liste (matières, notifications, classements) | `standard` + `stagger` | Max 8 premiers items animés, le reste apparaît instantanément (perf) |
+| **Slide page** | Navigation `go_router` standard | `standard` | Slide horizontal (push) ou bottom-up (modal route) |
+| **Sheet bottom slide** | Ouverture bottom sheet | `standard` | Avec backdrop fade-in en parallèle |
+| **Snackbar / Toast slide-up** | Feedback léger | `standard` | Disparaît après 3 s |
+| **Skeleton shimmer** | Chargement contenu | continu | Cycle 1.5 s. Désactivé si `MediaQuery.disableAnimations` |
+| **Spinner rotation** | Action brève < 3 s | continu | 0.7 s/tour linéaire |
+| **Success checkmark** | Bonne réponse Mode 1/2/3, paiement OK, soumission OK | `emphasis` | Draw du checkmark + bounce léger. Couplé à `haptic.success` + son `success` |
+| **Error shake** | Mauvaise réponse, validation form échouée | `fast` ×3 | Shake horizontal léger. Couplé à `haptic.error` + son `error` |
+| **Level-up bloom** | Montée de niveau santé scolaire, badge gagné | `celebration` | Burst de cercles + scale + fade. Couplé à `haptic.heavy` + son `levelup` |
+| **Progress bar fill** | Avancement quiz, progression chapitre | `emphasis` | Anim de 0 → valeur cible. Texte synchronisé |
+| **Pill tabs switch** | Changement de section | `fast` | Indicator slide entre les pills |
+| **Cursor blink** | Champ saisie focus | continu | Standard plateforme |
+
+#### Respect du système
+
+- **`MediaQuery.disableAnimations`** (Android « Désactiver les animations » dans dev options ou prefer-reduced-motion) : on fallback sur des transitions instantanées pour shimmer, level-up bloom, fade-in stagger ; on garde tap feedback et page transition courte (120 ms).
+- **Mode économie batterie Android** : on désactive automatiquement les animations continues décoratives (shimmer reste, mais on accepte qu'il soit moins prioritaire CPU).
+- **Cold start** : pas de hero animation > 400 ms au démarrage (perçu lent).
+
+#### Package retenu
+
+- **`flutter_animate`** pour les patterns custom (success checkmark, error shake, level-up bloom, stagger). Évite de réécrire les `AnimationController`.
+- **Implicit widgets natifs** (`AnimatedContainer`, `AnimatedOpacity`, `AnimatedSwitcher`, `AnimatedAlign`) pour les micro-interactions atomiques.
+- Pas de **Lottie** en V1 (perf + taille APK).
+
+---
+
+### Audio (sons d'interaction)
+
+**Posture audio** : *Standard — 8 à 12 sons clés, total ≤ 500 KB embarqués dans l'APK*. Aucun son streamé (data + latence). Chaque son est court (0.2-1 s), en OGG basse qualité (mono, 22 kHz).
+
+**Respect utilisateur** :
+- Sons soumis au volume **média** du système (pas notification, pas alarme).
+- Setting global « Sons activés » dans Profil (par défaut ON), persisté en `SharedPreferences`.
+- **Sons coupés automatiquement** si le téléphone est en mode silencieux (`SystemSoundType` détecté via `package:vibration` ou via le ringer mode Android).
+- **Sons coupés en Mode Examen** (FR-24+) : ambiance neutre obligatoire.
+
+#### Catalogue Valide School (à implémenter en Story 0.14)
+
+| Son | Quand | Durée | Asset cible |
+|---|---|---|---|
+| `tap` | Tap sur bouton primaire uniquement (pas tous les éléments — fatigue) | 80 ms | `assets/audio/tap.ogg` ≤ 8 KB |
+| `success_soft` | Bonne réponse Mode 1 standard | 350 ms | ≤ 30 KB |
+| `success_strong` | Bonne réponse Mode 2 (semi-assisté, plus rare) | 500 ms | ≤ 50 KB |
+| `error_soft` | Mauvaise réponse Mode 1 | 250 ms | ≤ 25 KB |
+| `error_strong` | Form validation échouée, action bloquée (paywall hit) | 350 ms | ≤ 35 KB |
+| `complete` | Quiz terminé, leçon finie | 700 ms | ≤ 60 KB |
+| `levelup` | Montée de niveau santé scolaire, palier franchi | 900 ms | ≤ 80 KB |
+| `badge` | Badge gagné | 800 ms | ≤ 70 KB |
+| `payment_ok` | Paiement Mobile Money réussi | 700 ms | ≤ 60 KB |
+| `notification` | Notification in-app reçue (différent du son push système) | 500 ms | ≤ 45 KB |
+| `streak` | Streak maintenu (discret, non culpabilisant) | 400 ms | ≤ 35 KB |
+| `chat_send` | Message envoyé au Chat IA | 150 ms | ≤ 15 KB |
+
+**Budget total cible** : ≤ 500 KB. Si dépassement, on supprime `tap`, `streak`, `chat_send` (les moins essentiels) avant les autres.
+
+#### Package audio retenu
+
+- **`audioplayers`** ou **`soundpool`** (à arbitrer en Story 0.14 — `soundpool` est plus efficace pour les SFX courts simultanés mais plus pauvre en API).
+
+---
+
+### Haptics (vibrations)
+
+**Posture haptic** : *Discret mais présent*. Chaque confirmation positive ou négative significative déclenche un haptic. Les micro-interactions de navigation n'en ont pas (fatigue).
+
+**Respect utilisateur** :
+- Setting global « Vibrations activées » dans Profil (par défaut ON), persisté en `SharedPreferences`.
+- **Pas de haptic en Mode Examen**.
+- **Pas de haptic si batterie < 15 %** (mode économie).
+- Utilise l'API Flutter native `HapticFeedback.*` (gratuit en perms Android, pas besoin de `<uses-permission android:name="android.permission.VIBRATE"/>` au-delà de ce que Flutter déclare déjà).
+
+#### Catalogue Valide School (à implémenter en Story 0.14)
+
+| Haptic | Quand | API Flutter |
+|---|---|---|
+| `selection` | Switch toggle, pill tab change, sélection radio | `HapticFeedback.selectionClick()` |
+| `light` | Tap sur bouton primaire, validation Mode 1/2/3 | `HapticFeedback.lightImpact()` |
+| `medium` | Bonne réponse, action confirmée (soumission quiz, envoi message) | `HapticFeedback.mediumImpact()` |
+| `heavy` | Mauvaise réponse, validation form échouée, paywall hit, level up | `HapticFeedback.heavyImpact()` |
+| `success` (séquence) | Paiement réussi, badge gagné | `medium` + delay 100 ms + `light` |
+| `error` (séquence) | Erreur réseau bloquante | `heavy` + delay 80 ms + `heavy` |
+
+**Bannis** :
+
+- Pas de vibration continue > 500 ms (épuise batterie, mauvaise UX perçue).
+- Pas de pattern complexe custom (utiliser uniquement les presets Flutter).
+
+#### Package haptic retenu
+
+- **API Flutter native uniquement** (`flutter/services` → `HapticFeedback`). Pas de dépendance externe.
+
+---
 
 ## Do's and Don'ts
 

@@ -175,6 +175,99 @@ Chaque écran possède au minimum 4 états gérés : **loading**, **error**, **e
 
 ---
 
+## Emotional Posture
+
+**Pourquoi cette section** : sur un marché de l'éducation où l'élève vient souvent avec de l'anxiété (examen, parents, peur de l'échec), l'app doit dégager une émotion **encourageante, lucide, calme**. L'émotion n'est pas un vernis : elle change la rétention, la persévérance, l'usage.
+
+### Les 4 émotions cibles, par moment
+
+| Moment | Émotion visée | Levier principal | Anti-pattern |
+|---|---|---|---|
+| **Onboarding (premier soir)** | Soulagement, accueil | Copy chaleureux, illustration douce, progression visible | Pas de wall of text, pas d'avalanche d'options |
+| **Lecture cours / révision** | Concentration sereine | Typographie généreuse, blancs respiratoires, micro-feedback discret | Pas de notifications, pas de pop-up promo, pas de bandeaux premium intrusifs |
+| **Bonne réponse / progression** | Fierté tranquille | Checkmark animé doux + haptic light + son success_soft + copy concis (« C'est ça. ») | Pas de confettis débridés, pas de « 🎉🎉🎉 » |
+| **Mauvaise réponse / échec** | Bienveillance, redirection | Shake léger + haptic medium + son error_soft + copy non culpabilisant (« Pas tout à fait. On reprend ? ») | Pas de couleur rouge agressive seule, pas de « Faux ! », pas de score qui descend en gros |
+| **Paywall / paiement** | Confiance, contrôle | Transparence prix, copy direct (« 1 500 F CFA pour 1 mois »), feedback paiement haptic+son+anim claire | Pas de dark pattern, pas de countdown anxiogène, pas de comparaisons honteuses |
+| **Mode Examen** | Concentration neutre | **Tout son et haptic coupés**, motion réduit, copy minimaliste, chrono visible mais discret | Pas de célébration, pas d'animations décoratives, pas de couleurs vives |
+| **Santé scolaire faible** | Espoir, plan d'action | Étiquette « Priorité » (jamais « faible »), suggestion concrète immédiate, micro-anim d'invitation | Pas de jugement, pas de classement humiliant |
+
+### Règles d'écriture émotionnelle
+
+- **Tutoiement présent mais non envahissant.** « Tu peux », « tu vas voir », pas « Tu DOIS ».
+- **Préférer le futur à l'impératif** : « Tu vas voir tes matières » plutôt que « Vois tes matières ».
+- **Nommer le sentiment de l'élève uniquement quand on est sûr** : « Pas tout à fait, on reprend ? » plutôt que « Ne sois pas découragé ! ».
+- **Verbes au présent pour décrire l'état** : « Ton niveau monte » au lieu de « Ton niveau a augmenté ».
+- **Une émotion par écran**, pas un cocktail. Un écran de quiz est concentration ; un écran de résultat est fierté ou redirection ; pas les deux.
+
+### Couleur et émotion (rappels — specs dans DESIGN.md)
+
+- **Primary `{colors.primary}`** : confiance, engagement (boutons d'action principaux).
+- **Success `{colors.success}`** : validation, plein de sens (jamais utilisé en succès gratuit pour ne pas dévaloriser).
+- **Warning `{colors.warning}`** : attention sans peur (utilisé pour rappels positifs, pas pour menaces).
+- **Error `{colors.error}`** : présent mais doublé d'un texte explicite (jamais signal seul).
+- **Soft palettes (`{colors.primary-soft}`, etc.)** : pour les fonds de surface émotionnellement neutres mais chaleureux.
+
+---
+
+## Multisensoriel — Motion, Audio, Haptic
+
+**Posture globale** : Tout est animé (micro-interactions partout, transitions sobres), les sons accompagnent les **moments significatifs uniquement** (≤ 12 sons clés), les haptics renforcent **chaque confirmation positive ou négative significative**. **Toutes ces couches respectent les préférences système et les contraintes marché** (téléphones modestes, batterie, mode silencieux).
+
+> Les **tokens, catalogues, durées et packages** vivent dans `DESIGN.md` § Animations & motion / Audio / Haptics. Ici on couvre **quand** déclencher quoi, pas **comment** l'implémenter.
+
+### Choreography par moment clé
+
+| Moment | Anim | Son | Haptic | Copy |
+|---|---|---|---|---|
+| Tap bouton primaire | `tap feedback` 120 ms | `tap` (si activé + bouton primaire) | `light` | — |
+| Tap bouton secondaire | `tap feedback` 120 ms | aucun | `selection` | — |
+| Bonne réponse Mode 1 | `success checkmark` 300 ms | `success_soft` | `medium` | « C'est ça. » |
+| Bonne réponse Mode 2 (semi-assisté) | `success checkmark` 300 ms + barre progression | `success_strong` | `medium` | « Étape validée. » |
+| Mauvaise réponse Mode 1 | `error shake` 360 ms | `error_soft` | `heavy` | « Pas tout à fait. On reprend ? » |
+| Quiz terminé | `progress bar fill` 300 ms + slide écran résultat | `complete` | `success` (séquence) | « Quiz terminé. » + mention obtenue |
+| Niveau monté (santé scolaire) | `level-up bloom` 600 ms | `levelup` | `heavy` | « Ton niveau en {notion} passe à {Solide}. » |
+| Badge gagné | `level-up bloom` 600 ms | `badge` | `heavy` | « Badge gagné : {nom}. » |
+| Paiement Mobile Money OK | `success checkmark` plein écran 700 ms | `payment_ok` | `success` (séquence) | « Paiement reçu. Premium activé. » |
+| Paywall hit (essayer Mode 2 sans premium) | `error shake` 200 ms (sur bouton bloqué) | `error_strong` | `heavy` | « Mode 2 — inclus dans le premium. » + CTA |
+| Notification in-app | `slide-up snackbar` 200 ms | `notification` | aucun | court (≤ 60 caractères) |
+| Streak maintenu | `pulse` discret sur badge profil | `streak` (très discret) | `light` | optionnel |
+| Message Chat IA envoyé | `slide-up bulle` 200 ms | `chat_send` | `selection` | — |
+| Pull-to-refresh | spinner natif | aucun | `selection` (au release du pull) | — |
+| Switch tab principal | `pill tabs switch` 120 ms | aucun | `selection` | — |
+| Page transition standard | `slide page` 200 ms | aucun | aucun | — |
+| Skeleton chargement | `skeleton shimmer` (continu) | aucun | aucun | — |
+| Hello première ouverture (sentinelle E0) | fade-in 300 ms du texte + formule LaTeX | aucun | aucun | « Hello Valide » |
+
+### Coupures globales (override toutes les couches)
+
+| Contexte | Motion | Audio | Haptic |
+|---|---|---|---|
+| **Mode Examen actif** | Motion réduit (seules transitions fonctionnelles) | Aucun son | Aucun haptic |
+| **Mode silencieux Android** | Motion normal | Aucun son | Haptic normal (volume silencieux n'affecte pas la vibration) |
+| **Mode économie batterie Android** | Anims continues coupées (shimmer ok), motion fonctionnel ok | Sons toujours OK | Haptic OK |
+| **Batterie < 15 %** | Anims continues coupées | Sons OK | Aucun haptic (économie) |
+| **Préférence système « réduire animations »** (MediaQuery.disableAnimations) | Anims décoratives → statique, fonctionnelles 120 ms max | Sons OK | Haptic OK |
+| **Setting Profil « Sons activés » = off** | Motion normal | Aucun son | Haptic normal |
+| **Setting Profil « Vibrations activées » = off** | Motion normal | Sons normaux | Aucun haptic |
+
+### Anti-patterns multisensoriels
+
+- **Jamais cumuler animation lourde + son fort + haptic heavy** pour la même action banale. Réservé aux 3-4 moments forts par session.
+- **Pas d'animations qui retardent l'action** : si un tap bouton déclenche une anim 400 ms avant l'effet, l'utilisateur perçoit l'app comme lente. Le `tap feedback` 120 ms est **simultané** à l'action, pas avant.
+- **Pas de son sans haptic associé** sur les confirmations (en mode silencieux, l'utilisateur n'a aucun feedback).
+- **Pas de haptic seul** sans feedback visuel (les sourds-malentendants ne sont pas le cas critique, mais l'utilisateur regarde son écran : le visuel reste maître).
+- **Pas de boucle audio** (musique d'ambiance, jingles répétés).
+- **Pas de pop-up à la première utilisation** « Veux-tu activer les sons ? » — settings vivent dans Profil, on n'interrompt pas l'onboarding.
+
+### Implémentation amont (rappel Stories Epic 0)
+
+- **Tokens motion** (durations, easings) : Story 0.10 — Setup design tokens
+- **Atoms animés** (boutons avec tap feedback, switch toggle haptic, pill tabs) : Story 0.13 — Composants atomiques
+- **Services audio + haptic + overlays célébration** : Story 0.14 — Composants feedback
+- **Setting « Sons / Vibrations »** dans Profil : E1 ou première story Profil
+
+---
+
 ## Interaction Primitives
 
 - **Tap to act.** Tout élément cliquable réagit visuellement au tap (état pressed : opacité 0.7 sur le bouton, ou highlight `{colors.primary-soft}` sur les cards).
