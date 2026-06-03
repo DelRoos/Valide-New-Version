@@ -52,7 +52,7 @@ Riverpod sert aussi de **système d'injection de dépendances** — on n'ajoute 
 
 ## Détail d'implémentation
 
-Voir [`doc/tech/Valide Mobile App Architecture.md`](../../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) — section 8 (presentation + Riverpod).
+Voir [`doc/tech/Valide School App Architecture.md`](../../../../doc/tech/Valide%20School%20App%20Architecture.md) — section 8 (presentation + Riverpod).
 
 ## Décisions liées
 

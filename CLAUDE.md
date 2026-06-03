@@ -1,4 +1,4 @@
-# Instructions pour Claude — Projet Valide Mobile
+# Instructions pour Claude — Projet Valide School
 
 > Ce fichier est chargé automatiquement dans ton contexte au début de chaque session. Il définit le comportement non négociable attendu de toi sur ce projet.
 
@@ -6,11 +6,40 @@
 
 ## Contexte projet (en 5 lignes)
 
-- **Valide Mobile** : app Flutter bilingue FR/EN pour élèves du secondaire camerounais (BEPC, Probatoire, BAC, GCE O/A-Level).
+- **Valide School** : app Flutter bilingue FR/EN pour élèves du secondaire camerounais (BEPC, Probatoire, BAC, GCE O/A-Level).
 - **Ce dépôt = app mobile uniquement.** Le backend Cloud Functions, la console admin et la landing page vivent dans des dépôts séparés.
 - **Statut** : phase de documentation. Aucun code Flutter encore. MVP planifié sur 6 semaines (6 phases).
 - **Méthode de pilotage** : BMAD v6.8.0 — voir [doc/tools/BMAD_METHOD_GUIDE.md](doc/tools/BMAD_METHOD_GUIDE.md).
 - **Contraintes marché non négociables** : téléphones modestes, data limitée et coûteuse, connectivité instable.
+
+---
+
+## Structure du dépôt
+
+```text
+.
+├── mobile_app/             # ← Projet Flutter (toutes commandes flutter à lancer ici)
+│   ├── lib/                # code Dart (clean architecture : core/ + features/)
+│   ├── android/            # configuration Android (Gradle, manifests)
+│   ├── test/               # tests Flutter
+│   ├── pubspec.yaml        # dépendances Flutter
+│   └── analysis_options.yaml
+├── doc/                    # documentation projet (tech, métier, partage, tools)
+├── project_manage/         # planification BMAD (SPEC, PRD, UX, architecture, epics, stories)
+├── _bmad/                  # installation BMAD v6.8.0
+├── .claude/                # skills BMAD chargées dans Claude Code
+├── .github/                # templates PR + issues
+├── CLAUDE.md               # ce fichier — règles non négociables
+├── README.md
+└── (futur : firebase.json, .firebaserc, firestore.rules, firestore.indexes.json, storage.rules)
+                            # ↑ configs Firebase au niveau racine
+                            # (utilisées par firebase deploy, partagées avec backend)
+```
+
+**Règle de localisation** :
+- Tout chemin commençant par `lib/`, `android/`, `pubspec.yaml`, `test/` dans la doc ou une story = relatif à `mobile_app/`.
+- Les configs Firebase (`firebase.json`, `.firebaserc`, `firestore.rules`, `firestore.indexes.json`, `storage.rules`) vivent au niveau **racine** du dépôt, pas dans `mobile_app/`. Justification : ces fichiers configurent le projet Firebase entier (Firestore, Storage, Functions, Hosting) et sont déployés via `firebase deploy` indépendamment du build Flutter. Le mobile consomme leurs effets (règles d'accès, indexes) mais ne les contient pas.
+- Les artefacts Firebase **spécifiques au client mobile** (`google-services.json`, `firebase_options.dart`) vivent dans `mobile_app/android/app/` et `mobile_app/lib/` respectivement.
 
 ---
 
@@ -112,7 +141,7 @@ Et pour les modes (`Fast` / `Coaching`) :
 
 ## Règles non négociables (héritées des docs)
 
-### Architecture mobile (cf. [Mobile App Architecture](doc/tech/Valide%20Mobile%20App%20Architecture.md))
+### Architecture mobile (cf. [Mobile App Architecture](doc/tech/Valide%20School%20App%20Architecture.md))
 
 1. **Règle d'or des dépendances** : `presentation → domain ← data`. Le `domain` n'importe **JAMAIS** Flutter, Firebase, Dio, Riverpod, ni `logger`.
 2. **Traduction `Exception → Failure`** : uniquement dans les repository impls (`data/repositories/*_repository_impl.dart`).
@@ -160,8 +189,8 @@ Et pour les modes (`Fast` / `Coaching`) :
 | Méthode BMAD (skills, intents, agents) | [doc/tools/BMAD_METHOD_GUIDE.md](doc/tools/BMAD_METHOD_GUIDE.md) |
 | Comment contribuer (workflow, conventions, revue) | [doc/tools/CONTRIBUTING.md](doc/tools/CONTRIBUTING.md) |
 | Périmètre du MVP en 6 phases | [doc/metier/Valide Decoupage MVP.md](doc/metier/Valide%20Decoupage%20MVP.md) |
-| Architecture mobile détaillée | [doc/tech/Valide Mobile App Architecture.md](doc/tech/Valide%20Mobile%20App%20Architecture.md) |
-| Packages Flutter (et pourquoi) | [doc/tech/Valide Mobile Package Architecture.md](doc/tech/Valide%20Mobile%20Package%20Architecture.md) |
+| Architecture mobile détaillée | [doc/tech/Valide School App Architecture.md](doc/tech/Valide%20School%20App%20Architecture.md) |
+| Packages Flutter (et pourquoi) | [doc/tech/Valide School Package Architecture.md](doc/tech/Valide%20School%20Package%20Architecture.md) |
 | Architecture backend (référence) | [doc/tech/Valide Cloud Function Architecture.md](doc/tech/Valide%20Cloud%20Function%20Architecture.md) |
 | Schéma Firestore | [doc/partage/BASE-DE-DONNEES.md](doc/partage/BASE-DE-DONNEES.md) |
 | Algorithmes métier | [doc/partage/ALGORITHMES.md](doc/partage/ALGORITHMES.md) |
@@ -226,7 +255,7 @@ Dans tous les autres cas : **passe par BMAD**.
 
 À ta première interaction avec l'utilisateur dans une nouvelle session :
 
-1. **Confirmer le contexte** en une phrase : « Je suis sur Valide Mobile, pipeline BMAD v6.8.0, on est en phase doc. »
+1. **Confirmer le contexte** en une phrase : « Je suis sur Valide School, pipeline BMAD v6.8.0, on est en phase doc. »
 2. **Lancer mentalement `bmad-workflow-status`** : vérifier `project_manage/` pour comprendre où en est le projet (existe-t-il un SPEC, un PRD, une archi, des stories ?).
 3. **Demander à l'utilisateur ce qu'il veut faire** plutôt que de présumer.
 4. **Identifier la skill BMAD à utiliser** dans la table § « Décisions par type de demande » et l'annoncer.

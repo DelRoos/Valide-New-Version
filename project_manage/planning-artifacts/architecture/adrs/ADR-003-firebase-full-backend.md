@@ -58,7 +58,7 @@ Une note dans la doc d'archi packages mobile mentionne un possible stack Next.js
 
 ## Détail d'implémentation
 
-Voir [`doc/tech/Valide Mobile Package Architecture.md`](../../../../doc/tech/Valide%20Mobile%20Package%20Architecture.md) — section 1 (Firebase complet, module par module).
+Voir [`doc/tech/Valide School Package Architecture.md`](../../../../doc/tech/Valide%20School%20Package%20Architecture.md) — section 1 (Firebase complet, module par module).
 
 ## Décisions liées
 

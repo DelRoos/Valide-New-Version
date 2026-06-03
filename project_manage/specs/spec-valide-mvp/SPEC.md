@@ -3,8 +3,8 @@ id: SPEC-valide-mvp
 companions:
   - phases-mvp.md
   - glossary.md
-  - ../../../doc/tech/Valide Mobile App Architecture.md
-  - ../../../doc/tech/Valide Mobile Package Architecture.md
+  - ../../../doc/tech/Valide School App Architecture.md
+  - ../../../doc/tech/Valide School Package Architecture.md
   - ../../../doc/tech/Valide Cloud Function Architecture.md
   - ../../../doc/partage/BASE-DE-DONNEES.md
   - ../../../doc/partage/ALGORITHMES.md

@@ -9,8 +9,8 @@ sourceArtifacts:
   - project_manage/planning-artifacts/architecture/architecture.md
   - project_manage/planning-artifacts/ux-designs/ux-valide-mvp-2026-06-03/DESIGN.md
   - project_manage/planning-artifacts/ux-designs/ux-valide-mvp-2026-06-03/EXPERIENCE.md
-  - doc/tech/Valide Mobile App Architecture.md
-  - doc/tech/Valide Mobile Package Architecture.md
+  - doc/tech/Valide School App Architecture.md
+  - doc/tech/Valide School Package Architecture.md
   - doc/partage/BASE-DE-DONNEES.md
   - ADRs/ADR-001 à ADR-010
 storyCount: 21
@@ -96,17 +96,18 @@ Versions à utiliser : **Flutter stable la plus récente disponible au moment de
 
 #### Acceptance Criteria
 
-**AC1 — Projet créé**
-**Given** un dépôt git vide à la racine du projet
-**When** la commande `flutter create --org app.valide --project-name valide_mobile --platforms android --org app.valide .` est exécutée et adaptée à la structure
-**Then** le dossier `lib/` existe avec `main.dart` qui affiche `Valide` au lancement
-**And** `flutter run` lance l'app sur émulateur Android sans erreur
+**AC1 — Projet créé dans `mobile_app/`**
+**Given** un dépôt git existant à la racine du projet
+**When** la commande `flutter create --org com.valideStartup --project-name valide_school --platforms android .` est exécutée et le projet placé dans `mobile_app/` (cf. CLAUDE.md § Structure du dépôt)
+**Then** `mobile_app/lib/main.dart` existe et affiche `Valide School` au lancement
+**And** `cd mobile_app && flutter run` lance l'app sur émulateur Android sans erreur
+**And** `mobile_app/android/app/build.gradle.kts` a `applicationId = "com.valideStartup.valideSchool"` (camelCase, patché depuis le défaut snake_case)
 
 **AC2 — Structure clean architecture créée**
 **Given** le projet créé
-**When** on liste `lib/`
-**Then** les dossiers vides suivants existent : `lib/core/{di,error,logging,network,theme,widgets,utils}`, `lib/features/`, `lib/l10n/`, avec un `.gitkeep` dans chaque
-**And** un `lib/main.dart` minimal initialise `runApp(const ValideApp())`
+**When** on liste `mobile_app/lib/`
+**Then** les dossiers vides suivants existent : `mobile_app/lib/core/{di,error,logging,network,theme,widgets,utils}`, `mobile_app/lib/features/`, `mobile_app/lib/l10n/`, avec un `.gitkeep` dans chaque
+**And** un `mobile_app/lib/main.dart` minimal initialise `runApp(const ValideApp())`
 
 **AC3 — pubspec versionné et propre**
 **Given** le `pubspec.yaml` initial
@@ -148,7 +149,7 @@ Versions à utiliser : **Flutter stable la plus récente disponible au moment de
 
 #### Contexte technique
 
-ADR-002 acte le choix `flutter_riverpod` (et non GetX) pour des raisons de durabilité, testabilité et dépendances explicites. Le routing utilise `go_router` (cf. `Valide Mobile Package Architecture.md`). Cette story ne crée que le shell racine + 1 route stub `/hello` — les routes métier viendront avec leurs features.
+ADR-002 acte le choix `flutter_riverpod` (et non GetX) pour des raisons de durabilité, testabilité et dépendances explicites. Le routing utilise `go_router` (cf. `Valide School Package Architecture.md`). Cette story ne crée que le shell racine + 1 route stub `/hello` — les routes métier viendront avec leurs features.
 
 Le `ProviderScope` enveloppe `ScreenUtilInit` (qui viendra en Story 0.12) qui enveloppe `MaterialApp.router`. Cette story prépare la place mais utilise un `MaterialApp.router` direct ; Story 0.12 wrappera avec ScreenUtil.
 
@@ -237,7 +238,7 @@ Niveau de log par défaut en debug = `verbose`, en release = `warning`.
 #### Definition of Done
 
 - [ ] Tests unitaires : 3 cas redaction + 1 cas niveau par env (4 tests)
-- [ ] Documentation 1 paragraphe dans `doc/tech/Valide Mobile App Architecture.md` § Logging si pas déjà décrit
+- [ ] Documentation 1 paragraphe dans `doc/tech/Valide School App Architecture.md` § Logging si pas déjà décrit
 - [ ] PR ≤ 200 lignes diff
 - [ ] Commit `feat(core): AppLogger avec redaction donnees sensibles`
 
@@ -288,7 +289,7 @@ Hiérarchie minimale : `Failure` (sealed) → `NetworkFailure`, `AuthFailure`, `
 
 **AC4 — Convention documentaire**
 **Given** la story marquée done
-**When** on relit `doc/tech/Valide Mobile App Architecture.md` § Gestion erreurs
+**When** on relit `doc/tech/Valide School App Architecture.md` § Gestion erreurs
 **Then** un paragraphe court documente la convention `Either<Failure, T>` et indique que ce helper centralise la traduction
 **And** un exemple de repository impl est donné
 
@@ -384,12 +385,12 @@ App Check est ajouté ici mais activé en mode debug provider seulement (Story 0
 
 **AC1 — Projet Firebase créé**
 **Given** la Firebase Console
-**When** un projet `valide-mobile-mvp` est créé en plan Blaze (pay-as-you-go)
+**When** un projet `valide-school-mvp` est créé en plan Blaze (pay-as-you-go)
 **Then** Auth (Email + Google + Apple stub), Firestore (Native mode, `europe-west1`), Storage (`europe-west1`), Cloud Functions (`europe-west1`), FCM, Crashlytics, Analytics (consentement à gérer plus tard), Remote Config, App Check sont activés
 **And** `google-services.json` est téléchargé et placé dans `android/app/`
 
 **AC2 — FlutterFire CLI configuré**
-**Given** `flutterfire configure --project=valide-mobile-mvp --platforms=android` est exécuté
+**Given** `flutterfire configure --project=valide-school-mvp --platforms=android` est exécuté
 **When** la commande termine
 **Then** `lib/firebase_options.dart` est généré
 **And** `android/app/build.gradle` est patché avec `google-services` plugin
@@ -461,7 +462,7 @@ ADR-010 acte « zéro cache custom ». Le cache offline Firestore est activé pa
 **Given** une recherche dans `lib/`
 **When** on grep `hive`, `drift`, `isar`, `sqflite`, `Map<String,` (utilisé pour cache)
 **Then** aucun résultat de cache custom n'est trouvé
-**And** documenté dans `doc/tech/Valide Mobile App Architecture.md` § 12
+**And** documenté dans `doc/tech/Valide School App Architecture.md` § 12
 
 #### Definition of Done
 
@@ -569,7 +570,7 @@ Le déploiement des règles passe par `firebase deploy --only firestore:rules` d
 
 **AC4 — Déploiement testé**
 **Given** Firebase CLI installé
-**When** `firebase deploy --only firestore:rules --project=valide-mobile-mvp` est exécuté
+**When** `firebase deploy --only firestore:rules --project=valide-school-mvp` est exécuté
 **Then** le déploiement réussit
 **And** les règles sont visibles dans Firebase Console > Firestore > Rules
 **And** la commande de déploiement est documentée dans `doc/tools/CONTRIBUTING.md`

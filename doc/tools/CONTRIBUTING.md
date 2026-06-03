@@ -1,4 +1,4 @@
-# Guide de contribution — Valide Mobile
+# Guide de contribution — Valide School
 
 > **Périmètre** : ce dépôt contient **uniquement l'application mobile Flutter** de Valide.
 > **Public** : développeur mobile, designer/UX, PM, QA travaillant sur l'app mobile.
@@ -45,7 +45,7 @@ Le projet Valide est composé de **quatre applications**, **chacune dans son pro
 
 ## 1. Bienvenue & vue d'ensemble
 
-**Valide Mobile** est l'application mobile bilingue FR/EN pour les élèves du secondaire camerounais (BEPC, Probatoire, BAC, GCE O/A-Level).
+**Valide School** est l'application mobile bilingue FR/EN pour les élèves du secondaire camerounais (BEPC, Probatoire, BAC, GCE O/A-Level).
 
 **MVP** : 6 semaines, découpé en 6 phases hebdomadaires (cf. [Valide Decoupage MVP.md](../metier/Valide%20Decoupage%20MVP.md)).
 
@@ -60,8 +60,8 @@ Le projet Valide est composé de **quatre applications**, **chacune dans son pro
 | Tu cherches… | Va voir |
 |---|---|
 | Le périmètre et le découpage du MVP | [doc/metier/Valide Decoupage MVP.md](../metier/Valide%20Decoupage%20MVP.md) |
-| L'architecture de l'app mobile | [doc/tech/Valide Mobile App Architecture.md](../tech/Valide%20Mobile%20App%20Architecture.md) |
-| Les packages Flutter (et pourquoi) | [doc/tech/Valide Mobile Package Architecture.md](../tech/Valide%20Mobile%20Package%20Architecture.md) |
+| L'architecture de l'app mobile | [doc/tech/Valide School App Architecture.md](../tech/Valide%20School%20App%20Architecture.md) |
+| Les packages Flutter (et pourquoi) | [doc/tech/Valide School Package Architecture.md](../tech/Valide%20School%20Package%20Architecture.md) |
 | Le Design System | [doc/tech/Valide - Design System.html](../tech/Valide%20-%20Design%20System.html) |
 | Les maquettes d'écrans par module | [doc/tech/Valide - Design.html](../tech/Valide%20-%20Design.html) |
 | L'architecture backend (référence) | [doc/tech/Valide Cloud Function Architecture.md](../tech/Valide%20Cloud%20Function%20Architecture.md) |
@@ -81,8 +81,8 @@ Checklist à dérouler **dans cet ordre** lors de ton premier jour.
 |---|---|
 | 1 | [Valide Decoupage MVP.md](../metier/Valide%20Decoupage%20MVP.md) — les 6 phases du MVP |
 | 2 | [BMAD_METHOD_GUIDE.md](BMAD_METHOD_GUIDE.md) — sections 1 à 5 (philosophie, phases, agents) |
-| 3 | [Mobile App Architecture.md](../tech/Valide%20Mobile%20App%20Architecture.md) — entier, particulièrement sections 4 (règle d'or), 6-8 (couches), 19 (checklist de revue) |
-| 4 | [Mobile Package Architecture.md](../tech/Valide%20Mobile%20Package%20Architecture.md) — entier |
+| 3 | [Mobile App Architecture.md](../tech/Valide%20School%20App%20Architecture.md) — entier, particulièrement sections 4 (règle d'or), 6-8 (couches), 19 (checklist de revue) |
+| 4 | [Mobile Package Architecture.md](../tech/Valide%20School%20Package%20Architecture.md) — entier |
 | 5 | [doc/partage/README.md](../partage/README.md) — comprendre la surface partagée |
 | 6 | Ce guide en entier |
 
@@ -144,7 +144,7 @@ Valide/
 └── doc/tools/CONTRIBUTING.md      # ce fichier
 ```
 
-Le détail de la structure interne de `lib/` (couches `domain` / `data` / `presentation`, contenu de `core/`, gabarit par feature) est dans la section 14 du [Mobile App Architecture](../tech/Valide%20Mobile%20App%20Architecture.md). **Ne pas dupliquer ici.**
+Le détail de la structure interne de `lib/` (couches `domain` / `data` / `presentation`, contenu de `core/`, gabarit par feature) est dans la section 14 du [Mobile App Architecture](../tech/Valide%20School%20App%20Architecture.md). **Ne pas dupliquer ici.**
 
 ---
 
@@ -317,7 +317,7 @@ Si ta branche a plus d'une journée : **rebase** sur `main` à jour (pas de merg
 
 ## 6. Conventions de code
 
-**Source unique de vérité** : [Mobile App Architecture.md](../tech/Valide%20Mobile%20App%20Architecture.md), particulièrement les sections 4 (règle d'or des dépendances), 6-8 (couches), 19 (checklist de revue).
+**Source unique de vérité** : [Mobile App Architecture.md](../tech/Valide%20School%20App%20Architecture.md), particulièrement les sections 4 (règle d'or des dépendances), 6-8 (couches), 19 (checklist de revue).
 
 ### 6.1 Règles non négociables (rappel)
 
@@ -416,7 +416,7 @@ Si rien trouvé après une lecture sérieuse, le reviewer le dit explicitement.
 
 ## 8. Tests
 
-Voir [Mobile App Architecture.md § 18](../tech/Valide%20Mobile%20App%20Architecture.md).
+Voir [Mobile App Architecture.md § 18](../tech/Valide%20School%20App%20Architecture.md).
 
 | Type | Quand | Outils |
 |---|---|---|
@@ -578,8 +578,8 @@ _bmad/_config/   # config locale spécifique utilisateur
 | Un algorithme métier (score, santé, points, idempotence…) | `doc/partage/ALGORITHMES.md` |
 | Une consommation de Cloud Function | `doc/partage/CONTRATS-API.md` (en accord avec l'équipe backend) |
 | Une donnée de référence (filière, série, matières) | `doc/partage/DONNEES-REFERENCE.md` |
-| Le pattern d'une couche mobile | Section concernée de [Mobile App Architecture](../tech/Valide%20Mobile%20App%20Architecture.md) |
-| Une dépendance Flutter | [Mobile Package Architecture](../tech/Valide%20Mobile%20Package%20Architecture.md) |
+| Le pattern d'une couche mobile | Section concernée de [Mobile App Architecture](../tech/Valide%20School%20App%20Architecture.md) |
+| Une dépendance Flutter | [Mobile Package Architecture](../tech/Valide%20School%20Package%20Architecture.md) |
 | Une convention transversale | Ce guide |
 | Une décision technique non triviale | Un ADR dans `project_manage/planning-artifacts/adrs/` |
 | Une décision produit / scope | Le `.decision-log.md` du livrable concerné |

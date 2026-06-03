@@ -1,0 +1,95 @@
+# generated: 2026-06-03
+# last_updated: 2026-06-03
+# project: Valide School MVP
+# project_key: VALIDE
+# tracking_system: file-system
+# story_location: project_manage/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in implementation-artifacts/
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (PR submitted)
+#   - done: Story completed and merged
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+
+generated: 2026-06-03
+last_updated: 2026-06-03
+project: Valide School MVP
+project_key: VALIDE
+tracking_system: file-system
+story_location: project_manage/implementation-artifacts
+
+development_status:
+  # ======================
+  # Epic 0 — Foundation & Bootstrap (P0)
+  # ======================
+  epic-0: in-progress
+  0-1-bootstrap-projet-flutter: ready-for-dev
+  0-2-setup-architecture-state-routing: backlog
+  0-3-setup-app-logger: backlog
+  0-4-setup-failure-types-either-pattern: backlog
+  0-5-setup-dio-retry-connectivity: backlog
+  0-6-setup-firebase-android: backlog
+  0-7-setup-cache-offline-firestore: backlog
+  0-8-setup-app-check: backlog
+  0-9-setup-firestore-rules-initiales: backlog
+  0-10-setup-design-tokens: backlog
+  0-11-setup-fonts-nunito-jetbrains: backlog
+  0-12-setup-flutter-screenutil: backlog
+  0-13-composants-ux-atomiques: backlog
+  0-14-composants-ux-feedback: backlog
+  0-15-setup-pedagogical-content-wrapper: backlog
+  0-16-setup-i18n-fr-en: backlog
+  0-17-setup-ci-cd-github-actions: backlog
+  0-18-risk-r1-agregateurs-momo: backlog
+  0-19-risk-r2-tests-precoces-smooth-markdown: backlog
+  0-20-risk-r3-benchmark-latence-europe-west1: backlog
+  0-21-page-hello-valide-sentinelle-e0: backlog
+  epic-0-retrospective: optional
+
+  # ======================
+  # Epic 1 — Onboarding & Profil scolaire (P1)
+  # ======================
+  epic-1: backlog
+  epic-1-retrospective: optional
+
+  # ======================
+  # Epic 2 — Navigation & Lecture contenu (P2)
+  # ======================
+  epic-2: backlog
+  epic-2-retrospective: optional
+
+  # ======================
+  # Epic 3 — Quiz & Pratique active Mode 1/2 (P3)
+  # ======================
+  epic-3: backlog
+  epic-3-retrospective: optional
+
+  # ======================
+  # Epic 4 — Freemium & Paiement Mobile Money (P4)
+  # ======================
+  epic-4: backlog
+  epic-4-retrospective: optional
+
+  # ======================
+  # Epic 5 — Santé scolaire & Gamification (P5)
+  # ======================
+  epic-5: backlog
+  epic-5-retrospective: optional
+
+  # ======================
+  # Epic 6 — Mode 3, Examen, Chat IA, Partage (P6)
+  # ======================
+  epic-6: backlog
+  epic-6-retrospective: optional
