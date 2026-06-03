@@ -47,8 +47,8 @@ development_status:
   0-8-setup-app-check: backlog
   0-9-setup-firestore-rules-initiales: backlog
   0-10-setup-design-tokens: in-progress  # 2026-06-04 attaque apres ADR-012
-  0-11-setup-fonts-nunito-jetbrains: backlog
-  0-12-setup-flutter-screenutil: backlog
+  0-11-setup-fonts-nunito-jetbrains: in-progress  # 2026-06-04 chaine PR avec 0.10
+  0-12-setup-flutter-screenutil: in-progress  # 2026-06-04 chaine PR avec 0.10
   0-13-composants-ux-atomiques: backlog
   0-14-composants-ux-feedback: backlog
   0-15-setup-pedagogical-content-wrapper: backlog
