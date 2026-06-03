@@ -244,7 +244,18 @@ Tokens : voir `{spacing}` en frontmatter.
 
 ### Grille de contenu
 
-Layout **mono-colonne** systématique. Pas de grilles 2 colonnes sauf cas explicites : icon grid (matières) et grid-3 (graisses, badges principaux).
+Layout **mono-colonne** systématique sur phone portrait (< 600 dp). Pas de grilles 2 colonnes sauf cas explicites : icon grid (matières) et grid-3 (graisses, badges principaux).
+
+### Layout tablette (≥ 840 dp) — MAJ 2026-06-04 (ADR-011)
+
+> Comportements responsives détaillés dans EXPERIENCE.md § Responsive & Platform.
+
+- **Largeur de lecture** : tout contenu textuel (cours, énoncé, chat) reste dans une **colonne max 600 dp** centrée — au-delà, la lisibilité tombe.
+- **Grilles** : matières en **5-6 colonnes** sur tablette (contre 3 sur phone), notifications/classements/historique **2-colonnes (master-detail)** si la largeur le permet.
+- **Marges** : `{spacing.6}` (24 px) à `{spacing.7}` (32 px) sur tablette au lieu de `{spacing.4}` (16 px) phone.
+- **Bottom tabs vs NavigationRail** : portrait tablette = bottom tabs ; paysage tablette = NavigationRail à gauche.
+- **Split-view** : autorisé sur écran cours+sommaire (paysage tablette uniquement). Largeur sommaire fixe 300 dp, contenu prend le reste (max 600 dp utiles + marges).
+- **Pas de hero qui prend toute la largeur** : sur tablette, les héros (mini-carte rang, paywall hero) gardent une largeur max 600 dp centrée.
 
 ### Surfaces
 
@@ -463,7 +474,9 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 
 ### Audio (sons d'interaction)
 
-**Posture audio** : *Standard — 8 à 12 sons clés, total ≤ 500 KB embarqués dans l'APK*. Aucun son streamé (data + latence). Chaque son est court (0.2-1 s), en OGG basse qualité (mono, 22 kHz).
+> **MAJ 2026-06-04 (ADR-011)** : V1 cross-platform Android + iOS. Format audio passé OGG → **AAC/M4A** (OGG non supporté nativement iOS).
+
+**Posture audio** : *Standard — 8 à 12 sons clés, total ≤ 500 KB embarqués dans le bundle*. Aucun son streamé (data + latence). Chaque son est court (0.2-1 s), en **AAC/M4A basse qualité (mono, 22 kHz, ~32-64 kbps)** — supporté nativement Android et iOS sans transcoding runtime.
 
 **Respect utilisateur** :
 - Sons soumis au volume **média** du système (pas notification, pas alarme).
@@ -475,7 +488,7 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 
 | Son | Quand | Durée | Asset cible |
 |---|---|---|---|
-| `tap` | Tap sur bouton primaire uniquement (pas tous les éléments — fatigue) | 80 ms | `assets/audio/tap.ogg` ≤ 8 KB |
+| `tap` | Tap sur bouton primaire uniquement (pas tous les éléments — fatigue) | 80 ms | `assets/audio/tap.m4a` ≤ 8 KB |
 | `success_soft` | Bonne réponse Mode 1 standard | 350 ms | ≤ 30 KB |
 | `success_strong` | Bonne réponse Mode 2 (semi-assisté, plus rare) | 500 ms | ≤ 50 KB |
 | `error_soft` | Mauvaise réponse Mode 1 | 250 ms | ≤ 25 KB |
@@ -492,11 +505,14 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 
 #### Package audio retenu
 
-- **`audioplayers`** ou **`soundpool`** (à arbitrer en Story 0.14 — `soundpool` est plus efficace pour les SFX courts simultanés mais plus pauvre en API).
+- **`audioplayers`** (cross-platform Android + iOS). `soundpool` est **éliminé** car Android-only (cf. NFR-16 / ADR-011).
+- Recommandation : utiliser un pool de `AudioPlayer` réutilisables (1 par catégorie : `tap`, `success`, `error`, `notification`, …) plutôt qu'un `AudioPlayer` par appel — évite les fuites de ressources et l'overhead de création.
 
 ---
 
 ### Haptics (vibrations)
+
+> **MAJ 2026-06-04 (ADR-011)** : cross-platform. API Flutter `HapticFeedback.*` couvre Android (via `vibrator`) ET iOS (via Taptic Engine). Mapping ci-dessous garantit une expérience cohérente sur les deux plateformes (intensité ressentie peut varier légèrement — c'est attendu).
 
 **Posture haptic** : *Discret mais présent*. Chaque confirmation positive ou négative significative déclenche un haptic. Les micro-interactions de navigation n'en ont pas (fatigue).
 
@@ -508,14 +524,16 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 
 #### Catalogue Valide School (à implémenter en Story 0.14)
 
-| Haptic | Quand | API Flutter |
-|---|---|---|
-| `selection` | Switch toggle, pill tab change, sélection radio | `HapticFeedback.selectionClick()` |
-| `light` | Tap sur bouton primaire, validation Mode 1/2/3 | `HapticFeedback.lightImpact()` |
-| `medium` | Bonne réponse, action confirmée (soumission quiz, envoi message) | `HapticFeedback.mediumImpact()` |
-| `heavy` | Mauvaise réponse, validation form échouée, paywall hit, level up | `HapticFeedback.heavyImpact()` |
-| `success` (séquence) | Paiement réussi, badge gagné | `medium` + delay 100 ms + `light` |
-| `error` (séquence) | Erreur réseau bloquante | `heavy` + delay 80 ms + `heavy` |
+| Haptic | Quand | API Flutter | Mapping iOS (Taptic) | Mapping Android (vibrator) |
+|---|---|---|---|---|
+| `selection` | Switch toggle, pill tab change, sélection radio | `HapticFeedback.selectionClick()` | `UISelectionFeedbackGenerator` | vibration ~10 ms |
+| `light` | Tap sur bouton primaire, validation Mode 1/2/3 | `HapticFeedback.lightImpact()` | `UIImpactFeedbackGenerator(.light)` | vibration ~20 ms |
+| `medium` | Bonne réponse, action confirmée (soumission quiz, envoi message) | `HapticFeedback.mediumImpact()` | `UIImpactFeedbackGenerator(.medium)` | vibration ~40 ms |
+| `heavy` | Mauvaise réponse, validation form échouée, paywall hit, level up | `HapticFeedback.heavyImpact()` | `UIImpactFeedbackGenerator(.heavy)` | vibration ~80 ms |
+| `success` (séquence) | Paiement réussi, badge gagné | `medium` + delay 100 ms + `light` | enchaînement Taptic | enchaînement vibrator |
+| `error` (séquence) | Erreur réseau bloquante | `heavy` + delay 80 ms + `heavy` | enchaînement Taptic | enchaînement vibrator |
+
+> L'intensité **ressentie** peut varier entre Android (vibrator linéaire) et iOS (Taptic Engine plus précis et tactile). C'est attendu — on accepte cette variation de qualité haptique, l'important est la **présence** et la **sémantique** (positive/négative).
 
 **Bannis** :
 

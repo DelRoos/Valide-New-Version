@@ -39,8 +39,9 @@ development_status:
   0-2-setup-architecture-state-routing: done
   0-3-setup-app-logger: in-progress
   0-4-setup-failure-types-either-pattern: backlog
+  0-4bis-bootstrap-ios-cross-platform: backlog
   0-5-setup-dio-retry-connectivity: backlog
-  0-6-setup-firebase-android: backlog
+  0-6-setup-firebase-android-ios: backlog
   0-7-setup-cache-offline-firestore: backlog
   0-8-setup-app-check: backlog
   0-9-setup-firestore-rules-initiales: backlog

@@ -54,7 +54,9 @@ Du point de vue d'un opérateur de la plateforme :
 - **Élèves hors Cameroun** — la matrice de référence, les agrégateurs MoMo et le curriculum sont nationaux. Pas d'expansion CEMAC en V1.
 - **Enseignants** — pas d'interface enseignant en V1 (pas de création de quiz, pas de suivi de classe).
 - **Parents** — pas d'app parent en V1.
-- **Utilisateurs d'iPhone** — V1 Android-first ; iOS reporté à V2.
+- **Utilisateurs hors du curriculum camerounais** — voir ci-dessus.
+
+> **MAJ 2026-06-04 — Scope plateforme révisé** : Les utilisateurs iPhone et utilisateurs de tablette (Android et iPad) **sont désormais inclus dans la V1**, suite à décision produit. Cf. ADR-011 et `.decision-log.md` PRD. La timeline V1 glisse en conséquence à ~8-10 semaines au lieu de 6.
 
 ### 2.3 Key User Journeys
 
@@ -601,7 +603,7 @@ Un utilisateur peut consulter la liste de ses liens partagés avec le nombre d'o
 - Pas de gestion d'écoles ni de classes par enseignants côté mobile.
 - Pas de cache custom maison — uniquement cache Firestore natif.
 - Pas de tests E2E exhaustifs en V1 — parcours critiques seulement.
-- Pas de support iPad ni tablette spécifique en V1.
+- ~~Pas de support iPad ni tablette spécifique en V1.~~ → **Tablette (Android et iPad) incluse en V1** (MAJ 2026-06-04, cf. ADR-011).
 - Pas de marketplace de contenu tiers.
 
 Et spécifiquement pour ce PRD :
@@ -617,7 +619,8 @@ Et spécifiquement pour ce PRD :
 ### 6.1 In Scope
 
 - FR-1 à FR-44 (l'intégralité des features décrites en §4).
-- Mode Android-first (APK / AAB).
+- **Cross-platform Android (phone & tablet) + iOS (iPhone & iPad)** — distribution Play Store (AAB) + App Store (IPA via TestFlight puis prod) (MAJ 2026-06-04, ADR-011).
+- **Responsive natif** Flutter : 3 form factors cibles (phone < 600 dp, phone landscape 600-840 dp, tablet ≥ 840 dp).
 - Bilingue FR + EN intégral (interface, contenu, notifications).
 - Paiement MoMo + Orange Money via 1 agrégateur (à choisir parmi Tranzak / Campay / MyCoolPay).
 - Au moins **1 matière pleinement populée** par sous-système au moment du lancement, pour démontrer le parcours canonique (cf. Assumption A2).
@@ -625,7 +628,7 @@ Et spécifiquement pour ce PRD :
 
 ### 6.2 Out of Scope for MVP
 
-- **iOS** — reporté V2 (~92 % du marché smartphone camerounais est Android, ROI insuffisant en V1).
+- ~~**iOS** — reporté V2.~~ → **iOS inclus en V1** (MAJ 2026-06-04, ADR-011). La part de marché iPhone au Cameroun reste minoritaire (~8 %) mais la décision produit donne la priorité à la couverture plateforme (parité fonctionnelle Android/iOS) plutôt qu'au ROI court terme.
 - **Série E francophone** — reportée V2 selon prévalence (cf. OQ-2).
 - **Filières techniques étendues** (F5, ESF, IH, MVT, MAVA, MEM, etc.) — reportées V2 (cf. OQ-1).
 - **Expansion CEMAC** (Gabon, Congo, RDC, Tchad, RCA) — V3 minimum.
@@ -666,7 +669,7 @@ Numérotées OQ-1 à OQ-10. Les OQ-1 à OQ-7 viennent du SPEC ; les OQ-8 à OQ-1
 
 1. **OQ-1 — Périmètre des séries techniques en V1.** F1-F4 + G1-G3 suffisent-elles ? Inclure ESF, IH, MVT dès la V1 ou attendre V2 ? *Bloque la fin de la matrice DONNEES-REFERENCE.md.*
 2. **OQ-2 — Série E francophone.** Présente dans certains lycées, pas dans tous. V1 ou V2 ? *Mineur si on documente clairement.*
-3. **OQ-3 — Stratégie iOS post-V1.** Quel seuil d'utilisateurs déclenche le port iOS ? Pilotage par signal plutôt que par instinct.
+3. ~~**OQ-3 — Stratégie iOS post-V1.** Quel seuil d'utilisateurs déclenche le port iOS ?~~ → **RÉSOLU (2026-06-04)** : iOS est inclus dès la V1 par décision produit, pas par signal. Cf. ADR-011.
 4. **OQ-4 — Volume initial de contenu pédagogique pour le test « parcours canonique ».** Combien de leçons, exercices, sujets minimum par sous-système ? *À spécifier avec l'équipe pédagogique.*
 5. **OQ-5 — Mention vs note sur 20 vs barème officiel.** BAC/Probatoire/GCE utilisent-ils la même échelle ? Afficher selon sous-système ou normaliser ?
 6. **OQ-6 — Comportement pour élève sans école renseignée.** Invitation à renseigner sur le dashboard ou silencieux ? *Affecte FR-33, FR-34.*
@@ -695,8 +698,8 @@ Numérotées AS-1 à AS-7. Les AS-1 à AS-5 viennent du SPEC ; AS-6 et AS-7 sont
 
 Ces NFRs s'appliquent à toutes les features de §4. Elles dérivent **directement** des Constraints du SPEC mais sont exprimées ici comme exigences testables.
 
-- **NFR-1 — Taille de l'app installée < 30 MB par device** (Android App Bundle + split per ABI). Vérifier sur APK release.
-- **NFR-2 — Démarrage de l'app < 3 secondes** sur Android Go-class (entrée de gamme).
+- **NFR-1 — Taille de l'app installée < 30 MB par device sur Android** (App Bundle + split per ABI) et **< 50 MB sur iOS** (l'IPA inclut tous les bitcodes, pas de split natif). Vérifier sur builds release.
+- **NFR-2 — Démarrage de l'app < 3 secondes** sur Android Go-class (entrée de gamme) **et < 2 secondes sur iPhone milieu de gamme (iPhone SE 2020+) et iPad mini**.
 - **NFR-3 — Modules Firebase chargés au plus près de leur usage**, pas au démarrage. `flutter_smooth_markdown` en lazy-load uniquement sur les écrans qui l'utilisent.
 - **NFR-4 — Compression des photos Mode 1 avant upload.** Cible : < 200 KB en moyenne, format WebP.
 - **NFR-5 — Pas de cache custom maison.** Uniquement le cache offline natif de Firestore. Aucun import de Hive, drift, isar, etc.
@@ -710,6 +713,9 @@ Ces NFRs s'appliquent à toutes les features de §4. Elles dérivent **directeme
 - **NFR-13 — Cohérence des écritures liées garantie par transaction atomique unique côté serveur** (santé + niveau + points + marque d'idempotence dans le même `runTransaction`).
 - **NFR-14 — Application bilingue intégrale.** Tout texte affiché à l'élève doit être disponible dans les deux langues ; pas de chaîne en dur dans le code.
 - **NFR-15 — Couverture des contraintes connectivité.** Toute action réseau doit avoir un retry avec backoff exponentiel (Dio), un message d'erreur clair en cas d'échec, et un état restituable si l'utilisateur revient plus tard.
+- **NFR-16 — Cross-platform Android + iOS.** L'app doit fonctionner sur Android 8.0+ (API 26) ET iOS 13.0+. Parité fonctionnelle stricte sur les deux plateformes. Pas de feature Android-only sans équivalent iOS (et inversement). Code plateforme-spécifique confiné à `core/platform/*` derrière des wrappers.
+- **NFR-17 — Responsive 3 form factors.** Chaque écran utilisateur doit être conçu et testé sur 3 layouts : phone portrait (< 600 dp), phone landscape ou small tablet (600-840 dp), tablet (≥ 840 dp). Le breakpoint phone-landscape peut être assimilé à phone-portrait en V1 si la story le justifie, mais tablet est obligatoire. Pas de pixel hardcodé pour la composition de layout : `LayoutBuilder` ou `MediaQuery.sizeOf(context).width`.
+- **NFR-18 — Assets audio cross-platform.** Tous les fichiers audio embarqués sont en **AAC/M4A** (supportés nativement Android et iOS). Pas de OGG (iOS ne le supporte pas nativement).
 
 ---
 
@@ -756,9 +762,27 @@ Modèle **freemium** :
 
 ## 14. Platform
 
-- **Android-first.** Versions Android cibles : Android 8.0 (API 26) à Android 14+ (API 34). Cible principale en termes de tests : Android Go-class entrée de gamme et milieu de gamme.
-- **iOS V2.** iPad et tablette V3 ou jamais.
+> **MAJ 2026-06-04 — section refondue suite à ADR-011 (scope cross-platform).**
+
+### 14.1 Cibles V1
+
+- **Android phone & tablet.** Min API 26 (Android 8.0), target API 34 (Android 14+). Tests primaires sur Android Go-class (Tecno Spark, Infinix Hot) + un device tablette Android (Lenovo Tab M10 ou équivalent). Distribution **Play Store** (AAB) avec split per ABI.
+- **iOS iPhone & iPad.** Min iOS 13.0 (couvre 95 %+ du parc iPhone), target iOS 17+. Tests primaires sur iPhone SE 2020 (petite cible perf) + iPhone 14 (cible standard) + iPad mini (cible tablette). Distribution **App Store** via TestFlight d'abord, puis prod.
+- **Responsive 3 form factors** (cf. NFR-17) : phone portrait (< 600 dp), phone landscape ou small tablet (600-840 dp), tablet (≥ 840 dp).
 - **Pas de Web.** L'app est nativement mobile ; la version web Flutter n'est pas dans le scope MVP (pourrait être considérée pour la console admin, mais c'est un autre dépôt).
+
+### 14.2 Conventions cross-platform
+
+- **Design Material** sur les deux plateformes (cohérence de marque) avec adaptations comportement iOS quand pertinent (swipe-back navigation via `CupertinoPageRoute` autorisé).
+- **Pas de feature Android-only** sans équivalent ou no-op gracieux iOS.
+- **Détection mode silencieux** : disponible sur Android, **pas d'API publique iOS** → fallback obligatoire sur setting Profil utilisateur (cf. EXPERIENCE.md § Multisensoriel).
+- **Haptic** : `HapticFeedback.*` Flutter (Taptic Engine côté iOS, vibrator côté Android — mapping documenté en DESIGN.md § Haptics).
+- **Audio** : OGG **interdit** (iOS) → AAC/M4A obligatoire (cf. NFR-18).
+- **Packages plateforme-spécifiques** (ex. `soundpool` Android-only) interdits sans wrapper cross-platform.
+
+### 14.3 Impact timeline
+
+L'inclusion d'iOS et de la tablette dès la V1 augmente l'effort Foundation (P0) d'environ **30-50 %** (setup Firebase iOS, signing, App Store, CI macOS, responsive widgets) et **20-30 %** sur les phases E1-E6 (chaque écran porte 2-3 breakpoints). Timeline V1 **ajustée à ~8-10 semaines** au lieu de 6.
 
 ---
 
