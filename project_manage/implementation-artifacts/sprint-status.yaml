@@ -37,10 +37,10 @@ development_status:
   epic-0: in-progress
   0-1-bootstrap-projet-flutter: done
   0-2-setup-architecture-state-routing: done
-  0-3-setup-app-logger: in-progress
-  0-4-setup-failure-types-either-pattern: backlog
-  0-4bis-bootstrap-ios-cross-platform: in-progress
-  0-5-setup-dio-retry-connectivity: backlog
+  0-3-setup-app-logger: done
+  0-4-setup-failure-types-either-pattern: done
+  0-4bis-bootstrap-ios-cross-platform: done  # AC3/AC4 validation iOS sim deferred a prochaine session Mac
+  0-5-setup-dio-retry-connectivity: in-progress
   0-6-setup-firebase-android-ios: backlog
   0-7-setup-cache-offline-firestore: backlog
   0-8-setup-app-check: backlog
