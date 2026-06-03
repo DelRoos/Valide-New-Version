@@ -35,8 +35,8 @@ development_status:
   # Epic 0 — Foundation & Bootstrap (P0)
   # ======================
   epic-0: in-progress
-  0-1-bootstrap-projet-flutter: ready-for-dev
-  0-2-setup-architecture-state-routing: backlog
+  0-1-bootstrap-projet-flutter: done
+  0-2-setup-architecture-state-routing: in-progress
   0-3-setup-app-logger: backlog
   0-4-setup-failure-types-either-pattern: backlog
   0-5-setup-dio-retry-connectivity: backlog

@@ -1,25 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'app.dart';
 
 void main() {
-  runApp(const ValideApp());
-}
-
-class ValideApp extends StatelessWidget {
-  const ValideApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Valide School',
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Center(
-          child: Text(
-            'Valide School',
-            style: TextStyle(fontSize: 24),
-          ),
-        ),
-      ),
-    );
-  }
+  runApp(const ProviderScope(child: ValideApp()));
 }
