@@ -21,8 +21,8 @@
 | Comment contribuer (workflow, conventions, revue) | [doc/tools/CONTRIBUTING.md](doc/tools/CONTRIBUTING.md) |
 | La méthode de pilotage (BMAD v6.8.0) | [doc/tools/BMAD_METHOD_GUIDE.md](doc/tools/BMAD_METHOD_GUIDE.md) |
 | Le périmètre du MVP en 6 phases | [doc/metier/Valide Decoupage MVP.md](doc/metier/Valide%20Decoupage%20MVP.md) |
-| L'architecture de l'app mobile | [doc/tech/Valide Mobile App Architecture.md](doc/tech/Valide%20Mobile%20App%20Architecture.md) |
-| Les packages Flutter utilisés | [doc/tech/Valide Mobile Package Architecture.md](doc/tech/Valide%20Mobile%20Package%20Architecture.md) |
+| L'architecture de l'app mobile | [doc/tech/Valide School App Architecture.md](doc/tech/Valide%20School%20App%20Architecture.md) |
+| Les packages Flutter utilisés | [doc/tech/Valide School Package Architecture.md](doc/tech/Valide%20School%20Package%20Architecture.md) |
 | Le Design System | [doc/tech/Valide - Design System.html](doc/tech/Valide%20-%20Design%20System.html) |
 | Les maquettes d'écrans par module | [doc/tech/Valide - Design.html](doc/tech/Valide%20-%20Design.html) |
 | **La surface partagée avec backend / admin / landing** | **[doc/partage/](doc/partage/)** |
@@ -48,7 +48,7 @@
 | Logging | logger (wrappé dans `AppLogger`) |
 | Tailles dynamiques | flutter_screenutil |
 
-Détails complets : [Mobile Package Architecture](doc/tech/Valide%20Mobile%20Package%20Architecture.md).
+Détails complets : [Mobile Package Architecture](doc/tech/Valide%20School%20Package%20Architecture.md).
 
 ---
 

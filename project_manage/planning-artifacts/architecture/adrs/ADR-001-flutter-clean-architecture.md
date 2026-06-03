@@ -42,7 +42,7 @@ Sur l'organisation interne du code, la tentation classique est de mettre toute l
 
 ## Détail d'implémentation
 
-Voir [`doc/tech/Valide Mobile App Architecture.md`](../../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) — sections 3, 4, 5, 6, 7, 8 (les piliers) et section 14 (structure de dossiers).
+Voir [`doc/tech/Valide School App Architecture.md`](../../../../doc/tech/Valide%20School%20App%20Architecture.md) — sections 3, 4, 5, 6, 7, 8 (les piliers) et section 14 (structure de dossiers).
 
 ## Décisions liées
 

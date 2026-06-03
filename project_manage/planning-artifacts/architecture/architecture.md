@@ -2,7 +2,7 @@
 stepsCompleted: [1, 2, 3, 4, 5, 6, 7, 8]
 workflowType: 'architecture'
 status: 'draft'
-project_name: 'Valide Mobile'
+project_name: 'Valide School'
 user_name: 'Delano Roosvelt'
 date: '2026-06-03'
 inputDocuments:
@@ -10,15 +10,15 @@ inputDocuments:
   - ../prds/prd-valide-mvp-2026-06-03/prd.md
   - ../ux-designs/ux-valide-mvp-2026-06-03/DESIGN.md
   - ../ux-designs/ux-valide-mvp-2026-06-03/EXPERIENCE.md
-  - ../../../doc/tech/Valide Mobile App Architecture.md
+  - ../../../doc/tech/Valide School App Architecture.md
   - ../../../doc/tech/Valide Cloud Function Architecture.md
-  - ../../../doc/tech/Valide Mobile Package Architecture.md
+  - ../../../doc/tech/Valide School Package Architecture.md
   - ../../../doc/partage/BASE-DE-DONNEES.md
   - ../../../doc/partage/ALGORITHMES.md
   - ../../../doc/partage/CONTRATS-API.md
 ---
 
-# Architecture Decision Document — Valide Mobile MVP
+# Architecture Decision Document — Valide School MVP
 
 > **Posture de ce document.** L'architecture de Valide est largement **déjà documentée et figée** dans trois documents techniques produits avant le démarrage BMAD. Ce `architecture.md` est un **document de consolidation** : il synthétise les choix structurants, formalise les décisions clés en ADRs, et **pointe vers les trois docs source pour les détails d'implémentation**. Il n'a pas vocation à dupliquer ce que les sources contiennent déjà.
 >
@@ -49,7 +49,7 @@ inputDocuments:
 
 ## 1. Contexte du projet
 
-**Valide Mobile** est une application mobile Flutter bilingue (FR/EN) pour les élèves du secondaire camerounais. Elle pratique le freemium par Mobile Money (MTN MoMo / Orange Money) avec un cœur de produit autour de la **pratique active** (3 modes d'accompagnement avec IA), de la **santé scolaire par notion**, et de la **gamification équilibrée**.
+**Valide School** est une application mobile Flutter bilingue (FR/EN) pour les élèves du secondaire camerounais. Elle pratique le freemium par Mobile Money (MTN MoMo / Orange Money) avec un cœur de produit autour de la **pratique active** (3 modes d'accompagnement avec IA), de la **santé scolaire par notion**, et de la **gamification équilibrée**.
 
 **Contraintes marché qui pilotent l'architecture** (cf. SPEC § Constraints, PRD § 10 NFRs) :
 
@@ -135,8 +135,8 @@ L'essentiel de l'architecture est **déjà rédigé** dans les documents suivant
 
 | Document | Périmètre | Statut |
 |---|---|---|
-| [`doc/tech/Valide Mobile App Architecture.md`](../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) | Clean Architecture mobile (3 couches × features) | 🟢 Validé — source de vérité pour l'app mobile |
-| [`doc/tech/Valide Mobile Package Architecture.md`](../../../doc/tech/Valide%20Mobile%20Package%20Architecture.md) | Packages Flutter retenus avec justifications | 🟢 Validé |
+| [`doc/tech/Valide School App Architecture.md`](../../../doc/tech/Valide%20School%20App%20Architecture.md) | Clean Architecture mobile (3 couches × features) | 🟢 Validé — source de vérité pour l'app mobile |
+| [`doc/tech/Valide School Package Architecture.md`](../../../doc/tech/Valide%20School%20Package%20Architecture.md) | Packages Flutter retenus avec justifications | 🟢 Validé |
 | [`doc/tech/Valide Cloud Function Architecture.md`](../../../doc/tech/Valide%20Cloud%20Function%20Architecture.md) | Architecture serveur (Cloud Functions 2nd gen TypeScript) | 🟢 Validé |
 | [`doc/partage/BASE-DE-DONNEES.md`](../../../doc/partage/BASE-DE-DONNEES.md) | Schéma Firestore complet (22 collections) | 🟡 Squelette à figer P1 |
 | [`doc/partage/ALGORITHMES.md`](../../../doc/partage/ALGORITHMES.md) | 11 algorithmes métier (scoring, santé, idempotence…) | 🟡 Squelette à figer P3-P5 |
@@ -172,7 +172,7 @@ L'essentiel de l'architecture est **déjà rédigé** dans les documents suivant
 | Visualisation | `fl_chart`, `lottie` (mesurés) | Graphiques progression, célébrations | — |
 | Code gen | `build_runner`, `riverpod_generator`, `custom_lint` + `riverpod_lint` | Dev-only, ne pèse pas dans l'APK | — |
 
-> **Détail complet** : voir [`doc/tech/Valide Mobile Package Architecture.md`](../../../doc/tech/Valide%20Mobile%20Package%20Architecture.md) (14 sections, 1 par domaine, avec justifications et arbitrages explicites).
+> **Détail complet** : voir [`doc/tech/Valide School Package Architecture.md`](../../../doc/tech/Valide%20School%20Package%20Architecture.md) (14 sections, 1 par domaine, avec justifications et arbitrages explicites).
 
 ### 4.2 Stack backend (rappel — autre dépôt)
 
@@ -225,7 +225,7 @@ lib/features/
 └── sharing/           # M18 — deep links
 ```
 
-Le détail de chaque feature (gabarit `domain/data/presentation`, contenu de chaque sous-dossier) suit le pattern décrit en section 14 de [`Valide Mobile App Architecture.md`](../../../doc/tech/Valide%20Mobile%20App%20Architecture.md).
+Le détail de chaque feature (gabarit `domain/data/presentation`, contenu de chaque sous-dossier) suit le pattern décrit en section 14 de [`Valide School App Architecture.md`](../../../doc/tech/Valide%20School%20App%20Architecture.md).
 
 ### 5.3 `core/` — transversal, admission stricte
 
@@ -255,7 +255,7 @@ core/
 
 Chaque écran complexe modélise son état en sealed class `freezed`. Le compilateur force le `switch` exhaustif. Exemple type : `SemiAssistedState = CheckingAccess | AccessDenied | Loading | InProgress | Completed | ErrorState`.
 
-> **Pattern complet** : section 8.3 de [`Valide Mobile App Architecture.md`](../../../doc/tech/Valide%20Mobile%20App%20Architecture.md).
+> **Pattern complet** : section 8.3 de [`Valide School App Architecture.md`](../../../doc/tech/Valide%20School%20App%20Architecture.md).
 
 ---
 
@@ -395,7 +395,7 @@ sequenceDiagram
 
 **Ne jamais** : commit de secret, log de PIN/jeton/numéro complet/contenu personnel sensible.
 
-> **Détail** : `Valide Cloud Function Architecture.md § 12`, `Valide Mobile App Architecture.md § 13`, CONTRIBUTING.md § 11.
+> **Détail** : `Valide Cloud Function Architecture.md § 12`, `Valide School App Architecture.md § 13`, CONTRIBUTING.md § 11.
 
 ---
 
@@ -420,7 +420,7 @@ sequenceDiagram
 - **Backend** : Cloud Logging (Google Cloud Console) + alertes sur erreurs critiques.
 - **Corrélation** : `uid` + `sessionId` loggés des deux côtés pour tracer un incident bout-en-bout.
 
-> **Détail** : `Valide Mobile App Architecture.md § 11`, `Valide Cloud Function Architecture.md § 13`.
+> **Détail** : `Valide School App Architecture.md § 11`, `Valide Cloud Function Architecture.md § 13`.
 
 ---
 
@@ -453,7 +453,7 @@ lib/
     └── sharing/                           # CAP-6 — M18
 ```
 
-Chaque feature suit le gabarit `domain/` + `data/` + `presentation/` détaillé en section 14 de `Valide Mobile App Architecture.md`.
+Chaque feature suit le gabarit `domain/` + `data/` + `presentation/` détaillé en section 14 de `Valide School App Architecture.md`.
 
 ---
 
@@ -461,7 +461,7 @@ Chaque feature suit le gabarit `domain/` + `data/` + `presentation/` détaillé 
 
 ### 12.1 Le pattern de feature complète (référence)
 
-Pour ancrer, le trajet d'une action « terminer un exercice » à travers toutes les couches est décrit en détail dans la section 17 de [`Valide Mobile App Architecture.md`](../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) (étude de cas Mode 2 « Semi-assisté »). C'est le **gabarit de référence** pour toute nouvelle feature.
+Pour ancrer, le trajet d'une action « terminer un exercice » à travers toutes les couches est décrit en détail dans la section 17 de [`Valide School App Architecture.md`](../../../doc/tech/Valide%20School%20App%20Architecture.md) (étude de cas Mode 2 « Semi-assisté »). C'est le **gabarit de référence** pour toute nouvelle feature.
 
 ### 12.2 Granularité use case
 

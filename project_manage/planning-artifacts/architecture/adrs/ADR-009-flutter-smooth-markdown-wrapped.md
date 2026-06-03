@@ -97,8 +97,8 @@ Si l'un de ces tests échoue → décision en revue archi cross-équipes (contin
 
 Voir :
 
-- [`doc/tech/Valide Mobile Package Architecture.md`](../../../../doc/tech/Valide%20Mobile%20Package%20Architecture.md) — section 5 (`flutter_smooth_markdown`, justifications et points de vigilance)
-- [`doc/tech/Valide Mobile App Architecture.md`](../../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) — section 17.7 (`PedagogicalContent` comme widget d'isolation)
+- [`doc/tech/Valide School Package Architecture.md`](../../../../doc/tech/Valide%20School%20Package%20Architecture.md) — section 5 (`flutter_smooth_markdown`, justifications et points de vigilance)
+- [`doc/tech/Valide School App Architecture.md`](../../../../doc/tech/Valide%20School%20App%20Architecture.md) — section 17.7 (`PedagogicalContent` comme widget d'isolation)
 
 ## Décisions liées
 

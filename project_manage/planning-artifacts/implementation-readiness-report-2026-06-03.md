@@ -1,7 +1,7 @@
 # Implementation Readiness Assessment Report
 
 **Date** : 2026-06-03
-**Projet** : Valide Mobile MVP
+**Projet** : Valide School MVP
 **Auditor** : Claude (Opus 4.7) en rôle expert Product Manager + Epic Quality Enforcer
 **Skill** : `bmad-check-implementation-readiness` (BMAD v6.8.0)
 **Mode** : Audit autonome séquencé en Steps 1 à 6

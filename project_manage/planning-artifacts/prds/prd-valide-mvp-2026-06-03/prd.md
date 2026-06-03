@@ -1,12 +1,12 @@
 ---
-title: Valide Mobile MVP
+title: Valide School MVP
 status: draft
 created: 2026-06-03
 updated: 2026-06-03
 spec_ref: ../../../specs/spec-valide-mvp/SPEC.md
 ---
 
-# PRD — Valide Mobile MVP
+# PRD — Valide School MVP
 
 *Premier passage. Vise à fixer le QUOI (exigences fonctionnelles + non-fonctionnelles + scope) en s'appuyant sur le SPEC déjà distillé. Le COMMENT (architecture, choix techniques) est dans les docs d'archi cibles.*
 

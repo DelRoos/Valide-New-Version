@@ -22,13 +22,13 @@ inputDocuments:
   - "doc/partage/DONNEES-REFERENCE.md"
 ---
 
-# Valide Mobile MVP — Epic Breakdown
+# Valide School MVP — Epic Breakdown
 
 ## Overview
 
 Ce document décompose les exigences du **PRD**, de l'**Architecture** et de l'**UX Design** (DESIGN + EXPERIENCE) en epics et stories implémentables pour la phase 4 (développement) du pipeline BMAD.
 
-**Projet** : Valide Mobile — app Flutter EdTech bilingue FR/EN, marché Cameroun secondaire (BEPC, Probatoire, BAC, GCE O/A-Level).
+**Projet** : Valide School — app Flutter EdTech bilingue FR/EN, marché Cameroun secondaire (BEPC, Probatoire, BAC, GCE O/A-Level).
 **Pipeline** : BMAD v6.8.0, méthodologie en 6 phases sur 6 semaines.
 **Statut** : Stories en cours de génération (phase 3 BMAD).
 

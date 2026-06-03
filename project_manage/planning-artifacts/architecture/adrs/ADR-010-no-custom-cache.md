@@ -72,8 +72,8 @@ Si l'une de ces conditions se réalise, ouvrir un nouvel ADR pour réviser cette
 
 Voir :
 
-- [`doc/tech/Valide Mobile App Architecture.md`](../../../../doc/tech/Valide%20Mobile%20App%20Architecture.md) — section 12 (la stratégie de cache complète)
-- [`doc/tech/Valide Mobile Package Architecture.md`](../../../../doc/tech/Valide%20Mobile%20Package%20Architecture.md) — section 10 (stratégie de cache)
+- [`doc/tech/Valide School App Architecture.md`](../../../../doc/tech/Valide%20School%20App%20Architecture.md) — section 12 (la stratégie de cache complète)
+- [`doc/tech/Valide School Package Architecture.md`](../../../../doc/tech/Valide%20School%20Package%20Architecture.md) — section 10 (stratégie de cache)
 
 ## Décisions liées
 
