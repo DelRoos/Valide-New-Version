@@ -1,0 +1,16 @@
+# Team / enterprise overrides for _bmad/config.toml.
+# Committed to the repo — applies to every developer on the project.
+# Tables deep-merge over base config; keyed entries merge by key.
+
+[core]
+# Dossier de gestion projet : contient PRD, architecture, epics, stories,
+# sprint-status, project-context, decision-logs, etc.
+output_folder = "project_manage"
+
+[modules.bmm]
+# La doc projet vit dans doc/ (sans s), pas docs/ — cohérent avec
+# la structure existante et tous les liens dans CLAUDE.md, README.md,
+# CONTRIBUTING.md, etc.
+project_knowledge = "{project-root}/doc"
+planning_artifacts = "{project-root}/project_manage/planning-artifacts"
+implementation_artifacts = "{project-root}/project_manage/implementation-artifacts"

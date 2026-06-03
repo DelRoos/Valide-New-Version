@@ -1,0 +1,149 @@
+# =====================================================================
+# Valide Mobile — .gitignore
+# =====================================================================
+
+# --- Secrets (NE JAMAIS commit) ----------------------------------------
+.env
+.env.*
+!.env.example
+
+# Firebase config locale (placée manuellement, partagée hors Git)
+**/google-services.json
+**/GoogleService-Info.plist
+
+# Signature Android
+**/key.properties
+**/*.keystore
+**/*.jks
+
+# Clés et certificats
+**/*.pem
+**/*.key
+**/*.p12
+
+# Service accounts Firebase
+**/firebase-adminsdk-*.json
+**/serviceAccountKey.json
+
+# --- Flutter / Dart ----------------------------------------------------
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
+*.iml
+.metadata
+.packages
+
+# Fichiers générés par les generators
+*.g.dart
+*.freezed.dart
+*.config.dart
+*.gr.dart
+# (à activer si l'équipe choisit de NE PAS committer les générés ;
+#  par défaut, beaucoup d'équipes Flutter LES COMMITENT pour éviter
+#  les build_runner à chaque clone — décision à prendre, cf. CONTRIBUTING § 17)
+
+# Fichiers Dart de couverture
+coverage/
+lcov.info
+
+# --- Android -----------------------------------------------------------
+**/android/**/gradle-wrapper.jar
+**/android/.gradle
+**/android/captures/
+**/android/gradlew
+**/android/gradlew.bat
+**/android/local.properties
+**/android/**/GeneratedPluginRegistrant.java
+**/android/.idea/
+**/android/app/release/
+**/android/app/profile/
+**/android/app/debug/
+
+# --- iOS ---------------------------------------------------------------
+**/ios/**/*.mode1v3
+**/ios/**/*.mode2v3
+**/ios/**/*.moved-aside
+**/ios/**/*.pbxuser
+**/ios/**/*.perspectivev3
+**/ios/**/*sync/
+**/ios/**/.sconsign.dblite
+**/ios/**/.tags*
+**/ios/**/.vagrant/
+**/ios/**/DerivedData/
+**/ios/**/Icon?
+**/ios/**/Pods/
+**/ios/**/.symlinks/
+**/ios/**/profile
+**/ios/**/xcuserdata
+**/ios/.generated/
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/Generated.xcconfig
+**/ios/Flutter/ephemeral
+**/ios/Flutter/app.flx
+**/ios/Flutter/app.zip
+**/ios/Flutter/flutter_assets/
+**/ios/Flutter/flutter_export_environment.sh
+**/ios/ServiceDefinitions.json
+**/ios/Runner/GeneratedPluginRegistrant.*
+
+# --- IDE & outils ------------------------------------------------------
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.fleet/
+.zed/
+
+# --- OS ----------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# --- BMAD --------------------------------------------------------------
+# Fichiers de config "personnels" (scope utilisateur) — gitignorés par convention BMAD
+_bmad/config.user.toml
+_bmad/custom/config.user.toml
+
+# Cache de l'installateur BMAD
+_bmad/.cache/
+
+# Le reste de _bmad/ EST versionné — pour que toute l'équipe ait le même setup
+# (skills, agents, manifests, custom team overrides).
+# Si tu préfères regénérer à chaque clone via `npx bmad-method install`, décommente :
+# _bmad/
+
+# Garder l'output BMAD versionné (project_manage/) — PRDs, archi, stories
+# sont sources de vérité partagées par toute l'équipe.
+# Si une équipe préfère le garder hors Git, décommenter :
+# project_manage/
+
+# --- Logs & temp -------------------------------------------------------
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# --- Autres ------------------------------------------------------------
+.history/
+node_modules/

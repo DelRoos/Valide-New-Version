@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Valide — Design</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #f0eee9; }
+  #root { min-height: 100vh; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="ios-frame.jsx"></script>
+<script type="text/babel" src="tokens.jsx"></script>
+<script type="text/babel" src="onboarding.jsx"></script>
+<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel" src="activities.jsx"></script>
+<script type="text/babel" src="examens.jsx"></script>
+<script type="text/babel" src="profil.jsx"></script>
+<script type="text/babel" src="chapitres-fiche.jsx"></script>
+<script type="text/babel" src="quiz-flow.jsx"></script>
+<script type="text/babel" src="exercices-modes.jsx"></script>
+<script type="text/babel" src="exercices-photo.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const DEVICE_W = 380;
+const DEVICE_H = 820;
+const ART_W = DEVICE_W + 28;   // device width + a little margin
+const ART_H = DEVICE_H + 28;
+
+const Phone = ({ children, dark = false }) => (
+  <div data-screen-label={"phone"} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%' }}>
+    <IOSDevice width={DEVICE_W} height={DEVICE_H} dark={dark}>
+      {children}
+    </IOSDevice>
+  </div>
+);
+
+const App = () => (
+  <DesignCanvas
+    title="Valide"
+    subtitle="Application éducative · sous-système francophone général · Tle D"
+  >
+    {/* ─── MODULE 1 ─── */}
+    <DCSection
+      id="m1-onboarding"
+      title="Module 1 · Onboarding & inscription"
+      subtitle="Première ouverture → compte → profil scolaire → objectif → démo IA"
+    >
+      <DCArtboard id="ob-promesse" label="Page promesse" width={ART_W} height={ART_H}>
+        <Phone><ScreenPromesse /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ob-inscription" label="Inscription · pseudo + PIN" width={ART_W} height={ART_H}>
+        <Phone><ScreenInscription /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ob-profil" label="Profil scolaire" width={ART_W} height={ART_H}>
+        <Phone><ScreenProfil /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ob-objectif" label="Objectif élève" width={ART_W} height={ART_H}>
+        <Phone><ScreenObjectif /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ob-aha" label="Aha moment · démo IA" width={ART_W} height={ART_H}>
+        <Phone><ScreenAha /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 2 ─── */}
+    <DCSection
+      id="m2-accueil"
+      title="Module 2 · Accueil & navigation"
+      subtitle="Les écrans top-level — Accueil, Matières, Profil"
+    >
+      <DCArtboard id="nav-home" label="Accueil" width={ART_W} height={ART_H}>
+        <Phone><ScreenHome /></Phone>
+      </DCArtboard>
+      <DCArtboard id="nav-matieres" label="Mes matières" width={ART_W} height={ART_H}>
+        <Phone><ScreenMatieres /></Phone>
+      </DCArtboard>
+      <DCArtboard id="nav-profil" label="Profil" width={ART_W} height={ART_H}>
+        <Phone><ScreenProfilApp /></Phone>
+      </DCArtboard>
+      <DCArtboard id="nav-profil-edit" label="Modifier parcours" width={ART_W} height={ART_H}>
+        <Phone><ScreenProfilEdit /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 3 ─── */}
+    <DCSection
+      id="m3-cours"
+      title="Module 3 · Apprendre · cours"
+      subtitle="Chapitres → page chapitre → lecture leçon → fiche de révision"
+    >
+      <DCArtboard id="cours-chapitres" label="Liste des chapitres" width={ART_W} height={ART_H}>
+        <Phone><ScreenChapitresListing /></Phone>
+      </DCArtboard>
+      <DCArtboard id="cours-chapitre" label="Page chapitre · Leçons" width={ART_W} height={ART_H}>
+        <Phone><ScreenChapitre tab={0} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="cours-chapitre-quiz" label="Page chapitre · Quiz" width={ART_W} height={ART_H}>
+        <Phone><ScreenChapitre tab={1} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="cours-chapitre-ex" label="Page chapitre · Exercices" width={ART_W} height={ART_H}>
+        <Phone><ScreenChapitre tab={2} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="cours-lecon" label="Lecture leçon" width={ART_W} height={ART_H}>
+        <Phone><ScreenLecon /></Phone>
+      </DCArtboard>
+      <DCArtboard id="cours-fiche" label="Fiche de révision" width={ART_W} height={ART_H}>
+        <Phone><ScreenFiche /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 4 ─── */}
+    <DCSection
+      id="m4-quiz"
+      title="Module 4 · S'entraîner · quiz"
+      subtitle="Intro → question → feedback → résultat selon score → correction"
+    >
+      <DCArtboard id="quiz-intro" label="1. Intro" width={ART_W} height={ART_H}>
+        <Phone><ScreenQuizIntro /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-question" label="2. Question" width={ART_W} height={ART_H}>
+        <Phone><ScreenQuiz /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-right" label="3a. Feedback · bonne réponse" width={ART_W} height={ART_H}>
+        <Phone><ScreenQuizFeedback correct={true} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-wrong" label="3b. Feedback · mauvaise réponse" width={ART_W} height={ART_H}>
+        <Phone><ScreenQuizFeedback correct={false} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-result-low" label="4a. Résultat · faible" width={ART_W} height={ART_H}>
+        <Phone><ScreenResultatQuiz score={3} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-result-mid" label="4b. Résultat · moyen" width={ART_W} height={ART_H}>
+        <Phone><ScreenResultatQuiz score={6} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-result-high" label="4c. Résultat · fort" width={ART_W} height={ART_H}>
+        <Phone><ScreenResultatQuiz score={9} /></Phone>
+      </DCArtboard>
+      <DCArtboard id="quiz-correction" label="5. Correction" width={ART_W} height={ART_H}>
+        <Phone><ScreenQuizCorrection /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 5 ─── */}
+    <DCSection
+      id="m5-exercices"
+      title="Module 5 · S'entraîner · exercices"
+      subtitle="Choix du mode → 3 modes (Je maîtrise / J'apprends / Guide-moi) → capture photo → feedback IA sur copie"
+    >
+      <DCArtboard id="ex-modes" label="1. Choix du mode (×1.5 / ×1.0 / ×0.75)" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoChoixMode /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-mode1" label="2a. Je maîtrise · énoncé pur" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoMode1 /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-mode2" label="2b. J'apprends · aides pliées" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoMode2 /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-mode3" label="2c. Guide-moi · étape papier" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoMode3 /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-capture" label="3. Capture photo (cadrage + qualité)" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoCapture /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-feedback" label="4. Feedback IA · copie annotée" width={ART_W} height={ART_H}>
+        <Phone><ScreenExoFeedbackPhoto /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ex-ia-legacy" label="Bonus · chat IA conversationnel" width={ART_W} height={ART_H}>
+        <Phone><ScreenExerciceIA /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 6 ─── */}
+    <DCSection
+      id="m6-epreuves"
+      title="Module 6 · Épreuves & sujets"
+      subtitle="Séquences → matière → liste sujets → détail (téléchargements + exos individuels)"
+    >
+      <DCArtboard id="ep-sequences" label="1. Liste séquences" width={ART_W} height={ART_H}>
+        <Phone><ScreenExamens /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ep-choix" label="2. Choix matière" width={ART_W} height={ART_H}>
+        <Phone><ScreenExamensChoixMatiere /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ep-sujets" label="3. Listing sujets" width={ART_W} height={ART_H}>
+        <Phone><ScreenSujetsListing /></Phone>
+      </DCArtboard>
+      <DCArtboard id="ep-detail" label="4. Détail · PDF + exos" width={ART_W} height={ART_H}>
+        <Phone><ScreenSujetDetail /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    {/* ─── MODULE 7 ─── */}
+    <DCSection
+      id="m7-engagement"
+      title="Module 7 · Engagement"
+      subtitle="Favoris, classement, blocage en mode invité"
+    >
+      <DCArtboard id="eng-fav" label="Favoris" width={ART_W} height={ART_H}>
+        <Phone><ScreenFavoris /></Phone>
+      </DCArtboard>
+      <DCArtboard id="eng-classement" label="Classement" width={ART_W} height={ART_H}>
+        <Phone><ScreenClassement /></Phone>
+      </DCArtboard>
+      <DCArtboard id="eng-guest" label="Blocage invité" width={ART_W} height={ART_H}>
+        <Phone><ScreenGuestBlocked /></Phone>
+      </DCArtboard>
+    </DCSection>
+
+    <DCPostIt x={40} y={20} rotate={-2}>
+      Direction visuelle{'\n'}— Bleu #2563EB sur fond clair{'\n'}— Nunito Sans, généreuse{'\n'}— Cartes 18px, ombres très douces{'\n'}— Badges colorés pour les états
+    </DCPostIt>
+  </DesignCanvas>
+);
+
+// External Babel scripts can race with this inline render — kick Babel again
+// and wait until the last-declared component is on window before mounting.
+function __mountValide(attempt) {
+  attempt = attempt || 0;
+  if (typeof window.ScreenExoFeedbackPhoto === 'undefined') {
+    if (attempt === 0 && typeof Babel !== 'undefined' && Babel.transformScriptTags) {
+      try { Babel.transformScriptTags(); } catch (e) {}
+    }
+    if (attempt < 200) return setTimeout(function(){ __mountValide(attempt + 1); }, 30);
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+}
+__mountValide();
+</script>
+</body>
+</html>

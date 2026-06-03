@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Valide — Design System</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&family=JetBrains+Mono:wght@400;600&display=swap" />
+<style>
+  :root {
+    --primary: #2563EB;
+    --primary-dark: #1E3A8A;
+    --primary-light: #DBEAFE;
+    --primary-soft: #EFF6FF;
+    --primary-soft-border: #BFDBFE;
+    --ink: #0F172A;
+    --ink-soft: #334155;
+    --muted: #64748B;
+    --mute2: #94A3B8;
+    --border: #E2E8F0;
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --green: #16A34A; --green-soft: #DCFCE7; --green-ink: #166534;
+    --amber: #F59E0B; --amber-soft: #FEF3C7; --amber-ink: #92400E;
+    --red: #DC2626;   --red-soft: #FEE2E2;   --red-ink: #991B1B;
+    --sky: #0284C7;   --sky-soft: #E0F2FE;
+    --shadow-soft: 0 4px 12px rgba(15,23,42,0.06);
+    --shadow-mid: 0 8px 24px rgba(15,23,42,0.08);
+    --font: "Nunito Sans", "Nunito", -apple-system, system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--font); background: var(--bg); color: var(--ink);
+    -webkit-font-smoothing: antialiased; line-height: 1.5; }
+
+  /* Layout */
+  .wrap { display: flex; max-width: 1280px; margin: 0 auto; }
+  .sidebar { width: 240px; flex-shrink: 0; position: sticky; top: 0; height: 100vh;
+    padding: 32px 20px; border-right: 1px solid var(--border); background: #fff; overflow-y: auto; }
+  .content { flex: 1; min-width: 0; padding: 56px 56px 120px; }
+
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+  .brand-logo { width: 38px; height: 38px; border-radius: 11px; background: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 18px rgba(37,99,235,.35); }
+  .brand-name { font-size: 20px; font-weight: 900; letter-spacing: -0.03em; }
+  .brand-sub { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+  .nav-group { font-size: 11px; font-weight: 800; color: var(--mute2); text-transform: uppercase;
+    letter-spacing: 0.06em; margin: 22px 0 8px; }
+  .nav a { display: block; padding: 7px 12px; border-radius: 9px; color: var(--ink-soft);
+    text-decoration: none; font-size: 14px; font-weight: 600; transition: background .12s; }
+  .nav a:hover { background: var(--primary-soft); color: var(--primary); }
+
+  /* Hero */
+  .hero { margin-bottom: 64px; }
+  .hero h1 { font-size: 46px; font-weight: 900; letter-spacing: -0.04em; line-height: 1.05; }
+  .hero h1 .accent { color: var(--primary); }
+  .hero p { font-size: 17px; color: var(--muted); font-weight: 500; margin-top: 14px; max-width: 560px; }
+  .hero-meta { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 999px;
+    background: #fff; border: 1px solid var(--border); font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+  .chip .dot { width: 12px; height: 12px; border-radius: 999px; }
+
+  /* Section */
+  section { margin-bottom: 72px; scroll-margin-top: 24px; }
+  .sec-head { margin-bottom: 24px; }
+  .sec-num { font-size: 13px; font-weight: 800; color: var(--primary); letter-spacing: 0.04em; }
+  .sec-head h2 { font-size: 30px; font-weight: 900; letter-spacing: -0.03em; margin-top: 4px; }
+  .sec-head p { font-size: 15px; color: var(--muted); font-weight: 500; margin-top: 8px; max-width: 620px; }
+
+  .sub-head { font-size: 13px; font-weight: 800; color: var(--ink); text-transform: uppercase;
+    letter-spacing: 0.05em; margin: 32px 0 14px; }
+
+  /* Color swatches */
+  .swatch-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+  .swatch { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); background: #fff;
+    box-shadow: var(--shadow-soft); }
+  .swatch-color { height: 88px; display: flex; align-items: flex-end; padding: 10px; }
+  .swatch-info { padding: 12px 14px; }
+  .swatch-name { font-size: 13.5px; font-weight: 800; }
+  .swatch-hex { font-size: 12px; font-family: var(--mono); color: var(--muted); margin-top: 2px; text-transform: uppercase; }
+  .swatch-use { font-size: 11.5px; color: var(--mute2); font-weight: 600; margin-top: 6px; }
+
+  /* Type scale */
+  .type-row { display: flex; align-items: baseline; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border); }
+  .type-spec { width: 150px; flex-shrink: 0; }
+  .type-spec .t1 { font-size: 13px; font-weight: 800; }
+  .type-spec .t2 { font-size: 12px; font-family: var(--mono); color: var(--muted); margin-top: 2px; }
+  .type-sample { flex: 1; min-width: 0; color: var(--ink); }
+
+  /* Generic cards/grids */
+  .demo-card { background: #fff; border: 1px solid var(--border); border-radius: 18px; padding: 24px;
+    box-shadow: var(--shadow-soft); }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+  /* Spacing scale */
+  .space-row { display: flex; align-items: center; gap: 18px; padding: 10px 0; }
+  .space-bar { background: var(--primary-light); border-radius: 4px; height: 22px; }
+  .space-label { font-size: 13px; font-weight: 700; width: 90px; }
+  .space-px { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  /* Radius demo */
+  .radius-box { height: 80px; background: var(--primary-soft); border: 2px solid var(--primary-soft-border);
+    display: flex; align-items: center; justify-content: center; }
+  .radius-label { font-size: 12px; font-weight: 800; color: var(--primary); }
+  .radius-px { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+  /* Shadow demo */
+  .shadow-box { height: 96px; background: #fff; border-radius: 16px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; }
+
+  /* Buttons */
+  .btn { height: 52px; padding: 0 20px; border-radius: 14px; border: 1px solid transparent;
+    font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+  .btn-primary { background: var(--primary); color: #fff; }
+  .btn-secondary { background: var(--primary-soft); color: var(--primary); border-color: var(--primary-soft-border); }
+  .btn-outline { background: transparent; color: var(--ink); border-color: #CBD5E1; }
+  .btn-danger { background: var(--red-soft); color: var(--red); }
+
+  /* Badges */
+  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 999px;
+    font-size: 12px; font-weight: 700; }
+  .badge .bdot { width: 6px; height: 6px; border-radius: 999px; }
+
+  /* Icon grid */
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .icon-cell { background: #fff; border: 1px solid var(--border); border-radius: 14px; padding: 16px 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .icon-cell span { font-size: 11px; color: var(--muted); font-weight: 700; }
+
+  /* Code */
+  code { font-family: var(--mono); font-size: 12.5px; background: var(--primary-soft); color: var(--primary-dark);
+    padding: 2px 7px; border-radius: 6px; font-weight: 600; }
+
+  /* Principles */
+  .principle { display: flex; gap: 14px; padding: 16px; background: #fff; border: 1px solid var(--border);
+    border-radius: 16px; box-shadow: var(--shadow-soft); }
+  .principle .pic { width: 40px; height: 40px; border-radius: 11px; background: var(--primary-soft);
+    color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .principle h4 { font-size: 15px; font-weight: 800; }
+  .principle p { font-size: 13px; color: var(--muted); font-weight: 500; margin-top: 3px; }
+
+  .pill-tab { display: inline-flex; gap: 6px; padding: 4px; background: #F1F5F9; border-radius: 14px; }
+  .pill-tab div { height: 36px; padding: 0 16px; border-radius: 11px; display: flex; align-items: center;
+    font-size: 13px; font-weight: 700; color: var(--muted); }
+  .pill-tab div.on { background: #fff; color: var(--primary); box-shadow: 0 1px 3px rgba(15,23,42,.08); }
+
+  /* Animations & loaders */
+  .spinner { width: 18px; height: 18px; border-radius: 999px; border: 3px solid rgba(255,255,255,.4);
+    border-top-color: #fff; animation: spin .7s linear infinite; display: inline-block; }
+  .skel { background: linear-gradient(90deg, #EEF1F5 25%, #E2E8F0 37%, #EEF1F5 63%);
+    background-size: 400% 100%; animation: shimmer 1.4s ease infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes shimmer { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+  @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.08); } }
+
+  @media (max-width: 860px) {
+    .sidebar { display: none; }
+    .content { padding: 32px 20px 80px; }
+    .hero h1 { font-size: 34px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
+      </div>
+      <div>
+        <div class="brand-name">Valide</div>
+        <div class="brand-sub">Design System</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <div class="nav-group">Fondations</div>
+      <a href="#principes">Principes</a>
+      <a href="#couleurs">Couleurs</a>
+      <a href="#typographie">Typographie</a>
+      <a href="#espacement">Espacement</a>
+      <a href="#arrondis">Arrondis</a>
+      <a href="#ombres">Ombres</a>
+      <a href="#icones">Icônes</a>
+      <div class="nav-group">Composants</div>
+      <a href="#boutons">Boutons</a>
+      <a href="#badges">Badges</a>
+      <a href="#cartes">Cartes</a>
+      <a href="#champs">Champs &amp; saisie</a>
+      <a href="#controles">Contrôles</a>
+      <a href="#progression">Progression</a>
+      <a href="#onglets">Onglets &amp; nav</a>
+      <a href="#encadres">Encadrés</a>
+      <div class="nav-group">Retours &amp; overlays</div>
+      <a href="#toasts">Toasts</a>
+      <a href="#modales">Modales</a>
+      <a href="#sheets">Bottom sheets</a>
+      <a href="#vides">États vides</a>
+      <a href="#chargement">Chargement</a>
+    </nav>
+  </aside>
+
+  <!-- Content -->
+  <main class="content">
+    <div class="hero">
+      <h1>Le système de design<br /><span class="accent">Valide</span></h1>
+      <p>La référence visuelle de l'application éducative Valide — couleurs, typographie, espacements et composants. Moderne, clair, motivant. Pensé mobile-first pour les élèves du secondaire.</p>
+      <div class="hero-meta">
+        <span class="chip"><span class="dot" style="background:#2563EB"></span>Bleu &amp; blanc</span>
+        <span class="chip">Nunito Sans</span>
+        <span class="chip">Grille 4px</span>
+        <span class="chip">Mobile-first</span>
+      </div>
+    </div>
+
+    <!-- Principes -->
+    <section id="principes">
+      <div class="sec-head">
+        <div class="sec-num">01</div>
+        <h2>Principes</h2>
+        <p>Quatre intentions guident chaque décision visuelle.</p>
+      </div>
+      <div class="grid-2">
+        <div class="principle">
+          <div class="pic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/><path d="M9 18h6M10 21h4"/></svg></div>
+          <div><h4>Simplicité</h4><p>Chaque écran répond à une seule intention principale. Pas de surcharge.</p></div>
+        </div>
+        <div class="principle">
+          <div class="pic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg></div>
+          <div><h4>Motivation</h4><p>Valoriser la progression, les efforts et les réussites. Encourager sans culpabiliser.</p></div>
+        </div>
+        <div class="principle">
+          <div class="pic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/></svg></div>
+          <div><h4>Clarté pédagogique</h4><p>L'élève sait toujours où il est, quoi faire, et quelle est la prochaine action.</p></div>
+        </div>
+        <div class="principle">
+          <div class="pic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div><h4>Accessibilité</h4><p>Lisible sur petits écrans Android. Texte ≥ 14px, boutons ≥ 48px, contraste fort.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Couleurs -->
+    <section id="couleurs">
+      <div class="sec-head">
+        <div class="sec-num">02</div>
+        <h2>Couleurs</h2>
+        <p>L'identité repose sur le bleu et le blanc. Le bleu guide l'action, il ne remplit pas l'écran. Les couleurs d'état communiquent le niveau et le feedback.</p>
+      </div>
+
+      <div class="sub-head">Marque</div>
+      <div class="swatch-grid" id="sw-brand"></div>
+
+      <div class="sub-head">Neutres</div>
+      <div class="swatch-grid" id="sw-neutral"></div>
+
+      <div class="sub-head">États</div>
+      <div class="swatch-grid" id="sw-state"></div>
+    </section>
+
+    <!-- Typographie -->
+    <section id="typographie">
+      <div class="sec-head">
+        <div class="sec-num">03</div>
+        <h2>Typographie</h2>
+        <p>Police <strong>Nunito Sans</strong> — douce, ronde et très lisible, moins froide qu'Inter. Idéale pour des élèves.</p>
+      </div>
+      <div id="type-scale"></div>
+      <div class="sub-head">Graisses</div>
+      <div class="grid-3">
+        <div class="demo-card" style="text-align:center"><div style="font-size:28px;font-weight:400">Aa</div><div style="font-size:12px;color:var(--muted);font-weight:700;margin-top:8px">Regular · 400</div></div>
+        <div class="demo-card" style="text-align:center"><div style="font-size:28px;font-weight:600">Aa</div><div style="font-size:12px;color:var(--muted);font-weight:700;margin-top:8px">SemiBold · 600</div></div>
+        <div class="demo-card" style="text-align:center"><div style="font-size:28px;font-weight:800">Aa</div><div style="font-size:12px;color:var(--muted);font-weight:700;margin-top:8px">ExtraBold · 800</div></div>
+      </div>
+    </section>
+
+    <!-- Espacement -->
+    <section id="espacement">
+      <div class="sec-head">
+        <div class="sec-num">04</div>
+        <h2>Espacement</h2>
+        <p>Grille de base <strong>4&nbsp;px</strong>. Padding d'écran : 16px horizontal, 16–24px vertical.</p>
+      </div>
+      <div class="demo-card" id="space-scale"></div>
+    </section>
+
+    <!-- Arrondis -->
+    <section id="arrondis">
+      <div class="sec-head">
+        <div class="sec-num">05</div>
+        <h2>Arrondis</h2>
+        <p>Style moderne et doux. Coins généreux, jamais carrés.</p>
+      </div>
+      <div class="grid-3" id="radius-grid"></div>
+    </section>
+
+    <!-- Ombres -->
+    <section id="ombres">
+      <div class="sec-head">
+        <div class="sec-num">06</div>
+        <h2>Ombres</h2>
+        <p>Discrètes. L'application reste claire et légère — jamais d'ombre forte.</p>
+      </div>
+      <div class="grid-2">
+        <div class="shadow-box" style="box-shadow:var(--shadow-soft)">
+          <div style="font-size:14px;font-weight:800">Légère</div>
+          <code style="margin-top:8px">0 4px 12px rgba(15,23,42,.06)</code>
+        </div>
+        <div class="shadow-box" style="box-shadow:var(--shadow-mid)">
+          <div style="font-size:14px;font-weight:800">Carte importante</div>
+          <code style="margin-top:8px">0 8px 24px rgba(15,23,42,.08)</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- Icones -->
+    <section id="icones">
+      <div class="sec-head">
+        <div class="sec-num">07</div>
+        <h2>Icônes</h2>
+        <p>Style linéaire, épaisseur moyenne (stroke 2), coins arrondis. Famille cohérente type Lucide.</p>
+      </div>
+      <div class="icon-grid" id="icon-grid"></div>
+    </section>
+
+    <!-- Boutons -->
+    <section id="boutons">
+      <div class="sec-head">
+        <div class="sec-num">08</div>
+        <h2>Boutons</h2>
+        <p>Hauteur 52px, rayon 14px, texte SemiBold. Le bouton principal porte l'action unique de l'écran.</p>
+      </div>
+      <div class="demo-card">
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button class="btn btn-primary">Commencer</button>
+          <button class="btn btn-secondary">Voir la correction</button>
+          <button class="btn btn-outline">Passer</button>
+          <button class="btn btn-danger">Réinitialiser</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:12px;font-size:12px;color:var(--muted);font-weight:700">
+          <div>Principal — action unique</div>
+          <div>Secondaire — action douce</div>
+          <div>Outline — action neutre</div>
+          <div>Danger — destructif</div>
+        </div>
+
+        <div class="sub-head" style="margin-top:28px">États du bouton principal</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <div style="text-align:center">
+            <button class="btn btn-primary">Par défaut</button>
+            <div style="font-size:11px;color:var(--mute2);font-weight:700;margin-top:6px">Repos</div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn btn-primary" style="background:#1D4FD7;box-shadow:0 4px 14px rgba(37,99,235,.4)">Survol</button>
+            <div style="font-size:11px;color:var(--mute2);font-weight:700;margin-top:6px">Hover</div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn btn-primary" style="background:#1E40AF;transform:scale(.97)">Pressé</button>
+            <div style="font-size:11px;color:var(--mute2);font-weight:700;margin-top:6px">Active</div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn btn-primary" style="opacity:.45;cursor:not-allowed">Indisponible</button>
+            <div style="font-size:11px;color:var(--mute2);font-weight:700;margin-top:6px">Disabled</div>
+          </div>
+          <div style="text-align:center">
+            <button class="btn btn-primary" style="gap:10px"><span class="spinner"></span>Chargement</button>
+            <div style="font-size:11px;color:var(--mute2);font-weight:700;margin-top:6px">Loading</div>
+          </div>
+        </div>
+
+        <div class="sub-head" style="margin-top:28px">Tailles &amp; variantes</div>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+          <button class="btn btn-primary" style="height:52px">Large · 52px</button>
+          <button class="btn btn-primary" style="height:44px;font-size:15px">Moyen · 44px</button>
+          <button class="btn btn-primary" style="height:36px;font-size:13px;padding:0 14px">Petit · 36px</button>
+          <button class="btn btn-primary" style="width:52px;height:52px;padding:0;border-radius:14px">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+          </button>
+          <button class="btn btn-primary" style="gap:8px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5v14l12-7z" fill="#fff"/></svg>
+            Avec icône
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Badges -->
+    <section id="badges">
+      <div class="sec-head">
+        <div class="sec-num">09</div>
+        <h2>Badges</h2>
+        <p>Informations rapides : niveau, difficulté, statut. Rayon plein (999px), texte 12px.</p>
+      </div>
+      <div class="demo-card">
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <span class="badge" style="background:var(--primary-soft);color:var(--primary)">Recommandé</span>
+          <span class="badge" style="background:var(--green-soft);color:var(--green-ink)"><span class="bdot" style="background:var(--green-ink)"></span>Fort</span>
+          <span class="badge" style="background:var(--amber-soft);color:var(--amber-ink)"><span class="bdot" style="background:var(--amber-ink)"></span>Moyen</span>
+          <span class="badge" style="background:var(--red-soft);color:var(--red-ink)"><span class="bdot" style="background:var(--red-ink)"></span>Faible</span>
+          <span class="badge" style="background:#F1F5F9;color:var(--ink-soft)">Tle D</span>
+          <span class="badge" style="background:var(--sky-soft);color:var(--sky)">Nouveau</span>
+        </div>
+        <div style="margin-top:16px;font-size:13px;color:var(--muted);font-weight:600">
+          Accessibilité : l'information ne dépend jamais de la seule couleur — toujours doublée d'un texte (ex. « Niveau : Faible »).
+        </div>
+      </div>
+    </section>
+
+    <!-- Cartes -->
+    <section id="cartes">
+      <div class="sec-head">
+        <div class="sec-num">10</div>
+        <h2>Cartes</h2>
+        <p>Fond blanc, rayon 18px, bordure fine, ombre légère, padding 16px. Le conteneur de contenu de base.</p>
+      </div>
+      <div class="grid-2">
+        <!-- Carte matière -->
+        <div class="demo-card" style="padding:16px">
+          <div style="display:flex;align-items:flex-start;gap:12px">
+            <div style="width:48px;height:48px;border-radius:14px;background:#2563EB1A;color:#2563EB;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v3l-7 5 7 5v3H6"/></svg>
+            </div>
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start">
+                <div style="font-size:16px;font-weight:800">Mathématiques</div>
+                <span class="badge" style="background:var(--amber-soft);color:var(--amber-ink)">Moyen</span>
+              </div>
+              <div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:2px">Dernier : Fonctions numériques</div>
+              <div style="margin-top:10px;display:flex;align-items:center;gap:8px">
+                <div style="flex:1;height:6px;background:var(--border);border-radius:999px"><div style="width:42%;height:100%;background:#2563EB;border-radius:999px"></div></div>
+                <span style="font-size:12px;font-weight:800">42%</span>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top:14px;font-size:11px;color:var(--mute2);font-weight:700;text-transform:uppercase;letter-spacing:.05em">Carte matière</div>
+        </div>
+
+        <!-- Carte recommandation -->
+        <div style="background:var(--primary-soft);border:1px solid var(--primary-soft-border);border-radius:22px;padding:18px;box-shadow:var(--shadow-soft)">
+          <span class="badge" style="background:#fff;color:var(--primary)">✦ IA personnalisé</span>
+          <div style="font-size:18px;font-weight:900;letter-spacing:-.02em;margin-top:10px;line-height:1.25">Révise les équations du second degré</div>
+          <div style="font-size:13px;color:var(--ink-soft);font-weight:500;margin-top:8px">Souvent abordé à cette période en Tle&nbsp;D.</div>
+          <button class="btn btn-primary" style="width:100%;margin-top:14px">Commencer</button>
+          <div style="margin-top:14px;font-size:11px;color:var(--primary);font-weight:700;text-transform:uppercase;letter-spacing:.05em;opacity:.7">Carte recommandation</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Champs -->
+    <section id="champs">
+      <div class="sec-head">
+        <div class="sec-num">11</div>
+        <h2>Champs &amp; saisie</h2>
+        <p>Hauteur 52px, rayon 14px. Bordure neutre au repos, bordure bleue + halo au focus, rouge à l'erreur. Toujours un label clair au-dessus.</p>
+      </div>
+
+      <div class="sub-head">États d'un champ texte</div>
+      <div class="demo-card grid-2" style="gap:18px">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Repos</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;color:var(--mute2);font-weight:600">Entre ton pseudo…</div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Rempli</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;font-weight:700;color:var(--ink)">junior_237</div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--primary);text-transform:uppercase;letter-spacing:.02em">Focus</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid var(--primary);background:#fff;display:flex;align-items:center;font-weight:700;box-shadow:0 0 0 4px var(--primary-soft)">junior_237<span style="width:1.5px;height:18px;background:var(--primary);margin-left:1px;animation:blink 1s infinite"></span></div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:.02em">Validé</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid var(--green);background:#fff;display:flex;align-items:center;gap:8px;font-weight:700;color:var(--ink)">junior_237<span style="margin-left:auto;color:var(--green)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></span></div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--red);text-transform:uppercase;letter-spacing:.02em">Erreur</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1.5px solid var(--red);background:var(--red-soft);display:flex;align-items:center;font-weight:600;color:var(--red-ink)">jr</div>
+          <div style="font-size:12px;color:var(--red);font-weight:700;margin-top:5px">Le pseudo doit faire 3 caractères minimum.</div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--mute2);text-transform:uppercase;letter-spacing:.02em">Désactivé</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--border);background:#F1F5F9;display:flex;align-items:center;color:var(--mute2);font-weight:600;opacity:.7">Non modifiable</div>
+        </div>
+      </div>
+
+      <div class="sub-head">Variétés de champs</div>
+      <div class="demo-card grid-2" style="gap:18px">
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Avec icône</label>
+          <div style="margin-top:6px;height:52px;padding:0 14px;border-radius:14px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+            <span style="font-weight:700;color:var(--ink)">Junior Mbarga</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Recherche</label>
+          <div style="margin-top:6px;height:48px;padding:0 14px;border-radius:999px;border:1px solid var(--border);background:#F1F5F9;display:flex;align-items:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg>
+            <span style="font-weight:600;color:var(--mute2)">Rechercher un chapitre…</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Numéro WhatsApp</label>
+          <div style="margin-top:6px;height:52px;border-radius:14px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;overflow:hidden">
+            <div style="height:100%;padding:0 14px;display:flex;align-items:center;gap:6px;background:#F1F5F9;border-right:1px solid var(--border);font-weight:700;color:var(--ink-soft)">🇨🇲 +237</div>
+            <span style="padding:0 14px;font-weight:700;color:var(--ink)">6 78 12 34 56</span>
+          </div>
+        </div>
+        <div>
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Sélecteur (dropdown)</label>
+          <div style="margin-top:6px;height:52px;padding:0 16px;border-radius:14px;border:1px solid var(--border);background:#fff;display:flex;align-items:center;font-weight:700;color:var(--ink)">Allemand<span style="margin-left:auto;color:var(--mute2)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></div>
+        </div>
+        <div style="grid-column:1/-1">
+          <label style="font-size:12px;font-weight:700;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.02em">Zone de texte (réponse libre)</label>
+          <div style="margin-top:6px;min-height:96px;padding:14px 16px;border-radius:14px;border:1px solid var(--border);background:#fff;font-weight:500;color:var(--ink);line-height:1.5">On considère la fonction f définie par f(x) = x²…</div>
+          <div style="display:flex;justify-content:flex-end;font-size:12px;color:var(--mute2);font-weight:600;margin-top:4px">128 / 500</div>
+        </div>
+      </div>
+
+      <div class="sub-head">Code PIN (4 chiffres)</div>
+      <div class="demo-card">
+        <div style="display:flex;gap:12px;max-width:300px">
+          <div style="flex:1;height:60px;border-radius:14px;border:1.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800">●</div>
+          <div style="flex:1;height:60px;border-radius:14px;border:1.5px solid var(--ink);background:#fff;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800">●</div>
+          <div style="flex:1;height:60px;border-radius:14px;border:1.5px solid var(--primary);background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--primary-soft)"></div>
+          <div style="flex:1;height:60px;border-radius:14px;border:1.5px solid var(--border);background:#fff;display:flex;align-items:center;justify-content:center"></div>
+        </div>
+        <div style="font-size:12.5px;color:var(--muted);font-weight:600;margin-top:10px">Cases individuelles, focus sur la case active. Utilisé à l'inscription et à la connexion.</div>
+      </div>
+    </section>
+
+    <!-- Contrôles -->
+    <section id="controles">
+      <div class="sec-head">
+        <div class="sec-num">12</div>
+        <h2>Contrôles de sélection</h2>
+        <p>Interrupteurs, cases, boutons radio, stepper et puces de choix. Cibles tactiles ≥ 44px.</p>
+      </div>
+
+      <div class="demo-card grid-2" style="gap:24px">
+        <div>
+          <div class="sub-head" style="margin:0 0 14px">Interrupteurs</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:15px;font-weight:700">Notifications</span>
+              <div style="width:52px;height:31px;border-radius:999px;background:var(--primary);position:relative"><div style="position:absolute;top:2px;right:2px;width:27px;height:27px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:15px;font-weight:700">Mode hors-ligne</span>
+              <div style="width:52px;height:31px;border-radius:999px;background:#E2E8F0;position:relative"><div style="position:absolute;top:2px;left:2px;width:27px;height:27px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-head" style="margin:0 0 14px">Cases à cocher</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:24px;height:24px;border-radius:7px;background:var(--primary);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+              <span style="font-size:15px;font-weight:600">Se souvenir de moi</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:24px;height:24px;border-radius:7px;border:2px solid var(--border);background:#fff"></div>
+              <span style="font-size:15px;font-weight:600;color:var(--ink-soft)">Recevoir les rappels</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-head" style="margin:0 0 14px">Boutons radio</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:24px;height:24px;border-radius:999px;border:2px solid var(--primary);display:flex;align-items:center;justify-content:center"><div style="width:12px;height:12px;border-radius:999px;background:var(--primary)"></div></div>
+              <span style="font-size:15px;font-weight:600">Mode assisté IA</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div style="width:24px;height:24px;border-radius:999px;border:2px solid var(--border);background:#fff"></div>
+              <span style="font-size:15px;font-weight:600;color:var(--ink-soft)">Mode classique</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub-head" style="margin:0 0 14px">Stepper</div>
+          <div style="display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:14px;width:fit-content;overflow:hidden">
+            <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center;color:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M5 12h14"/></svg></div>
+            <div style="width:46px;text-align:center;font-size:17px;font-weight:800;border-left:1px solid var(--border);border-right:1px solid var(--border);line-height:46px">3</div>
+            <div style="width:46px;height:46px;display:flex;align-items:center;justify-content:center;color:var(--primary)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sub-head">Puces de choix (quiz, filtres)</div>
+      <div class="demo-card">
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <div style="padding:10px 18px;border-radius:999px;background:var(--primary-soft);border:1.5px solid var(--primary);color:var(--primary);font-weight:800;display:inline-flex;align-items:center;gap:6px">Sélectionné<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+          <div style="padding:10px 18px;border-radius:999px;background:#fff;border:1.5px solid var(--border);color:var(--ink);font-weight:700">Non sélectionné</div>
+          <div style="padding:10px 18px;border-radius:999px;background:var(--green-soft);border:1.5px solid var(--green);color:var(--green-ink);font-weight:800;display:inline-flex;align-items:center;gap:6px">Bonne réponse<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg></div>
+          <div style="padding:10px 18px;border-radius:999px;background:var(--red-soft);border:1.5px solid var(--red);color:var(--red-ink);font-weight:800;display:inline-flex;align-items:center;gap:6px">Mauvaise<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Progression -->
+    <section id="progression">
+      <div class="sec-head">
+        <div class="sec-num">13</div>
+        <h2>Barres de progression</h2>
+        <p>Toujours visibles. La progression motive — on la montre partout.</p>
+      </div>
+      <div class="demo-card" style="display:flex;flex-direction:column;gap:18px;max-width:520px">
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px"><span>Bleu — progression neutre</span><span style="color:var(--ink)">60%</span></div><div style="height:8px;background:var(--border);border-radius:999px"><div style="width:60%;height:100%;background:#2563EB;border-radius:999px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px"><span>Vert — réussite</span><span style="color:var(--ink)">85%</span></div><div style="height:8px;background:var(--border);border-radius:999px"><div style="width:85%;height:100%;background:var(--green);border-radius:999px"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:700;margin-bottom:6px"><span>Ambre — à consolider</span><span style="color:var(--ink)">35%</span></div><div style="height:8px;background:var(--border);border-radius:999px"><div style="width:35%;height:100%;background:var(--amber);border-radius:999px"></div></div></div>
+      </div>
+    </section>
+
+    <!-- Onglets -->
+    <section id="onglets">
+      <div class="sec-head">
+        <div class="sec-num">14</div>
+        <h2>Onglets &amp; navigation</h2>
+        <p>Navigation interne d'une page (chapitre, classement) et barre du bas à 3 onglets.</p>
+      </div>
+      <div class="demo-card" style="display:flex;flex-direction:column;gap:24px">
+        <div>
+          <div class="sub-head" style="margin:0 0 12px">Onglets segmentés</div>
+          <div class="pill-tab">
+            <div class="on">Leçons</div>
+            <div>Quiz</div>
+            <div>Exercices</div>
+            <div>Fiche</div>
+          </div>
+        </div>
+        <div>
+          <div class="sub-head" style="margin:0 0 12px">Filtres défilants</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <div style="padding:7px 14px;border-radius:999px;background:var(--ink);color:#fff;font-size:13px;font-weight:700">Tous</div>
+            <div style="padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--border);color:var(--ink-soft);font-size:13px;font-weight:700">Facile</div>
+            <div style="padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--border);color:var(--ink-soft);font-size:13px;font-weight:700">Moyen</div>
+            <div style="padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--border);color:var(--ink-soft);font-size:13px;font-weight:700">Difficile</div>
+          </div>
+        </div>
+        <div>
+          <div class="sub-head" style="margin:0 0 12px">Barre de navigation (3 onglets)</div>
+          <div style="border:1px solid var(--border);border-radius:16px;overflow:hidden;max-width:420px">
+            <div style="display:flex;justify-content:space-around;padding:10px 8px 12px;background:#fff">
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--primary)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/></svg><span style="font-size:10.5px;font-weight:700">Accueil</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--mute2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/></svg><span style="font-size:10.5px;font-weight:700">Épreuves</span></div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--mute2)"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span style="font-size:10.5px;font-weight:700">Profil</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Encadres -->
+    <section id="encadres">
+      <div class="sec-head">
+        <div class="sec-num">15</div>
+        <h2>Encadrés pédagogiques</h2>
+        <p>Pour structurer une leçon : définition, à retenir, attention, erreur fréquente.</p>
+      </div>
+      <div class="grid-2">
+        <div style="background:var(--primary-soft);border-left:4px solid var(--primary);border-radius:14px;padding:14px">
+          <div style="font-size:11px;font-weight:800;color:var(--primary);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Définition</div>
+          <div style="font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.55">Le nombre dérivé mesure la variation instantanée d'une fonction en un point.</div>
+        </div>
+        <div style="background:var(--amber-soft);border-radius:14px;padding:14px">
+          <div style="font-size:11px;font-weight:800;color:var(--amber-ink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">À retenir</div>
+          <div style="font-size:13.5px;color:var(--amber-ink);font-weight:600;line-height:1.55">f′(a) est le coefficient directeur de la tangente en a.</div>
+        </div>
+        <div style="background:var(--sky-soft);border-radius:14px;padding:14px">
+          <div style="font-size:11px;font-weight:800;color:var(--sky);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Information</div>
+          <div style="font-size:13.5px;color:var(--ink);font-weight:500;line-height:1.55">Cette notion sera réutilisée au chapitre suivant.</div>
+        </div>
+        <div style="background:var(--red-soft);border-radius:14px;padding:14px">
+          <div style="font-size:11px;font-weight:800;color:var(--red-ink);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Erreur fréquente</div>
+          <div style="font-size:13.5px;color:var(--red-ink);font-weight:600;line-height:1.55">Ne pas confondre (u·v)′ avec u′·v′.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Toasts -->
+    <section id="toasts">
+      <div class="sec-head">
+        <div class="sec-num">16</div>
+        <h2>Toasts &amp; notifications</h2>
+        <p>Messages transitoires (≈ 2,5 s) en haut de l'écran. Confirmation, erreur, info, gain de récompense.</p>
+      </div>
+      <div class="demo-card" style="display:flex;flex-direction:column;gap:12px;max-width:440px">
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:var(--ink);color:#fff;box-shadow:var(--shadow-mid)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg>
+          <span style="font-size:14px;font-weight:700;flex:1">Connexion rétablie</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:var(--green);color:#fff;box-shadow:var(--shadow-mid)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>
+          <span style="font-size:14px;font-weight:700;flex:1">Progression sauvegardée</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:var(--red);color:#fff;box-shadow:var(--shadow-mid)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6 18 18M18 6 6 18"/></svg>
+          <span style="font-size:14px;font-weight:700;flex:1">Échec de l'envoi. Réessaie.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:14px;background:#fff;border:1px solid var(--primary-soft-border);box-shadow:var(--shadow-soft)">
+          <div style="width:32px;height:32px;border-radius:9px;background:var(--amber-soft);color:var(--amber);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m13 3-9 12h7l-1 6 9-12h-7z"/></svg></div>
+          <div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--ink)">+12 XP gagnés</div><div style="font-size:12px;color:var(--muted);font-weight:600">Bravo, continue ta série !</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:14px;background:var(--primary-soft);border:1px solid var(--primary-soft-border)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg>
+          <span style="font-size:14px;font-weight:700;flex:1;color:var(--ink)">Nouvelle recommandation pour toi</span>
+          <span style="font-size:13px;font-weight:800;color:var(--primary)">Voir</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Modales -->
+    <section id="modales">
+      <div class="sec-head">
+        <div class="sec-num">17</div>
+        <h2>Modales</h2>
+        <p>Pour une décision ou une confirmation. Fond assombri, carte centrée (rayon 24px), action principale + secondaire.</p>
+      </div>
+      <div class="grid-2">
+        <div style="background:#0F172A;border-radius:20px;padding:24px;display:flex;align-items:center;justify-content:center">
+          <div style="width:100%;max-width:300px;background:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow-mid)">
+            <div style="width:56px;height:56px;border-radius:16px;background:var(--primary-soft);color:var(--primary);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+            <div style="font-size:19px;font-weight:900;text-align:center;letter-spacing:-.02em">Crée un compte</div>
+            <div style="font-size:13px;color:var(--muted);text-align:center;font-weight:500;margin-top:6px;line-height:1.5">Pour faire les quiz, utiliser l'IA et sauvegarder ta progression.</div>
+            <button class="btn btn-primary" style="width:100%;margin-top:16px">Créer mon compte</button>
+            <button class="btn btn-outline" style="width:100%;margin-top:8px;border:none;color:var(--muted)">Plus tard</button>
+          </div>
+        </div>
+        <div style="background:#0F172A;border-radius:20px;padding:24px;display:flex;align-items:center;justify-content:center">
+          <div style="width:100%;max-width:300px;background:#fff;border-radius:24px;padding:22px;box-shadow:var(--shadow-mid)">
+            <div style="width:56px;height:56px;border-radius:16px;background:var(--amber-soft);color:var(--amber);display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+            <div style="font-size:19px;font-weight:900;text-align:center;letter-spacing:-.02em">Changer de classe ?</div>
+            <div style="font-size:13px;color:var(--muted);text-align:center;font-weight:500;margin-top:6px;line-height:1.5">Tes matières et ton classement seront rechargés. L'historique est conservé.</div>
+            <button class="btn btn-primary" style="width:100%;margin-top:16px">Confirmer</button>
+            <button class="btn btn-outline" style="width:100%;margin-top:8px">Annuler</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom sheets -->
+    <section id="sheets">
+      <div class="sec-head">
+        <div class="sec-num">18</div>
+        <h2>Bottom sheets</h2>
+        <p>Pour une sélection rapide ou un menu contextuel. Glisse depuis le bas, rayon 28px en haut, poignée de glisse.</p>
+      </div>
+      <div style="background:#0F172A;border-radius:20px;padding:20px 20px 0;max-width:420px">
+        <div style="background:#fff;border-radius:28px 28px 0 0;padding:14px 20px 24px">
+          <div style="width:40px;height:4px;background:var(--border);border-radius:999px;margin:0 auto 16px"></div>
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+            <div style="width:46px;height:46px;border-radius:12px;background:var(--primary);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0"><div style="font-size:9px;font-weight:700;opacity:.85">SÉQ.</div><div style="font-size:18px;font-weight:900;line-height:1">3</div></div>
+            <div><div style="font-size:18px;font-weight:900;letter-spacing:-.02em">Choisis une matière</div><div style="font-size:12px;color:var(--muted);font-weight:600">Séquence 3 · Tle D</div></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="padding:12px 14px;border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:11px;background:#2563EB1A;color:#2563EB;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h12v3l-7 5 7 5v3H6"/></svg></div><div style="flex:1"><div style="font-size:14px;font-weight:800">Mathématiques</div><div style="font-size:11px;color:var(--muted);font-weight:600">4 sujets</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></div>
+            <div style="padding:12px 14px;border-radius:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px"><div style="width:40px;height:40px;border-radius:11px;background:#7C3AED1A;color:#7C3AED;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1.5" fill="currentColor"/><ellipse cx="12" cy="12" rx="9" ry="4"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="9" ry="4" transform="rotate(-60 12 12)"/></svg></div><div style="flex:1"><div style="font-size:14px;font-weight:800">Physique-Chimie</div><div style="font-size:11px;color:var(--muted);font-weight:600">3 sujets</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Etats vides -->
+    <section id="vides">
+      <div class="sec-head">
+        <div class="sec-num">19</div>
+        <h2>États vides</h2>
+        <p>Quand il n'y a pas encore de données. Icône douce, message clair, action pour démarrer. Jamais d'écran blanc.</p>
+      </div>
+      <div class="grid-3">
+        <div class="demo-card" style="text-align:center;padding:28px 18px">
+          <div style="width:64px;height:64px;border-radius:20px;background:var(--amber-soft);color:var(--amber);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1L3.2 9.4l6.1-.9z"/></svg></div>
+          <div style="font-size:16px;font-weight:800">Aucun favori</div>
+          <div style="font-size:13px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.5">Ajoute leçons, quiz et exercices pour les retrouver ici.</div>
+        </div>
+        <div class="demo-card" style="text-align:center;padding:28px 18px">
+          <div style="width:64px;height:64px;border-radius:20px;background:var(--primary-soft);color:var(--primary);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <div style="font-size:16px;font-weight:800">Pas encore d'historique</div>
+          <div style="font-size:13px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.5">Commence une activité pour suivre ta progression.</div>
+        </div>
+        <div class="demo-card" style="text-align:center;padding:28px 18px">
+          <div style="width:64px;height:64px;border-radius:20px;background:#F1F5F9;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/></svg></div>
+          <div style="font-size:16px;font-weight:800">Aucun résultat</div>
+          <div style="font-size:13px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.5">Essaie un autre mot-clé ou un autre filtre.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chargement -->
+    <section id="chargement">
+      <div class="sec-head">
+        <div class="sec-num">20</div>
+        <h2>Chargement</h2>
+        <p>Squelettes pour le contenu qui arrive, spinner pour une action ponctuelle, overlay pour l'analyse IA.</p>
+      </div>
+      <div class="grid-2">
+        <div class="demo-card">
+          <div class="sub-head" style="margin:0 0 12px">Skeleton (carte qui charge)</div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div class="skel" style="width:48px;height:48px;border-radius:14px"></div>
+            <div style="flex:1">
+              <div class="skel" style="height:14px;width:60%;border-radius:7px"></div>
+              <div class="skel" style="height:12px;width:40%;border-radius:6px;margin-top:8px"></div>
+              <div class="skel" style="height:6px;width:100%;border-radius:999px;margin-top:12px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px">
+          <div class="sub-head" style="margin:0;align-self:flex-start">Spinner &amp; analyse IA</div>
+          <div style="display:flex;align-items:center;gap:24px;padding:10px 0">
+            <span class="spinner" style="width:34px;height:34px;border-width:4px;border-top-color:var(--primary)"></span>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:8px">
+              <div style="width:52px;height:52px;border-radius:16px;background:var(--primary);color:#FCD34D;display:flex;align-items:center;justify-content:center;animation:pulse 1.2s infinite"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/></svg></div>
+              <div style="font-size:12px;font-weight:700;color:var(--muted)">Analyse de ta copie…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div style="border-top:1px solid var(--border);padding-top:24px;font-size:13px;color:var(--mute2);font-weight:600">
+      Valide · Design System — sous-système francophone général · Collège &amp; lycée
+    </div>
+  </main>
+</div>
+
+<template id="__bundler_thumbnail">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="22" fill="#2563EB"/>
+    <path d="M32 52 L45 65 L70 38" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</template>
+
+<script>
+  // ── Color data ──
+  const SW = {
+    brand: [
+      { n: 'Primary Blue', hex: '#2563EB', use: 'Boutons, liens, actif', text: '#fff' },
+      { n: 'Deep Blue', hex: '#1E3A8A', use: 'Titres, headers', text: '#fff' },
+      { n: 'Light Blue', hex: '#DBEAFE', use: 'Badges, états doux', text: '#1E3A8A' },
+      { n: 'Soft Blue', hex: '#EFF6FF', use: 'Fonds cartes reco', text: '#1E3A8A' },
+    ],
+    neutral: [
+      { n: 'Dark Navy', hex: '#0F172A', use: 'Texte principal', text: '#fff' },
+      { n: 'Slate', hex: '#334155', use: 'Texte fort', text: '#fff' },
+      { n: 'Slate Gray', hex: '#64748B', use: 'Texte secondaire', text: '#fff' },
+      { n: 'Mute', hex: '#94A3B8', use: 'Texte tertiaire', text: '#fff' },
+      { n: 'Border', hex: '#E2E8F0', use: 'Bordures, séparateurs', text: '#0F172A' },
+      { n: 'App BG', hex: '#F8FAFC', use: 'Fond général', text: '#0F172A' },
+      { n: 'Card', hex: '#FFFFFF', use: 'Fond cartes', text: '#0F172A' },
+    ],
+    state: [
+      { n: 'Success', hex: '#16A34A', use: 'Bonne réponse, Fort', text: '#fff' },
+      { n: 'Success Soft', hex: '#DCFCE7', use: 'Fond succès', text: '#166534' },
+      { n: 'Warning', hex: '#F59E0B', use: 'Niveau moyen', text: '#fff' },
+      { n: 'Warning Soft', hex: '#FEF3C7', use: 'Fond moyen', text: '#92400E' },
+      { n: 'Error', hex: '#DC2626', use: 'Mauvaise réponse, Faible', text: '#fff' },
+      { n: 'Error Soft', hex: '#FEE2E2', use: 'Fond erreur', text: '#991B1B' },
+      { n: 'Info', hex: '#0284C7', use: 'Information', text: '#fff' },
+      { n: 'Info Soft', hex: '#E0F2FE', use: 'Fond info', text: '#0284C7' },
+    ],
+  };
+  const swatchHTML = (s) => `<div class="swatch">
+    <div class="swatch-color" style="background:${s.hex};color:${s.text}"><span style="font-size:11px;font-weight:800;font-family:var(--mono);opacity:.85">${s.hex}</span></div>
+    <div class="swatch-info"><div class="swatch-name">${s.n}</div><div class="swatch-hex">${s.hex}</div><div class="swatch-use">${s.use}</div></div>
+  </div>`;
+  document.getElementById('sw-brand').innerHTML = SW.brand.map(swatchHTML).join('');
+  document.getElementById('sw-neutral').innerHTML = SW.neutral.map(swatchHTML).join('');
+  document.getElementById('sw-state').innerHTML = SW.state.map(swatchHTML).join('');
+
+  // ── Type scale ──
+  const TYPE = [
+    { name: 'Titre principal', px: '28px', w: 800, sample: 'Révise, comprends, progresse', use: 'Page promesse, titres héro de l\'onboarding. Un seul par écran.' },
+    { name: 'Titre écran', px: '24px', w: 800, sample: 'Quel est ton objectif ?', use: 'En-tête d\'une page (objectif, profil, résultat de quiz).' },
+    { name: 'Titre section', px: '20px', w: 700, sample: 'Mes matières', use: 'Séparer les blocs d\'une page (« Recommandé », « Reprendre »).' },
+    { name: 'Titre carte', px: '16px', w: 700, sample: 'Fonctions numériques', use: 'Nom d\'une matière, chapitre, leçon ou quiz dans une carte.' },
+    { name: 'Texte normal', px: '15px', w: 400, sample: 'Le nombre dérivé mesure la variation instantanée.', use: 'Corps des leçons, descriptions, contenu lisible long.' },
+    { name: 'Texte secondaire', px: '13px', w: 400, sample: '3 leçons · 2 quiz · 12 exercices', use: 'Métadonnées, sous-titres, infos de contexte sous un titre.' },
+    { name: 'Label / badge', px: '12px', w: 600, sample: 'RECOMMANDÉ', use: 'Badges d\'état, étiquettes, eyebrows en majuscules.' },
+  ];
+  document.getElementById('type-scale').innerHTML = TYPE.map(t => `
+    <div class="type-row">
+      <div class="type-spec"><div class="t1">${t.name}</div><div class="t2">${t.px} · ${t.w}</div></div>
+      <div class="type-sample">
+        <div style="font-size:${t.px};font-weight:${t.w};color:var(--ink)">${t.sample}</div>
+        <div style="font-size:12.5px;font-weight:500;color:var(--muted);margin-top:6px;line-height:1.45">${t.use}</div>
+      </div>
+    </div>`).join('');
+
+  // ── Spacing ──
+  const SPACE = [
+    { n: 'Petit', px: 4 }, { n: 'Standard', px: 8 }, { n: 'Proche', px: 12 },
+    { n: 'Padding carte', px: 16 }, { n: 'Sections', px: 24 }, { n: 'Grand', px: 32 },
+  ];
+  document.getElementById('space-scale').innerHTML = SPACE.map(s => `
+    <div class="space-row">
+      <div class="space-label">${s.n}</div>
+      <div class="space-bar" style="width:${s.px * 3}px"></div>
+      <div class="space-px">${s.px}px</div>
+    </div>`).join('');
+
+  // ── Radius ──
+  const RADIUS = [
+    { n: 'Boutons / champs', px: 14 }, { n: 'Cartes', px: 18 }, { n: 'Modales', px: 24 },
+  ];
+  document.getElementById('radius-grid').innerHTML = RADIUS.map(r => `
+    <div class="demo-card" style="padding:0;overflow:hidden;border:none;box-shadow:none">
+      <div class="radius-box" style="border-radius:${r.px}px">
+        <div style="text-align:center"><div class="radius-label">${r.n}</div><div class="radius-px">${r.px}px</div></div>
+      </div>
+    </div>`).join('') + `
+    <div class="demo-card" style="padding:0;overflow:hidden;border:none;box-shadow:none">
+      <div class="radius-box" style="border-radius:999px">
+        <div style="text-align:center"><div class="radius-label">Badges / pills</div><div class="radius-px">999px</div></div>
+      </div>
+    </div>`;
+
+  // ── Icons ──
+  const stroke = 'fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"';
+  const ICONS = {
+    'home': '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/>',
+    'book': '<path d="M4 4h7a3 3 0 0 1 3 3v13"/><path d="M20 4h-7a3 3 0 0 0-3 3v13"/>',
+    'flag': '<path d="M4 21V4"/><path d="M4 4h13l-2 4 2 4H4"/>',
+    'star': '<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1L3.2 9.4l6.1-.9z"/>',
+    'trophy': '<path d="M8 3h8v5a4 4 0 0 1-8 0z"/><path d="M8 5H5v2a3 3 0 0 0 3 3"/><path d="M16 5h3v2a3 3 0 0 1-3 3"/><path d="M10 14h4l-1 4h2v3H9v-3h2z"/>',
+    'target': '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/>',
+    'sparkles': '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/>',
+    'check-circle': '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+    'pencil': '<path d="m4 20 4-1L20 7l-3-3L5 16l-1 4z"/>',
+    'book-open': '<path d="M3 5c3-1 6-1 9 1 3-2 6-2 9-1v14c-3-1-6-1-9 1-3-2-6-2-9-1z"/><path d="M12 6v15"/>',
+    'clock': '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    'lightbulb': '<path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z"/>',
+    'trending': '<path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/>',
+    'fire': '<path d="M12 3c0 4-4 4-4 8a4 4 0 0 0 8 0c0-2-1-3-1-5 2 0 4 3 4 6a7 7 0 1 1-14 0c0-5 4-5 7-9z"/>',
+    'user': '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',
+    'file-text': '<path d="M14 3H6v18h12V7z"/><path d="M14 3v4h4"/><path d="M9 13h6M9 17h4"/>',
+    'search': '<circle cx="11" cy="11" r="6"/><path d="m20 20-4-4"/>',
+  };
+  document.getElementById('icon-grid').innerHTML = Object.entries(ICONS).map(([name, path]) => `
+    <div class="icon-cell">
+      <svg width="26" height="26" viewBox="0 0 24 24" ${stroke}>${path}</svg>
+      <span>${name}</span>
+    </div>`).join('');
+
+  // Scroll spy
+  const links = [...document.querySelectorAll('.nav a')];
+  const sections = links.map(l => document.querySelector(l.getAttribute('href')));
+  const spy = () => {
+    const y = window.scrollY + 120;
+    let active = sections[0];
+    for (const s of sections) { if (s && s.offsetTop <= y) active = s; }
+    links.forEach(l => l.style.background = l.getAttribute('href') === '#' + active.id ? 'var(--primary-soft)' : '');
+    links.forEach(l => l.style.color = l.getAttribute('href') === '#' + active.id ? 'var(--primary)' : '');
+  };
+  window.addEventListener('scroll', spy); spy();
+</script>
+</body>
+</html>
