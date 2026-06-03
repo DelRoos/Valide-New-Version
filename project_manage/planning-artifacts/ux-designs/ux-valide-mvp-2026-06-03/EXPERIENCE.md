@@ -243,10 +243,12 @@ Chaque écran possède au minimum 4 états gérés : **loading**, **error**, **e
 | Contexte | Motion | Audio | Haptic |
 |---|---|---|---|
 | **Mode Examen actif** | Motion réduit (seules transitions fonctionnelles) | Aucun son | Aucun haptic |
-| **Mode silencieux Android** | Motion normal | Aucun son | Haptic normal (volume silencieux n'affecte pas la vibration) |
+| **Mode silencieux Android** (ringer mode SILENT/VIBRATE détecté) | Motion normal | Aucun son | Haptic normal |
+| **Mode silencieux iOS** (hardware ringer switch) | Motion normal | **Setting Profil seul fait foi — pas d'API publique iOS pour détecter le switch.** Optionnellement, configurer `AVAudioSession` category `ambient` (les sons jouent sur le canal média et seront muets si l'utilisateur baisse le volume média) | Haptic normal |
 | **Mode économie batterie Android** | Anims continues coupées (shimmer ok), motion fonctionnel ok | Sons toujours OK | Haptic OK |
+| **Low Power Mode iOS** (`Process.processInfo.isLowPowerModeEnabled` via plugin) | Anims continues coupées | Sons OK | Haptic OK |
 | **Batterie < 15 %** | Anims continues coupées | Sons OK | Aucun haptic (économie) |
-| **Préférence système « réduire animations »** (MediaQuery.disableAnimations) | Anims décoratives → statique, fonctionnelles 120 ms max | Sons OK | Haptic OK |
+| **Préférence système « réduire animations »** (`MediaQuery.disableAnimations` — couvre Android Dev option ET iOS Settings → Accessibility → Motion → Reduce Motion) | Anims décoratives → statique, fonctionnelles 120 ms max | Sons OK | Haptic OK |
 | **Setting Profil « Sons activés » = off** | Motion normal | Aucun son | Haptic normal |
 | **Setting Profil « Vibrations activées » = off** | Motion normal | Sons normaux | Aucun haptic |
 
@@ -343,23 +345,38 @@ L'app doit être utilisable en connexion 3G dégradée, ce qui est une forme d'a
 
 ## Responsive & Platform
 
-**Form-factors supportés :** Android téléphone uniquement en V1.
+> **MAJ 2026-06-04 — section refondue suite à ADR-011 (scope cross-platform).**
 
-### Breakpoints téléphone
+**Form-factors supportés en V1 :** Android phone + Android tablet + iPhone + iPad. **3 layouts cibles** : phone, phone-landscape ou small tablet, tablet.
 
-| Catégorie | Largeur logique | Comportement |
+### Breakpoints (3 layouts)
+
+| Layout | Largeur logique | Comportement |
 |---|---|---|
-| Petit (entrée de gamme) | 360 dp (~5") | Marges horizontales 16 px. Grille de matières en 3 colonnes. |
-| Standard (milieu) | 393 dp | Marges horizontales 16 px. Grille en 3 colonnes. |
-| Tall | 412 dp | Marges horizontales 20 px. Grille en 3 colonnes. |
-| Large | 480 dp+ | Marges horizontales 20 px. Grille en 4 colonnes. |
+| **Phone portrait** | < 600 dp | Mono-colonne. Marges 16-20 px. Grille de matières en 3 colonnes. Bottom tabs visibles. |
+| **Phone landscape / Small tablet** | 600-840 dp | Mono-colonne avec largeur max 600 dp et marges automatiques. Grille de matières en 4 colonnes. Bottom tabs toujours visibles. |
+| **Tablet** | ≥ 840 dp | Layout 2-colonnes optionnel selon écran (cf. § Patterns tablette). Marges 24-32 px. Grille de matières en 5-6 colonnes. **NavigationRail** (à gauche) remplace les bottom tabs en orientation paysage. |
 
-**Pas de support tablette.** Si l'app est lancée sur tablette Android (par accident), l'expérience reste mono-colonne avec marges horizontales centrées et largeur max 480 px. Pas de mise en page split-view en V1.
+**Détection** : `LayoutBuilder` ou `MediaQuery.sizeOf(context).width` (jamais `Platform.isTablet` — n'existe pas et ne reflète pas le form factor réel).
+
+### Patterns tablette (≥ 840 dp)
+
+- **Lecture cours + sommaire** : split-view possible (sommaire chapitre à gauche 300 dp, contenu à droite). Configurable par écran.
+- **Liste + détail** (notifications, classements, historique chat) : pattern master-detail si la largeur le permet, sinon stack normal.
+- **Quiz / Mode 1 / Mode 2** : restent mono-colonne centrés max 600 dp (l'élève ne profite pas d'un quiz étalé sur 1200 dp).
+- **Dashboard** : la mini-carte de rang + 3 recommandations restent verticales mais peuvent être enrichies d'un widget supplémentaire (à définir par écran).
+- **Bottom tabs vs NavigationRail** : portrait tablette → bottom tabs ; paysage tablette → NavigationRail à gauche (gain d'espace utile).
+
+### Phone landscape
+
+- En V1, **non bloqué mais non spécifiquement designé**. Si l'utilisateur tourne son téléphone, l'app accepte le layout mais reste mono-colonne avec largeur max 600 dp. Pas de feature exclusive landscape phone.
+- Si une story justifie de verrouiller en portrait (ex. Mode Examen pour éviter triche), elle peut le faire localement via `SystemChrome.setPreferredOrientations`.
 
 ### Densités d'écran
 
-- Tester sur ldpi/mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi (cibler particulièrement xhdpi et xxhdpi qui dominent le segment entrée et milieu de gamme camerounais).
-- Toutes les icônes sont vectorielles (SVG via `flutter_smooth_markdown` ou widgets natifs) — pas de PNG multirésolution.
+- **Android** : tester sur ldpi/mdpi/hdpi/xhdpi/xxhdpi/xxxhdpi (cibler particulièrement xhdpi et xxhdpi qui dominent le segment entrée et milieu de gamme camerounais).
+- **iOS** : tester sur 2x (iPhone SE 2020, iPad mini) et 3x (iPhone 14 Pro). iPad Pro 12.9" non prioritaire (segment minoritaire au Cameroun).
+- Toutes les icônes sont vectorielles (SVG, `lucide_icons` ou widgets natifs) — pas de PNG multirésolution.
 
 ### Plateforme Android
 
@@ -367,11 +384,22 @@ L'app doit être utilisable en connexion 3G dégradée, ce qui est une forme d'a
 - L'app **n'utilise pas** la barre de notification système pour des notifications inline (uniquement les pushes FCM légitimes).
 - **Pas d'overlay screen** au-dessus d'autres apps.
 - **Pas de demande de permissions abusive** : caméra demandée uniquement quand l'élève tape « Photo » dans Mode 1, géolocalisation jamais.
+- **Bouton retour Android** : navigation hiérarchique (déjà spécifié § Interaction Primitives).
 
-### Adaptation aux téléphones modestes
+### Plateforme iOS
 
-- Cible : Android 8.0 (API 26), 2 GB RAM, 32 GB stockage.
-- L'app installée doit faire **< 30 MB** (cf. NFR-1 du PRD).
+- Respecter les **gestes système iOS** : swipe-from-edge pour back (Cupertino-like via `CupertinoPageRoute` autorisée si améliore l'UX), pull-to-refresh natif iOS sur les listes.
+- **Pas de top bar custom qui masque la status bar** sans raison.
+- **Permissions iOS** : caméra et notifications demandées via `Info.plist` avec `NSCameraUsageDescription` et `NSUserNotificationsUsageDescription` claires en FR + EN ; demande inline sur tap action utilisateur (pas au démarrage).
+- **VoiceOver** : équivalent TalkBack ; mêmes règles d'accessibilité (cf. § Accessibility Floor).
+- **Dynamic Type iOS** : respecter `MediaQuery.textScaleFactor` (iOS l'expose via Settings → Display & Brightness → Text Size).
+- **Détection mode silencieux** : non disponible publiquement sur iOS → fallback exclusif sur setting Profil utilisateur (cf. § Multisensoriel coupures globales).
+- **Hardware ringer switch iOS** : n'affecte PAS l'audio « ambient » de l'app par défaut. Si on veut respecter le switch, configurer une `AVAudioSession` category appropriée (à arbitrer Story 0.14).
+
+### Adaptation aux téléphones modestes (Android entry-level prioritaire)
+
+- Cible Android : 8.0 (API 26), 2 GB RAM, 32 GB stockage. Cible iOS : iOS 13.0, iPhone SE 2020.
+- L'app installée doit faire **< 30 MB sur Android** (cf. NFR-1) et **< 50 MB sur iOS**.
 - Pas de splash screen plus long que 2 s.
 - Lazy-load `flutter_smooth_markdown` au premier écran qui le nécessite (lecture cours, correction IA, chat).
 - Compression photo Mode 1 : qualité WebP 80, max 200 KB avant upload.

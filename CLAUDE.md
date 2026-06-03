@@ -4,13 +4,14 @@
 
 ---
 
-## Contexte projet (en 5 lignes)
+## Contexte projet
 
 - **Valide School** : app Flutter bilingue FR/EN pour élèves du secondaire camerounais (BEPC, Probatoire, BAC, GCE O/A-Level).
 - **Ce dépôt = app mobile uniquement.** Le backend Cloud Functions, la console admin et la landing page vivent dans des dépôts séparés.
-- **Statut** : phase de documentation. Aucun code Flutter encore. MVP planifié sur 6 semaines (6 phases).
+- **Statut** : Foundation en cours (P0). MVP initialement planifié sur 6 semaines, **timeline ajustée à ~8-10 semaines** suite au scope cross-platform (cf. ADR-011).
 - **Méthode de pilotage** : BMAD v6.8.0 — voir [doc/tools/BMAD_METHOD_GUIDE.md](doc/tools/BMAD_METHOD_GUIDE.md).
 - **Contraintes marché non négociables** : téléphones modestes, data limitée et coûteuse, connectivité instable.
+- **Plateformes V1** : **Android (phone & tablet) + iOS (iPhone & iPad)**. Responsive natif Flutter, layouts adaptés à 3 form factors (phone portrait, phone landscape optionnel, tablet portrait/landscape). Pas de WebView wrapper.
 
 ---
 
@@ -21,6 +22,7 @@
 ├── mobile_app/             # ← Projet Flutter (toutes commandes flutter à lancer ici)
 │   ├── lib/                # code Dart (clean architecture : core/ + features/)
 │   ├── android/            # configuration Android (Gradle, manifests)
+│   ├── ios/                # configuration iOS (Xcode project, Info.plist, Podfile)
 │   ├── test/               # tests Flutter
 │   ├── pubspec.yaml        # dépendances Flutter
 │   └── analysis_options.yaml
@@ -37,9 +39,13 @@
 ```
 
 **Règle de localisation** :
-- Tout chemin commençant par `lib/`, `android/`, `pubspec.yaml`, `test/` dans la doc ou une story = relatif à `mobile_app/`.
+
+- Tout chemin commençant par `lib/`, `android/`, `ios/`, `pubspec.yaml`, `test/` dans la doc ou une story = relatif à `mobile_app/`.
 - Les configs Firebase (`firebase.json`, `.firebaserc`, `firestore.rules`, `firestore.indexes.json`, `storage.rules`) vivent au niveau **racine** du dépôt, pas dans `mobile_app/`. Justification : ces fichiers configurent le projet Firebase entier (Firestore, Storage, Functions, Hosting) et sont déployés via `firebase deploy` indépendamment du build Flutter. Le mobile consomme leurs effets (règles d'accès, indexes) mais ne les contient pas.
-- Les artefacts Firebase **spécifiques au client mobile** (`google-services.json`, `firebase_options.dart`) vivent dans `mobile_app/android/app/` et `mobile_app/lib/` respectivement.
+- Les artefacts Firebase **spécifiques au client mobile** vivent côté client :
+  - Android : `mobile_app/android/app/google-services.json`
+  - iOS : `mobile_app/ios/Runner/GoogleService-Info.plist`
+  - Dart : `mobile_app/lib/firebase_options.dart` (généré par FlutterFire CLI, contient les options des deux plateformes)
 
 ---
 
@@ -151,6 +157,16 @@ Et pour les modes (`Fast` / `Coaching`) :
 6. **flutter_smooth_markdown** : n'est importé que dans `core/widgets/pedagogical_content.dart`.
 7. **flutter_screenutil** : pas de pixels en dur dans les widgets, utiliser `.w` / `.h` / `.sp` / `.r`.
 8. **Models** : ne sortent jamais de `data/` — `toEntity()` à la frontière.
+
+### Cross-platform & responsive (V1 = Android + iOS, phone + tablet)
+
+1. **Pas de code plateforme-spécifique non isolé.** Tout `if (Platform.isAndroid)` ou `if (Platform.isIOS)` est confiné à `core/platform/*` (un wrapper par capability divergente : silent mode detection, haptic mapping, etc.). Les couches `domain` et `presentation` ne `import 'dart:io'` jamais.
+2. **Pas de package Android-only sans wrapper.** Avant d'ajouter une dépendance, vérifier qu'elle supporte iOS. Sinon : choisir une alternative cross-platform, ou wrapper avec fallback iOS dans `core/platform/`.
+3. **Pas de pixel hardcodé pour layouts responsives.** Au-delà de `flutter_screenutil` (échelle phone-référence 375×812), tout écran doit utiliser un `LayoutBuilder` ou `MediaQuery.sizeOf(context).width` pour adapter à 3 form factors : phone (< 600 dp), phone landscape (600-840 dp), tablet (≥ 840 dp).
+4. **Pas de design portrait-only sur tablette.** Tablette doit fonctionner en portrait ET paysage. Phone landscape est optionnel (peut être verrouillé portrait en V1 si stories le justifient).
+5. **Tester chaque écran sur 4 form factors** : Android phone (Pixel 4a), Android tablet (Pixel Tablet), iOS phone (iPhone 14), iOS tablet (iPad mini). Au minimum, un golden test par breakpoint.
+6. **Conventions iOS quand divergentes** : utiliser les widgets Material par défaut (l'app est Material visual sur les deux), mais respecter les comportements iOS attendus quand ils ne contredisent pas le design (swipe-back navigation iOS via `CupertinoPageRoute` autorisée si elle améliore l'UX).
+7. **Assets audio en AAC/M4A** (pas OGG — non supporté nativement iOS).
 
 ### Sécurité
 
@@ -272,6 +288,10 @@ Liste minimale à garder en tête tant que ces décisions ne sont pas prises (cf
 - **Statut agents Bob / Barry en v6.8.0** : à vérifier avec `/bmad-help` après install.
 - **Liste exacte de matières par série** dans `DONNEES-REFERENCE.md` : 🟡 / 🔴, à valider par un enseignant camerounais.
 - **Version exacte Flutter / Dart** : non figée, à aligner au démarrage.
+- **Bundle ID iOS** : `com.valideStartup.valideSchool` (aligné avec applicationId Android) — à confirmer dans Story 0.4bis.
+- **Min iOS version** : iOS 13.0 proposé (couvre 95%+ du marché). À figer en Story 0.4bis.
+- **Min Android SDK** : actuellement 21 (Android 5.0, défaut Flutter). À confirmer.
+- **Détection mode silencieux iOS** : pas d'API publique sur iOS (Apple ne l'expose pas) — fallback obligatoire sur setting Profil utilisateur. Documenté en Story 0.14.
 
 Quand l'utilisateur prend une décision sur l'un de ces points, **mets-la à jour dans le bon document** dans la même conversation (CONTRIBUTING.md, ou doc/partage/, ou ADR).
 

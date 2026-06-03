@@ -13,7 +13,7 @@ sourceArtifacts:
   - doc/tech/Valide School Package Architecture.md
   - doc/partage/BASE-DE-DONNEES.md
   - ADRs/ADR-001 à ADR-010
-storyCount: 21
+storyCount: 22  # +Story 0.4bis ajoutee 2026-06-04 (ADR-011)
 ---
 
 # Epic 0 — Foundation & Bootstrap
@@ -32,44 +32,45 @@ Mettre en place la base technique sans laquelle aucun epic métier (E1-E6) ne pe
 - ❌ Paywall, paiement, agrégateur MoMo en prod → **E4** (l'évaluation des agrégateurs est en E0 = Story 0.18)
 - ❌ Santé scolaire, points, classements → **E5**
 - ❌ Mode 3, Mode Examen, Chat IA, Partage → **E6**
-- ❌ iOS build (V1 = Android-only)
+- ~~❌ iOS build (V1 = Android-only)~~ → **MAJ 2026-06-04 (ADR-011)** : iOS phone + iPad inclus en V1. Bootstrap iOS = Story 0.4bis ; Firebase iOS = Story 0.6 ; build CI iOS = Story 0.17 ; release TestFlight = Story 0.21.
 - ❌ Mode sombre (V1 = clair seulement)
 - ❌ Migration Firestore depuis legacy (greenfield)
+- ⚠️ **Layouts responsive tablette** : in scope V1 mais minimal en E0. Les composants atomiques (Story 0.13) et la sentinelle E0 (Story 0.21) doivent rendre correctement sur tablette ; les écrans métier riches (split-view, NavigationRail, etc.) sont implémentés au fur et à mesure dans E1-E6.
 
 ## Dependency graph
 
-```
-                    ┌─── 0.1 Bootstrap projet Flutter
-                    │       │
-                    │       ▼
-                    │  0.2 Setup architecture (Riverpod + go_router)
-                    │       │
-            ┌───────┼───────┼───────┬────────────┬────────┐
-            ▼       ▼       ▼       ▼            ▼        ▼
-       0.3 Logger  0.4 Either  0.5 Dio   0.6 Firebase  0.10 Theme  0.16 i18n
-                              retry      Android       tokens
-                                          │             │
-                                          ▼             ▼
-                                       0.7 Cache    0.11 Fonts
-                                       offline          │
-                                          │             ▼
-                                          ▼          0.12 ScreenUtil
-                                       0.8 App Check    │
-                                          │             ▼
-                                          ▼          0.13 Composants atomiques
-                                       0.9 Règles      │
-                                       Firestore       ▼
-                                          │         0.14 Composants feedback
-                                          │             │
-                                          │             ▼
-                                          │         0.15 PedagogicalContent
-                                          │             │
-                                          └─────┬───────┘
-                                                ▼
-                                          0.21 Smoke test sentinelle
+```text
+                  ┌─── 0.1 Bootstrap projet Flutter (Android)
+                  │       │
+                  │       ▼
+                  │  0.2 Setup architecture (Riverpod + go_router)
+                  │       │
+          ┌───────┼───────┼───────┬────────────┬────────┐
+          ▼       ▼       ▼       ▼            ▼        ▼
+     0.3 Logger  0.4 Either  0.5 Dio   0.6 Firebase  0.10 Theme  0.16 i18n
+                  │           retry    Android+iOS    tokens
+                  ▼                       │              │
+              0.4bis Bootstrap iOS        ▼              ▼
+              (requis pour 0.6)        0.7 Cache    0.11 Fonts
+                                      offline           │
+                                         │              ▼
+                                         ▼          0.12 ScreenUtil + Responsive
+                                      0.8 App Check    │
+                                         │              ▼
+                                         ▼          0.13 Composants atomiques
+                                      0.9 Règles       │
+                                      Firestore        ▼
+                                         │          0.14 Composants feedback + audio/haptic
+                                         │              │
+                                         │              ▼
+                                         │          0.15 PedagogicalContent
+                                         │              │
+                                         └─────┬────────┘
+                                               ▼
+                                         0.21 Smoke test sentinelle (Android + iOS)
 
   Parallèle CI/CD et risques (peut démarrer dès 0.1) :
-    0.17 CI/CD GitHub Actions
+    0.17 CI/CD GitHub Actions (Android + iOS, runner macOS)
     0.18 Risk R1 — Évaluation agrégateurs MoMo (J1 mandatory)
     0.19 Risk R2 — Tests précoces flutter_smooth_markdown
     0.20 Risk R3 — Benchmark latence europe-west1
@@ -306,6 +307,91 @@ Hiérarchie minimale : `Failure` (sealed) → `NetworkFailure`, `AuthFailure`, `
 
 ---
 
+### Story 0.4bis : Bootstrap iOS + squelette responsive
+
+> **AJOUTÉE 2026-06-04 (ADR-011)** suite au scope cross-platform.
+
+**Statut** : Draft
+**Sprint** : P0 (semaine 0-1)
+**Dépendances** : Story 0.4 (failure types prêts, code de base stable)
+**Estimation** : M (~4-5h, dont 1-2h de signing Apple + 1h Xcode)
+**Risque** : Demande Mac local ou cloud + compte Apple Developer actif.
+
+**As a** tech lead Flutter,
+**I want** le squelette iOS généré pour le projet existant (`flutter create -t app --platforms=ios .`), un Bundle ID stable, un build iOS debug qui démarre, et une vérification que le code Stories 0.1-0.3 fonctionne sur iOS sans modification,
+**so that** les Stories 0.5+ puissent dépendre d'une cible iOS opérationnelle et que Story 0.6 (Firebase Android + iOS) puisse démarrer.
+
+#### Contexte technique
+
+Story 0.1 a été faite avec `flutter create --platforms=android` — il n'y a pas de dossier `mobile_app/ios/`. Cette story le génère, vérifie que le code Dart existant (`main.dart`, `app.dart`, `core/logging/`, `core/error/`, `core/di/`, `core/routing/`, `features/hello/`) fonctionne sur simulateur iOS, et fige les conventions (Bundle ID, min iOS, capabilities, Podfile platform).
+
+**Bundle ID** : `com.valideStartup.valideSchool` (aligné avec applicationId Android).
+**Min iOS** : 13.0 (couvre 95 %+ du parc, supporté par Firebase iOS SDK).
+
+#### Acceptance Criteria
+
+**AC1 — Squelette iOS généré**
+**Given** `mobile_app/` actuel (sans dossier `ios/`)
+**When** on exécute `flutter create -t app --platforms=ios --org com.valideStartup --project-name valide_school .` à la racine de `mobile_app/`
+**Then** un dossier `mobile_app/ios/` est créé avec `Runner.xcodeproj`, `Runner/`, `Podfile`, `Flutter/`
+**And** aucun fichier existant n'est écrasé (vérifier `lib/`, `test/`, `pubspec.yaml`, `android/` intacts)
+
+**AC2 — Bundle ID et min iOS figés**
+**Given** `ios/Runner.xcodeproj/project.pbxproj`
+**When** on l'ouvre
+**Then** `PRODUCT_BUNDLE_IDENTIFIER = com.valideStartup.valideSchool` pour les configurations Debug, Release, Profile
+**And** `ios/Podfile` contient `platform :ios, '13.0'`
+**And** `ios/Runner/Info.plist` : `CFBundleDisplayName = Valide School`
+
+**AC3 — Pods installés**
+**Given** `mobile_app/ios/`
+**When** on exécute `pod install` (Mac requis)
+**Then** la commande réussit sans erreur
+**And** `Podfile.lock` est généré
+**And** `ios/Pods/` est créé (ignoré par `.gitignore` — ne pas committer le dossier mais committer `Podfile.lock`)
+
+**AC4 — Build iOS debug réussit**
+**Given** un simulateur iOS lancé (iPhone SE 2020 minimum)
+**When** on exécute `flutter build ios --debug --no-codesign` puis `flutter run -d <ios-sim>`
+**Then** l'app se lance et affiche la page `/hello` avec « Hello Valide » (cf. comportement Story 0.2)
+**And** aucun crash au démarrage
+**And** les tests existants `flutter test` restent verts (les widget tests n'utilisent pas la plateforme native, donc ils doivent rester verts)
+
+**AC5 — Audit code existant cross-platform**
+**Given** les fichiers Dart livrés Stories 0.1-0.4
+**When** on grep `dart:io`, `Platform.is`, `import 'package:flutter/cupertino.dart'`
+**Then** **aucun usage** n'est trouvé hors du futur `lib/core/platform/` (qui n'existe pas encore — donc 0 résultat attendu)
+**And** AppLogger, Failure, Either fonctionnent identiquement sur iOS (logs visibles dans Xcode console)
+
+**AC6 — `.gitignore` iOS**
+**Given** `.gitignore` racine ou `mobile_app/.gitignore`
+**When** on inspecte les patterns
+**Then** sont ignorés : `mobile_app/ios/Pods/`, `mobile_app/ios/.symlinks/`, `mobile_app/ios/Flutter/Flutter.framework/`, `mobile_app/ios/Flutter/Flutter.podspec`, `mobile_app/ios/Runner/GoogleService-Info.plist` (anticipation Story 0.6), `**/*.xcuserdata/`
+**And** sont committés : `Podfile`, `Podfile.lock`, `Runner.xcodeproj/`, `Runner.xcworkspace/`, `Info.plist`
+
+#### Definition of Done
+
+- [ ] `flutter build ios --debug --no-codesign` réussit
+- [ ] `flutter run -d <ios-sim>` lance l'app avec la page Hello
+- [ ] Tests `flutter test` restent verts (5+ tests)
+- [ ] `Podfile.lock` committé
+- [ ] `.gitignore` mis à jour
+- [ ] CLAUDE.md § Points ouverts : confirme Bundle ID + min iOS (ou mets à jour)
+- [ ] PR ≤ 300 lignes diff (le gros vient du squelette `ios/` généré automatiquement, qui peut représenter 200-300 lignes mais c'est du boilerplate Xcode)
+- [ ] Commit `feat(core): bootstrap squelette iOS et verification cross-platform`
+
+#### Notes pour Amelia
+
+- **Mac requis**. Si pas de Mac local, utiliser un service de cloud Mac (MacInCloud, MacStadium) pour cette story.
+- Le `flutter create -t app --platforms=ios .` peut écraser certains fichiers du dossier racine `mobile_app/` (ex. README) — utiliser un répertoire temporaire si nécessaire et copier seulement `ios/` à la fin.
+- **Pas de Firebase ici** — Story 0.6 s'en occupe. Cette story livre juste un squelette iOS propre.
+- **Pas de signing release** — `--no-codesign` est OK pour debug. Le signing release sera traité en Story 0.17 (CI macOS).
+- **Capabilities Xcode** : ne pas activer Push Notifications / Background Modes ici — sera fait en Story 0.6.
+- **Tester rapide** : ouvrir `ios/Runner.xcworkspace` dans Xcode pour vérifier que le projet est lisible (pas obligatoire si la CLI build passe).
+- Cette story ne livre **aucun changement Dart** — uniquement du squelette iOS + audit.
+
+---
+
 ### Story 0.5 : Setup Dio + retry + connectivity_plus
 
 **Statut** : Draft
@@ -363,44 +449,47 @@ Marché cible = connectivité fluctuante (cf. SPEC). Pattern retry Dio : 3 tenta
 
 ---
 
-### Story 0.6 : Setup Firebase Android (Auth, Firestore, Storage, Functions, FCM, Crashlytics, Analytics, Remote Config, App Check)
+### Story 0.6 : Setup Firebase Android + iOS (Auth, Firestore, Storage, Functions, FCM, Crashlytics, Analytics, Remote Config, App Check)
 
 **Statut** : Draft
-**Sprint** : P0 (semaine 0)
-**Dépendances** : Story 0.2
-**Estimation** : L (~8h, dont 4h admin Firebase Console)
-**Risque** : Demande accès Firebase Console et création du projet par l'admin.
+**Sprint** : P0 (semaine 0-1)
+**Dépendances** : Story 0.2, Story 0.4bis (bootstrap iOS)
+**Estimation** : L+ (~10-12h, dont 5h admin Firebase Console pour 2 plateformes + signing iOS)
+**Risque** : Demande accès Firebase Console + compte Apple Developer (certificats, Bundle ID provisionning).
 
 **As a** tech lead,
-**I want** Firebase intégré côté Android avec tous les modules nécessaires initialisés en lazy-load au plus près de leur usage,
-**so that** les epics suivants puissent consommer Auth/Firestore/Functions/FCM sans setup supplémentaire et que NFR-3 (lazy-load) soit respectée.
+**I want** Firebase intégré sur Android **et iOS** avec tous les modules nécessaires initialisés en lazy-load au plus près de leur usage,
+**so that** les epics suivants puissent consommer Auth/Firestore/Functions/FCM sur les deux plateformes sans setup supplémentaire et que NFR-3 (lazy-load) + NFR-16 (cross-platform) soient respectées.
 
 #### Contexte technique
 
-ADR-003 acte Firebase comme backend complet. Cette story configure Android uniquement (V1 Android-only, cf. Out of scope ci-dessus). FlutterFire CLI est utilisé pour générer `firebase_options.dart`. La région cible Cloud Functions est `europe-west1` (à confirmer après Story 0.20 R3). L'initialisation Crashlytics est faite au `main()` ; les autres modules sont init lazy (Auth quand l'écran login s'ouvre, Firestore quand premier provider Firestore est lu, etc.).
+ADR-003 acte Firebase comme backend complet. ADR-011 (2026-06-04) acte le scope cross-platform V1. Cette story configure **Android ET iOS** dans le même projet Firebase. FlutterFire CLI est utilisé pour générer `firebase_options.dart` avec les deux plateformes. La région cible Cloud Functions est `europe-west1` (à confirmer après Story 0.20 R3). L'initialisation Crashlytics est faite au `main()` ; les autres modules sont init lazy (Auth quand l'écran login s'ouvre, Firestore quand premier provider Firestore est lu, etc.).
 
-App Check est ajouté ici mais activé en mode debug provider seulement (Story 0.8 activera `enforceAppCheck: true`).
+App Check est ajouté ici mais activé en mode debug provider seulement (Story 0.8 activera `enforceAppCheck: true`). Côté iOS, App Check utilise **DeviceCheck** (debug : `AppCheck.debugProvider`).
 
 #### Acceptance Criteria
 
-**AC1 — Projet Firebase créé**
+**AC1 — Projet Firebase créé avec les 2 plateformes**
 **Given** la Firebase Console
 **When** un projet `valide-school-mvp` est créé en plan Blaze (pay-as-you-go)
-**Then** Auth (Email + Google + Apple stub), Firestore (Native mode, `europe-west1`), Storage (`europe-west1`), Cloud Functions (`europe-west1`), FCM, Crashlytics, Analytics (consentement à gérer plus tard), Remote Config, App Check sont activés
-**And** `google-services.json` est téléchargé et placé dans `android/app/`
+**Then** Auth (Email + Google + Apple), Firestore (Native mode, `europe-west1`), Storage (`europe-west1`), Cloud Functions (`europe-west1`), FCM, Crashlytics, Analytics (consentement à gérer plus tard), Remote Config, App Check (DeviceCheck iOS + Play Integrity Android) sont activés
+**And** une **app Android** est ajoutée avec package `com.valideStartup.valideSchool` → `google-services.json` téléchargé et placé dans `mobile_app/android/app/`
+**And** une **app iOS** est ajoutée avec Bundle ID `com.valideStartup.valideSchool` → `GoogleService-Info.plist` téléchargé et placé dans `mobile_app/ios/Runner/`
 
-**AC2 — FlutterFire CLI configuré**
-**Given** `flutterfire configure --project=valide-school-mvp --platforms=android` est exécuté
+**AC2 — FlutterFire CLI configuré pour les 2 plateformes**
+**Given** `flutterfire configure --project=valide-school-mvp --platforms=android,ios` est exécuté
 **When** la commande termine
-**Then** `lib/firebase_options.dart` est généré
-**And** `android/app/build.gradle` est patché avec `google-services` plugin
+**Then** `lib/firebase_options.dart` est généré avec `DefaultFirebaseOptions.android` ET `DefaultFirebaseOptions.ios`
+**And** `android/app/build.gradle.kts` est patché avec `google-services` plugin
+**And** `ios/Runner.xcworkspace` ouvre dans Xcode sans erreur et `pod install` réussit (CocoaPods configuré dans `ios/Podfile`)
 
-**AC3 — Initialisation au démarrage**
+**AC3 — Initialisation au démarrage (les 2 plateformes)**
 **Given** `main.dart`
 **When** l'app démarre
-**Then** `await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)` est appelé avant `runApp`
+**Then** `await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform)` est appelé avant `runApp` — `currentPlatform` sélectionne automatiquement Android ou iOS
 **And** `FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(!kDebugMode)` est appelé
 **And** `FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError`
+**And** l'app build et lance sans erreur sur un émulateur Android **ET** un simulateur iOS
 
 **AC4 — Lazy-load des autres modules**
 **Given** la règle NFR-3
@@ -408,24 +497,36 @@ App Check est ajouté ici mais activé en mode debug provider seulement (Story 0
 **Then** Auth, Firestore, Storage, Functions, FCM, Remote Config NE sont PAS importés dans `main.dart`
 **And** chacun est consommé via un provider Riverpod lazy (créé à la 1ère lecture)
 
-**AC5 — Crashlytics testé**
-**Given** une route debug `/crash` (à supprimer après test)
+**AC5 — Crashlytics testé sur les 2 plateformes**
+**Given** une route debug `/_crash` (à supprimer après test)
 **When** on tape sur un bouton qui fait `throw Exception('crash test')`
-**Then** un crash apparaît dans Crashlytics Console dans les 5 minutes
+**Then** un crash apparaît dans Crashlytics Console dans les 5 minutes **pour les builds Android et iOS** (vérifier le filtre par plateforme dans la Console)
 **And** le crash est marqué `non-fatal: false`
 
 #### Definition of Done
 
-- [ ] Aucun secret (clé API, projet ID) dans le commit (uniquement dans `google-services.json` qui est dans `.gitignore` ? **NON** — il est checked-in normalement, contient des identifiants publics ; vérifier la politique exacte du projet via CLAUDE.md / `.gitignore` — il y est dans la `.gitignore` actuelle, donc utilise CI secret).
-- [ ] Commit `feat(core): integration Firebase Android avec lazy-load des modules`
+- [ ] `google-services.json` ET `GoogleService-Info.plist` placés (en CI : restitués depuis secrets GitHub Actions encodés base64)
+- [ ] Aucun secret dans le commit ; les deux fichiers sont dans `.gitignore`
+- [ ] `lib/firebase_options.dart` généré et committé (les valeurs sont des identifiants publics, OK)
+- [ ] Build Android `flutter build apk --debug` réussit
+- [ ] Build iOS `flutter build ios --debug --no-codesign` réussit
+- [ ] App lance sur émulateur Android ET simulateur iOS (cf. AC3)
+- [ ] Crashlytics console montre un crash test sur les 2 plateformes (cf. AC5)
+- [ ] Commit `feat(core): integration Firebase Android et iOS avec lazy-load des modules`
 - [ ] `flutter pub get` réussit avec FlutterFire packages aux versions du `firebase_options.dart`
 
 #### Notes pour Amelia
 
-- **CRITIQUE** : `google-services.json` est dans `.gitignore` — utilise un secret GitHub Actions pour le restaurer en CI. Documente la procédure dans `doc/tools/CONTRIBUTING.md`.
+- **CRITIQUE** : `google-services.json` ET `GoogleService-Info.plist` sont dans `.gitignore`. Utiliser des secrets GitHub Actions `GOOGLE_SERVICES_JSON_BASE64` et `GOOGLE_SERVICE_INFO_PLIST_BASE64` pour les restituer en CI. Documenter la procédure dans `doc/tools/CONTRIBUTING.md` (Story 0.17 CI/CD).
 - Si `kDebugMode == true`, Crashlytics doit être OFF (sinon spam de crashes de dev).
 - Ne fais PAS `await` sur les autres init Firebase au `main()` — vraiment lazy.
-- iOS sera fait dans une story ultérieure (V1 = Android only) mais prépare la structure (ne pas hardcoder Android partout).
+- **iOS spécifiques** :
+  - Min iOS 13.0 dans `ios/Podfile` (`platform :ios, '13.0'`).
+  - Bundle ID `com.valideStartup.valideSchool` à figer dans `ios/Runner.xcodeproj/project.pbxproj`.
+  - Capabilities Xcode à activer : Push Notifications (pour FCM), Background Modes (background fetch + remote notification).
+  - `Info.plist` : `NSCameraUsageDescription` (pour Mode 1 photo, même si la story Mode 1 vient plus tard — anticiper le wording FR/EN), `NSUserTrackingUsageDescription` si Analytics IDFA utilisé (à vérifier).
+  - Provisioning : utiliser un certificat développeur Apple pour le build debug ; le release sera couvert par Story 0.17 (CI macOS).
+- **Hook AppLogger.e() → Crashlytics** : ajouter dans `app_logger.dart` un forward optionnel vers `FirebaseCrashlytics.instance.recordError()` quand le service est disponible (initialisé). Cette story est le moment où on branche ce forward (TODO laissé en Story 0.3 mentionnant cette story).
 
 ---
 
@@ -726,20 +827,28 @@ Solution : télécharger les TTF/OTF depuis Google Fonts (CC0 ou OFL), les place
 
 ---
 
-### Story 0.12 : Setup `flutter_screenutil`
+### Story 0.12 : Setup `flutter_screenutil` + helper responsive 3 form factors
 
 **Statut** : Draft
 **Sprint** : P0 (semaine 1)
 **Dépendances** : Story 0.2, Story 0.10
-**Estimation** : S (~2-3h)
+**Estimation** : M (~4h — +helper breakpoints et tests responsive vs S initial)
 
 **As a** dev Flutter,
-**I want** `flutter_screenutil` wrappé autour de `MaterialApp.router` avec design size 375×812 et un lint qui interdit les pixels en dur,
-**so that** l'UX rende correctement sur les 4 breakpoints cibles (360/393/412/480dp) sans rework futur.
+**I want** `flutter_screenutil` wrappé autour de `MaterialApp.router` avec design size 375×812, **plus un helper `Responsive` qui expose les 3 form factors (phone/phone-landscape/tablet)**,
+**so that** l'UX rende correctement sur phone, phone-landscape et tablette (Android et iOS) sans rework futur.
 
 #### Contexte technique
 
-Règle CLAUDE.md § Architecture mobile 7 : pas de pixels en dur, utiliser `.w`/`.h`/`.sp`/`.r`. Design size de référence : 375×812 (cf. Mobile Package Architecture § 9). Le wrapping doit être : `ProviderScope > ScreenUtilInit > MaterialApp.router`.
+Règle CLAUDE.md § Architecture mobile 7 : pas de pixels en dur, utiliser `.w`/`.h`/`.sp`/`.r`. Design size de référence : 375×812 (cf. Mobile Package Architecture § 9 — c'est la taille d'iPhone 14, valide aussi pour Android entry phone).
+
+**Breakpoints responsive** (cf. EXPERIENCE.md § Responsive & Platform) :
+
+- `phone` : largeur < 600 dp
+- `phoneLandscape` : 600-840 dp (couvre aussi small tablet portrait)
+- `tablet` : ≥ 840 dp
+
+Le wrapping doit être : `ProviderScope > ScreenUtilInit > MaterialApp.router`. `flutter_screenutil` gère l'échelle relative à 375×812 — **pour les layouts multi-colonnes**, on s'appuie sur `LayoutBuilder` ou `MediaQuery.sizeOf(context).width` (`Responsive` helper l'encapsule).
 
 #### Acceptance Criteria
 
@@ -767,16 +876,32 @@ Règle CLAUDE.md § Architecture mobile 7 : pas de pixels en dur, utiliser `.w`/
 **When** on utilise `AppSpacing.s4.w` dans un widget
 **Then** cela compile et rend la bonne valeur sur 375dp
 
+**AC5 — Helper `Responsive` 3 form factors**
+**Given** `lib/core/responsive/responsive.dart`
+**When** on appelle `Responsive.of(context).formFactor`
+**Then** il retourne `FormFactor.phone` (< 600 dp), `FormFactor.phoneLandscape` (600-840 dp) ou `FormFactor.tablet` (≥ 840 dp)
+**And** un widget `Responsive.builder(builder: (context, formFactor) => ...)` est exposé pour les cas de layout adaptatifs
+**And** un test widget vérifie le bon classement sur 3 tailles d'écran simulées (375×812, 768×1024, 1024×1366)
+
+**AC6 — Page Hello adaptée aux 3 form factors**
+**Given** la page `/hello` actuelle
+**When** on la rend sur phone et sur tablet
+**Then** le texte « Hello Valide » reste centré, taille `AppTypography.h1.sp` adaptée, max-width 600 dp sur tablet (pas étalé)
+**And** ce comportement est testé avec un golden test simple sur 2 tailles
+
 #### Definition of Done
 
-- [ ] PR ≤ 200 lignes diff
-- [ ] Commit `feat(theme): flutter_screenutil avec design 375x812`
+- [ ] PR ≤ 300 lignes diff (légèrement plus grosse à cause du helper Responsive + tests)
+- [ ] Tests : AC2 widget + AC5 unitaires + AC6 golden basique
+- [ ] Commit `feat(theme): flutter_screenutil et helper Responsive 3 form factors`
 
 #### Notes pour Amelia
 
 - Si lint custom trop complexe : fallback grep CI Story 0.17.
 - `.sp` pour fontSize avec floor pour éviter rendu blurry sur petits écrans.
-- N'utilise PAS `MediaQuery` directement (sauf cas particulier safe area) — passe par `ScreenUtil`.
+- N'utilise PAS `MediaQuery` directement (sauf cas particulier safe area) — passe par `ScreenUtil` pour l'échelle, par `Responsive` pour le form factor.
+- Le helper `Responsive` n'est PAS un `InheritedWidget` lourd — il utilise simplement `MediaQuery.sizeOf(context)` en interne. Pas de provider Riverpod ici.
+- Pour le golden test : utiliser `goldenFileTester` avec `flutter test --update-goldens` la première fois. Si les goldens deviennent un blocker en revue (différences CI vs local), accepter de les mettre derrière un tag `@Tags(['golden'])` et de les exécuter optionnellement.
 
 ---
 
@@ -1095,57 +1220,81 @@ NFR-14 + UX-DR-31. Le projet est strictement bilingue FR/EN. Locale par défaut 
 
 ---
 
-### Story 0.17 : Setup CI/CD GitHub Actions
+### Story 0.17 : Setup CI/CD GitHub Actions (Android + iOS)
 
 **Statut** : Draft
-**Sprint** : P0 (semaine 1)
-**Dépendances** : Story 0.1 (peut démarrer dès 0.1 même si finalisation après 0.6)
-**Estimation** : M (~5h)
+**Sprint** : P0 (semaine 1-2)
+**Dépendances** : Story 0.1 (PR build Android peut démarrer dès 0.1 ; iOS et release après 0.6)
+**Estimation** : L (~8h — +runner macOS, signing iOS, TestFlight upload vs M initial)
 
 **As a** tech lead,
-**I want** un workflow GitHub Actions qui build APK + AAB, exécute `flutter analyze` et `flutter test`, et upload les symbols Crashlytics sur push de tag,
-**so that** chaque PR ait un feedback automatisé et que les release builds soient reproductibles.
+**I want** un workflow GitHub Actions qui build APK + AAB (Android) + IPA (iOS), exécute `flutter analyze` et `flutter test`, upload symbols Crashlytics et release sur Play Internal + TestFlight,
+**so that** chaque PR ait un feedback automatisé sur les 2 plateformes et que les release builds soient reproductibles.
 
 #### Contexte technique
 
-CLAUDE.md § Workflow Git : PR ≤ 400 lignes, conventional commits, pas de `--no-verify`. Le workflow doit refléter ces règles : check format, analyze, test, build.
+CLAUDE.md § Workflow Git : PR ≤ 400 lignes, conventional commits, pas de `--no-verify`. Le workflow doit refléter ces règles : check format, analyze, test, build sur les 2 plateformes.
 
-Secrets nécessaires (à provisionner dans GitHub repo settings) :
-- `GOOGLE_SERVICES_JSON_BASE64` — pour restituer `android/app/google-services.json`
-- `ANDROID_KEYSTORE_BASE64` + `ANDROID_KEYSTORE_PASSWORD` + alias + key password (release seulement)
-- `FIREBASE_TOKEN` (pour Crashlytics symbols upload)
+**Secrets nécessaires** (à provisionner dans GitHub repo settings) :
+
+- **Android**
+  - `GOOGLE_SERVICES_JSON_BASE64` — pour restituer `mobile_app/android/app/google-services.json`
+  - `ANDROID_KEYSTORE_BASE64` + `ANDROID_KEYSTORE_PASSWORD` + `ANDROID_KEY_ALIAS` + `ANDROID_KEY_PASSWORD` (release seulement)
+  - `GOOGLE_PLAY_SERVICE_ACCOUNT_JSON` (upload Play Internal)
+- **iOS**
+  - `GOOGLE_SERVICE_INFO_PLIST_BASE64` — pour restituer `mobile_app/ios/Runner/GoogleService-Info.plist`
+  - `APPLE_DEVELOPER_CERTIFICATE_P12_BASE64` + `APPLE_DEVELOPER_CERTIFICATE_PASSWORD`
+  - `APPLE_PROVISIONING_PROFILE_BASE64`
+  - `APPLE_API_KEY_ID` + `APPLE_API_ISSUER_ID` + `APPLE_API_PRIVATE_KEY` (App Store Connect API pour upload TestFlight)
+- **Cross**
+  - `FIREBASE_TOKEN` (pour Crashlytics symbols upload Android + iOS)
 
 #### Acceptance Criteria
 
-**AC1 — Workflow PR build**
-**Given** `.github/workflows/pr.yml`
+**AC1 — Workflow PR build Android**
+**Given** `.github/workflows/pr-android.yml`
 **When** un PR est ouvert
-**Then** le job exécute (dans cet ordre) : checkout, setup Flutter, `flutter pub get`, `dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `flutter build apk --debug`
+**Then** un job sur runner `ubuntu-latest` exécute (dans cet ordre) : checkout, setup Flutter, `flutter pub get`, `dart format --output=none --set-exit-if-changed .`, `flutter analyze`, `flutter test`, `flutter build apk --debug`
 **And** le run échoue si une étape échoue
 
-**AC2 — Workflow release tag**
-**Given** un push tag `v0.1.0-internal`
-**When** le workflow `release.yml` se déclenche
-**Then** il build `flutter build appbundle --release` + signe avec keystore stocké en secret, puis upload aux Play Internal Track via Fastlane ou Google Play API
-**And** upload Crashlytics dSYM/symbols via `firebase crashlytics:symbols:upload`
+**AC2 — Workflow PR build iOS**
+**Given** `.github/workflows/pr-ios.yml`
+**When** un PR est ouvert
+**Then** un job sur runner `macos-latest` exécute : checkout, setup Flutter, `flutter pub get`, `cd mobile_app/ios && pod install`, `flutter build ios --debug --no-codesign`
+**And** le run échoue si une étape échoue
+**And** le workflow utilise des conditions pour skip ce job si seuls des fichiers `android/` ou `doc/` ont changé (économie temps runner macOS qui est facturé 10× plus cher qu'Ubuntu)
 
-**AC3 — Lint custom imports interdits**
+**AC3 — Workflow release tag Android**
+**Given** un push tag `v0.1.0-internal`
+**When** le workflow `release-android.yml` se déclenche
+**Then** il build `flutter build appbundle --release` + signe avec keystore stocké en secret, puis upload au Play Internal Track via Fastlane ou Google Play API
+**And** upload Crashlytics symbols Android via `firebase crashlytics:symbols:upload --android-app-id=...`
+
+**AC4 — Workflow release tag iOS**
+**Given** le même push tag `v0.1.0-internal`
+**When** le workflow `release-ios.yml` se déclenche (runner macOS)
+**Then** il build `flutter build ipa --release --export-options-plist=...`, signe avec le certificat + provisioning profile en secret, puis upload à TestFlight via `xcrun altool` ou `fastlane pilot`
+**And** upload Crashlytics dSYM iOS via `firebase crashlytics:symbols:upload --ios-app-id=...`
+
+**AC5 — Lint custom imports interdits**
 **Given** le workflow PR
 **When** un fichier importe `package:logger/logger.dart` hors `lib/core/logging/` OU `package:flutter_smooth_markdown` hors `lib/core/widgets/pedagogical_content.dart`
 **Then** un step de grep CI échoue avec un message explicite
 
-**AC4 — Caching Flutter SDK + pub cache**
+**AC6 — Caching Flutter SDK + pub cache + Pods**
 **Given** runs successifs
 **When** on inspecte les durées
-**Then** le 2ème PR build prend < 3 min (cache SDK + pub cache hit)
-**And** le badge dans le README montre le statut du build
+**Then** le 2ème PR build Android prend < 3 min (cache SDK + pub cache hit), le 2ème PR build iOS prend < 8 min (cache SDK + pub cache + Pods hit — iOS builds restent plus lents)
+**And** le badge dans le README montre le statut des 2 workflows
 
 #### Definition of Done
 
 - [ ] Procédure secrets documentée dans `doc/tools/CONTRIBUTING.md`
-- [ ] Badge ajouté au `README.md` racine
-- [ ] PR ≤ 300 lignes diff
-- [ ] Commit `chore(ci): GitHub Actions PR build et release tag`
+- [ ] Badges Android + iOS ajoutés au `README.md` racine
+- [ ] Premier run réussi sur les 2 plateformes
+- [ ] Budget temps runner macOS surveillé (GitHub donne 2000 min/mois gratuit pour repo privé ; macOS coûte 10× plus) — alerte à 80 % d'usage configurée si possible
+- [ ] PR ≤ 500 lignes diff (workflows iOS plus longs)
+- [ ] Commit `chore(ci): GitHub Actions PR build Android et iOS + release tag`
 
 #### Notes pour Amelia
 
@@ -1372,31 +1521,45 @@ C'est la **sentinelle E0** — le test d'intégration vivant qui valide que tout
 **Then** `throw Exception('E0 sentinel crash')` est levée
 **And** une exception apparaît dans Crashlytics Console < 5 min
 
-**AC4 — Déploiement Play Internal**
+**AC4 — Déploiement Play Internal ET TestFlight**
 **Given** un push tag `v0.1.0-internal`
-**When** le workflow Story 0.17 release tourne
-**Then** un AAB est uploadé au Play Internal Track
-**And** au moins un testeur autorisé peut installer et lancer l'app sans crash
+**When** les workflows Story 0.17 release-android.yml + release-ios.yml tournent
+**Then** un AAB est uploadé au **Play Internal Track** (Android) ET un IPA est uploadé à **TestFlight** (iOS)
+**And** au moins un testeur autorisé peut installer et lancer l'app sans crash sur Android ET iOS
 
 **AC5 — Sentinelle régression dans CI**
 **Given** le workflow PR Story 0.17
-**When** un PR modifie un fichier critique (theme, router, AppLogger, PedagogicalContent)
-**Then** un test widget de la page `/hello` est exécuté
+**When** un PR modifie un fichier critique (theme, router, AppLogger, PedagogicalContent, Responsive)
+**Then** un test widget de la page `/hello` est exécuté sur 3 tailles d'écran simulées (phone 375×812, tablet 1024×1366, +1 supplémentaire)
 **And** ce test doit rester vert
+
+**AC6 — Rendu responsive vérifié manuellement**
+**Given** l'app lancée sur 4 cibles
+**When** on inspecte le rendu de `/hello`
+**Then** elle rend correctement sur :
+
+- Android phone (Pixel 4a émulateur)
+- Android tablet (Pixel Tablet émulateur ou device)
+- iOS phone (iPhone SE 2020 simulateur)
+- iOS tablet (iPad mini simulateur)
+
+**And** sur tablette, le contenu reste centré max 600 dp (pas étalé) — cf. Story 0.12 AC5/AC6.
 
 #### Definition of Done
 
-- [ ] Page rendue manuellement vérifiée (screenshot dans PR)
-- [ ] Tag `v0.1.0-internal` créé et déployé
-- [ ] Crash test validé
-- [ ] PR ≤ 200 lignes diff
-- [ ] Commit `feat(app): page Hello Valide bilingue sentinelle E0`
+- [ ] Page rendue manuellement vérifiée sur 4 cibles (screenshots dans PR)
+- [ ] Tag `v0.1.0-internal` créé
+- [ ] AAB uploadé Play Internal + IPA uploadé TestFlight
+- [ ] Crash test validé sur Android ET iOS (cf. AC3)
+- [ ] PR ≤ 250 lignes diff
+- [ ] Commit `feat(app): page Hello Valide bilingue responsive sentinelle E0`
 
 #### Notes pour Amelia
 
 - C'est la story de clôture E0 — si quelque chose ne marche pas ici, c'est une story amont à reprendre.
 - Garde `/hello` dans le code post-MVP, c'est une page de smoke test régression utile.
-- La route `/_crash` doit être supprimée dès Story 0.21 mergée + test Crashlytics OK.
+- La route `/_crash` doit être supprimée dès Story 0.21 mergée + test Crashlytics OK sur les 2 plateformes.
+- Pour les screenshots, utilise `flutter_screenshots` ou les outils Xcode/Android Studio. Ne checke PAS les screenshots dans le repo — uploade-les dans la PR.
 
 ---
 
