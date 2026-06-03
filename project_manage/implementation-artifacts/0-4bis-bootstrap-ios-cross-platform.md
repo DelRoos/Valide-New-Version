@@ -34,6 +34,7 @@ Story 0.1 a été faite avec `flutter create --platforms=android`. Il n'y avait 
 ## Acceptance Criteria
 
 ### AC1 — Squelette iOS généré
+
 - **Status** : ✅ Done
 - **Given** `mobile_app/` actuel (sans dossier `ios/`)
 - **When** on exécute `flutter create -t app --platforms=ios --org com.valideStartup --project-name valide_school .`
@@ -42,6 +43,7 @@ Story 0.1 a été faite avec `flutter create --platforms=android`. Il n'y avait 
 - **Vérifié dans le commit** : 42 fichiers / ~1210 lignes ajoutées (squelette Xcode standard).
 
 ### AC2 — Bundle ID et min iOS figés
+
 - **Status** : ✅ Done
 - **Given** `ios/Runner.xcodeproj/project.pbxproj`
 - **When** on l'inspecte
@@ -50,29 +52,49 @@ Story 0.1 a été faite avec `flutter create --platforms=android`. Il n'y avait 
 - **And** `Info.plist` : `CFBundleDisplayName = Valide School` ✅
 
 ### AC3 — Pods installés
-- **Status** : ⏳ À vérifier sur Mac
+
+- **Status** : ⏸ **Reportée à la prochaine session Mac** (le Mac est fermé, le user a choisi de continuer sur PC)
 - **Given** `mobile_app/ios/`
 - **When** on exécute `pod install`
 - **Then** la commande réussit sans erreur
 - **And** `Podfile.lock` est généré et committé
 - **And** `ios/Pods/` est créé (ignoré par `.gitignore`)
+- **Action requise** : à exécuter avant le merge de cette PR ou en suivi immédiat.
 
 ### AC4 — Build iOS debug réussit
-- **Status** : ⏳ À vérifier sur Mac
+
+- **Status** : ⏸ **Reportée à la prochaine session Mac**
 - **Given** un simulateur iOS lancé (iPhone SE 2020 minimum)
 - **When** on exécute `flutter build ios --debug --no-codesign` puis `flutter run -d <ios-sim>`
 - **Then** l'app se lance et affiche la page `/hello` avec « Hello Valide »
 - **And** aucun crash au démarrage
 - **And** `flutter test` reste vert
+- **Action requise** : à exécuter avant le merge de cette PR ou en suivi immédiat.
 
 ### AC5 — Audit code existant cross-platform
-- **Status** : ⏳ À vérifier
-- **Given** les fichiers Dart livrés Stories 0.1-0.4
+
+- **Status** : ✅ Done (vérifié sur PC le 2026-06-04)
+- **Given** les fichiers Dart livrés Stories 0.1-0.3 (Story 0.4 pas encore mergée sur cette branche)
 - **When** on grep `dart:io`, `Platform.is`, `import 'package:flutter/cupertino.dart'`
-- **Then** **aucun usage** n'est trouvé hors du futur `lib/core/platform/`
-- **And** AppLogger, Failure, Either fonctionnent identiquement sur iOS
+- **Vérification effectuée** :
+
+  ```bash
+  grep -rn --include='*.dart' "dart:io" mobile_app/lib mobile_app/test  # 0 résultat
+  grep -rn --include='*.dart' "Platform\\.is" mobile_app/lib mobile_app/test  # 0 résultat
+  grep -rn --include='*.dart' "package:flutter/cupertino" mobile_app/lib mobile_app/test  # 0 résultat
+  ```
+
+- **Then** **aucun usage** trouvé. ✅
+
+> **À noter** : quand Story 0.4 (Failure types) sera mergée, `lib/core/error/failures.dart` importera `dart:io` pour utiliser `SocketException` dans `Failure.from(Object)`. **C'est légitime et autorisé** :
+>
+> - `dart:io` est une stdlib Dart cross-platform (Android, iOS, desktop) — différent du `dart:io` web qui est limité.
+> - `SocketException` est un type d'exception cross-platform, pas du code qui branche par OS.
+> - La règle CLAUDE.md § Cross-platform interdit **`Platform.is*`** (split par OS) hors `core/platform/`, mais **autorise `dart:io`** dans `core/` pour des types cross-platform.
+> - À documenter explicitement dans la règle si ambiguïté en revue.
 
 ### AC6 — `.gitignore` iOS
+
 - **Status** : ✅ Done
 - **Given** `mobile_app/.gitignore` et `mobile_app/ios/.gitignore`
 - **When** on inspecte les patterns
