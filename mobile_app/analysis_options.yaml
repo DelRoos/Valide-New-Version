@@ -24,5 +24,18 @@ linter:
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule
     # prefer_single_quotes: true  # Uncomment to enable the `prefer_single_quotes` rule
 
+# RÈGLE NON-NÉGOCIABLE — Import unique de `package:logger`
+# ---------------------------------------------------------
+# `package:logger/logger.dart` ne doit être importé QUE dans
+# `lib/core/logging/app_logger.dart`. Tout autre fichier doit utiliser
+# `AppLogger` (voir CLAUDE.md § Architecture mobile 3).
+#
+# À ce stade, la règle n'est pas exprimée comme lint custom Dart.
+# Application :
+#   - revue de PR (humaine)
+#   - check CI grep (à introduire en Story 0.17 :
+#       `! grep -rn --include='*.dart' --exclude='app_logger.dart' \
+#          "package:logger/logger.dart" lib/`)
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
