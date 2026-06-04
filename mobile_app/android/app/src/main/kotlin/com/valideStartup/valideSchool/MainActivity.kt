@@ -1,4 +1,4 @@
-package com.valideStartup.valide_school
+package com.valideStartup.valideSchool
 
 import io.flutter.embedding.android.FlutterActivity
 
