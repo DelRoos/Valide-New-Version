@@ -1,60 +1,55 @@
 // =====================================================================
-// Tests des regles Firestore — collection _smoketest/{doc} (Story 0.9 AC3)
-// =====================================================================
-//
-// Cette collection est temporaire (Story 0.21 sentinelle E0). Le matching
-// `_smoketest/*` sera retire en fin E0 ou debut E1.
+// Tests d'integration des regles Firestore — _smoketest/{doc} (AC3)
+// Firebase direct (sans emulateur). Cf. test/rules/test-config.mjs.
 // =====================================================================
 
-import { describe, before, after, beforeEach, test } from 'node:test';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { dirname, resolve } from 'node:path';
-import {
-  initializeTestEnvironment,
-  assertSucceeds,
-  assertFails,
-} from '@firebase/rules-unit-testing';
+import { describe, after, test } from 'node:test';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const rulesPath = resolve(__dirname, '..', '..', 'firestore.rules');
+import {
+  testUid,
+  createAuthedClient,
+  createUnauthedClient,
+  cleanupRun,
+  assertSucceeds,
+  assertFails,
+} from './test-config.mjs';
 
-let testEnv;
+const eveUid = testUid('eve');
+const docId = testUid('launch');
 
 describe('Firestore rules — _smoketest/{doc}', () => {
-  before(async () => {
-    testEnv = await initializeTestEnvironment({
-      projectId: 'valide-edu-rules-test',
-      firestore: {
-        rules: readFileSync(rulesPath, 'utf8'),
-        host: '127.0.0.1',
-        port: 8080,
-      },
-    });
-  });
+  const cleanups = [];
 
   after(async () => {
-    await testEnv.cleanup();
+    for (const c of cleanups) {
+      try {
+        await c();
+      } catch (_) {
+        /* ignore */
+      }
+    }
+    await cleanupRun();
   });
 
-  beforeEach(async () => {
-    await testEnv.clearFirestore();
-  });
-
-  test('user auth ecrit puis lit _smoketest/launch → OK', async () => {
-    const eve = testEnv.authenticatedContext('eve').firestore();
+  test('user auth ecrit puis lit _smoketest/launch -> OK', async () => {
+    const { db, cleanup } = await createAuthedClient(eveUid);
+    cleanups.push(cleanup);
     await assertSucceeds(
-      setDoc(doc(eve, '_smoketest/launch'), { at: new Date(), source: 'rules-test' }),
+      setDoc(doc(db, '_smoketest', docId), {
+        at: new Date(),
+        source: 'rules-test',
+      }),
     );
-    await assertSucceeds(getDoc(doc(eve, '_smoketest/launch')));
+    await assertSucceeds(getDoc(doc(db, '_smoketest', docId)));
   });
 
-  test('user non auth → KO', async () => {
-    const anonymous = testEnv.unauthenticatedContext().firestore();
+  test('user non auth ecrit/lit _smoketest -> KO', async () => {
+    const { db, cleanup } = createUnauthedClient();
+    cleanups.push(cleanup);
     await assertFails(
-      setDoc(doc(anonymous, '_smoketest/launch'), { at: new Date() }),
+      setDoc(doc(db, '_smoketest', docId), { at: new Date() }),
     );
-    await assertFails(getDoc(doc(anonymous, '_smoketest/launch')));
+    await assertFails(getDoc(doc(db, '_smoketest', docId)));
   });
 });

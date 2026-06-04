@@ -1,7 +1,7 @@
 {
   "name": "valide-firestore-rules-tests",
-  "version": "1.0.0",
-  "description": "Tests unitaires des regles Firestore (Story 0.9). Demarre l'emulateur Firebase puis lance node --test.",
+  "version": "1.1.0",
+  "description": "Tests d'integration des regles Firestore directement sur le projet Firebase (sans emulateur). Cf. test/rules/README.md.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,7 +11,7 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@firebase/rules-unit-testing": "^4.0.1",
-    "firebase": "^11.0.0"
+    "firebase": "^11.0.0",
+    "firebase-admin": "^13.0.1"
   }
 }

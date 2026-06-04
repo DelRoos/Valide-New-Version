@@ -560,9 +560,11 @@ _bmad/_config/   # config locale spécifique utilisateur
 3. **Alerter** l'équipe sur `#incidents`.
 4. Nettoyer l'historique Git uniquement si pertinent (la rotation est prioritaire).
 
-### 11.5 Règles Firestore — deploy et tests locaux (Story 0.9)
+### 11.5 Règles Firestore — deploy et tests directs (Story 0.9)
 
 Les règles Firestore vivent à la **racine du dépôt** (`firestore.rules`, `firestore.indexes.json`, `firebase.json`, `.firebaserc`) car elles sont déployées via `firebase deploy` indépendamment du build Flutter.
+
+**Choix d'équipe** : on **n'utilise pas l'émulateur Firebase**. Les règles sont testées directement sur le projet Firebase `valide-edu` via Admin SDK + Web SDK (cf. [test/rules/README.md](../../test/rules/README.md)).
 
 **Déployer les règles** sur le projet Firebase :
 
@@ -573,29 +575,22 @@ firebase deploy --only firestore:rules --project=valide-edu
 **Tester les règles en local** (avant push) :
 
 ```bash
-# Terminal 1 — émulateur Firestore + Auth
-firebase emulators:start --only firestore,auth
-
-# Terminal 2 — tests unitaires des règles
+# 1. Service account JSON dans test/rules/service-account.json (gitignore)
+#    Console Firebase > Project Settings > Service accounts > Generate new private key
+# 2. Tests
 cd test/rules
 npm install   # première fois seulement
 npm test
 ```
 
-Ou en une seule commande depuis la racine :
-
-```bash
-firebase emulators:exec --only firestore,auth "cd test/rules && npm test"
-```
-
 **Quand ajouter / modifier une règle** :
 
 1. Modifier `firestore.rules` à la racine.
-2. Ajouter ou modifier les tests dans `test/rules/*.test.mjs`.
-3. Lancer `npm test` en local — tout doit passer.
-4. Mettre à jour `doc/partage/BASE-DE-DONNEES.md` § règles d'accès si le contrat change (et obtenir l'accord backend, cf. § 13).
-5. Commit + PR.
-6. Après merge, déployer manuellement avec `firebase deploy --only firestore:rules`.
+2. Déployer sur `valide-edu` (ou un projet de test) avec `firebase deploy --only firestore:rules`.
+3. Ajouter / modifier les tests dans `test/rules/*.test.mjs`.
+4. Lancer `npm test` — les tests tapent sur la version **déployée** des règles.
+5. Mettre à jour `doc/partage/BASE-DE-DONNEES.md` § règles d'accès si le contrat change (et obtenir l'accord backend, cf. § 13).
+6. Commit + PR.
 
 ---
 

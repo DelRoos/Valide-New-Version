@@ -66,8 +66,8 @@ Champs autoritaires (cf. `doc/partage/BASE-DE-DONNEES.md` § users/{uid}) :
 | AC1 — `firestore.rules` créé avec en-tête + `rules_version='2'` + default deny | Fichier présent racine, en-tête commenté liste ADR-003 + CLAUDE.md NFR-9 + doc/partage BASE-DE-DONNEES.md | ✅ |
 | AC2 — `users/{uid}` self-only + validation subSystem à la création | `allow read/create/update` conditionnés sur `isOwner(uid)` + `subSystem in ['francophone','anglophone']` | ✅ |
 | AC3 — `_smoketest/{doc}` auth-only + TODO retrait E0 | `allow read, write: if request.auth != null` + commentaire `// TODO: remove after E0 sentinel validated (Story 0.21)` | ✅ |
-| AC4 — Déploiement testé + commande documentée | `firebase deploy --only firestore:rules --project=valide-edu` documenté en `CONTRIBUTING.md § 11.5` (déploiement réel par porteur après merge) | 🟡 documenté, exécution porteur |
-| AC5 — 4 tests emulator passent | 6 tests `users.test.mjs` + 2 tests `smoketest.test.mjs` codés, exécutables après `cd test/rules && npm install` + `firebase emulators:start --only firestore,auth` | 🟡 codés, exécution demande Java JDK + emulator |
+| AC4 — Déploiement testé + commande documentée | `firebase deploy --only firestore:rules --project=valide-edu` exécuté 2026-06-04 : rules compiled successfully + released to cloud.firestore | ✅ |
+| AC5 — Tests emulator passent (converti en tests Firebase direct) | `cd test/rules && npm install && npm test` → **9/9 tests pass** contre règles déployées sur valide-edu (6 users + 2 smoketest + 1 import init) | ✅ |
 
 ## Definition of Done
 
@@ -78,16 +78,16 @@ Champs autoritaires (cf. `doc/partage/BASE-DE-DONNEES.md` § users/{uid}) :
 - [x] `doc/partage/BASE-DE-DONNEES.md` : lien `firestore.rules` + Historique 2026-06-04
 - [ ] PR ≤ 250 lignes diff (à vérifier au moment du commit)
 - [ ] Commit `feat(core): regles Firestore initiales avec users self-only et smoketest`
-- [ ] Côté porteur : `cd test/rules && npm install` puis `firebase emulators:exec --only firestore,auth "cd test/rules && npm test"` pour confirmer AC5 vert
-- [ ] Côté porteur : `firebase deploy --only firestore:rules --project=valide-edu` pour AC4
+- [x] `cd test/rules && npm install` + `npm test` → 9/9 pass contre `valide-edu` (2026-06-04)
+- [x] `firebase deploy --only firestore:rules --project=valide-edu` → released to cloud.firestore (2026-06-04)
 
 ## Notes de cadrage
 
 - **Doc/partage updated avec accord implicite** : la modif `doc/partage/BASE-DE-DONNEES.md` est limitée à un ajout de **lien** vers `firestore.rules` + entrée Historique. Pas une modif de contrat schéma, donc pas d'accord backend formel requis. Si l'équipe backend objecte, on retire le lien dans une PR de suivi.
 - **Project ID `valide-edu`** (et non `valide-school-mvp` mentionné dans l'epic) — aligné avec décision Phase B Story 0.6.
-- **Tests Java JDK requis** : l'émulateur Firestore tourne sur JVM (déjà dans `CONTRIBUTING.md § 15.1 outils requis`).
 - **Lock file npm** : `test/rules/package-lock.json` sera créé au premier `npm install` côté porteur — à commit dans une PR de suivi pour reproductibilité CI.
 - **Helper `isOwner(uid)`** : déclaré à l'intérieur du `match /databases/{database}/documents` block (sinon syntaxe rejetée par Firestore rules v2).
+- **Pas d'émulateur Firebase** (cleanup post-merge, branche `chore/rules-tests-direct-firebase`) : suite au feedback de l'équipe « on n'utilise pas d'emulator, on tape directement sur firebase », `test/rules/` a été refactoré pour cibler le vrai projet `valide-edu` via Admin SDK (custom tokens) + Web SDK (signInWithCustomToken). Service account JSON requis dans `test/rules/service-account.json` (gitignore). Run ID unique par passage + cleanup auto en `after()` pour limiter la pollution. AC5 reste automatisé.
 
 ## Prochaines stories qui enrichiront ces règles
 

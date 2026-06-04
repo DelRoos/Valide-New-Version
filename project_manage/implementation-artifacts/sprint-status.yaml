@@ -45,7 +45,7 @@ development_status:
   0-6-setup-firebase-android-ios-firebase-ai: done  # 2026-06-04 Phase A (PR #16) + Phase B (PR #17) mergees, modules Console actives + smoke tests OK
   0-7-setup-cache-offline-firestore: done  # 2026-06-04 PR #18 mergee (commit 90fd66b)
   0-8-setup-app-check: backlog
-  0-9-setup-firestore-rules-initiales: in-progress  # 2026-06-04 regles racine + tests test/rules/ codes, deploy + npm install cote porteur
+  0-9-setup-firestore-rules-initiales: done  # 2026-06-04 PR #19 mergee + chore conversion tests Firebase direct (branche chore/rules-tests-direct-firebase), regles deployees sur valide-edu, npm test = 9/9 pass
   0-10-setup-design-tokens: done
   0-11-setup-fonts-nunito-jetbrains: done
   0-12-setup-flutter-screenutil: done

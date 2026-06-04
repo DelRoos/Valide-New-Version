@@ -24,6 +24,7 @@
 # Service accounts Firebase
 **/firebase-adminsdk-*.json
 **/serviceAccountKey.json
+**/service-account.json
 
 # --- Flutter / Dart ----------------------------------------------------
 .dart_tool/
