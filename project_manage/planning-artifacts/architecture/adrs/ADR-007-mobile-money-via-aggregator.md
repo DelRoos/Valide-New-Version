@@ -2,6 +2,7 @@
 
 **Date** : 2026-06-03
 **Statut** : 🟢 Accepté
+**Partenaire choisi V1** : **Freemopay v2** (cf. [ADR-013](ADR-013-freemopay-as-momo-aggregator.md), 2026-06-04). La question ouverte « Tranzak / Campay / MyCoolPay » est **résolue**.
 
 ## Contexte
 
@@ -27,7 +28,7 @@ Critères de sélection à utiliser :
 4. **Qualité du support** technique (anglophone et/ou francophone, réactivité).
 5. **Process d'ouverture de compte marchand** réaliste sur 6 semaines.
 
-L'app mobile ouvre une **WebView** sur la page de paiement hébergée par l'agrégateur. L'élève valide par **PIN MoMo ou OM** sur son téléphone. L'agrégateur confirme par **webhook signé** au backend.
+~~L'app mobile ouvre une **WebView** sur la page de paiement hébergée par l'agrégateur.~~ Avec Freemopay v2 (ADR-013) **le payeur valide directement via la notification native MoMo/OM** reçue sur son téléphone (SIM Toolkit) — **pas de WebView**. L'app affiche un overlay « Confirme sur ton téléphone » et écoute le stream Firestore. L'agrégateur confirme par **webhook** au backend ; le critère « webhook signé HMAC » initial n'est **pas** respecté par Freemopay v2, mitigation détaillée dans ADR-013 (path-token + re-fetch GET).
 
 ## Conséquences
 
@@ -50,11 +51,13 @@ L'app mobile ouvre une **WebView** sur la page de paiement hébergée par l'agr�
 1. **L'app ne décide jamais du statut premium / crédit ajouté.** Le webhook serveur est la **seule source de vérité**. L'app affiche un overlay « Confirming your payment… » pendant l'attente et **écoute le stream Firestore** `subscriptions/{uid}` ou `credits/{uid}` pour la confirmation.
 2. **Webhook signature vérifiée AVANT toute action.** Cf. archi backend § 10.
 3. **Idempotence webhook** : un même `aggregator_event_id` reçu deux fois ne crédite qu'une seule fois (collection `webhook_events/{eventId}` côté serveur).
-4. **Mode WebView + URL agrégateur** uniquement. **Pas de saisie de PIN** dans l'app Valide.
+4. ~~**Mode WebView + URL agrégateur** uniquement.~~ Avec Freemopay v2 : **flux natif MoMo/OM** (notification SIM Toolkit), pas de WebView. **Pas de saisie de PIN** dans l'app Valide.
 
 ## Open Question (PRD OQ-10)
 
-Décision du partenaire agrégateur à prendre dès J1. Recommandation : test de bout en bout des 3 candidats sur leur sandbox en parallèle de la P1, choix figé en début P2.
+✅ **RÉSOLUE 2026-06-04** : partenaire = **Freemopay v2** (cf. [ADR-013](ADR-013-freemopay-as-momo-aggregator.md)).
+
+~~Décision du partenaire agrégateur à prendre dès J1. Recommandation : test de bout en bout des 3 candidats sur leur sandbox en parallèle de la P1, choix figé en début P2.~~
 
 ## Détail d'implémentation
 
