@@ -1,0 +1,25 @@
+{
+  "@@locale": "en",
+  "@@author": "Valide School",
+
+  "appTitle": "Valide School",
+  "helloValide": "Hello {target}",
+  "continueLabel": "Continue",
+  "cancelLabel": "Cancel",
+  "closeLabel": "Close",
+  "okLabel": "OK",
+  "back": "Back",
+  "next": "Next",
+  "confirmYes": "Yes",
+  "confirmNo": "No",
+  "loadingLabel": "Loading…",
+  "sendingLabel": "Sending…",
+  "loadingMore": "Loading…",
+  "retryLabel": "Try again",
+  "tryAgain": "Try again later",
+  "errorGeneric": "Something went wrong. Try again?",
+  "errorNoConnection": "No connection. You can continue with what you've opened.",
+  "successCopied": "Link copied.",
+  "emptyStateGeneric": "Nothing to show yet.",
+  "pageNotFound": "Page not found"
+}
