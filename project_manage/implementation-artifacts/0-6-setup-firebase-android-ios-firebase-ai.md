@@ -3,9 +3,9 @@ story_id: 0.6
 title: Setup Firebase Android + iOS + Firebase AI Logic (Gemini)
 epic: 0
 phase: P0
-status: in-progress
+status: phase-b-in-progress
 created: 2026-06-04
-branch: feature/0.6-firebase-setup-phase-a
+branch: feature/0.6-firebase-setup-phase-b  # Phase A mergee sur main (commit f95ff7b)
 estimation: L++ (~12-14h total)
 dependencies:
   - 0.2  # routing + DI
@@ -114,3 +114,74 @@ Contenu :
 | Build APK debug fonctionnel | **Reporté Phase B** | Sans `google-services.json` valide, build échoue. Tant que pas merge Phase B, on désactive ce check en CI (Story 0.17) |
 | Smoke tests AC5 / AC6 | **Reporté Phase B** | Sans Firebase initialisé, les smoke tests ne peuvent pas tourner |
 | Init Firebase conditionnelle | **OUI** | L'app ne doit pas crasher si stub `firebase_options.dart` est utilisé — try/catch silencieux + log |
+
+## Phase B — Setup effectif (2026-06-04, branche `feature/0.6-firebase-setup-phase-b`)
+
+### Choix de projet Firebase
+
+`valide-edu` (projet n° 410229733764) plutot que `valide-school-mvp` propose
+en Phase A — nom plus court, plus generaliste pour couvrir l'ecosysteme
+au-dela du seul MVP.
+
+### Etapes executees
+
+1. **Projet cree** par le porteur dans Firebase Console (plan a confirmer
+   pour Blaze quand Functions seront branches — Story 0.7+)
+2. **flutterfire configure** lance depuis `mobile_app/` :
+
+   ```bash
+   flutterfire configure --project=valide-edu \
+     --platforms=android,ios \
+     --android-package-name=com.valideStartup.valideSchool \
+     --ios-bundle-id=com.valideStartup.valideSchool --yes
+   ```
+
+   → genere `lib/firebase_options.dart` reel (Android + iOS) + `firebase.json`
+     (config-mapping flutterfire) + `android/app/google-services.json`
+   → enregistre `1:410229733764:android:9ee866c121954b0e7ac5d1`
+     et `1:410229733764:ios:c2243941f8ce9aed7ac5d1`
+3. **iOS plist recupere manuellement** : flutterfire CLI sur Windows
+   n'ecrit pas le `GoogleService-Info.plist` (depend de Xcode tools macOS).
+   Recupere via `firebase apps:sdkconfig IOS <appId>` et place dans
+   `mobile_app/ios/Runner/GoogleService-Info.plist`.
+4. **Plugin Crashlytics gradle** ajoute dans `android/settings.gradle.kts`
+   (`com.google.firebase.crashlytics` v3.0.4 apply false), referencee par
+   `app/build.gradle.kts` apres `flutterfire configure`.
+
+### Etapes restantes Phase B (porteur, Mac)
+
+- [ ] Activer modules Firebase Console : Auth (Email + Google + Apple),
+      Firestore (Native, `europe-west1`), Storage (`europe-west1`), Cloud
+      Functions (`europe-west1`), FCM, Crashlytics, Analytics, Remote
+      Config, App Check (DeviceCheck iOS + Play Integrity Android),
+      **AI Logic Gemini Developer API**
+- [ ] Mac : `cd mobile_app/ios && pod install` (genere Podfile.lock)
+- [ ] Xcode signing iOS : certificat developpeur Apple + provisioning
+      profile pour Bundle ID `com.valideStartup.valideSchool`
+- [ ] Smoke test `/_crash` sur emulateur Android → verifier Crashlytics
+      Console reception
+- [ ] Smoke test `/_ai_smoke` sur emulateur Android + simulateur iOS →
+      verifier reponse Gemini OK
+- [ ] Activer Blaze (paiement) sur le projet quand Functions seront poses
+      (Story 0.7+)
+- [ ] CI Story 0.17 : secrets GitHub Actions pour `google-services.json`
+      et `GoogleService-Info.plist` (gitignores), restitues au build
+
+### Fichiers gitignores vs commitables
+
+| Fichier | Status | Notes |
+|---|---|---|
+| `mobile_app/lib/firebase_options.dart` | **Commit** | API keys publiques par design (Firebase doc) |
+| `mobile_app/firebase.json` | **Commit** | Config-mapping flutterfire (different du `firebase.json` deploy root) |
+| `mobile_app/android/app/google-services.json` | **.gitignore** | Restituee via secret CI |
+| `mobile_app/ios/Runner/GoogleService-Info.plist` | **.gitignore** | Restituee via secret CI |
+
+### Identifiants Firebase utilises
+
+- Project ID : `valide-edu`
+- Project Number : `410229733764`
+- Android App ID : `1:410229733764:android:9ee866c121954b0e7ac5d1`
+- iOS App ID : `1:410229733764:ios:c2243941f8ce9aed7ac5d1`
+- Package Android : `com.valideStartup.valideSchool`
+- Bundle ID iOS : `com.valideStartup.valideSchool`
+- Storage bucket : `valide-edu.firebasestorage.app`

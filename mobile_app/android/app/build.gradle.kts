@@ -5,6 +5,7 @@ plugins {
     // (gitignore, restitue via secret CI ou place manuellement apres flutterfire
     // configure - Phase B).
     id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
