@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../core/di/providers.dart';
 import '../../../core/responsive/responsive.dart';
 import '../../../core/theme/tokens.dart';
+import '../../../l10n/generated/app_localizations.dart';
 
 class HelloPage extends ConsumerWidget {
   const HelloPage({super.key});
@@ -13,6 +14,7 @@ class HelloPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final greetingTarget = ref.watch(helloProvider);
     final responsive = Responsive.of(context);
+    final l10n = AppLocalizations.of(context);
 
     final titleStyle = AppTypography.h1.copyWith(
       fontSize: responsive.select<double>(
@@ -33,7 +35,7 @@ class HelloPage extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hello $greetingTarget',
+                  l10n.helloValide(greetingTarget),
                   style: titleStyle,
                 ),
                 SizedBox(height: AppSpacing.s2.h),

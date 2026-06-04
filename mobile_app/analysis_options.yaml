@@ -37,5 +37,28 @@ linter:
 #       `! grep -rn --include='*.dart' --exclude='app_logger.dart' \
 #          "package:logger/logger.dart" lib/`)
 
+# RÈGLE NON-NÉGOCIABLE — Pas de chaîne hardcodée affichée à l'utilisateur
+# ----------------------------------------------------------------------
+# NFR-14 : bilinguisme intégral FR/EN. Tout `Text('...')` qui apparaît
+# à l'écran doit passer par `AppLocalizations.of(context).<key>` (cf.
+# `lib/l10n/generated/app_localizations.dart`).
+#
+# Exceptions tolérées :
+#   - Routes debug (`/_*`) et dev gallery
+#   - Messages d'exception techniques (non affichés à l'élève)
+#   - Sentinelles de smoke test
+#   - Affichage de paramètres dynamiques (form factor, dp, IDs) non-i18n
+#
+# Application :
+#   - revue de PR (humaine)
+#   - check CI grep (à introduire en Story 0.17 :
+#       `! grep -rn --include='*.dart' "Text\(['\"]" lib/features/ \
+#          | grep -v '\.\(arb\|l10n\)' | grep -v '// ignore: hardcoded-string'`)
+
+# exclut le code généré gen-l10n (auto-formaté, ligne longue tolérée).
+analyzer:
+  exclude:
+    - lib/l10n/generated/**
+
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

@@ -21,6 +21,20 @@
 
 ---
 
+> ## ⚠️ Mise à jour Phase 4 — 2026-06-04 ([ADR-013](../../project_manage/planning-artifacts/architecture/adrs/ADR-013-freemopay-as-momo-aggregator.md))
+>
+> L'agrégateur Mobile Money retenu pour la V1 est **Freemopay v2** (`https://api-v2.freemopay.com`). Les 3 contrats Phase 4 ci-dessous (`createSubscription`, `purchaseCredits`, `paymentWebhook`) restent **valides dans leur intention**, mais leurs **détails techniques sont à aligner** avec l'API Freemopay v2 :
+>
+> | Contrat | À ajuster avant Phase 4 |
+> |---|---|
+> | `createSubscription` | `paymentUrl` (URL WebView agrégateur) → **probablement supprimé** : Freemopay valide via notification native MoMo/OM, pas de WebView. Renommer en `freemopayReference: string` (UUID Freemopay) + supprimer `paymentUrl` |
+> | `purchaseCredits` | Idem |
+> | `paymentWebhook` | `x-aggregator-signature` → **n'existe pas dans Freemopay v2**. Vérification = path-token URL secret (`?token=<secret>`) + **re-fetch obligatoire** `GET /api/v2/payment/:reference` avant tout crédit. Détails dans ADR-013 § Sécurité |
+>
+> Ces ajustements **nécessitent un accord backend** (cf. CLAUDE.md § Surface partagée) — à formaliser au démarrage de Phase 4 dans une PR dédiée. La doc API source : [`doc/tools/Freemopay API v2 — Documentation.md`](../tools/Freemopay%20API%20v2%20—%20Documentation.md).
+
+---
+
 ## Pourquoi ce document existe
 
 L'app mobile, la console admin et la landing appellent toutes les **mêmes Cloud Functions**. Si le contrat (nom, forme de l'entrée, forme de la sortie, codes d'erreur) diverge d'un côté à l'autre, **les clients cassent en silence**.
@@ -574,3 +588,5 @@ Les types TypeScript de ce fichier doivent être synchronisés avec :
 | Date | Auteur | Modification |
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du catalogue à partir de l'archi backend § 5.2 |
+| 2026-06-04 | ADR-012 | Retrait des 3 contrats IA (`askTutor`, `chatMessage`, `correctMode1`) — remplacés par appels client `firebase_ai`. Ajout `consumeCredits` (à figer Phase 3) |
+| 2026-06-04 | ADR-013 | Bannière Phase 4 : agrégateur Freemopay v2 retenu, ajustements à prévoir sur `createSubscription`/`purchaseCredits` (suppression `paymentUrl` WebView) et `paymentWebhook` (path-token + re-fetch GET au lieu de signature HMAC) |

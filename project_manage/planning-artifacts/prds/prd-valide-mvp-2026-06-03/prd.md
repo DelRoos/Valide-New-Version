@@ -676,7 +676,7 @@ Numérotées OQ-1 à OQ-10. Les OQ-1 à OQ-7 viennent du SPEC ; les OQ-8 à OQ-1
 7. **OQ-7 — Plafond chat premium 200/jour.** Strict (refus net) ou gradient (warning 180, blocage 200) ?
 8. **OQ-8 — Délai de grâce subscription.** Combien de jours de grace après échec de renouvellement avant `expired` ? Proposition 7 jours, à valider.
 9. **OQ-9 — Modèle de notation Mode 1 (pondérations correct / incomplet / rephrasing / incorrect).** À calibrer avec un panel d'enseignants en Phase 3.
-10. **OQ-10 — Choix de l'agrégateur Mobile Money.** Tranzak vs Campay vs MyCoolPay : qui propose les meilleures conditions (frais, support, webhook signé exploitable) ? *Décision bloquante pour P4 — à lancer dès J1.*
+10. ~~**OQ-10 — Choix de l'agrégateur Mobile Money.** Tranzak vs Campay vs MyCoolPay : qui propose les meilleures conditions (frais, support, webhook signé exploitable) ?~~ → **RÉSOLU (2026-06-04)** : **Freemopay v2** retenu (cf. [ADR-013](../../architecture/adrs/ADR-013-freemopay-as-momo-aggregator.md)). Note : Freemopay **ne signe pas** ses webhooks → mitigation par path-token + re-fetch GET (détaillée dans ADR-013).
 
 ---
 

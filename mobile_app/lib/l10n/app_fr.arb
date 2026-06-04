@@ -1,0 +1,74 @@
+{
+  "@@locale": "fr",
+  "@@author": "Valide School",
+
+  "appTitle": "Valide School",
+  "@appTitle": {
+    "description": "Nom de l'app affiché dans le titre système (lanceur, multitâche)."
+  },
+
+  "helloValide": "Bonjour {target}",
+  "@helloValide": {
+    "description": "Page Hello d'amorçage (sentinelle Epic 0). Affiché en grand sur la home initiale.",
+    "placeholders": {
+      "target": {
+        "type": "String",
+        "example": "Valide"
+      }
+    }
+  },
+
+  "continueLabel": "Continuer",
+  "@continueLabel": { "description": "Bouton principal d'avancement (onboarding, flow)." },
+
+  "cancelLabel": "Annuler",
+  "@cancelLabel": { "description": "Bouton secondaire qui annule l'action en cours." },
+
+  "closeLabel": "Fermer",
+  "@closeLabel": { "description": "Bouton de fermeture d'une modale ou d'un sheet." },
+
+  "okLabel": "OK",
+  "@okLabel": { "description": "Bouton de confirmation neutre dans une alerte." },
+
+  "back": "Retour",
+  "@back": { "description": "Action de navigation arrière." },
+
+  "next": "Suivant",
+  "@next": { "description": "Action de navigation vers l'étape suivante." },
+
+  "confirmYes": "Oui",
+  "@confirmYes": { "description": "Réponse positive à une question oui/non." },
+
+  "confirmNo": "Non",
+  "@confirmNo": { "description": "Réponse négative à une question oui/non." },
+
+  "loadingLabel": "Chargement…",
+  "@loadingLabel": { "description": "Texte affiché pendant une opération courte (< 3 s)." },
+
+  "sendingLabel": "Envoi…",
+  "@sendingLabel": { "description": "Texte affiché sur le bouton primaire en état loading." },
+
+  "loadingMore": "Chargement…",
+  "@loadingMore": { "description": "Texte d'un indicateur en fin de liste paginée." },
+
+  "retryLabel": "Réessayer",
+  "@retryLabel": { "description": "Bouton de relance après échec." },
+
+  "tryAgain": "Réessaie plus tard",
+  "@tryAgain": { "description": "Suggestion à l'élève quand l'action ne peut pas aboutir maintenant." },
+
+  "errorGeneric": "Une erreur est survenue. Réessaie ?",
+  "@errorGeneric": { "description": "Erreur fourre-tout quand la cause précise n'est pas exposable." },
+
+  "errorNoConnection": "Pas de connexion. Tu peux continuer ce que tu as ouvert.",
+  "@errorNoConnection": { "description": "Erreur affichée quand le réseau est coupé. Rassure l'élève sur le cache offline." },
+
+  "successCopied": "Lien copié.",
+  "@successCopied": { "description": "Toast de confirmation après copie dans le presse-papier." },
+
+  "emptyStateGeneric": "Rien à afficher pour le moment.",
+  "@emptyStateGeneric": { "description": "Empty state neutre quand une liste est vide." },
+
+  "pageNotFound": "Page introuvable",
+  "@pageNotFound": { "description": "Titre d'écran 404 (deep link cassé, route inconnue)." }
+}
