@@ -55,7 +55,7 @@ development_status:
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
   0-17-setup-ci-cd-github-actions: backlog
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)
-  0-19-risk-r2-tests-precoces-smooth-markdown: backlog
+  0-19-risk-r2-tests-precoces-smooth-markdown: in-progress  # 2026-06-04 phase agent livree (3 cours md + route debug + banner bench + section R2 decision-log), phase terrain (release sur Tecno Spark 8 + decision go/no-go) en attente
   0-20-risk-r3-benchmark-latence-europe-west1: backlog
   0-21-page-hello-valide-sentinelle-e0: backlog
   epic-0-retrospective: optional
