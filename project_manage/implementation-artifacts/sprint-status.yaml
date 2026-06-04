@@ -49,7 +49,7 @@ development_status:
   0-10-setup-design-tokens: done
   0-11-setup-fonts-nunito-jetbrains: done
   0-12-setup-flutter-screenutil: done
-  0-13-composants-ux-atomiques: review  # PR ouverte (feature/0.13-composants-atomiques)
+  0-13-composants-ux-atomiques: in-progress
   0-14-composants-ux-feedback: backlog
   0-15-setup-pedagogical-content-wrapper: backlog
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
