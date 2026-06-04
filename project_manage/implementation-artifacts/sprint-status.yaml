@@ -43,9 +43,9 @@ development_status:
   # 0-5-setup-dio-retry-connectivity : retiree 2026-06-04 suite a ADR-012 (Firebase AI Logic remplace Claude+Dio streaming).
   # PR #8 deja mergee sur main, code supprime dans la PR refonte Firebase AI Logic.
   0-6-setup-firebase-android-ios-firebase-ai: done  # 2026-06-04 Phase A (PR #16) + Phase B (PR #17) mergees, modules Console actives + smoke tests OK
-  0-7-setup-cache-offline-firestore: in-progress  # 2026-06-04 firestoreProvider applique Settings 40MB persistance
+  0-7-setup-cache-offline-firestore: done  # 2026-06-04 PR #18 mergee (commit 90fd66b)
   0-8-setup-app-check: backlog
-  0-9-setup-firestore-rules-initiales: backlog
+  0-9-setup-firestore-rules-initiales: in-progress  # 2026-06-04 regles racine + tests test/rules/ codes, deploy + npm install cote porteur
   0-10-setup-design-tokens: done
   0-11-setup-fonts-nunito-jetbrains: done
   0-12-setup-flutter-screenutil: done
