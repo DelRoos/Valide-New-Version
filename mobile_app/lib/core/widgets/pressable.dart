@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../feedback/haptic_service.dart';
 import '../theme/tokens.dart';
+
+// Re-export pour préserver l'API publique pré-Story 0.14 (les widgets
+// AppButton, AppCard, AppIconButton importent HapticPreset depuis ici).
+export '../feedback/haptic_service.dart' show HapticPreset;
 
 /// Wrapper qui applique le pattern "tap feedback" de DESIGN.md :
 /// scale 0.96 → 1.0 + opacity 0.7 → 1.0 sur durée `AppMotion.fast`.
 ///
 /// Délègue la sémantique tactile à `Material` + `InkWell` (ripple natif).
-/// L'haptic est déclenché au `onTap` quand `hapticPreset` est non nul.
-///
-/// TODO(0.14): remplacer l'appel direct `HapticFeedback.*` par `HapticService`
-/// quand le service exposé par Story 0.14 sera disponible, pour respecter le
-/// setting Profil « Vibrations activées ».
-class Pressable extends StatefulWidget {
+/// L'haptic est déclenché au `onTap` quand `hapticPreset` est non nul,
+/// via [[haptic_service]] (respecte les prefs utilisateur + Mode Examen).
+class Pressable extends ConsumerStatefulWidget {
   const Pressable({
     super.key,
     required this.child,
@@ -33,12 +35,10 @@ class Pressable extends StatefulWidget {
   final Size? minSize;
 
   @override
-  State<Pressable> createState() => _PressableState();
+  ConsumerState<Pressable> createState() => _PressableState();
 }
 
-enum HapticPreset { selection, light, medium, heavy }
-
-class _PressableState extends State<Pressable> {
+class _PressableState extends ConsumerState<Pressable> {
   bool _pressed = false;
 
   void _setPressed(bool value) {
@@ -49,17 +49,9 @@ class _PressableState extends State<Pressable> {
 
   void _onTap() {
     if (!widget.enabled || widget.onTap == null) return;
-    switch (widget.hapticPreset) {
-      case HapticPreset.selection:
-        HapticFeedback.selectionClick();
-      case HapticPreset.light:
-        HapticFeedback.lightImpact();
-      case HapticPreset.medium:
-        HapticFeedback.mediumImpact();
-      case HapticPreset.heavy:
-        HapticFeedback.heavyImpact();
-      case null:
-        break;
+    final preset = widget.hapticPreset;
+    if (preset != null) {
+      ref.read(hapticServiceProvider).fire(preset);
     }
     widget.onTap!();
   }

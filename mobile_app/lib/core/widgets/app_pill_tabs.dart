@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../feedback/haptic_service.dart';
 import '../theme/tokens.dart';
 
-class AppPillTabs extends StatelessWidget {
+class AppPillTabs extends ConsumerWidget {
   const AppPillTabs({
     super.key,
     required this.labels,
@@ -17,7 +18,7 @@ class AppPillTabs extends StatelessWidget {
   final ValueChanged<int> onTabSelected;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final tabCount = labels.length;
     assert(tabCount > 1, 'AppPillTabs nécessite au moins 2 onglets');
     assert(
@@ -63,7 +64,7 @@ class AppPillTabs extends StatelessWidget {
                       behavior: HitTestBehavior.opaque,
                       onTap: () {
                         if (selected) return;
-                        HapticFeedback.selectionClick();
+                        ref.read(hapticServiceProvider).selection();
                         onTabSelected(i);
                       },
                       child: Center(

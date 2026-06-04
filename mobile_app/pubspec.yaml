@@ -31,6 +31,12 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # i18n (Story 0.16) — gen-l10n a besoin de flutter_localizations + intl
+  # pour les delegates Material/Cupertino et la generation de AppLocalizations.
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
@@ -41,6 +47,11 @@ dependencies:
   equatable: ^2.0.8
   flutter_screenutil: ^5.9.3
   lucide_icons_flutter: ^3.1.14+2
+
+  # Story 0.14 — feedback layer (services + overlays celebration)
+  flutter_animate: ^4.5.2
+  audioplayers: ^6.4.0
+  shared_preferences: ^2.3.3
 
 dev_dependencies:
   flutter_test:
@@ -75,3 +86,11 @@ flutter:
     - family: JetBrains Mono
       fonts:
         - asset: assets/fonts/JetBrainsMono-Variable.ttf
+
+  # Story 0.14 — assets audio. Format AAC/M4A (cross-platform iOS+Android,
+  # OGG impossible iOS — cf. ADR-011 + CLAUDE.md). silence.m4a sert de
+  # placeholder pour les 12 sons AppSfx tant que la production audio
+  # n'est pas faite (TODO story future). Le fichier reel est unique
+  # (~1 KB) et le mapping AppSfx -> path se fait dans AudioService.
+  assets:
+    - assets/audio/silence.m4a
