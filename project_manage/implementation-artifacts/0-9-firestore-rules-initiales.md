@@ -85,9 +85,9 @@ Champs autoritaires (cf. `doc/partage/BASE-DE-DONNEES.md` § users/{uid}) :
 
 - **Doc/partage updated avec accord implicite** : la modif `doc/partage/BASE-DE-DONNEES.md` est limitée à un ajout de **lien** vers `firestore.rules` + entrée Historique. Pas une modif de contrat schéma, donc pas d'accord backend formel requis. Si l'équipe backend objecte, on retire le lien dans une PR de suivi.
 - **Project ID `valide-edu`** (et non `valide-school-mvp` mentionné dans l'epic) — aligné avec décision Phase B Story 0.6.
-- **Tests Java JDK requis** : l'émulateur Firestore tourne sur JVM (déjà dans `CONTRIBUTING.md § 15.1 outils requis`).
 - **Lock file npm** : `test/rules/package-lock.json` sera créé au premier `npm install` côté porteur — à commit dans une PR de suivi pour reproductibilité CI.
 - **Helper `isOwner(uid)`** : déclaré à l'intérieur du `match /databases/{database}/documents` block (sinon syntaxe rejetée par Firestore rules v2).
+- **Pas d'émulateur Firebase** (cleanup post-merge, branche `chore/rules-tests-direct-firebase`) : suite au feedback de l'équipe « on n'utilise pas d'emulator, on tape directement sur firebase », `test/rules/` a été refactoré pour cibler le vrai projet `valide-edu` via Admin SDK (custom tokens) + Web SDK (signInWithCustomToken). Service account JSON requis dans `test/rules/service-account.json` (gitignore). Run ID unique par passage + cleanup auto en `after()` pour limiter la pollution. AC5 reste automatisé.
 
 ## Prochaines stories qui enrichiront ces règles
 
