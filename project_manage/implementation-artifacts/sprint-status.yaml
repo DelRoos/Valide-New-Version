@@ -42,7 +42,7 @@ development_status:
   0-4bis-bootstrap-ios-cross-platform: done  # AC3/AC4 validation iOS sim deferred a prochaine session Mac
   # 0-5-setup-dio-retry-connectivity : retiree 2026-06-04 suite a ADR-012 (Firebase AI Logic remplace Claude+Dio streaming).
   # PR #8 deja mergee sur main, code supprime dans la PR refonte Firebase AI Logic.
-  0-6-setup-firebase-android-ios-firebase-ai: backlog  # renommee 2026-06-04 : +firebase_ai package
+  0-6-setup-firebase-android-ios-firebase-ai: in-progress  # 2026-06-04 Phase A (code prep) - Phase B (Console+flutterfire) reste a faire
   0-7-setup-cache-offline-firestore: backlog
   0-8-setup-app-check: backlog
   0-9-setup-firestore-rules-initiales: backlog
@@ -51,7 +51,7 @@ development_status:
   0-12-setup-flutter-screenutil: done
   0-13-composants-ux-atomiques: done  # mergee main (PR #13, commit c9605b1)
   0-14-composants-ux-feedback: done  # mergee main (PR #14, commit 2adb38c)
-  0-15-setup-pedagogical-content-wrapper: in-progress  # 2026-06-04 demarre
+  0-15-setup-pedagogical-content-wrapper: done  # mergee main (PR #15, commit dfa334c)
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
   0-17-setup-ci-cd-github-actions: backlog
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)

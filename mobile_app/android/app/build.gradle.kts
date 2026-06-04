@@ -1,6 +1,10 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    // Story 0.6 — Firebase. Le plugin lit `android/app/google-services.json`
+    // (gitignore, restitue via secret CI ou place manuellement apres flutterfire
+    // configure - Phase B).
+    id("com.google.gms.google-services")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
