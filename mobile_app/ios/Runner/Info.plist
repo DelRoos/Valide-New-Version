@@ -66,5 +66,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Story 0.6 — Permissions anticipées pour Mode 1 photo (E3) et FCM (E0+). -->
+	<key>NSCameraUsageDescription</key>
+	<string>Valide School utilise l'appareil photo pour scanner tes exercices et te donner un feedback personnalisé en Mode 1.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Valide School peut importer une image existante de ton exercice pour analyse en Mode 1.</string>
 </dict>
 </plist>

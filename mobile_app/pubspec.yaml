@@ -58,6 +58,22 @@ dependencies:
   # cf. ADR-009. Aucun autre fichier ne doit l'importer.
   flutter_smooth_markdown: ^0.7.2
 
+  # Story 0.6 — Firebase Android + iOS + Firebase AI Logic (cf. ADR-003,
+  # ADR-012). Tous les modules sont consommes via providers Riverpod
+  # lazy depuis lib/core/firebase/providers.dart — main.dart n'importe
+  # QUE firebase_core (init au boot) + firebase_crashlytics (setup au boot).
+  firebase_core: ^4.10.0
+  firebase_auth: ^6.5.2
+  cloud_firestore: ^6.5.0
+  firebase_storage: ^13.4.2
+  cloud_functions: ^6.3.2
+  firebase_messaging: ^16.3.0
+  firebase_crashlytics: ^5.2.3
+  firebase_analytics: ^12.4.2
+  firebase_remote_config: ^6.5.2
+  firebase_app_check: ^0.4.4+2
+  firebase_ai: ^3.12.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

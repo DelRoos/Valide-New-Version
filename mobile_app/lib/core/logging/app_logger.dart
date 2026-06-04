@@ -3,6 +3,7 @@
 // Toute donnée sensible (téléphone, JWT, PIN, password) est masquée via `redact` avant émission.
 // Ne jamais logger un payload JSON entier — extraire et logger uniquement les champs identifiés.
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:logger/logger.dart';
 
@@ -20,6 +21,24 @@ class AppLogger {
     level: resolveLevel(isRelease: kReleaseMode),
   );
 
+  /// Instance Crashlytics liée par `bindCrashlytics(...)` au boot (Story 0.6).
+  /// Si null (init Firebase pas faite — ex. tests, Phase B pending), les
+  /// erreurs ne sont pas forwardées — `_logger.e()` continue de tracer en local.
+  static FirebaseCrashlytics? _crashlytics;
+
+  /// À appeler une fois au boot après `Firebase.initializeApp()`. Branche
+  /// `AppLogger.e()` sur `FirebaseCrashlytics.recordError()` pour la collecte
+  /// d'erreurs distantes.
+  static void bindCrashlytics(FirebaseCrashlytics instance) {
+    _crashlytics = instance;
+  }
+
+  /// Pour les tests : reset l'instance Crashlytics liée.
+  @visibleForTesting
+  static void resetCrashlyticsBinding() {
+    _crashlytics = null;
+  }
+
   static void v(String message, {Object? error}) =>
       _logger.t(redact(message), error: error);
 
@@ -32,8 +51,21 @@ class AppLogger {
   static void w(String message, {Object? error}) =>
       _logger.w(redact(message), error: error);
 
-  static void e(String message, {Object? error, StackTrace? stackTrace}) =>
-      _logger.e(redact(message), error: error, stackTrace: stackTrace);
+  static void e(String message, {Object? error, StackTrace? stackTrace}) {
+    final redacted = redact(message);
+    _logger.e(redacted, error: error, stackTrace: stackTrace);
+    final cl = _crashlytics;
+    if (cl != null) {
+      // Forward best-effort vers Crashlytics. Non-fatal pour qu'un seul
+      // appel `e()` ne fasse pas remonter une erreur fatale.
+      cl.recordError(
+        error ?? redacted,
+        stackTrace,
+        reason: redacted,
+        fatal: false,
+      );
+    }
+  }
 
   @visibleForTesting
   static Level resolveLevel({required bool isRelease}) =>
