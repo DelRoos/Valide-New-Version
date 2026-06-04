@@ -50,8 +50,8 @@ development_status:
   0-11-setup-fonts-nunito-jetbrains: done
   0-12-setup-flutter-screenutil: done
   0-13-composants-ux-atomiques: done  # mergee main (PR #13, commit c9605b1)
-  0-14-composants-ux-feedback: in-progress  # 2026-06-04 demarre, 1 PR globale (exception 400 lignes acceptee)
-  0-15-setup-pedagogical-content-wrapper: backlog
+  0-14-composants-ux-feedback: done  # mergee main (PR #14, commit 2adb38c)
+  0-15-setup-pedagogical-content-wrapper: in-progress  # 2026-06-04 demarre
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
   0-17-setup-ci-cd-github-actions: backlog
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)

@@ -37,6 +37,20 @@ linter:
 #       `! grep -rn --include='*.dart' --exclude='app_logger.dart' \
 #          "package:logger/logger.dart" lib/`)
 
+# RÈGLE NON-NÉGOCIABLE — Import unique de `package:flutter_smooth_markdown`
+# ------------------------------------------------------------------------
+# Cf. ADR-009 + Story 0.15 : `flutter_smooth_markdown` n'est en 0.7.x
+# (mainteneur unique). Mitigation : isoler le package derrière
+# `lib/core/widgets/pedagogical_content.dart` — seul fichier autorisé à
+# l'importer. Si demain le package est abandonné, on remplace
+# l'implémentation interne sans toucher aux écrans consommateurs.
+#
+# Application :
+#   - revue de PR (humaine)
+#   - check CI grep (à introduire en Story 0.17 :
+#       `! grep -rn --include='*.dart' --exclude='pedagogical_content.dart' \
+#          "package:flutter_smooth_markdown" lib/`)
+
 # RÈGLE NON-NÉGOCIABLE — Pas de chaîne hardcodée affichée à l'utilisateur
 # ----------------------------------------------------------------------
 # NFR-14 : bilinguisme intégral FR/EN. Tout `Text('...')` qui apparaît

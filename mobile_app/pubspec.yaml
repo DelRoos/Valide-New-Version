@@ -53,6 +53,11 @@ dependencies:
   audioplayers: ^6.4.0
   shared_preferences: ^2.3.3
 
+  # Story 0.15 — rendu pedagogique unifie (Markdown + LaTeX + Mermaid +
+  # streaming). Isole derriere lib/core/widgets/pedagogical_content.dart
+  # cf. ADR-009. Aucun autre fichier ne doit l'importer.
+  flutter_smooth_markdown: ^0.7.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
