@@ -42,7 +42,7 @@ development_status:
   0-4bis-bootstrap-ios-cross-platform: done  # AC3/AC4 validation iOS sim deferred a prochaine session Mac
   # 0-5-setup-dio-retry-connectivity : retiree 2026-06-04 suite a ADR-012 (Firebase AI Logic remplace Claude+Dio streaming).
   # PR #8 deja mergee sur main, code supprime dans la PR refonte Firebase AI Logic.
-  0-6-setup-firebase-android-ios-firebase-ai: in-progress  # 2026-06-04 Phase A (code prep) - Phase B (Console+flutterfire) reste a faire
+  0-6-setup-firebase-android-ios-firebase-ai: in-progress  # 2026-06-04 Phase A mergee main (PR Phase A, commit f95ff7b), Phase B partielle (flutterfire configure + plist iOS + Crashlytics plugin gradle), reste: activation modules Console + pod install Mac + smoke tests sur device
   0-7-setup-cache-offline-firestore: backlog
   0-8-setup-app-check: backlog
   0-9-setup-firestore-rules-initiales: backlog

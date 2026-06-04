@@ -24,6 +24,8 @@ plugins {
     // Story 0.6 — Firebase via google-services plugin. Version alignee avec
     // les Firebase BoM Android recents (flutterfire CLI generera le bom).
     id("com.google.gms.google-services") version "4.4.2" apply false
+    // Story 0.6 Phase B — Crashlytics Gradle plugin (upload symboles natifs).
+    id("com.google.firebase.crashlytics") version "3.0.4" apply false
 }
 
 include(":app")
