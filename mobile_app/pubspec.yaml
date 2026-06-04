@@ -115,3 +115,6 @@ flutter:
   # (~1 KB) et le mapping AppSfx -> path se fait dans AudioService.
   assets:
     - assets/audio/silence.m4a
+    # Story 0.19 R2 — cours de test pour validation precoce du wrapper
+    # PedagogicalContent. Retires a la cloture E0 (Story 0.21) ou avant.
+    - assets/dev/test_courses/
