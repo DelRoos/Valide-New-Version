@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -13,10 +14,12 @@ import 'package:valide_school/core/widgets/app_progress_bar.dart';
 
 Future<void> pumpHarness(WidgetTester tester, Widget child) async {
   await tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(375, 812),
-      builder: (context, _) => MaterialApp(
-        home: Scaffold(body: Padding(padding: const EdgeInsets.all(16), child: child)),
+    ProviderScope(
+      child: ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context, _) => MaterialApp(
+          home: Scaffold(body: Padding(padding: const EdgeInsets.all(16), child: child)),
+        ),
       ),
     ),
   );
