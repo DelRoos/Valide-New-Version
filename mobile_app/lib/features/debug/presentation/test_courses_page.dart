@@ -101,13 +101,22 @@ class _TestCourseDetailPageState extends State<TestCourseDetailPage> {
       appBar: AppBar(title: Text(course.title)),
       body: md == null
           ? const Center(child: CircularProgressIndicator())
-          : ListView(
+          // Story 0.19 phase terrain : pattern officiel SmoothMarkdown =
+          // SingleChildScrollView + child direct (pas ListView). Cf.
+          // .decision-log.md S 2026-06-04.
+          : SingleChildScrollView(
               padding: EdgeInsets.all(AppSpacing.s4.w),
-              children: [
-                _BenchmarkBanner(loadMs: _loadMs, firstFrameMs: _firstFrameMs),
-                SizedBox(height: AppSpacing.s4.h),
-                PedagogicalContent(data: md),
-              ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _BenchmarkBanner(
+                    loadMs: _loadMs,
+                    firstFrameMs: _firstFrameMs,
+                  ),
+                  SizedBox(height: AppSpacing.s4.h),
+                  PedagogicalContent(data: md),
+                ],
+              ),
             ),
     );
   }

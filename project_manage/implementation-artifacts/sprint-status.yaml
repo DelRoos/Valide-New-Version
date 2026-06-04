@@ -55,7 +55,7 @@ development_status:
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
   0-17-setup-ci-cd-github-actions: backlog
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)
-  0-19-risk-r2-tests-precoces-smooth-markdown: in-progress  # 2026-06-04 phase agent livree (PR #21) + phase terrain executee sur Redmi A7 Pro (decision-log mis a jour): perf OK (< 100ms) mais rendu visuel KO sur les 3 cours, hypotheses + plan investigation 1-2h documentes. Decision AC4 finale en attente.
+  0-19-risk-r2-tests-precoces-smooth-markdown: in-progress  # 2026-06-04 investigation H1/H2/H3 sur Redmi A7 Pro: H1 (SingleChildScrollView) retenue car pattern officiel, H2/H3 reverted. Conclusion: wrapper marche sur md basique (H3 OK) mais cassent silencieusement sur les .md reels avec LaTeX/Mermaid. Follow-up 0.19.1 pour isoler la cause racine. Decision AC4 finale toujours en attente.
   0-20-risk-r3-benchmark-latence-europe-west1: backlog
   0-21-page-hello-valide-sentinelle-e0: backlog
   epic-0-retrospective: optional
