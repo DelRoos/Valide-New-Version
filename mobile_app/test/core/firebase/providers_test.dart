@@ -30,4 +30,31 @@ void main() {
       expect(firebaseAIProvider, isNotNull);
     });
   });
+
+  // ===================================================================
+  // Story 0.7 — Cache offline Firestore (AC2)
+  // ===================================================================
+  // Le test d'integration AC2 (lecture cache apres coupure reseau) demande
+  // Firebase initialise + reseau pilotable. Il est code ici comme procedure
+  // documentee a executer manuellement sur emulateur Android apres Phase B
+  // (modules Firebase Console actifs). En CI il reste skip pour eviter les
+  // faux echecs (token App Check absent, reseau lab).
+  //
+  // Procedure manuelle :
+  //   1. `flutter run` sur emulateur Android
+  //   2. Ouvrir /_smoketest si dispo, sinon depuis la console Firebase
+  //      ajouter manuellement un doc `_smoketest/launch`
+  //   3. Couper le wifi sur l'emulateur (adb shell svc wifi disable)
+  //   4. Re-lire le doc → la lecture doit reussir et
+  //      `snapshot.metadata.isFromCache == true`
+  //   5. Rallumer le wifi (adb shell svc wifi enable)
+  group('Firestore cache offline (AC2)', () {
+    test(
+      'lecture cache apres coupure reseau retourne isFromCache=true',
+      () {
+        // Procedure ci-dessus. Non automatisable sans Firebase init reel.
+      },
+      skip: 'AC2 = procedure manuelle sur device, voir commentaire ci-dessus.',
+    );
+  });
 }

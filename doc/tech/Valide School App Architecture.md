@@ -968,6 +968,8 @@ Sur Android et iOS, **la persistance offline de Firestore est activée par défa
 
 Tout cela **sans une ligne de code de notre part**. C'est le bénéfice de ce choix : simplicité maximale, zéro système à maintenir, comportement éprouvé.
 
+**Borne explicite à 40 MB** (Story 0.7) : on configure `Settings(persistenceEnabled: true, cacheSizeBytes: 40 * 1024 * 1024)` dans `firestoreProvider` avant tout `get()` / `snapshots()`. Le défaut Firestore est 100 MB, on le ramène à 40 MB pour les téléphones modestes du marché cible (NFR-1, NFR-2). Firestore évince les documents les plus anciens (LRU) au-delà de cette taille.
+
 ### 12.2 Ce que cela implique pour notre code
 
 La conséquence pratique est qu'on écrit des lectures Firestore **standard**, sans options de source particulières :

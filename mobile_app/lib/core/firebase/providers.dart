@@ -21,6 +21,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../logging/app_logger.dart';
+
 /// `true` si l'app Firebase par défaut est initialisée (Phase B faite).
 /// Les écrans consommateurs lisent ce flag pour basculer en degraded mode.
 final firebaseAvailableProvider = Provider<bool>((ref) {
@@ -41,9 +43,23 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
-/// Firestore — cache offline activé automatiquement (cf. ADR-010).
+/// Taille du cache Firestore en octets. 40 MB borne adaptee aux telephones
+/// modestes du marche cible (NFR-1 stockage limite, NFR-2 perf).
+const int _firestoreCacheSizeBytes = 40 * 1024 * 1024;
+
+/// Firestore — cache offline 40 MB persistance activee (Story 0.7, ADR-010).
+///
+/// Les `settings` doivent etre appliques AVANT tout `get()` / `snapshots()` :
+/// Firestore lock les settings au premier acces. Le Provider est cache par
+/// Riverpod donc le bloc s'execute une seule fois.
 final firestoreProvider = Provider<FirebaseFirestore>((ref) {
-  return FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
+  firestore.settings = const Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: _firestoreCacheSizeBytes,
+  );
+  AppLogger.i('Firestore cache: 40MB, persistence on');
+  return firestore;
 });
 
 /// Storage — buckets media. Lazy.
