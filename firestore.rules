@@ -1,0 +1,73 @@
+// =====================================================================
+// Valide School — Firestore Security Rules (Story 0.9, P0)
+// =====================================================================
+//
+// References :
+//   - NFR-9 : "le vrai verrou est dans les regles Firestore" (CLAUDE.md)
+//   - ADR-003 : Firebase full backend
+//   - doc/partage/BASE-DE-DONNEES.md § users/{uid}
+//
+// Phase actuelle : P0 squelette minimal. Sera enrichi story par story
+// (subscriptions, sessions Mode 2 premium-gated, etc.).
+//
+// Deploiement : `firebase deploy --only firestore:rules --project=valide-edu`
+// Tests : `cd test/rules && npm test` (necessite firebase emulator demarre)
+// =====================================================================
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    // -----------------------------------------------------------------
+    // Default deny — toute path non matchee ci-dessous est refusee.
+    // Firestore deny par defaut deja, mais on l'expose pour lisibilite.
+    // -----------------------------------------------------------------
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // -----------------------------------------------------------------
+    // users/{uid} — profil eleve, self-only
+    // Schema autoritatif : doc/partage/BASE-DE-DONNEES.md § users/{uid}
+    // -----------------------------------------------------------------
+    match /users/{uid} {
+
+      // Lecture : uniquement le proprietaire
+      allow read: if isOwner(uid);
+
+      // Creation : proprietaire + champs critiques valides
+      // - subSystem fige a l'inscription (cf. schema doc/partage)
+      // - language derive de subSystem (idem)
+      // - uid redondant doit matcher le doc ID
+      allow create: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.subSystem in ['francophone', 'anglophone']
+        && request.resource.data.language in ['fr', 'en']
+        && request.resource.data.displayName is string;
+
+      // Update : proprietaire, mais subSystem et language non modifiables
+      allow update: if isOwner(uid)
+        && request.resource.data.subSystem == resource.data.subSystem
+        && request.resource.data.language == resource.data.language;
+
+      // Delete : interdit cote client.
+      // La suppression passe par Cloud Function `requestAccountDeletion`
+      // (cf. BASE-DE-DONNEES.md § deletionRequestedAt).
+      allow delete: if false;
+    }
+
+    // -----------------------------------------------------------------
+    // _smoketest/{doc} — lecture/ecriture autorisee aux users authentifies
+    // pour la story sentinelle E0 (Story 0.21).
+    // TODO: remove after E0 sentinel validated (Story 0.21 ou debut E1).
+    // -----------------------------------------------------------------
+    match /_smoketest/{doc} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}

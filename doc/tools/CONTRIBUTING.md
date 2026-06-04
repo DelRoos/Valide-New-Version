@@ -560,6 +560,43 @@ _bmad/_config/   # config locale spécifique utilisateur
 3. **Alerter** l'équipe sur `#incidents`.
 4. Nettoyer l'historique Git uniquement si pertinent (la rotation est prioritaire).
 
+### 11.5 Règles Firestore — deploy et tests locaux (Story 0.9)
+
+Les règles Firestore vivent à la **racine du dépôt** (`firestore.rules`, `firestore.indexes.json`, `firebase.json`, `.firebaserc`) car elles sont déployées via `firebase deploy` indépendamment du build Flutter.
+
+**Déployer les règles** sur le projet Firebase :
+
+```bash
+firebase deploy --only firestore:rules --project=valide-edu
+```
+
+**Tester les règles en local** (avant push) :
+
+```bash
+# Terminal 1 — émulateur Firestore + Auth
+firebase emulators:start --only firestore,auth
+
+# Terminal 2 — tests unitaires des règles
+cd test/rules
+npm install   # première fois seulement
+npm test
+```
+
+Ou en une seule commande depuis la racine :
+
+```bash
+firebase emulators:exec --only firestore,auth "cd test/rules && npm test"
+```
+
+**Quand ajouter / modifier une règle** :
+
+1. Modifier `firestore.rules` à la racine.
+2. Ajouter ou modifier les tests dans `test/rules/*.test.mjs`.
+3. Lancer `npm test` en local — tout doit passer.
+4. Mettre à jour `doc/partage/BASE-DE-DONNEES.md` § règles d'accès si le contrat change (et obtenir l'accord backend, cf. § 13).
+5. Commit + PR.
+6. Après merge, déployer manuellement avec `firebase deploy --only firestore:rules`.
+
 ---
 
 ## 12. Documentation

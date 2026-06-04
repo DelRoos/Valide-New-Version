@@ -479,7 +479,7 @@ interface WebhookEventDoc {
 
 ## Règles de sécurité — résumé
 
-Le détail vit dans `firestore.rules` (dépôt backend). En résumé :
+Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de ce dépôt (les configs Firebase racine sont partagées avec le backend, cf. CLAUDE.md). Tests unitaires des règles dans [`test/rules/`](../../test/rules/). En résumé :
 
 | Collection | Lecture | Écriture |
 |---|---|---|
@@ -509,3 +509,4 @@ Le détail vit dans `firestore.rules` (dépôt backend). En résumé :
 | Date | Auteur | Modification |
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture mobile et backend |
+| 2026-06-04 | DelRoos / Claude | Story 0.9 — lien vers `firestore.rules` racine + `test/rules/` (règles initiales P0 : default deny + users self-only + `_smoketest/*` temporaire) |
