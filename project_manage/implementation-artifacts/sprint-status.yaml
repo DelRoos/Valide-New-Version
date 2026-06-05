@@ -1,5 +1,5 @@
 # generated: 2026-06-03
-# last_updated: 2026-06-05  # MAJ post create-story 0.22 (ready-for-dev)
+# last_updated: 2026-06-05  # MAJ post merge Story 0.22 (PR #33 0cd95e0) + cloture Epic 0
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -28,7 +28,7 @@
 #   - cancelled: Story annulee suite a sprint change (pivot strategique). Le fichier story est conserve en archive avec banner SUPERSEDED + reference au sprint-change-proposal.
 
 generated: 2026-06-03
-last_updated: 2026-06-05
+last_updated: 2026-06-05  # post merge Story 0.22 + cloture Epic 0
 project: Valide School MVP
 project_key: VALIDE
 tracking_system: file-system
@@ -38,7 +38,7 @@ development_status:
   # ======================
   # Epic 0 — Foundation & Bootstrap (P0)
   # ======================
-  epic-0: in-progress  # 2026-06-05 Reouverture Epic 0 pour Story 0.22 (app identity icone + splash). 4 stories defers documentees ci-dessous : 0.4bis-iOS (besoin Mac), 0.8 (App Check report Epic 1+), 0.17 (CI skip sprint), 0.20 (benchmark report). Epic 0 sera re-cloture apres merge 0.22.
+  epic-0: done  # 2026-06-05 Re-cloture Epic 0 apres merge Story 0.22 (PR #33 0cd95e0). 4 stories deferred restent tracees : 0.4bis (validation iOS sim a faire sur session Mac), 0.8 App Check (a tracer debut Epic 1 ou avant 1ere story Firebase AI Logic prod), 0.17 CI/CD (a reprendre quand pipeline sera priorise, probablement Epic 1+ ou post-1ere TestFlight), 0.20 benchmark latence europe-west1 (a tracer au demarrage Epic 1 ou Epic 3 sur device Cameroun). 17 stories done + 4 deferred. Action post-merge porteur (depuis Story 0.21) : activer Anonymous Auth dans Firebase Console valide-edu pour smoke test E0.
   0-1-bootstrap-projet-flutter: done
   0-2-setup-architecture-state-routing: done
   0-3-setup-app-logger: done
@@ -63,7 +63,7 @@ development_status:
   0-19-2-styling-images-mermaid-code-block: done  # 2026-06-05 PR #25 mergee. PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
   0-20-risk-r3-benchmark-latence-europe-west1: deferred  # 2026-06-05 Reporte. Risque R3 (latence europe-west1 vs Cameroun) reste a mesurer mais necessite une Cloud Function deployee et un device sur reseau camerounais. Re-trace au demarrage Epic 1 ou Epic 3 (premier appel IA depuis Cameroun).
   0-21-page-hello-valide-sentinelle-e0: done  # 2026-06-05 PR #26 mergee. Sentinelle E0 livree: HelloPage (i18n + tokens + PedagogicalContent LaTeX+Mermaid + AppButton + responsive max 600dp) + smoke test Firestore au boot (Anonymous Auth + _smoketest/launch write/read) + 3 widget tests responsive. Valide device Android Redmi A7 Pro (FR+EN screencap). AC4/AC5 (CI) defers (0.17 skippe). AC6 iOS defere (pas de Mac). Action porteur post-merge: activer Anonymous Auth dans Firebase Console.
-  0-22-app-identity-icon-splash: review  # 2026-06-05 in-progress -> review via /bmad-dev-story. Livre: T1 logo_master.png 1024x1024 60.7KB (Python+Pillow palette 256 FASTOCTREE) + T2 flutter_launcher_icons 0.13.1 (icones Android adaptive + iOS) + T3 flutter_native_splash 2.4.7 (drawable + Android 12+ values-v31 + iOS LaunchScreen) + T4 SplashPage Flutter "VALIDE qui se dessine au trait" (CustomPainter 1800ms easeInOutCubic stroke writing + hold 300ms + navigate /hello) + main.dart Firebase init non bloquant (unawaited _bootstrap pour que splash anime soit visible) + app_router redirect / -> /splash + T6 82 tests verts (4 SplashPage + 5 HelloPage adaptes flow /splash + 73 existants) flutter analyze 0 issue APK release 60.4MB build OK device ANE-LX2 Android 8 screenshots V_t1 V_t2 launcher OK. iOS + Android 12+ visuel defere. Pivot vs spec original: animation 100% non-liee au logo (decision user 2026-06-05). Fichier 0-22-app-identity-icon-splash.md (~700 lignes): 6 AC + 6 Tasks (T1 logo optimise pngquant 1024x1024 <=400KB, T2 flutter_launcher_icons ^0.13.x, T3 flutter_native_splash ^2.4.x avec section android_12 critique pour Android 16, T4 SplashPage feature + route /splash + redirect /, T5 time-box .riv community 30min OR fallback TweenAnimationBuilder, T6 tests widget responsive 3 sizes + screenshots) + Dev Notes (ADR-001 clean arch + ADR-011 cross-platform + couleur tokens.dart:11 #2563EB + pattern preserve/remove FlutterNativeSplash + commit scope core) + anti-patterns (pas de Lottie, pas de remove dans main, pas de hex hardcode hors pubspec) + DoD. Estim M ~4-6h.
+  0-22-app-identity-icon-splash: done  # 2026-06-05 mergee main (PR #33 commit 0cd95e0). review -> done. Livre: T1 logo_master.png 1024x1024 60.7KB (Python+Pillow palette 256 FASTOCTREE) + T2 flutter_launcher_icons 0.13.1 (icones Android adaptive + iOS) + T3 flutter_native_splash 2.4.7 (drawable + Android 12+ values-v31 + iOS LaunchScreen) + T4 SplashPage Flutter "VALIDE qui se dessine au trait" (CustomPainter 1800ms easeInOutCubic stroke writing + hold 300ms + navigate /hello) + main.dart Firebase init non bloquant (unawaited _bootstrap pour que splash anime soit visible) + app_router redirect / -> /splash + T6 82 tests verts (4 SplashPage + 5 HelloPage adaptes flow /splash + 73 existants) flutter analyze 0 issue APK release 60.4MB build OK device ANE-LX2 Android 8 screenshots V_t1 V_t2 launcher OK. iOS + Android 12+ visuel defere. Pivot vs spec original: animation 100% non-liee au logo (decision user 2026-06-05). Fichier 0-22-app-identity-icon-splash.md (~700 lignes): 6 AC + 6 Tasks (T1 logo optimise pngquant 1024x1024 <=400KB, T2 flutter_launcher_icons ^0.13.x, T3 flutter_native_splash ^2.4.x avec section android_12 critique pour Android 16, T4 SplashPage feature + route /splash + redirect /, T5 time-box .riv community 30min OR fallback TweenAnimationBuilder, T6 tests widget responsive 3 sizes + screenshots) + Dev Notes (ADR-001 clean arch + ADR-011 cross-platform + couleur tokens.dart:11 #2563EB + pattern preserve/remove FlutterNativeSplash + commit scope core) + anti-patterns (pas de Lottie, pas de remove dans main, pas de hex hardcode hors pubspec) + DoD. Estim M ~4-6h.
   epic-0-retrospective: optional
 
   # ======================
