@@ -79,4 +79,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get helloLanguageEn => 'English';
+
+  @override
+  String get catalogueWaitingTitle => 'Waiting for connection';
+
+  @override
+  String get catalogueWaitingMessage =>
+      'To get started, Valide needs to connect once. Check your connection and try again.';
+
+  @override
+  String get catalogueWaitingRetry => 'Retry';
 }

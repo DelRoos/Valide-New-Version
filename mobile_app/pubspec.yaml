@@ -100,6 +100,10 @@ dev_dependencies:
   # Re-generer apres tout changement du logo: `dart run flutter_launcher_icons`.
   flutter_launcher_icons: ^0.13.1
 
+  # Story 1.1c — mock Firestore en memoire pour tests CatalogueRepository
+  # (filtres isActive, derive() match + noMatchingRule). Pas utilise en prod.
+  fake_cloud_firestore: ^4.0.0
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

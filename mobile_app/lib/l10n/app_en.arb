@@ -25,5 +25,9 @@
 
   "helloLanguageLabel": "Language",
   "helloLanguageFr": "French",
-  "helloLanguageEn": "English"
+  "helloLanguageEn": "English",
+
+  "catalogueWaitingTitle": "Waiting for connection",
+  "catalogueWaitingMessage": "To get started, Valide needs to connect once. Check your connection and try again.",
+  "catalogueWaitingRetry": "Retry"
 }

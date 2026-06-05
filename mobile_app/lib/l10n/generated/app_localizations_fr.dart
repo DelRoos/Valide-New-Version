@@ -79,4 +79,14 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get helloLanguageEn => 'English';
+
+  @override
+  String get catalogueWaitingTitle => 'En attente de connexion';
+
+  @override
+  String get catalogueWaitingMessage =>
+      'Pour démarrer, Valide doit se connecter une première fois. Vérifie ta connexion et réessaie.';
+
+  @override
+  String get catalogueWaitingRetry => 'Réessayer';
 }

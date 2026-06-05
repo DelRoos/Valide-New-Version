@@ -235,6 +235,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'English'**
   String get helloLanguageEn;
+
+  /// Titre de l'écran bloquant affiché quand le catalogue Firestore est vide ET le cache offline est vide (1er lancement offline). Cf. Story 1.1c, UX-DR-24.
+  ///
+  /// In fr, this message translates to:
+  /// **'En attente de connexion'**
+  String get catalogueWaitingTitle;
+
+  /// Sous-titre rassurant qui explique pourquoi une connexion est nécessaire au 1er lancement et invite à l'action.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour démarrer, Valide doit se connecter une première fois. Vérifie ta connexion et réessaie.'**
+  String get catalogueWaitingMessage;
+
+  /// CTA primaire pour re-tenter le chargement du catalogue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réessayer'**
+  String get catalogueWaitingRetry;
 }
 
 class _AppLocalizationsDelegate

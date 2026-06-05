@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/app.dart';
+import 'package:valide_school/core/catalogue/providers.dart';
 
 // Story 0.22 — le splash anime 1800 ms + 300 ms de hold avant de
 // rediriger vers /hello. Les tests qui ciblent HelloPage doivent attendre
@@ -15,11 +16,24 @@ Future<void> _settleSplashToHello(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 200));
 }
 
+// Story 1.1c — bypass du redirect /catalogue-waiting en environnement test.
+// Sans Firestore initialise, `appStartupCatalogueCheckProvider` echouerait et
+// le router redirigerait vers /catalogue-waiting. On force `true` pour rester
+// sur le flow normal Splash -> Hello.
+final _bypassCatalogueCheck = [
+  appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+];
+
 void main() {
   testWidgets(
     'Locale FR par défaut : affiche « Bonjour Valide » apres splash',
     (WidgetTester tester) async {
-      await tester.pumpWidget(const ProviderScope(child: ValideApp()));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: _bypassCatalogueCheck,
+          child: const ValideApp(),
+        ),
+      );
       await _settleSplashToHello(tester);
 
       expect(find.text('Bonjour Valide'), findsOneWidget);
@@ -33,6 +47,7 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            ..._bypassCatalogueCheck,
             localeProvider.overrideWith(() => _EnglishLocaleNotifier()),
           ],
           child: const ValideApp(),
@@ -51,7 +66,12 @@ void main() {
     Future<void> pumpAtSize(WidgetTester tester, Size size) async {
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(const ProviderScope(child: ValideApp()));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: _bypassCatalogueCheck,
+          child: const ValideApp(),
+        ),
+      );
       await _settleSplashToHello(tester);
     }
 
