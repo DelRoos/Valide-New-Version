@@ -21,5 +21,9 @@
   "errorNoConnection": "No connection. You can continue with what you've opened.",
   "successCopied": "Link copied.",
   "emptyStateGeneric": "Nothing to show yet.",
-  "pageNotFound": "Page not found"
+  "pageNotFound": "Page not found",
+
+  "helloLanguageLabel": "Language",
+  "helloLanguageFr": "French",
+  "helloLanguageEn": "English"
 }

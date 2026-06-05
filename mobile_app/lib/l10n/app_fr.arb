@@ -70,5 +70,14 @@
   "@emptyStateGeneric": { "description": "Empty state neutre quand une liste est vide." },
 
   "pageNotFound": "Page introuvable",
-  "@pageNotFound": { "description": "Titre d'écran 404 (deep link cassé, route inconnue)." }
+  "@pageNotFound": { "description": "Titre d'écran 404 (deep link cassé, route inconnue)." },
+
+  "helloLanguageLabel": "Langue",
+  "@helloLanguageLabel": { "description": "Étiquette au-dessus du sélecteur de langue dans la page Hello sentinelle Story 0.21." },
+
+  "helloLanguageFr": "Français",
+  "@helloLanguageFr": { "description": "Option français dans le sélecteur de langue." },
+
+  "helloLanguageEn": "English",
+  "@helloLanguageEn": { "description": "Option anglais dans le sélecteur de langue." }
 }

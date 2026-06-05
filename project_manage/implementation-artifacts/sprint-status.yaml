@@ -58,7 +58,7 @@ development_status:
   0-19-risk-r2-tests-precoces-smooth-markdown: done  # 2026-06-04 PIVOT gpt_markdown (ADR-014) merge sur main. AC2+AC3+AC4 valides device.
   0-19-2-styling-images-mermaid-code-block: in-progress  # 2026-06-05 PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
   0-20-risk-r3-benchmark-latence-europe-west1: backlog
-  0-21-page-hello-valide-sentinelle-e0: backlog
+  0-21-page-hello-valide-sentinelle-e0: in-progress  # 2026-06-05 Sentinelle E0 livree: HelloPage (i18n + tokens + PedagogicalContent LaTeX+Mermaid + AppButton + responsive max 600dp) + smoke test Firestore au boot (Anonymous Auth + _smoketest/launch write/read) + 3 widget tests responsive. Valide device Android Redmi A7 Pro (FR+EN screencap). AC4/AC5 (CI) defers (0.17 skippe). AC6 iOS defere (pas de Mac). Action porteur post-merge: activer Anonymous Auth dans Firebase Console.
   epic-0-retrospective: optional
 
   # ======================

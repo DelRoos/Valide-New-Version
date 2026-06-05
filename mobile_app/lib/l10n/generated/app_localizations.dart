@@ -217,6 +217,24 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Page introuvable'**
   String get pageNotFound;
+
+  /// Étiquette au-dessus du sélecteur de langue dans la page Hello sentinelle Story 0.21.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get helloLanguageLabel;
+
+  /// Option français dans le sélecteur de langue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get helloLanguageFr;
+
+  /// Option anglais dans le sélecteur de langue.
+  ///
+  /// In fr, this message translates to:
+  /// **'English'**
+  String get helloLanguageEn;
 }
 
 class _AppLocalizationsDelegate

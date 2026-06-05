@@ -122,3 +122,7 @@ flutter:
     # Story 0.19 R2 — cours de test pour validation precoce du wrapper
     # PedagogicalContent. Retires a la cloture E0 (Story 0.21) ou avant.
     - assets/dev/test_courses/
+    # Story 0.21 — markdown sentinelle bilingue (FR/EN) charge depuis
+    # HelloPage via rootBundle. Hors arb car contient LaTeX `$$...$$` qui
+    # casse gen-l10n (Mermaid ok mais $$ confond le parser ICU).
+    - assets/sentinel/
