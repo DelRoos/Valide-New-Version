@@ -78,6 +78,12 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_svg: ^2.3.0
 
+  # Story 0.22 — runtime usage de FlutterNativeSplash.preserve() (main.dart)
+  # et FlutterNativeSplash.remove() (splash_page.dart). Le CLI generator
+  # (`dart run flutter_native_splash:create`) fonctionne aussi en runtime
+  # dependency — pas besoin d'une entree separee en dev_dependencies.
+  flutter_native_splash: ^2.4.3
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -88,6 +94,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+
+  # Story 0.22 — generation icones Android + iOS depuis assets/images/logo_master.png.
+  # Config en bas du yaml dans la section `flutter_launcher_icons:`.
+  # Re-generer apres tout changement du logo: `dart run flutter_launcher_icons`.
+  flutter_launcher_icons: ^0.13.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -126,3 +137,42 @@ flutter:
     # HelloPage via rootBundle. Hors arb car contient LaTeX `$$...$$` qui
     # casse gen-l10n (Mermaid ok mais $$ confond le parser ICU).
     - assets/sentinel/
+    # Story 0.22 — assets identite visuelle. logo.png (1254x1254 brute,
+    # conserve pour future re-gen haute-res). logo_master.png (1024x1024,
+    # 60.7 KB, palette 256 FASTOCTREE) est consomme par flutter_launcher_icons
+    # ET flutter_native_splash ET la SplashPage Flutter.
+    - assets/images/
+
+# ============================================================
+# Story 0.22 — configuration generation icones d'app
+# ============================================================
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo_master.png"
+  min_sdk_android: 21
+  remove_alpha_ios: true
+  # AppColors.primary (lib/core/theme/tokens.dart:11) — MUST stay in sync.
+  background_color_ios: "#2563EB"
+  # Adaptive icon Android 8+ (fond uni + foreground).
+  adaptive_icon_background: "#2563EB"
+  adaptive_icon_foreground: "assets/images/logo_master.png"
+
+# ============================================================
+# Story 0.22 — configuration splash screen natif
+# ============================================================
+flutter_native_splash:
+  # AppColors.primary (lib/core/theme/tokens.dart:11) — MUST stay in sync.
+  # Si tokens.dart change -> relancer `dart run flutter_native_splash:create`.
+  color: "#2563EB"
+  image: assets/images/logo_master.png
+  android: true
+  ios: true
+  web: false
+
+  # Android 12+ utilise le SplashScreen API natif. Couleur + icone foreground.
+  # NB: la zone visible est restreinte par le masque systeme — utiliser le logo
+  # tel quel (le crop circulaire systeme respectera la circularite du design).
+  android_12:
+    color: "#2563EB"
+    image: assets/images/logo_master.png

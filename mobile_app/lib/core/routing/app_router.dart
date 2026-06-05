@@ -5,6 +5,7 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
+import '../../features/splash/presentation/splash_page.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -12,7 +13,14 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: '/',
-        redirect: (context, state) => '/hello',
+        // Story 0.22 — redirect vers /splash (SplashPage anime puis navigue
+        // vers /hello). Quand Story 1.5 (garde navigation) sera livree, la
+        // SplashPage redirigera vers /onboarding ou /dashboard selon profil.
+        redirect: (context, state) => '/splash',
+      ),
+      GoRoute(
+        path: '/splash',
+        builder: (context, state) => const SplashPage(),
       ),
       GoRoute(
         path: '/hello',

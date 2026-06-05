@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app.dart';
@@ -15,8 +18,19 @@ import 'firebase_options.dart';
 const String kBuildVersion = '1.0.0+1';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await _bootstrap();
+  final binding = WidgetsFlutterBinding.ensureInitialized();
+  // Story 0.22 — garde le splash natif visible jusqu'a ce que la SplashPage
+  // Flutter appelle FlutterNativeSplash.remove() au 1er postFrame. Sans
+  // preserve, on retombe sur un fond noir entre splash natif et 1re frame.
+  FlutterNativeSplash.preserve(widgetsBinding: binding);
+  // Story 0.22 — Firebase init en background (non bloquant) pour ne pas
+  // retarder runApp. Le splash natif resterait fige tant que _bootstrap
+  // n'a pas rendu la main, et l'utilisateur ne verrait jamais l'animation
+  // Flutter (boot Firebase observe ~3-5s sur device entree de gamme).
+  // SplashPage Flutter n'utilise pas Firebase ; HelloPage non plus
+  // (sentinelle E0). Si /hello tente une operation Firebase avant init,
+  // _e0SmokeTest le gere via AppLogger.w non bloquant.
+  unawaited(_bootstrap());
   runApp(const ProviderScope(child: ValideApp()));
 }
 
