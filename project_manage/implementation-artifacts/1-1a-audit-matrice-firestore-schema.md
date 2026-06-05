@@ -3,10 +3,12 @@ story_id: 1.1a
 title: Audit matrice exhaustive MINESEC/GCE + schema Firestore + ADR-015 + BASE-DE-DONNEES update
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-05
+merged: 2026-06-05
 branch: feat/1.1a-audit-matrice-firestore-schema
 baseline_commit: 9fd0792a0e723e3fa64e70c4841f55385280ed5c
+merge_commit: 748f07e
 estimation: S (~3-4h)
 risk: R4 — matrice profil → matières/examens marquée 🟡 squelette à compléter en P1
 dependencies: []
@@ -31,7 +33,7 @@ amendments_downstream:
 
 # Story 1.1a — Audit matrice exhaustive MINESEC/GCE + schema Firestore + ADR-015 + BASE-DE-DONNEES update
 
-Status: **review**
+Status: **done**
 
 ## Objectif
 
@@ -591,3 +593,4 @@ Claude Opus 4.7 (Amelia dev agent — /bmad-dev-story workflow).
 - **2026-06-05 (Step Create-Story)** : Story file généré via `/bmad-create-story 1.1a`. Status `backlog` → `ready-for-dev`. Estimation S (~3-4h). Aucun code prévu.
 - **2026-06-05 (Step 4 dev-story)** : `baseline_commit: 9fd0792a0e723e3fa64e70c4841f55385280ed5c` capturé. Status `ready-for-dev` → `in-progress`. Branche `feat/1.1a-audit-matrice-firestore-schema` créée.
 - **2026-06-05 (T1-T6 livrés)** : 6 tâches complétées séquentiellement. 4 fichiers `doc/partage/*` + `architecture.md § 14` updates + ADR-015 créé. Cohérence inter-doc validée (grep IDs snake_case + indexes + cross-refs). Diff total ~560 lignes (sous les 600 cibles). Status `in-progress` → `review`.
+- **2026-06-05 (PR mergée)** : `merge_commit: 748f07e`. Status `review` → `done`. AC6 (accord backend) reste différé async post-merge. Stories 1.1b et 1.1c maintenant débloquées (peuvent partir en parallèle).
