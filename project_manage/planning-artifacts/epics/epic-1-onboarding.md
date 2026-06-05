@@ -17,7 +17,9 @@ sourceArtifacts:
   - doc/partage/BASE-DE-DONNEES.md
   - doc/partage/DONNEES-REFERENCE.md
   - doc/partage/ALGORITHMES.md
-storyCount: 10
+storyCount: 12  # 2026-06-05 sprint change : Story 1.1 cancelled, 1.1a/1.1b/1.1c ajoutees (cf sprint-change-proposal-2026-06-05.md). Net +2 stories.
+amendments:
+  - "2026-06-05 — sprint-change-proposal-2026-06-05.md : pivot Firestore-driven catalogue. Story 1.1 cancelled, remplacee par 1.1a (audit + Firestore schema + ADR-015 + BASE-DE-DONNEES.md update) + 1.1b (script Python seed) + 1.1c (CatalogueRepository mobile + ecran connexion bloquant). Stories 1.3/1.4/1.9 amendees (lecture catalogue depuis Firestore au lieu de seed JSON local)."
 ---
 
 # Epic 1 — Onboarding & Profil scolaire
@@ -43,49 +45,242 @@ Mettre en place le flow d'onboarding complet qui permet à un élève camerounai
 
 ## Dependency graph
 
+> **Mis a jour 2026-06-05** suite au sprint change : Story 1.1 cancelled, remplacee par 1.1a → {1.1b, 1.1c}.
+
 ```text
-                  1.1 Audit R4 matrice + seed catalogue (research)
-                     │
-                     ▼
-              1.2 Choix sous-système (FR-1) + bascule i18n
-                     │
-                     ▼
-              1.3 Flow profil scolaire 3 étapes + récap (FR-2)
-                     │
-        ┌────────────┼─────────────┬─────────────┬──────────┐
+        1.1a Audit matrice exhaustive + Firestore schema + ADR-015
+        (research/docs only, accord backend requis)
+              │
+              ├──────────────────────┐
+              ▼                      ▼
+        1.1b Script Python      1.1c CatalogueRepository
+        seed_catalogue.py       mobile + ecran connexion
+        (peut paralleliser      bloquant + tests
+         avec 1.1c)             (depend de 1.1a)
+              │                      │
+              └──────────┬───────────┘
+                         ▼
+              1.2 Choix sous-systeme (FR-1) + bascule i18n
+                         │
+                         ▼
+              1.3 Flow profil scolaire 3 etapes + recap (FR-2)
+              (depend desormais de 1.1c CatalogueRepository)
+                         │
+        ┌────────────┬───┴─────────┬─────────────┬──────────┐
         ▼            ▼             ▼             ▼          ▼
    1.4 Retrait     1.5 Garde     1.6 Compte    1.8 Persis  1.9 Dashboard
-   matières (FR-3) nav (FR-4)    Google/Apple  -tance      skeleton +
-                                 + merge       session     filtrage (FR-10)
-                                 visiteur (FR-5) (FR-8)
-                                       │
+   matieres        nav (FR-4)    Google/Apple  -tance      skeleton +
+   (FR-3)                        + merge       session     filtrage
+   canOptOut                     visiteur      (FR-8)      isActive Firestore
+   Firestore                     (FR-5)                    (FR-10)
+                                        │
                             ┌──────────┴───────────┐
                             ▼                      ▼
-                     1.7 Liaison école      1.10 Suppression compte
+                     1.7 Liaison ecole      1.10 Suppression compte
                      optionnelle (FR-6)     7j grace (FR-7)
 ```
 
 ## Stories
 
-### Story 1.1 : Audit R4 matrice MINESEC/GCE + seed catalogue local
+### ~~Story 1.1 : Audit R4 matrice MINESEC/GCE + seed catalogue local~~
+
+> ⚠️ **CANCELLED 2026-06-05** — superseded par [sprint-change-proposal-2026-06-05.md](../../sprint-change-proposal-2026-06-05.md). Remplacee par **Stories 1.1a + 1.1b + 1.1c** ci-dessous suite au pivot Firestore-driven catalogue. Le fichier story `project_manage/implementation-artifacts/1-1-audit-r4-matrice-seed-catalogue.md` est conserve en archive avec banner SUPERSEDED.
+
+---
+
+### Story 1.1a : Audit matrice exhaustive + schema Firestore + ADR-015 + BASE-DE-DONNEES.md update
 
 **Statut** : Draft
-**Sprint** : P1 (semaine 1, à lancer J1 — bloquant pour 1.3)
-**Dépendances** : aucune
-**Estimation** : S (~3-4h, plus temps d'attente si audit par enseignant externe)
-**Risque** : R4 — la matrice profil → matières/examens dans `doc/partage/DONNEES-REFERENCE.md` est marquée 🟡 « squelette à compléter en Phase 1 ». Story dédiée d'audit.
+**Sprint** : P1 (semaine 1, J1 — bloquant pour 1.1b, 1.1c)
+**Dependances** : aucune
+**Estimation** : S (~3-4h)
+**Accord requis** : backend team pour `doc/partage/BASE-DE-DONNEES.md` updates (CLAUDE.md regle § doc/partage)
 
 **As a** product owner Valide,
-**I want** la matrice (sous-système, filière, niveau, série) → matières dérivées + examens visés validée par une source autoritaire (enseignant camerounais OU sources publiques MINESEC/GCE Board) et un seed catalogue local versionné,
-**so that** les Stories 1.3 (flow profil) et 1.9 (dashboard filtré) puissent dériver les matières sans dépendre d'une Cloud Function backend pas encore en place et que le risque R4 soit retiré du registre.
+**I want** une matrice exhaustive (sous-systeme, filiere, niveau, serie) → (matieres, examens) couvrant TOUTES les classes francophone (1er cycle + 2nd cycle A/C/D/E + technique F1-F5 + G1-G3 + autres ESF/IH/MVT) et anglophone (Form 1-5 + Lower/Upper Sixth complet S1-S8 + A1-A5), ET un schema Firestore documente (6 collections avec flag `isActive: bool`) + ADR-015 + mise a jour de `doc/partage/BASE-DE-DONNEES.md`,
+**so that** Stories 1.1b (script Python seed) et 1.1c (CatalogueRepository mobile) puissent demarrer en parallele avec des contrats clairs, et que l'admin pedagogique puisse activer/desactiver les classes runtime depuis Firebase Console.
 
 #### Contexte technique
 
-`doc/partage/DONNEES-REFERENCE.md` § « Tableau de dérivation » contient 8 lignes d'exemples figés mais la matrice complète est marquée 🟡. PRD FR-2 dit « la série dépend du niveau et de la filière » et les exemples doivent matcher : Tle D francophone → `[Maths, PCT, SVT, Français, Anglais, LV2, Philo, Hist-Géo, EPS]` + `[exam_bac_francophone_d]` ; Upper Sixth S2 anglophone → `[Chemistry, Physics, Biology]` + `[exam_gce_a_level_anglophone_s2]`.
+Sprint change 2026-06-05 acte le pivot du seed JSON local statique vers Firestore source-of-truth dynamique. Cette story livre **uniquement les contrats** (docs, ADR, schema) — pas de code Dart ni Python.
 
-Pour le MVP, on **embarque** la matrice complète comme **seed JSON local** dans `mobile_app/assets/onboarding/catalogue_subjects.json` — pas de lecture Firestore lors du flow profil. Cela permet à l'app de fonctionner sans backend déployé et de réduire la latence au 1ᵉʳ lancement (NFR-2 : démarrage < 3s, profil affiché < 2s).
+**6 collections cibles** :
+- `filieres/{id}` : `{id, name.fr, name.en, isActive, sortOrder}`
+- `niveaux/{id}` : `{id, subSystem, name.fr, name.en, filiereIds[], isActive, sortOrder}`
+- `series/{id}` : `{id, subSystem, niveauId, filiereId, name.fr, name.en, canOptOut, isActive, sortOrder}`
+- `subjects/{id}` : `{id, subSystem, name.fr, name.en, icon, isActive, sortOrder}`
+- `exam_targets/{id}` : `{id, subSystem, name.fr, name.en, isActive, sortOrder}`
+- `derivation_rules/{id}` : `{matchSubSystem, matchFiliere, matchNiveau, matchSerie, subjectIds[], examTargetIds[], canOptOut, isActive}`
 
-Quand le backend déploiera la collection `subjects/` Firestore (Phase Cloud Function), le seed local restera comme fallback offline. Le passage à la lecture Firestore en runtime se fera dans une chore de suivi (post-Epic 1).
+**Indexes composites** :
+- `series.(subSystem, niveauId, filiereId, isActive)` — selection serie pour profil
+- `subjects.(subSystem, isActive)` — grille matieres dashboard
+- `derivation_rules.(matchSubSystem, matchFiliere, matchNiveau, matchSerie, isActive)` — derivation
+
+**Regles d'acces** : `read: if request.auth != null` (catalogue public auth), `write: if false` (admin Console / script Python seulement).
+
+#### Acceptance Criteria
+
+**AC1 — Audit matrice exhaustive** : `doc/partage/DONNEES-REFERENCE.md` matrice completee pour TOUTES les classes (cf. perimetre user 2026-06-05). Statut 🟡 → 🟢 § Tableau de derivation + historique mis a jour.
+
+**AC2 — Schema Firestore documente** : `doc/partage/BASE-DE-DONNEES.md` etendu avec les 6 collections (structure TypeScript-like comme les autres collections du doc), indexes composites listes, regles d'acces ecrites. Mise a jour de la table inventaire en haut du doc.
+
+**AC3 — ADR-015 cree** : `project_manage/planning-artifacts/architecture/adrs/ADR-015-catalogue-firestore-runtime-activation.md` avec Statut Accepte, Contexte, Decision, Consequences positives/negatives, Alternatives rejetees (incl. seed JSON local). Reference au sprint-change-proposal.
+
+**AC4 — Algorithmes update** : `doc/partage/ALGORITHMES.md § 1` mis a jour : algo derivation reste identique mais lieu d'execution precise (Cloud Function backend OU helper Dart client — decision figee dans Story 1.1c).
+
+**AC5 — Accord backend** : PR commentee par backend lead approuvant les updates BASE-DE-DONNEES.md (peut etre async, mais bloquant pour merge).
+
+#### Definition of Done
+
+- [ ] `doc/partage/DONNEES-REFERENCE.md` matrice 🟢 complete (toutes classes)
+- [ ] `doc/partage/BASE-DE-DONNEES.md` : 6 nouvelles collections documentees
+- [ ] `doc/partage/ALGORITHMES.md § 1` mis a jour
+- [ ] `architecture/adrs/ADR-015-catalogue-firestore-runtime-activation.md` cree
+- [ ] `architecture/architecture.md § 14 Catalogue d'ADRs` mis a jour avec reference ADR-015
+- [ ] Accord backend obtenu (commentaire PR)
+- [ ] PR ≤ 600 lignes diff
+- [ ] Commit `docs(partage): pivot Firestore catalogue + schema + ADR-015 (sprint change Story 1.1)`
+
+#### Notes pour Amelia
+
+- **Aucun code dans cette story** (ni Dart ni Python). Uniquement docs + ADR.
+- **Aucune assumption Cloud Function** : on ne suppose pas qu'un backend existe. ADR-015 doit fonctionner mobile-only (seed via script Python externe + lecture Firestore au runtime).
+- **Sources matrice** : MINESEC + GCE Board + Office du Bac (cf. DONNEES-REFERENCE.md § Sources autoritaires).
+- **Decision derivation** : laisser ouverte en 1.1a (helper Dart client OU Cloud Function). Story 1.1c trance.
+- **Update CLAUDE.md ?** : non, sauf si decision sur `scripts/firebase_seed/` location necessite (a discuter pendant l'implementation).
+
+---
+
+### Story 1.1b : Script Python `seed_catalogue.py` + matrice source + procedure d'init
+
+**Statut** : Draft
+**Sprint** : P1 (semaine 1, J2-J3 — parallele 1.1c possible)
+**Dependances** : Story 1.1a (schema + ADR-015 figes)
+**Estimation** : M (~4-5h)
+
+**As a** porteur Firebase (Delano),
+**I want** un script Python autonome qui lit une matrice JSON versionnee et populate les 6 collections Firestore (filieres, niveaux, series, subjects, exam_targets, derivation_rules) avec `isActive` configurables,
+**so that** je puisse initialiser le catalogue sur `valide-edu` sans dependre d'un backend deploye et que les modifications futures (ajout matiere, activation serie) se fassent par re-run du script ou edition directe Console.
+
+#### Contexte technique
+
+Nouveau dossier `scripts/firebase_seed/` cree au niveau racine du depot (exception documentee dans CLAUDE.md — depot mobile inclut des scripts d'init Firebase). Le script utilise `firebase-admin` Python SDK (auth via service-account.json local, jamais commit).
+
+Architecture du dossier :
+```
+scripts/firebase_seed/
+├── seed_catalogue.py          # script principal (idempotent : set avec merge)
+├── data/
+│   ├── matrice.json           # source de verite versionnee (toutes classes)
+│   └── README.md              # documentation de la structure
+├── tests/
+│   └── test_seed.py           # tests basiques (parsing matrice, validation IDs)
+├── requirements.txt           # firebase-admin, pytest
+├── README.md                  # procedure d'init pour porteur
+└── .gitignore                 # service-account.json, __pycache__, .venv
+```
+
+#### Acceptance Criteria
+
+**AC1 — Structure dossier scripts/firebase_seed/** : tous les fichiers ci-dessus crees. `.gitignore` couvre `service-account*.json`, `__pycache__/`, `.venv/`, `*.pyc`.
+
+**AC2 — Matrice JSON source** : `data/matrice.json` reflete la matrice 🟢 de DONNEES-REFERENCE.md (Story 1.1a). Structure exacte selon schema Firestore Story 1.1a.
+
+**AC3 — Script seed idempotent** : `python seed_catalogue.py --project valide-edu --credentials ./service-account.json` execute sans erreur. Idempotent : run 2x → memes documents (utilise `set` avec merge, pas `add`). Affiche un resume `Created/Updated X filieres, Y niveaux, ...`.
+
+**AC4 — Tests basiques** : `pytest tests/` couvre : (a) parsing matrice JSON valide, (b) validation convention IDs (snake_case, prefix subSystem), (c) detection de doublons d'ID, (d) dry-run sans ecriture Firestore.
+
+**AC5 — README porteur** : procedure d'init claire (creer service account, telecharger JSON, installer deps, run script, verifier Firestore Console). Avertissement : `service-account.json` jamais commit.
+
+**AC6 — `flutter analyze` 0 issue** : non applicable (pas de code Dart). Tests Python verts.
+
+#### Definition of Done
+
+- [ ] Dossier `scripts/firebase_seed/` complet (script + matrice + tests + README + .gitignore + requirements)
+- [ ] `python seed_catalogue.py --dry-run` execute sans erreur (CI)
+- [ ] `pytest scripts/firebase_seed/tests/` vert (4+ tests)
+- [ ] Procedure README testee par porteur (Delano) — note OK dans la PR
+- [ ] PR ≤ 600 lignes diff hors matrice JSON
+- [ ] Commit `feat(scripts): script Python seed Firestore catalogue (Story 1.1b)`
+
+#### Notes pour Amelia
+
+- **`firebase-admin` SDK Python** : version stable au moment du dev (~ 6.x).
+- **Auth** : service-account.json fourni par porteur. Le script attend `--credentials` flag.
+- **Idempotence critique** : `set(merge=True)` partout. Jamais `add()`.
+- **NE PAS** commiter `service-account.json` — verifier `.gitignore`.
+- **Action porteur post-merge** : Delano run le script une fois. Documenter le run dans la PR.
+
+---
+
+### Story 1.1c : CatalogueRepository mobile + ecran connexion bloquant + tests
+
+**Statut** : Draft
+**Sprint** : P1 (semaine 1, J2-J4 — parallele 1.1b possible)
+**Dependances** : Story 1.1a (schema Firestore + ADR-015 figes)
+**Estimation** : M (~4-5h)
+
+**As a** dev Flutter,
+**I want** un `CatalogueRepository` qui lit les 6 collections Firestore avec cache offline natif (NFR-5) + filtre `isActive == true` + helper `derive(subSystem, filiere, niveau, serie)`, et un ecran « En attente de connexion » bloquant si Firestore est vide au 1er lancement (Firestore offline + cache vide),
+**so that** Stories 1.3, 1.4, 1.9 puissent consommer le catalogue de maniere transparente sans connaitre la couche Firestore.
+
+#### Contexte technique
+
+**Clean architecture** (ADR-001) :
+- Modeles immutables (`equatable` deja pubspec) : `Filiere`, `Niveau`, `Serie`, `Subject`, `ExamTarget`, `DerivationRule`, `DerivedProfile`
+- Repository : `lib/core/catalogue/catalogue_repository.dart` qui expose `Stream<CatalogueSnapshot>` (snapshots Firestore) + `Either<CatalogueFailure, DerivedProfile> derive(...)`
+- Provider Riverpod : `catalogueProvider` lazy, expose un `AsyncValue<Catalogue>`
+- Failure : `CatalogueFailure.empty()`, `.networkError(...)`, `.noMatchingRule(...)` etendant `Failure` (Story 0.4)
+
+**Filtrage isActive** : toutes les queries Firestore appliquent `where('isActive', '==', true)`. Cache offline natif Firestore (Story 0.7) prend en charge la persistence.
+
+**Ecran connexion bloquant** : route `/catalogue-waiting` affichee si `CatalogueRepository.firstLoad()` retourne `Left(CatalogueFailure.empty())` ET pas de cache offline. Affiche : icone, texte « Connecte-toi pour demarrer », bouton « Reessayer ». Pattern UX-DR-24 (loading/empty/error/offline) + EXPERIENCE.md ajout Flow 1 « Edge case 1er lancement offline ».
+
+**Decision derivation** : helper `derive()` execute cote client (Dart) en lisant les `derivation_rules` Firestore. Pas de Cloud Function backend pour V1 (decision figee ici).
+
+#### Acceptance Criteria
+
+**AC1 — Modeles immutables** : `lib/core/catalogue/models.dart` (ou fichier separe par modele) avec 7 classes `equatable` listees ci-dessus. Each model has `fromFirestore(DocumentSnapshot)` factory + `toJson()` (utile pour debug). 0 dependance Flutter dans les modeles (juste `equatable`).
+
+**AC2 — Repository Firestore** : `CatalogueRepository` expose :
+- `Stream<List<Filiere>> watchFilieres()` (filter `isActive == true`, orderBy `sortOrder`)
+- idem pour niveaux/series/subjects/examTargets/derivationRules
+- `Future<Either<CatalogueFailure, DerivedProfile>> derive({...})` qui matche la 1ere rule des derivationRules
+- Cache offline implicite (settings Story 0.7 deja active)
+
+**AC3 — Provider Riverpod** : `catalogueProvider` Provider/StreamProvider lazy. `appStartupCatalogueCheckProvider` qui retourne `AsyncValue<bool>` (true si catalogue charge OK, false si offline+vide). Test integration.
+
+**AC4 — Ecran connexion bloquant** : page `/catalogue-waiting` rendue si AsyncValue est offline+vide. Icone Lucide `wifi-off`, texte i18n FR/EN, bouton `AppButton.primary` « Reessayer » qui re-trigger le stream. Disparait des que le catalogue charge.
+
+**AC5 — i18n FR/EN** : ajouter 3 cles ARB (`catalogueWaitingTitle`, `catalogueWaitingMessage`, `catalogueWaitingRetry`) en FR+EN. UX-DR-31 respecte (tutoiement FR).
+
+**AC6 — Tests** :
+- 4 tests unitaires modeles (1 par fromFirestore representative)
+- 3 tests repository (mocks `FakeFirebaseFirestore` ou similaire) : stream filtres, derive() match, derive() noMatchingRule
+- 2 tests widget pour ecran connexion bloquant (vide → affiche, charge → disparait)
+
+**AC7 — `flutter analyze` 0 issue** + `flutter test` vert + PR ≤ 500 lignes diff (hors i18n generated).
+
+#### Definition of Done
+
+- [ ] `lib/core/catalogue/` cree avec models + repository + provider
+- [ ] Ecran `/catalogue-waiting` integre dans `go_router`
+- [ ] 3 cles ARB FR+EN ajoutees, AppLocalizations regenere
+- [ ] 9+ tests verts
+- [ ] `flutter analyze` 0 issue
+- [ ] Validation device Android (optionnel iOS si Mac dispo)
+- [ ] PR ≤ 500 lignes diff
+- [ ] Commit `feat(catalogue): CatalogueRepository Firestore + ecran connexion bloquant (Story 1.1c)`
+
+#### Notes pour Amelia
+
+- **Reutiliser pattern Story 0.7** : firestore settings deja appliques au boot. Pas besoin de re-configurer.
+- **AppLogger** : log `AppLogger.i('Catalogue loaded: X filieres, Y niveaux, ...')` au 1er succes. Log `AppLogger.w('Catalogue empty + offline')` si bloquant.
+- **NE PAS** introduire de provider global qui parse toute la matrice au boot. Streams lazy.
+- **NE PAS** ajouter `freezed` ou `json_serializable` (equatable + fromFirestore manuels suffisent).
+- **Pattern Either** : `derive()` retourne `Either<CatalogueFailure, DerivedProfile>` per NFR-7.
+- **iOS** : tester si Mac dispo. Sinon defer (cf. 0.4bis).
 
 #### Acceptance Criteria
 
@@ -233,16 +428,20 @@ Un message d'avertissement clair (PRD FR-1 conséquence + ADR-006 négatif #2) :
 
 ### Story 1.3 : Flow profil scolaire 3 étapes + écran récap (FR-2)
 
+> **AMENDED 2026-06-05** (sprint change) : depend desormais de **Story 1.1c (CatalogueRepository)** au lieu de Story 1.1 cancelled. Lecture catalogue migre du seed JSON local vers Firestore via repository. AC enrichis (loading state + ecran connexion bloquant herite de 1.1c).
+
 **Statut** : Draft
-**Sprint** : P1 (semaine 1)
-**Dépendances** : Story 1.1 (seed catalogue), Story 1.2 (sous-système choisi), Story 0.13 (AppButton, AppCard, PillTabs, ProgressBar), Story 0.14 (toasts pour validation)
-**Estimation** : L (~6-8h)
+**Sprint** : P1 (semaine 1-2)
+**Dépendances** : Story 1.1c (CatalogueRepository Firestore), Story 1.2 (sous-système choisi), Story 0.13 (AppButton, AppCard, PillTabs, ProgressBar), Story 0.14 (toasts pour validation)
+**Estimation** : L (~6-8h, inchangee — la couche catalogue est encapsulee dans CatalogueRepository de 1.1c)
 
 **As a** élève qui a choisi son sous-système,
 **I want** remplir mon profil scolaire en 3 étapes guidées (filière → niveau → série) avec une progression visible, et voir mes matières dérivées + examen visé affichés clairement à la fin,
 **so that** je sache immédiatement quels cours sont préparés pour moi sans avoir à cocher chaque matière individuellement (FR-2).
 
 #### Contexte technique
+
+> **MAJ 2026-06-05** : la lecture catalogue passe par `CatalogueRepository` (Story 1.1c) au lieu de `OnboardingCatalogue.load()` local. Les `subjects[]` et `examTargets[]` derives via `catalogueRepository.derive(...)` returning `Either<CatalogueFailure, DerivedProfile>`. Toutes les listes affichees (filieres, niveaux, series) sont des streams Firestore filtres `isActive == true`.
 
 FR-2 + EXPERIENCE.md Flow 1 étapes 3-6. Le flow est une **state machine** linéaire avec navigation arrière autorisée entre étapes :
 
@@ -365,9 +564,11 @@ La règle Firestore `users/{uid}` self-only (Story 0.9) doit être **étendue** 
 
 ### Story 1.4 : Retrait conditionnel matières (FR-3)
 
+> **AMENDED 2026-06-05** (sprint change) : `_canOptOut(subSystem, niveau)` lit `series/{id}.canOptOut` depuis Firestore via `CatalogueRepository` au lieu de helper Dart hardcoded. Logique decisionnelle inchangee — seule la source change. Tests adaptes.
+
 **Statut** : Draft
-**Sprint** : P1 (semaine 1)
-**Dépendances** : Story 1.3 (profil créé)
+**Sprint** : P1 (semaine 1-2)
+**Dépendances** : Story 1.3 (profil créé), Story 1.1c (CatalogueRepository pour lire `series/{id}.canOptOut`)
 **Estimation** : S (~3h)
 
 **As a** élève dont le profil autorise le retrait (anglophone Form 3+ ou Lower/Upper Sixth toutes filières),
@@ -796,9 +997,11 @@ Si l'utilisateur n'est pas encore en Anonymous Auth (avant Story 1.3), `onboardi
 
 ### Story 1.9 : Dashboard skeleton + filtrage matières par profil (FR-10 partiel)
 
+> **AMENDED 2026-06-05** (sprint change) : la grille matieres filtre les `derivedSubjects \ optedOutSubjects` par `subject.isActive == true` lu depuis Firestore via `CatalogueRepository`. Une matiere desactivee admin runtime disparait automatiquement de la grille au prochain stream tick.
+
 **Statut** : Draft
 **Sprint** : P1 (semaine 2)
-**Dépendances** : Story 1.3 (profil créé), Story 1.1 (seed catalogue)
+**Dépendances** : Story 1.3 (profil créé), Story 1.1c (CatalogueRepository pour `subject.isActive` filter)
 **Estimation** : M (~5h)
 
 **As a** élève qui vient de finir son onboarding,
@@ -973,15 +1176,17 @@ FR-7 + ADR-005 (doc/partage maintenance). Le cycle de vie :
 | FR | Story | Notes |
 |---|---|---|
 | FR-1 | 1.2 | Choix sous-système + bascule i18n + immuabilité |
-| FR-2 | 1.3 | Flow 3 étapes + récap |
-| FR-3 | 1.4 | Retrait conditionnel |
+| FR-2 | 1.3 | Flow 3 étapes + récap (lecture catalogue Firestore via 1.1c) |
+| FR-3 | 1.4 | Retrait conditionnel (canOptOut depuis Firestore via 1.1c) |
 | FR-4 | 1.5 | Garde nav centralisée |
 | FR-5 | 1.6 | Compte Google/Apple + linkWithCredential |
 | FR-6 | 1.7 | École optionnelle + autocomplete |
 | FR-7 | 1.10 | Suppression 7j grace |
 | FR-8 | 1.8 | Persistance + reprise |
-| FR-10 | 1.9 | Dashboard filtré (partiel — recos en E5) |
-| R4 | 1.1 | Audit matrice + seed local |
+| FR-10 | 1.9 | Dashboard filtré (partiel — recos en E5, isActive filter via 1.1c) |
+| R4 | 1.1a | Audit matrice exhaustive + Firestore schema (replaced 1.1 cancelled) |
+| Infrastructure seed | 1.1b | Script Python `scripts/firebase_seed/` (sprint change) |
+| Infrastructure mobile | 1.1c | CatalogueRepository + ecran connexion bloquant (sprint change) |
 
 | UX-DR | Story | Notes |
 |---|---|---|
@@ -1002,25 +1207,36 @@ FR-7 + ADR-005 (doc/partage maintenance). Le cycle de vie :
 
 | Story | Taille | Heures estimées |
 |---|---|---|
-| 1.1 Audit R4 | S | 3-4h |
+| ~~1.1 Audit R4 + seed local~~ | ~~S~~ | ~~3-4h~~ **CANCELLED** |
+| **1.1a Audit matrice + Firestore schema + ADR-015 + BASE-DE-DONNEES update** | **S** | **3-4h** |
+| **1.1b Script Python seed_catalogue.py** | **M** | **4-5h** |
+| **1.1c CatalogueRepository mobile + ecran connexion bloquant** | **M** | **4-5h** |
 | 1.2 Sous-système | M | 4-5h |
-| 1.3 Profil 3 étapes | L | 6-8h |
-| 1.4 Retrait matières | S | 3h |
+| 1.3 Profil 3 étapes (lecture Firestore via 1.1c) | L | 6-8h |
+| 1.4 Retrait matières (canOptOut Firestore) | S | 3h |
 | 1.5 Garde nav | S | 3h |
 | 1.6 Compte Google/Apple | M | 5h |
 | 1.7 École | M | 4-5h |
 | 1.8 Persistance | S | 3h |
-| 1.9 Dashboard skeleton | M | 5h |
+| 1.9 Dashboard skeleton (isActive filter) | M | 5h |
 | 1.10 Suppression compte | S | 3h |
-| **Total** | | **39-48h** |
+| **Total post sprint change** | | **51-63h** |
 
-Cible P1 = 1 semaine (5j × ~8h = 40h). Léger dépassement possible si Story 1.3 (L) prend 8h plein. Marge tampon via Story 1.10 ou 1.7 reportables en début P2 si pression.
+Cible P1 = 1 semaine (5j × ~8h = 40h). Sprint change 2026-06-05 ajoute **+12-15h** (split 1.1 → 3 stories). **Options absorption** :
+
+- Elargir P1 a 6-7j calendaires (recommande)
+- OU deferer 1.7 (Liaison ecole) et 1.10 (Suppression compte) en debut P2 sans perte de user-value Epic 1 critique (Fatou et James peuvent valider l'onboarding sans ecole liee et sans option suppression compte)
+
+Decision a prendre en mid-sprint si pression timeline.
 
 ## Notes transversales
 
 - **Anonymous Auth activée en Firebase Console** : action porteur toujours en attente depuis Story 0.21 (sentinelle E0). Story 1.2 verrouille cet requirement. À traiter J1 P1.
-- **Règles Firestore étendues** : Stories 1.3 (validation users/{uid}), 1.7 (catalog schools read + requests write), 1.10 (deletion field) — toutes nécessitent des updates `firestore.rules` + redéploiement. À coordonner avec backend si parallèle.
+- **Règles Firestore étendues** : Stories 1.3 (validation users/{uid}), 1.7 (catalog schools read + requests write), 1.10 (deletion field), **1.1c (6 nouvelles collections catalogue read-only)** — toutes nécessitent des updates `firestore.rules` + redéploiement. À coordonner avec backend si parallèle.
 - **Backend Cloud Functions** : Story 1.10 dépend de `requestAccountDeletion` + `cancelAccountDeletion`. Si backend pas prêt, stub mobile-side.
-- **CI/CD (0.17 deferred)** : pas de pipeline GitHub Actions. Tests à lancer manuellement (`flutter test`) avant chaque PR.
+- **Sprint change 2026-06-05** : pivot Firestore-driven catalogue (cf. [sprint-change-proposal-2026-06-05.md](../../sprint-change-proposal-2026-06-05.md)). Stories 1.1a/1.1b/1.1c remplacent 1.1 cancelled. Stories 1.3/1.4/1.9 amendees. Action porteur post-1.1b mergee : run `python scripts/firebase_seed/seed_catalogue.py --project valide-edu` pour peupler Firestore.
+- **Accord backend BASE-DE-DONNEES.md** : Story 1.1a ajoute 6 collections (filieres, niveaux, series, subjects, exam_targets, derivation_rules) au schema partage. Per CLAUDE.md regle § doc/partage, necessite commentaire approval backend lead sur la PR 1.1a.
+- **Nouveau dossier `scripts/firebase_seed/`** : exception au principe « ce depot = mobile only » de CLAUDE.md, documentee dans Story 1.1b. Justification : pas de backend deploye V1, le script Python d'init est l'unique mecanisme de seed.
+- **CI/CD (0.17 deferred)** : pas de pipeline GitHub Actions. Tests à lancer manuellement (`flutter test` + `pytest scripts/firebase_seed/tests/`) avant chaque PR.
 - **iOS validation** : Stories 1.6 (Apple Sign-In) et 1.9 (responsive tablet) gagnent à être validées sur iOS — session Mac à planifier.
-- **Performance NFR-2 (démarrage < 3s)** : à surveiller — splash 1.5s + lecture seed catalogue + check onboardingStep. Profiling Story 1.2 et 1.8.
+- **Performance NFR-2 (démarrage < 3s)** : à surveiller — splash 1.5s + lecture catalogue Firestore (1er cold start) + check onboardingStep. Cache offline Firestore (Story 0.7) couvre les lancements suivants. Profiling Story 1.1c et 1.2.

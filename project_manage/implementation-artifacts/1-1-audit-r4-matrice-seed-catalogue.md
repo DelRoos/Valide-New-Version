@@ -3,8 +3,10 @@ story_id: 1.1
 title: Audit R4 matrice MINESEC/GCE + seed catalogue local
 epic: 1
 phase: P1
-status: ready-for-dev
+status: cancelled
+superseded_by: project_manage/planning-artifacts/sprint-change-proposal-2026-06-05.md
 created: 2026-06-05
+cancelled: 2026-06-05
 branch: feature/1.1-audit-r4-matrice-seed-catalogue
 estimation: S (~3-4h, plus temps d'attente si audit externe)
 risk: R4 — matrice profil → matières/examens marquée 🟡 squelette à compléter en P1
@@ -17,9 +19,15 @@ sourceArtifacts:
   - doc/partage/ALGORITHMES.md § 1 (Dérivation profil → matières + examens)
 ---
 
+> ⚠️ **SUPERSEDED 2026-06-05** par [sprint-change-proposal-2026-06-05.md](../planning-artifacts/sprint-change-proposal-2026-06-05.md).
+>
+> Cette story a été annulée suite à un pivot architectural : passage d'un **seed JSON local statique** à un **catalogue Firestore-driven** avec flag `isActive` runtime (activation/désactivation depuis Firebase Console sans rebuild). Elle est remplacée par les Stories **1.1a** (audit + Firestore schema + ADR-015), **1.1b** (script Python `scripts/firebase_seed/seed_catalogue.py`) et **1.1c** (`CatalogueRepository` mobile + écran connexion bloquant), décomposées dans [epic-1-onboarding.md](../planning-artifacts/epics/epic-1-onboarding.md).
+>
+> Le contenu ci-dessous est **conservé en archive** pour traçabilité de la décision initiale et de l'effort de contexte engine. Ne pas implémenter — voir Stories 1.1a/1.1b/1.1c à la place.
+
 # Story 1.1 — Audit R4 matrice MINESEC/GCE + seed catalogue local
 
-Status: **ready-for-dev**
+Status: **cancelled** (superseded — voir banner ci-dessus)
 
 ## Objectif
 
