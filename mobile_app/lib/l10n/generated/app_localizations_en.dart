@@ -70,4 +70,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pageNotFound => 'Page not found';
+
+  @override
+  String get helloLanguageLabel => 'Language';
+
+  @override
+  String get helloLanguageFr => 'French';
+
+  @override
+  String get helloLanguageEn => 'English';
 }
