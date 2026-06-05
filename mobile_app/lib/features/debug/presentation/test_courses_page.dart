@@ -173,6 +173,13 @@ class TestCourse {
 
 const List<TestCourse> testCourses = [
   TestCourse(
+    slug: 'rendu_avance',
+    title: 'Démo rendu avancé (0.19.2)',
+    description: 'Image + SVG + Mermaid + code + LaTeX + tableau dans un seul cours.',
+    renderFocus: 'imageBuilder + codeBuilder Mermaid (mermaid.ink)',
+    assetPath: 'assets/dev/test_courses/rendu_avance.md',
+  ),
+  TestCourse(
     slug: 'maths_derivees',
     title: 'Maths — Dérivées et primitives',
     description: 'Tle D / C, ~3000 mots, 10+ formules LaTeX inline et display.',

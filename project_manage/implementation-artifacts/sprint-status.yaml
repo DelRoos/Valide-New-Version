@@ -55,7 +55,8 @@ development_status:
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
   0-17-setup-ci-cd-github-actions: backlog
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)
-  0-19-risk-r2-tests-precoces-smooth-markdown: in-progress  # 2026-06-04 PIVOT gpt_markdown (ADR-014 supersede ADR-009). Phase terrain bis OK: les 3 cours rendent correctement sur Redmi A7 Pro avec LaTeX inline + display (< 300ms total chacun). AC2+AC3+AC4 valides. Passage done apres merge PR pivot.
+  0-19-risk-r2-tests-precoces-smooth-markdown: done  # 2026-06-04 PIVOT gpt_markdown (ADR-014) merge sur main. AC2+AC3+AC4 valides device.
+  0-19-2-styling-images-mermaid-code-block: in-progress  # 2026-06-05 PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
   0-20-risk-r3-benchmark-latence-europe-west1: backlog
   0-21-page-hello-valide-sentinelle-e0: backlog
   epic-0-retrospective: optional
