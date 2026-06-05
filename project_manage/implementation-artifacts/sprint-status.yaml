@@ -1,5 +1,5 @@
 # generated: 2026-06-03
-# last_updated: 2026-06-04
+# last_updated: 2026-06-05
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -22,9 +22,12 @@
 # Retrospective Status:
 #   - optional: Can be completed but not required
 #   - done: Retrospective has been completed
+#
+# Story Status (extension projet):
+#   - deferred: Story sortie du scope Epic courant, report explicite (justification dans commentaire). Pas un backlog : prereqs identifies.
 
 generated: 2026-06-03
-last_updated: 2026-06-04
+last_updated: 2026-06-05
 project: Valide School MVP
 project_key: VALIDE
 tracking_system: file-system
@@ -34,7 +37,7 @@ development_status:
   # ======================
   # Epic 0 — Foundation & Bootstrap (P0)
   # ======================
-  epic-0: in-progress
+  epic-0: done  # 2026-06-05 Cloture Epic 0 apres merge 0.21 (sentinelle E0). 4 stories defers documentees ci-dessous : 0.4bis-iOS (besoin Mac), 0.8 (App Check report Epic 1+), 0.17 (CI skip sprint), 0.20 (benchmark report).
   0-1-bootstrap-projet-flutter: done
   0-2-setup-architecture-state-routing: done
   0-3-setup-app-logger: done
@@ -44,7 +47,7 @@ development_status:
   # PR #8 deja mergee sur main, code supprime dans la PR refonte Firebase AI Logic.
   0-6-setup-firebase-android-ios-firebase-ai: done  # 2026-06-04 Phase A (PR #16) + Phase B (PR #17) mergees, modules Console actives + smoke tests OK
   0-7-setup-cache-offline-firestore: done  # 2026-06-04 PR #18 mergee (commit 90fd66b)
-  0-8-setup-app-check: backlog
+  0-8-setup-app-check: deferred  # 2026-06-05 Reporte post-cloture Epic 0. App Check (Play Integrity Android + DeviceCheck iOS) sera trace au debut d'Epic 1 ou avant premiere story qui appelle Firebase AI Logic en production.
   0-9-setup-firestore-rules-initiales: done  # 2026-06-04 PR #19 mergee + chore conversion tests Firebase direct (branche chore/rules-tests-direct-firebase), regles deployees sur valide-edu, npm test = 9/9 pass
   0-10-setup-design-tokens: done
   0-11-setup-fonts-nunito-jetbrains: done
@@ -53,12 +56,12 @@ development_status:
   0-14-composants-ux-feedback: done  # mergee main (PR #14, commit 2adb38c)
   0-15-setup-pedagogical-content-wrapper: done  # mergee main (PR #15, commit dfa334c)
   0-16-setup-i18n-fr-en: done  # 2026-06-04 mergee main (commit 0bca01a)
-  0-17-setup-ci-cd-github-actions: backlog
+  0-17-setup-ci-cd-github-actions: deferred  # 2026-06-04 Skip explicite par decision sprint. A reprendre quand le pipeline CI sera priorise (probablement Epic 1 ou apres premier crash en TestFlight).
   0-18-risk-r1-agregateurs-momo: done  # 2026-06-04 court-circuitee par ADR-013 (Freemopay v2 retenu sans benchmark)
   0-19-risk-r2-tests-precoces-smooth-markdown: done  # 2026-06-04 PIVOT gpt_markdown (ADR-014) merge sur main. AC2+AC3+AC4 valides device.
-  0-19-2-styling-images-mermaid-code-block: in-progress  # 2026-06-05 PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
-  0-20-risk-r3-benchmark-latence-europe-west1: backlog
-  0-21-page-hello-valide-sentinelle-e0: in-progress  # 2026-06-05 Sentinelle E0 livree: HelloPage (i18n + tokens + PedagogicalContent LaTeX+Mermaid + AppButton + responsive max 600dp) + smoke test Firestore au boot (Anonymous Auth + _smoketest/launch write/read) + 3 widget tests responsive. Valide device Android Redmi A7 Pro (FR+EN screencap). AC4/AC5 (CI) defers (0.17 skippe). AC6 iOS defere (pas de Mac). Action porteur post-merge: activer Anonymous Auth dans Firebase Console.
+  0-19-2-styling-images-mermaid-code-block: done  # 2026-06-05 PR #25 mergee. PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
+  0-20-risk-r3-benchmark-latence-europe-west1: deferred  # 2026-06-05 Reporte. Risque R3 (latence europe-west1 vs Cameroun) reste a mesurer mais necessite une Cloud Function deployee et un device sur reseau camerounais. Re-trace au demarrage Epic 1 ou Epic 3 (premier appel IA depuis Cameroun).
+  0-21-page-hello-valide-sentinelle-e0: done  # 2026-06-05 PR #26 mergee. Sentinelle E0 livree: HelloPage (i18n + tokens + PedagogicalContent LaTeX+Mermaid + AppButton + responsive max 600dp) + smoke test Firestore au boot (Anonymous Auth + _smoketest/launch write/read) + 3 widget tests responsive. Valide device Android Redmi A7 Pro (FR+EN screencap). AC4/AC5 (CI) defers (0.17 skippe). AC6 iOS defere (pas de Mac). Action porteur post-merge: activer Anonymous Auth dans Firebase Console.
   epic-0-retrospective: optional
 
   # ======================
