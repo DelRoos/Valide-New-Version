@@ -13,7 +13,7 @@ sourceArtifacts:
   - doc/tech/Valide School Package Architecture.md
   - doc/partage/BASE-DE-DONNEES.md
   - ADRs/ADR-001 à ADR-010
-storyCount: 21  # +Story 0.4bis (ADR-011), -Story 0.5 Dio (ADR-012) — 2026-06-04
+storyCount: 22  # +Story 0.4bis (ADR-011), -Story 0.5 Dio (ADR-012) — 2026-06-04 ; +Story 0.22 app identity (reouverture Epic 0) — 2026-06-05
 ---
 
 # Epic 0 — Foundation & Bootstrap
@@ -74,6 +74,9 @@ Mettre en place la base technique sans laquelle aucun epic métier (E1-E6) ne pe
     0.18 Risk R1 — Évaluation agrégateurs MoMo (J1 mandatory)
     0.19 Risk R2 — Tests précoces flutter_smooth_markdown
     0.20 Risk R3 — Benchmark latence europe-west1
+
+  Réouverture Epic 0 (2026-06-05) — polish identité visuelle :
+    0.22 App identity (icon app + splash) — dépend 0.10 (tokens) + 0.21 (mergée)
 ```
 
 ## Stories
@@ -1548,15 +1551,144 @@ C'est la **sentinelle E0** — le test d'intégration vivant qui valide que tout
 
 ---
 
+### Story 0.22 : App identity — icône d'app + splash screen animé (réouverture Epic 0)
+
+**Statut** : Backlog
+**Sprint** : P0 (réouverture Epic 0 le 2026-06-05, parallèle au démarrage Epic 1)
+**Dépendances** : Story 0.10 (design tokens — pour la couleur splash), Story 0.21 (sentinelle E0 mergée — base sur laquelle le splash s'insère)
+**Estimation** : M (~4-6h)
+
+**As a** utilisateur Valide School,
+**I want** voir l'icône Valide School dans le launcher système et un splash screen branded animé court au lancement de l'app,
+**so that** l'identité visuelle soit immédiate, professionnelle et reconnaissable dès la première seconde d'usage.
+
+#### Contexte technique
+
+Le logo source `assets/images/logo.png` (1254×1254 PNG RGBA, 1.3 MB) a été déposé hors story le 2026-06-03. Cette story formalise son intégration en :
+
+1. **Icône d'app système** : générée pour Android (`mipmap-mdpi → mipmap-xxxhdpi`) et iOS (`AppIcon.appiconset` 20pt → 1024pt) via `flutter_launcher_icons`.
+2. **Splash natif statique** : affiché instantanément au lancement (avant que Flutter ne soit chargé) via `flutter_native_splash`. Fond = `tokens.colorPrimary` (bleu brand). Logo centré.
+3. **Splash Flutter animé post-natif** : `SplashPage` courte (~600-1000 ms) avec animation Rive (.riv community sous licence libre ≤ 50 KB) ou fallback `TweenAnimationBuilder` natif Flutter si aucun .riv adapté trouvé.
+
+**Ordre d'affichage au lancement** :
+
+1. **Native splash** (instantané, avant runApp) : fond `colorPrimary`, logo centré statique
+2. **Flutter SplashPage** (~600-1000 ms) : animation Rive ou Tween du logo (scale + fade-in)
+3. **Routage post-splash** : redirige vers `/hello` (route sentinelle E0 actuelle) en V0.22, puis `/onboarding` ou `/dashboard` selon profil quand Story 1.5 (garde navigation) sera livrée
+
+**Justification réouverture Epic 0** : l'identité visuelle (icône + splash) appartient à la foundation projet, indépendante du métier onboarding (Epic 1). Mieux vaut la traiter ici, en parallèle au démarrage Epic 1, plutôt que de polluer Epic 1 avec une story foundation tardive. Le re-close d'Epic 0 interviendra après merge 0.22.
+
+**Contraintes data-light Cameroun** (cf. CLAUDE.md § Contexte projet) :
+
+- Splash animation totale ≤ 1500 ms (UX rapide sur devices modestes)
+- Asset Rive ≤ 50 KB OU fallback Tween natif (0 KB asset, 0 package supplémentaire)
+- Pas de Lottie (package ~600 KB jugé trop lourd pour V1)
+
+#### Acceptance Criteria
+
+**AC1 — Logo source optimisé**
+**Given** le fichier `mobile_app/assets/images/logo.png` actuel (1254×1254, 1.3 MB)
+**When** on lance le pipeline de prep assets
+**Then** un fichier `mobile_app/assets/images/logo_master.png` est créé en **1024×1024** (resize standard iOS App Store) + compressé via `pngquant --quality=80-95` (ou équivalent)
+**And** la taille finale de `logo_master.png` ≤ **400 KB**
+**And** `assets/images/logo.png` (source brute 1254×1254) est conservé pour future re-génération haute-res
+**And** `pubspec.yaml` déclare `assets/images/` dans la section `assets:`
+
+**AC2 — Icône d'app système générée**
+**Given** la dépendance `flutter_launcher_icons` (dernière stable compatible Flutter 3.x) ajoutée en `dev_dependencies` dans `pubspec.yaml`
+**And** la section `flutter_launcher_icons:` configurée pour Android + iOS pointant vers `assets/images/logo_master.png`
+**When** on lance `dart run flutter_launcher_icons`
+**Then** les icônes Android sont générées dans `mobile_app/android/app/src/main/res/mipmap-*/`
+**And** les icônes iOS sont générées dans `mobile_app/ios/Runner/Assets.xcassets/AppIcon.appiconset/`
+**And** l'icône s'affiche correctement dans le launcher Android sur Redmi A7 Pro (screenshot dans PR)
+**And** iOS validation deferred quand Mac dispo (comme Stories 0.4bis et 0.21)
+
+**AC3 — Splash natif via `flutter_native_splash`**
+**Given** la dépendance `flutter_native_splash` (dernière stable compatible Flutter 3.x) ajoutée en `dev_dependencies`
+**And** la section `flutter_native_splash:` configurée avec :
+
+- `color: "#1A237E"` (ou valeur hex exacte de `tokens.colorPrimary` — commentaire pointant vers `lib/core/theme/tokens.dart`)
+- `image: assets/images/logo_master.png`
+- `android_12: { color: "#1A237E", image: assets/images/logo_master.png }` (compat Android 12+)
+
+**When** on lance `dart run flutter_native_splash:create`
+**Then** Android : `android/app/src/main/res/drawable-*/` contient le splash + `android/app/src/main/res/values*/styles.xml` update LaunchTheme
+**And** iOS : `ios/Runner/Assets.xcassets/LaunchImage.imageset/` contient l'image + `ios/Runner/Base.lproj/LaunchScreen.storyboard` updated
+**And** au lancement de l'app sur Redmi A7 Pro, le splash natif s'affiche **instantanément** (avant runApp Flutter)
+**And** **aucune transition flash noir** entre splash natif et 1re frame Flutter (vérification visuelle ralenti vidéo)
+
+**AC4 — SplashPage Flutter animée post-natif**
+**Given** le boot Flutter terminé (après `runApp()`)
+**And** la route initiale est `/splash` (ajoutée au `AppRouter` de Story 0.2)
+**When** la SplashPage est rendue
+**Then** elle affiche le logo avec une animation de **600-1000 ms** :
+
+- **Option A (privilégiée si .riv community trouvé)** : `RiveAnimation.asset('assets/animations/splash.riv')` — animation logo (scale/pulse/fade)
+- **Option B (fallback)** : `TweenAnimationBuilder<double>` natif Flutter avec scale `0.8 → 1.0` (300 ms `Curves.easeOutBack`) + opacity `0 → 1` (300 ms `Curves.easeOut`) puis hold 400 ms puis fade-out 200 ms
+
+**And** à la fin de l'animation, `context.go('/hello')` push remplace la route (préparé pour swap vers `/onboarding` quand Story 1.5 livrée)
+**And** l'animation totale n'excède pas **1500 ms**
+**And** la SplashPage est responsive sur 4 form factors (logo centré ≤ 40% du plus petit côté écran, `MediaQuery` + `ScreenUtil`)
+
+**AC5 — Recherche .riv community sous time-box**
+**Given** la phase d'implémentation Option A vs B
+**When** le dev recherche un .riv adapté sur <https://rive.app/community/>
+**Then** il valide les critères :
+
+- **Licence libre** (CC0 / MIT-like) — pas de copyleft viral, pas de "ask permission"
+- **Taille** ≤ 50 KB
+- **Thématique compatible** : logo brand-friendly (cercle, étoile montante, learning/education theme, pulse/morphing simple)
+- **Pas de texte hardcodé** dans le .riv (le brand "VALIDE SCHOOL" vient du logo PNG superposé ou inclus dans le master)
+
+**And** **si aucun .riv adapté trouvé en ≤ 30 minutes de recherche**, le dev livre le fallback Option B (Tween natif) et documente la décision dans un `decision-log.md` story-local : "Rive deferred to future polish story — community search inconclusive on {{date}}"
+
+**AC6 — Splash responsive vérifié sur form factors**
+**Given** l'app lancée sur les cibles suivantes :
+
+- Android phone : Redmi A7 Pro (device) OU Pixel 4a émulateur
+- Android tablet : Pixel Tablet émulateur (ou device si dispo)
+- iOS phone : iPhone SE 2020 simulateur (deferred si pas de Mac)
+- iOS tablet : iPad mini simulateur (deferred si pas de Mac)
+
+**When** on lance l'app
+**Then** le splash natif rend correctement (logo centré, fond brand exact, pas de pixelisation)
+**And** la SplashPage Flutter animée est centrée et fluide sur les cibles testées
+**And** **screenshots Android phone + tablet attachés à la PR** (iOS deferred si pas de Mac, suivi décision Story 0.21)
+
+#### Definition of Done
+
+- [ ] AC1-AC6 validés
+- [ ] `pubspec.yaml` à jour : `flutter_launcher_icons` + `flutter_native_splash` en `dev_dependencies`, `rive` en runtime SI Option A retenue
+- [ ] `assets/images/logo_master.png` (1024×1024, ≤ 400 KB) committé ; `assets/images/logo.png` brute conservée
+- [ ] `assets/animations/splash.riv` committé SI Option A choisie (référence licence + URL community dans description PR)
+- [ ] Smoke test : `flutter run --release` sur Redmi A7 Pro → splash natif → SplashPage animée → `/hello` (sans crash, sans flash noir)
+- [ ] Test widget `splash_page_test.dart` : SplashPage rend, anime, et navigue automatiquement en ≤ 1500 ms (utiliser `tester.pumpAndSettle` avec timeout)
+- [ ] PR ≤ 250 lignes diff (hors assets binaires generated par les deux outils)
+- [ ] Commit `feat(app): icone app + splash screen anime polish identite visuelle E0`
+- [ ] Screenshots Android phone + tablet dans la description PR
+
+#### Notes pour Amelia
+
+- **Re-run générateurs après chaque modif `pubspec.yaml`** : `dart run flutter_launcher_icons` puis `dart run flutter_native_splash:create`. Vérifie que les fichiers générés Android + iOS sont bien committés.
+- **Ne commit pas `pubspec.lock` modifié si seul le hash change** — vérifie le diff utile (versions résolues uniquement).
+- **Si Option A (Rive) retenue** : `rive: ^0.13.x` (dernière stable Flutter 3.x), garde un fallback Tween en code dead-code-eliminé (`if (kIsRiveAvailable)` ou config). Ne pas crash si l'asset .riv est corrompu — afficher le fallback Tween.
+- **Couleur splash dans `pubspec.yaml`** : NE PAS hardcoder en hex sans commentaire. Ajoute un commentaire YAML qui pointe vers `lib/core/theme/tokens.dart::colorPrimary` et qui rappelle de re-générer le splash natif si la valeur change.
+- **iOS validation deferred** quand Mac dispo, comme Stories 0.4bis, 0.17, 0.21. Marquer AC2/AC3 iOS rows comme "deferred Mac" dans le checklist DoD.
+- **`/splash` doit rester** dans le code post-MVP (page utilisable comme transition d'amorce). NE PAS la supprimer après livraison.
+- **Action porteur post-merge** : vérifier le rendu icône dans launcher Android (devrait être automatique) et préparer assets iOS App Store Connect quand compte Apple Developer activé.
+
+---
+
 ## Critère de sortie d'epic
 
 L'Epic 0 est **fermé** quand :
 
-1. Toutes les 21 stories ci-dessus sont marquées Done.
+1. Toutes les 22 stories ci-dessus sont marquées Done (sauf les 4 deferred documentées dans `sprint-status.yaml` : 0.4bis-iOS validation, 0.8 App Check, 0.17 CI/CD, 0.20 R3 benchmark — reportées Epic 1+).
 2. La sentinelle Story 0.21 est verte sur Play Internal Track.
-3. Les 3 risques R1/R2/R3 ont une décision documentée dans le `.decision-log.md`.
-4. Le `CONTRIBUTING.md` est à jour avec les procédures secrets / Firebase / déploiement.
-5. Un compte rendu de fin de sprint E0 (`bmad-retrospective`) a été écrit.
+3. La Story 0.22 (app identity) est mergée et l'icône + splash sont visibles à l'install Android.
+4. Les 3 risques R1/R2/R3 ont une décision documentée dans le `.decision-log.md`.
+5. Le `CONTRIBUTING.md` est à jour avec les procédures secrets / Firebase / déploiement.
+6. Un compte rendu de fin de sprint E0 (`bmad-retrospective`) a été écrit.
 
 ## Risques et mitigations
 

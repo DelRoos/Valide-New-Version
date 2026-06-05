@@ -38,7 +38,7 @@ development_status:
   # ======================
   # Epic 0 — Foundation & Bootstrap (P0)
   # ======================
-  epic-0: done  # 2026-06-05 Cloture Epic 0 apres merge 0.21 (sentinelle E0). 4 stories defers documentees ci-dessous : 0.4bis-iOS (besoin Mac), 0.8 (App Check report Epic 1+), 0.17 (CI skip sprint), 0.20 (benchmark report).
+  epic-0: in-progress  # 2026-06-05 Reouverture Epic 0 pour Story 0.22 (app identity icone + splash). 4 stories defers documentees ci-dessous : 0.4bis-iOS (besoin Mac), 0.8 (App Check report Epic 1+), 0.17 (CI skip sprint), 0.20 (benchmark report). Epic 0 sera re-cloture apres merge 0.22.
   0-1-bootstrap-projet-flutter: done
   0-2-setup-architecture-state-routing: done
   0-3-setup-app-logger: done
@@ -63,6 +63,7 @@ development_status:
   0-19-2-styling-images-mermaid-code-block: done  # 2026-06-05 PR #25 mergee. PedagogicalContent enrichi (imageBuilder CachedNetworkImage + flutter_svg + codeBuilder Mermaid via mermaid.ink PNG + bloc code style). Cours rendu_avance ajoute en tete catalogue. Phase terrain OK sauf Mermaid SVG -> fix PNG applique post-validation.
   0-20-risk-r3-benchmark-latence-europe-west1: deferred  # 2026-06-05 Reporte. Risque R3 (latence europe-west1 vs Cameroun) reste a mesurer mais necessite une Cloud Function deployee et un device sur reseau camerounais. Re-trace au demarrage Epic 1 ou Epic 3 (premier appel IA depuis Cameroun).
   0-21-page-hello-valide-sentinelle-e0: done  # 2026-06-05 PR #26 mergee. Sentinelle E0 livree: HelloPage (i18n + tokens + PedagogicalContent LaTeX+Mermaid + AppButton + responsive max 600dp) + smoke test Firestore au boot (Anonymous Auth + _smoketest/launch write/read) + 3 widget tests responsive. Valide device Android Redmi A7 Pro (FR+EN screencap). AC4/AC5 (CI) defers (0.17 skippe). AC6 iOS defere (pas de Mac). Action porteur post-merge: activer Anonymous Auth dans Firebase Console.
+  0-22-app-identity-icon-splash: backlog  # 2026-06-05 NEW (reouverture Epic 0). App identity polish: flutter_launcher_icons (icone Android+iOS depuis logo.png 1254x1254 -> logo_master.png 1024x1024 compresse <=400KB) + flutter_native_splash (splash natif statique fond colorPrimary + logo centre) + SplashPage Flutter animee post-natif ~600-1000ms (Rive .riv community licence libre OR fallback TweenAnimation natif si pas de .riv adapte <=50KB en 30min recherche) + responsive 4 form factors + screenshots Android device. iOS validation defere (pas de Mac). Estim M ~4-6h.
   epic-0-retrospective: optional
 
   # ======================
