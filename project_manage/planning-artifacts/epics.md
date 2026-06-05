@@ -1,5 +1,5 @@
 ---
-stepsCompleted: ["step-01-validate-prerequisites"]
+stepsCompleted: ["step-01-validate-prerequisites", "step-02-design-epics", "step-03-create-stories-epic-1"]
 inputDocuments:
   - "project_manage/planning-artifacts/prds/prd-valide-mvp-2026-06-03/prd.md"
   - "project_manage/planning-artifacts/architecture/architecture.md"
@@ -238,7 +238,7 @@ Exigences techniques transverses nécessitant des stories d'initialisation.
 **Risque clé** : R4 (validation matrice MINESEC/GCE par un enseignant) — story dédiée d'audit.
 **Critère de sortie d'epic** : Personas Fatou Mballa (Tle D francophone) et James Tanyi (Upper Sixth S2 anglophone) peuvent compléter le flow d'onboarding en < 2 minutes chacun et voir leur dashboard personnalisé avec leurs matières correctes.
 
-*Stories à générer en début de P1 via `/bmad-create-story`.*
+*Stories détaillées dans `epics/epic-1-onboarding.md` (générées 2026-06-05, 10 stories de FR-1 à FR-8 + FR-10 + audit R4).*
 
 ## Epic 2 : Navigation & Lecture contenu
 
