@@ -1,7 +1,7 @@
 # ADR-009 — `flutter_smooth_markdown` wrappé dans un widget unique
 
 **Date** : 2026-06-03
-**Statut** : 🟢 Accepté
+**Statut** : ⛔ **Superseded par [ADR-014](ADR-014-gpt-markdown-replaces-smooth-markdown.md)** (2026-06-04) — KO en phase terrain Story 0.19, basculé sur `gpt_markdown`.
 
 ## Contexte
 

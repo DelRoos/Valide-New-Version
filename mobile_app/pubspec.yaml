@@ -53,10 +53,12 @@ dependencies:
   audioplayers: ^6.4.0
   shared_preferences: ^2.3.3
 
-  # Story 0.15 — rendu pedagogique unifie (Markdown + LaTeX + Mermaid +
-  # streaming). Isole derriere lib/core/widgets/pedagogical_content.dart
-  # cf. ADR-009. Aucun autre fichier ne doit l'importer.
-  flutter_smooth_markdown: ^0.7.2
+  # Story 0.15 — rendu pedagogique unifie (Markdown + LaTeX + streaming).
+  # Isole derriere lib/core/widgets/pedagogical_content.dart. Aucun autre
+  # fichier ne doit l'importer (cf. ADR-014, qui supersede ADR-009 apres
+  # KO de flutter_smooth_markdown en phase terrain Story 0.19).
+  # Mermaid non supporte nativement -> fallback bloc code brut.
+  gpt_markdown: ^1.1.7
 
   # Story 0.6 — Firebase Android + iOS + Firebase AI Logic (cf. ADR-003,
   # ADR-012). Tous les modules sont consommes via providers Riverpod
