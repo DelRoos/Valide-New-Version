@@ -3,10 +3,13 @@ story_id: 0.22
 title: App identity — icône d'app + splash screen animé (réouverture Epic 0)
 epic: 0
 phase: P0
-status: review
+status: done
 created: 2026-06-05
+merged: 2026-06-05
 branch: feat/0.22-app-identity-icon-splash
 baseline_commit: 788924df4cab47443e665499ffe197d137f8c990
+merge_commit: 0cd95e0  # PR #33
+pull_request: 33
 estimation: M (~4-6h)
 dependencies:
   - 0.2   # AppRouter (go_router) — ajout route /splash
@@ -542,6 +545,7 @@ Claude Opus 4.7 (`claude-opus-4-7`) via `/bmad-dev-story` skill BMAD v6.8.0 — 
 
 - **2026-06-05 (Step 4 dev-story)** : `baseline_commit: 788924df...` capturé. Status `ready-for-dev` → `in-progress`.
 - **2026-06-05 (T1-T6 livrés)** : Implémentation complète des 6 tâches, 82 tests verts, build APK release OK, device smoke test OK. Status `in-progress` → `review`.
+- **2026-06-05 (PR #33 mergée)** : `merge_commit: 0cd95e0`. Status `review` → `done`. Epic 0 re-clôturé en parallèle dans `sprint-status.yaml` (cf. commit `docs(planning): cloture Epic 0`).
 
 ---
 
