@@ -38,26 +38,44 @@ Si l'admin recalcule ces valeurs avec une formule différente du backend, elle a
 
 ## 1. Dérivation profil → matières + examens
 
-**Statut** : 🟡 En cours
-**Lieu d'exécution** : Cloud Function (au moment du remplissage du profil ou de sa modification), résultat stocké dans `users/{uid}.derivedSubjects` et `users/{uid}.examTargets`.
+**Statut** : 🟢 Validé Story 1.1a (pivot Firestore-driven, cf. [ADR-015](../../project_manage/planning-artifacts/architecture/adrs/ADR-015-catalogue-firestore-runtime-activation.md)).
+
+**Lieu d'exécution V1** : Helper Dart pur dans `CatalogueRepository.derive()` (mobile, Story 1.1c). Résultat retourné via `Either<CatalogueFailure, DerivedProfile>` (NFR-7) et persisté dans `users/{uid}.derivedSubjects` et `users/{uid}.examTargets` au moment de la création du profil (Story 1.3).
+
+**Pourquoi côté client V1** : ce dépôt est mobile-only ; pas de Cloud Function déployée à ce stade. Cohérent avec ADR-015. Migration future vers Cloud Function `deriveProfile(uid)` triggered Firestore reste possible sans refactor mobile (le repository encapsule la dérivation derrière une interface stable `Future<Either<CatalogueFailure, DerivedProfile>> derive(...)`).
+
+**Source de vérité** : les 6 collections catalogue Firestore (`filieres`, `niveaux`, `series`, `subjects`, `exam_targets`, `derivation_rules`) seedées par `scripts/firebase_seed/seed_catalogue.py` (Story 1.1b). Cf. [BASE-DE-DONNEES.md § Catalogue scolaire](BASE-DE-DONNEES.md#catalogue-scolaire-6-collections--story-11a).
 
 ### Entrée
 - `subSystem` ∈ {`francophone`, `anglophone`}
-- `filiere` ∈ {`generale`, `technique`}
-- `niveau` (ex. `Tle`, `Form 5`)
-- `serie` (ex. `D`, `Sciences`)
+- `filiere` ∈ {`generale`, `technique`} — réf vers `filieres/{id}` Firestore
+- `niveau` — réf vers `niveaux/{id}` Firestore (ex. `francophone_terminale`, `anglophone_form_5`)
+- `serie` — réf vers `series/{id}` Firestore (ex. `francophone_terminale_d`, `anglophone_upper_sixth_s2`) ou `null` si le niveau n'a pas de série
 
 ### Algorithme
-```
-matières = subjects.filter(s =>
-    s.subSystem === user.subSystem
-    && s.applicableToFiliere.includes(user.filiere)
-    && s.applicableToNiveau.includes(user.niveau)
-    && s.applicableToSerie.includes(user.serie)
+
+```typescript
+// 1. Match la première derivation_rule active compatible
+rule = derivation_rules.firstWhere(r =>
+    r.isActive
+    && r.matchSubSystem === user.subSystem
+    && (r.matchFiliere === "*" || r.matchFiliere === user.filiere)
+    && r.matchNiveau === user.niveau
+    && (r.matchSerie === null || r.matchSerie === user.serie)
 )
 
-examens = exam_targets_table[user.subSystem][user.niveau][user.serie]
+// 2. Résoudre les references vers subjects + exam_targets (filtrer isActive)
+subjects = rule.subjectIds.map(id =>
+    subjects.firstWhere(s => s.subjectId === id && s.isActive)
+)
+examens = rule.examTargetIds.map(id =>
+    exam_targets.firstWhere(e => e.examTargetId === id && e.isActive)
+)
 ```
+
+**Cas pas de match** : `derive()` retourne `Left(CatalogueFailure.noMatchingRule(profile))` — l'écran récap (Story 1.3) affiche un message d'erreur clair et permet à l'utilisateur de corriger son profil. Ne devrait pas arriver en pratique si la matrice catalogue est complète (cf. AC1 Story 1.1a → 🟢).
+
+**Cas catalogue vide + offline** : `derive()` n'est même pas atteint — l'écran « En attente de connexion » bloquant (UX-DR-24, Story 1.1c) est affiché en amont. Cf. ADR-015 § Conséquences négatives.
 
 ### Règles d'exception (retrait de matières)
 
@@ -66,15 +84,17 @@ L'élève peut retirer une matière de `derivedSubjects` (la mettre dans `optedO
 - Anglophones, dès **Form 3** : retrait possible des matières non présentées à l'examen
 - Lower Sixth / Upper Sixth (toutes filières) : le **stream** (Sciences / Arts) détermine la combinaison
 
-Dans tous les autres cas, `optedOutSubjects` doit être vide.
+Source runtime : flag `series/{id}.canOptOut: bool` Firestore. Story 1.4 lit ce flag via `CatalogueRepository` au lieu d'un helper Dart hardcoded (amendement sprint-change-proposal-2026-06-05.md).
+
+Dans tous les autres cas, `optedOutSubjects` doit être vide. La règle Firestore `users/{uid}` (Story 1.4) valide `optedOutSubjects ⊂ derivedSubjects` côté serveur.
 
 ### Référence pour les matières dérivables
 
-Voir [DONNEES-REFERENCE.md](DONNEES-REFERENCE.md) — la matrice (subSystem, filiere, niveau, serie) → (matières, examens) y est exhaustive.
+Voir [DONNEES-REFERENCE.md § Tableau de dérivation](DONNEES-REFERENCE.md#tableau-de-d%C3%A9rivation-subsystem-filiere-niveau-serie--examtargetids) — la matrice (subSystem, filiere, niveau, serie) → (matières, examens) est exhaustive 🟢 (79 `derivation_rules` totales, ~50 activées au seed initial, 29 étendues `isActive: false` runtime).
 
 ### Implications pour l'admin
 
-L'admin **ne dérive jamais elle-même** les matières d'un profil — elle lit `derivedSubjects` du document `users/{uid}`. Pour modifier la dérivation d'un élève, l'admin met à jour son profil (filière / niveau / série), et la Cloud Function recalcule.
+L'admin **ne dérive jamais elle-même** les matières d'un profil — elle lit `derivedSubjects` du document `users/{uid}`. Pour modifier la dérivation d'un élève, l'admin met à jour son profil (filière / niveau / série) ; la dérivation est re-calculée côté client à la prochaine action (Story 1.3) OU re-déclenchée par Cloud Function admin si nécessaire (future). Pour activer/désactiver une série au niveau **catalogue**, l'admin toggle `series/{id}.isActive` depuis Firebase Console — l'effet est immédiat pour tous les utilisateurs (les `CatalogueRepository.watch*()` streams réémettent).
 
 ---
 
@@ -614,3 +634,4 @@ Liste prévisionnelle ; chaque entrée sera une Cloud Function admin protégée 
 | Date | Auteur | Modification |
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture et du Decoupage MVP |
+| 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — § 1 « Dérivation profil → matières + examens » amendé : statut 🟡 → 🟢, lieu d'exécution V1 = helper Dart pur dans `CatalogueRepository.derive()` (mobile-only, pas de Cloud Function déployée), pseudo-code mis à jour pour matcher `derivation_rules` Firestore (ADR-015). Règle d'exception retrait : `series/{id}.canOptOut` lu Firestore (amendement Story 1.4 sprint-change-proposal-2026-06-05.md). Sprint-change-proposal-2026-06-05.md. |
