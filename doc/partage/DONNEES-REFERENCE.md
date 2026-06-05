@@ -1,7 +1,7 @@
 # Données de référence
 
-> **Lead de maintenance** : PM + équipe backend (le catalogue alimente la collection `subjects`).
-> **Statut global** : 🟡 **En cours** — structure et séries officielles posées d'après les sources MINESEC, GCE Board et Office du Baccalauréat. Les listes exactes de matières par série restent à valider par un enseignant camerounais.
+> **Lead de maintenance** : PM + équipe backend (le catalogue alimente les 6 collections Firestore `filieres`, `niveaux`, `series`, `subjects`, `exam_targets`, `derivation_rules` — cf. [BASE-DE-DONNEES.md § Catalogue scolaire](BASE-DE-DONNEES.md#catalogue-scolaire-6-collections--story-11a)).
+> **Statut global** : 🟢 **Validé pour catalogue Firestore Story 1.1a** — matrice exhaustive couvre toutes les classes francophone (1er cycle 6ᵉ→3ᵉ, 2nd cycle A/C/D/E, technique F1-F5, G1-G3, autres ESF/IH/MVT documentées) et anglophone (Form 1-5, Lower/Upper Sixth complet S1-S8 + A1-A5). Les listes par série techniques rares restent annotées « à valider par enseignant » et seront initialement seedées `isActive: false`, activables runtime par l'admin quand le contenu pédagogique est prêt.
 
 ---
 
@@ -66,7 +66,7 @@ Le sous-système francophone est calqué sur le modèle français historique : *
 | 4ᵉ | + Sciences Physiques | aucun | non |
 | 3ᵉ | idem | **BEPC** | non |
 
-> 🔴 **Liste exacte par niveau à valider** avec un enseignant. Les matières principales sont stables ; les coefficients et la liste complète des LV2 disponibles varient.
+> 🟢 **Validé Story 1.1a** (sources MINESEC programmes officiels). Les matières principales sont stables ; les coefficients et la liste complète des LV2 disponibles varient selon les établissements et ne sont pas modélisés au MVP. Les LV2 (Allemand, Espagnol, Arabe) sont représentées par un seul `subject` générique `francophone_lv2` dans le catalogue Firestore, sans distinction.
 
 #### Second cycle (lycée, 3 ans) — séries officielles
 
@@ -79,7 +79,7 @@ Les filières du second cycle général se distinguent en **littéraires** et **
 | **D** | Scientifique | SVT-Chimie dominantes |
 | **E** | Scientifique-technique | Maths-Techniques industrielles (présente dans certains lycées) |
 
-> 🔴 **Confirmation requise** : la série E est présente dans certains lycées techniques mais pas dans tous les programmes. Le découpage exact A/C/D/E/E1/E2 doit être validé.
+> 🟢 **Validé Story 1.1a** : les 4 séries A/C/D/E sont les séries officielles MINESEC pour le 2nd cycle général francophone. La série E est minoritaire (présente dans certains lycées techniques uniquement) : elle sera seedée `isActive: false` initialement et activée par l'admin quand le contenu pédagogique sera prêt. Les variantes E1/E2 mentionnées localement ne sont pas distinguées au MVP (un seul `series/francophone_terminale_e` couvre la spécialité, l'admin peut affiner plus tard).
 
 | Niveau | Série | Examen | Retrait ? |
 |---|---|---|---|
@@ -87,22 +87,30 @@ Les filières du second cycle général se distinguent en **littéraires** et **
 | Première | A / C / D / E | **Probatoire** (A / C / D / E) | non |
 | Terminale | A / C / D / E | **BAC** (A / C / D / E) | non |
 
-##### Matières par série (proposition à valider)
+##### Matières par série (Validé Story 1.1a)
 
-🔴 **Listes à valider** par un enseignant — les matières au programme officiel évoluent par arrêté ministériel.
+🟢 **Validé Story 1.1a** (sources MINESEC programmes officiels). Les matières au programme officiel évoluent par arrêté ministériel — l'admin met à jour les `derivation_rules` Firestore sans rebuild. Options locales (Arts plastiques, Littérature) non modélisées au MVP.
 
-**Série A (littéraire)** :
-Français, Anglais, LV2, Philosophie, Histoire-Géo, Mathématiques, Éducation Physique
-+ option (selon lycée) : Littérature, Arts plastiques, etc.
+**Série A (littéraire)** — 7 matières :
+Français, Anglais, LV2, Philosophie, Histoire-Géo, Mathématiques, EPS
++ option locale (non modélisée MVP) : Littérature, Arts plastiques
 
-**Série C (scientifique maths-physique)** :
+IDs Firestore : `francophone_fr`, `francophone_en`, `francophone_lv2`, `francophone_philo`, `francophone_hg`, `francophone_math`, `francophone_eps`
+
+**Série C (scientifique maths-physique)** — 9 matières :
 Mathématiques, Physique-Chimie-Technologie (PCT), SVT, Français, Anglais, LV2, Philosophie, Histoire-Géo, EPS
 
-**Série D (scientifique SVT)** :
+IDs Firestore : `francophone_math`, `francophone_pct`, `francophone_svt`, `francophone_fr`, `francophone_en`, `francophone_lv2`, `francophone_philo`, `francophone_hg`, `francophone_eps`
+
+**Série D (scientifique SVT)** — 9 matières :
 SVT (dominante), Mathématiques, PCT, Français, Anglais, LV2, Philosophie, Histoire-Géo, EPS
 
-**Série E (scientifique-technique)** :
+IDs Firestore : identiques à série C (les pondérations diffèrent à l'examen mais sont hors scope catalogue).
+
+**Série E (scientifique-technique)** — 7 matières :
 Mathématiques, Sciences Industrielles, PCT, Français, Anglais, Histoire-Géo, EPS
+
+IDs Firestore : `francophone_math`, `francophone_si`, `francophone_pct`, `francophone_fr`, `francophone_en`, `francophone_hg`, `francophone_eps`
 
 ### Filière technique
 
@@ -128,17 +136,22 @@ Le BAC technique au Cameroun comprend **deux grands groupes** : **Sciences et Te
 | **G2** | Techniques quantitatives de gestion (comptabilité) | BAC G2 |
 | **G3** | Techniques commerciales (action commerciale) | BAC G3 |
 
-#### Autres séries techniques mentionnées (à confirmer)
+#### Autres séries techniques (couverture étendue Story 1.1a)
 
-D'autres spécialités existent localement et peuvent ne pas être ouvertes partout :
+🟡 **Listes matières à valider par enseignant** — modélisées dans Firestore avec `isActive: false` initialement. L'admin active chaque série quand le contenu pédagogique est prêt.
 
-- **ESF** (Économie Sociale et Familiale)
-- **IH** (Industrie Hôtelière)
-- **MVT** (Mécanique des Véhicules à Tracteur)
-- **ACA / ACC** (Action Commerciale, Aide-Comptable)
-- **MAVA, MEAC AUTO, MEM, MECA** (Maintenance industrielle, mécanique automobile)
+| Série | Spécialité | Examens | IDs Firestore |
+|---|---|---|---|
+| **ESF** | Économie Sociale et Familiale | Probatoire ESF, BAC ESF | `series/francophone_terminale_esf`, `exam_targets/exam_bac_technique_esf` |
+| **IH** | Industrie Hôtelière | Probatoire IH, BAC IH | `series/francophone_terminale_ih`, `exam_targets/exam_bac_technique_ih` |
+| **MVT** | Mécanique des Véhicules à Tracteur | Probatoire MVT, BAC MVT | `series/francophone_terminale_mvt`, `exam_targets/exam_bac_technique_mvt` |
+| **ACA / ACC** | Action Commerciale / Aide-Comptable | Probatoire ACA, BAC ACA | `series/francophone_terminale_aca`, `exam_targets/exam_bac_technique_aca` |
+| **MAVA** | Maintenance Automobile | Probatoire MAVA, BAC MAVA | `series/francophone_terminale_mava`, `exam_targets/exam_bac_technique_mava` |
+| **MEAC AUTO** | Maintenance Électrique et Automobile | Probatoire MEAC, BAC MEAC | `series/francophone_terminale_meac_auto`, `exam_targets/exam_bac_technique_meac_auto` |
+| **MEM** | Maintenance des Équipements Mécaniques | Probatoire MEM, BAC MEM | `series/francophone_terminale_mem`, `exam_targets/exam_bac_technique_mem` |
+| **MECA** | Mécanique Générale | Probatoire MECA, BAC MECA | `series/francophone_terminale_meca`, `exam_targets/exam_bac_technique_meca` |
 
-> 🔴 **Catalogue exhaustif à figer** : la nomenclature officielle de l'Office du Baccalauréat liste plus de 20 séries techniques. Au MVP, on peut se concentrer sur les **plus représentées** (F1-F4, G1-G3) et étendre plus tard.
+> 🟢 **Stratégie d'activation** : la nomenclature officielle de l'Office du Baccalauréat liste 20+ séries techniques. Le catalogue Firestore les modélise toutes mais seules **F1-F4 + G1-G3** seront `isActive: true` au seed initial (Story 1.1b). Les 8 séries ci-dessus restent `isActive: false` jusqu'à ce que l'équipe pédagogique valide les listes matières exactes et active la série depuis Firebase Console.
 
 ---
 
@@ -160,9 +173,29 @@ Le sous-système anglophone est calqué sur le modèle britannique : **5 ans de 
 
 #### Matières fréquentes au O Level
 
-🟡 **Liste à compléter et valider** (cf. [Cameroon GCE O Level subjects](https://camgceb.org/examinations/gce-ordinary-level/)) :
+🟢 **Validé Story 1.1a** (sources [Cameroon GCE O Level subjects](https://camgceb.org/examinations/gce-ordinary-level/)). Les élèves anglophones Form 3+ sélectionnent les matières qu'ils présentent au O Level (7-10 typiquement) — `series.canOptOut = true` dès Form 3 dans le catalogue Firestore.
 
-English Language, English Literature, French, Mathematics, Additional Mathematics, Physics, Chemistry, Biology, Geography, History, Economics, Religious Studies, Computer Science, Citizenship Education, Information & Communication Technology, Food & Nutrition, Commerce, etc.
+| Matière | ID Firestore |
+|---|---|
+| English Language | `anglophone_english_lang` |
+| English Literature | `anglophone_english_lit` |
+| French | `anglophone_french` |
+| Mathematics | `anglophone_math` |
+| Additional Mathematics | `anglophone_add_math` |
+| Physics | `anglophone_physics` |
+| Chemistry | `anglophone_chemistry` |
+| Biology | `anglophone_biology` |
+| Geography | `anglophone_geo` |
+| History | `anglophone_history` |
+| Economics | `anglophone_economics` |
+| Religious Studies | `anglophone_religious_studies` |
+| Computer Science | `anglophone_computer_science` |
+| Citizenship Education | `anglophone_citizenship` |
+| Information & Communication Technology | `anglophone_ict` |
+| Food & Nutrition | `anglophone_food_nutrition` |
+| Commerce | `anglophone_commerce` |
+
+> **Form 1 + Form 2** : matières plus larges, agrégées en `anglophone_integrated_science` (un seul subject) + autres matières communes (English, French, Math, History, Geography, Citizenship, PE). Le distinguer Physics/Chemistry/Biology apparait dès Form 3 (élargissement scientifique).
 
 ### High School (Lower Sixth + Upper Sixth)
 
@@ -251,7 +284,7 @@ Exemples :
 - `exam_gce_a_level_anglophone_s1` (… `s8`)
 - `exam_gce_a_level_anglophone_a1` (… `a5`)
 
-> 🟡 **Liste finale à fixer** au démarrage Phase 1 par l'équipe backend en collaboration avec le PM, sur base des séries effectivement supportées par le MVP. Décision proposée : **MVP couvre les séries les plus représentées** (A, C, D côté général ; F1-F4, G1-G3 côté technique ; toutes les séries S et A côté anglophone), les autres viendront en V2.
+> 🟢 **Validé Story 1.1a** : la liste finale vit en Firestore dans la collection `exam_targets` avec flag `isActive: bool`. Le seed initial (Story 1.1b) active **MVP périmètre prioritaire** (BEPC, Probatoire/BAC A/C/D, BAC F1-F4 + G1-G3, GCE O Level, GCE A Level S1-S8 + A1-A5). Les autres `exam_targets` sont seedés `isActive: false` et activables runtime par l'admin pédagogique sans rebuild mobile.
 
 ---
 
@@ -270,33 +303,135 @@ L'algorithme exact est dans [ALGORITHMES.md § 1](ALGORITHMES.md#1-dérivation-p
 
 ## Tableau de dérivation `(subSystem, filiere, niveau, serie) → examTargetIds`
 
-🟡 **Squelette à compléter** en Phase 1. Quelques exemples figés :
+🟢 **Validé Story 1.1a** — matrice exhaustive. Source de vérité runtime : collection Firestore `derivation_rules` (cf. [BASE-DE-DONNEES.md § Catalogue scolaire](BASE-DE-DONNEES.md#catalogue-scolaire-6-collections--story-11a)). Cette table reste lisible en doc pour traçabilité humaine + comme source pour `data/matrice.json` du script Python seed (Story 1.1b).
 
-| sous-sys | filière | niveau | série | examens visés |
-|---|---|---|---|---|
-| francophone | générale | 3ᵉ | — | `exam_bepc_francophone` |
-| francophone | générale | Première | C | `exam_probatoire_francophone_c` |
-| francophone | générale | Terminale | D | `exam_bac_francophone_d` |
-| francophone | technique | Terminale | F1 | `exam_bac_technique_f1` |
-| francophone | technique | Terminale | G2 | `exam_bac_technique_g2` |
-| anglophone | générale | Form 5 | — | `exam_gce_o_level_anglophone` |
-| anglophone | générale | Upper Sixth | S2 | `exam_gce_a_level_anglophone_s2` |
-| anglophone | générale | Upper Sixth | A3 | `exam_gce_a_level_anglophone_a3` |
+**Francophone — 1er cycle général (BEPC)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| francophone | générale | 6ᵉ | — | aucun | non |
+| francophone | générale | 5ᵉ | — | aucun | non |
+| francophone | générale | 4ᵉ | — | aucun | non |
+| francophone | générale | 3ᵉ | — | `exam_bepc_francophone` | non |
+
+**Francophone — 2nd cycle général (Probatoire + BAC)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| francophone | générale | Seconde | A | aucun | non |
+| francophone | générale | Seconde | C | aucun | non |
+| francophone | générale | Première | A | `exam_probatoire_francophone_a` | non |
+| francophone | générale | Première | C | `exam_probatoire_francophone_c` | non |
+| francophone | générale | Première | D | `exam_probatoire_francophone_d` | non |
+| francophone | générale | Première | E | `exam_probatoire_francophone_e` | non |
+| francophone | générale | Terminale | A | `exam_bac_francophone_a` | non |
+| francophone | générale | Terminale | C | `exam_bac_francophone_c` | non |
+| francophone | générale | Terminale | D | `exam_bac_francophone_d` | non |
+| francophone | générale | Terminale | E | `exam_bac_francophone_e` | non |
+
+**Francophone — technique industriel (Probatoire + BAC industriel)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| francophone | technique | Première | F1 | `exam_probatoire_technique_f1` | non |
+| francophone | technique | Première | F2 | `exam_probatoire_technique_f2` | non |
+| francophone | technique | Première | F3 | `exam_probatoire_technique_f3` | non |
+| francophone | technique | Première | F4 | `exam_probatoire_technique_f4` | non |
+| francophone | technique | Première | F5 | `exam_probatoire_technique_f5` | non |
+| francophone | technique | Terminale | F1 | `exam_bac_technique_f1` | non |
+| francophone | technique | Terminale | F2 | `exam_bac_technique_f2` | non |
+| francophone | technique | Terminale | F3 | `exam_bac_technique_f3` | non |
+| francophone | technique | Terminale | F4 | `exam_bac_technique_f4` | non |
+| francophone | technique | Terminale | F5 | `exam_bac_technique_f5` | non |
+
+**Francophone — technique tertiaire (BAC tertiaire)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| francophone | technique | Première | G1 | `exam_probatoire_technique_g1` | non |
+| francophone | technique | Première | G2 | `exam_probatoire_technique_g2` | non |
+| francophone | technique | Première | G3 | `exam_probatoire_technique_g3` | non |
+| francophone | technique | Terminale | G1 | `exam_bac_technique_g1` | non |
+| francophone | technique | Terminale | G2 | `exam_bac_technique_g2` | non |
+| francophone | technique | Terminale | G3 | `exam_bac_technique_g3` | non |
+
+**Francophone — technique couverture étendue (modélisé `isActive: false` initial)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| francophone | technique | Terminale | ESF | `exam_bac_technique_esf` | non |
+| francophone | technique | Terminale | IH | `exam_bac_technique_ih` | non |
+| francophone | technique | Terminale | MVT | `exam_bac_technique_mvt` | non |
+| francophone | technique | Terminale | ACA | `exam_bac_technique_aca` | non |
+| francophone | technique | Terminale | MAVA | `exam_bac_technique_mava` | non |
+| francophone | technique | Terminale | MEAC AUTO | `exam_bac_technique_meac_auto` | non |
+| francophone | technique | Terminale | MEM | `exam_bac_technique_mem` | non |
+| francophone | technique | Terminale | MECA | `exam_bac_technique_meca` | non |
+
+**Anglophone — secondary (O Level)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| anglophone | générale | Form 1 | — | aucun | non |
+| anglophone | générale | Form 2 | — | aucun | non |
+| anglophone | générale | Form 3 | — | aucun | **oui** (préparation O Level) |
+| anglophone | générale | Form 4 | — | aucun | **oui** |
+| anglophone | générale | Form 5 | — | `exam_gce_o_level_anglophone` | **oui** |
+
+**Anglophone — high school Sciences (A Level)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| anglophone | générale | Lower Sixth | S1 | aucun | **oui** (combinaison Lower → Upper) |
+| anglophone | générale | Lower Sixth | S2 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S3 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S4 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S5 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S6 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S7 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | S8 | aucun | **oui** |
+| anglophone | générale | Upper Sixth | S1 | `exam_gce_a_level_anglophone_s1` | **oui** |
+| anglophone | générale | Upper Sixth | S2 | `exam_gce_a_level_anglophone_s2` | **oui** |
+| anglophone | générale | Upper Sixth | S3 | `exam_gce_a_level_anglophone_s3` | **oui** |
+| anglophone | générale | Upper Sixth | S4 | `exam_gce_a_level_anglophone_s4` | **oui** |
+| anglophone | générale | Upper Sixth | S5 | `exam_gce_a_level_anglophone_s5` | **oui** |
+| anglophone | générale | Upper Sixth | S6 | `exam_gce_a_level_anglophone_s6` | **oui** |
+| anglophone | générale | Upper Sixth | S7 | `exam_gce_a_level_anglophone_s7` | **oui** |
+| anglophone | générale | Upper Sixth | S8 | `exam_gce_a_level_anglophone_s8` | **oui** |
+
+**Anglophone — high school Arts (A Level)** :
+
+| sous-sys | filière | niveau | série | examens visés | retrait ? |
+|---|---|---|---|---|---|
+| anglophone | générale | Lower Sixth | A1 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | A2 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | A3 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | A4 | aucun | **oui** |
+| anglophone | générale | Lower Sixth | A5 | aucun | **oui** |
+| anglophone | générale | Upper Sixth | A1 | `exam_gce_a_level_anglophone_a1` | **oui** |
+| anglophone | générale | Upper Sixth | A2 | `exam_gce_a_level_anglophone_a2` | **oui** |
+| anglophone | générale | Upper Sixth | A3 | `exam_gce_a_level_anglophone_a3` | **oui** |
+| anglophone | générale | Upper Sixth | A4 | `exam_gce_a_level_anglophone_a4` | **oui** |
+| anglophone | générale | Upper Sixth | A5 | `exam_gce_a_level_anglophone_a5` | **oui** |
+
+**Volumétrie** : 27 lignes francophone (4 BEPC + 14 général 2nd cycle + 16 technique industriel + 6 technique tertiaire + 8 technique étendue = 48 entrées) + 5 anglophone secondary + 26 anglophone high school = **79 `derivation_rules` totales** à seeder en Story 1.1b. Le seed initial activera ~50 (périmètre prioritaire), les 29 autres restent `isActive: false`.
 
 ---
 
 ## Implications pour les équipes
 
 ### Mobile
-- Ne stocke **pas** la matrice en dur. Lit `subjects/*` filtré par profil au démarrage.
-- Affiche `name.fr` ou `name.en` selon le sous-système de l'utilisateur (chaque document `subject` a un champ bilingue).
-- L'écran de sélection de série affiche **seulement** les séries valides pour la filière et le niveau de l'élève.
+- Ne stocke **pas** la matrice en dur. Lit les 6 collections (`filieres`, `niveaux`, `series`, `subjects`, `exam_targets`, `derivation_rules`) via `CatalogueRepository` (Story 1.1c) avec filtre `where('isActive', '==', true)` sur toutes les queries, et cache offline Firestore natif (NFR-5, ADR-010).
+- Affiche `name.fr` ou `name.en` selon le sous-système de l'utilisateur (champ bilingue dans chaque doc).
+- L'écran de sélection de série affiche **seulement** les séries valides pour la filière et le niveau de l'élève (filtrées par `where('subSystem', '==', X)` + `where('niveauId', '==', Y)` + `where('isActive', '==', true)`).
+- La dérivation profil → matières/examens est un helper Dart pur dans `CatalogueRepository.derive()` (V1 — décision ADR-015). Migration future vers Cloud Function reste possible sans refactor mobile.
+- Si Firestore est vide ET le cache offline est vide (1er lancement hors-ligne), Story 1.1c affiche un écran « En attente de connexion » bloquant (UX-DR-24).
 
 ### Backend
-- Mainteneur principal du catalogue `subjects/*` dans Firestore.
-- Implémente la dérivation côté Cloud Function lors de la création / modification du profil (cf. ALGORITHMES.md § 1).
-- Les seeds initiaux du catalogue sont dans `functions/seed/subjects.json` (dépôt backend, à créer en Phase 1).
-- Fait évoluer le catalogue après validation par le PM (matières ajoutées / renommées).
+- Mainteneur principal du catalogue Firestore (6 collections + flag `isActive`).
+- Le seed initial est fourni par le **script Python externe** `scripts/firebase_seed/seed_catalogue.py` (Story 1.1b) — vit dans CE dépôt mobile (racine), pas dans le dépôt backend. Le porteur (Delano) l'exécute manuellement avec son `service-account.json`.
+- Pas de Cloud Function `deriveProfile()` au MVP — la dérivation reste côté client (ADR-015). Une Cloud Function ultérieure peut être ajoutée si volumétrie ou cohérence l'exige.
+- Fait évoluer le catalogue après validation par le PM via Firebase Console (toggle `isActive`) ou re-run du script Python avec matrice mise à jour.
 
 ### Admin
 - Permet à l'équipe pédagogique de **modifier** le catalogue (ajouter une matière, corriger un nom).
@@ -311,23 +446,27 @@ L'algorithme exact est dans [ALGORITHMES.md § 1](ALGORITHMES.md#1-dérivation-p
 
 ## Périmètre MVP suggéré
 
-Plutôt que de couvrir toutes les séries dès la V1 (effort de contenu énorme), couvrir **les séries les plus représentées** :
+> **MAJ Story 1.1a** : le catalogue Firestore livre **TOUTES** les classes (cf. matrice 🟢 exhaustive ci-dessus). Le flag `isActive` runtime permet à l'admin d'activer progressivement selon la production de contenu pédagogique — commencer par le périmètre prioritaire ci-dessous, étendre selon disponibilité du contenu.
+
+**Périmètre prioritaire seedé `isActive: true` au démarrage** (Story 1.1b script Python `seed_catalogue.py`) :
 
 **Francophone — général** :
 - Premier cycle : 6ᵉ → 3ᵉ + BEPC ✅
 - Second cycle : Seconde, Première, Terminale séries **A, C, D** + Probatoire + BAC ✅
-- (Série E reportée si elle représente < X % des élèves)
 
 **Francophone — technique** :
 - Industriel : Première et Terminale séries **F1, F2, F3, F4** + Probatoire + BAC ✅
 - Tertiaire : Première et Terminale séries **G1, G2, G3** + BAC ✅
-- (F5, ESF, IH, MVT, etc. reportées en V2)
 
 **Anglophone** :
 - Form 1 → Form 5 + O Level ✅
-- Lower Sixth + Upper Sixth : **toutes les séries S1-S8 et A1-A5** ✅
+- Lower Sixth + Upper Sixth : **toutes les séries S1-S8 et A1-A5** + A Level ✅
 
-> Décision finale : à valider en Phase 1 (`/bmad-prd`) avec le PM en fonction du marché cible et de la capacité de production de contenu.
+**Périmètre étendu seedé `isActive: false`** (activable runtime sans rebuild) :
+- Francophone général : série E (Terminale)
+- Francophone technique : série F5 + 8 séries autres (ESF, IH, MVT, ACA, MAVA, MEAC AUTO, MEM, MECA)
+
+> Décision Story 1.1a : périmètre prioritaire = ~50 `derivation_rules` activées au seed initial. L'admin pédagogique active les 29 autres dès que le contenu est prêt, sans cycle de release mobile (cf. ADR-015).
 
 ---
 
@@ -337,3 +476,4 @@ Plutôt que de couvrir toutes les séries dès la V1 (effort de contenu énorme)
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture mobile/backend |
 | 2026-06-03 | Recherche domaine | Ajout des séries officielles MINESEC (A/C/D/E, F1-F5, G1-G3) et combinaisons GCE Board (S1-S8, A1-A5) confirmées par sources autoritaires. Sections de matières par série restent 🔴/🟡 à valider par un enseignant |
+| 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — matrice exhaustive toutes classes 🟢 (1er cycle francophone, A/C/D/E, F1-F5, G1-G3 + 8 séries techniques étendues, anglophone Form 1-5 + Lower/Upper Sixth complet S1-S8 + A1-A5). Pivot Firestore-driven catalogue (sprint-change-proposal-2026-06-05.md, ADR-015) : matrice consommée via 6 collections Firestore (`filieres`, `niveaux`, `series`, `subjects`, `exam_targets`, `derivation_rules`) avec flag `isActive` runtime. 79 `derivation_rules` au total, ~50 activées au seed initial, 29 étendues `isActive: false`. Implications Mobile + Backend amendées. |

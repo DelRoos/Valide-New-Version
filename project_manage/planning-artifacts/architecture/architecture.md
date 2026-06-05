@@ -554,7 +554,7 @@ Tester sur **≥ 2 gabarits** : petit (360×640) et standard (393×873).
 
 ## 14. Catalogue d'ADRs
 
-10 décisions structurantes formalisées dans `adrs/`. À étendre au fil du projet à chaque décision technique non triviale.
+15 décisions structurantes formalisées dans `adrs/`. À étendre au fil du projet à chaque décision technique non triviale.
 
 | ID | Titre | Statut |
 |---|---|---|
@@ -568,6 +568,11 @@ Tester sur **≥ 2 gabarits** : petit (360×640) et standard (393×873).
 | [ADR-008](adrs/ADR-008-idempotency-via-sessionid.md) | Idempotence via `sessionId` dans la même transaction Firestore | 🟢 Accepté |
 | [ADR-009](adrs/ADR-009-flutter-smooth-markdown-wrapped.md) | `flutter_smooth_markdown` wrappé dans un widget unique | 🟢 Accepté |
 | [ADR-010](adrs/ADR-010-no-custom-cache.md) | Pas de cache custom — uniquement cache Firestore natif | 🟢 Accepté |
+| [ADR-011](adrs/ADR-011-cross-platform-v1-android-ios-tablet.md) | Périmètre V1 Android + iOS (phone + tablet) | 🟢 Accepté |
+| [ADR-012](adrs/ADR-012-firebase-ai-logic-replace-claude.md) | Firebase AI Logic (Gemini) remplace Claude+Dio streaming pour l'IA | 🟢 Accepté |
+| [ADR-013](adrs/ADR-013-freemopay-as-momo-aggregator.md) | Freemopay v2 retenu comme agrégateur Mobile Money V1 | 🟢 Accepté |
+| [ADR-014](adrs/ADR-014-gpt-markdown-replaces-smooth-markdown.md) | `gpt_markdown` remplace `flutter_smooth_markdown` | 🟢 Accepté |
+| [ADR-015](adrs/ADR-015-catalogue-firestore-runtime-activation.md) | Catalogue scolaire Firestore + activation runtime via `isActive` | 🟢 Accepté |
 
 ---
 

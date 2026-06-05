@@ -25,7 +25,12 @@ Pour chaque collection :
 | `users` | Profil élève (sous-système, filière, niveau, série, école, langue) | 🟡 | Mutable (profil peut être modifié) |
 | `subscriptions` | Statut d'abonnement par utilisateur | 🟡 | **Stream** (le statut change après webhook paiement) |
 | `credits` | Solde de crédits par utilisateur | 🟡 | **Stream** |
-| `subjects` | Catalogue des matières (référentiel) | 🟡 | Statique |
+| `filieres` | Catalogue filières (générale, technique) — multilingue, activable runtime via `isActive` | 🟢 | **Stream** (admin peut désactiver à chaud) |
+| `niveaux` | Catalogue niveaux par (subSystem, filière) (6ᵉ, Seconde, Form 1, Lower Sixth, …) | 🟢 | **Stream** |
+| `series` | Catalogue séries par (subSystem, niveau, filière) (A, C, D, E, F1-F5, G1-G3, S1-S8, A1-A5, …) + flag `canOptOut` | 🟢 | **Stream** |
+| `subjects` | Catalogue matières bilingue (référentiel) + flag `isActive` | 🟢 | **Stream** (admin peut désactiver à chaud) |
+| `exam_targets` | Catalogue examens visés (BEPC, Probatoire/BAC × séries, O Level, A Level × séries) | 🟢 | **Stream** |
+| `derivation_rules` | Règles dérivation (subSystem, filiere, niveau, serie) → (subjectIds, examTargetIds, canOptOut) | 🟢 | **Stream** |
 | `chapters` | Chapitres par matière | 🟡 | Statique |
 | `lessons` | Leçons par chapitre | 🟡 | Statique |
 | `notions` | Notions par leçon (unité atomique d'évaluation) | 🟡 | Statique |
@@ -82,6 +87,126 @@ interface UserDoc {
 - Lecture : uniquement par `uid` (l'élève lui-même), ou par un compte admin
 - Écriture : uniquement par `uid`, sauf `derivedSubjects` qui est écrit par une Cloud Function lors de la création du profil
 - `deletionRequestedAt` géré par Cloud Function (`requestAccountDeletion`)
+
+## Catalogue scolaire (6 collections — Story 1.1a)
+
+> **Pivot ADR-015** : le catalogue scolaire (filières, niveaux, séries, matières, examens, règles de dérivation) vit en **Firestore** avec flag `isActive: bool` sur chaque document. L'admin pédagogique active/désactive runtime depuis Firebase Console sans cycle de release mobile. Seed initial via script Python externe `scripts/firebase_seed/seed_catalogue.py` (Story 1.1b). Lecture côté mobile via `CatalogueRepository` (Story 1.1c) avec filtre systématique `where('isActive', '==', true)` + cache offline Firestore natif (NFR-5, ADR-010).
+
+**Conventions IDs cross-collection** : snake_case strict, préfixe `{subSystem}_` pour disambiguation francophone / anglophone. Détail dans [DONNEES-REFERENCE.md § Convention de nommage](DONNEES-REFERENCE.md#convention-de-nommage-des-ids).
+
+### `filieres/{filiereId}` 🟢
+
+```typescript
+interface FiliereDoc {
+  filiereId: string;                    // = doc ID. Convention: snake_case ("generale", "technique")
+  name: { fr: string; en: string };     // ex. { fr: "Générale", en: "General" }
+  isActive: boolean;                    // pivot — admin Console toggle pour activer/désactiver runtime
+  sortOrder: number;                    // ordre d'affichage (10, 20, 30...)
+}
+```
+
+### `niveaux/{niveauId}` 🟢
+
+```typescript
+interface NiveauDoc {
+  niveauId: string;                     // = doc ID. Convention: {subSystem}_{slug}
+                                         // ex. "francophone_6e", "francophone_terminale",
+                                         //     "anglophone_form_1", "anglophone_lower_sixth"
+  subSystem: "francophone" | "anglophone";
+  name: { fr: string; en: string };
+  filiereIds: string[];                  // refs vers filieres/{id} — un niveau peut être valide
+                                         // pour générale + technique (ex. Terminale)
+  isActive: boolean;
+  sortOrder: number;
+}
+```
+
+### `series/{serieId}` 🟢
+
+```typescript
+interface SerieDoc {
+  serieId: string;                       // = doc ID. Convention: {subSystem}_{niveau_slug}_{serie_slug}
+                                         // ex. "francophone_terminale_d", "francophone_terminale_f1",
+                                         //     "anglophone_upper_sixth_s2", "anglophone_upper_sixth_a3"
+  subSystem: "francophone" | "anglophone";
+  niveauId: string;                      // ref vers niveaux/{id}
+  filiereId: string;                     // ref vers filieres/{id}
+  name: { fr: string; en: string };
+  canOptOut: boolean;                    // Story 1.4 — retrait conditionnel matières.
+                                         // Anglophone Form 3+ et Lower/Upper Sixth toutes filières => true.
+                                         // Sinon false.
+  isActive: boolean;
+  sortOrder: number;
+}
+```
+
+### `subjects/{subjectId}` 🟢
+
+```typescript
+interface SubjectDoc {
+  subjectId: string;                     // = doc ID. Convention: {subSystem}_{shortCode} en snake_case
+                                         // ex. "francophone_math", "francophone_pct", "francophone_svt",
+                                         //     "anglophone_pure_maths", "anglophone_further_maths",
+                                         //     "anglophone_english_lit"
+  subSystem: "francophone" | "anglophone";
+  name: { fr: string; en: string };
+  icon: string;                          // nom Lucide (ex. "function-square", "flask-conical")
+                                         // pack lucide_icons_flutter ^3.1.14 (pubspec.yaml)
+  isActive: boolean;
+  sortOrder: number;
+}
+```
+
+> **Migration de l'ancien schéma `SubjectDoc`** (ligne ~155 ci-dessous, statut 🟡) : le schéma legacy ne sera **plus utilisé**. Le seed Story 1.1b écrira directement la nouvelle structure ci-dessus. L'ancienne définition reste documentée plus bas en attendant sa dépréciation formelle en Story 1.1c.
+
+### `exam_targets/{examTargetId}` 🟢
+
+```typescript
+interface ExamTargetDoc {
+  examTargetId: string;                  // = doc ID. Convention: exam_{niveau}_{subSystem}[_{serie}]
+                                         // ex. "exam_bepc_francophone", "exam_bac_francophone_d",
+                                         //     "exam_bac_technique_f1", "exam_gce_o_level_anglophone",
+                                         //     "exam_gce_a_level_anglophone_s2"
+  subSystem: "francophone" | "anglophone";
+  name: { fr: string; en: string };      // ex. { fr: "BAC D", en: "BAC D" }
+  isActive: boolean;
+  sortOrder: number;
+}
+```
+
+### `derivation_rules/{ruleId}` 🟢
+
+```typescript
+interface DerivationRuleDoc {
+  ruleId: string;                        // = doc ID. Convention: rule_{subSystem}_{filiere}_{niveau}_{serie|none}
+                                         // ex. "rule_francophone_generale_terminale_d",
+                                         //     "rule_anglophone_generale_form_1_none"
+  matchSubSystem: "francophone" | "anglophone";
+  matchFiliere: string;                  // ref filieres/{id} ou "*" pour wildcard
+                                         // (ex. Forms 1-2 sans distinction filière)
+  matchNiveau: string;                   // ref niveaux/{id}
+  matchSerie: string | null;             // ref series/{id} ou null si le niveau n'a pas de série
+                                         // (ex. 6ᵉ, Form 1)
+  subjectIds: string[];                  // refs vers subjects/{id} — résultat de la dérivation
+  examTargetIds: string[];               // refs vers exam_targets/{id}
+  canOptOut: boolean;                    // doublon avec series.canOptOut pour requête directe
+                                         // (figé à la création de la rule)
+  isActive: boolean;
+}
+```
+
+### Indexes composés (les 6 collections catalogue)
+
+À ajouter dans `firestore.indexes.json` racine en Story 1.1c :
+
+- `series.(subSystem ASC, niveauId ASC, filiereId ASC, isActive ASC)` — sélection séries valides pour flow profil 3 étapes (Story 1.3)
+- `subjects.(subSystem ASC, isActive ASC, sortOrder ASC)` — grille matières dashboard (Story 1.9)
+- `derivation_rules.(matchSubSystem ASC, matchFiliere ASC, matchNiveau ASC, matchSerie ASC, isActive ASC)` — match dérivation côté client (Story 1.1c `CatalogueRepository.derive()`)
+
+### Règles d'accès (les 6 collections catalogue)
+
+- **Lecture** : `if request.auth != null` (utilisateur authentifié, anonyme ou complet)
+- **Écriture** : `if false` (jamais depuis le mobile — seul le script Python `seed_catalogue.py` (Story 1.1b) avec service-account.json OU la Firebase Console admin peut écrire)
 
 ### `subscriptions/{uid}` 🟡
 
@@ -465,6 +590,12 @@ interface WebhookEventDoc {
 
 À documenter ici dès qu'un index composé est ajouté à `firestore.indexes.json` (côté backend). Liste à compléter :
 
+🟢 **Validés Story 1.1a** (catalogue scolaire) :
+
+- `series` : `(subSystem, niveauId, filiereId, isActive)` — sélection séries valides flow profil
+- `subjects` : `(subSystem, isActive, sortOrder)` — grille matières dashboard
+- `derivation_rules` : `(matchSubSystem, matchFiliere, matchNiveau, matchSerie, isActive)` — match dérivation
+
 🔴 **À compléter pendant la mise en place** :
 
 - `users` : `(subSystem, niveau, serie)` — pour les stats par profil
@@ -487,7 +618,9 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | `subscriptions/{uid}` | `uid` | **Cloud Function uniquement** |
 | `credits/{uid}` | `uid` | **Cloud Function uniquement** |
 | `credits/{uid}/transactions/*` | `uid` | **Cloud Function uniquement** |
-| `subjects`, `chapters`, `lessons`, `notions`, `exercises`, `quizzes`, `exam_subjects` | Authentifié, profil complet (filtré par règle) | Admin (via backoffice) |
+| `filieres`, `niveaux`, `series`, `exam_targets`, `derivation_rules` (catalogue Story 1.1a) | Authentifié (`request.auth != null`) | **Script Python `seed_catalogue.py` / Console admin uniquement** (`write: if false` côté mobile) |
+| `subjects` (Story 1.1a, schema migré) | Authentifié | **Script Python / Console admin uniquement** |
+| `chapters`, `lessons`, `notions`, `exercises`, `quizzes`, `exam_subjects` | Authentifié, profil complet (filtré par règle) | Admin (via backoffice) |
 | `users/{uid}/completions/*` | `uid` | **Cloud Function uniquement** (dans transaction) |
 | `users/{uid}/health/*` | `uid` | **Cloud Function uniquement** |
 | `users/{uid}/stats` | `uid` | **Cloud Function uniquement** |
@@ -510,3 +643,4 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture mobile et backend |
 | 2026-06-04 | DelRoos / Claude | Story 0.9 — lien vers `firestore.rules` racine + `test/rules/` (règles initiales P0 : default deny + users self-only + `_smoketest/*` temporaire) |
+| 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — pivot Firestore catalogue scolaire (ADR-015). Ajout 6 collections `filieres`, `niveaux`, `series`, `subjects` (schema migré), `exam_targets`, `derivation_rules` avec flag `isActive: bool` runtime + 3 indexes composites + règles d'accès `read: auth / write: false` (seed via script Python externe Story 1.1b). Updates : Vue d'ensemble (+5 lignes, `subjects` 🟡→🟢 Stream), nouvelle section « Catalogue scolaire » entre `users` et `subscriptions`, tables Indexes + Règles sécurité résumé étendues. Sprint-change-proposal-2026-06-05.md. |

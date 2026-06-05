@@ -1,5 +1,5 @@
 # generated: 2026-06-03
-# last_updated: 2026-06-05  # MAJ post merge Story 0.22 (PR #33 0cd95e0) + cloture Epic 0
+# last_updated: 2026-06-05  # MAJ post merge Story 0.22 (PR #33 0cd95e0) + cloture Epic 0 + create-story 1.1a (ready-for-dev)
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -28,7 +28,7 @@
 #   - cancelled: Story annulee suite a sprint change (pivot strategique). Le fichier story est conserve en archive avec banner SUPERSEDED + reference au sprint-change-proposal.
 
 generated: 2026-06-03
-last_updated: 2026-06-05  # post merge Story 0.22 + cloture Epic 0
+last_updated: 2026-06-05  # post merge Story 0.22 + cloture Epic 0 + create-story 1.1a
 project: Valide School MVP
 project_key: VALIDE
 tracking_system: file-system
@@ -71,7 +71,7 @@ development_status:
   # ======================
   epic-1: in-progress  # 2026-06-05 Epic 1 actif. Sprint change 2026-06-05 (pivot Firestore-driven catalogue) cf sprint-change-proposal-2026-06-05.md.
   1-1-audit-r4-matrice-seed-catalogue: cancelled  # 2026-06-05 SUPERSEDED par sprint-change-proposal-2026-06-05.md (pivot Firestore-driven). Story file conservee en archive avec banner SUPERSEDED. Remplacee par 1.1a + 1.1b + 1.1c.
-  1-1a-audit-matrice-firestore-schema: backlog  # 2026-06-05 NEW (sprint change). Audit matrice exhaustive toutes classes + schema Firestore (6 collections + isActive + indexes) + ADR-015 + BASE-DE-DONNEES.md update (accord backend requis) + DONNEES-REFERENCE + ALGORITHMES updates. Docs only, no code. Estim S ~3-4h.
+  1-1a-audit-matrice-firestore-schema: review  # 2026-06-05 ready-for-dev -> in-progress -> review via /bmad-dev-story. Livré: T1 matrice 79 derivation_rules 🟢 toutes classes (4 BEPC + 14 général + 16 industriel + 6 tertiaire + 8 étendue francophone + 5 anglo secondary + 26 anglo high school) + T2 BASE-DE-DONNEES schema 6 collections (filieres/niveaux/series/subjects/exam_targets/derivation_rules) + 3 indexes composites + règles read-auth/write-false + T3 ADR-015 (72 lignes) + T4 ALGORITHMES § 1 amend (lieu V1 helper Dart client + pseudo-code derivation_rules + cas no-match + retrait series.canOptOut) + T5 architecture § 14 rattrapage drift ADR-011 à 015 + intro 10→15 décisions + T6 cohérence inter-doc validée (grep IDs snake_case OK + 3 indexes OK + cross-refs 5 fichiers OK). Diff ~560 lignes net (sous 600). AC6 backend différé post-merge (équipe non constituée).
   1-1b-script-python-seed-catalogue: backlog  # 2026-06-05 NEW. scripts/firebase_seed/seed_catalogue.py (firebase-admin SDK) + data/matrice.json source versionnee + requirements.txt + README + .gitignore service-account + tests Python. Estim M ~4-5h. Depends 1.1a.
   1-1c-catalogue-repository-mobile: backlog  # 2026-06-05 NEW. lib/core/catalogue/catalogue_repository.dart (lecture Firestore + cache offline NFR-5 + filtre isActive == true) + provider Riverpod + ecran "En attente de connexion" bloquant (UX-DR-24) si Firestore vide au 1er lancement + tests. Estim M ~4-5h. Depends 1.1a (parallele 1.1b possible).
   1-2-choix-sous-systeme-bascule-i18n: backlog
