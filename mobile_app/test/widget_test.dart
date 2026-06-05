@@ -4,12 +4,23 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/app.dart';
 
+// Story 0.22 — le splash anime 1800 ms + 300 ms de hold avant de
+// rediriger vers /hello. Les tests qui ciblent HelloPage doivent attendre
+// cette transition (marge de securite : 2200 ms).
+const Duration _kSplashSettleDuration = Duration(milliseconds: 2200);
+
+Future<void> _settleSplashToHello(WidgetTester tester) async {
+  await tester.pump();
+  await tester.pump(_kSplashSettleDuration);
+  await tester.pump(const Duration(milliseconds: 200));
+}
+
 void main() {
   testWidgets(
-    'Locale FR par défaut : affiche « Bonjour Valide »',
+    'Locale FR par défaut : affiche « Bonjour Valide » apres splash',
     (WidgetTester tester) async {
       await tester.pumpWidget(const ProviderScope(child: ValideApp()));
-      await tester.pump(const Duration(milliseconds: 200));
+      await _settleSplashToHello(tester);
 
       expect(find.text('Bonjour Valide'), findsOneWidget);
       expect(find.text('Hello Valide'), findsNothing);
@@ -17,7 +28,7 @@ void main() {
   );
 
   testWidgets(
-    'Locale EN forcée : affiche « Hello Valide »',
+    'Locale EN forcée : affiche « Hello Valide » apres splash',
     (WidgetTester tester) async {
       await tester.pumpWidget(
         ProviderScope(
@@ -27,7 +38,7 @@ void main() {
           child: const ValideApp(),
         ),
       );
-      await tester.pump(const Duration(milliseconds: 200));
+      await _settleSplashToHello(tester);
 
       expect(find.text('Hello Valide'), findsOneWidget);
       expect(find.text('Bonjour Valide'), findsNothing);
@@ -41,7 +52,7 @@ void main() {
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
       await tester.pumpWidget(const ProviderScope(child: ValideApp()));
-      await tester.pump(const Duration(milliseconds: 200));
+      await _settleSplashToHello(tester);
     }
 
     testWidgets('Phone 375×812 : titre + sélecteur langue + 2 boutons',
