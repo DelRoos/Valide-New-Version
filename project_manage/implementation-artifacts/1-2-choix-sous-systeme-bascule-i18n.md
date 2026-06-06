@@ -3,8 +3,11 @@ story_id: 1.2
 title: Choix sous-système (FR-1) + bascule i18n runtime + persistance SharedPreferences
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-06
+merged: 2026-06-06
+merge_commit: 3ccfd28
+pr_number: 42
 branch: feat/1.2-choix-sous-systeme-bascule-i18n
 baseline_commit: 693d9eed  # merge commit Story 1.1b (PR #40)
 estimation: M (~4-5h)
