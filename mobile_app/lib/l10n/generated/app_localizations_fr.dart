@@ -89,4 +89,23 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get catalogueWaitingRetry => 'Réessayer';
+
+  @override
+  String get subsystemChoiceTitle => 'Choisis ta langue et ton programme';
+
+  @override
+  String get subsystemChoiceSubtitle => 'Tu ne pourras pas changer après.';
+
+  @override
+  String get subsystemFrancophone => 'Francophone';
+
+  @override
+  String get subsystemAnglophone => 'Anglophone';
+
+  @override
+  String get subsystemConfirmTitle => 'Confirmer ton choix';
+
+  @override
+  String get subsystemConfirmBody =>
+      'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.';
 }

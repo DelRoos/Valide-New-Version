@@ -253,6 +253,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Réessayer'**
   String get catalogueWaitingRetry;
+
+  /// Titre H2 de la page /onboarding/subsystem (Story 1.2). Tutoiement UX-DR-39.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ta langue et ton programme'**
+  String get subsystemChoiceTitle;
+
+  /// Sous-titre court qui avertit du caractère immuable du choix (ADR-006).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu ne pourras pas changer après.'**
+  String get subsystemChoiceSubtitle;
+
+  /// Label du bouton qui sélectionne le sous-système francophone (langue FR + curriculum MINESEC).
+  ///
+  /// In fr, this message translates to:
+  /// **'Francophone'**
+  String get subsystemFrancophone;
+
+  /// Label du bouton qui sélectionne le sous-système anglophone (langue EN + curriculum Cameroon GCE).
+  ///
+  /// In fr, this message translates to:
+  /// **'Anglophone'**
+  String get subsystemAnglophone;
+
+  /// Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer ton choix'**
+  String get subsystemConfirmTitle;
+
+  /// Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.'**
+  String get subsystemConfirmBody;
 }
 
 class _AppLocalizationsDelegate

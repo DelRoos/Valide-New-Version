@@ -88,5 +88,23 @@
   "@catalogueWaitingMessage": { "description": "Sous-titre rassurant qui explique pourquoi une connexion est nécessaire au 1er lancement et invite à l'action." },
 
   "catalogueWaitingRetry": "Réessayer",
-  "@catalogueWaitingRetry": { "description": "CTA primaire pour re-tenter le chargement du catalogue." }
+  "@catalogueWaitingRetry": { "description": "CTA primaire pour re-tenter le chargement du catalogue." },
+
+  "subsystemChoiceTitle": "Choisis ta langue et ton programme",
+  "@subsystemChoiceTitle": { "description": "Titre H2 de la page /onboarding/subsystem (Story 1.2). Tutoiement UX-DR-39." },
+
+  "subsystemChoiceSubtitle": "Tu ne pourras pas changer après.",
+  "@subsystemChoiceSubtitle": { "description": "Sous-titre court qui avertit du caractère immuable du choix (ADR-006)." },
+
+  "subsystemFrancophone": "Francophone",
+  "@subsystemFrancophone": { "description": "Label du bouton qui sélectionne le sous-système francophone (langue FR + curriculum MINESEC)." },
+
+  "subsystemAnglophone": "Anglophone",
+  "@subsystemAnglophone": { "description": "Label du bouton qui sélectionne le sous-système anglophone (langue EN + curriculum Cameroon GCE)." },
+
+  "subsystemConfirmTitle": "Confirmer ton choix",
+  "@subsystemConfirmTitle": { "description": "Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone." },
+
+  "subsystemConfirmBody": "Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.",
+  "@subsystemConfirmBody": { "description": "Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2)." }
 }

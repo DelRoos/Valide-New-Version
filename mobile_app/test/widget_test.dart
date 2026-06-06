@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
+import 'package:valide_school/features/onboarding/providers.dart';
 
 // Story 0.22 — le splash anime 1800 ms + 300 ms de hold avant de
-// rediriger vers /hello. Les tests qui ciblent HelloPage doivent attendre
-// cette transition (marge de securite : 2200 ms).
+// rediriger. Les tests qui ciblent HelloPage doivent attendre cette
+// transition (marge de securite : 2200 ms).
 const Duration _kSplashSettleDuration = Duration(milliseconds: 2200);
 
 Future<void> _settleSplashToHello(WidgetTester tester) async {
@@ -16,21 +18,33 @@ Future<void> _settleSplashToHello(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 200));
 }
 
-// Story 1.1c — bypass du redirect /catalogue-waiting en environnement test.
-// Sans Firestore initialise, `appStartupCatalogueCheckProvider` echouerait et
-// le router redirigerait vers /catalogue-waiting. On force `true` pour rester
-// sur le flow normal Splash -> Hello.
-final _bypassCatalogueCheck = [
-  appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-];
+// Story 1.2 — la locale derive desormais du sous-systeme. Pour rejoindre
+// /hello apres le splash, il faut pre-populer subSystem en SharedPreferences
+// (sinon le splash navigue vers /onboarding/subsystem).
+Future<SharedPreferences> _prefsWith({
+  required String subSystem,
+  required String language,
+}) async {
+  SharedPreferences.setMockInitialValues({
+    'onboarding.subsystem': subSystem,
+    'onboarding.language': language,
+  });
+  return SharedPreferences.getInstance();
+}
 
 void main() {
   testWidgets(
     'Locale FR par défaut : affiche « Bonjour Valide » apres splash',
     (WidgetTester tester) async {
+      final prefs =
+          await _prefsWith(subSystem: 'francophone', language: 'fr');
+
       await tester.pumpWidget(
         ProviderScope(
-          overrides: _bypassCatalogueCheck,
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+          ],
           child: const ValideApp(),
         ),
       );
@@ -42,13 +56,19 @@ void main() {
   );
 
   testWidgets(
-    'Locale EN forcée : affiche « Hello Valide » apres splash',
+    'Locale EN dérivée de subSystem anglophone : affiche « Hello Valide »',
     (WidgetTester tester) async {
+      // Story 1.2 — la bascule i18n passe par le sous-systeme. Pas d'override
+      // de localeProvider possible : LocaleNotifier.build() ref.watch
+      // subSystemNotifierProvider donc une sous-classe ferait planter le watch.
+      final prefs =
+          await _prefsWith(subSystem: 'anglophone', language: 'en');
+
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
-            ..._bypassCatalogueCheck,
-            localeProvider.overrideWith(() => _EnglishLocaleNotifier()),
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
           ],
           child: const ValideApp(),
         ),
@@ -66,9 +86,14 @@ void main() {
     Future<void> pumpAtSize(WidgetTester tester, Size size) async {
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
+      final prefs =
+          await _prefsWith(subSystem: 'francophone', language: 'fr');
       await tester.pumpWidget(
         ProviderScope(
-          overrides: _bypassCatalogueCheck,
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+          ],
           child: const ValideApp(),
         ),
       );
@@ -101,9 +126,4 @@ void main() {
       expect(find.text('Annuler'), findsOneWidget);
     });
   });
-}
-
-class _EnglishLocaleNotifier extends LocaleNotifier {
-  @override
-  Locale build() => const Locale('en');
 }

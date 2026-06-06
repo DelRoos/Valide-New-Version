@@ -10,24 +10,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/theme/tokens.dart';
+import 'package:valide_school/features/onboarding/providers.dart';
 
-// Story 1.1c — bypass du redirect /catalogue-waiting en environnement test.
-final _bypassCatalogueCheck = [
-  appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-];
+// Story 1.2 — pre-populate subSystem=francophone pour que le splash navigue
+// direct vers /hello (sinon il irait sur /onboarding/subsystem). Cela conserve
+// l'intention initiale du test : verifier l'animation puis la nav.
+Future<SharedPreferences> _prefsWithFrancophoneSubsystem() async {
+  SharedPreferences.setMockInitialValues({
+    'onboarding.subsystem': 'francophone',
+    'onboarding.language': 'fr',
+  });
+  return SharedPreferences.getInstance();
+}
 
 void main() {
   group('SplashPage responsive — Story 0.22', () {
     Future<void> pumpAtSize(WidgetTester tester, Size size) async {
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
+      final prefs = await _prefsWithFrancophoneSubsystem();
       await tester.pumpWidget(
         ProviderScope(
-          overrides: _bypassCatalogueCheck,
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+          ],
           child: const ValideApp(),
         ),
       );
@@ -68,9 +80,13 @@ void main() {
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(375, 812));
       addTearDown(() => tester.binding.setSurfaceSize(null));
+      final prefs = await _prefsWithFrancophoneSubsystem();
       await tester.pumpWidget(
         ProviderScope(
-          overrides: _bypassCatalogueCheck,
+          overrides: [
+            sharedPreferencesProvider.overrideWithValue(prefs),
+            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+          ],
           child: const ValideApp(),
         ),
       );

@@ -8,9 +8,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/logging/app_logger.dart';
+import 'features/onboarding/providers.dart';
 import 'firebase_options.dart';
 
 /// Version build courante. Doit refléter `pubspec.yaml` § `version:`.
@@ -23,6 +25,14 @@ Future<void> main() async {
   // Flutter appelle FlutterNativeSplash.remove() au 1er postFrame. Sans
   // preserve, on retombe sur un fond noir entre splash natif et 1re frame.
   FlutterNativeSplash.preserve(widgetsBinding: binding);
+
+  // Story 1.2 — preload SharedPreferences AVANT runApp pour eviter le flash
+  // de locale par defaut (FR) puis bascule (EN) au 1er build pour un user
+  // anglophone qui relance l'app. Le splash natif reste visible pendant ce
+  // preload (~10-100ms selon device). Le ProviderScope override injecte
+  // l'instance dans `sharedPreferencesProvider` (sinon UnimplementedError).
+  final prefs = await SharedPreferences.getInstance();
+
   // Story 0.22 — Firebase init en background (non bloquant) pour ne pas
   // retarder runApp. Le splash natif resterait fige tant que _bootstrap
   // n'a pas rendu la main, et l'utilisateur ne verrait jamais l'animation
@@ -31,7 +41,14 @@ Future<void> main() async {
   // (sentinelle E0). Si /hello tente une operation Firebase avant init,
   // _e0SmokeTest le gere via AppLogger.w non bloquant.
   unawaited(_bootstrap());
-  runApp(const ProviderScope(child: ValideApp()));
+  runApp(
+    ProviderScope(
+      overrides: [
+        sharedPreferencesProvider.overrideWithValue(prefs),
+      ],
+      child: const ValideApp(),
+    ),
+  );
 }
 
 /// Init Firebase + Crashlytics + smoke test Firestore (Story 0.21 AC2).
