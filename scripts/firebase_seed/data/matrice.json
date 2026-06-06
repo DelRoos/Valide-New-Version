@@ -1,0 +1,3202 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-06-06",
+  "comment": "Source matrice : doc/partage/DONNEES-REFERENCE.md § Tableau de derivation (79 derivation_rules). Schema : doc/partage/BASE-DE-DONNEES.md § Catalogue scolaire. Modifier ici puis re-run seed_catalogue.py pour propager.",
+  "filieres": [
+    {
+      "filiereId": "generale",
+      "name": {
+        "fr": "Générale",
+        "en": "General"
+      },
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "filiereId": "technique",
+      "name": {
+        "fr": "Technique",
+        "en": "Technical"
+      },
+      "isActive": true,
+      "sortOrder": 20
+    }
+  ],
+  "niveaux": [
+    {
+      "niveauId": "francophone_6e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "6ᵉ",
+        "en": "6e"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 110
+    },
+    {
+      "niveauId": "francophone_5e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "5ᵉ",
+        "en": "5e"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 120
+    },
+    {
+      "niveauId": "francophone_4e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "4ᵉ",
+        "en": "4e"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 130
+    },
+    {
+      "niveauId": "francophone_3e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "3ᵉ",
+        "en": "3e"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 140
+    },
+    {
+      "niveauId": "francophone_seconde",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Seconde",
+        "en": "Seconde"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 150
+    },
+    {
+      "niveauId": "francophone_premiere",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Première",
+        "en": "Première"
+      },
+      "filiereIds": [
+        "generale",
+        "technique"
+      ],
+      "isActive": true,
+      "sortOrder": 160
+    },
+    {
+      "niveauId": "francophone_terminale",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Terminale",
+        "en": "Terminale"
+      },
+      "filiereIds": [
+        "generale",
+        "technique"
+      ],
+      "isActive": true,
+      "sortOrder": 170
+    },
+    {
+      "niveauId": "anglophone_form_1",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Form 1",
+        "en": "Form 1"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 210
+    },
+    {
+      "niveauId": "anglophone_form_2",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Form 2",
+        "en": "Form 2"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 220
+    },
+    {
+      "niveauId": "anglophone_form_3",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Form 3",
+        "en": "Form 3"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 230
+    },
+    {
+      "niveauId": "anglophone_form_4",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Form 4",
+        "en": "Form 4"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 240
+    },
+    {
+      "niveauId": "anglophone_form_5",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Form 5",
+        "en": "Form 5"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 250
+    },
+    {
+      "niveauId": "anglophone_lower_sixth",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Lower Sixth",
+        "en": "Lower Sixth"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 260
+    },
+    {
+      "niveauId": "anglophone_upper_sixth",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Upper Sixth",
+        "en": "Upper Sixth"
+      },
+      "filiereIds": [
+        "generale"
+      ],
+      "isActive": true,
+      "sortOrder": 270
+    }
+  ],
+  "series": [
+    {
+      "serieId": "francophone_seconde_a",
+      "subSystem": "francophone",
+      "niveauId": "francophone_seconde",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A",
+        "en": "A"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "serieId": "francophone_seconde_c",
+      "subSystem": "francophone",
+      "niveauId": "francophone_seconde",
+      "filiereId": "generale",
+      "name": {
+        "fr": "C",
+        "en": "C"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 20
+    },
+    {
+      "serieId": "francophone_premiere_a",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A",
+        "en": "A"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 30
+    },
+    {
+      "serieId": "francophone_premiere_c",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "C",
+        "en": "C"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 40
+    },
+    {
+      "serieId": "francophone_premiere_d",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "D",
+        "en": "D"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 50
+    },
+    {
+      "serieId": "francophone_premiere_e",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "E",
+        "en": "E"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 60
+    },
+    {
+      "serieId": "francophone_terminale_a",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A",
+        "en": "A"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 70
+    },
+    {
+      "serieId": "francophone_terminale_c",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "generale",
+      "name": {
+        "fr": "C",
+        "en": "C"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 80
+    },
+    {
+      "serieId": "francophone_terminale_d",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "generale",
+      "name": {
+        "fr": "D",
+        "en": "D"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 90
+    },
+    {
+      "serieId": "francophone_terminale_e",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "generale",
+      "name": {
+        "fr": "E",
+        "en": "E"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 100
+    },
+    {
+      "serieId": "francophone_premiere_f1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F1 — Construction mécanique",
+        "en": "F1 — Mech. Construction"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 200
+    },
+    {
+      "serieId": "francophone_terminale_f1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F1 — Construction mécanique",
+        "en": "F1 — Mech. Construction"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 205
+    },
+    {
+      "serieId": "francophone_premiere_f2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F2 — Électronique",
+        "en": "F2 — Electronics"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 210
+    },
+    {
+      "serieId": "francophone_terminale_f2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F2 — Électronique",
+        "en": "F2 — Electronics"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 215
+    },
+    {
+      "serieId": "francophone_premiere_f3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F3 — Électrotechnique",
+        "en": "F3 — Electrotechnics"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 220
+    },
+    {
+      "serieId": "francophone_terminale_f3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F3 — Électrotechnique",
+        "en": "F3 — Electrotechnics"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 225
+    },
+    {
+      "serieId": "francophone_premiere_f4",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F4 — Génie civil",
+        "en": "F4 — Civil Engineering"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 230
+    },
+    {
+      "serieId": "francophone_terminale_f4",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F4 — Génie civil",
+        "en": "F4 — Civil Engineering"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 235
+    },
+    {
+      "serieId": "francophone_premiere_f5",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F5 — Chimie industrielle",
+        "en": "F5 — Industrial Chemistry"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 240
+    },
+    {
+      "serieId": "francophone_terminale_f5",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F5 — Chimie industrielle",
+        "en": "F5 — Industrial Chemistry"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 245
+    },
+    {
+      "serieId": "francophone_premiere_g1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G1 — Techniques administratives",
+        "en": "G1 — Administrative"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 300
+    },
+    {
+      "serieId": "francophone_terminale_g1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G1 — Techniques administratives",
+        "en": "G1 — Administrative"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 305
+    },
+    {
+      "serieId": "francophone_premiere_g2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G2 — Comptabilité",
+        "en": "G2 — Accounting"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 310
+    },
+    {
+      "serieId": "francophone_terminale_g2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G2 — Comptabilité",
+        "en": "G2 — Accounting"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 315
+    },
+    {
+      "serieId": "francophone_premiere_g3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G3 — Techniques commerciales",
+        "en": "G3 — Commerce"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 320
+    },
+    {
+      "serieId": "francophone_terminale_g3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "G3 — Techniques commerciales",
+        "en": "G3 — Commerce"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 325
+    },
+    {
+      "serieId": "francophone_terminale_esf",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "ESF — Économie sociale et familiale",
+        "en": "ESF — Social Economy"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 400
+    },
+    {
+      "serieId": "francophone_terminale_ih",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "IH — Industrie hôtelière",
+        "en": "IH — Hospitality"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 410
+    },
+    {
+      "serieId": "francophone_terminale_mvt",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "MVT — Méca. véhicules à tracteur",
+        "en": "MVT — Tractor Mechanics"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 420
+    },
+    {
+      "serieId": "francophone_terminale_aca",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "ACA — Action commerciale",
+        "en": "ACA — Sales"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 430
+    },
+    {
+      "serieId": "francophone_terminale_mava",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "MAVA — Maintenance automobile",
+        "en": "MAVA — Auto Maintenance"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 440
+    },
+    {
+      "serieId": "francophone_terminale_meac_auto",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "MEAC AUTO — Maint. élec. & auto.",
+        "en": "MEAC AUTO — Elec.+Auto"
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 450
+    },
+    {
+      "serieId": "francophone_terminale_mem",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "MEM — Maint. équip. mécaniques",
+        "en": "MEM — Mech. Equip."
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 460
+    },
+    {
+      "serieId": "francophone_terminale_meca",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "MECA — Mécanique générale",
+        "en": "MECA — General Mech."
+      },
+      "canOptOut": false,
+      "isActive": false,
+      "sortOrder": 470
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s1",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S1",
+        "en": "S1"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 510
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s1",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S1",
+        "en": "S1"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 610
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s2",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S2",
+        "en": "S2"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 520
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s2",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S2",
+        "en": "S2"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 620
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s3",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S3",
+        "en": "S3"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 530
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s3",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S3",
+        "en": "S3"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 630
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s4",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S4",
+        "en": "S4"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 540
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s4",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S4",
+        "en": "S4"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 640
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s5",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S5",
+        "en": "S5"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 550
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s5",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S5",
+        "en": "S5"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 650
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s6",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S6",
+        "en": "S6"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 560
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s6",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S6",
+        "en": "S6"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 660
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s7",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S7",
+        "en": "S7"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 570
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s7",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S7",
+        "en": "S7"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 670
+    },
+    {
+      "serieId": "anglophone_lower_sixth_s8",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S8",
+        "en": "S8"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 580
+    },
+    {
+      "serieId": "anglophone_upper_sixth_s8",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "S8",
+        "en": "S8"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 680
+    },
+    {
+      "serieId": "anglophone_lower_sixth_a1",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A1",
+        "en": "A1"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 710
+    },
+    {
+      "serieId": "anglophone_upper_sixth_a1",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A1",
+        "en": "A1"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 810
+    },
+    {
+      "serieId": "anglophone_lower_sixth_a2",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A2",
+        "en": "A2"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 720
+    },
+    {
+      "serieId": "anglophone_upper_sixth_a2",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A2",
+        "en": "A2"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 820
+    },
+    {
+      "serieId": "anglophone_lower_sixth_a3",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A3",
+        "en": "A3"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 730
+    },
+    {
+      "serieId": "anglophone_upper_sixth_a3",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A3",
+        "en": "A3"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 830
+    },
+    {
+      "serieId": "anglophone_lower_sixth_a4",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A4",
+        "en": "A4"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 740
+    },
+    {
+      "serieId": "anglophone_upper_sixth_a4",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A4",
+        "en": "A4"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 840
+    },
+    {
+      "serieId": "anglophone_lower_sixth_a5",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_lower_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A5",
+        "en": "A5"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 750
+    },
+    {
+      "serieId": "anglophone_upper_sixth_a5",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_upper_sixth",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A5",
+        "en": "A5"
+      },
+      "canOptOut": true,
+      "isActive": true,
+      "sortOrder": 850
+    }
+  ],
+  "subjects": [
+    {
+      "subjectId": "francophone_math",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mathématiques",
+        "en": "Mathematics"
+      },
+      "icon": "function-square",
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "subjectId": "francophone_pct",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Physique-Chimie-Tech",
+        "en": "Physics-Chemistry-Tech"
+      },
+      "icon": "atom",
+      "isActive": true,
+      "sortOrder": 20
+    },
+    {
+      "subjectId": "francophone_svt",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "SVT",
+        "en": "Life & Earth Sciences"
+      },
+      "icon": "dna",
+      "isActive": true,
+      "sortOrder": 30
+    },
+    {
+      "subjectId": "francophone_sciences_phy",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences Physiques",
+        "en": "Physical Sciences"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 25
+    },
+    {
+      "subjectId": "francophone_si",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences Industrielles",
+        "en": "Industrial Sciences"
+      },
+      "icon": "cog",
+      "isActive": true,
+      "sortOrder": 35
+    },
+    {
+      "subjectId": "francophone_fr",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Français",
+        "en": "French"
+      },
+      "icon": "book-open-text",
+      "isActive": true,
+      "sortOrder": 40
+    },
+    {
+      "subjectId": "francophone_en",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Anglais",
+        "en": "English"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 50
+    },
+    {
+      "subjectId": "francophone_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "LV2",
+        "en": "Second Foreign Lang."
+      },
+      "icon": "globe",
+      "isActive": true,
+      "sortOrder": 60
+    },
+    {
+      "subjectId": "francophone_philo",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Philosophie",
+        "en": "Philosophy"
+      },
+      "icon": "brain",
+      "isActive": true,
+      "sortOrder": 70
+    },
+    {
+      "subjectId": "francophone_hg",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Histoire-Géo",
+        "en": "History-Geography"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 80
+    },
+    {
+      "subjectId": "francophone_ecv",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Éducation civique",
+        "en": "Civic Education"
+      },
+      "icon": "scale",
+      "isActive": true,
+      "sortOrder": 90
+    },
+    {
+      "subjectId": "francophone_eps",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "EPS",
+        "en": "PE"
+      },
+      "icon": "dumbbell",
+      "isActive": true,
+      "sortOrder": 100
+    },
+    {
+      "subjectId": "francophone_tech_atelier",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier pratique",
+        "en": "Workshop"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 200
+    },
+    {
+      "subjectId": "francophone_tech_admin",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques administratives",
+        "en": "Administrative Skills"
+      },
+      "icon": "file-text",
+      "isActive": true,
+      "sortOrder": 210
+    },
+    {
+      "subjectId": "francophone_tech_compta",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Comptabilité",
+        "en": "Accounting"
+      },
+      "icon": "calculator",
+      "isActive": true,
+      "sortOrder": 220
+    },
+    {
+      "subjectId": "francophone_tech_commerce",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques commerciales",
+        "en": "Commerce"
+      },
+      "icon": "shopping-bag",
+      "isActive": true,
+      "sortOrder": 230
+    },
+    {
+      "subjectId": "francophone_tech_general_etendu",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Tronc technique étendu (placeholder)",
+        "en": "Extended Technical (placeholder)"
+      },
+      "icon": "book-open",
+      "isActive": false,
+      "sortOrder": 999
+    },
+    {
+      "subjectId": "anglophone_english_lang",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "English Language",
+        "en": "English Language"
+      },
+      "icon": "book-open-text",
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "subjectId": "anglophone_english_lit",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "English Literature",
+        "en": "English Literature"
+      },
+      "icon": "book-marked",
+      "isActive": true,
+      "sortOrder": 20
+    },
+    {
+      "subjectId": "anglophone_french",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "French",
+        "en": "French"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 30
+    },
+    {
+      "subjectId": "anglophone_math",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Mathematics",
+        "en": "Mathematics"
+      },
+      "icon": "function-square",
+      "isActive": true,
+      "sortOrder": 40
+    },
+    {
+      "subjectId": "anglophone_add_math",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Additional Mathematics",
+        "en": "Additional Mathematics"
+      },
+      "icon": "sigma",
+      "isActive": true,
+      "sortOrder": 50
+    },
+    {
+      "subjectId": "anglophone_pure_maths",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Pure Mathematics",
+        "en": "Pure Mathematics"
+      },
+      "icon": "sigma",
+      "isActive": true,
+      "sortOrder": 55
+    },
+    {
+      "subjectId": "anglophone_further_maths",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Further Mathematics",
+        "en": "Further Mathematics"
+      },
+      "icon": "sigma",
+      "isActive": true,
+      "sortOrder": 58
+    },
+    {
+      "subjectId": "anglophone_physics",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Physics",
+        "en": "Physics"
+      },
+      "icon": "atom",
+      "isActive": true,
+      "sortOrder": 60
+    },
+    {
+      "subjectId": "anglophone_chemistry",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Chemistry",
+        "en": "Chemistry"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 70
+    },
+    {
+      "subjectId": "anglophone_biology",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Biology",
+        "en": "Biology"
+      },
+      "icon": "dna",
+      "isActive": true,
+      "sortOrder": 80
+    },
+    {
+      "subjectId": "anglophone_geology",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geology",
+        "en": "Geology"
+      },
+      "icon": "mountain",
+      "isActive": true,
+      "sortOrder": 90
+    },
+    {
+      "subjectId": "anglophone_geo",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geography",
+        "en": "Geography"
+      },
+      "icon": "globe",
+      "isActive": true,
+      "sortOrder": 100
+    },
+    {
+      "subjectId": "anglophone_history",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "History",
+        "en": "History"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 110
+    },
+    {
+      "subjectId": "anglophone_economics",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Economics",
+        "en": "Economics"
+      },
+      "icon": "trending-up",
+      "isActive": true,
+      "sortOrder": 120
+    },
+    {
+      "subjectId": "anglophone_computer_science",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Computer Science",
+        "en": "Computer Science"
+      },
+      "icon": "code-2",
+      "isActive": true,
+      "sortOrder": 130
+    },
+    {
+      "subjectId": "anglophone_citizenship",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Citizenship Education",
+        "en": "Citizenship Education"
+      },
+      "icon": "scale",
+      "isActive": true,
+      "sortOrder": 140
+    },
+    {
+      "subjectId": "anglophone_religious_studies",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Religious Studies",
+        "en": "Religious Studies"
+      },
+      "icon": "book",
+      "isActive": true,
+      "sortOrder": 150
+    },
+    {
+      "subjectId": "anglophone_integrated_science",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Integrated Science",
+        "en": "Integrated Science"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 65
+    },
+    {
+      "subjectId": "anglophone_pe",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Physical Education",
+        "en": "Physical Education"
+      },
+      "icon": "dumbbell",
+      "isActive": true,
+      "sortOrder": 160
+    },
+    {
+      "subjectId": "anglophone_literature",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Literature",
+        "en": "Literature"
+      },
+      "icon": "book-marked",
+      "isActive": true,
+      "sortOrder": 170
+    },
+    {
+      "subjectId": "anglophone_philosophy",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Philosophy",
+        "en": "Philosophy"
+      },
+      "icon": "brain",
+      "isActive": true,
+      "sortOrder": 180
+    }
+  ],
+  "exam_targets": [
+    {
+      "examTargetId": "exam_bepc_francophone",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BEPC",
+        "en": "BEPC"
+      },
+      "isActive": true,
+      "sortOrder": 10
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A",
+        "en": "Probatoire A"
+      },
+      "isActive": true,
+      "sortOrder": 20
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_c",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire C",
+        "en": "Probatoire C"
+      },
+      "isActive": true,
+      "sortOrder": 30
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_d",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire D",
+        "en": "Probatoire D"
+      },
+      "isActive": true,
+      "sortOrder": 40
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire E",
+        "en": "Probatoire E"
+      },
+      "isActive": false,
+      "sortOrder": 50
+    },
+    {
+      "examTargetId": "exam_bac_francophone_a",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC A",
+        "en": "BAC A"
+      },
+      "isActive": true,
+      "sortOrder": 60
+    },
+    {
+      "examTargetId": "exam_bac_francophone_c",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC C",
+        "en": "BAC C"
+      },
+      "isActive": true,
+      "sortOrder": 70
+    },
+    {
+      "examTargetId": "exam_bac_francophone_d",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC D",
+        "en": "BAC D"
+      },
+      "isActive": true,
+      "sortOrder": 80
+    },
+    {
+      "examTargetId": "exam_bac_francophone_e",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC E",
+        "en": "BAC E"
+      },
+      "isActive": false,
+      "sortOrder": 90
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_f1",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire F1",
+        "en": "Probatoire F1"
+      },
+      "isActive": true,
+      "sortOrder": 100
+    },
+    {
+      "examTargetId": "exam_bac_technique_f1",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC F1",
+        "en": "BAC F1"
+      },
+      "isActive": true,
+      "sortOrder": 130
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_f2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire F2",
+        "en": "Probatoire F2"
+      },
+      "isActive": true,
+      "sortOrder": 105
+    },
+    {
+      "examTargetId": "exam_bac_technique_f2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC F2",
+        "en": "BAC F2"
+      },
+      "isActive": true,
+      "sortOrder": 135
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_f3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire F3",
+        "en": "Probatoire F3"
+      },
+      "isActive": true,
+      "sortOrder": 110
+    },
+    {
+      "examTargetId": "exam_bac_technique_f3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC F3",
+        "en": "BAC F3"
+      },
+      "isActive": true,
+      "sortOrder": 140
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_f4",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire F4",
+        "en": "Probatoire F4"
+      },
+      "isActive": true,
+      "sortOrder": 115
+    },
+    {
+      "examTargetId": "exam_bac_technique_f4",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC F4",
+        "en": "BAC F4"
+      },
+      "isActive": true,
+      "sortOrder": 145
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_f5",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire F5",
+        "en": "Probatoire F5"
+      },
+      "isActive": false,
+      "sortOrder": 120
+    },
+    {
+      "examTargetId": "exam_bac_technique_f5",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC F5",
+        "en": "BAC F5"
+      },
+      "isActive": false,
+      "sortOrder": 150
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_g1",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire G1",
+        "en": "Probatoire G1"
+      },
+      "isActive": true,
+      "sortOrder": 160
+    },
+    {
+      "examTargetId": "exam_bac_technique_g1",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC G1",
+        "en": "BAC G1"
+      },
+      "isActive": true,
+      "sortOrder": 180
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_g2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire G2",
+        "en": "Probatoire G2"
+      },
+      "isActive": true,
+      "sortOrder": 165
+    },
+    {
+      "examTargetId": "exam_bac_technique_g2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC G2",
+        "en": "BAC G2"
+      },
+      "isActive": true,
+      "sortOrder": 185
+    },
+    {
+      "examTargetId": "exam_probatoire_technique_g3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire G3",
+        "en": "Probatoire G3"
+      },
+      "isActive": true,
+      "sortOrder": 170
+    },
+    {
+      "examTargetId": "exam_bac_technique_g3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC G3",
+        "en": "BAC G3"
+      },
+      "isActive": true,
+      "sortOrder": 190
+    },
+    {
+      "examTargetId": "exam_bac_technique_esf",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC ESF",
+        "en": "BAC ESF"
+      },
+      "isActive": false,
+      "sortOrder": 200
+    },
+    {
+      "examTargetId": "exam_bac_technique_ih",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC IH",
+        "en": "BAC IH"
+      },
+      "isActive": false,
+      "sortOrder": 205
+    },
+    {
+      "examTargetId": "exam_bac_technique_mvt",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC MVT",
+        "en": "BAC MVT"
+      },
+      "isActive": false,
+      "sortOrder": 210
+    },
+    {
+      "examTargetId": "exam_bac_technique_aca",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC ACA",
+        "en": "BAC ACA"
+      },
+      "isActive": false,
+      "sortOrder": 215
+    },
+    {
+      "examTargetId": "exam_bac_technique_mava",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC MAVA",
+        "en": "BAC MAVA"
+      },
+      "isActive": false,
+      "sortOrder": 220
+    },
+    {
+      "examTargetId": "exam_bac_technique_meac_auto",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC MEAC AUTO",
+        "en": "BAC MEAC AUTO"
+      },
+      "isActive": false,
+      "sortOrder": 225
+    },
+    {
+      "examTargetId": "exam_bac_technique_mem",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC MEM",
+        "en": "BAC MEM"
+      },
+      "isActive": false,
+      "sortOrder": 230
+    },
+    {
+      "examTargetId": "exam_bac_technique_meca",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BAC MECA",
+        "en": "BAC MECA"
+      },
+      "isActive": false,
+      "sortOrder": 235
+    },
+    {
+      "examTargetId": "exam_gce_o_level_anglophone",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE O Level",
+        "en": "GCE Ordinary Level"
+      },
+      "isActive": true,
+      "sortOrder": 300
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s1",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S1",
+        "en": "GCE A Level S1"
+      },
+      "isActive": true,
+      "sortOrder": 315
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s2",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S2",
+        "en": "GCE A Level S2"
+      },
+      "isActive": true,
+      "sortOrder": 320
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s3",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S3",
+        "en": "GCE A Level S3"
+      },
+      "isActive": true,
+      "sortOrder": 325
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s4",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S4",
+        "en": "GCE A Level S4"
+      },
+      "isActive": true,
+      "sortOrder": 330
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s5",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S5",
+        "en": "GCE A Level S5"
+      },
+      "isActive": true,
+      "sortOrder": 335
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s6",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S6",
+        "en": "GCE A Level S6"
+      },
+      "isActive": true,
+      "sortOrder": 340
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s7",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S7",
+        "en": "GCE A Level S7"
+      },
+      "isActive": true,
+      "sortOrder": 345
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_s8",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level S8",
+        "en": "GCE A Level S8"
+      },
+      "isActive": true,
+      "sortOrder": 350
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_a1",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level A1",
+        "en": "GCE A Level A1"
+      },
+      "isActive": true,
+      "sortOrder": 365
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_a2",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level A2",
+        "en": "GCE A Level A2"
+      },
+      "isActive": true,
+      "sortOrder": 370
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_a3",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level A3",
+        "en": "GCE A Level A3"
+      },
+      "isActive": true,
+      "sortOrder": 375
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_a4",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level A4",
+        "en": "GCE A Level A4"
+      },
+      "isActive": true,
+      "sortOrder": 380
+    },
+    {
+      "examTargetId": "exam_gce_a_level_anglophone_a5",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "GCE A Level A5",
+        "en": "GCE A Level A5"
+      },
+      "isActive": true,
+      "sortOrder": 385
+    }
+  ],
+  "derivation_rules": [
+    {
+      "ruleId": "rule_francophone_generale_6e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_6e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_5e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_5e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_lv2"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_4e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_4e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_lv2",
+        "francophone_sciences_phy"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_3e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_3e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_lv2",
+        "francophone_sciences_phy"
+      ],
+      "examTargetIds": [
+        "exam_bepc_francophone"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_seconde_a",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_seconde",
+      "matchSerie": "francophone_seconde_a",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_math",
+        "francophone_eps"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_seconde_c",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_seconde",
+      "matchSerie": "francophone_seconde_c",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_pct",
+        "francophone_svt",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_math",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_c",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_c",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_pct",
+        "francophone_svt",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_c"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_d",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_d",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_pct",
+        "francophone_svt",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_d"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_e",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_si",
+        "francophone_pct",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_e"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_generale_terminale_a",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_a",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_math",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_francophone_a"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_terminale_c",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_c",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_pct",
+        "francophone_svt",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_francophone_c"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_terminale_d",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_d",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_pct",
+        "francophone_svt",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_lv2",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_francophone_d"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_terminale_e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_e",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_si",
+        "francophone_pct",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_francophone_e"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f1",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_f1"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f1",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_f1"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f2",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_f2"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f2",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_f2"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f3",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_f3"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f3",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_f3"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f4",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f4",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_f4"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f4",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f4",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_f4"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f5",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f5",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_f5"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f5",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f5",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_sciences_phy",
+        "francophone_si",
+        "francophone_tech_atelier",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_f5"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_g1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_g1",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_admin",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_g1"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_g1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_g1",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_admin",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_g1"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_g2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_g2",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_compta",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_g2"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_g2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_g2",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_compta",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_g2"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_g3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_g3",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_commerce",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_technique_g3"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_g3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_g3",
+      "subjectIds": [
+        "francophone_math",
+        "francophone_tech_commerce",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_g3"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_esf",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_esf",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_esf"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_ih",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_ih",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_ih"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_mvt",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_mvt",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_mvt"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_aca",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_aca",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_aca"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_mava",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_mava",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_mava"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_meac_auto",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_meac_auto",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_meac_auto"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_mem",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_mem",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_mem"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_meca",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_meca",
+      "subjectIds": [
+        "francophone_tech_general_etendu",
+        "francophone_fr",
+        "francophone_en",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_bac_technique_meca"
+      ],
+      "canOptOut": false,
+      "isActive": false
+    },
+    {
+      "ruleId": "rule_anglophone_generale_form_1_none",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_form_1",
+      "matchSerie": null,
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_integrated_science",
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_citizenship",
+        "anglophone_pe"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_form_2_none",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_form_2",
+      "matchSerie": null,
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_integrated_science",
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_citizenship",
+        "anglophone_pe"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_form_3_none",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_form_3",
+      "matchSerie": null,
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_physics",
+        "anglophone_chemistry",
+        "anglophone_biology",
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_citizenship",
+        "anglophone_pe"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_form_4_none",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_form_4",
+      "matchSerie": null,
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_physics",
+        "anglophone_chemistry",
+        "anglophone_biology",
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_citizenship",
+        "anglophone_pe"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_form_5_none",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_form_5",
+      "matchSerie": null,
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_physics",
+        "anglophone_chemistry",
+        "anglophone_biology",
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_citizenship",
+        "anglophone_pe"
+      ],
+      "examTargetIds": [
+        "exam_gce_o_level_anglophone"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s1",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s1",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s1",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s1",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s1"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s2",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s2",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_biology"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s2",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s2",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_biology"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s2"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s3",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s3",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s3",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s3",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s3"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s4",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s4",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_geology"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s4",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s4",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_geology"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s4"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s5",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s5",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_computer_science",
+        "anglophone_math"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s5",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s5",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_computer_science",
+        "anglophone_math"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s5"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s6",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s6",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_math",
+        "anglophone_further_maths"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s6",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s6",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_math",
+        "anglophone_further_maths"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s6"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s7",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s7",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_biology",
+        "anglophone_physics",
+        "anglophone_math"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s7",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s7",
+      "subjectIds": [
+        "anglophone_chemistry",
+        "anglophone_biology",
+        "anglophone_physics",
+        "anglophone_math"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s7"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_s8",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_s8",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_math",
+        "anglophone_further_maths"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_s8",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_s8",
+      "subjectIds": [
+        "anglophone_biology",
+        "anglophone_chemistry",
+        "anglophone_physics",
+        "anglophone_math",
+        "anglophone_further_maths"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_s8"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_a1",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_a1",
+      "subjectIds": [
+        "anglophone_literature",
+        "anglophone_history",
+        "anglophone_french"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_a1",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_a1",
+      "subjectIds": [
+        "anglophone_literature",
+        "anglophone_history",
+        "anglophone_french"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_a1"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_a2",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_a2",
+      "subjectIds": [
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_economics"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_a2",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_a2",
+      "subjectIds": [
+        "anglophone_history",
+        "anglophone_geo",
+        "anglophone_economics"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_a2"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_a3",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_a3",
+      "subjectIds": [
+        "anglophone_history",
+        "anglophone_economics",
+        "anglophone_literature"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_a3",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_a3",
+      "subjectIds": [
+        "anglophone_history",
+        "anglophone_economics",
+        "anglophone_literature"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_a3"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_a4",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_a4",
+      "subjectIds": [
+        "anglophone_economics",
+        "anglophone_geo",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_a4",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_a4",
+      "subjectIds": [
+        "anglophone_economics",
+        "anglophone_geo",
+        "anglophone_pure_maths"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_a4"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_lower_sixth_a5",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_lower_sixth",
+      "matchSerie": "anglophone_lower_sixth_a5",
+      "subjectIds": [
+        "anglophone_literature",
+        "anglophone_history",
+        "anglophone_philosophy"
+      ],
+      "examTargetIds": [],
+      "canOptOut": true,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_anglophone_generale_upper_sixth_a5",
+      "matchSubSystem": "anglophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "anglophone_upper_sixth",
+      "matchSerie": "anglophone_upper_sixth_a5",
+      "subjectIds": [
+        "anglophone_literature",
+        "anglophone_history",
+        "anglophone_philosophy"
+      ],
+      "examTargetIds": [
+        "exam_gce_a_level_anglophone_a5"
+      ],
+      "canOptOut": true,
+      "isActive": true
+    }
+  ]
+}
