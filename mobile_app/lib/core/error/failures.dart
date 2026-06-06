@@ -8,7 +8,11 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-sealed class Failure extends Equatable {
+// Story 1.1c : `Failure` était `sealed` (interdit d'étendre hors de la library)
+// pour permettre l'exhaustive switch. Aucun consommateur n'exploitait cette
+// garantie. Changé en `abstract` pour permettre aux features d'introduire
+// leurs propres sous-types (ex. `CatalogueFailure` dans `core/catalogue/`).
+abstract class Failure extends Equatable {
   const Failure(this.message);
 
   final String message;

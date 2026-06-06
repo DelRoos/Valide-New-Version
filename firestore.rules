@@ -69,5 +69,41 @@ service cloud.firestore {
     match /_smoketest/{doc} {
       allow read, write: if request.auth != null;
     }
+
+    // -----------------------------------------------------------------
+    // Catalogue scolaire — 6 collections (Story 1.1c, ADR-015)
+    //
+    // Lecture autorisee a tout utilisateur authentifie (anonyme inclus).
+    // Ecriture interdite cote client : seul le script Python externe
+    // `scripts/firebase_seed/seed_catalogue.py` (Story 1.1b, avec
+    // service-account.json) ou la Firebase Console admin peut ecrire.
+    //
+    // Schema autoritatif : doc/partage/BASE-DE-DONNEES.md
+    // § « Catalogue scolaire (6 collections — Story 1.1a) »
+    // -----------------------------------------------------------------
+    match /filieres/{filiereId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /niveaux/{niveauId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /series/{serieId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /subjects/{subjectId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /exam_targets/{examTargetId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /derivation_rules/{ruleId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
   }
 }

@@ -79,5 +79,14 @@
   "@helloLanguageFr": { "description": "Option français dans le sélecteur de langue." },
 
   "helloLanguageEn": "English",
-  "@helloLanguageEn": { "description": "Option anglais dans le sélecteur de langue." }
+  "@helloLanguageEn": { "description": "Option anglais dans le sélecteur de langue." },
+
+  "catalogueWaitingTitle": "En attente de connexion",
+  "@catalogueWaitingTitle": { "description": "Titre de l'écran bloquant affiché quand le catalogue Firestore est vide ET le cache offline est vide (1er lancement offline). Cf. Story 1.1c, UX-DR-24." },
+
+  "catalogueWaitingMessage": "Pour démarrer, Valide doit se connecter une première fois. Vérifie ta connexion et réessaie.",
+  "@catalogueWaitingMessage": { "description": "Sous-titre rassurant qui explique pourquoi une connexion est nécessaire au 1er lancement et invite à l'action." },
+
+  "catalogueWaitingRetry": "Réessayer",
+  "@catalogueWaitingRetry": { "description": "CTA primaire pour re-tenter le chargement du catalogue." }
 }

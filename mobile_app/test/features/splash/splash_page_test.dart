@@ -12,14 +12,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/app.dart';
+import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/theme/tokens.dart';
+
+// Story 1.1c — bypass du redirect /catalogue-waiting en environnement test.
+final _bypassCatalogueCheck = [
+  appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+];
 
 void main() {
   group('SplashPage responsive — Story 0.22', () {
     Future<void> pumpAtSize(WidgetTester tester, Size size) async {
       await tester.binding.setSurfaceSize(size);
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(const ProviderScope(child: ValideApp()));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: _bypassCatalogueCheck,
+          child: const ValideApp(),
+        ),
+      );
       await tester.pump();
     }
 
@@ -57,7 +68,12 @@ void main() {
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(375, 812));
       addTearDown(() => tester.binding.setSurfaceSize(null));
-      await tester.pumpWidget(const ProviderScope(child: ValideApp()));
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: _bypassCatalogueCheck,
+          child: const ValideApp(),
+        ),
+      );
       await tester.pump();
       expect(find.text('Bonjour Valide'), findsNothing);
 
