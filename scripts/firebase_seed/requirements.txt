@@ -1,0 +1,11 @@
+# Dépendances script seed_catalogue.py (Story 1.1b).
+#
+# firebase-admin : SDK officiel Firebase pour Python.
+#   - Version 7.2.0 testée OK sur la machine porteur (2026-06-06, ADC + projectId=valide-edu).
+#   - Pin majeure <8.0.0 protège contre une éventuelle breaking change majeure.
+#
+# pytest : framework de tests standard.
+#   - Pas de fixtures complexes, tests sans Firestore live (validation matrice JSON pure).
+
+firebase-admin>=7.2.0,<8.0.0
+pytest>=8.0.0,<9.0.0

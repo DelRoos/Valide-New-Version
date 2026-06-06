@@ -1,0 +1,25 @@
+# Defensive overlay du .gitignore racine — ne JAMAIS commit ces fichiers,
+# même si quelqu'un override le .gitignore racine ou ouvre ce dossier en standalone.
+
+# --- Secrets Firebase ---
+service-account*.json
+serviceAccountKey.json
+firebase-adminsdk-*.json
+*.pem
+*.key
+
+# --- Python venv & cache ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- IDE local ---
+.vscode/
+.idea/
