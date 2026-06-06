@@ -10,6 +10,8 @@ import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/pedagogical_content.dart';
 import '../../../l10n/generated/app_localizations.dart';
+import '../../onboarding/domain/sub_system.dart';
+import '../../onboarding/providers.dart';
 
 /// Page Hello Valide — sentinelle E0 (Story 0.21).
 ///
@@ -92,10 +94,19 @@ class _HelloPageState extends ConsumerState<HelloPage> {
                     style: AppTypography.meta.copyWith(color: AppColors.muted),
                   ),
                   SizedBox(height: AppSpacing.s6.h),
+                  // Story 1.2 — la locale derive desormais du sous-systeme
+                  // (LocaleNotifier ref.watch subSystemNotifierProvider). Le
+                  // selecteur dev de la sentinelle E0 bascule en deleguant a
+                  // subSystemNotifierProvider.set() au lieu de localeProvider
+                  // qui n'expose plus setLocale (immuable runtime via UI ADR-006).
                   _LanguageSwitcher(
                     current: currentLocale,
-                    onChanged: (loc) =>
-                        ref.read(localeProvider.notifier).setLocale(loc),
+                    onChanged: (loc) {
+                      final target = loc.languageCode == 'en'
+                          ? SubSystem.anglophone
+                          : SubSystem.francophone;
+                      ref.read(subSystemNotifierProvider.notifier).set(target);
+                    },
                     label: l10n.helloLanguageLabel,
                     frLabel: l10n.helloLanguageFr,
                     enLabel: l10n.helloLanguageEn,

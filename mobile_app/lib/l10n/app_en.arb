@@ -29,5 +29,12 @@
 
   "catalogueWaitingTitle": "Waiting for connection",
   "catalogueWaitingMessage": "To get started, Valide needs to connect once. Check your connection and try again.",
-  "catalogueWaitingRetry": "Retry"
+  "catalogueWaitingRetry": "Retry",
+
+  "subsystemChoiceTitle": "Choose your language and program",
+  "subsystemChoiceSubtitle": "You won't be able to change this later.",
+  "subsystemFrancophone": "Francophone",
+  "subsystemAnglophone": "Anglophone",
+  "subsystemConfirmTitle": "Confirm your choice",
+  "subsystemConfirmBody": "This choice locks your language and program. You won't be able to change it later."
 }

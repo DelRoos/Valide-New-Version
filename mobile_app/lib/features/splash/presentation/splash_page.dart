@@ -32,10 +32,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/tokens.dart';
+import '../../onboarding/providers.dart';
 
 const Duration _kStrokeDuration = Duration(milliseconds: 1800);
 const Duration _kHoldAfterStroke = Duration(milliseconds: 300);
-const String _kRouteAfterSplash = '/hello';
+// Story 1.2 — la destination post-splash est dynamique, plus une const :
+// `/onboarding/subsystem` au 1er lancement, `/hello` sinon (cf. _goNext).
 const String _kWord = 'VALIDE';
 
 class SplashPage extends ConsumerStatefulWidget {
@@ -72,7 +74,11 @@ class _SplashPageState extends ConsumerState<SplashPage>
   void _goNext() {
     if (_navigated || !mounted) return;
     _navigated = true;
-    context.go(_kRouteAfterSplash);
+    // Story 1.2 — destination dynamique selon subSystem persiste en
+    // SharedPreferences. 1er lancement (null) -> page de choix ; sinon -> /hello.
+    final subSystem = ref.read(subSystemNotifierProvider);
+    final dest = subSystem == null ? '/onboarding/subsystem' : '/hello';
+    context.go(dest);
   }
 
   @override

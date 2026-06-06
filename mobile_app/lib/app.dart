@@ -4,20 +4,23 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/onboarding/providers.dart';
 import 'l10n/generated/app_localizations.dart';
 
 /// Design reference : iPhone 14 / Android entry-level phone portrait.
 /// `.w` / `.h` / `.sp` dans les widgets sont scalés relativement à ce gabarit.
 const Size kDesignSize = Size(375, 812);
 
-/// Notifier qui pilote la locale active. Locale FR par défaut (cf. PRD § 2.3
-/// — la majorité des élèves cibles sont francophones). L'app peut basculer
-/// en EN à la demande (sera connecté au choix sous-système dans Story E1).
+/// Notifier qui pilote la locale active. Story 1.2 : la locale est désormais
+/// **dérivée** du sous-système choisi (cf. ADR-006 — sous-système figé à
+/// l'inscription, la langue en dérive). Tant que le sous-système n'est pas
+/// posé (1er lancement), on défaut FR (majorité des élèves cibles, PRD § 2.3).
 class LocaleNotifier extends Notifier<Locale> {
   @override
-  Locale build() => const Locale('fr');
-
-  void setLocale(Locale locale) => state = locale;
+  Locale build() {
+    final subSystem = ref.watch(subSystemNotifierProvider);
+    return subSystem?.locale ?? const Locale('fr');
+  }
 }
 
 final localeProvider =

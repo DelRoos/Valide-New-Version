@@ -7,14 +7,20 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
+import '../../features/onboarding/presentation/subsystem_choice_page.dart';
+import '../../features/onboarding/providers.dart';
 import '../../features/splash/presentation/splash_page.dart';
 import '../catalogue/providers.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
-  // Story 1.1c — refreshListenable cable au check catalogue. Le router
-  // re-evalue le redirect des que le check passe de loading -> data(true|false).
+  // Story 1.1c — refreshListenable cable au check catalogue. Story 1.2
+  // l'etend pour ecouter aussi subSystemNotifierProvider, sinon le tap
+  // « Continuer » persiste mais le router ne re-evalue pas son redirect.
   final notifier = ValueNotifier<int>(0);
   ref.listen(appStartupCatalogueCheckProvider, (_, _) {
+    notifier.value++;
+  });
+  ref.listen(subSystemNotifierProvider, (_, _) {
     notifier.value++;
   });
   ref.onDispose(notifier.dispose);
@@ -23,24 +29,41 @@ final routerProvider = Provider<GoRouter>((ref) {
     initialLocation: '/',
     refreshListenable: notifier,
     redirect: (context, state) {
-      // Routes qui contournent toujours le redirect catalogue :
-      //  - /splash (animation de boot, c'est elle qui pousse vers /hello)
-      //  - /catalogue-waiting (sinon boucle infinie)
-      //  - /_* (routes debug)
       final loc = state.matchedLocation;
+
+      // Bypass inconditionnel : routes systeme + debug.
       if (loc == '/' ||
           loc.startsWith('/splash') ||
-          loc.startsWith('/_') ||
-          loc == '/catalogue-waiting') {
+          loc.startsWith('/_')) {
         return null;
       }
 
+      final subSystem = ref.read(subSystemNotifierProvider);
+
+      // Story 1.2 — subsystem prioritaire sur catalogue.
+      // Cas 1 : subSystem absent (1er lancement).
+      if (subSystem == null) {
+        // Deja sur la bonne route OU sur l'ecran catalogue offline : ok.
+        if (loc == '/onboarding/subsystem' ||
+            loc == '/catalogue-waiting') {
+          return null;
+        }
+        return '/onboarding/subsystem';
+      }
+
+      // Cas 2 : subSystem present.
+      // Garde first-launch-only : si l'utilisateur tente d'acceder
+      // manuellement a /onboarding/subsystem, on le renvoie au home.
+      if (loc == '/onboarding/subsystem') {
+        return '/';
+      }
+
+      // Story 1.1c — logique catalogue preservee pour les autres routes.
+      if (loc == '/catalogue-waiting') return null;
       final check = ref.read(appStartupCatalogueCheckProvider);
       return check.when(
         data: (ok) => ok ? null : '/catalogue-waiting',
-        // Loading : on ne bloque pas (le splash gere la transition).
         loading: () => null,
-        // Erreur : fail-safe vers l'ecran connexion bloquant.
         error: (_, _) => '/catalogue-waiting',
       );
     },
@@ -48,8 +71,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/',
         // Story 0.22 — redirect vers /splash (SplashPage anime puis navigue
-        // vers /hello). Quand Story 1.5 (garde navigation) sera livree, la
-        // SplashPage redirigera vers /onboarding ou /dashboard selon profil.
+        // vers /hello ou /onboarding/subsystem selon subSystem Story 1.2).
         redirect: (context, state) => '/splash',
       ),
       GoRoute(
@@ -60,7 +82,13 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/hello',
         builder: (context, state) => const HelloPage(),
       ),
-      // Story 1.1c — ecran « En attente de connexion » bloquant. Affiche par
+      // Story 1.2 — premier ecran utilisateur (FR-1 + ADR-006). Affichee par
+      // le redirect global ci-dessus quand subSystem absent en SharedPreferences.
+      GoRoute(
+        path: '/onboarding/subsystem',
+        builder: (context, state) => const SubsystemChoicePage(),
+      ),
+      // Story 1.1c — ecran « En attente de connexion » bloquant. Affichee par
       // le redirect global ci-dessus quand le catalogue Firestore est vide ET
       // le cache offline est vide (1er lancement strictement hors-ligne).
       GoRoute(
