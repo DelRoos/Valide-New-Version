@@ -3,8 +3,11 @@ story_id: 1.1c
 title: CatalogueRepository mobile + écran connexion bloquant + tests
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-05
+merged: 2026-06-06
+merge_commit: 6913609
+pr_number: 37
 branch: feat/1.1c-catalogue-repository-mobile
 baseline_commit: 15128d1eb8ee8bf11a1b8a23a422f142578e6cd2
 estimation: M (~4-5h)
