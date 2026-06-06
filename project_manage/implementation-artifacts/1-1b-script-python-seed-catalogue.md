@@ -3,8 +3,11 @@ story_id: 1.1b
 title: Script Python `seed_catalogue.py` + matrice source + procédure d'init
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-06
+merged: 2026-06-06
+merge_commit: 693d9ee
+pr_number: 40
 branch: feat/1.1b-script-python-seed-catalogue
 baseline_commit: 6913609d  # merge commit Story 1.1c (PR #37)
 estimation: M (~4-5h)
