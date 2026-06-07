@@ -289,6 +289,96 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.'**
   String get subsystemConfirmBody;
+
+  /// Label de progression du flow profil 3 étapes (Story 1.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Étape {step} sur {total}'**
+  String onboardingStepLabel(int step, int total);
+
+  /// Titre H2 de FiliereChoicePage (Story 1.3 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ta filière'**
+  String get onboardingFiliereTitle;
+
+  /// Libellé filière générale (MINESEC / GCE général).
+  ///
+  /// In fr, this message translates to:
+  /// **'Générale'**
+  String get onboardingFiliereGenerale;
+
+  /// Libellé filière technique (STI / STT / autres).
+  ///
+  /// In fr, this message translates to:
+  /// **'Technique'**
+  String get onboardingFiliereTechnique;
+
+  /// Titre H2 de NiveauChoicePage (Story 1.3 AC3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ton niveau'**
+  String get onboardingNiveauTitle;
+
+  /// Titre H2 de SerieChoicePage (Story 1.3 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ta série'**
+  String get onboardingSerieTitle;
+
+  /// Sous-titre court de SerieChoicePage.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sélectionne la série qui correspond à ta classe.'**
+  String get onboardingSerieSubtitle;
+
+  /// Bandeau bandeau exam target en haut du récap (Story 1.3 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu prépares {examName}'**
+  String onboardingRecapPrepareLabel(String examName);
+
+  /// Bandeau si DerivedProfile.examTargets vide (ex. 6e francophone).
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas d\'examen visé à ce niveau'**
+  String get onboardingRecapNoExamLabel;
+
+  /// Compteur pluralisé de matières dans le récap.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 matière} other{{count} matières}}'**
+  String onboardingRecapSubjectsCount(int count);
+
+  /// CTA primaire qui crée le doc users/{uid} Firestore (Story 1.3 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est ma classe'**
+  String get onboardingRecapValidateCta;
+
+  /// Lien discret affiché si DerivedProfile.canOptOut. Désactivé en V1, activé en Story 1.4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer une matière'**
+  String get onboardingRecapOptOutLink;
+
+  /// Texte du bouton primaire pendant le set() Firestore (loading state).
+  ///
+  /// In fr, this message translates to:
+  /// **'Création de ton profil…'**
+  String get onboardingRecapCreatingLabel;
+
+  /// Toast non bloquant si la création doc Firestore échoue (offline ou règles refusent).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil sauvegardé localement, on retentera en ligne'**
+  String get onboardingRecapFirestoreErrorToast;
+
+  /// Message d'erreur si CatalogueFailure.noMatchingRule (Story 1.3 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe trouvée pour ce profil. Reviens en arrière et corrige tes choix.'**
+  String get onboardingRecapNoMatchingRule;
 }
 
 class _AppLocalizationsDelegate

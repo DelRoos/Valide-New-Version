@@ -106,5 +106,66 @@
   "@subsystemConfirmTitle": { "description": "Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone." },
 
   "subsystemConfirmBody": "Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.",
-  "@subsystemConfirmBody": { "description": "Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2)." }
+  "@subsystemConfirmBody": { "description": "Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2)." },
+
+  "onboardingStepLabel": "Étape {step} sur {total}",
+  "@onboardingStepLabel": {
+    "description": "Label de progression du flow profil 3 étapes (Story 1.3).",
+    "placeholders": {
+      "step": { "type": "int", "example": "1" },
+      "total": { "type": "int", "example": "3" }
+    }
+  },
+
+  "onboardingFiliereTitle": "Choisis ta filière",
+  "@onboardingFiliereTitle": { "description": "Titre H2 de FiliereChoicePage (Story 1.3 AC2)." },
+
+  "onboardingFiliereGenerale": "Générale",
+  "@onboardingFiliereGenerale": { "description": "Libellé filière générale (MINESEC / GCE général)." },
+
+  "onboardingFiliereTechnique": "Technique",
+  "@onboardingFiliereTechnique": { "description": "Libellé filière technique (STI / STT / autres)." },
+
+  "onboardingNiveauTitle": "Choisis ton niveau",
+  "@onboardingNiveauTitle": { "description": "Titre H2 de NiveauChoicePage (Story 1.3 AC3)." },
+
+  "onboardingSerieTitle": "Choisis ta série",
+  "@onboardingSerieTitle": { "description": "Titre H2 de SerieChoicePage (Story 1.3 AC4)." },
+
+  "onboardingSerieSubtitle": "Sélectionne la série qui correspond à ta classe.",
+  "@onboardingSerieSubtitle": { "description": "Sous-titre court de SerieChoicePage." },
+
+  "onboardingRecapPrepareLabel": "Tu prépares {examName}",
+  "@onboardingRecapPrepareLabel": {
+    "description": "Bandeau bandeau exam target en haut du récap (Story 1.3 AC5).",
+    "placeholders": {
+      "examName": { "type": "String", "example": "BAC D" }
+    }
+  },
+
+  "onboardingRecapNoExamLabel": "Pas d'examen visé à ce niveau",
+  "@onboardingRecapNoExamLabel": { "description": "Bandeau si DerivedProfile.examTargets vide (ex. 6e francophone)." },
+
+  "onboardingRecapSubjectsCount": "{count, plural, =1{1 matière} other{{count} matières}}",
+  "@onboardingRecapSubjectsCount": {
+    "description": "Compteur pluralisé de matières dans le récap.",
+    "placeholders": {
+      "count": { "type": "int", "example": "9" }
+    }
+  },
+
+  "onboardingRecapValidateCta": "C'est ma classe",
+  "@onboardingRecapValidateCta": { "description": "CTA primaire qui crée le doc users/{uid} Firestore (Story 1.3 AC6)." },
+
+  "onboardingRecapOptOutLink": "Retirer une matière",
+  "@onboardingRecapOptOutLink": { "description": "Lien discret affiché si DerivedProfile.canOptOut. Désactivé en V1, activé en Story 1.4." },
+
+  "onboardingRecapCreatingLabel": "Création de ton profil…",
+  "@onboardingRecapCreatingLabel": { "description": "Texte du bouton primaire pendant le set() Firestore (loading state)." },
+
+  "onboardingRecapFirestoreErrorToast": "Profil sauvegardé localement, on retentera en ligne",
+  "@onboardingRecapFirestoreErrorToast": { "description": "Toast non bloquant si la création doc Firestore échoue (offline ou règles refusent)." },
+
+  "onboardingRecapNoMatchingRule": "Aucune classe trouvée pour ce profil. Reviens en arrière et corrige tes choix.",
+  "@onboardingRecapNoMatchingRule": { "description": "Message d'erreur si CatalogueFailure.noMatchingRule (Story 1.3 AC5)." }
 }

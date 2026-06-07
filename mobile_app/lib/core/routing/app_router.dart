@@ -7,6 +7,10 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
+import '../../features/onboarding/presentation/filiere_choice_page.dart';
+import '../../features/onboarding/presentation/niveau_choice_page.dart';
+import '../../features/onboarding/presentation/profile_recap_page.dart';
+import '../../features/onboarding/presentation/serie_choice_page.dart';
 import '../../features/onboarding/presentation/subsystem_choice_page.dart';
 import '../../features/onboarding/providers.dart';
 import '../../features/splash/presentation/splash_page.dart';
@@ -21,6 +25,12 @@ final routerProvider = Provider<GoRouter>((ref) {
     notifier.value++;
   });
   ref.listen(subSystemNotifierProvider, (_, _) {
+    notifier.value++;
+  });
+  // Story 1.3 — refresh router quand le flow profil avance (pas critique
+  // car les pages naviguent via context.go explicite, mais coherent avec
+  // pattern Stories 1.1c + 1.2).
+  ref.listen(onboardingFlowProvider, (_, _) {
     notifier.value++;
   });
   ref.onDispose(notifier.dispose);
@@ -87,6 +97,26 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/subsystem',
         builder: (context, state) => const SubsystemChoicePage(),
+      ),
+      // Story 1.3 — flow profil scolaire 3 etapes (Filiere -> Niveau ->
+      // Serie -> Recap). Chaque page a son propre guard de coherence (si
+      // l'etape precedente n'a pas pose son champ, redirect vers la 1ere
+      // etape manquante).
+      GoRoute(
+        path: '/onboarding/profile/filiere',
+        builder: (context, state) => const FiliereChoicePage(),
+      ),
+      GoRoute(
+        path: '/onboarding/profile/niveau',
+        builder: (context, state) => const NiveauChoicePage(),
+      ),
+      GoRoute(
+        path: '/onboarding/profile/serie',
+        builder: (context, state) => const SerieChoicePage(),
+      ),
+      GoRoute(
+        path: '/onboarding/profile/recap',
+        builder: (context, state) => const ProfileRecapPage(),
       ),
       // Story 1.1c — ecran « En attente de connexion » bloquant. Affichee par
       // le redirect global ci-dessus quand le catalogue Firestore est vide ET

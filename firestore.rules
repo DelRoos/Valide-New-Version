@@ -41,19 +41,35 @@ service cloud.firestore {
       allow read: if isOwner(uid);
 
       // Creation : proprietaire + champs critiques valides
-      // - subSystem fige a l'inscription (cf. schema doc/partage)
-      // - language derive de subSystem (idem)
+      // - subSystem + language figes a l'inscription (cf. ADR-006)
+      // - filiere + niveau + serie figes a l'inscription (Story 1.3)
       // - uid redondant doit matcher le doc ID
+      // - displayName est string (peut etre vide a la creation, Story 1.6
+      //   posera le nom Google/Apple via linkWithCredential)
       allow create: if isOwner(uid)
         && request.resource.data.uid == uid
         && request.resource.data.subSystem in ['francophone', 'anglophone']
         && request.resource.data.language in ['fr', 'en']
+        && request.resource.data.filiere in ['generale', 'technique']
+        && request.resource.data.niveau is string
+        && request.resource.data.niveau.size() > 0
+        && request.resource.data.serie is string
+        && request.resource.data.derivedSubjects is list
+        && request.resource.data.examTargets is list
         && request.resource.data.displayName is string;
 
-      // Update : proprietaire, mais subSystem et language non modifiables
+      // Update : proprietaire, mais subSystem, language, filiere, niveau,
+      // serie et createdAt sont IMMUABLES (Story 1.3 - ADR-006 etendu).
+      // Champs editables : derivedSubjects (Story 1.4 retrait),
+      // optedOutSubjects (Story 1.4), displayName/photoUrl (Story 1.6),
+      // schoolId (Story 1.7), updatedAt (a chaque update qui passe la regle).
       allow update: if isOwner(uid)
         && request.resource.data.subSystem == resource.data.subSystem
-        && request.resource.data.language == resource.data.language;
+        && request.resource.data.language == resource.data.language
+        && request.resource.data.filiere == resource.data.filiere
+        && request.resource.data.niveau == resource.data.niveau
+        && request.resource.data.serie == resource.data.serie
+        && request.resource.data.createdAt == resource.data.createdAt;
 
       // Delete : interdit cote client.
       // La suppression passe par Cloud Function `requestAccountDeletion`

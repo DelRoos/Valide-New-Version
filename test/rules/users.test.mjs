@@ -21,16 +21,18 @@ const bobUid = testUid('bob');
 const charlieUid = testUid('charlie');
 const daveUid = testUid('dave');
 
+// Story 1.3 — helper aligne sur le schema users/{uid} actuel (IDs catalogue
+// Firestore : `francophone_terminale`, `francophone_terminale_d`, etc.).
 const validUserDoc = (uid) => ({
   uid,
   subSystem: 'francophone',
   language: 'fr',
   filiere: 'generale',
-  niveau: 'Tle',
-  serie: 'D',
-  derivedSubjects: [],
+  niveau: 'francophone_terminale',
+  serie: 'francophone_terminale_d',
+  derivedSubjects: ['francophone_math', 'francophone_pct', 'francophone_svt'],
   optedOutSubjects: [],
-  examTargets: [],
+  examTargets: ['exam_bac_francophone_d'],
   schoolId: null,
   displayName: `Test ${uid}`,
   photoUrl: null,
@@ -102,6 +104,41 @@ describe('Firestore rules — users/{uid}', () => {
       setDoc(
         doc(db, 'users', aliceUid),
         { ...validUserDoc(aliceUid), subSystem: 'anglophone' },
+      ),
+    );
+  });
+
+  // Story 1.3 — 3 nouveaux cas : immutabilite etendue.
+
+  test('(g) update language (derive subSystem) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertFails(
+      setDoc(
+        doc(db, 'users', aliceUid),
+        { ...validUserDoc(aliceUid), language: 'en' },
+      ),
+    );
+  });
+
+  test('(h) update filiere (fige Story 1.3) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertFails(
+      setDoc(
+        doc(db, 'users', aliceUid),
+        { ...validUserDoc(aliceUid), filiere: 'technique' },
+      ),
+    );
+  });
+
+  test('(i) update niveau (fige Story 1.3) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertFails(
+      setDoc(
+        doc(db, 'users', aliceUid),
+        { ...validUserDoc(aliceUid), niveau: 'francophone_premiere' },
       ),
     );
   });
