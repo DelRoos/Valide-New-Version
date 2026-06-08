@@ -275,4 +275,52 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingSchoolGenericErrorToast =>
       'Something went wrong, check your connection and try again.';
+
+  @override
+  String dashboardWelcomeWithName(String name) {
+    return 'Welcome $name!';
+  }
+
+  @override
+  String get dashboardWelcomeGuest => 'Welcome!';
+
+  @override
+  String dashboardSubtitleWithExam(String exam) {
+    return 'Here are your subjects — you\'re preparing for $exam';
+  }
+
+  @override
+  String get dashboardSubtitleNoExam => 'Here are your subjects.';
+
+  @override
+  String get dashboardGuestBadge => 'Guest';
+
+  @override
+  String get dashboardGuestInviteText =>
+      'Create an account to save your progress';
+
+  @override
+  String get dashboardGuestInviteCta => 'Create my account';
+
+  @override
+  String get dashboardEmptyStateText =>
+      'Complete your profile to see your subjects.';
+
+  @override
+  String get dashboardEmptyStateCta => 'Continue onboarding';
+
+  @override
+  String get dashboardComingSoon => 'Coming soon';
+
+  @override
+  String get dashboardTabHome => 'Home';
+
+  @override
+  String get dashboardTabSubjects => 'Subjects';
+
+  @override
+  String get dashboardTabActivities => 'Activities';
+
+  @override
+  String get dashboardTabProfile => 'Profile';
 }

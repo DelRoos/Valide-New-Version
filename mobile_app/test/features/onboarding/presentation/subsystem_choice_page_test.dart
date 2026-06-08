@@ -8,12 +8,18 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
+import 'package:valide_school/core/catalogue/domain/catalogue_failure.dart';
+import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
+import 'package:valide_school/core/firebase/providers.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
+
+import '../../../_helpers/fakes.dart';
 
 // Story 0.22 — splash anime 2100 ms avant nav.
 const Duration _kSplashSettleDuration = Duration(milliseconds: 2200);
@@ -107,9 +113,29 @@ void main() {
             overrides: [
               sharedPreferencesProvider.overrideWithValue(prefs),
               appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-              // Story 1.5 — bypass garde profil-incomplet (Firebase indispo en test).
               profileCompletionProvider.overrideWith(
                 (ref) => Stream.value(ProfileCompletionState.complete),
+              ),
+              // Story 1.9 — tap Continuer navigue vers /dashboard qui requiert
+              // firebaseAuth + repo + derived overrides (sinon FirebaseAuth crash).
+              firebaseAuthProvider.overrideWithValue(
+                FakeAuth(isAnonymous: false, displayName: null),
+              ),
+              userProfileRepositoryProvider.overrideWithValue(
+                FakeUserProfileRepository(profileData: null),
+              ),
+              derivedProfileProvider.overrideWith(
+                (ref) async => Left(
+                  CatalogueFailure.noMatchingRule(
+                    subSystem: 'anglophone',
+                    filiere: 'generale',
+                    niveau: 'anglophone_upper_sixth',
+                    serie: null,
+                  ),
+                ),
+              ),
+              effectiveDerivedSubjectsProvider.overrideWith(
+                (ref) => const Stream<List<Subject>>.empty(),
               ),
             ],
             child: const ValideApp(),
@@ -136,7 +162,7 @@ void main() {
     );
 
     testWidgets(
-      'AC5 — garde first-launch : subSystem present, splash va direct /hello',
+      'AC5 — garde first-launch : subSystem present, splash va direct /dashboard',
       (tester) async {
         // Simule un user francophone qui a deja choisi son sous-systeme.
         final prefs = await _preparePrefs({
@@ -149,9 +175,28 @@ void main() {
             overrides: [
               sharedPreferencesProvider.overrideWithValue(prefs),
               appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-              // Story 1.5 — bypass garde profil-incomplet (Firebase indispo en test).
               profileCompletionProvider.overrideWith(
                 (ref) => Stream.value(ProfileCompletionState.complete),
+              ),
+              // Story 1.9 — DashboardPage requiert Firebase + repo + derived.
+              firebaseAuthProvider.overrideWithValue(
+                FakeAuth(isAnonymous: false, displayName: null),
+              ),
+              userProfileRepositoryProvider.overrideWithValue(
+                FakeUserProfileRepository(profileData: null),
+              ),
+              derivedProfileProvider.overrideWith(
+                (ref) async => Left(
+                  CatalogueFailure.noMatchingRule(
+                    subSystem: 'francophone',
+                    filiere: 'generale',
+                    niveau: 'francophone_terminale',
+                    serie: null,
+                  ),
+                ),
+              ),
+              effectiveDerivedSubjectsProvider.overrideWith(
+                (ref) => const Stream<List<Subject>>.empty(),
               ),
             ],
             child: const ValideApp(),
@@ -159,9 +204,9 @@ void main() {
         );
         await _settleSplash(tester);
 
-        // Page de choix n'est PAS affichee -> on est direct sur /hello en FR.
+        // Page de choix n'est PAS affichee -> on est direct sur /dashboard en FR.
         expect(find.text('Choisis ta langue et ton programme'), findsNothing);
-        expect(find.text('Bonjour Valide'), findsOneWidget);
+        expect(find.text('Bienvenue !'), findsOneWidget);
       },
     );
   });

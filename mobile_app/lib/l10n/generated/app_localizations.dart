@@ -553,6 +553,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Erreur, vérifie ta connexion et réessaie.'**
   String get onboardingSchoolGenericErrorToast;
+
+  /// Titre du Hero DashboardPage avec prenom (Story 1.9 AC1). Prenom = displayName.split(' ').first.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue {name} !'**
+  String dashboardWelcomeWithName(String name);
+
+  /// Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 1.9 AC1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue !'**
+  String get dashboardWelcomeGuest;
+
+  /// Sous-titre du Hero avec libelle d'examen (Story 1.9 AC1). examLabel = examTargets[0].name[lang].
+  ///
+  /// In fr, this message translates to:
+  /// **'Voici tes matières — tu prépares le {exam}'**
+  String dashboardSubtitleWithExam(String exam);
+
+  /// Sous-titre du Hero sans exam (cas 6e francophone ou Form 1 anglophone) — Story 1.9 AC1.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voici tes matières.'**
+  String get dashboardSubtitleNoExam;
+
+  /// Badge en haut a droite du Hero quand currentUser.isAnonymous == true (Story 1.9 AC3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Visiteur'**
+  String get dashboardGuestBadge;
+
+  /// Texte de l'encadre invite compte en bas du dashboard pour visiteur (Story 1.9 AC3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Crée ton compte pour sauvegarder ta progression'**
+  String get dashboardGuestInviteText;
+
+  /// Bouton secondaire de l'encadre invite compte → /onboarding/account (Story 1.9 AC3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer mon compte'**
+  String get dashboardGuestInviteCta;
+
+  /// Empty state du dashboard quand effective.data([]) ou derivedProfile.Left — Story 1.9 AC5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Termine ton profil pour voir tes matières.'**
+  String get dashboardEmptyStateText;
+
+  /// CTA de l'empty state → /onboarding/profile/filiere (Story 1.9 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer mon onboarding'**
+  String get dashboardEmptyStateCta;
+
+  /// Texte affiche sur les PlaceholderTabPage des onglets non implementes V1 + SubjectDetailPlaceholderPage (Story 1.9 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Bientôt disponible'**
+  String get dashboardComingSoon;
+
+  /// Label onglet 0 du bottom tab bar (Story 1.9 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Accueil'**
+  String get dashboardTabHome;
+
+  /// Label onglet 1 du bottom tab bar (Story 1.9 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières'**
+  String get dashboardTabSubjects;
+
+  /// Label onglet 2 du bottom tab bar (Story 1.9 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Activités'**
+  String get dashboardTabActivities;
+
+  /// Label onglet 3 du bottom tab bar (Story 1.9 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil'**
+  String get dashboardTabProfile;
 }
 
 class _AppLocalizationsDelegate

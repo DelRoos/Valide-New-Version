@@ -110,5 +110,30 @@
   "onboardingSchoolSkipCta": "Skip this step",
   "onboardingSchoolSkipToast": "You can link your school later in Profile.",
   "onboardingSchoolValidatedBadge": "Verified",
-  "onboardingSchoolGenericErrorToast": "Something went wrong, check your connection and try again."
+  "onboardingSchoolGenericErrorToast": "Something went wrong, check your connection and try again.",
+
+  "dashboardWelcomeWithName": "Welcome {name}!",
+  "@dashboardWelcomeWithName": {
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "dashboardWelcomeGuest": "Welcome!",
+  "dashboardSubtitleWithExam": "Here are your subjects — you're preparing for {exam}",
+  "@dashboardSubtitleWithExam": {
+    "placeholders": {
+      "exam": { "type": "String" }
+    }
+  },
+  "dashboardSubtitleNoExam": "Here are your subjects.",
+  "dashboardGuestBadge": "Guest",
+  "dashboardGuestInviteText": "Create an account to save your progress",
+  "dashboardGuestInviteCta": "Create my account",
+  "dashboardEmptyStateText": "Complete your profile to see your subjects.",
+  "dashboardEmptyStateCta": "Continue onboarding",
+  "dashboardComingSoon": "Coming soon",
+  "dashboardTabHome": "Home",
+  "dashboardTabSubjects": "Subjects",
+  "dashboardTabActivities": "Activities",
+  "dashboardTabProfile": "Profile"
 }

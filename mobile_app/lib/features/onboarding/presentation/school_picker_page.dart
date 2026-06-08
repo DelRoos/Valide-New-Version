@@ -172,7 +172,7 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
         );
       },
       (_) {
-        GoRouter.of(context).go('/hello');
+        GoRouter.of(context).go('/dashboard');
       },
     );
   }
@@ -185,7 +185,7 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
       message: l10n.onboardingSchoolSkipToast,
       tone: ToastTone.info,
     );
-    GoRouter.of(context).go('/hello');
+    GoRouter.of(context).go('/dashboard');
   }
 
   Future<void> _onShowAddDialog() async {
@@ -219,7 +219,7 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
           message: l10n.onboardingSchoolAddRequestSentToast,
           tone: ToastTone.info,
         );
-        GoRouter.of(context).go('/hello');
+        GoRouter.of(context).go('/dashboard');
       },
     );
   }

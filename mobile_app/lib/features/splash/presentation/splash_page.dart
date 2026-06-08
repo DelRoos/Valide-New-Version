@@ -74,10 +74,11 @@ class _SplashPageState extends ConsumerState<SplashPage>
   void _goNext() {
     if (_navigated || !mounted) return;
     _navigated = true;
-    // Story 1.2 — destination dynamique selon subSystem persiste en
-    // SharedPreferences. 1er lancement (null) -> page de choix ; sinon -> /hello.
+    // Story 1.9 — destination dynamique : 1er lancement (subSystem null) ->
+    // page de choix ; sinon -> /dashboard. La garde Story 1.5 redirige vers
+    // l'etape onboarding manquante si le profil n'est pas complet.
     final subSystem = ref.read(subSystemNotifierProvider);
-    final dest = subSystem == null ? '/onboarding/subsystem' : '/hello';
+    final dest = subSystem == null ? '/onboarding/subsystem' : '/dashboard';
     context.go(dest);
   }
 

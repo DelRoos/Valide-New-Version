@@ -274,4 +274,52 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get onboardingSchoolGenericErrorToast =>
       'Erreur, vérifie ta connexion et réessaie.';
+
+  @override
+  String dashboardWelcomeWithName(String name) {
+    return 'Bienvenue $name !';
+  }
+
+  @override
+  String get dashboardWelcomeGuest => 'Bienvenue !';
+
+  @override
+  String dashboardSubtitleWithExam(String exam) {
+    return 'Voici tes matières — tu prépares le $exam';
+  }
+
+  @override
+  String get dashboardSubtitleNoExam => 'Voici tes matières.';
+
+  @override
+  String get dashboardGuestBadge => 'Visiteur';
+
+  @override
+  String get dashboardGuestInviteText =>
+      'Crée ton compte pour sauvegarder ta progression';
+
+  @override
+  String get dashboardGuestInviteCta => 'Créer mon compte';
+
+  @override
+  String get dashboardEmptyStateText =>
+      'Termine ton profil pour voir tes matières.';
+
+  @override
+  String get dashboardEmptyStateCta => 'Continuer mon onboarding';
+
+  @override
+  String get dashboardComingSoon => 'Bientôt disponible';
+
+  @override
+  String get dashboardTabHome => 'Accueil';
+
+  @override
+  String get dashboardTabSubjects => 'Matières';
+
+  @override
+  String get dashboardTabActivities => 'Activités';
+
+  @override
+  String get dashboardTabProfile => 'Profil';
 }
