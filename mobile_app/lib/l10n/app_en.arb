@@ -36,5 +36,37 @@
   "subsystemFrancophone": "Francophone",
   "subsystemAnglophone": "Anglophone",
   "subsystemConfirmTitle": "Confirm your choice",
-  "subsystemConfirmBody": "This choice locks your language and program. You won't be able to change it later."
+  "subsystemConfirmBody": "This choice locks your language and program. You won't be able to change it later.",
+
+  "onboardingStepLabel": "Step {step} of {total}",
+  "@onboardingStepLabel": {
+    "placeholders": {
+      "step": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "onboardingFiliereTitle": "Choose your stream",
+  "onboardingFiliereGenerale": "General",
+  "onboardingFiliereTechnique": "Technical",
+  "onboardingNiveauTitle": "Choose your level",
+  "onboardingSerieTitle": "Choose your series",
+  "onboardingSerieSubtitle": "Pick the series that matches your class.",
+  "onboardingRecapPrepareLabel": "You're preparing {examName}",
+  "@onboardingRecapPrepareLabel": {
+    "placeholders": {
+      "examName": { "type": "String" }
+    }
+  },
+  "onboardingRecapNoExamLabel": "No exam target at this level",
+  "onboardingRecapSubjectsCount": "{count, plural, =1{1 subject} other{{count} subjects}}",
+  "@onboardingRecapSubjectsCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "onboardingRecapValidateCta": "That's my class",
+  "onboardingRecapOptOutLink": "Remove a subject",
+  "onboardingRecapCreatingLabel": "Setting up your profile…",
+  "onboardingRecapFirestoreErrorToast": "Profile saved locally, we'll retry online",
+  "onboardingRecapNoMatchingRule": "No class found for this profile. Go back and update your choices."
 }

@@ -109,4 +109,64 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get subsystemConfirmBody =>
       'This choice locks your language and program. You won\'t be able to change it later.';
+
+  @override
+  String onboardingStepLabel(int step, int total) {
+    return 'Step $step of $total';
+  }
+
+  @override
+  String get onboardingFiliereTitle => 'Choose your stream';
+
+  @override
+  String get onboardingFiliereGenerale => 'General';
+
+  @override
+  String get onboardingFiliereTechnique => 'Technical';
+
+  @override
+  String get onboardingNiveauTitle => 'Choose your level';
+
+  @override
+  String get onboardingSerieTitle => 'Choose your series';
+
+  @override
+  String get onboardingSerieSubtitle =>
+      'Pick the series that matches your class.';
+
+  @override
+  String onboardingRecapPrepareLabel(String examName) {
+    return 'You\'re preparing $examName';
+  }
+
+  @override
+  String get onboardingRecapNoExamLabel => 'No exam target at this level';
+
+  @override
+  String onboardingRecapSubjectsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count subjects',
+      one: '1 subject',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingRecapValidateCta => 'That\'s my class';
+
+  @override
+  String get onboardingRecapOptOutLink => 'Remove a subject';
+
+  @override
+  String get onboardingRecapCreatingLabel => 'Setting up your profile…';
+
+  @override
+  String get onboardingRecapFirestoreErrorToast =>
+      'Profile saved locally, we\'ll retry online';
+
+  @override
+  String get onboardingRecapNoMatchingRule =>
+      'No class found for this profile. Go back and update your choices.';
 }

@@ -108,4 +108,64 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get subsystemConfirmBody =>
       'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.';
+
+  @override
+  String onboardingStepLabel(int step, int total) {
+    return 'Étape $step sur $total';
+  }
+
+  @override
+  String get onboardingFiliereTitle => 'Choisis ta filière';
+
+  @override
+  String get onboardingFiliereGenerale => 'Générale';
+
+  @override
+  String get onboardingFiliereTechnique => 'Technique';
+
+  @override
+  String get onboardingNiveauTitle => 'Choisis ton niveau';
+
+  @override
+  String get onboardingSerieTitle => 'Choisis ta série';
+
+  @override
+  String get onboardingSerieSubtitle =>
+      'Sélectionne la série qui correspond à ta classe.';
+
+  @override
+  String onboardingRecapPrepareLabel(String examName) {
+    return 'Tu prépares $examName';
+  }
+
+  @override
+  String get onboardingRecapNoExamLabel => 'Pas d\'examen visé à ce niveau';
+
+  @override
+  String onboardingRecapSubjectsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count matières',
+      one: '1 matière',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingRecapValidateCta => 'C\'est ma classe';
+
+  @override
+  String get onboardingRecapOptOutLink => 'Retirer une matière';
+
+  @override
+  String get onboardingRecapCreatingLabel => 'Création de ton profil…';
+
+  @override
+  String get onboardingRecapFirestoreErrorToast =>
+      'Profil sauvegardé localement, on retentera en ligne';
+
+  @override
+  String get onboardingRecapNoMatchingRule =>
+      'Aucune classe trouvée pour ce profil. Reviens en arrière et corrige tes choix.';
 }
