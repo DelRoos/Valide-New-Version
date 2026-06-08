@@ -30,4 +30,19 @@ abstract interface class UserProfileRepository {
     required List<String> derivedSubjects,
     required List<String> examTargets,
   });
+
+  /// Story 1.5 — Stream du doc users/{uid}. Emet le snapshot (possiblement
+  /// absent ou partiel) a chaque update Firestore. Lecture en cache offline
+  /// (NFR-5 + ADR-010 : cache Firestore natif 40MB Story 0.7).
+  ///
+  /// Emet `null` si :
+  ///   - l'utilisateur n'est pas authentifie (Stream.value(null))
+  ///   - le doc users/{uid} n'existe pas encore (cas visiteur mi-flow)
+  ///
+  /// Emet `Map<String, dynamic>` sinon (data brute du doc).
+  ///
+  /// Le mapping vers `ProfileCompletionState` est fait par
+  /// `profileCompletionProvider` — ce repo retourne la donnee brute pour
+  /// preserver la separation des concerns (clean architecture).
+  Stream<Map<String, dynamic>?> watchProfile();
 }

@@ -379,6 +379,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune classe trouvée pour ce profil. Reviens en arrière et corrige tes choix.'**
   String get onboardingRecapNoMatchingRule;
+
+  /// Toast non bloquant affiché quand l'utilisateur tente d'ouvrir un deep link métier (cours, exercice, dashboard) avec un profil incomplet. Cf. Story 1.5 garde nav profil-incomplet FR-4. RÉSERVÉE pour usage futur (Story 1.9 dashboard ou Epic 2 lessons) — pas appelée par Story 1.5 elle-même.
+  ///
+  /// In fr, this message translates to:
+  /// **'Termine ton profil pour continuer.'**
+  String get profileGuardIncompleteToast;
 }
 
 class _AppLocalizationsDelegate
