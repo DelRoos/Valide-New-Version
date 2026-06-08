@@ -60,16 +60,33 @@ service cloud.firestore {
 
       // Update : proprietaire, mais subSystem, language, filiere, niveau,
       // serie et createdAt sont IMMUABLES (Story 1.3 - ADR-006 etendu).
-      // Champs editables : derivedSubjects (Story 1.4 retrait),
-      // optedOutSubjects (Story 1.4), displayName/photoUrl (Story 1.6),
-      // schoolId (Story 1.7), updatedAt (a chaque update qui passe la regle).
+      // Champs editables : optedOutSubjects (Story 1.4), displayName/photoUrl
+      // (Story 1.6), schoolId (Story 1.7), updatedAt (a chaque update qui passe
+      // la regle).
+      //
+      // Story 1.4 — Si optedOutSubjects est modifie dans la requete, il doit
+      // etre un sous-ensemble de derivedSubjects (validation stricte cote
+      // serveur). On utilise diff().affectedKeys() pour skip la validation
+      // quand l'update ne touche pas optedOutSubjects (ex. set displayName
+      // seul). toSet().difference() retourne l'ensemble des matieres en trop ;
+      // size() == 0 garantit que toutes les matieres retirees existent dans
+      // derivedSubjects.
       allow update: if isOwner(uid)
         && request.resource.data.subSystem == resource.data.subSystem
         && request.resource.data.language == resource.data.language
         && request.resource.data.filiere == resource.data.filiere
         && request.resource.data.niveau == resource.data.niveau
         && request.resource.data.serie == resource.data.serie
-        && request.resource.data.createdAt == resource.data.createdAt;
+        && request.resource.data.createdAt == resource.data.createdAt
+        && (
+          !('optedOutSubjects' in request.resource.data.diff(resource.data).affectedKeys())
+          || (
+            request.resource.data.optedOutSubjects is list
+            && request.resource.data.optedOutSubjects.toSet().difference(
+                 request.resource.data.derivedSubjects.toSet()
+               ).size() == 0
+          )
+        );
 
       // Delete : interdit cote client.
       // La suppression passe par Cloud Function `requestAccountDeletion`

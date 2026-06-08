@@ -256,3 +256,44 @@ final derivedProfileProvider =
     serie: flow.serieId, // peut etre null (niveau sans serie)
   );
 });
+
+// =====================================================================
+// Story 1.4 — Retrait conditionnel matieres (FR-3)
+// =====================================================================
+
+/// Stream de la liste effective des matieres (derivedSubjects \ optedOutSubjects).
+///
+/// Combine :
+///   1. `derivedProfileProvider` (Story 1.3) -> profil derive du catalogue
+///   2. `userProfileRepository.watchProfile()` -> stream users/{uid} avec
+///      `optedOutSubjects` a jour
+///
+/// Retourne la liste filtree : matieres dont l'id n'est PAS dans `optedOutSubjects`.
+///
+/// Pattern : logique de filtrage dans le provider, pas dans la widget — testable
+/// et memoise Riverpod (re-evalue uniquement quand l'un des inputs change).
+///
+/// Empty stream si :
+///   - derivedProfile en loading -> stream vide jusqu'a resolution
+///   - derivedProfile en error/Left -> stream vide (la page recap gere son propre
+///     error state, on ne double pas le message)
+final effectiveDerivedSubjectsProvider =
+    StreamProvider<List<Subject>>((ref) {
+  final derivedAsync = ref.watch(derivedProfileProvider);
+  final repo = ref.watch(userProfileRepositoryProvider);
+
+  return derivedAsync.maybeWhen(
+    data: (either) => either.fold(
+      (_) => const Stream<List<Subject>>.empty(),
+      (profile) => repo.watchProfile().map((data) {
+        final optedOut =
+            (data?['optedOutSubjects'] as List?)?.cast<String>() ??
+                const <String>[];
+        return profile.subjects
+            .where((s) => !optedOut.contains(s.subjectId))
+            .toList(growable: false);
+      }),
+    ),
+    orElse: () => const Stream<List<Subject>>.empty(),
+  );
+});

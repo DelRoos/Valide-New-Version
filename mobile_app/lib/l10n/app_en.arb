@@ -70,5 +70,17 @@
   "onboardingRecapFirestoreErrorToast": "Profile saved locally, we'll retry online",
   "onboardingRecapNoMatchingRule": "No class found for this profile. Go back and update your choices.",
 
-  "profileGuardIncompleteToast": "Complete your profile to continue."
+  "profileGuardIncompleteToast": "Complete your profile to continue.",
+
+  "onboardingOptOutTitle": "Pick your subjects",
+  "onboardingOptOutSubtitle": "Uncheck the ones you're not taking.",
+  "onboardingOptOutTakingCount": "{count, plural, =1{You'll take 1 of {total} subjects} other{You'll take {count} of {total} subjects}}",
+  "@onboardingOptOutTakingCount": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "onboardingOptOutValidateCta": "Save",
+  "onboardingRecapModifyLink": "Edit my subjects"
 }

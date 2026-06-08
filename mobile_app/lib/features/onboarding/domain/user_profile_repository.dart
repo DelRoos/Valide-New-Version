@@ -45,4 +45,17 @@ abstract interface class UserProfileRepository {
   /// `profileCompletionProvider` — ce repo retourne la donnee brute pour
   /// preserver la separation des concerns (clean architecture).
   Stream<Map<String, dynamic>?> watchProfile();
+
+  /// Story 1.4 — Met a jour le champ `optedOutSubjects` du doc users/{uid}.
+  ///
+  /// Utilise `update()` partiel (pas set merge) pour ne toucher que ce champ
+  /// + `updatedAt` serverTimestamp. La validation cote serveur (firestore.rules
+  /// Story 1.4 AC4) garantit `optedOutSubjects ⊆ derivedSubjects`.
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException (doc absent, rule violation, etc.) -> firestoreError
+  Future<Either<ProfileFailure, void>> updateOptedOutSubjects(
+    List<String> optedOutSubjectIds,
+  );
 }

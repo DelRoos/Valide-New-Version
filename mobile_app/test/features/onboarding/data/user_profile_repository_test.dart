@@ -148,5 +148,57 @@ void main() {
       final emitted = await repo.watchProfile().first;
       expect(emitted, isNull);
     });
+
+    // ================================================================
+    // Story 1.4 — updateOptedOutSubjects()
+    // ================================================================
+
+    test(
+        '(k) updateOptedOutSubjects : doc existant -> met a jour le champ + updatedAt',
+        () async {
+      // Doc deja seede (Story 1.3 createProfile a depose optedOutSubjects:[]).
+      await firestore.collection('users').doc('charlie').set(<String, dynamic>{
+        'uid': 'charlie',
+        'subSystem': 'anglophone',
+        'derivedSubjects': const [
+          'anglophone_chemistry',
+          'anglophone_physics',
+          'anglophone_biology',
+        ],
+        'optedOutSubjects': <String>[],
+      });
+      final repo = buildRepo(uid: 'charlie');
+
+      final result =
+          await repo.updateOptedOutSubjects(const ['anglophone_biology']);
+
+      expect(result.isRight(), isTrue);
+      final snap = await firestore.collection('users').doc('charlie').get();
+      expect(snap.data()!['optedOutSubjects'], ['anglophone_biology']);
+      expect(snap.data()!['updatedAt'], isNotNull);
+    });
+
+    test(
+        '(l) updateOptedOutSubjects : pas d\'auth -> Left(ProfileFailure.notAuthenticated)',
+        () async {
+      final repo = buildRepo(uid: null);
+
+      final result =
+          await repo.updateOptedOutSubjects(const ['anglophone_biology']);
+
+      expect(result.isLeft(), isTrue);
+    });
+
+    test(
+        '(m) updateOptedOutSubjects : doc absent -> Left(ProfileFailure.firestoreError)',
+        () async {
+      // Aucun doc seede pour 'ghost' -> update() leve FirebaseException.
+      final repo = buildRepo(uid: 'ghost');
+
+      final result =
+          await repo.updateOptedOutSubjects(const ['anglophone_biology']);
+
+      expect(result.isLeft(), isTrue);
+    });
   });
 }

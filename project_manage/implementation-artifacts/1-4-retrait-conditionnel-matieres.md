@@ -3,10 +3,10 @@ story_id: 1.4
 title: Retrait conditionnel matières (FR-3)
 epic: 1
 phase: P1
-status: ready-for-dev
+status: review
 created: 2026-06-08
 branch: feat/1.4-retrait-conditionnel-matieres
-baseline_commit: 6fff7a7  # merge commit Story 1.5 (PR #46)
+baseline_commit: 28ce9e0  # merge PR #47 (cloture 1.5 + contexte 1.4)
 estimation: S (~3h)
 dependencies:
   - 1.3   # Profil créé : users/{uid} avec derivedSubjects + optedOutSubjects:[] initial
@@ -33,7 +33,7 @@ sourceArtifacts:
 
 # Story 1.4 — Retrait conditionnel matières (FR-3)
 
-Status: **ready-for-dev**
+Status: **review**
 
 ## Objectif
 
@@ -271,79 +271,79 @@ final effectiveDerivedSubjectsProvider = StreamProvider<List<Subject>>((ref) {
 
 ## Tasks / Subtasks
 
-- [ ] **T1 — Domain : étendre `UserProfileRepository` interface** (AC3)
-  - [ ] T1.1 — Ouvrir `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart`
-  - [ ] T1.2 — Ajouter signature `Future<Either<ProfileFailure, void>> updateOptedOutSubjects(List<String>)` avec docstring
-  - [ ] T1.3 — Domain pur — pas d'import Firebase
+- [x] **T1 — Domain : étendre `UserProfileRepository` interface** (AC3)
+  - [x] T1.1 — Ouvrir `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart`
+  - [x] T1.2 — Ajouter signature `Future<Either<ProfileFailure, void>> updateOptedOutSubjects(List<String>)` avec docstring
+  - [x] T1.3 — Domain pur — pas d'import Firebase
 
-- [ ] **T2 — Data : implémenter `updateOptedOutSubjects()`** (AC3)
-  - [ ] T2.1 — Ouvrir `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart`
-  - [ ] T2.2 — Ajouter méthode `updateOptedOutSubjects(List<String>)` :
+- [x] **T2 — Data : implémenter `updateOptedOutSubjects()`** (AC3)
+  - [x] T2.1 — Ouvrir `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart`
+  - [x] T2.2 — Ajouter méthode `updateOptedOutSubjects(List<String>)` :
     - `_getUid()` null → `Left(ProfileFailure.notAuthenticated)` + log warn
     - `_firestore.doc(...).update({'optedOutSubjects': ids, 'updatedAt': FieldValue.serverTimestamp()})`
     - try/catch FirebaseException → `Left(ProfileFailure.firestoreError)`
     - Log `count`, JAMAIS la liste des IDs (CLAUDE.md § 4)
-  - [ ] T2.3 — Test `user_profile_repository_test.dart` : 3 cas (k/l/m AC3) via `FakeFirebaseFirestore`
+  - [x] T2.3 — Test `user_profile_repository_test.dart` : 3 cas (k/l/m AC3) via `FakeFirebaseFirestore`
 
-- [ ] **T3 — Providers : `effectiveDerivedSubjectsProvider`** (AC5)
-  - [ ] T3.1 — Étendre `mobile_app/lib/features/onboarding/providers.dart`
-  - [ ] T3.2 — Créer `effectiveDerivedSubjectsProvider` : `StreamProvider<List<Subject>>` qui combine `derivedProfileProvider` + `userProfileRepository.watchProfile()` pour filtrer matières retirées
-  - [ ] T3.3 — Test unitaire dans `profile_completion_provider_test.dart` style (override deps + verify filtered output)
+- [x] **T3 — Providers : `effectiveDerivedSubjectsProvider`** (AC5)
+  - [x] T3.1 — Étendre `mobile_app/lib/features/onboarding/providers.dart`
+  - [x] T3.2 — Créer `effectiveDerivedSubjectsProvider` : `StreamProvider<List<Subject>>` qui combine `derivedProfileProvider` + `userProfileRepository.watchProfile()` pour filtrer matières retirées
+  - [x] T3.3 — Test unitaire dans `profile_completion_provider_test.dart` style (override deps + verify filtered output)
 
-- [ ] **T4 — Présentation : `SubjectsOptOutPage`** (AC2, AC6 garde in-component)
-  - [ ] T4.1 — Créer `mobile_app/lib/features/onboarding/presentation/subjects_opt_out_page.dart` : `ConsumerStatefulWidget`
-  - [ ] T4.2 — Guard : si `!derivedProfile.canOptOut` → redirect `/onboarding/profile/recap` + AppLogger.w (subSystem + niveau, jamais uid)
-  - [ ] T4.3 — Header titre + sous-titre i18n
-  - [ ] T4.4 — `ListView.separated` de `CheckboxListTile` :
+- [x] **T4 — Présentation : `SubjectsOptOutPage`** (AC2, AC6 garde in-component)
+  - [x] T4.1 — Créer `mobile_app/lib/features/onboarding/presentation/subjects_opt_out_page.dart` : `ConsumerStatefulWidget`
+  - [x] T4.2 — Guard : si `!derivedProfile.canOptOut` → redirect `/onboarding/profile/recap` + AppLogger.w (subSystem + niveau, jamais uid)
+  - [x] T4.3 — Header titre + sous-titre i18n
+  - [x] T4.4 — `ListView.separated` de `CheckboxListTile` :
     - Pré-populer état initial depuis `users/{uid}.optedOutSubjects` (watchProfile)
     - Coché = inclus, décoché = retiré
     - Icône Lucide (réutiliser `_iconFor` de Story 1.3 — extraire en helper partagé `lib/features/onboarding/presentation/_subject_icons.dart`)
-  - [ ] T4.5 — Compteur ICU « {N} matières sur {total} » en bas (sticky ou normal)
-  - [ ] T4.6 — Bouton primaire « Valider » :
+  - [x] T4.5 — Compteur ICU « {N} matières sur {total} » en bas (sticky ou normal)
+  - [x] T4.6 — Bouton primaire « Valider » :
     - `disabled` si N == 0 (toutes les matières décochées)
     - `loading` pendant le save
     - Appelle `userProfileRepository.updateOptedOutSubjects(opted)`
     - Succès → `context.go('/onboarding/profile/recap')`
     - Échec → AppToast.show + state local préservé
-  - [ ] T4.7 — Bouton secondaire « Annuler » → `context.go('/onboarding/profile/recap')` sans save
-  - [ ] T4.8 — Responsive : `LayoutBuilder` + `ConstrainedBox(maxWidth: 720)` sur tablet
+  - [x] T4.7 — Bouton secondaire « Annuler » → `context.go('/onboarding/profile/recap')` sans save
+  - [x] T4.8 — Responsive : `LayoutBuilder` + `ConstrainedBox(maxWidth: 720)` sur tablet
 
-- [ ] **T5 — Routing : route `/onboarding/profile/opt-out`** (AC2)
-  - [ ] T5.1 — Étendre `mobile_app/lib/core/routing/app_router.dart`
-  - [ ] T5.2 — Ajouter `GoRoute(path: '/onboarding/profile/opt-out', builder: ...)` (bypass /onboarding/* dans le redirect Story 1.5, donc aucune garde supplémentaire)
-  - [ ] T5.3 — Activer le lien dans `profile_recap_page.dart` : remplacer le no-op + log par `context.go('/onboarding/profile/opt-out')`
-  - [ ] T5.4 — Adapter le libellé du lien selon `optedOutSubjects.isEmpty` :
+- [x] **T5 — Routing : route `/onboarding/profile/opt-out`** (AC2)
+  - [x] T5.1 — Étendre `mobile_app/lib/core/routing/app_router.dart`
+  - [x] T5.2 — Ajouter `GoRoute(path: '/onboarding/profile/opt-out', builder: ...)` (bypass /onboarding/* dans le redirect Story 1.5, donc aucune garde supplémentaire)
+  - [x] T5.3 — Activer le lien dans `profile_recap_page.dart` : remplacer le no-op + log par `context.go('/onboarding/profile/opt-out')`
+  - [x] T5.4 — Adapter le libellé du lien selon `optedOutSubjects.isEmpty` :
     - `[]` → `onboardingRecapOptOutLink` ("Retirer une matière")
     - non vide → `onboardingRecapModifyLink` ("Modifier mes matières")
 
-- [ ] **T6 — Filtrage récap : grille basée sur `effectiveDerivedSubjects`** (AC5)
-  - [ ] T6.1 — Dans `profile_recap_page.dart`, remplacer `profile.subjects` par `ref.watch(effectiveDerivedSubjectsProvider)` (AsyncValue.when)
-  - [ ] T6.2 — Compteur `onboardingRecapSubjectsCount` reflète la liste filtrée
-  - [ ] T6.3 — Si la liste filtrée est en `loading`, fallback sur `profile.subjects` (évite flash)
+- [x] **T6 — Filtrage récap : grille basée sur `effectiveDerivedSubjects`** (AC5)
+  - [x] T6.1 — Dans `profile_recap_page.dart`, remplacer `profile.subjects` par `ref.watch(effectiveDerivedSubjectsProvider)` (AsyncValue.when)
+  - [x] T6.2 — Compteur `onboardingRecapSubjectsCount` reflète la liste filtrée
+  - [x] T6.3 — Si la liste filtrée est en `loading`, fallback sur `profile.subjects` (évite flash)
 
-- [ ] **T7 — i18n** (AC7)
-  - [ ] T7.1 — Ajouter 5 clés dans `mobile_app/lib/l10n/app_fr.arb` (avec descriptions)
-  - [ ] T7.2 — Versions EN équivalentes (informal, UX-DR-39)
-  - [ ] T7.3 — `flutter gen-l10n` régénère AppLocalizations
+- [x] **T7 — i18n** (AC7)
+  - [x] T7.1 — Ajouter 5 clés dans `mobile_app/lib/l10n/app_fr.arb` (avec descriptions)
+  - [x] T7.2 — Versions EN équivalentes (informal, UX-DR-39)
+  - [x] T7.3 — `flutter gen-l10n` régénère AppLocalizations
 
-- [ ] **T8 — firestore.rules + tests rules** (AC4)
-  - [ ] T8.1 — Modifier `firestore.rules` racine pour étendre `match /users/{uid}` update avec validation `optedOutSubjects ⊆ derivedSubjects` (cf. AC4 syntax)
-  - [ ] T8.2 — Modifier `test/rules/users.test.mjs` :
+- [x] **T8 — firestore.rules + tests rules** (AC4)
+  - [x] T8.1 — Modifier `firestore.rules` racine pour étendre `match /users/{uid}` update avec validation `optedOutSubjects ⊆ derivedSubjects` (cf. AC4 syntax)
+  - [x] T8.2 — Modifier `test/rules/users.test.mjs` :
     - Ajouter 2 tests : (j) update opted valide → OK, (k) update opted invalide → KO
-  - [ ] T8.3 — `cd test/rules && npm test` → 14 tests verts
-  - [ ] T8.4 — Déployer : `firebase deploy --only firestore:rules --project valide-edu`
+  - [x] T8.3 — `cd test/rules && npm test` → 14 tests verts
+  - [x] T8.4 — Déployer : `firebase deploy --only firestore:rules --project valide-edu`
 
-- [ ] **T9 — Tests Flutter** (AC7)
-  - [ ] T9.1 — `test/features/onboarding/data/user_profile_repository_test.dart` étendu (3 cas k/l/m)
-  - [ ] T9.2 — `test/features/onboarding/presentation/subjects_opt_out_page_test.dart` : NEW (3 cas — page rendue + tap save + disabled si vide)
-  - [ ] T9.3 — `test/features/onboarding/presentation/profile_recap_page_test.dart` étendu (2 cas — lien visible canOptOut=true + filtrage grille)
+- [x] **T9 — Tests Flutter** (AC7)
+  - [x] T9.1 — `test/features/onboarding/data/user_profile_repository_test.dart` étendu (3 cas k/l/m)
+  - [x] T9.2 — `test/features/onboarding/presentation/subjects_opt_out_page_test.dart` : NEW (3 cas — page rendue + tap save + disabled si vide)
+  - [x] T9.3 — `test/features/onboarding/presentation/profile_recap_page_test.dart` étendu (2 cas — lien visible canOptOut=true + filtrage grille)
 
-- [ ] **T10 — Validation finale**
-  - [ ] T10.1 — `flutter analyze` → 0 issue
-  - [ ] T10.2 — `flutter test` → tous verts (~155 cible)
-  - [ ] T10.3 — `cd test/rules && npm test` → 14/14 verts
-  - [ ] T10.4 — Diff PR ≤ 250 lignes (hors l10n générée + .mjs)
-  - [ ] T10.5 — Update story file frontmatter status review + sprint-status backlog → ready-for-dev → review + commit + push
+- [x] **T10 — Validation finale**
+  - [x] T10.1 — `flutter analyze` → 0 issue
+  - [x] T10.2 — `flutter test` → tous verts (~155 cible)
+  - [x] T10.3 — `cd test/rules && npm test` → 14/14 verts
+  - [x] T10.4 — Diff PR ≤ 250 lignes (hors l10n générée + .mjs)
+  - [x] T10.5 — Update story file frontmatter status review + sprint-status backlog → ready-for-dev → review + commit + push
 
 ## Dev Notes
 
@@ -450,10 +450,66 @@ Et importer dans les 2 pages. Pas de regression — la liste reste identique.
 | Date | Auteur | Modification |
 |---|---|---|
 | 2026-06-08 | Claude Opus 4.7 | Story 1.4 contexte engine créé — comprehensive developer guide |
+| 2026-06-08 | Claude Opus 4.7 (Amelia) | Dev complete — 10 tasks done. PR pending. |
+
+## Dev Agent Record
+
+### Implementation Plan
+Workflow `/bmad-dev-story` exécuté sur baseline `28ce9e0` (merge PR #47). 10 tâches enchaînées dans l'ordre T1→T2→T3→T7→T4→T5→T6→T8→T9→T10 (T7 i18n avancé avant T4 pour que la page consomme les clés générées directement).
+
+### Completion Notes
+
+**T1 Domain** : Signature `updateOptedOutSubjects(List<String>)` ajoutée à l'interface `UserProfileRepository` (clean architecture — pas d'import Firebase dans le domain).
+
+**T2 Data** : Impl Firestore avec `update()` partiel (pas `set(merge:true)` — anti-pattern documenté). Log `count` seul (jamais la liste des IDs — fuite identité CLAUDE.md § 4). 3 tests fake_cloud_firestore verts (k/l/m).
+
+**T3 Providers** : `effectiveDerivedSubjectsProvider` (StreamProvider) combine `derivedProfileProvider` + `watchProfile()` pour exposer `List<Subject>` filtrée. 4 tests verts (override deps + polling pattern Story 1.5).
+
+**T4 Page** : `SubjectsOptOutPage` (`ConsumerStatefulWidget`) + guard in-component `!profile.canOptOut` → redirect /onboarding/profile/recap. State local `Set<String>? _optedOut` initialisé une fois depuis stream `watchProfile()`. Helper `_subject_icons.dart` extrait (partagé recap + opt-out). Bug initial : StreamBuilder initialisait _optedOut avant 1er event → corrigé via guard `connectionState == waiting && !hasData`.
+
+**T5 Routing** : Route `/onboarding/profile/opt-out` ajoutée (bypassée par la garde 1.5 — toutes `/onboarding/*` le sont). Lien dans recap remplace le no-op + log par `context.go(...)`. Libellé bascule `onboardingRecapOptOutLink` → `onboardingRecapModifyLink` via `StreamBuilder` sur `optedOutSubjects.isNotEmpty`.
+
+**T6 Filtrage récap** : `_RecapDataView` consomme `effectiveDerivedSubjectsProvider` avec fallback `profile.subjects` si AsyncValue n'est pas en data (évite flash).
+
+**T7 i18n** : 5 nouvelles clés FR + EN. Compteur ICU pluralisé `onboardingOptOutTakingCount` avec 2 placeholders (count + total). `flutter gen-l10n` régénéré silencieusement (l10n.yaml).
+
+**T8 firestore.rules** : Validation `optedOutSubjects ⊆ derivedSubjects` ajoutée sur `match /users/{uid}` update, guardée par `diff().affectedKeys()` (skip si le champ n'est pas dans la requête). Déployée sur `valide-edu` via `firebase deploy --only firestore` (depuis racine, pas mobile_app). 14 tests rules verts (12 existants + j/k Story 1.4). Bug initial : test (j) avec `setDoc` complet violait l'immutabilité `createdAt` → switch en `updateDoc` partiel pour aligner sur l'impl Story 1.4.
+
+**T9 Tests Flutter** : `_FakeRepo` ajouté à `profile_recap_page_test.dart` (override `userProfileRepositoryProvider` — sinon le watch sur `userProfileRepositoryProvider` instancie `FirebaseAuth.instance` qui crash en test sans init Firebase). 2 nouveaux tests (canOptOut=true lien visible + filtrage grille). `subjects_opt_out_page_test.dart` NEW (3 tests a/b/c). Test (c) corrigé : `widgetWithText(AppButton, 'Save')` au lieu de `ElevatedButton` (AppButton wrappe `Pressable`, pas Material).
+
+**T10 Validation** :
+- `flutter analyze` → 0 issue (incl. fix concrete impl manquante dans `profile_completion_provider_test.dart` _FakeRepo)
+- `flutter test` → 156 passed + 1 skipped (vs baseline 144, +12)
+- `cd test/rules && npm test` → 14/14 verts
+- Règles déployées sur `valide-edu`
+
+### File List
+
+**Nouveaux** :
+- `mobile_app/lib/features/onboarding/presentation/subjects_opt_out_page.dart`
+- `mobile_app/lib/features/onboarding/presentation/_subject_icons.dart`
+- `mobile_app/test/features/onboarding/presentation/subjects_opt_out_page_test.dart`
+- `mobile_app/test/features/onboarding/providers/effective_derived_subjects_provider_test.dart`
+
+**Modifiés** :
+- `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart` (signature updateOptedOutSubjects)
+- `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart` (impl + try/catch)
+- `mobile_app/lib/features/onboarding/providers.dart` (effectiveDerivedSubjectsProvider)
+- `mobile_app/lib/features/onboarding/presentation/profile_recap_page.dart` (effectiveSubjects + hasOptedOut + lien actif + helper partagé)
+- `mobile_app/lib/core/routing/app_router.dart` (route + import)
+- `mobile_app/lib/l10n/app_fr.arb` (5 clés + descriptions)
+- `mobile_app/lib/l10n/app_en.arb` (5 clés)
+- `mobile_app/lib/l10n/generated/app_localizations*.dart` (auto gen-l10n)
+- `firestore.rules` (validation `optedOutSubjects ⊆ derivedSubjects`)
+- `test/rules/users.test.mjs` (tests j/k + import updateDoc/serverTimestamp)
+- `mobile_app/test/features/onboarding/data/user_profile_repository_test.dart` (tests k/l/m)
+- `mobile_app/test/features/onboarding/presentation/profile_recap_page_test.dart` (_FakeRepo + 2 tests canOptOut + filtrage + jamesProfile)
+- `mobile_app/test/features/onboarding/providers/profile_completion_provider_test.dart` (_FakeRepo etend updateOptedOutSubjects)
+- `project_manage/implementation-artifacts/sprint-status.yaml`
 
 ---
 
-**Ultimate context engine analysis completed — comprehensive developer guide created.**
+**Story 1.4 livrée — prête pour code review.**
 
 Cette story est `ready-for-dev`. Amelia (via `/bmad-dev-story`) a tout pour implémenter sans ambiguïté :
 

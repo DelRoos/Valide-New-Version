@@ -172,4 +172,28 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get profileGuardIncompleteToast =>
       'Termine ton profil pour continuer.';
+
+  @override
+  String get onboardingOptOutTitle => 'Choisis tes matières';
+
+  @override
+  String get onboardingOptOutSubtitle =>
+      'Décoche celles que tu ne présentes pas.';
+
+  @override
+  String onboardingOptOutTakingCount(int count, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu présentes $count matières sur $total',
+      one: 'Tu présentes 1 matière sur $total',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingOptOutValidateCta => 'Valider';
+
+  @override
+  String get onboardingRecapModifyLink => 'Modifier mes matières';
 }
