@@ -19,15 +19,21 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../core/catalogue/domain/catalogue_failure.dart';
 import '../../core/catalogue/domain/models.dart';
 import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
+import 'data/account_linking_repository_firebase_impl.dart';
 import 'data/subsystem_prefs.dart';
 import 'data/user_profile_repository_firestore_impl.dart';
+import 'domain/account_linking_repository.dart';
+import 'domain/account_linking_state.dart';
+import 'domain/linked_account.dart';
 import 'domain/onboarding_flow_state.dart';
 import 'domain/profile_completion_state.dart';
 import 'domain/sub_system.dart';
@@ -211,6 +217,83 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
   }
   return ProfileCompletionState.complete;
 }
+
+// =====================================================================
+// Story 1.6 — Compte Google/Apple + merge visiteur (FR-5)
+// =====================================================================
+
+/// Singleton `GoogleSignIn.instance` exposed via Provider pour permettre
+/// l'override en test. v7+ : `GoogleSignIn.instance` est statique.
+final googleSignInProvider = Provider<GoogleSignIn>((ref) {
+  return GoogleSignIn.instance;
+});
+
+/// Repository de linking de compte anonyme vers Google/Apple.
+///
+/// Pattern : on injecte 3 fonctions (sign-in Google + sign-in Apple +
+/// linkWithCredential) plutot que les singletons, pour permettre le test
+/// unitaire des cas exception sans firebase_auth_mocks (absent du pubspec).
+final accountLinkingRepositoryProvider =
+    Provider<AccountLinkingRepository>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  final googleSignIn = ref.watch(googleSignInProvider);
+
+  return AccountLinkingRepositoryFirebaseImpl(
+    firestore: firestore,
+    googleSignIn: () => googleSignIn.authenticate(
+      scopeHint: const ['email', 'profile'],
+    ),
+    appleSignIn: () => SignInWithApple.getAppleIDCredential(
+      scopes: const [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+    ),
+    linkCredential: (credential) =>
+        firebaseAuth.currentUser!.linkWithCredential(credential),
+  );
+});
+
+/// State machine du linking (idle -> loading -> success/error).
+class AccountLinkingNotifier extends Notifier<AccountLinkingState> {
+  @override
+  AccountLinkingState build() => const AccountLinkingState.idle();
+
+  Future<void> linkGoogle() async {
+    if (state.isLoading) return;
+    state = const AccountLinkingState.loading(AccountProvider.google);
+    final result = await ref.read(accountLinkingRepositoryProvider).linkGoogle();
+    state = result.fold(
+      (failure) => AccountLinkingState.error(failure),
+      (account) => AccountLinkingState.success(account),
+    );
+  }
+
+  Future<void> linkApple() async {
+    if (state.isLoading) return;
+    state = const AccountLinkingState.loading(AccountProvider.apple);
+    final result = await ref.read(accountLinkingRepositoryProvider).linkApple();
+    state = result.fold(
+      (failure) => AccountLinkingState.error(failure),
+      (account) => AccountLinkingState.success(account),
+    );
+  }
+
+  /// Reset vers idle (ferme la modale conflit, permet de retenter).
+  void reset() {
+    state = const AccountLinkingState.idle();
+  }
+}
+
+final accountLinkingNotifierProvider =
+    NotifierProvider<AccountLinkingNotifier, AccountLinkingState>(
+  AccountLinkingNotifier.new,
+);
+
+// =====================================================================
+// Story 1.3/1.4 — providers derives du profil
+// =====================================================================
 
 /// FutureProvider qui derive matieres + examens depuis le profil courant.
 /// Invalide automatiquement quand subSystem ou flowState changent (ref.watch).

@@ -196,4 +196,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingRecapModifyLink => 'Edit my subjects';
+
+  @override
+  String get onboardingAccountTitle => 'Create your account';
+
+  @override
+  String get onboardingAccountSubtitle =>
+      'Save your progress, pick up on any device.';
+
+  @override
+  String get onboardingAccountGoogleCta => 'Continue with Google';
+
+  @override
+  String get onboardingAccountAppleCta => 'Continue with Apple';
+
+  @override
+  String get onboardingAccountNetworkErrorToast =>
+      'No connection. Check your connection and try again.';
+
+  @override
+  String get onboardingAccountConflictTitle => 'Account already in use';
+
+  @override
+  String get onboardingAccountConflictBody =>
+      'This account is already linked to another Valide profile. If you sign in with it, you\'ll lose your current profile.';
+
+  @override
+  String get onboardingAccountAlreadyLinkedToast =>
+      'You already have an account.';
 }

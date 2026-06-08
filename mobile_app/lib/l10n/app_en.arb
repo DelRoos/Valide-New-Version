@@ -82,5 +82,14 @@
     }
   },
   "onboardingOptOutValidateCta": "Save",
-  "onboardingRecapModifyLink": "Edit my subjects"
+  "onboardingRecapModifyLink": "Edit my subjects",
+
+  "onboardingAccountTitle": "Create your account",
+  "onboardingAccountSubtitle": "Save your progress, pick up on any device.",
+  "onboardingAccountGoogleCta": "Continue with Google",
+  "onboardingAccountAppleCta": "Continue with Apple",
+  "onboardingAccountNetworkErrorToast": "No connection. Check your connection and try again.",
+  "onboardingAccountConflictTitle": "Account already in use",
+  "onboardingAccountConflictBody": "This account is already linked to another Valide profile. If you sign in with it, you'll lose your current profile.",
+  "onboardingAccountAlreadyLinkedToast": "You already have an account."
 }

@@ -83,6 +83,8 @@ dependencies:
   # (`dart run flutter_native_splash:create`) fonctionne aussi en runtime
   # dependency — pas besoin d'une entree separee en dev_dependencies.
   flutter_native_splash: ^2.4.3
+  google_sign_in: ^7.2.0
+  sign_in_with_apple: ^8.1.0
 
 dev_dependencies:
   flutter_test:
