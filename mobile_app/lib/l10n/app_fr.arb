@@ -170,5 +170,26 @@
   "@onboardingRecapNoMatchingRule": { "description": "Message d'erreur si CatalogueFailure.noMatchingRule (Story 1.3 AC5)." },
 
   "profileGuardIncompleteToast": "Termine ton profil pour continuer.",
-  "@profileGuardIncompleteToast": { "description": "Toast non bloquant affiché quand l'utilisateur tente d'ouvrir un deep link métier (cours, exercice, dashboard) avec un profil incomplet. Cf. Story 1.5 garde nav profil-incomplet FR-4. RÉSERVÉE pour usage futur (Story 1.9 dashboard ou Epic 2 lessons) — pas appelée par Story 1.5 elle-même." }
+  "@profileGuardIncompleteToast": { "description": "Toast non bloquant affiché quand l'utilisateur tente d'ouvrir un deep link métier (cours, exercice, dashboard) avec un profil incomplet. Cf. Story 1.5 garde nav profil-incomplet FR-4. RÉSERVÉE pour usage futur (Story 1.9 dashboard ou Epic 2 lessons) — pas appelée par Story 1.5 elle-même." },
+
+  "onboardingOptOutTitle": "Choisis tes matières",
+  "@onboardingOptOutTitle": { "description": "Titre H2 de SubjectsOptOutPage (Story 1.4 FR-3). Tutoiement, ton direct." },
+
+  "onboardingOptOutSubtitle": "Décoche celles que tu ne présentes pas.",
+  "@onboardingOptOutSubtitle": { "description": "Sous-titre explicatif de SubjectsOptOutPage (Story 1.4)." },
+
+  "onboardingOptOutTakingCount": "{count, plural, =1{Tu présentes 1 matière sur {total}} other{Tu présentes {count} matières sur {total}}}",
+  "@onboardingOptOutTakingCount": {
+    "description": "Compteur en bas de SubjectsOptOutPage : N matières cochées sur total. Pluralisé ICU.",
+    "placeholders": {
+      "count": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+
+  "onboardingOptOutValidateCta": "Valider",
+  "@onboardingOptOutValidateCta": { "description": "Bouton primaire de SubjectsOptOutPage. Disabled si N==0." },
+
+  "onboardingRecapModifyLink": "Modifier mes matières",
+  "@onboardingRecapModifyLink": { "description": "Lien sur ProfileRecapPage quand optedOutSubjects non vide (Story 1.4). Remplace onboardingRecapOptOutLink quand au moins une matière a déjà été retirée." }
 }

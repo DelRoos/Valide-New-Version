@@ -385,6 +385,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Termine ton profil pour continuer.'**
   String get profileGuardIncompleteToast;
+
+  /// Titre H2 de SubjectsOptOutPage (Story 1.4 FR-3). Tutoiement, ton direct.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis tes matières'**
+  String get onboardingOptOutTitle;
+
+  /// Sous-titre explicatif de SubjectsOptOutPage (Story 1.4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Décoche celles que tu ne présentes pas.'**
+  String get onboardingOptOutSubtitle;
+
+  /// Compteur en bas de SubjectsOptOutPage : N matières cochées sur total. Pluralisé ICU.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{Tu présentes 1 matière sur {total}} other{Tu présentes {count} matières sur {total}}}'**
+  String onboardingOptOutTakingCount(int count, int total);
+
+  /// Bouton primaire de SubjectsOptOutPage. Disabled si N==0.
+  ///
+  /// In fr, this message translates to:
+  /// **'Valider'**
+  String get onboardingOptOutValidateCta;
+
+  /// Lien sur ProfileRecapPage quand optedOutSubjects non vide (Story 1.4). Remplace onboardingRecapOptOutLink quand au moins une matière a déjà été retirée.
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier mes matières'**
+  String get onboardingRecapModifyLink;
 }
 
 class _AppLocalizationsDelegate

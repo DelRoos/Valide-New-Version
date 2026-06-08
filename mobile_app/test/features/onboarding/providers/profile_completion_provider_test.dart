@@ -41,6 +41,12 @@ class _FakeRepo implements UserProfileRepository {
     required List<String> examTargets,
   }) async =>
       const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, void>> updateOptedOutSubjects(
+    List<String> optedOutSubjectIds,
+  ) async =>
+      const Right(null);
 }
 
 class _FakeAuth implements FirebaseAuth {

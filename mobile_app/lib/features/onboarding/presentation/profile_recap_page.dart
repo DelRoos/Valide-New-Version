@@ -22,6 +22,7 @@ import '../../../core/widgets/app_toast.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../domain/onboarding_flow_state.dart';
 import '../providers.dart';
+import '_subject_icons.dart';
 
 class ProfileRecapPage extends ConsumerStatefulWidget {
   const ProfileRecapPage({super.key});
@@ -89,6 +90,20 @@ class _ProfileRecapPageState extends ConsumerState<ProfileRecapPage> {
                       ),
                       (profile) => _RecapDataView(
                         profile: profile,
+                        // Story 1.4 T6 — grille filtree via le provider.
+                        // Fallback `profile.subjects` si stream encore en
+                        // loading (evite flash visuel).
+                        effectiveSubjects: ref
+                                .watch(effectiveDerivedSubjectsProvider)
+                                .maybeWhen(
+                                  data: (list) => list,
+                                  orElse: () => profile.subjects,
+                                ),
+                        // Story 1.4 T5.4 — libelle du lien depend de la presence
+                        // d'au moins une matiere retiree.
+                        hasOptedOut: ref
+                                .watch(userProfileRepositoryProvider)
+                                .watchProfile(),
                         langKey: subSystem.languageCode,
                         isCreating: _isCreating,
                         onValidate: () => _onValidate(profile),
@@ -171,6 +186,8 @@ class _ProfileRecapPageState extends ConsumerState<ProfileRecapPage> {
 class _RecapDataView extends StatelessWidget {
   const _RecapDataView({
     required this.profile,
+    required this.effectiveSubjects,
+    required this.hasOptedOut,
     required this.langKey,
     required this.isCreating,
     required this.onValidate,
@@ -178,6 +195,10 @@ class _RecapDataView extends StatelessWidget {
   });
 
   final DerivedProfile profile;
+  // Story 1.4 T6 — liste filtree (derivedSubjects \ optedOutSubjects).
+  final List<Subject> effectiveSubjects;
+  // Story 1.4 T5.4 — stream du doc users/{uid} pour adapter le libelle du lien.
+  final Stream<Map<String, dynamic>?> hasOptedOut;
   final String langKey;
   final bool isCreating;
   final VoidCallback onValidate;
@@ -223,7 +244,7 @@ class _RecapDataView extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.s5.h),
         Text(
-          l10n.onboardingRecapSubjectsCount(profile.subjects.length),
+          l10n.onboardingRecapSubjectsCount(effectiveSubjects.length),
           style: AppTypography.h3,
         ),
         SizedBox(height: AppSpacing.s3.h),
@@ -235,23 +256,30 @@ class _RecapDataView extends StatelessWidget {
               mainAxisSpacing: AppSpacing.s3.h,
               childAspectRatio: 0.9,
             ),
-            itemCount: profile.subjects.length,
+            itemCount: effectiveSubjects.length,
             itemBuilder: (context, index) {
-              final s = profile.subjects[index];
+              final s = effectiveSubjects[index];
               return _SubjectCard(subject: s, langKey: langKey);
             },
           ),
         ),
         SizedBox(height: AppSpacing.s4.h),
         if (profile.canOptOut)
-          TextButton(
-            onPressed: () {
-              // Story 1.4 — pas encore implementee.
-              AppLogger.i(
-                'Opt-out subjects tapped (Story 1.4 pending implementation)',
+          StreamBuilder<Map<String, dynamic>?>(
+            stream: hasOptedOut,
+            builder: (context, snap) {
+              final opted =
+                  (snap.data?['optedOutSubjects'] as List?)?.cast<String>() ??
+                      const <String>[];
+              final label = opted.isEmpty
+                  ? l10n.onboardingRecapOptOutLink
+                  : l10n.onboardingRecapModifyLink;
+              return TextButton(
+                onPressed: () =>
+                    GoRouter.of(context).go('/onboarding/profile/opt-out'),
+                child: Text(label),
               );
             },
-            child: Text(l10n.onboardingRecapOptOutLink),
           ),
         SizedBox(height: AppSpacing.s2.h),
         AppButton.primary(
@@ -285,7 +313,7 @@ class _SubjectCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            _iconFor(subject.icon),
+            subjectIconFor(subject.icon),
             size: 32.sp,
             color: AppColors.primary,
           ),
@@ -305,34 +333,6 @@ class _SubjectCard extends StatelessWidget {
     );
   }
 
-  /// Mapping iconName -> IconData. Fallback `book-open` si non reconnu.
-  IconData _iconFor(String iconName) {
-    return switch (iconName) {
-      'function-square' => LucideIcons.functionSquare,
-      'atom' => LucideIcons.atom,
-      'flask-conical' => LucideIcons.flaskConical,
-      'dna' => LucideIcons.dna,
-      'cog' => LucideIcons.cog,
-      'book-open-text' => LucideIcons.bookOpenText,
-      'languages' => LucideIcons.languages,
-      'globe' => LucideIcons.globe,
-      'brain' => LucideIcons.brain,
-      'landmark' => LucideIcons.landmark,
-      'scale' => LucideIcons.scale,
-      'dumbbell' => LucideIcons.dumbbell,
-      'wrench' => LucideIcons.wrench,
-      'file-text' => LucideIcons.fileText,
-      'calculator' => LucideIcons.calculator,
-      'shopping-bag' => LucideIcons.shoppingBag,
-      'sigma' => LucideIcons.sigma,
-      'mountain' => LucideIcons.mountain,
-      'trending-up' => LucideIcons.trendingUp,
-      'code-2' => LucideIcons.code,
-      'book' => LucideIcons.book,
-      'book-marked' => LucideIcons.bookMarked,
-      _ => LucideIcons.bookOpen,
-    };
-  }
 }
 
 class _RecapLoadingView extends StatelessWidget {

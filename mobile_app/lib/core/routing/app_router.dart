@@ -12,6 +12,7 @@ import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
 import '../../features/onboarding/presentation/profile_recap_page.dart';
 import '../../features/onboarding/presentation/serie_choice_page.dart';
+import '../../features/onboarding/presentation/subjects_opt_out_page.dart';
 import '../../features/onboarding/presentation/subsystem_choice_page.dart';
 import '../../features/onboarding/providers.dart';
 import '../../features/splash/presentation/splash_page.dart';
@@ -91,6 +92,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/profile/recap',
         builder: (context, state) => const ProfileRecapPage(),
+      ),
+      // Story 1.4 — page de retrait conditionnel des matieres (FR-3).
+      // Bypassee par le redirect Story 1.5 (toutes les routes /onboarding/* le
+      // sont). Guard in-component verifie derivedProfile.canOptOut.
+      GoRoute(
+        path: '/onboarding/profile/opt-out',
+        builder: (context, state) => const SubjectsOptOutPage(),
       ),
       // Story 1.1c — ecran « En attente de connexion » bloquant. Affichee par
       // le redirect global ci-dessus quand le catalogue Firestore est vide ET

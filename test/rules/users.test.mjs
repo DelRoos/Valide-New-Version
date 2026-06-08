@@ -4,7 +4,7 @@
 // =====================================================================
 
 import { describe, before, after, test } from 'node:test';
-import { doc, getDoc, setDoc, FieldValue } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 
 import {
   adminDb,
@@ -139,6 +139,39 @@ describe('Firestore rules — users/{uid}', () => {
       setDoc(
         doc(db, 'users', aliceUid),
         { ...validUserDoc(aliceUid), niveau: 'francophone_premiere' },
+      ),
+    );
+  });
+
+  // Story 1.4 — validation optedOutSubjects subset derivedSubjects.
+
+  test('(j) update optedOutSubjects valide (sous-ensemble de derivedSubjects) -> OK', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    // update partiel (cf. impl Story 1.4 updateOptedOutSubjects) : touche
+    // uniquement optedOutSubjects + updatedAt, preserve les champs immuables.
+    await assertSucceeds(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          optedOutSubjects: ['francophone_pct'],
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
+
+  test('(k) update optedOutSubjects invalide (matiere hors derivedSubjects) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertFails(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          // 'anglophone_biology' n'existe pas dans derivedSubjects d'alice.
+          optedOutSubjects: ['anglophone_biology'],
+          updatedAt: serverTimestamp(),
+        },
       ),
     );
   });

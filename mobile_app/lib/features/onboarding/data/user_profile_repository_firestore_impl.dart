@@ -117,4 +117,45 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       AppLogger.w('watchProfile() stream error reason=$reason');
     });
   }
+
+  // ===================================================================
+  // Story 1.4 — updateOptedOutSubjects() : retrait conditionnel matieres (FR-3)
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updateOptedOutSubjects(
+    List<String> optedOutSubjectIds,
+  ) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updateOptedOutSubjects() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+
+    try {
+      await _firestore.collection(_kCollection).doc(uid).update({
+        'optedOutSubjects': optedOutSubjectIds,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      // CLAUDE.md securite 4 : on log count, JAMAIS la liste des IDs
+      // (combinaison niveau + matieres retirees peut identifier un eleve).
+      AppLogger.i(
+        'Subjects opted out: count=${optedOutSubjectIds.length}',
+      );
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updateOptedOutSubjects() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updateOptedOutSubjects() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+      );
+    } catch (e, st) {
+      AppLogger.w('updateOptedOutSubjects() unexpected error: $e', error: e);
+      AppLogger.w('updateOptedOutSubjects() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
 }
