@@ -263,5 +263,57 @@
   "@onboardingSchoolValidatedBadge": { "description": "Badge sur chaque card ecole. Confirme que l'ecole a ete validee par admin." },
 
   "onboardingSchoolGenericErrorToast": "Erreur, vérifie ta connexion et réessaie.",
-  "@onboardingSchoolGenericErrorToast": { "description": "Toast warning si update schoolId echoue (reseau/rule)." }
+  "@onboardingSchoolGenericErrorToast": { "description": "Toast warning si update schoolId echoue (reseau/rule)." },
+
+  "dashboardWelcomeWithName": "Bienvenue {name} !",
+  "@dashboardWelcomeWithName": {
+    "description": "Titre du Hero DashboardPage avec prenom (Story 1.9 AC1). Prenom = displayName.split(' ').first.",
+    "placeholders": {
+      "name": { "type": "String", "example": "Fatou" }
+    }
+  },
+
+  "dashboardWelcomeGuest": "Bienvenue !",
+  "@dashboardWelcomeGuest": { "description": "Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 1.9 AC1." },
+
+  "dashboardSubtitleWithExam": "Voici tes matières — tu prépares le {exam}",
+  "@dashboardSubtitleWithExam": {
+    "description": "Sous-titre du Hero avec libelle d'examen (Story 1.9 AC1). examLabel = examTargets[0].name[lang].",
+    "placeholders": {
+      "exam": { "type": "String", "example": "BAC D" }
+    }
+  },
+
+  "dashboardSubtitleNoExam": "Voici tes matières.",
+  "@dashboardSubtitleNoExam": { "description": "Sous-titre du Hero sans exam (cas 6e francophone ou Form 1 anglophone) — Story 1.9 AC1." },
+
+  "dashboardGuestBadge": "Visiteur",
+  "@dashboardGuestBadge": { "description": "Badge en haut a droite du Hero quand currentUser.isAnonymous == true (Story 1.9 AC3)." },
+
+  "dashboardGuestInviteText": "Crée ton compte pour sauvegarder ta progression",
+  "@dashboardGuestInviteText": { "description": "Texte de l'encadre invite compte en bas du dashboard pour visiteur (Story 1.9 AC3)." },
+
+  "dashboardGuestInviteCta": "Créer mon compte",
+  "@dashboardGuestInviteCta": { "description": "Bouton secondaire de l'encadre invite compte → /onboarding/account (Story 1.9 AC3)." },
+
+  "dashboardEmptyStateText": "Termine ton profil pour voir tes matières.",
+  "@dashboardEmptyStateText": { "description": "Empty state du dashboard quand effective.data([]) ou derivedProfile.Left — Story 1.9 AC5." },
+
+  "dashboardEmptyStateCta": "Continuer mon onboarding",
+  "@dashboardEmptyStateCta": { "description": "CTA de l'empty state → /onboarding/profile/filiere (Story 1.9 AC5)." },
+
+  "dashboardComingSoon": "Bientôt disponible",
+  "@dashboardComingSoon": { "description": "Texte affiche sur les PlaceholderTabPage des onglets non implementes V1 + SubjectDetailPlaceholderPage (Story 1.9 AC6)." },
+
+  "dashboardTabHome": "Accueil",
+  "@dashboardTabHome": { "description": "Label onglet 0 du bottom tab bar (Story 1.9 AC6)." },
+
+  "dashboardTabSubjects": "Matières",
+  "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar (Story 1.9 AC6)." },
+
+  "dashboardTabActivities": "Activités",
+  "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar (Story 1.9 AC6)." },
+
+  "dashboardTabProfile": "Profil",
+  "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." }
 }

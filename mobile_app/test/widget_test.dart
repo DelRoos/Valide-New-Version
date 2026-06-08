@@ -1,27 +1,34 @@
-import 'package:flutter/material.dart';
+// Story 1.9 — apres migration `/hello` -> `/dashboard`, ces 2 tests verifient
+// que la bascule i18n (FR vs EN) s'applique au DashboardPage atteint post-splash.
+// Le group « HelloPage responsive — sentinelle E0 » a ete retire : la sentinelle
+// Story 0.21 a deja servi son but, HelloPage reste accessible via /hello pour
+// debug mais n'est plus la cible production du splash.
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
+import 'package:valide_school/core/catalogue/domain/catalogue_failure.dart';
+import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
+import 'package:valide_school/core/firebase/providers.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
 
-// Story 0.22 — le splash anime 1800 ms + 300 ms de hold avant de
-// rediriger. Les tests qui ciblent HelloPage doivent attendre cette
-// transition (marge de securite : 2200 ms).
+import '_helpers/fakes.dart';
+
+// Story 0.22 — splash anime 1800 ms + 300 ms hold. Tests ciblant la page metier
+// post-splash doivent attendre la transition (marge securite : 2200 ms).
 const Duration _kSplashSettleDuration = Duration(milliseconds: 2200);
 
-Future<void> _settleSplashToHello(WidgetTester tester) async {
+Future<void> _settleSplashToDashboard(WidgetTester tester) async {
   await tester.pump();
   await tester.pump(_kSplashSettleDuration);
   await tester.pump(const Duration(milliseconds: 200));
 }
 
-// Story 1.2 — la locale derive desormais du sous-systeme. Pour rejoindre
-// /hello apres le splash, il faut pre-populer subSystem en SharedPreferences
-// (sinon le splash navigue vers /onboarding/subsystem).
 Future<SharedPreferences> _prefsWith({
   required String subSystem,
   required String language,
@@ -35,7 +42,7 @@ Future<SharedPreferences> _prefsWith({
 
 void main() {
   testWidgets(
-    'Locale FR par défaut : affiche « Bonjour Valide » apres splash',
+    'Locale FR par defaut : DashboardPage affiche "Bienvenue !" post-splash',
     (WidgetTester tester) async {
       final prefs =
           await _prefsWith(subSystem: 'francophone', language: 'fr');
@@ -45,29 +52,42 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-            // Story 1.5 — bypass garde profil-incomplet : sans Firebase init,
-            // le profileCompletionProvider tomberait sur error -> redirect
-            // /onboarding/subsystem au lieu de servir /hello.
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
+            firebaseAuthProvider.overrideWithValue(
+              FakeAuth(isAnonymous: false, displayName: null),
+            ),
+            userProfileRepositoryProvider.overrideWithValue(
+              FakeUserProfileRepository(profileData: null),
+            ),
+            derivedProfileProvider.overrideWith(
+              (ref) async => Left(
+                CatalogueFailure.noMatchingRule(
+                  subSystem: 'francophone',
+                  filiere: 'generale',
+                  niveau: 'francophone_terminale',
+                  serie: null,
+                ),
+              ),
+            ),
+            effectiveDerivedSubjectsProvider.overrideWith(
+              (ref) => const Stream<List<Subject>>.empty(),
             ),
           ],
           child: const ValideApp(),
         ),
       );
-      await _settleSplashToHello(tester);
+      await _settleSplashToDashboard(tester);
 
-      expect(find.text('Bonjour Valide'), findsOneWidget);
-      expect(find.text('Hello Valide'), findsNothing);
+      expect(find.text('Bienvenue !'), findsOneWidget);
+      expect(find.text('Welcome!'), findsNothing);
     },
   );
 
   testWidgets(
-    'Locale EN dérivée de subSystem anglophone : affiche « Hello Valide »',
+    'Locale EN derivee de subSystem anglophone : DashboardPage affiche "Welcome!"',
     (WidgetTester tester) async {
-      // Story 1.2 — la bascule i18n passe par le sous-systeme. Pas d'override
-      // de localeProvider possible : LocaleNotifier.build() ref.watch
-      // subSystemNotifierProvider donc une sous-classe ferait planter le watch.
       final prefs =
           await _prefsWith(subSystem: 'anglophone', language: 'en');
 
@@ -76,73 +96,36 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-            // Story 1.5 — bypass garde profil-incomplet : sans Firebase init,
-            // le profileCompletionProvider tomberait sur error -> redirect
-            // /onboarding/subsystem au lieu de servir /hello.
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
+            firebaseAuthProvider.overrideWithValue(
+              FakeAuth(isAnonymous: false, displayName: null),
+            ),
+            userProfileRepositoryProvider.overrideWithValue(
+              FakeUserProfileRepository(profileData: null),
+            ),
+            derivedProfileProvider.overrideWith(
+              (ref) async => Left(
+                CatalogueFailure.noMatchingRule(
+                  subSystem: 'anglophone',
+                  filiere: 'generale',
+                  niveau: 'anglophone_upper_sixth',
+                  serie: null,
+                ),
+              ),
+            ),
+            effectiveDerivedSubjectsProvider.overrideWith(
+              (ref) => const Stream<List<Subject>>.empty(),
             ),
           ],
           child: const ValideApp(),
         ),
       );
-      await _settleSplashToHello(tester);
+      await _settleSplashToDashboard(tester);
 
-      expect(find.text('Hello Valide'), findsOneWidget);
-      expect(find.text('Bonjour Valide'), findsNothing);
+      expect(find.text('Welcome!'), findsOneWidget);
+      expect(find.text('Bienvenue !'), findsNothing);
     },
   );
-
-  // Story 0.21 AC5 — sentinelle régression : la page /hello doit rester verte
-  // sur 3 tailles d'écran représentatives (phone, tablet portrait, large).
-  group('HelloPage responsive — sentinelle E0', () {
-    Future<void> pumpAtSize(WidgetTester tester, Size size) async {
-      await tester.binding.setSurfaceSize(size);
-      addTearDown(() => tester.binding.setSurfaceSize(null));
-      final prefs =
-          await _prefsWith(subSystem: 'francophone', language: 'fr');
-      await tester.pumpWidget(
-        ProviderScope(
-          overrides: [
-            sharedPreferencesProvider.overrideWithValue(prefs),
-            appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-            // Story 1.5 — bypass garde profil-incomplet : sans Firebase init,
-            // le profileCompletionProvider tomberait sur error -> redirect
-            // /onboarding/subsystem au lieu de servir /hello.
-            profileCompletionProvider.overrideWith(
-              (ref) => Stream.value(ProfileCompletionState.complete),
-            ),
-          ],
-          child: const ValideApp(),
-        ),
-      );
-      await _settleSplashToHello(tester);
-    }
-
-    testWidgets('Phone 375×812 : titre + sélecteur langue + 2 boutons',
-        (tester) async {
-      await pumpAtSize(tester, const Size(375, 812));
-      expect(find.text('Bonjour Valide'), findsOneWidget);
-      expect(find.text('Langue'), findsOneWidget);
-      expect(find.text('Continuer'), findsOneWidget);
-      expect(find.text('Annuler'), findsOneWidget);
-    });
-
-    testWidgets('Tablet 1024×1366 : titre + sélecteur + 2 boutons',
-        (tester) async {
-      await pumpAtSize(tester, const Size(1024, 1366));
-      expect(find.text('Bonjour Valide'), findsOneWidget);
-      expect(find.text('Langue'), findsOneWidget);
-      expect(find.text('Continuer'), findsOneWidget);
-      expect(find.text('Annuler'), findsOneWidget);
-    });
-
-    testWidgets('Phone landscape 812×375 : titre + boutons toujours présents',
-        (tester) async {
-      await pumpAtSize(tester, const Size(812, 375));
-      expect(find.text('Bonjour Valide'), findsOneWidget);
-      expect(find.text('Continuer'), findsOneWidget);
-      expect(find.text('Annuler'), findsOneWidget);
-    });
-  });
 }

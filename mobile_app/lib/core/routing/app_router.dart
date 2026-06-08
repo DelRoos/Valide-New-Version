@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
+import '../../features/dashboard/presentation/dashboard_page.dart';
+import '../../features/dashboard/presentation/placeholder_tab_page.dart';
+import '../../features/dashboard/presentation/subject_detail_placeholder_page.dart';
 import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
@@ -68,6 +71,34 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/hello',
         builder: (context, state) => const HelloPage(),
+      ),
+      // Story 1.9 — dashboard skeleton + 3 onglets placeholder + detail matiere.
+      // Premier ecran metier post-onboarding. Remplace `/hello` comme cible
+      // par defaut depuis splash + subsystem-choice + school-picker.
+      GoRoute(
+        path: '/dashboard',
+        builder: (context, state) => const DashboardPage(),
+      ),
+      GoRoute(
+        path: '/matieres',
+        builder: (context, state) =>
+            const PlaceholderTabPage(title: 'Matieres', tabIndex: 1),
+      ),
+      GoRoute(
+        path: '/matieres/:subjectId',
+        builder: (context, state) => SubjectDetailPlaceholderPage(
+          subjectId: state.pathParameters['subjectId']!,
+        ),
+      ),
+      GoRoute(
+        path: '/activites',
+        builder: (context, state) =>
+            const PlaceholderTabPage(title: 'Activites', tabIndex: 2),
+      ),
+      GoRoute(
+        path: '/profil',
+        builder: (context, state) =>
+            const PlaceholderTabPage(title: 'Profil', tabIndex: 3),
       ),
       // Story 1.2 — premier ecran utilisateur (FR-1 + ADR-006). Affichee par
       // le redirect global ci-dessus quand subSystem absent en SharedPreferences.

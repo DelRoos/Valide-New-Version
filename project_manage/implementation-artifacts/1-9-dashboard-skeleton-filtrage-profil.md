@@ -3,10 +3,10 @@ story_id: 1.9
 title: Dashboard skeleton + filtrage matieres par profil (FR-10 partiel)
 epic: 1
 phase: P1
-status: ready-for-dev
+status: review
 created: 2026-06-08
 branch: feat/1.9-dashboard-skeleton-filtrage-profil
-baseline_commit: 99fa1f7  # merge PR #53 (Story 1.7 done)
+baseline_commit: b14af4d  # merge PR #54 (cloture 1.7 + contexte 1.9)
 estimation: M (~5h)
 dependencies:
   - 1.1c  # CatalogueRepository (utilise indirectement via derivedProfile + isActive filter cote Firestore)
@@ -29,7 +29,7 @@ sourceArtifacts:
 
 # Story 1.9 — Dashboard skeleton + filtrage matieres par profil (FR-10 partiel)
 
-Status: **ready-for-dev**
+Status: **review**
 
 > **AMENDED 2026-06-05** (sprint change) : la grille matieres filtre `derivedSubjects \ optedOutSubjects` par `subject.isActive == true` lu depuis Firestore via `CatalogueRepository`. Une matiere desactivee admin runtime disparait automatiquement de la grille au prochain stream tick. **Note d'implementation** : `effectiveDerivedSubjectsProvider` Story 1.4 consomme `derivedProfileProvider` qui appelle `catalogueRepository.derive()` qui filtre deja `where(isActive == true)` (Story 1.1c). Donc AMENDED est satisfait sans code supplementaire — verifier juste que le stream tick rafraichit bien quand l'admin desactive une matiere.
 
@@ -470,6 +470,71 @@ C'est le AC5 fallback defensif.
 | Date       | Auteur            | Modification                                                                |
 | ---------- | ----------------- | --------------------------------------------------------------------------- |
 | 2026-06-08 | Claude Opus 4.7   | Story 1.9 contexte engine cree — comprehensive developer guide              |
+| 2026-06-08 | Claude Opus 4.7   | Story 1.9 dev complete (10 tasks). Pure presentation : 4 NEW fichiers + 5 NEW routes + migration `/hello` -> `/dashboard` + 14 i18n + 7 tests. AUCUN nouvel index Firestore (CLAUDE.md regle 9 verifie). |
+
+### Dev Agent Record — Completion Notes
+
+**Implementation summary** :
+- T1 audit OK : tous les providers existants suffisent (effectiveDerivedSubjectsProvider Story 1.4 + derivedProfileProvider Story 1.3 + watchProfile Story 1.5 + firebaseAuthProvider Story 0.6 + subjectIconFor helper Story 1.4). **AUCUN nouveau provider/repo cree.**
+- T2-T5 : 4 nouveaux fichiers presentation
+  - `dashboard_page.dart` (~450 lignes — Hero + grille responsive 3/4/5 cols + skeleton shimmer flutter_animate + empty state + guest invite card)
+  - `_main_bottom_nav.dart` (~50 lignes — NavigationBar Material 3 4 destinations)
+  - `placeholder_tab_page.dart` (~50 lignes — texte "Bientot disponible" + bottom nav)
+  - `subject_detail_placeholder_page.dart` (~30 lignes — AppBar + placeholder)
+- T6 routing : 5 routes ajoutees (`/dashboard`, `/matieres`, `/matieres/:subjectId`, `/activites`, `/profil`) + migration des 4 nav production : splash, subsystem_choice, school_picker (×3) -> `/dashboard`.
+- T7 i18n : 14 cles ARB FR + EN ajoutees + `flutter gen-l10n` regenere AppLocalizations.
+- T8 tests : 5 dashboard + 2 placeholder + helper `test/_helpers/fakes.dart` (FakeAuth + FakeUserProfileRepository) + adaptation 3 tests legacy (widget_test.dart, splash_page_test.dart, subsystem_choice_page_test.dart) : ajout overrides Firebase + assertion "Bienvenue !" au lieu de "Bonjour Valide".
+- T9 decision : HelloPage **conservee** comme sentinelle E0 (route `/hello` reste fonctionnelle pour debug LaTeX/Mermaid). Pas de redirect alias — `/hello` rend HelloPage telle quelle. Le group "HelloPage responsive — sentinelle E0" dans `widget_test.dart` a ete retire (la sentinelle a deja servi son but Story 0.21).
+- T10 validation : `flutter analyze` 0 issue + `flutter test` 185 passed + 1 skipped (vs baseline 181, +4 net = +7 nouveaux -3 sentinelles retirees).
+
+**Bugs encountered & fixes** :
+1. **GridView lazy build** : test (a) Fatou avec 9 subjects sur 375x812 ne render que 8 cards (3 cols x 3 rows, derniere row hors viewport). Fix : assertions sur les premieres cards visibles (Math, PCT, SVT) uniquement + counter "9 matieres". Le tree GridView ne contient pas les widgets hors viewport.
+2. **flutter_animate `shimmer.repeat()` + pending Timer** : test (d) loading crash avec "A Timer is still pending after dispose". Fix : `await tester.pumpWidget(const SizedBox.shrink())` en fin de test pour disposer les Animate widgets + remplace `Future.delayed(10s)` par `Completer.future` (jamais resolu, pas de Timer) pour le derivedProfile loading override.
+3. **AC3 subsystem_choice_page_test apres migration** : tap Continuer navigue `/dashboard` qui crashe sans FirebaseAuth override. Fix : ajout des 4 overrides Firebase au test AC3.
+4. **placeholder test "Matieres" trouve 2 widgets** : AppBar.title + NavigationBar label. Fix : `findsAtLeastNWidgets(1)` au lieu de `findsOneWidget`.
+
+**Decisions** :
+- Pattern bottom tab : chaque page a son propre `Scaffold.bottomNavigationBar` (pas `StatefulShellRoute`). Refactor possible Epic 2 quand les onglets auront du state interne.
+- `/hello` conservee comme route debug (HelloPage = sentinelle E0). Pas d'alias redirect, juste une route facultative. Test redirect (`app_router_redirect_test.dart`) conserve ses 7 references `/hello` car la route reste valide.
+- Hero subtitle "Voici tes matieres" toujours rendu meme si grille vide (empty state n'affecte que la zone grille, pas le hero).
+
+**Anti-patterns evites** (Dev Notes) :
+- NE PAS re-fetch Firestore : on consomme `effectiveDerivedSubjectsProvider` Story 1.4 (combine derived + watchProfile) ✓
+- NE PAS recoder switch icon : on reutilise `subjectIconFor` Story 1.4 ✓
+- NE PAS afficher badge Visiteur si compte permanent : guard `isAnonymous` ✓
+- NE PAS logger `displayName` : aucun log de PII dans DashboardPage ✓
+
+**CLAUDE.md regle 9 (indexes Firestore)** : verifie. AUCUNE nouvelle query Firestore ajoutee par Story 1.9 (la page consomme uniquement les providers Story 1.3/1.4/1.5 qui utilisent les indexes deja declares). **Pas de deploiement `firebase deploy --only firestore:indexes` necessaire.**
+
+**Smoke device defere** : test runtime sur device Android Redmi A7 + iPad (si Mac dispo) reste a faire post-merge porteur. Scenarios attendus :
+- Fatou francophone Tle D : hero "Bienvenue Fatou !" + 9 matieres + bottom nav 4 onglets
+- James anglophone Upper Sixth S2 visiteur : hero "Bienvenue !" + badge "Visiteur" + invite compte
+- Phone vs tablet : verifier responsive 3/4/5 colonnes
+
+### File List (final)
+
+**Nouveaux fichiers** (7) :
+- `mobile_app/lib/features/dashboard/presentation/dashboard_page.dart`
+- `mobile_app/lib/features/dashboard/presentation/_main_bottom_nav.dart`
+- `mobile_app/lib/features/dashboard/presentation/placeholder_tab_page.dart`
+- `mobile_app/lib/features/dashboard/presentation/subject_detail_placeholder_page.dart`
+- `mobile_app/test/_helpers/fakes.dart`
+- `mobile_app/test/features/dashboard/presentation/dashboard_page_test.dart`
+- `mobile_app/test/features/dashboard/presentation/placeholder_tab_page_test.dart`
+
+**Fichiers modifies** (10) :
+- `mobile_app/lib/core/routing/app_router.dart` (+5 routes, +3 imports)
+- `mobile_app/lib/features/splash/presentation/splash_page.dart` (`/hello` -> `/dashboard`)
+- `mobile_app/lib/features/onboarding/presentation/subsystem_choice_page.dart` (`/hello` -> `/dashboard`)
+- `mobile_app/lib/features/onboarding/presentation/school_picker_page.dart` (3 nav `/hello` -> `/dashboard`)
+- `mobile_app/lib/l10n/app_fr.arb` (+14 cles avec descriptions ICU)
+- `mobile_app/lib/l10n/app_en.arb` (+14 cles)
+- `mobile_app/lib/l10n/generated/app_localizations*.dart` (auto gen-l10n)
+- `mobile_app/test/widget_test.dart` (adapte FR/EN locale tests + retire HelloPage responsive group)
+- `mobile_app/test/features/splash/splash_page_test.dart` (adapte SplashPage tests + nav `/dashboard`)
+- `mobile_app/test/features/onboarding/presentation/subsystem_choice_page_test.dart` (adapte AC3 + AC5 + ajout overrides Firebase)
+- `project_manage/implementation-artifacts/1-9-dashboard-skeleton-filtrage-profil.md` (frontmatter status review + Dev Agent Record + Change Log)
+- `project_manage/implementation-artifacts/sprint-status.yaml` (1.9 in-progress -> review)
 
 ---
 

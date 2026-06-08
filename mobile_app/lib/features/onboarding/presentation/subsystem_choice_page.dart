@@ -91,8 +91,9 @@ class _SubsystemChoicePageState extends ConsumerState<SubsystemChoicePage> {
 
     if (!mounted) return;
     // `go` (pas `push`) pour empêcher le back Android de revenir au choix.
-    // Story 1.3 remplacera `/hello` par `/onboarding/profile/filiere`.
-    context.go('/hello');
+    // Story 1.9 : /dashboard remplace /hello — la garde Story 1.5 redirige
+    // vers /onboarding/profile/filiere car le profil est encore vide.
+    context.go('/dashboard');
   }
 
   @override

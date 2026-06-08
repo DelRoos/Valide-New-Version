@@ -5,22 +5,28 @@
 //  - n'affiche PAS le logo image (animation non-liee au logo, verdict
 //    2026-06-05)
 //  - rend un CustomPaint (le mot VALIDE qui se dessine au trait)
-//  - navigue vers /hello apres l'animation (~2100 ms)
+//  - navigue vers /dashboard apres l'animation (~2100 ms) — Story 1.9.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
+import 'package:valide_school/core/catalogue/domain/catalogue_failure.dart';
+import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
+import 'package:valide_school/core/firebase/providers.dart';
 import 'package:valide_school/core/theme/tokens.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
 
+import '../../_helpers/fakes.dart';
+
 // Story 1.2 — pre-populate subSystem=francophone pour que le splash navigue
-// direct vers /hello (sinon il irait sur /onboarding/subsystem). Cela conserve
-// l'intention initiale du test : verifier l'animation puis la nav.
+// direct vers /dashboard (sinon il irait sur /onboarding/subsystem). Cela
+// conserve l'intention initiale du test : verifier l'animation puis la nav.
 Future<SharedPreferences> _prefsWithFrancophoneSubsystem() async {
   SharedPreferences.setMockInitialValues({
     'onboarding.subsystem': 'francophone',
@@ -28,6 +34,11 @@ Future<SharedPreferences> _prefsWithFrancophoneSubsystem() async {
   });
   return SharedPreferences.getInstance();
 }
+
+// Story 1.9 — DashboardPage requiert firebaseAuth + userProfileRepository +
+// derivedProfile + effectiveDerivedSubjects. Sans overrides, FirebaseAuth crash.
+// On reconstruit la liste a chaque test (le type Override n'est pas exporte
+// publiquement, donc on ne peut pas la factoriser dans un helper type).
 
 void main() {
   group('SplashPage responsive — Story 0.22', () {
@@ -40,11 +51,27 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-            // Story 1.5 — bypass garde profil-incomplet : le splash navigue
-            // /hello -> sans cet override, le redirect router bloquerait sur
-            // /onboarding/subsystem (firebaseAuth indisponible en test).
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
+            firebaseAuthProvider.overrideWithValue(
+              FakeAuth(isAnonymous: false, displayName: null),
+            ),
+            userProfileRepositoryProvider.overrideWithValue(
+              FakeUserProfileRepository(profileData: null),
+            ),
+            derivedProfileProvider.overrideWith(
+              (ref) async => Left(
+                CatalogueFailure.noMatchingRule(
+                  subSystem: 'francophone',
+                  filiere: 'generale',
+                  niveau: 'francophone_terminale',
+                  serie: null,
+                ),
+              ),
+            ),
+            effectiveDerivedSubjectsProvider.overrideWith(
+              (ref) => const Stream<List<Subject>>.empty(),
             ),
           ],
           child: const ValideApp(),
@@ -83,7 +110,7 @@ void main() {
       expectSplashRendered(tester);
     });
 
-    testWidgets('Navigation auto vers /hello apres ~2100 ms',
+    testWidgets('Navigation auto vers /dashboard apres ~2100 ms',
         (tester) async {
       await tester.binding.setSurfaceSize(const Size(375, 812));
       addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -93,22 +120,38 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-            // Story 1.5 — bypass garde profil-incomplet : le splash navigue
-            // /hello -> sans cet override, le redirect router bloquerait sur
-            // /onboarding/subsystem (firebaseAuth indisponible en test).
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
+            firebaseAuthProvider.overrideWithValue(
+              FakeAuth(isAnonymous: false, displayName: null),
+            ),
+            userProfileRepositoryProvider.overrideWithValue(
+              FakeUserProfileRepository(profileData: null),
+            ),
+            derivedProfileProvider.overrideWith(
+              (ref) async => Left(
+                CatalogueFailure.noMatchingRule(
+                  subSystem: 'francophone',
+                  filiere: 'generale',
+                  niveau: 'francophone_terminale',
+                  serie: null,
+                ),
+              ),
+            ),
+            effectiveDerivedSubjectsProvider.overrideWith(
+              (ref) => const Stream<List<Subject>>.empty(),
             ),
           ],
           child: const ValideApp(),
         ),
       );
       await tester.pump();
-      expect(find.text('Bonjour Valide'), findsNothing);
+      expect(find.text('Bienvenue !'), findsNothing);
 
       await tester.pump(const Duration(milliseconds: 2200));
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Bonjour Valide'), findsOneWidget);
+      expect(find.text('Bienvenue !'), findsOneWidget);
     });
   });
 }
