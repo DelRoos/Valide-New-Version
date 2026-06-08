@@ -200,5 +200,36 @@ void main() {
 
       expect(result.isLeft(), isTrue);
     });
+
+    // ================================================================
+    // Story 1.7 — updateSchoolId()
+    // ================================================================
+
+    test(
+        '(n) updateSchoolId : doc existant -> met a jour schoolId + updatedAt',
+        () async {
+      await firestore.collection('users').doc('delta').set(<String, dynamic>{
+        'uid': 'delta',
+        'schoolId': null,
+      });
+      final repo = buildRepo(uid: 'delta');
+
+      final result = await repo.updateSchoolId('school_bonaberi_dla');
+
+      expect(result.isRight(), isTrue);
+      final snap = await firestore.collection('users').doc('delta').get();
+      expect(snap.data()!['schoolId'], 'school_bonaberi_dla');
+      expect(snap.data()!['updatedAt'], isNotNull);
+    });
+
+    test(
+        '(o) updateSchoolId : pas d\'auth -> Left(notAuthenticated)',
+        () async {
+      final repo = buildRepo(uid: null);
+
+      final result = await repo.updateSchoolId('school_xxx');
+
+      expect(result.isLeft(), isTrue);
+    });
   });
 }

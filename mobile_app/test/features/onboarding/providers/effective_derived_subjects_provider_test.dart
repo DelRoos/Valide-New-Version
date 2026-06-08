@@ -42,6 +42,10 @@ class _FakeRepo implements UserProfileRepository {
     List<String> optedOutSubjectIds,
   ) async =>
       const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async =>
+      const Right(null);
 }
 
 Subject _subject(String id) => Subject(

@@ -224,4 +224,55 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get onboardingAccountAlreadyLinkedToast =>
       'You already have an account.';
+
+  @override
+  String get onboardingSchoolTitle => 'Link your school (optional)';
+
+  @override
+  String get onboardingSchoolSubtitle =>
+      'To join class and school rankings later.';
+
+  @override
+  String get onboardingSchoolSearchPlaceholder => 'Search my school…';
+
+  @override
+  String onboardingSchoolEmptyTitle(String query) {
+    return 'No school found for \"$query\".';
+  }
+
+  @override
+  String get onboardingSchoolAddCta => 'Add my school';
+
+  @override
+  String get onboardingSchoolAddDialogTitle => 'Request to add my school';
+
+  @override
+  String get onboardingSchoolAddDialogNameLabel => 'School name';
+
+  @override
+  String get onboardingSchoolAddDialogCityLabel => 'City';
+
+  @override
+  String get onboardingSchoolAddDialogRegionLabel => 'Region (optional)';
+
+  @override
+  String get onboardingSchoolAddDialogSubmitCta => 'Send request';
+
+  @override
+  String get onboardingSchoolAddRequestSentToast =>
+      'Request sent, we\'ll get back to you.';
+
+  @override
+  String get onboardingSchoolSkipCta => 'Skip this step';
+
+  @override
+  String get onboardingSchoolSkipToast =>
+      'You can link your school later in Profile.';
+
+  @override
+  String get onboardingSchoolValidatedBadge => 'Verified';
+
+  @override
+  String get onboardingSchoolGenericErrorToast =>
+      'Something went wrong, check your connection and try again.';
 }
