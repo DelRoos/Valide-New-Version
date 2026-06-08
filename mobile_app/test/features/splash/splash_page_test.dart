@@ -15,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:valide_school/app.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/theme/tokens.dart';
+import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
 
 // Story 1.2 — pre-populate subSystem=francophone pour que le splash navigue
@@ -39,6 +40,12 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+            // Story 1.5 — bypass garde profil-incomplet : le splash navigue
+            // /hello -> sans cet override, le redirect router bloquerait sur
+            // /onboarding/subsystem (firebaseAuth indisponible en test).
+            profileCompletionProvider.overrideWith(
+              (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
           ],
           child: const ValideApp(),
         ),
@@ -86,6 +93,12 @@ void main() {
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
+            // Story 1.5 — bypass garde profil-incomplet : le splash navigue
+            // /hello -> sans cet override, le redirect router bloquerait sur
+            // /onboarding/subsystem (firebaseAuth indisponible en test).
+            profileCompletionProvider.overrideWith(
+              (ref) => Stream.value(ProfileCompletionState.complete),
+            ),
           ],
           child: const ValideApp(),
         ),

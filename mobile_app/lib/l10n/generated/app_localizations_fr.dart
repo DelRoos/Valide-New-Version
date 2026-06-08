@@ -168,4 +168,8 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get onboardingRecapNoMatchingRule =>
       'Aucune classe trouvée pour ce profil. Reviens en arrière et corrige tes choix.';
+
+  @override
+  String get profileGuardIncompleteToast =>
+      'Termine ton profil pour continuer.';
 }

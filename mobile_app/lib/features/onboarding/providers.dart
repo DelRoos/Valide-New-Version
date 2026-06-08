@@ -15,6 +15,8 @@
 //      initialisé synchroniquement depuis SharedPreferences au build.
 //      Notifie ses watchers (LocaleNotifier, GoRouter redirect) au changement.
 
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,9 +25,11 @@ import '../../core/catalogue/domain/catalogue_failure.dart';
 import '../../core/catalogue/domain/models.dart';
 import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
+import '../../core/logging/app_logger.dart';
 import 'data/subsystem_prefs.dart';
 import 'data/user_profile_repository_firestore_impl.dart';
 import 'domain/onboarding_flow_state.dart';
+import 'domain/profile_completion_state.dart';
 import 'domain/sub_system.dart';
 import 'domain/user_profile_repository.dart';
 
@@ -121,6 +125,92 @@ final userProfileRepositoryProvider = Provider<UserProfileRepository>((ref) {
     getUid: () => ref.read(firebaseAuthProvider).currentUser?.uid,
   );
 });
+
+// =====================================================================
+// Story 1.5 — Garde navigation profil-incomplet (FR-4)
+// =====================================================================
+
+/// Stream du `ProfileCompletionState` derive de :
+///   1. `subSystemNotifierProvider` (sync, SharedPreferences Story 1.2)
+///   2. `firebaseAuthProvider.currentUser?.uid` (auth Story 0.6)
+///   3. `userProfileRepository.watchProfile()` (Firestore users/{uid} Story 1.5)
+///
+/// Mapping :
+///   - subSystem == null                    -> subsystemMissing
+///   - uid == null (auth dropped)           -> filiereMissing (+ log warn)
+///   - users/{uid} absent                   -> filiereMissing
+///   - data['filiere'] null/vide            -> filiereMissing
+///   - data['niveau'] null/vide             -> niveauMissing
+///   - data['serie'] null/vide              -> serieMissing
+///     (la sentinelle '-' Story 1.3 = present)
+///   - tous champs presents et non vides    -> complete
+///
+/// Fail-safe : si le stream emet une erreur (FirebaseException
+/// permission-denied, unavailable, etc.), retombe sur `filiereMissing`
+/// + log warn (reason masquee, JAMAIS l'uid — CLAUDE.md securite 4).
+///
+/// Consomme par `GoRouter.redirect` (AC2) via `ref.read` + `.maybeWhen`.
+final profileCompletionProvider =
+    StreamProvider<ProfileCompletionState>((ref) {
+  final subSystem = ref.watch(subSystemNotifierProvider);
+  if (subSystem == null) {
+    return Stream.value(ProfileCompletionState.subsystemMissing);
+  }
+
+  final auth = ref.watch(firebaseAuthProvider);
+  final uid = auth.currentUser?.uid;
+  if (uid == null) {
+    AppLogger.w(
+      'profileCompletion: fail-safe (filiereMissing) reason=auth-missing '
+      'subSystem=${subSystem.id}',
+    );
+    return Stream.value(ProfileCompletionState.filiereMissing);
+  }
+
+  final repo = ref.watch(userProfileRepositoryProvider);
+  return repo
+      .watchProfile()
+      .map(_mapDataToCompletion)
+      .transform(_failSafeTransformer(subSystem.id));
+});
+
+/// Transformer fail-safe : si le stream emet une erreur, log warn (reason
+/// masquee, JAMAIS l'uid — CLAUDE.md securite 4) puis emet `filiereMissing`.
+StreamTransformer<ProfileCompletionState, ProfileCompletionState>
+    _failSafeTransformer(String subSystemId) {
+  return StreamTransformer<ProfileCompletionState, ProfileCompletionState>
+      .fromHandlers(
+    handleError: (Object e, StackTrace st,
+        EventSink<ProfileCompletionState> sink) {
+      AppLogger.w(
+        'profileCompletion: fail-safe (filiereMissing) '
+        'reason=${e.runtimeType} subSystem=$subSystemId',
+      );
+      sink.add(ProfileCompletionState.filiereMissing);
+    },
+  );
+}
+
+/// Helper pur : traduit la map brute Firestore en ProfileCompletionState.
+/// La sentinelle `'-'` (Story 1.3 pour les niveaux sans serie) est consideree
+/// comme **presente** — pas comme manquante.
+ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
+  if (data == null) return ProfileCompletionState.filiereMissing;
+  final filiere = data['filiere'];
+  final niveau = data['niveau'];
+  final serie = data['serie'];
+
+  if (filiere is! String || filiere.isEmpty) {
+    return ProfileCompletionState.filiereMissing;
+  }
+  if (niveau is! String || niveau.isEmpty) {
+    return ProfileCompletionState.niveauMissing;
+  }
+  if (serie is! String || serie.isEmpty) {
+    return ProfileCompletionState.serieMissing;
+  }
+  return ProfileCompletionState.complete;
+}
 
 /// FutureProvider qui derive matieres + examens depuis le profil courant.
 /// Invalide automatiquement quand subSystem ou flowState changent (ref.watch).

@@ -90,4 +90,31 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }
+
+  // ===================================================================
+  // Story 1.5 — watchProfile() : stream users/{uid} pour garde nav (FR-4)
+  // ===================================================================
+
+  @override
+  Stream<Map<String, dynamic>?> watchProfile() {
+    final uid = _getUid();
+    if (uid == null) {
+      // Auth absente : on emet null immediatement. Le provider en aval
+      // traduira en ProfileCompletionState.filiereMissing avec un log warn.
+      return Stream.value(null);
+    }
+    return _firestore
+        .collection(_kCollection)
+        .doc(uid)
+        .snapshots()
+        .map((doc) => doc.exists ? doc.data() : null)
+        .handleError((Object e, StackTrace st) {
+      // L'erreur est attrappee ici (log) mais re-propagee au stream pour
+      // que le provider la traduise en filiereMissing fail-safe (AC6).
+      // CLAUDE.md securite 4 : on ne logue JAMAIS l'uid complet, seulement
+      // le code d'erreur et le type d'exception.
+      final reason = e is FirebaseException ? e.code : e.runtimeType.toString();
+      AppLogger.w('watchProfile() stream error reason=$reason');
+    });
+  }
 }

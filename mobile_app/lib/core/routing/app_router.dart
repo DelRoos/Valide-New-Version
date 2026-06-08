@@ -7,6 +7,7 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
+import '../../features/onboarding/domain/profile_completion_state.dart';
 import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
 import '../../features/onboarding/presentation/profile_recap_page.dart';
@@ -33,50 +34,23 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(onboardingFlowProvider, (_, _) {
     notifier.value++;
   });
+  // Story 1.5 — refresh router quand la completion profil change (post-tap
+  // « C'est ma classe » -> users/{uid} cree -> profileCompletion passe a
+  // `complete` -> les routes metier deviennent accessibles).
+  ref.listen(profileCompletionProvider, (_, _) {
+    notifier.value++;
+  });
   ref.onDispose(notifier.dispose);
 
   return GoRouter(
     initialLocation: '/',
     refreshListenable: notifier,
-    redirect: (context, state) {
-      final loc = state.matchedLocation;
-
-      // Bypass inconditionnel : routes systeme + debug.
-      if (loc == '/' ||
-          loc.startsWith('/splash') ||
-          loc.startsWith('/_')) {
-        return null;
-      }
-
-      final subSystem = ref.read(subSystemNotifierProvider);
-
-      // Story 1.2 — subsystem prioritaire sur catalogue.
-      // Cas 1 : subSystem absent (1er lancement).
-      if (subSystem == null) {
-        // Deja sur la bonne route OU sur l'ecran catalogue offline : ok.
-        if (loc == '/onboarding/subsystem' ||
-            loc == '/catalogue-waiting') {
-          return null;
-        }
-        return '/onboarding/subsystem';
-      }
-
-      // Cas 2 : subSystem present.
-      // Garde first-launch-only : si l'utilisateur tente d'acceder
-      // manuellement a /onboarding/subsystem, on le renvoie au home.
-      if (loc == '/onboarding/subsystem') {
-        return '/';
-      }
-
-      // Story 1.1c — logique catalogue preservee pour les autres routes.
-      if (loc == '/catalogue-waiting') return null;
-      final check = ref.read(appStartupCatalogueCheckProvider);
-      return check.when(
-        data: (ok) => ok ? null : '/catalogue-waiting',
-        loading: () => null,
-        error: (_, _) => '/catalogue-waiting',
-      );
-    },
+    redirect: (context, state) => evaluateRedirect(
+      location: state.matchedLocation,
+      catalogueCheck: ref.read(appStartupCatalogueCheckProvider),
+      hasSubSystem: ref.read(subSystemNotifierProvider) != null,
+      profileCompletion: ref.read(profileCompletionProvider),
+    ),
     routes: [
       GoRoute(
         path: '/',
@@ -149,3 +123,58 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+/// Pure helper qui calcule la redirect target pour une location donnee.
+/// Extrait pour testabilite (cf. test/core/routing/app_router_redirect_test.dart).
+///
+/// Ordre d'evaluation (cf. Story 1.5 AC2) :
+///   1. Bypass systeme : `/`, `/splash`, `/_*` -> null.
+///   2. Catalogue check (Story 1.1c) : si vide+offline -> /catalogue-waiting.
+///   3. Story 1.2 anti-replay : si subSystem present + loc == /onboarding/subsystem -> /.
+///   4. Story 1.5 garde profil-incomplet : sur routes metier (hors /onboarding/* +
+///      hors /catalogue-waiting), si profile incomplet -> nextOnboardingRoute.
+///      Loading -> null (laisse passer, evite flash). Error -> /onboarding/subsystem.
+///   5. Routes /onboarding/* -> bypass (guards in-component Story 1.3 gerent
+///      la coherence mi-flow).
+@visibleForTesting
+String? evaluateRedirect({
+  required String location,
+  required AsyncValue<bool> catalogueCheck,
+  required bool hasSubSystem,
+  required AsyncValue<ProfileCompletionState> profileCompletion,
+}) {
+  // 1. Bypass inconditionnel : routes systeme + debug.
+  if (location == '/' ||
+      location.startsWith('/splash') ||
+      location.startsWith('/_')) {
+    return null;
+  }
+
+  // 2. Story 1.1c — catalogue check prioritaire.
+  if (location != '/catalogue-waiting') {
+    final catalogueOk = catalogueCheck.when(
+      data: (ok) => ok,
+      loading: () => true,
+      error: (_, _) => false,
+    );
+    if (!catalogueOk) return '/catalogue-waiting';
+  }
+
+  // 3. Story 1.2 — anti-replay sur subsystem-choice.
+  if (hasSubSystem && location == '/onboarding/subsystem') {
+    return '/';
+  }
+
+  // 4. Story 1.5 — garde profil-incomplet pour les routes metier uniquement.
+  if (!location.startsWith('/onboarding/') &&
+      location != '/catalogue-waiting') {
+    final nextRoute = profileCompletion.when(
+      data: (state) => state.isComplete ? null : state.nextOnboardingRoute,
+      loading: () => null,
+      error: (_, _) => '/onboarding/subsystem',
+    );
+    if (nextRoute != null) return nextRoute;
+  }
+
+  return null;
+}

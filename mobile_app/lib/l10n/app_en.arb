@@ -68,5 +68,7 @@
   "onboardingRecapOptOutLink": "Remove a subject",
   "onboardingRecapCreatingLabel": "Setting up your profile…",
   "onboardingRecapFirestoreErrorToast": "Profile saved locally, we'll retry online",
-  "onboardingRecapNoMatchingRule": "No class found for this profile. Go back and update your choices."
+  "onboardingRecapNoMatchingRule": "No class found for this profile. Go back and update your choices.",
+
+  "profileGuardIncompleteToast": "Complete your profile to continue."
 }

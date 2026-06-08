@@ -113,5 +113,40 @@ void main() {
       expect(all.docs.length, 1);
       expect(all.docs.first.id, 'test_uid_123');
     });
+
+    // ================================================================
+    // Story 1.5 — watchProfile()
+    // ================================================================
+
+    test('(h) watchProfile : doc present -> emet la Map data', () async {
+      await firestore.collection('users').doc('alice').set(<String, dynamic>{
+        'uid': 'alice',
+        'subSystem': 'francophone',
+        'filiere': 'generale',
+        'niveau': 'francophone_terminale',
+        'serie': 'francophone_terminale_d',
+      });
+      final repo = buildRepo(uid: 'alice');
+
+      final emitted = await repo.watchProfile().first;
+      expect(emitted, isNotNull);
+      expect(emitted!['filiere'], 'generale');
+      expect(emitted['niveau'], 'francophone_terminale');
+      expect(emitted['serie'], 'francophone_terminale_d');
+    });
+
+    test('(i) watchProfile : doc absent -> emet null', () async {
+      final repo = buildRepo(uid: 'bob_no_doc');
+
+      final emitted = await repo.watchProfile().first;
+      expect(emitted, isNull);
+    });
+
+    test('(j) watchProfile : uid absent -> emet null immediatement', () async {
+      final repo = buildRepo(uid: null);
+
+      final emitted = await repo.watchProfile().first;
+      expect(emitted, isNull);
+    });
   });
 }
