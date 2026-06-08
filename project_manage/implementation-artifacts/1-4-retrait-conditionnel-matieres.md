@@ -3,8 +3,9 @@ story_id: 1.4
 title: Retrait conditionnel matières (FR-3)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-08
+merged: 2026-06-08  # PR #48 -> commit 839d2c9
 branch: feat/1.4-retrait-conditionnel-matieres
 baseline_commit: 28ce9e0  # merge PR #47 (cloture 1.5 + contexte 1.4)
 estimation: S (~3h)
@@ -33,7 +34,7 @@ sourceArtifacts:
 
 # Story 1.4 — Retrait conditionnel matières (FR-3)
 
-Status: **review**
+Status: **done**
 
 ## Objectif
 
