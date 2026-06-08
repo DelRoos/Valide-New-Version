@@ -3,8 +3,9 @@ story_id: 1.6
 title: Compte Google/Apple + merge visiteur (FR-5)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-08
+merged: 2026-06-08  # PR #50 -> commit 784ba7e
 branch: feat/1.6-compte-google-apple-merge-visiteur
 baseline_commit: d6f9f44  # merge PR #49 (cloture 1.4 + contexte 1.6)
 estimation: L (~6-8h)
@@ -32,7 +33,7 @@ sourceArtifacts:
 
 # Story 1.6 — Compte Google/Apple + merge visiteur (FR-5)
 
-Status: **review**
+Status: **done**
 
 ## Objectif
 
