@@ -191,5 +191,29 @@
   "@onboardingOptOutValidateCta": { "description": "Bouton primaire de SubjectsOptOutPage. Disabled si N==0." },
 
   "onboardingRecapModifyLink": "Modifier mes matières",
-  "@onboardingRecapModifyLink": { "description": "Lien sur ProfileRecapPage quand optedOutSubjects non vide (Story 1.4). Remplace onboardingRecapOptOutLink quand au moins une matière a déjà été retirée." }
+  "@onboardingRecapModifyLink": { "description": "Lien sur ProfileRecapPage quand optedOutSubjects non vide (Story 1.4). Remplace onboardingRecapOptOutLink quand au moins une matière a déjà été retirée." },
+
+  "onboardingAccountTitle": "Crée ton compte",
+  "@onboardingAccountTitle": { "description": "Titre H2 AccountCreationPage (Story 1.6 FR-5). Tutoiement, direct." },
+
+  "onboardingAccountSubtitle": "Sauvegarde tes progrès, reprends sur n'importe quel appareil.",
+  "@onboardingAccountSubtitle": { "description": "Sous-titre explicatif AccountCreationPage (Story 1.6)." },
+
+  "onboardingAccountGoogleCta": "Continuer avec Google",
+  "@onboardingAccountGoogleCta": { "description": "CTA Google sign-in. Toujours visible, cross-platform (ADR-011)." },
+
+  "onboardingAccountAppleCta": "Continuer avec Apple",
+  "@onboardingAccountAppleCta": { "description": "CTA Apple sign-in. Toujours visible, cross-platform (sign_in_with_apple supporte Android via OAuth web)." },
+
+  "onboardingAccountNetworkErrorToast": "Pas de connexion. Vérifie ta connexion et réessaie.",
+  "@onboardingAccountNetworkErrorToast": { "description": "Toast warning si OAuth ou linkWithCredential echoue pour cause reseau (AC6)." },
+
+  "onboardingAccountConflictTitle": "Compte déjà utilisé",
+  "@onboardingAccountConflictTitle": { "description": "Titre AlertDialog si credential-already-in-use (AC5). Story 1.6 V1 : flow switch differe en 1.6bis." },
+
+  "onboardingAccountConflictBody": "Ce compte est déjà lié à un autre profil Valide. Si tu te connectes avec, tu perdras ton profil actuel.",
+  "@onboardingAccountConflictBody": { "description": "Body AlertDialog conflit (AC5). Avertit l'utilisateur de la perte de profil." },
+
+  "onboardingAccountAlreadyLinkedToast": "Tu as déjà un compte.",
+  "@onboardingAccountAlreadyLinkedToast": { "description": "Toast info si provider-already-linked (l'utilisateur a deja lie ce provider)." }
 }

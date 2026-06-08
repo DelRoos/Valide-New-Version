@@ -196,4 +196,31 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingRecapModifyLink => 'Modifier mes matières';
+
+  @override
+  String get onboardingAccountTitle => 'Crée ton compte';
+
+  @override
+  String get onboardingAccountSubtitle =>
+      'Sauvegarde tes progrès, reprends sur n\'importe quel appareil.';
+
+  @override
+  String get onboardingAccountGoogleCta => 'Continuer avec Google';
+
+  @override
+  String get onboardingAccountAppleCta => 'Continuer avec Apple';
+
+  @override
+  String get onboardingAccountNetworkErrorToast =>
+      'Pas de connexion. Vérifie ta connexion et réessaie.';
+
+  @override
+  String get onboardingAccountConflictTitle => 'Compte déjà utilisé';
+
+  @override
+  String get onboardingAccountConflictBody =>
+      'Ce compte est déjà lié à un autre profil Valide. Si tu te connectes avec, tu perdras ton profil actuel.';
+
+  @override
+  String get onboardingAccountAlreadyLinkedToast => 'Tu as déjà un compte.';
 }

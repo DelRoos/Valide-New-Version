@@ -415,6 +415,54 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Modifier mes matières'**
   String get onboardingRecapModifyLink;
+
+  /// Titre H2 AccountCreationPage (Story 1.6 FR-5). Tutoiement, direct.
+  ///
+  /// In fr, this message translates to:
+  /// **'Crée ton compte'**
+  String get onboardingAccountTitle;
+
+  /// Sous-titre explicatif AccountCreationPage (Story 1.6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarde tes progrès, reprends sur n\'importe quel appareil.'**
+  String get onboardingAccountSubtitle;
+
+  /// CTA Google sign-in. Toujours visible, cross-platform (ADR-011).
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer avec Google'**
+  String get onboardingAccountGoogleCta;
+
+  /// CTA Apple sign-in. Toujours visible, cross-platform (sign_in_with_apple supporte Android via OAuth web).
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer avec Apple'**
+  String get onboardingAccountAppleCta;
+
+  /// Toast warning si OAuth ou linkWithCredential echoue pour cause reseau (AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion. Vérifie ta connexion et réessaie.'**
+  String get onboardingAccountNetworkErrorToast;
+
+  /// Titre AlertDialog si credential-already-in-use (AC5). Story 1.6 V1 : flow switch differe en 1.6bis.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte déjà utilisé'**
+  String get onboardingAccountConflictTitle;
+
+  /// Body AlertDialog conflit (AC5). Avertit l'utilisateur de la perte de profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte est déjà lié à un autre profil Valide. Si tu te connectes avec, tu perdras ton profil actuel.'**
+  String get onboardingAccountConflictBody;
+
+  /// Toast info si provider-already-linked (l'utilisateur a deja lie ce provider).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu as déjà un compte.'**
+  String get onboardingAccountAlreadyLinkedToast;
 }
 
 class _AppLocalizationsDelegate

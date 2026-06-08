@@ -175,9 +175,10 @@ class _ProfileRecapPageState extends ConsumerState<ProfileRecapPage> {
         );
       },
       (_) {
-        // Story 1.3 V1 : navigation vers /hello. Sera remplacee par
-        // /onboarding/account (Story 1.6) ou /onboarding/school (Story 1.7).
-        GoRouter.of(context).go('/hello');
+        // Story 1.6 — apres creation profil, on demande le compte Google/Apple
+        // (FR-5) avant d'arriver au dashboard. Story 1.7 ajoutera ensuite
+        // l'ecran de liaison ecole optionnelle.
+        GoRouter.of(context).go('/onboarding/account');
       },
     );
   }

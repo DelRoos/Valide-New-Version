@@ -11,6 +11,7 @@ import '../../features/onboarding/domain/profile_completion_state.dart';
 import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
 import '../../features/onboarding/presentation/profile_recap_page.dart';
+import '../../features/onboarding/presentation/account_creation_page.dart';
 import '../../features/onboarding/presentation/serie_choice_page.dart';
 import '../../features/onboarding/presentation/subjects_opt_out_page.dart';
 import '../../features/onboarding/presentation/subsystem_choice_page.dart';
@@ -99,6 +100,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/profile/opt-out',
         builder: (context, state) => const SubjectsOptOutPage(),
+      ),
+      // Story 1.6 — creation de compte Google/Apple (FR-5). Affichee
+      // post-recap (Story 1.3 _onValidate succes navigue ici au lieu de
+      // /hello). Bypassee par la garde Story 1.5 (route /onboarding/*).
+      GoRoute(
+        path: '/onboarding/account',
+        builder: (context, state) => const AccountCreationPage(),
       ),
       // Story 1.1c — ecran « En attente de connexion » bloquant. Affichee par
       // le redirect global ci-dessus quand le catalogue Firestore est vide ET
