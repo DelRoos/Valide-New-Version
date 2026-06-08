@@ -3,8 +3,9 @@ story_id: 1.7
 title: Liaison ecole optionnelle (FR-6)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-08
+merged: 2026-06-08  # PR #53 -> commit 99fa1f7
 branch: feat/1.7-liaison-ecole-optionnelle
 baseline_commit: b2ba687  # merge PR #52 (cloture 1.6 + contexte 1.7)
 estimation: M (~4-5h)
@@ -28,7 +29,7 @@ sourceArtifacts:
 
 # Story 1.7 — Liaison ecole optionnelle (FR-6)
 
-Status: **review**
+Status: **done**
 
 ## Objectif
 
