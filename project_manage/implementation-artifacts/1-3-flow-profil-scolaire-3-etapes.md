@@ -3,8 +3,11 @@ story_id: 1.3
 title: Flow profil scolaire 3 étapes (Filière → Niveau → Série) + écran récap + création doc users
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-06
+merged: 2026-06-08
+pr_number: 44
+merge_commit: 04181cc
 branch: feat/1.3-flow-profil-scolaire-3-etapes
 baseline_commit: 3ccfd28  # merge commit Story 1.2 (PR #42)
 estimation: L (~6-8h — la plus grosse story d'Epic 1)
@@ -697,6 +700,7 @@ Claude Opus 4.7 (`claude-opus-4-7`) via `/bmad-dev-story`.
 | Date | Auteur | Modification |
 |---|---|---|
 | 2026-06-06 | Claude Opus 4.7 (Amelia) | Story 1.3 implémentée : flow profil scolaire 3 étapes + recap matières dérivées + création users/{uid} Firestore + règles étendues (filiere/niveau/serie/createdAt immutables) + tests rules 12/12 verts. flutter analyze 0 issue. flutter test 113 passed +1 skipped. |
+| 2026-06-08 | Claude Opus 4.7 | Story 1.3 mergée main via PR #44 (merge commit 04181cc). Status review → done. Sprint-status.yaml mis à jour. Blocks libéré : 1.4 / 1.5 / 1.6 / 1.7 / 1.9. |
 
 ---
 
