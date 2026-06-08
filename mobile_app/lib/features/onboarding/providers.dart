@@ -29,6 +29,7 @@ import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
 import 'data/account_linking_repository_firebase_impl.dart';
+import 'data/school_repository_firestore_impl.dart';
 import 'data/subsystem_prefs.dart';
 import 'data/user_profile_repository_firestore_impl.dart';
 import 'domain/account_linking_repository.dart';
@@ -36,6 +37,8 @@ import 'domain/account_linking_state.dart';
 import 'domain/linked_account.dart';
 import 'domain/onboarding_flow_state.dart';
 import 'domain/profile_completion_state.dart';
+import 'domain/school.dart';
+import 'domain/school_repository.dart';
 import 'domain/sub_system.dart';
 import 'domain/user_profile_repository.dart';
 
@@ -289,6 +292,76 @@ class AccountLinkingNotifier extends Notifier<AccountLinkingState> {
 final accountLinkingNotifierProvider =
     NotifierProvider<AccountLinkingNotifier, AccountLinkingState>(
   AccountLinkingNotifier.new,
+);
+
+// =====================================================================
+// Story 1.7 — Liaison ecole optionnelle (FR-6)
+// =====================================================================
+
+/// Repository Firestore du catalogue `schools` + sous-collection requests.
+/// Reutilise `firebaseAuthProvider` pour injecter l'uid (pattern Story 1.3).
+final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
+  return SchoolRepositoryFirestoreImpl(
+    firestore: ref.watch(firestoreProvider),
+    getUid: () => ref.read(firebaseAuthProvider).currentUser?.uid,
+  );
+});
+
+/// State machine de la recherche autocomplete avec debounce 300ms interne.
+///
+/// `state` :
+///   - `AsyncValue.data([])` : invitation vide (rien tape, ou < 2 chars)
+///   - `AsyncValue.loading()` : query Firestore en cours
+///   - `AsyncValue.data([...])` : resultats
+///   - `AsyncValue.error(SchoolFailure)` : erreur Firestore
+///
+/// Le notifier expose 2 actions :
+///   - `search(query)` : declenche la recherche avec debounce 300ms
+///   - `clear()` : reset a `data([])` sans attendre le debounce
+class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
+  Timer? _debounceTimer;
+  String? _lastQuery;
+
+  @override
+  AsyncValue<List<School>> build() {
+    ref.onDispose(() => _debounceTimer?.cancel());
+    return const AsyncValue.data([]);
+  }
+
+  void search(String query) {
+    _debounceTimer?.cancel();
+    _lastQuery = query;
+    if (query.length < 2) {
+      state = const AsyncValue.data([]);
+      return;
+    }
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
+      // Si l'utilisateur a deja tape autre chose pendant le debounce, le
+      // _lastQuery aura ete update mais ce timer est cancelled. Defensive
+      // check : verifier que ce timer n'a pas ete remplace.
+      if (_lastQuery != query) return;
+      state = const AsyncValue.loading();
+      final result =
+          await ref.read(schoolRepositoryProvider).searchByPrefix(query);
+      // Si une nouvelle recherche a ete demandee entre temps, ignorer.
+      if (_lastQuery != query) return;
+      state = result.fold(
+        (failure) => AsyncValue.error(failure, StackTrace.current),
+        (schools) => AsyncValue.data(schools),
+      );
+    });
+  }
+
+  void clear() {
+    _debounceTimer?.cancel();
+    _lastQuery = null;
+    state = const AsyncValue.data([]);
+  }
+}
+
+final schoolSearchNotifierProvider =
+    NotifierProvider<SchoolSearchNotifier, AsyncValue<List<School>>>(
+  SchoolSearchNotifier.new,
 );
 
 // =====================================================================

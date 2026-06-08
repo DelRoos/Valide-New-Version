@@ -463,6 +463,96 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Tu as déjà un compte.'**
   String get onboardingAccountAlreadyLinkedToast;
+
+  /// Titre H2 SchoolPickerPage (Story 1.7 FR-6). Tutoiement, mention 'optionnel'.
+  ///
+  /// In fr, this message translates to:
+  /// **'Lie ton école (optionnel)'**
+  String get onboardingSchoolTitle;
+
+  /// Sous-titre explicatif SchoolPickerPage (Story 1.7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour participer aux classements de classe et école plus tard.'**
+  String get onboardingSchoolSubtitle;
+
+  /// Placeholder TextField recherche ecole.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher mon école…'**
+  String get onboardingSchoolSearchPlaceholder;
+
+  /// Etat vide quand la recherche ne renvoie rien (AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune école trouvée pour « {query} ».'**
+  String onboardingSchoolEmptyTitle(String query);
+
+  /// CTA primaire dans l'etat vide pour demander l'ajout d'une ecole absente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter mon école'**
+  String get onboardingSchoolAddCta;
+
+  /// Titre de la modale d'ajout d'ecole (AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Demander l\'ajout de mon école'**
+  String get onboardingSchoolAddDialogTitle;
+
+  /// Label champ Nom (obligatoire) dans la modale d'ajout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de ton école'**
+  String get onboardingSchoolAddDialogNameLabel;
+
+  /// Label champ Ville (obligatoire) dans la modale d'ajout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ville'**
+  String get onboardingSchoolAddDialogCityLabel;
+
+  /// Label champ Region (optionnel) dans la modale d'ajout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Région (optionnel)'**
+  String get onboardingSchoolAddDialogRegionLabel;
+
+  /// CTA primaire de la modale d'ajout. Disabled si nom ou ville vides.
+  ///
+  /// In fr, this message translates to:
+  /// **'Envoyer la demande'**
+  String get onboardingSchoolAddDialogSubmitCta;
+
+  /// Toast info apres soumission d'une demande d'ajout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demande envoyée, on revient vers toi.'**
+  String get onboardingSchoolAddRequestSentToast;
+
+  /// Bouton secondaire pleine largeur (AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer cette étape'**
+  String get onboardingSchoolSkipCta;
+
+  /// Toast info apres tap Skip (AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu pourras lier ton école plus tard dans Profil.'**
+  String get onboardingSchoolSkipToast;
+
+  /// Badge sur chaque card ecole. Confirme que l'ecole a ete validee par admin.
+  ///
+  /// In fr, this message translates to:
+  /// **'Validée'**
+  String get onboardingSchoolValidatedBadge;
+
+  /// Toast warning si update schoolId echoue (reseau/rule).
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur, vérifie ta connexion et réessaie.'**
+  String get onboardingSchoolGenericErrorToast;
 }
 
 class _AppLocalizationsDelegate

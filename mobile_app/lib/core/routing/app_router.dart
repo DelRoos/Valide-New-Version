@@ -12,6 +12,7 @@ import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
 import '../../features/onboarding/presentation/profile_recap_page.dart';
 import '../../features/onboarding/presentation/account_creation_page.dart';
+import '../../features/onboarding/presentation/school_picker_page.dart';
 import '../../features/onboarding/presentation/serie_choice_page.dart';
 import '../../features/onboarding/presentation/subjects_opt_out_page.dart';
 import '../../features/onboarding/presentation/subsystem_choice_page.dart';
@@ -107,6 +108,13 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/account',
         builder: (context, state) => const AccountCreationPage(),
+      ),
+      // Story 1.7 — liaison ecole optionnelle (FR-6). Affichee post-success
+      // Story 1.6 (AccountCreationPage success navigue ici au lieu de /hello).
+      // Bypassee par la garde Story 1.5 (route /onboarding/*).
+      GoRoute(
+        path: '/onboarding/school',
+        builder: (context, state) => const SchoolPickerPage(),
       ),
       // Story 1.1c — ecran « En attente de connexion » bloquant. Affichee par
       // le redirect global ci-dessus quand le catalogue Firestore est vide ET

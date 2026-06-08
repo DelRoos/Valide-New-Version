@@ -47,6 +47,10 @@ class _FakeRepo implements UserProfileRepository {
     List<String> optedOutSubjectIds,
   ) async =>
       const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async =>
+      const Right(null);
 }
 
 class _PreloadedFlow extends OnboardingFlowNotifier {

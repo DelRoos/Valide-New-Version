@@ -215,5 +215,53 @@
   "@onboardingAccountConflictBody": { "description": "Body AlertDialog conflit (AC5). Avertit l'utilisateur de la perte de profil." },
 
   "onboardingAccountAlreadyLinkedToast": "Tu as déjà un compte.",
-  "@onboardingAccountAlreadyLinkedToast": { "description": "Toast info si provider-already-linked (l'utilisateur a deja lie ce provider)." }
+  "@onboardingAccountAlreadyLinkedToast": { "description": "Toast info si provider-already-linked (l'utilisateur a deja lie ce provider)." },
+
+  "onboardingSchoolTitle": "Lie ton école (optionnel)",
+  "@onboardingSchoolTitle": { "description": "Titre H2 SchoolPickerPage (Story 1.7 FR-6). Tutoiement, mention 'optionnel'." },
+
+  "onboardingSchoolSubtitle": "Pour participer aux classements de classe et école plus tard.",
+  "@onboardingSchoolSubtitle": { "description": "Sous-titre explicatif SchoolPickerPage (Story 1.7)." },
+
+  "onboardingSchoolSearchPlaceholder": "Rechercher mon école…",
+  "@onboardingSchoolSearchPlaceholder": { "description": "Placeholder TextField recherche ecole." },
+
+  "onboardingSchoolEmptyTitle": "Aucune école trouvée pour « {query} ».",
+  "@onboardingSchoolEmptyTitle": {
+    "description": "Etat vide quand la recherche ne renvoie rien (AC4).",
+    "placeholders": { "query": { "type": "String" } }
+  },
+
+  "onboardingSchoolAddCta": "Ajouter mon école",
+  "@onboardingSchoolAddCta": { "description": "CTA primaire dans l'etat vide pour demander l'ajout d'une ecole absente." },
+
+  "onboardingSchoolAddDialogTitle": "Demander l'ajout de mon école",
+  "@onboardingSchoolAddDialogTitle": { "description": "Titre de la modale d'ajout d'ecole (AC4)." },
+
+  "onboardingSchoolAddDialogNameLabel": "Nom de ton école",
+  "@onboardingSchoolAddDialogNameLabel": { "description": "Label champ Nom (obligatoire) dans la modale d'ajout." },
+
+  "onboardingSchoolAddDialogCityLabel": "Ville",
+  "@onboardingSchoolAddDialogCityLabel": { "description": "Label champ Ville (obligatoire) dans la modale d'ajout." },
+
+  "onboardingSchoolAddDialogRegionLabel": "Région (optionnel)",
+  "@onboardingSchoolAddDialogRegionLabel": { "description": "Label champ Region (optionnel) dans la modale d'ajout." },
+
+  "onboardingSchoolAddDialogSubmitCta": "Envoyer la demande",
+  "@onboardingSchoolAddDialogSubmitCta": { "description": "CTA primaire de la modale d'ajout. Disabled si nom ou ville vides." },
+
+  "onboardingSchoolAddRequestSentToast": "Demande envoyée, on revient vers toi.",
+  "@onboardingSchoolAddRequestSentToast": { "description": "Toast info apres soumission d'une demande d'ajout." },
+
+  "onboardingSchoolSkipCta": "Passer cette étape",
+  "@onboardingSchoolSkipCta": { "description": "Bouton secondaire pleine largeur (AC5)." },
+
+  "onboardingSchoolSkipToast": "Tu pourras lier ton école plus tard dans Profil.",
+  "@onboardingSchoolSkipToast": { "description": "Toast info apres tap Skip (AC5)." },
+
+  "onboardingSchoolValidatedBadge": "Validée",
+  "@onboardingSchoolValidatedBadge": { "description": "Badge sur chaque card ecole. Confirme que l'ecole a ete validee par admin." },
+
+  "onboardingSchoolGenericErrorToast": "Erreur, vérifie ta connexion et réessaie.",
+  "@onboardingSchoolGenericErrorToast": { "description": "Toast warning si update schoolId echoue (reseau/rule)." }
 }

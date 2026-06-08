@@ -58,4 +58,15 @@ abstract interface class UserProfileRepository {
   Future<Either<ProfileFailure, void>> updateOptedOutSubjects(
     List<String> optedOutSubjectIds,
   );
+
+  /// Story 1.7 — Met a jour le champ `schoolId` du doc users/{uid}.
+  ///
+  /// Update partiel sur `{schoolId, updatedAt}`. Les regles Story 1.3
+  /// (immuables : subSystem/filiere/niveau/serie/createdAt) ne touchent pas
+  /// a `schoolId` — l'update passe sans modification rules.
+  ///
+  /// Passer `null` "skipperait" la liaison, mais en pratique la page Story 1.7
+  /// court-circuite : le `schoolId` est deja `null` par defaut (Story 1.3),
+  /// pas besoin d'update Firestore quand on skip.
+  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId);
 }

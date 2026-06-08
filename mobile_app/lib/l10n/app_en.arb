@@ -91,5 +91,24 @@
   "onboardingAccountNetworkErrorToast": "No connection. Check your connection and try again.",
   "onboardingAccountConflictTitle": "Account already in use",
   "onboardingAccountConflictBody": "This account is already linked to another Valide profile. If you sign in with it, you'll lose your current profile.",
-  "onboardingAccountAlreadyLinkedToast": "You already have an account."
+  "onboardingAccountAlreadyLinkedToast": "You already have an account.",
+
+  "onboardingSchoolTitle": "Link your school (optional)",
+  "onboardingSchoolSubtitle": "To join class and school rankings later.",
+  "onboardingSchoolSearchPlaceholder": "Search my school…",
+  "onboardingSchoolEmptyTitle": "No school found for \"{query}\".",
+  "@onboardingSchoolEmptyTitle": {
+    "placeholders": { "query": { "type": "String" } }
+  },
+  "onboardingSchoolAddCta": "Add my school",
+  "onboardingSchoolAddDialogTitle": "Request to add my school",
+  "onboardingSchoolAddDialogNameLabel": "School name",
+  "onboardingSchoolAddDialogCityLabel": "City",
+  "onboardingSchoolAddDialogRegionLabel": "Region (optional)",
+  "onboardingSchoolAddDialogSubmitCta": "Send request",
+  "onboardingSchoolAddRequestSentToast": "Request sent, we'll get back to you.",
+  "onboardingSchoolSkipCta": "Skip this step",
+  "onboardingSchoolSkipToast": "You can link your school later in Profile.",
+  "onboardingSchoolValidatedBadge": "Verified",
+  "onboardingSchoolGenericErrorToast": "Something went wrong, check your connection and try again."
 }

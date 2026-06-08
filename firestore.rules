@@ -138,5 +138,32 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if false;
     }
+
+    // -----------------------------------------------------------------
+    // schools/{schoolId} — catalogue d'ecoles (Story 1.7, FR-6)
+    //
+    // Lecture par tout user authentifie (le catalogue est public).
+    // Ecriture interdite cote client : seul l'admin (via Console) peut
+    // valider une ecole (poser isValidated = true) ou ajouter un doc.
+    //
+    // Sous-collection requests/ : demandes d'ajout d'ecole soumises par les
+    // utilisateurs (modeles dans schools/_pending_$ts/requests/$autoId).
+    // Create autorise si requestedBy == auth.uid + name + city sont des
+    // strings. Pas de read/update/delete cote client (donnees admin).
+    // -----------------------------------------------------------------
+    match /schools/{schoolId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+
+      match /requests/{requestId} {
+        allow create: if request.auth != null
+          && request.resource.data.requestedBy == request.auth.uid
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.city is string
+          && request.resource.data.city.size() > 0;
+        allow read, update, delete: if false;
+      }
+    }
   }
 }

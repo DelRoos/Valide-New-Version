@@ -158,4 +158,41 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }
+
+  // ===================================================================
+  // Story 1.7 — updateSchoolId() : liaison ecole optionnelle (FR-6)
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updateSchoolId() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+
+    try {
+      await _firestore.collection(_kCollection).doc(uid).update({
+        'schoolId': schoolId,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      // schoolId est public (un identifiant catalogue), OK a logger.
+      // CLAUDE.md securite 4 : on ne logue PAS l'uid.
+      AppLogger.i('School linked: schoolId=${schoolId ?? "(null)"}');
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updateSchoolId() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updateSchoolId() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+      );
+    } catch (e, st) {
+      AppLogger.w('updateSchoolId() unexpected error: $e', error: e);
+      AppLogger.w('updateSchoolId() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
 }

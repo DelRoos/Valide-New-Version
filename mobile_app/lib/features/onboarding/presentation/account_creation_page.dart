@@ -116,7 +116,9 @@ class AccountCreationPage extends ConsumerWidget {
     AccountLinkingState next,
   ) {
     if (next is AccountLinkingSuccess) {
-      GoRouter.of(context).go('/hello');
+      // Story 1.7 — apres creation compte, on demande la liaison ecole
+      // optionnelle avant d'arriver au dashboard.
+      GoRouter.of(context).go('/onboarding/school');
       return;
     }
     if (next is AccountLinkingError) {
