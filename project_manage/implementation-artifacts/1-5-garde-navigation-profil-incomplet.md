@@ -3,8 +3,11 @@ story_id: 1.5
 title: Garde navigation profil-incomplet centralisée go_router (FR-4)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-08
+merged: 2026-06-08
+pr_number: 46
+merge_commit: 6fff7a7
 branch: feat/1.5-garde-navigation-profil-incomplet
 baseline_commit: 9623a28  # merge commit Story 1.3 cloture + Story 1.5 contexte (PR #45)
 estimation: S (~3-4h)
@@ -426,6 +429,7 @@ expect(state, ProfileCompletionState.complete);
 |---|---|---|
 | 2026-06-08 | Claude Opus 4.7 | Story 1.5 contexte engine créé — comprehensive developer guide |
 | 2026-06-08 | Claude Opus 4.7 (Amelia) | Story 1.5 implémentée : enum ProfileCompletionState + UserProfileRepository.watchProfile() + profileCompletionProvider StreamProvider + GoRouter.evaluateRedirect() pure helper + i18n clé réservée. flutter analyze 0 issue. flutter test 144 passed + 1 skipped (vs 113 baseline, +31). Refactors mineurs : provider en composition de streams + StreamTransformer fail-safe (async* incompat avec provider.future Riverpod 3.x), redirect logic extraite en fonction pure `evaluateRedirect` @visibleForTesting pour testabilité. 3 tests Story 1.3 adaptés (widget_test, splash_page, subsystem_choice_page) avec override profileCompletionProvider. |
+| 2026-06-08 | Claude Opus 4.7 | Story 1.5 mergée main via PR #46 (merge commit 6fff7a7). Status review → done. Sprint-status.yaml mis à jour. Blocks libéré : 1.6 (compte Google/Apple — redirect /onboarding/account validé quand profil complet) + 1.9 (dashboard — garde profil en place avant exposition métier). |
 
 ---
 
