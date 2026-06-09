@@ -89,6 +89,9 @@
   "onboardingPickerOptionalTitle": "Optional subjects",
   "onboardingPickerSeriesTitle": "Series (mandatory)",
   "onboardingPickerTransversalesTitle": "Optional transversal subjects",
+  "onboardingPickerProfessionalTitle": "Professional subjects (mandatory)",
+  "onboardingPickerRelatedTitle": "Related professional subjects (mandatory)",
+  "onboardingPickerOtherTitle": "Other subjects",
   "onboardingPickerCounterLive": "{count, plural, =1{You take 1/{max} subject} other{You take {count}/{max} subjects}}",
   "@onboardingPickerCounterLive": {
     "placeholders": {
