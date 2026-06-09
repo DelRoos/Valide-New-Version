@@ -127,18 +127,34 @@ Un utilisateur peut remplir son profil scolaire en trois étapes obligatoires (f
 
 - Les choix possibles à chaque étape ne dépendent **que** des choix précédents (la série dépend du niveau et de la filière).
 - À la confirmation de la série, la liste des matières **et** la liste des examens visés s'affichent **sans cocher individuellement** ; aucun parcours d'inscription n'aboutit avec une liste vide.
-- Un profil francophone Tle D montre `[Maths, PCT, SVT, Français, Anglais, LV2, Philo, Hist-Géo, EPS]` et `[exam_bac_francophone_d]`.
-- Un profil anglophone Upper Sixth S2 montre `[Chemistry, Physics, Biology]` (+ optionnelles) et `[exam_gce_a_level_anglophone_s2]`.
+- **La liste des séries présentées à l'étape 3 varie selon le profil** (catalogue v2 — Story 1.11a, [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md)) :
+  - Francophone Tle générale → jusqu'à 12 cards (A1, A2, A3, A4, A5, ABI, SH, AC, C, D, E, TI) avec groupement visuel par famille (Lettres / Sciences humaines / Sciences / Sciences techniques) — Story 1.14
+  - Anglophone Form 3-5 → panier dédié post-choix Form 5 avec règles min 6 / max 11 + EN+FR+Math obligatoires — Story 1.15
+  - Anglophone Lower/Upper Sixth → Series fixe + extension transversales optionnelles (Computer Science / ICT / Religious Studies / Commerce) max 5 — Story 1.16
+  - Anglophone TVEE (filière technique) → cards spécialités groupées 3 familles (Industrial : ELEQ/ELNI/ELME/ELET/AC/ME/CE/Carpentry ; Commercial : Accounting/Commerce/Office Practice ; Home Economics : Food/Clothing) — Story 1.17
+- Un profil francophone Tle D montre `[Maths, Physique, Chimie, SVT, Environnement, Français, Anglais, Philo, Hist-Géo, Informatique, EPS]` (11 matières — corrigées Story 1.11a : Physique+Chimie séparés ex-PCT, retrait LV2 erronée v1, ajout Environnement + Informatique) et `[exam_bac_francophone_d]`.
+- Un profil francophone Tle A1 montre `[Français, Anglais, Math, Philo, HG, EPS, Latin, Grec, LV2]` (9 matières — sous-série littéraire Story 1.11a, `isActive: true` post-1.12) et `[exam_bac_francophone_a1]`.
+- Un profil anglophone Upper Sixth S2 montre `[Chemistry, Physics, Biology]` + transversales optionnelles ajoutables (Computer Science / ICT / Religious Studies / Commerce, max 5 total — Story 1.16) et `[exam_gce_a_level_anglophone_s2]`.
+- Un profil anglophone Form 5 (panier O-Level) sélectionne 6-11 matières dont English Language + French + Mathematics obligatoires non décochables — Story 1.15.
+- Un profil anglophone TVE AL Electrotechnique présente 6-8 matières dont ≥3 Professional Subjects (Electrotechnique theory + practical + Electrical machines) + ≥3 Related Professional Subjects (Math industrial + Physics + Drawing) + English/French obligatoires — Story 1.17.
 
-#### FR-3 : Retrait conditionnel de matières
+> **Rationale** : le pivot v2 (sprint-change-proposal-2026-06-09.md, [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md)) aligne le PRD avec la nomenclature officielle Office du Baccalauréat + Cameroon GCE Board. La structure 3 étapes reste pour cohérence UX (pas d'étape supplémentaire), mais la liste de séries présentées à l'étape 3 est variable selon le profil. Voir [DONNEES-REFERENCE.md v2](../../../../doc/partage/DONNEES-REFERENCE.md) § « Sous-système anglophone — ESTP (TVEE) » + [ALGORITHMES.md § 1 « Modes panier (PickerMode) v2 »](../../../../doc/partage/ALGORITHMES.md).
 
-Un utilisateur dans les cas autorisés (anglophones ≥ Form 3, ou Lower/Upper Sixth toutes filières) peut retirer des matières de sa liste dérivée. Hors ces cas, le retrait n'est pas proposé.
+#### FR-3 : Sélection conditionnelle de matières (multi-mode)
+
+Un utilisateur peut sélectionner ou retirer des matières de sa liste dérivée **selon le mode défini par sa série** (`series.pickerMode` Firestore, [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md) — 5 valeurs : `derived` / `opt_out` / `free_with_obligatory` / `series_plus_optional` / `tve_picker`). Hors mode `derived`, une page picker dédiée s'affiche après l'écran récap. Réalise UJ-1.
 
 **Consequences (testable) :**
 
-- Un élève francophone en Première C **ne voit pas** l'option « retirer une matière ».
-- Un élève anglophone en Form 3 voit l'option et peut retirer toute matière non présentée à son O Level.
-- Une matière retirée n'apparaît plus dans la liste filtrée du contenu, ni dans les classements par matière.
+- Un élève francophone en Première C ou Tle C/D **ne voit pas** de page picker (mode `derived` default — matières dérivées non modifiables).
+- Un élève anglophone en Lower/Upper Sixth (Series A1-A5 / S1-S8) voit un mode legacy `opt_out` (retrait simple — Story 1.4 conservée) jusqu'à Story 1.16 qui passe en mode `series_plus_optional`.
+- Un élève anglophone en Form 3, Form 4 ou Form 5 voit un picker dédié O-Level (mode `free_with_obligatory` — Story 1.15) avec validation **min 6 / max 11 matières** et **English Language + French + Mathematics obligatoires non décochables**. Tap sur matière obligatoire → toast erreur. Tap au-delà de 11 → toast erreur. Save disabled si < 6.
+- Un élève anglophone en Upper Sixth (post Story 1.16) voit son Series figé (3-4 matières lockées) **+ 4 checkboxes transversales** (Computer Science, ICT, Religious Studies, Commerce) ajoutables jusqu'à max 5 total. Tap = compteur live « X/5 matières ».
+- Un élève anglophone TVE IL ou TVE AL voit un picker spécifique mode `tve_picker` (Story 1.17) avec sections **Professional Subjects** (lockées) + **Related Professional** (lockées) + **Other Subjects** (libres) + EN/FR obligatoires. Validation TVE IL : min 5 dont ≥2 Pro + ≥1 Related. TVE AL : min 6 max 8 dont ≥3 Pro + ≥3 Related.
+- Une matière non sélectionnée (panier) ou retirée (opt_out) **n'apparaît plus** dans la liste filtrée du contenu (Stories E2+) ni dans les classements par matière (Story E5).
+- La sélection est persistée dans `users/{uid}.pickedSubjects` (modes panier) ou `users/{uid}.optedOutSubjects` (legacy mode `opt_out`) — cf. [BASE-DE-DONNEES.md](../../../../doc/partage/BASE-DE-DONNEES.md) schema v2.
+
+> **Rationale** : le mode `derived` (default Tle franco A1-A5/C/D/E/etc.) correspond au comportement Story 1.3 v1 — pas de modification possible. Les 4 autres modes (`opt_out`, `free_with_obligatory`, `series_plus_optional`, `tve_picker`) couvrent les variantes officielles MINESEC + Cameroon GCE Board. Validation client + serveur (Firestore rule `pickedSubjectsValid()`) dupliquée — cf. [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md) § Décision 4 + [ALGORITHMES.md § 1 « Modes panier »](../../../../doc/partage/ALGORITHMES.md).
 
 #### FR-4 : Garde de navigation profil-incomplet
 
