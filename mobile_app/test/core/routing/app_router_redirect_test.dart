@@ -1,16 +1,17 @@
-// Story 1.5 AC2 — Tests integration de la logique redirect du router.
+// Story 1.5 AC2 + Story 1.8 smart resume — Tests integration redirect router.
 //
 // Pattern : la logique redirect est extraite dans `evaluateRedirect()`
 // (@visibleForTesting), donc on teste la fonction pure directement sans
 // monter un MaterialApp.router complet.
 //
-// 5 cas AC2 (a-e) + 4 cas bonus pour couvrir les paliers ProfileCompletionState
-// + le bypass /catalogue-waiting + le cas catalogue empty redirige.
+// Story 1.8 : ajout du parametre `flowState` pour le smart resume + 3 nouveaux
+// cas (filiere set -> /niveau, filiere+niveau set -> /serie, tout set -> /recap).
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/core/routing/app_router.dart';
+import 'package:valide_school/features/onboarding/domain/onboarding_flow_state.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 
 AsyncValue<bool> _catalogueOk = const AsyncData(true);
@@ -18,6 +19,8 @@ const AsyncValue<bool> _catalogueEmpty = AsyncData(false);
 
 AsyncValue<ProfileCompletionState> _completion(ProfileCompletionState s) =>
     AsyncData(s);
+
+const _emptyFlow = OnboardingFlowState();
 
 void main() {
   group('evaluateRedirect — Story 1.5 AC2', () {
@@ -28,6 +31,7 @@ void main() {
         hasSubSystem: false,
         profileCompletion:
             _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
       );
       expect(result, '/onboarding/subsystem');
     });
@@ -39,6 +43,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.filiereMissing),
+        flowState: _emptyFlow,
       );
       expect(result, '/onboarding/profile/filiere');
     });
@@ -49,6 +54,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -60,6 +66,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -71,6 +78,7 @@ void main() {
         hasSubSystem: false,
         profileCompletion:
             _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -83,6 +91,7 @@ void main() {
         catalogueCheck: _catalogueEmpty,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, '/catalogue-waiting');
     });
@@ -94,6 +103,7 @@ void main() {
         hasSubSystem: false,
         profileCompletion:
             _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -105,6 +115,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, '/');
     });
@@ -115,6 +126,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.niveauMissing),
+        flowState: _emptyFlow,
       );
       expect(result, '/onboarding/profile/niveau');
     });
@@ -125,6 +137,7 @@ void main() {
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.serieMissing),
+        flowState: _emptyFlow,
       );
       expect(result, '/onboarding/profile/serie');
     });
@@ -136,6 +149,7 @@ void main() {
         hasSubSystem: true,
         profileCompletion:
             const AsyncLoading<ProfileCompletionState>(),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -149,6 +163,7 @@ void main() {
           Exception('boom'),
           StackTrace.current,
         ),
+        flowState: _emptyFlow,
       );
       expect(result, '/onboarding/subsystem');
     });
@@ -159,6 +174,7 @@ void main() {
         catalogueCheck: const AsyncLoading<bool>(),
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, isNull);
     });
@@ -172,8 +188,85 @@ void main() {
         ),
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
       );
       expect(result, '/catalogue-waiting');
     });
+  });
+
+  group('evaluateRedirect — Story 1.8 smart resume', () {
+    test(
+      '(smart-a) filiereMissing Firestore + flowState.filiereId set -> '
+      '/onboarding/profile/niveau (saute /filiere)',
+      () {
+        final result = evaluateRedirect(
+          location: '/dashboard',
+          catalogueCheck: _catalogueOk,
+          hasSubSystem: true,
+          profileCompletion:
+              _completion(ProfileCompletionState.filiereMissing),
+          flowState: const OnboardingFlowState(filiereId: 'generale'),
+        );
+        expect(result, '/onboarding/profile/niveau');
+      },
+    );
+
+    test(
+      '(smart-b) filiereMissing Firestore + flowState.filiere+niveau set -> '
+      '/onboarding/profile/serie',
+      () {
+        final result = evaluateRedirect(
+          location: '/dashboard',
+          catalogueCheck: _catalogueOk,
+          hasSubSystem: true,
+          profileCompletion:
+              _completion(ProfileCompletionState.filiereMissing),
+          flowState: const OnboardingFlowState(
+            filiereId: 'generale',
+            niveauId: 'francophone_terminale',
+          ),
+        );
+        expect(result, '/onboarding/profile/serie');
+      },
+    );
+
+    test(
+      '(smart-c) filiereMissing Firestore + flowState complet -> '
+      '/onboarding/profile/recap (cas kill avant tap "C est ma classe")',
+      () {
+        final result = evaluateRedirect(
+          location: '/dashboard',
+          catalogueCheck: _catalogueOk,
+          hasSubSystem: true,
+          profileCompletion:
+              _completion(ProfileCompletionState.filiereMissing),
+          flowState: const OnboardingFlowState(
+            filiereId: 'generale',
+            niveauId: 'francophone_terminale',
+            serieId: 'francophone_terminale_d',
+          ),
+        );
+        expect(result, '/onboarding/profile/recap');
+      },
+    );
+
+    test(
+      '(smart-d) profil complet Firestore + flowState complet -> null '
+      '(profileCompletion prime, flowState ignored)',
+      () {
+        final result = evaluateRedirect(
+          location: '/dashboard',
+          catalogueCheck: _catalogueOk,
+          hasSubSystem: true,
+          profileCompletion: _completion(ProfileCompletionState.complete),
+          flowState: const OnboardingFlowState(
+            filiereId: 'generale',
+            niveauId: 'francophone_terminale',
+            serieId: 'francophone_terminale_d',
+          ),
+        );
+        expect(result, isNull);
+      },
+    );
   });
 }

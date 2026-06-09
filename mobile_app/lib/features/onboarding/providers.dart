@@ -29,6 +29,7 @@ import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
 import 'data/account_linking_repository_firebase_impl.dart';
+import 'data/onboarding_flow_prefs.dart';
 import 'data/school_repository_firestore_impl.dart';
 import 'data/subsystem_prefs.dart';
 import 'data/user_profile_repository_firestore_impl.dart';
@@ -84,41 +85,70 @@ final subSystemNotifierProvider =
     NotifierProvider<SubSystemNotifier, SubSystem?>(SubSystemNotifier.new);
 
 // =====================================================================
-// Story 1.3 — providers du flow profil scolaire 3 etapes
+// Story 1.3 + 1.8 — providers du flow profil scolaire 3 etapes
 // =====================================================================
+
+/// Wrapper SharedPreferences pour persister le flow profil (Story 1.8 FR-8).
+/// Lazy autour de `sharedPreferencesProvider` (preloaded en main.dart Story 1.2).
+final onboardingFlowPrefsProvider = Provider<OnboardingFlowPrefs>((ref) {
+  return OnboardingFlowPrefs(ref.watch(sharedPreferencesProvider));
+});
 
 /// State machine du flow Filiere -> Niveau -> Serie -> Recap.
 /// Notifie les watchers (pages onboarding + router redirect) au changement.
+///
+/// Story 1.8 : `build()` restaure l'etat depuis SharedPreferences. Chaque
+/// mutation persiste en arriere-plan (fire-and-forget) — l'UI bouge
+/// immediatement, la persistance suit en microtask.
 class OnboardingFlowNotifier extends Notifier<OnboardingFlowState> {
   @override
-  OnboardingFlowState build() => const OnboardingFlowState();
+  OnboardingFlowState build() {
+    // Story 1.8 — Restaure le flow depuis SharedPreferences si l'utilisateur
+    // a kille l'app pendant les 3 etapes profile.
+    return ref.read(onboardingFlowPrefsProvider).read();
+  }
 
   void selectFiliere(String filiereId) {
-    state = const OnboardingFlowState().copyWith(filiereId: filiereId);
+    final newState = const OnboardingFlowState().copyWith(filiereId: filiereId);
+    state = newState;
+    _persist(newState);
   }
 
   void selectNiveau(String niveauId) {
     // Reset serie au cas ou un niveau precedent avait deja pose un serieId.
-    state = OnboardingFlowState(
+    final newState = OnboardingFlowState(
       filiereId: state.filiereId,
       niveauId: niveauId,
     );
+    state = newState;
+    _persist(newState);
   }
 
   /// `serieId` peut etre null si le niveau n'a pas de serie (skip explicite).
   void selectSerie(String? serieId) {
-    state = state.copyWith(serieId: serieId);
+    final newState = state.copyWith(serieId: serieId);
+    state = newState;
+    _persist(newState);
   }
 
   /// Reset les champs APRES `step` (inclus). Permet a `backTo(filiere)` de
   /// repartir d'une feuille propre.
   void backTo(OnboardingFlowStep step) {
-    state = state.resetFrom(step);
+    final newState = state.resetFrom(step);
+    state = newState;
+    _persist(newState);
   }
 
   /// Reset complet (utile en tests ou apres deconnexion future).
   void reset() {
     state = const OnboardingFlowState();
+    unawaited(ref.read(onboardingFlowPrefsProvider).clear());
+  }
+
+  /// Persiste l'etat courant en arriere-plan. Fire-and-forget : si l'ecriture
+  /// SharedPreferences est lente (device entree de gamme), l'UI reste reactive.
+  void _persist(OnboardingFlowState newState) {
+    unawaited(ref.read(onboardingFlowPrefsProvider).write(newState));
   }
 }
 

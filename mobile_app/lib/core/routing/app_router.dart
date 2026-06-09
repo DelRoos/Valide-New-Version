@@ -10,6 +10,7 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
+import '../../features/onboarding/domain/onboarding_flow_state.dart';
 import '../../features/onboarding/domain/profile_completion_state.dart';
 import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
@@ -56,6 +57,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       catalogueCheck: ref.read(appStartupCatalogueCheckProvider),
       hasSubSystem: ref.read(subSystemNotifierProvider) != null,
       profileCompletion: ref.read(profileCompletionProvider),
+      flowState: ref.read(onboardingFlowProvider),
     ),
     routes: [
       GoRoute(
@@ -182,12 +184,14 @@ final routerProvider = Provider<GoRouter>((ref) {
 /// Pure helper qui calcule la redirect target pour une location donnee.
 /// Extrait pour testabilite (cf. test/core/routing/app_router_redirect_test.dart).
 ///
-/// Ordre d'evaluation (cf. Story 1.5 AC2) :
+/// Ordre d'evaluation (cf. Story 1.5 AC2 + Story 1.8 smart resume) :
 ///   1. Bypass systeme : `/`, `/splash`, `/_*` -> null.
 ///   2. Catalogue check (Story 1.1c) : si vide+offline -> /catalogue-waiting.
 ///   3. Story 1.2 anti-replay : si subSystem present + loc == /onboarding/subsystem -> /.
-///   4. Story 1.5 garde profil-incomplet : sur routes metier (hors /onboarding/* +
-///      hors /catalogue-waiting), si profile incomplet -> nextOnboardingRoute.
+///   4. Story 1.5 + 1.8 garde profil-incomplet smart resume : sur routes metier (hors
+///      /onboarding/* + hors /catalogue-waiting), si profile incomplet -> route vers
+///      la VRAIE prochaine etape (le flowState SharedPreferences restaure permet de
+///      sauter directement a /niveau ou /serie ou /recap au lieu de toujours /filiere).
 ///      Loading -> null (laisse passer, evite flash). Error -> /onboarding/subsystem.
 ///   5. Routes /onboarding/* -> bypass (guards in-component Story 1.3 gerent
 ///      la coherence mi-flow).
@@ -197,6 +201,7 @@ String? evaluateRedirect({
   required AsyncValue<bool> catalogueCheck,
   required bool hasSubSystem,
   required AsyncValue<ProfileCompletionState> profileCompletion,
+  required OnboardingFlowState flowState,
 }) {
   // 1. Bypass inconditionnel : routes systeme + debug.
   if (location == '/' ||
@@ -220,11 +225,13 @@ String? evaluateRedirect({
     return '/';
   }
 
-  // 4. Story 1.5 — garde profil-incomplet pour les routes metier uniquement.
+  // 4. Story 1.5 + 1.8 — garde profil-incomplet pour les routes metier
+  // uniquement, avec smart resume basee sur le flowState SharedPreferences.
   if (!location.startsWith('/onboarding/') &&
       location != '/catalogue-waiting') {
     final nextRoute = profileCompletion.when(
-      data: (state) => state.isComplete ? null : state.nextOnboardingRoute,
+      data: (state) =>
+          state.isComplete ? null : _smartResumeRoute(state, flowState),
       loading: () => null,
       error: (_, _) => '/onboarding/subsystem',
     );
@@ -232,4 +239,27 @@ String? evaluateRedirect({
   }
 
   return null;
+}
+
+/// Story 1.8 — Calcule la route de reprise en combinant le profileCompletion
+/// (Firestore-based, source de verite apres createProfile) et le flowState
+/// SharedPreferences-based (in-flight pendant les 3 etapes profile).
+///
+/// Quand `users/{uid}` n'existe pas encore mais que le user a deja tape
+/// filiere et/ou niveau en local, on saute directement a l'etape suivante au
+/// lieu de le renvoyer systematiquement a `/onboarding/profile/filiere`.
+String _smartResumeRoute(
+  ProfileCompletionState completion,
+  OnboardingFlowState flowState,
+) {
+  // serie set -> recap (apres tap serie, avant tap "C'est ma classe")
+  if (flowState.serieId != null) return '/onboarding/profile/recap';
+  // niveau set sans serie -> serie (le user va choisir sa serie, ou la
+  // SerieChoicePage skip vers recap si le niveau n'a pas de serie applicable)
+  if (flowState.niveauId != null) return '/onboarding/profile/serie';
+  // filiere set sans niveau -> niveau
+  if (flowState.filiereId != null) return '/onboarding/profile/niveau';
+  // Rien en flight : default sur la 1ere etape manquante selon
+  // profileCompletion (filiere/niveau/serie/subsystemMissing).
+  return completion.nextOnboardingRoute;
 }
