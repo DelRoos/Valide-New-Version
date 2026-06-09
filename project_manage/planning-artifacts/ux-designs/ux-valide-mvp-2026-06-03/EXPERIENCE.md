@@ -434,12 +434,14 @@ Les flux suivants reprennent et étendent les UJ-1 à UJ-7 du PRD. Chaque flux a
 
 *Réalise UJ-1 du PRD. Personas : Fatou Mballa, Tle D francophone, Yaoundé, Tecno Spark 8.*
 
+> ℹ️ **Flow nominal mode `derived`** (sprint change 2026-06-09, [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md)). Pour les variants v2 Story 1.11b couvrant les modes `pickerMode` non-`derived` (sous-séries franco A1-A5/ABI/SH/AC/TI, panier anglo O-Level, extension A-Level transversales, parcours TVEE), voir variants **Flow 1a (Aïssatou)** / **1b (Mariam)** / **1c (James)** / **1d (Eyong)** ci-dessous.
+
 1. Fatou lance l'app pour la 1ʳᵉ fois. Splash 1.5 s (logo bleu pulsé léger).
 2. Écran sous-système : deux boutons primaires plein largeur **« Francophone »** et **« Anglophone »**. Aucun défaut suggéré. Tap « Francophone » → toute l'app passe en français immédiatement.
 3. Écran profil étape 1/3 : filière. Deux cartes : **Général** et **Technique**. Tap « Général ».
 4. Étape 2/3 : niveau. Liste scrollable (6ᵉ à Terminale). Tap « Terminale ».
 5. Étape 3/3 : série. Pill tabs : A, C, D, E (selon disponibilité). Tap « D ».
-6. Écran récap : matières dérivées affichées en grille (Maths, PCT, SVT, Français, Anglais, LV2, Philo, Histoire-Géo, EPS) + examen visé en bandeau (« Tu prépares le BAC D »). Bouton primaire « C'est ma classe ».
+6. Écran récap : matières dérivées affichées en grille (Maths, **Physique**, **Chimie**, SVT, **Environnement**, Français, Anglais, Philo, Histoire-Géo, **Informatique**, EPS — 11 matières — cf. corrections série D Story 1.11a : Physique+Chimie séparés ex-PCT, retrait LV2 erronée v1, ajout Environnement + Informatique) + examen visé en bandeau (« Tu prépares le BAC D »). Bouton primaire « C'est ma classe ».
 7. Écran liaison école (optionnel) : champ recherche + suggestions + bouton secondaire « Passer ». Fatou tape « Lycée Bilingue d'Application », sélectionne dans la liste.
 8. Écran compte : deux boutons « Continuer avec Google » et « Continuer avec Apple ». Fatou tape Google.
 9. Sheet système Google Sign-In → confirmation.
@@ -448,6 +450,85 @@ Les flux suivants reprennent et étendent les UJ-1 à UJ-7 du PRD. Chaque flux a
 **Failure : panne Google Sign-In** → écran d'erreur explicite, bouton « Réessayer » + lien « Continuer en visiteur (tu pourras créer un compte plus tard) ». Pas de blocage dur.
 
 **Edge case : profil interrompu** → réouverture relance directement l'étape en cours (FR-8 persistance).
+
+#### Variant Flow 1a — Aïssatou (Tle A1 francophone, sous-série littéraire, Story 1.14)
+
+*Personas : Aïssatou Diop, Tle A1 francophone, Bafoussam, Samsung Galaxy A12.*
+
+1-4. Identique au Flow 1 Fatou jusqu'à l'étape 2/3 niveau (Tap « Terminale »).
+5. **Étape 3/3 : série — variant 12 cards Tle franco générale**. Liste scrollable groupée par famille avec headings et icônes Lucide :
+   - **« Lettres »** (icône `BookOpen`) — cards A1, A2, A3, A4, A5, ABI
+   - **« Sciences humaines »** (icône `Users`) — cards SH, AC
+   - **« Sciences »** (icône `Atom`) — cards C, D
+   - **« Sciences techniques »** (icône `Wrench`) — cards E, TI
+   Aïssatou scroll, identifie « Lettres » → tap card **A1**. Critère UX : Aïssatou trouve sa série en < 10s sur Pixel 4a (objectif test 1.14).
+6. Écran récap : matières dérivées (Français, Anglais, Math, Philo, Hist-Géo, EPS, **Latin**, **Grec**, **LV2** — 9 matières) + bandeau « Tu prépares le BAC A1 ». Bouton « C'est ma classe ».
+7-10. Identique au Flow 1 Fatou (école + compte + dashboard).
+
+**Edge case Tle A v1 DEPRECATED** : un élève qui avait choisi série A v1 (DEPRECATED) avant 2026-06-09 reste en série A annotée — pas de migration forcée. Cf. ADR-016 § Décision 1 rétrocompat. La série A est conservée mais `isActive: false` post-1.12 — les nouveaux élèves choisissent A1-A5/ABI/SH/AC directement.
+
+#### Variant Flow 1b — Mariam (Form 5 anglophone, panier O-Level, Story 1.15)
+
+*Personas : Mariam Bakari, Form 5 anglophone, Limbé, Tecno Pop 7.*
+
+1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
+3. Étape 1/3 : filière. Tap « General ».
+4. Étape 2/3 : niveau. Liste anglophone (Form 1 à Upper Sixth). Tap « Form 5 ».
+5. **Étape 3/3 : pas de série**. Form 5 anglophone n'a pas de série au sens v1 — skip cette étape, nav direct à l'écran picker O-Level.
+6. **Variant picker O-Level (mode `free_with_obligatory`)** : nouvelle page après step niveau. Sections :
+   - **« Matières obligatoires »** : 3 cards lockées avec checkbox checked + icône cadenas Lucide (English Language, French, Mathematics). Tap décocher → toast erreur « EN, FR et Math sont obligatoires ».
+   - **« Matières au choix »** : ~14-18 checkboxes (Physics, Chemistry, Biology, Geography, History, Economics, Religious Studies, Computer Science, Citizenship Education, ICT, Food & Nutrition, Commerce, **Geology** NEW Story 1.11a, **Human Biology** NEW, **Logic** NEW, **Accounting** NEW, Additional Mathematics, **Bilingual French** NEW). Pre-cochées : Physics + Chemistry + Biology + Geography + History (5 matières populaires sciences) — soit **8 matières au total** avec obligatoires.
+   - **Compteur live en bas** : « Tu présentes 8/11 matières ». Bouton Valider activé si X ∈ [6, 11].
+7. Mariam décoche Geography (préfère parcours sciences pur). Compteur passe à 7/11. Tap Valider.
+8. Écran récap : 7 matières affichées + bandeau « Tu prépares le GCE O-Level ». Bouton « C'est ma classe ».
+9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+
+**Validation Firestore (Story 1.15)** : `pickedSubjects ⊂ derivedSubjects ∪ optionalSubjectIds ∧ obligatorySubjectIds ⊂ pickedSubjects`. Cf. firestore.rules + [BASE-DE-DONNEES.md § Validation panier polymorphe](../../../../doc/partage/BASE-DE-DONNEES.md).
+
+**Edge case bypass client** : un appel API direct depuis outil externe qui POST `pickedSubjects` invalide (ex. sans Math) → Firestore rule rejette. Toast côté client si Firebase remonte l'erreur.
+
+#### Variant Flow 1c — James (Upper Sixth S2 + ICT, extension A-Level transversales, Story 1.16)
+
+*Personas : James Tanyi, Upper Sixth S2 anglophone, Buea, Tecno Spark 8.* (étendu de la persona James du PRD v1)
+
+1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
+3. Étape 1/3 : filière. Tap « General ».
+4. Étape 2/3 : niveau. Tap « Upper Sixth ».
+5. Étape 3/3 : série. Cards Sciences (S1-S8) + Arts (A1-A5). Tap **« S2 »** (Chemistry/Physics/Biology).
+6. **Variant extension A-Level (mode `series_plus_optional`)** : nouvelle page après step série. Sections :
+   - **« Series (obligatoires) »** : 3 cards lockées avec checkbox checked + icône cadenas (Chemistry, Physics, Biology — la Series S2 figée).
+   - **« Transversales optionnelles »** : 4 checkboxes décochées par défaut (Computer Science, ICT, Religious Studies, Commerce). James veut ajouter ICT pour son orientation IT.
+   - **Compteur live** : « Tu présentes 3/5 matières ». James coche ICT → 4/5. Save activé tant que X ∈ [3, 5].
+7. Tap Valider. `pickedSubjects = [Chemistry, Physics, Biology, ICT]`.
+8. Écran récap : 4 matières + bandeau « Tu prépares le GCE A-Level ». Bouton « C'est ma classe ».
+9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+
+**Edge case max 5** : si James coche ICT + Computer Science + Religious Studies + Commerce (4 transversales) = 7 matières total > 5 → tap Valider disabled + toast « Maximum 5 matières au A-Level ».
+
+#### Variant Flow 1d — Eyong (TVE AL anglophone, Electrotechnique, parcours TVEE, Story 1.17)
+
+*Personas : Eyong Eboa, TVE Advanced Level anglophone, spécialité Electrotechnique, Bonabéri Douala, Itel A56.*
+
+1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
+3. **Étape 1/3 : filière — variant filière technique anglo (NEW Story 1.17)**. Cards affichées : « General » (existant v1) + **« Technique »** (NEW). Tap « Technique ».
+4. **Étape 2/3 : niveau — variant TVEE**. Cards affichées : « TVE Intermediate Level (TVE IL) » + « TVE Advanced Level (TVE AL) ». Eyong tape « TVE AL ».
+5. **Étape 3/3 : spécialité — variant 13 cards groupées TVEE**. Liste scrollable groupée 3 familles avec headings et icônes Lucide :
+   - **« Industrial »** (icône `Wrench`) — 8 cards : ELEQ, ELNI, ELME, ELET, AC, ME, CE, Carpentry
+   - **« Commercial »** (icône `Briefcase`) — 3 cards : Accounting, Commerce, Office Practice
+   - **« Home Economics »** (icône `UtensilsCrossed`) — 2 cards : Food & Nutrition, Clothing & Textiles
+   Eyong tape **« ELET — Electrotechnique »** (famille Industrial).
+6. **Variant picker TVEE (mode `tve_picker`)** : nouvelle page. Sections :
+   - **« Professional Subjects (obligatoires) »** : 3 cards lockées + icône cadenas (Electrotechnique theory, Electrotechnique practical, Electrical machines)
+   - **« Related Professional Subjects (obligatoires) »** : 3 cards lockées (Mathematics for Industrial, Physics, Drawing)
+   - **« Other Subjects (au choix) »** : checkboxes (English Language locked, French locked, History, Geography, Religious Studies)
+   - **Compteur live** : « Tu présentes 7/8 matières (≥3 Pro + ≥3 Related ✓) ». Validation TVE AL : min 6 max 8 dont ≥3 Pro + ≥3 Related.
+7. Eyong garde la sélection par défaut (3 Pro + 3 Related + EN + FR = 8 matières exactement). Tap Valider.
+8. Écran récap : 8 matières TVEE + bandeau « Tu prépares le TVE AL Electrotechnique ». Bouton « C'est ma classe ».
+9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+
+**Edge case `isActive: false` initial** : au seed Story 1.12, les 26 séries TVEE (13 spécialités × 2 niveaux TVE IL/AL) sont `isActive: false`. Eyong tape « Technique » + « TVE AL » mais aucune spécialité disponible → message « Filière TVEE en cours d'activation. Reviens dans quelques semaines. » + bouton secondaire « Continuer en visiteur General Lower Sixth » (fallback). Toggle `isActive: true` par admin pédagogique post-validation enseignant TVEE (action porteur Story 1.17).
+
+**Décision activation progressive** : ELEQ + ELNI + ELME + ELET (Industrial électriques) activés en premier (validation Mr Eboa Joseph, Lycée Technique Bonabéri, action porteur post-merge 1.17). Autres spécialités activées au fil de la production de contenu pédagogique.
 
 ### Flow 2 — Lecture cours en taxi-brousse (James, trajet Buea-Limbé)
 
