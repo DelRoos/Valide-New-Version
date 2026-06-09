@@ -3,10 +3,11 @@ story_id: 1.8
 title: Persistance session + reprise flow interrompu (FR-8)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-09
 branch: feat/1.8-persistance-session-reprise-flow
 baseline_commit: 872fafd  # merge PR #56 (cloture 1.9 + contexte 1.8)
+merge_commit: 2511cd5  # PR #57 mergee 2026-06-09
 estimation: S (~3h)
 dependencies:
   - 1.2   # subSystemNotifierProvider deja persiste subSystem en SharedPreferences
@@ -27,7 +28,7 @@ sourceArtifacts:
 
 # Story 1.8 — Persistance session + reprise flow interrompu (FR-8)
 
-Status: **review**
+Status: **done**
 
 ## Objectif
 
