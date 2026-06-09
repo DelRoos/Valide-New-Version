@@ -434,6 +434,18 @@ abstract class AppLocalizations {
   /// **'Matières au choix'**
   String get onboardingPickerOptionalTitle;
 
+  /// Titre H3 section Series (obligatoires) mode series_plus_optional A-Level (Story 1.16). Series = combinaison fixe 3-4 matières GCE A-Level (ex. Chemistry/Physics/Biology pour S2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Series (obligatoires)'**
+  String get onboardingPickerSeriesTitle;
+
+  /// Titre H3 section matières transversales optionnelles mode series_plus_optional A-Level (Story 1.16). Computer Science, ICT, Religious Studies, Commerce ajoutables jusqu'à max 5 total.
+  ///
+  /// In fr, this message translates to:
+  /// **'Transversales optionnelles'**
+  String get onboardingPickerTransversalesTitle;
+
   /// Compteur live mode free_with_obligatory. Couleur primaire si valide, danger sinon (Story 1.15).
   ///
   /// In fr, this message translates to:

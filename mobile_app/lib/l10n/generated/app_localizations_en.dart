@@ -208,6 +208,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingPickerOptionalTitle => 'Optional subjects';
 
   @override
+  String get onboardingPickerSeriesTitle => 'Series (mandatory)';
+
+  @override
+  String get onboardingPickerTransversalesTitle =>
+      'Optional transversal subjects';
+
+  @override
   String onboardingPickerCounterLive(int count, int max) {
     String _temp0 = intl.Intl.pluralLogic(
       count,

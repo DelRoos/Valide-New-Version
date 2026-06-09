@@ -202,6 +202,12 @@
   "onboardingPickerOptionalTitle": "Matières au choix",
   "@onboardingPickerOptionalTitle": { "description": "Titre H3 section matières sélectionnables mode free_with_obligatory (Story 1.15)." },
 
+  "onboardingPickerSeriesTitle": "Series (obligatoires)",
+  "@onboardingPickerSeriesTitle": { "description": "Titre H3 section Series (obligatoires) mode series_plus_optional A-Level (Story 1.16). Series = combinaison fixe 3-4 matières GCE A-Level (ex. Chemistry/Physics/Biology pour S2)." },
+
+  "onboardingPickerTransversalesTitle": "Transversales optionnelles",
+  "@onboardingPickerTransversalesTitle": { "description": "Titre H3 section matières transversales optionnelles mode series_plus_optional A-Level (Story 1.16). Computer Science, ICT, Religious Studies, Commerce ajoutables jusqu'à max 5 total." },
+
   "onboardingPickerCounterLive": "{count, plural, =1{Tu présentes 1/{max} matière} other{Tu présentes {count}/{max} matières}}",
   "@onboardingPickerCounterLive": {
     "description": "Compteur live mode free_with_obligatory. Couleur primaire si valide, danger sinon (Story 1.15).",

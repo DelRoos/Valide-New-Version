@@ -208,6 +208,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPickerOptionalTitle => 'Matières au choix';
 
   @override
+  String get onboardingPickerSeriesTitle => 'Series (obligatoires)';
+
+  @override
+  String get onboardingPickerTransversalesTitle => 'Transversales optionnelles';
+
+  @override
   String onboardingPickerCounterLive(int count, int max) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
