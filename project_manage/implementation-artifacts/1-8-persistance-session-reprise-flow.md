@@ -3,10 +3,10 @@ story_id: 1.8
 title: Persistance session + reprise flow interrompu (FR-8)
 epic: 1
 phase: P1
-status: ready-for-dev
+status: review
 created: 2026-06-09
 branch: feat/1.8-persistance-session-reprise-flow
-baseline_commit: 9fa64bc  # merge PR #55 (Story 1.9 done)
+baseline_commit: 872fafd  # merge PR #56 (cloture 1.9 + contexte 1.8)
 estimation: S (~3h)
 dependencies:
   - 1.2   # subSystemNotifierProvider deja persiste subSystem en SharedPreferences
@@ -27,7 +27,7 @@ sourceArtifacts:
 
 # Story 1.8 — Persistance session + reprise flow interrompu (FR-8)
 
-Status: **ready-for-dev**
+Status: **review**
 
 ## Objectif
 
@@ -411,6 +411,55 @@ Si l'admin desactive runtime une serie qui etait dans le flow state restaure (`f
 | Date       | Auteur            | Modification                                                                |
 | ---------- | ----------------- | --------------------------------------------------------------------------- |
 | 2026-06-09 | Claude Opus 4.7   | Story 1.8 contexte engine cree — decision SharedPreferences vs Firestore documentee |
+| 2026-06-09 | Claude Opus 4.7   | Story 1.8 dev complete (9 tasks). 3 fichiers data/provider/router + 3 fichiers tests. flutter analyze 0 issue + flutter test 196 verts (185 baseline + 11). Diff ~480 lignes incl. 3 nouveaux fichiers (au dela cible 250 mais coherent avec scope reel : wrapper + persistance + smart redirect + 11 tests). |
+
+### Dev Agent Record — Completion Notes
+
+**Implementation summary** :
+- T1 NEW `mobile_app/lib/features/onboarding/data/onboarding_flow_prefs.dart` (~70 lignes — wrapper SharedPreferences 3 cles : `onboarding.flow.filiere_id/niveau_id/serie_id`). Pattern : `read()` synchrone, `write(state)` async avec `_writeOrRemove` helper, `clear()` reset 3 cles.
+- T2 NEW `onboardingFlowPrefsProvider` dans `providers.dart` (lazy autour de `sharedPreferencesProvider`).
+- T3 UPDATE `OnboardingFlowNotifier` : `build()` lit prefs au lieu de `const OnboardingFlowState()`. Toutes les mutations (selectFiliere/Niveau/Serie/backTo/reset) appellent `_persist(newState)` qui fire-and-forget `prefs.write` via `unawaited()`. UI bouge immediatement, persistance suit en microtask.
+- T4 UPDATE `evaluateRedirect` Story 1.5 : ajout parametre `flowState: OnboardingFlowState` + helper `_smartResumeRoute` qui route vers la VRAIE prochaine etape (serie set → /recap, niveau set → /serie, filiere set → /niveau, sinon → `completion.nextOnboardingRoute`).
+- T5 audit edge cases OK : main.dart fait deja `signInAnonymously` au boot (Story 0.21). Si offline, la garde Story 1.5 retombe sur /onboarding/subsystem. Pas de changement code.
+- T6 NEW `test/features/onboarding/data/onboarding_flow_prefs_test.dart` (4 cas : read empty + write/read roundtrip + clear + write avec null-field).
+- T7 NEW `test/features/onboarding/providers/onboarding_flow_notifier_persistence_test.dart` (3 cas : build restore + selectFiliere ecrit + backTo(serie) preserve filiere/niveau et efface serie).
+- T8 UPDATE `test/core/routing/app_router_redirect_test.dart` : adaptation 14 appels existants (ajout `flowState: _emptyFlow`) + 4 nouveaux cas smart resume (smart-a/b/c/d).
+- T9 validation : `flutter analyze` 0 issue + `flutter test` 196 passed + 1 skipped (vs baseline 185, +11 net).
+
+**Bugs encountered & fixes** : aucun. La conception SharedPreferences synchrone + persistance fire-and-forget + smart redirect en helper pur a marche du premier coup. Les warnings IDE intermediaires ("Unused import", "Named parameter not defined") etaient des hooks stale entre mes edits sequentiels.
+
+**Decisions** :
+- **SharedPreferences uniquement (PAS Firestore)** — decision strategique documentee dans la story et le code. Pas de modification `doc/partage/BASE-DE-DONNEES.md` car schema users inchange.
+- **fire-and-forget persistance** : `unawaited(_persist())` au lieu de `await` dans les setters Notifier — evite le freeze UI sur device entree de gamme avec stockage lent.
+- **Smart resume helper pur `_smartResumeRoute`** : pas de logique complexe dans `evaluateRedirect`, juste un appel. Testable isolement via les 4 cas smart.
+
+**Anti-patterns evites** (Dev Notes) :
+- NE PAS persister en Firestore (cf. Decision § ci-dessus) ✓
+- NE PAS await la persistance dans setters Notifier (pattern unawaited) ✓
+- NE PAS oublier reset downstream lors backTo (resetFrom + write avec null → _writeOrRemove appelle remove) ✓
+- NE PAS stocker secrets en SharedPreferences (seulement ids catalogue publics : filiere/niveau/serie) ✓
+
+**CLAUDE.md regle 9 (indexes Firestore)** : verifie. AUCUNE nouvelle query Firestore. **Pas de deploiement `firebase deploy --only firestore:indexes` necessaire.**
+
+**Smoke device defere** : test runtime kill app a chaque etape (filiere/niveau/serie/recap) + reprise sur device Android Redmi A7 reste a faire post-merge porteur. Scenarios attendus :
+- Fatou tape filiere "Generale", kill app -> relance -> direct sur /onboarding/profile/niveau
+- Fatou tape niveau "Tle", kill -> relance -> direct sur /onboarding/profile/serie
+- Fatou tape serie "D", kill avant "C'est ma classe" -> relance -> direct sur /onboarding/profile/recap
+- Fatou tape "C'est ma classe" -> users/{uid} cree -> kill -> relance -> direct sur /dashboard (visiteur badge)
+
+### File List (final)
+
+**Nouveaux fichiers** (3) :
+- `mobile_app/lib/features/onboarding/data/onboarding_flow_prefs.dart` (~70 lignes)
+- `mobile_app/test/features/onboarding/data/onboarding_flow_prefs_test.dart` (~80 lignes, 4 cas)
+- `mobile_app/test/features/onboarding/providers/onboarding_flow_notifier_persistence_test.dart` (~110 lignes, 3 cas)
+
+**Fichiers modifies** (3) :
+- `mobile_app/lib/features/onboarding/providers.dart` (+42 lignes : `onboardingFlowPrefsProvider` + persistance dans Notifier methods + `_persist` helper)
+- `mobile_app/lib/core/routing/app_router.dart` (+40 lignes : import + `flowState` parametre + `_smartResumeRoute` helper)
+- `mobile_app/test/core/routing/app_router_redirect_test.dart` (+99 lignes : adaptation 14 appels existants + 4 nouveaux cas smart resume)
+- `project_manage/implementation-artifacts/1-8-persistance-session-reprise-flow.md` (frontmatter status review + Dev Agent Record)
+- `project_manage/implementation-artifacts/sprint-status.yaml` (1.8 in-progress → review)
 
 ---
 
