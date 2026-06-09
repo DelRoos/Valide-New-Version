@@ -3,8 +3,11 @@ story_id: 1.17
 title: SubjectsPickerPage mode `tve_picker` TVEE Professional/Related/Other (Eyong TVE AL Electrotechnique — dernière story Epic 1 v2)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-10
+pr: 84
+merge_commit: b10d9df  # PR #84 merge — Epic 1 v2 COMPLETE (8/8 stories done) 🎉
 baseline_commit: 4afb36b  # merge PR #83 (contexte engine Story 1.17) — main aligné post Stories 1.11a/1.11b/1.12/1.13/1.14/1.15/1.16 done
 estimation: M (~5h)
 sprint_change: sprint-change-proposal-2026-06-09.md
@@ -30,7 +33,7 @@ sourceArtifacts:
 
 # Story 1.17 — SubjectsPickerPage mode `tve_picker` TVEE Professional/Related/Other (Eyong TVE AL Electrotechnique)
 
-Status: **review**
+Status: **done** ✅ (PR #84 mergée 2026-06-10 — `b10d9df` — **Epic 1 v2 COMPLETE**)
 
 ## Objectif
 
