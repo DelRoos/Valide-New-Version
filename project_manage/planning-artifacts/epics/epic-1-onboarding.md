@@ -17,9 +17,10 @@ sourceArtifacts:
   - doc/partage/BASE-DE-DONNEES.md
   - doc/partage/DONNEES-REFERENCE.md
   - doc/partage/ALGORITHMES.md
-storyCount: 12  # 2026-06-05 sprint change : Story 1.1 cancelled, 1.1a/1.1b/1.1c ajoutees (cf sprint-change-proposal-2026-06-05.md). Net +2 stories.
+storyCount: 20  # 2026-06-09 sprint change v2 : +8 stories 1.11a/b, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17 (cf sprint-change-proposal-2026-06-09.md). Cumul avec sprint change 2026-06-05 (Story 1.1 cancelled + 1.1a/b/c). Net 20 stories actives Epic 1 (1.1 cancelled exclue).
 amendments:
   - "2026-06-05 — sprint-change-proposal-2026-06-05.md : pivot Firestore-driven catalogue. Story 1.1 cancelled, remplacee par 1.1a (audit + Firestore schema + ADR-015 + BASE-DE-DONNEES.md update) + 1.1b (script Python seed) + 1.1c (CatalogueRepository mobile + ecran connexion bloquant). Stories 1.3/1.4/1.9 amendees (lecture catalogue depuis Firestore au lieu de seed JSON local)."
+  - "2026-06-09 — sprint-change-proposal-2026-06-09.md : alignement nomenclature officielle (Office du Baccalaureat + Cameroon GCE Board). +8 stories 1.11a (audit matrice v2 + ADR-016) + 1.11b (PRD/UX update) + 1.12 (matrice.json + reseed) + 1.13 (DerivedProfile pickerMode extension) + 1.14 (sous-series Tle franco flat 12 cards) + 1.15 (refactor SubjectsOptOutPage -> SubjectsPickerPage polymorphe panier O-Level) + 1.16 (A-Level transversales) + 1.17 (ESTP TVEE anglophone). Stories 1.1c/1.3/1.4 amendees (DerivedProfile enrichi, SerieChoicePage 12 cards Tle franco, SubjectsOptOutPage refactorisee non-breaking). Critere de sortie elargi : Mariam Tanyi (Form 5 panier 8 matieres EN+FR+Math obligatoires), Eyong Eboa (TVE AL Electrotechnique 7 matieres) et Aissatou Diop (Tle A1 Lettres+Latin+Grec) doivent egalement reussir l'onboarding."
 ---
 
 # Epic 1 — Onboarding & Profil scolaire
@@ -28,7 +29,15 @@ amendments:
 
 Mettre en place le flow d'onboarding complet qui permet à un élève camerounais d'arriver sur l'app pour la 1ʳᵉ fois, de choisir son sous-système (francophone / anglophone), de remplir son profil scolaire en 3 étapes (filière → niveau → série), optionnellement de lier son école et de créer un compte Google/Apple, et d'atterrir sur un dashboard contextualisé avec ses matières filtrées.
 
-**Critère de sortie d'epic** : Fatou Mballa (Tle D francophone) et James Tanyi (Upper Sixth S2 anglophone) peuvent chacun compléter le flow d'onboarding en moins de 2 minutes sur Android entrée de gamme et voir leur dashboard personnalisé avec leurs matières correctes (Maths/PCT/SVT/Français/Anglais/LV2/Philo/Hist-Géo/EPS pour Fatou ; Chemistry/Physics/Biology pour James) + leur examen visé en bandeau.
+**Critère de sortie d'epic** (élargi 2026-06-09) :
+
+- **Fatou Mballa** (Tle D francophone) : Maths/Physique/Chimie/SVT/Environnement/Informatique/Français/Anglais/Philo/Hist-Géo/EPS (PCT séparée en Physique+Chimie post-1.12 ; pas de LV2 ; ajout Informatique + Environnement)
+- **James Tanyi** (Upper Sixth S2 anglophone) : Chemistry/Physics/Biology + transversales optionnelles ajoutables (Computer Science, ICT, Religious Studies, Commerce) via picker A-Level (Story 1.16)
+- **Aïssatou Diop** (Tle A1 francophone Lettres + Latin + Grec) : Français/Anglais/Math/Philo/Hist-Géo/EPS/Latin/Grec/LV2 (livré Story 1.14)
+- **Mariam Bakari** (Form 5 anglophone, panier O-Level) : sélection libre 6-11 matières dont EN+FR+Math obligatoires non décochables, default 8 matières (Story 1.15)
+- **Eyong Eboa** (TVE AL anglophone, Electrotechnique) : 7 matières dont ≥3 Professional (Electrotechnique theory, Electrotechnique practical, Electrical machines) + ≥3 Related Professional (Math, Physics, Drawing) + EN/FR obligatoires (Story 1.17)
+
+Chacun peut compléter le flow d'onboarding en moins de 2 minutes sur Android entrée de gamme et voir son dashboard personnalisé avec ses matières correctes + son examen visé en bandeau.
 
 ## Out of scope (Epic 1)
 
@@ -1171,6 +1180,291 @@ FR-7 + ADR-005 (doc/partage maintenance). Le cycle de vie :
 
 ---
 
+## Stories sprint change 2026-06-09 (extension v2 alignement nomenclature officielle)
+
+> Les 8 stories ci-dessous étendent l'Epic 1 suite au sprint change 2026-06-09 (cf. [sprint-change-proposal-2026-06-09.md](../../sprint-change-proposal-2026-06-09.md)). Justification : audit comparatif Office du Baccalauréat + Cameroon GCE Board révèle gaps majeurs sur (1) matières manquantes premier cycle + O/A-Level, (2) sous-séries Tle francophone A1-A5/ABI/SH/AC/TI absentes, (3) règles panier Anglo O-Level/A-Level non implémentées, (4) sous-système ESTP anglophone TVEE totalement absent.
+
+### Story 1.11a : Audit matrice exhaustive v2 + ADR-016 modélisation + BASE-DE-DONNEES.md update
+
+**Statut** : Backlog
+**Sprint** : P1 extension (après merge Story 1.10)
+**Dépendances** : Stories 1.1a/1.1b/1.1c done (catalogue Firestore v1 en place)
+**Estimation** : S (~3h)
+**Accord requis** : backend team pour `doc/partage/BASE-DE-DONNEES.md` updates (5 nouveaux champs catalogue + 1 champ `users/{uid}`)
+
+**As a** product owner Valide,
+**I want** une matrice v2 exhaustive alignée nomenclature officielle (Office du Bac francophone + Cameroon GCE Board anglophone) couvrant : (a) 4 matières premier cycle francophone (LCN, Informatique, Éducation Artistique, Travail Manuel), (b) corrections séries C/D francophone (séparation Physique/Chimie, ajout Informatique, retrait LV2 erroné), (c) 9 nouvelles sous-séries Tle francophone (A1, A2, A3, A4, A5, ABI, SH, AC, TI), (d) 4 matières O-Level manquantes (codes 0546, 0555, 0565, 0590) + règle panier 6-11 obligatoires EN+FR+Math, (e) 3 matières A-Level manquantes (0746, 0790, 0796) + règle Series + transversales optionnelles, (f) sous-système ESTP anglophone TVEE complet (TVE IL + TVE AL + 13 spécialités + règles min/max + obligatoires Professional/Related), ET un schéma Firestore étendu (5 nouveaux champs `series` + `derivation_rules` + 1 champ `users/{uid}.pickedSubjects`),
+**so that** Stories 1.11b (PRD/UX) + 1.12 (matrice.json + reseed) + 1.13 (DerivedProfile model) puissent démarrer avec des contrats clairs.
+
+#### Acceptance Criteria
+
+**AC1 — DONNEES-REFERENCE.md v2** : matrice étendue avec ~50 nouveaux documents (4 matières premier cycle + 4 matières O-Level + 3 matières A-Level + 9 séries Tle franco + sous-système TVEE complet). Corrections séries C/D francophones documentées. Historique mis à jour 2026-06-09.
+
+**AC2 — BASE-DE-DONNEES.md v2** : 3 nouveaux champs `series` (`pickerMode`, `minSubjects`, `maxSubjects`) + 2 nouveaux champs `derivation_rules` (`obligatorySubjectIds[]`, `optionalSubjectIds[]`) + 3 champs `series` TVEE spécifiques (`professionalSubjectIds[]`, `relatedProfessionalSubjectIds[]`, `otherSubjectIds[]`) + 1 champ `users/{uid}.pickedSubjects[]` documentés.
+
+**AC3 — ADR-016 créé** : `project_manage/planning-artifacts/architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md` avec Statut Accepté, Contexte, 4 Décisions (flat sous-séries + filière technique anglo TVEE + panier polymorphe + validations client+server), Conséquences positives/négatives, Alternatives rejetées (hiérarchique, nouveau subSystem, panier mono-mode, validation serveur uniquement).
+
+**AC4 — ALGORITHMES.md § 1 update** : pseudo-code `derive()` étendu retourne `DerivedProfile` v2 (avec `pickerMode`, `obligatorySubjects`, `optionalSubjects`, `minSubjects`, `maxSubjects`).
+
+**AC5 — Architecture catalogue d'ADRs** : `architecture.md § 14` mis à jour avec référence ADR-016.
+
+**AC6 — Accord backend** : PR commentée par backend lead approuvant les 6 nouveaux champs Firestore.
+
+#### Definition of Done
+
+- [ ] DONNEES-REFERENCE.md matrice v2 🟢 (toutes nomenclatures officielles)
+- [ ] BASE-DE-DONNEES.md schema v2 (6 nouveaux champs documentés)
+- [ ] ALGORITHMES.md § 1 mis à jour
+- [ ] ADR-016 créé
+- [ ] architecture.md § 14 référence ADR-016
+- [ ] Accord backend (commentaire PR)
+- [ ] PR ≤ 800 lignes diff
+- [ ] Commit `docs(partage): catalogue v2 alignement nomenclature officielle + ADR-016 (sprint change 2026-06-09)`
+
+#### Notes pour Amelia
+
+- **Aucun code dans cette story** — uniquement docs + ADR.
+- **Sources autoritaires** : Office du Baccalauréat (officedubac.cm) + Cameroon GCE Board (camgceb.org) + doc utilisateur 2026-06-09 « Orientation et matières au secondaire camerounais ».
+- **Décisions ADR-016 figées par PO** (cf. sprint change) : flat sous-séries franco (12 séries Tle générale), filière `technique` en `anglophone` pour TVEE, panier polymorphe via `pickerMode` enum, validations client+server.
+- **Out of scope ADR-016** : BT/BP/BEP, F6/F7/F8 industriels, AF artistiques, spécialités Hôtellerie/Tourisme/Industries spécifiques (BIJO, GT, IH-TMG, etc.) — documentés Out of scope.
+
+---
+
+### Story 1.11b : Update PRD FR-2/FR-3 + EXPERIENCE.md Flow 1 variants
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.11a (contrats figés)
+**Estimation** : S (~2h)
+
+**As a** product owner,
+**I want** PRD § FR-2/FR-3 et EXPERIENCE.md Flow 1 amendés pour refléter la matrice v2 (panier conditionnelle multi-mode + 4 variants UX),
+**so that** les Stories 1.13-1.17 implémentation suivent un contrat produit/UX clair.
+
+#### Acceptance Criteria
+
+**AC1 — PRD § FR-2 amendé** : remplacer "3 étapes obligatoires" par "3 étapes obligatoires avec liste série variable selon profil (jusqu'à 12 cards Tle franco, picker O-Level/A-Level/TVEE en anglophone)". Ajout 3 consequences testable : profil Tle A1 → 9 matières (Latin/Grec/LV2), profil Form 5 panier → 6-11 dont EN+FR+Math, profil TVE AL Electrotechnique → 6-8 dont ≥3 Professional + ≥3 Related.
+
+**AC2 — PRD § FR-3 amendé** : "retrait conditionnel" → "sélection conditionnelle multi-mode (derived/opt_out/free_with_obligatory/series_plus_optional/tve_picker) selon `series.pickerMode` Firestore".
+
+**AC3 — EXPERIENCE.md Flow 1 amendé** : ajout 4 variants UX (cards série étendues Tle franco, picker O-Level avec validation, extension A-Level checkboxes transversales, parcours TVEE filière technique).
+
+**AC4 — PR ≤ 250 lignes diff** + commit `docs(planning): PRD FR-2/FR-3 + EXPERIENCE.md Flow 1 variants alignement nomenclature (Story 1.11b)`
+
+#### Notes pour Amelia
+
+- Docs only. Pas de code.
+- Réutiliser microcopie UX-DR-39 (tutoiement FR / informal EN).
+
+---
+
+### Story 1.12 : Update matrice.json + re-seed Firestore valide-edu
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.11a (contrats matrice figés)
+**Estimation** : M (~4h)
+
+**As a** porteur Firebase (Delano),
+**I want** `scripts/firebase_seed/data/matrice.json` étendu avec ~50 nouveaux documents (matières + séries + derivation_rules + exam_targets) + re-run du script seed sur valide-edu pour pousser la matrice v2,
+**so that** la nouvelle matrice soit disponible runtime pour Stories 1.13-1.17.
+
+#### Acceptance Criteria
+
+**AC1 — matrice.json étendu** : +4 matières premier cycle franco + 4 matières O-Level + 3 matières A-Level + 9 séries Tle franco (A1-A5/ABI/SH/AC/TI) + sous-système TVEE complet (2 niveaux × 13 spécialités) + ~30 nouvelles derivation_rules. Toutes nouvelles entrées extensives ont `isActive: false` par défaut sauf : matières manquantes O-Level/A-Level activées (essentielles MVP).
+
+**AC2 — Tests Python verts** : `pytest scripts/firebase_seed/tests/` reste vert avec nouvelle matrice (parsing, IDs uniques, conventions snake_case).
+
+**AC3 — Re-seed valide-edu idempotent** : `python seed_catalogue.py --project valide-edu --credentials ./service-account.json` exécuté par porteur. Idempotent (set avec merge). Affiche `Created X, Updated Y`. Vérification Console Firestore : nouveaux docs visibles.
+
+**AC4 — Vérification mobile non-régression** : `flutter test` reste vert post-seed (les profils existants Fatou/James continuent à dériver correctement via `pickerMode: 'derived'` default).
+
+**AC5 — Commit** `feat(scripts): matrice v2 alignement nomenclature officielle + re-seed Firestore (Story 1.12)`
+
+#### Notes pour Amelia
+
+- **Idempotence critique** : utiliser `set(merge=True)` partout (déjà cas dans script v1).
+- **`isActive: false` initial** pour TVEE + sous-séries A4/A5/ABI/SH/AC/TI : activable runtime par Firebase Console quand contenu pédagogique prêt.
+- **Action porteur post-merge** : Delano re-run script avec service-account.json local + screenshot Console pour PR review.
+- **Pas de modif `seed_catalogue.py`** sauf si nouveaux champs nécessitent validation explicite (à confirmer 1.12).
+
+---
+
+### Story 1.13 : Enrichir DerivedProfile + pickerMode extension (non-breaking)
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.11a (contrats Dart figés via ADR-016)
+**Estimation** : S (~3h)
+
+**As a** dev Flutter,
+**I want** model `DerivedProfile` enrichi avec champs `pickerMode`, `obligatorySubjects`, `optionalSubjects`, `minSubjects`, `maxSubjects` (defaults safe) + `CatalogueRepository.derive()` mis à jour pour mapper les nouveaux champs Firestore, le tout non-breaking pour les profils existants,
+**so that** Stories 1.14-1.17 puissent consommer la matrice v2 sans connaître les détails de modélisation Firestore.
+
+#### Acceptance Criteria
+
+**AC1 — DerivedProfile v2** : champs ajoutés avec defaults safe (`pickerMode: 'derived'`, `obligatorySubjects: []`, `optionalSubjects: []`, `minSubjects: null`, `maxSubjects: null`). 2 tests model `equatable` ajoutés.
+
+**AC2 — CatalogueRepository.derive() update** : mapping Firestore lit `series.pickerMode`, `series.minSubjects`, `series.maxSubjects`, `derivation_rules.obligatorySubjectIds`, `derivation_rules.optionalSubjectIds`. Si champs absents (cas v1 data) → defaults safe. 3 tests fake_cloud_firestore couvrant : (a) mode derived default Fatou Tle D, (b) mode opt_out James Upper Sixth S2, (c) mode free_with_obligatory Mariam Form 5.
+
+**AC3 — Non-breaking** : tests existants Stories 1.1c, 1.3, 1.4 restent verts. Régression Fatou (Tle D) + James (Upper Sixth S2) : dashboard inchangé post-1.13.
+
+**AC4 — `flutter analyze` 0 issue** + `flutter test` cumul ≥ 210 (vs baseline 205, +5)
+
+**AC5 — Commit** `feat(catalogue): DerivedProfile v2 pickerMode + obligatory/optional subjects (Story 1.13)`
+
+#### Notes pour Amelia
+
+- **Non-breaking critique** : tous les profils existants continuent à fonctionner. Defaults safe = mode legacy.
+- **Pas de modif UI** dans cette story — uniquement model + repository.
+- **AppLogger** : log `pickerMode` au derive() pour debug.
+
+---
+
+### Story 1.14 : Sous-séries Tle francophone flat (SerieChoicePage 12 cards + groupement visuel)
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.13 (DerivedProfile v2 dispo)
+**Estimation** : M (~5h)
+
+**As a** élève francophone en Tle générale (Aïssatou),
+**I want** voir 12 cards de séries au choix (A1, A2, A3, A4, A5, ABI, SH, AC, C, D, E, TI) groupées visuellement par famille (Lettres / Sciences humaines / Sciences / Sciences techniques),
+**so that** je puisse choisir ma série exacte (A1 Lettres+Latin+Grec) sans confusion ni étape supplémentaire dans le flow.
+
+#### Acceptance Criteria
+
+**AC1 — SerieChoicePage adaptée** : si profil = Tle générale francophone, affiche 12 cards groupées en 4 sections (Lettres : A1, A2, A3, A4, A5, ABI ; Sciences humaines : SH, AC ; Sciences : C, D ; Sciences techniques : E, TI). Si autre profil, pas de groupement (cards à plat).
+
+**AC2 — Scroll responsive** : sur Pixel 4a (375×667 dp), scroll vertical attendu. Sur tablet ≥ 840 dp, grille 2 colonnes.
+
+**AC3 — Recap matières correctes** : Aïssatou (Tle A1) voit `[FR, EN, Math, Philo, HG, EPS, Latin, Grec, LV2]` (9 matières) sur écran récap (Story 1.3 réutilisé).
+
+**AC4 — i18n FR/EN** : 12 nouvelles clés noms série + 4 clés noms famille. Microcopie UX-DR-39.
+
+**AC5 — Tests widget** : (a) Aïssatou choisit A1 en < 10s sur Pixel 4a (mesure manuelle), (b) test layout 4 sections rendues, (c) test série D toujours findable (régression).
+
+**AC6 — `flutter analyze` 0 issue** + `flutter test` cumul ≥ 215
+
+**AC7 — Commit** `feat(onboarding): sous-series Tle francophone flat 12 cards + groupement visuel famille (Story 1.14)`
+
+#### Notes pour Amelia
+
+- **Pas de step supplémentaire** dans le flow — la liste plus longue est rendue dans la même page SerieChoicePage existante.
+- **Pattern groupement** : `ListView.builder` avec `headerBuilder` ou `Column` simple avec headings.
+- **Familles icons** : Lucide BookOpen (Lettres), Users (Sciences humaines), Atom (Sciences), Wrench (Sciences techniques).
+- **NE PAS** créer un nouveau widget SerieChoicePageV2 — adaptation de l'existant via switch `if subSystem=='francophone' && niveau=='terminale'`.
+
+---
+
+### Story 1.15 : Refactor SubjectsOptOutPage → SubjectsPickerPage polymorphe (panier Anglo O-Level)
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.13 (DerivedProfile v2 avec pickerMode)
+**Estimation** : M (~5h)
+
+**As a** élève anglophone Form 5 (Mariam),
+**I want** sélectionner librement 6 à 11 matières parmi les matières O-Level disponibles avec EN+FR+Math obligatoires non décochables,
+**so that** mon panier O-Level reflète exactement ma sélection officielle (conforme règle Cameroon GCE Board).
+
+#### Acceptance Criteria
+
+**AC1 — Refactor non-breaking** : `SubjectsOptOutPage` renommée en `SubjectsPickerPage`. Routes existantes `/onboarding/profile/opt-out` conservées (alias compatibilité). Tests Story 1.4 restent verts en mode `opt_out` legacy (James Upper Sixth S2 picker simple).
+
+**AC2 — Mode `free_with_obligatory`** : si `derivedProfile.pickerMode == 'free_with_obligatory'`, page affiche : (a) section "Matières obligatoires" en haut (EN+FR+Math) en disabled checkbox checked + locked icon, (b) section "Matières au choix" avec checkbox initialisées (pre-coche 3-5 populaires selon stream), (c) compteur live "Tu présentes X/11 matières" en bas, (d) bouton Valider disabled si X < 6 ou X > 11.
+
+**AC3 — Validation client** : tap sur matière obligatoire = toast erreur "EN, FR et Math sont obligatoires". Tap au-delà de 11 = toast "Maximum 11 matières". Tap en dessous de 6 lors Save = toast "Minimum 6 matières".
+
+**AC4 — Persistance Firestore** : `users/{uid}.pickedSubjects[]` mis à jour via update partiel. `optedOutSubjects` conservé pour compat (mode legacy).
+
+**AC5 — firestore.rules update** : règle `pickedSubjects ⊂ derivedSubjects ∪ optionalSubjectIds ∧ obligatorySubjectIds ⊂ pickedSubjects` ajoutée. 3 nouveaux tests rules (n) valide, (o) obligatoire manquant KO, (p) extra hors derived KO.
+
+**AC6 — Test Mariam (Form 5 panier 8 matières)** : EN+FR+Math + 5 au choix → save OK. Tentative décocher Math → toast erreur. Tentative ajouter 12e matière → toast erreur.
+
+**AC7 — `flutter analyze` 0 issue** + `flutter test` cumul ≥ 230 + `cd test/rules && npm test` 23/23 verts (vs baseline 20)
+
+**AC8 — Commit** `feat(onboarding): refactor SubjectsOptOutPage en SubjectsPickerPage polymorphe + panier Anglo O-Level (Story 1.15)`
+
+#### Notes pour Amelia
+
+- **Refactor non-breaking critique** : le mode `opt_out` legacy doit continuer à fonctionner identiquement. Switch sur `derivedProfile.pickerMode` dans le widget body.
+- **Pattern polymorphe** : `switch (pickerMode) { case 'derived': return SizedBox.shrink(); case 'opt_out': return _OptOutBody(); case 'free_with_obligatory': return _FreeWithObligatoryBody(); ... }`
+- **Pre-cocher matières populaires** : pour Form 5, suggest Physics + Chemistry + Biology (sciences) OU History + Geography + Literature (arts) selon profil — micro-heuristique à confirmer 1.15.
+- **NE PAS** logger la liste des `pickedSubjects` (count uniquement).
+
+---
+
+### Story 1.16 : Extension A-Level transversales optionnelles
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.15 (SubjectsPickerPage polymorphe)
+**Estimation** : S (~3h)
+
+**As a** élève anglophone Upper Sixth (James),
+**I want** ajouter des matières transversales optionnelles (Computer Science, ICT, Religious Studies, Commerce) à mon Series S2 (Chemistry + Physics + Biology) jusqu'à un total max de 5 matières,
+**so that** je puisse personnaliser mon panier A-Level conforme règle Cameroon GCE Board (max 5).
+
+#### Acceptance Criteria
+
+**AC1 — Mode `series_plus_optional`** : si `derivedProfile.pickerMode == 'series_plus_optional'`, page affiche : (a) section "Series" (matières Series fixées, locked checked), (b) section "Transversales optionnelles" (4 checkboxes : Computer Science, ICT, Religious Studies, Commerce — décochées par défaut), (c) compteur live "Tu présentes X/5 matières", (d) bouton Valider disabled si X > 5.
+
+**AC2 — Persistance** : `pickedSubjects[]` = Series locked + transversales cochées. firestore.rules existante (Story 1.15) valide automatiquement.
+
+**AC3 — Test James (Upper Sixth S2 + ICT optionnel)** : Series Chemistry/Physics/Biology + tap ICT → save OK → pickedSubjects = [Chemistry, Physics, Biology, ICT] (4 matières).
+
+**AC4 — `flutter analyze` 0 issue** + `flutter test` cumul ≥ 235
+
+**AC5 — Commit** `feat(onboarding): A-Level transversales optionnelles mode series_plus_optional (Story 1.16)`
+
+#### Notes pour Amelia
+
+- Extension de la story 1.15 — réutiliser pattern polymorphe SubjectsPickerPage.
+- **Validation max 5** : compter Series + transversales cochées.
+
+---
+
+### Story 1.17 : ESTP anglophone TVEE (filière technique + niveaux TVE IL/AL + 13 spécialités)
+
+**Statut** : Backlog
+**Sprint** : P1 extension
+**Dépendances** : Story 1.13 (DerivedProfile v2)
+**Estimation** : L (~6-8h)
+
+**As a** élève anglophone TVE AL Electrotechnique (Eyong),
+**I want** suivre un parcours d'onboarding dédié technique anglophone : filière "Technique" → niveau TVE IL/AL → spécialité (ELET) → panier 6-8 matières avec ≥3 Professional + ≥3 Related + EN/FR obligatoires,
+**so that** mon profil TVEE soit fidèle à la nomenclature officielle Cameroon GCE Board.
+
+#### Acceptance Criteria
+
+**AC1 — Filière technique anglophone visible** : après step sous-système anglophone, FiliereChoicePage affiche 2 cards : "Général" (existant) + "Technique" (nouveau). Si tap Technique → niveau = TVE IL ou TVE AL.
+
+**AC2 — NiveauChoicePage anglo technique** : affiche 2 cards : TVE Intermediate Level (fin Form 5 technique) + TVE Advanced Level (fin Upper Sixth technique).
+
+**AC3 — SerieChoicePage anglo technique** : affiche 13 cards spécialités groupées en 3 familles (Industrial : ELEQ, ELNI, ELME, ELET, AC, ME, CE, Carpentry ; Commercial : Accounting, Commerce, Office Practice ; Home Economics : Food & Nutrition, Clothing & Textiles).
+
+**AC4 — Mode `tve_picker`** : SubjectsPickerPage mode TVEE affiche : (a) section "Professional Subjects" (obligatoires selon spécialité, locked checked), (b) section "Related Professional" (obligatoires, locked), (c) section "Other Subjects" (libres, max ≤ 8 - obligatoires). Validation TVE IL : min 5 dont ≥2 Professional + ≥1 Related. TVE AL : min 6 max 8 dont ≥3 Professional + ≥3 Related. EN+FR obligatoires partout.
+
+**AC5 — Test Eyong (TVE AL Electrotechnique 7 matières)** : Professional [Electrotechnique theory, Electrotechnique practical, Electrical machines] + Related [Math, Physics, Drawing] + EN/FR → save OK (7 matières).
+
+**AC6 — `isActive: false` initial** : matrice TVEE seedée `isActive: false` initial (cf. Story 1.12). Activable runtime via Console Firestore après validation enseignant TVEE.
+
+**AC7 — i18n FR/EN** : ~20 nouvelles clés (filière technique, niveaux TVE, 13 spécialités, validation messages).
+
+**AC8 — `flutter analyze` 0 issue** + `flutter test` cumul ≥ 245
+
+**AC9 — Commit** `feat(onboarding): ESTP anglophone TVEE filiere technique + niveaux TVE IL/AL + 13 specialites (Story 1.17)`
+
+#### Notes pour Amelia
+
+- **Story L (6-8h)** car nouveau domaine : si dépassement, split 1.17a (data + matrice TVEE) + 1.17b (flow UI TVEE).
+- **Pattern réutilisation** : SerieChoicePage avec groupement (Story 1.14 pattern) + SubjectsPickerPage polymorphe (Story 1.15-1.16 pattern) + nouveau mode `tve_picker`.
+- **NE PAS** créer nouveaux providers — réutiliser onboardingFlowProvider + catalogueProvider + effectiveDerivedSubjectsProvider.
+- **Validation enseignant TVEE** : Mr Eboa Joseph (enseignant Electrotechnique Lycée Technique Bonabéri) à consulter post-merge pour valider matières exactes par spécialité. Si désaccord, ré-itérer matrice TVEE en 1.17bis.
+
+---
+
 ## Couverture des exigences
 
 | FR | Story | Notes |
@@ -1185,8 +1479,16 @@ FR-7 + ADR-005 (doc/partage maintenance). Le cycle de vie :
 | FR-8 | 1.8 | Persistance + reprise |
 | FR-10 | 1.9 | Dashboard filtré (partiel — recos en E5, isActive filter via 1.1c) |
 | R4 | 1.1a | Audit matrice exhaustive + Firestore schema (replaced 1.1 cancelled) |
-| Infrastructure seed | 1.1b | Script Python `scripts/firebase_seed/` (sprint change) |
-| Infrastructure mobile | 1.1c | CatalogueRepository + ecran connexion bloquant (sprint change) |
+| Infrastructure seed | 1.1b | Script Python `scripts/firebase_seed/` (sprint change 2026-06-05) |
+| Infrastructure mobile | 1.1c | CatalogueRepository + ecran connexion bloquant (sprint change 2026-06-05) |
+| Alignement nomenclature | 1.11a | Audit matrice v2 + ADR-016 + BASE-DE-DONNEES update (sprint change 2026-06-09) |
+| Update PRD/UX flow variable | 1.11b | Amendement PRD FR-2/FR-3 + EXPERIENCE.md Flow 1 4 variants |
+| Re-seed Firestore | 1.12 | matrice.json v2 + run script + non-régression |
+| DerivedProfile v2 | 1.13 | pickerMode + obligatory/optional subjects (non-breaking) |
+| Sous-séries Tle franco | 1.14 | SerieChoicePage 12 cards Tle franco + groupement visuel famille |
+| Panier Anglo O-Level | 1.15 | Refactor SubjectsOptOutPage → SubjectsPickerPage polymorphe |
+| Extension A-Level transversales | 1.16 | Mode series_plus_optional + checkboxes Computer Science/ICT/RS/Commerce |
+| ESTP TVEE | 1.17 | Filière technique anglo + niveaux TVE IL/AL + 13 spécialités |
 
 | UX-DR | Story | Notes |
 |---|---|---|
@@ -1220,14 +1522,26 @@ FR-7 + ADR-005 (doc/partage maintenance). Le cycle de vie :
 | 1.8 Persistance | S | 3h |
 | 1.9 Dashboard skeleton (isActive filter) | M | 5h |
 | 1.10 Suppression compte | S | 3h |
-| **Total post sprint change** | | **51-63h** |
+| **Sub-total post sprint change 2026-06-05** | | **51-63h** |
+| **1.11a Audit matrice v2 + ADR-016** | **S** | **3h** |
+| **1.11b PRD/UX update** | **S** | **2h** |
+| **1.12 matrice.json + re-seed** | **M** | **4h** |
+| **1.13 DerivedProfile v2 pickerMode** | **S** | **3h** |
+| **1.14 Sous-séries Tle franco flat** | **M** | **5h** |
+| **1.15 Refactor picker Anglo O-Level** | **M** | **5h** |
+| **1.16 A-Level transversales** | **S** | **3h** |
+| **1.17 ESTP TVEE anglophone** | **L** | **6-8h** |
+| **Total post sprint change 2026-06-09** | | **82-99h** |
 
-Cible P1 = 1 semaine (5j × ~8h = 40h). Sprint change 2026-06-05 ajoute **+12-15h** (split 1.1 → 3 stories). **Options absorption** :
+Cible P1 = 1 semaine (5j × ~8h = 40h). Sprint change 2026-06-05 (+12-15h) + sprint change 2026-06-09 (+31-36h) = total Epic 1 ~82-99h, soit **~17-19j calendaires** (au lieu de 10).
 
-- Elargir P1 a 6-7j calendaires (recommande)
-- OU deferer 1.7 (Liaison ecole) et 1.10 (Suppression compte) en debut P2 sans perte de user-value Epic 1 critique (Fatou et James peuvent valider l'onboarding sans ecole liee et sans option suppression compte)
+**Options absorption** :
 
-Decision a prendre en mid-sprint si pression timeline.
+- Elargir P1 (déjà étendue) à ~3 semaines calendaires (recommandé)
+- OU déférer 1.17 (ESTP TVEE) en début Epic 2 — perte de user-value modeste car TVEE seedé `isActive: false` initial de toute façon
+- OU déférer 1.16 (A-Level transversales) en début Epic 2 — perte mineure car Series existant fonctionnel
+
+Décision à prendre en mid-sprint si pression timeline.
 
 ## Notes transversales
 
@@ -1235,7 +1549,8 @@ Decision a prendre en mid-sprint si pression timeline.
 - **Règles Firestore étendues** : Stories 1.3 (validation users/{uid}), 1.7 (catalog schools read + requests write), 1.10 (deletion field), **1.1c (6 nouvelles collections catalogue read-only)** — toutes nécessitent des updates `firestore.rules` + redéploiement. À coordonner avec backend si parallèle.
 - **Backend Cloud Functions** : Story 1.10 dépend de `requestAccountDeletion` + `cancelAccountDeletion`. Si backend pas prêt, stub mobile-side.
 - **Sprint change 2026-06-05** : pivot Firestore-driven catalogue (cf. [sprint-change-proposal-2026-06-05.md](../../sprint-change-proposal-2026-06-05.md)). Stories 1.1a/1.1b/1.1c remplacent 1.1 cancelled. Stories 1.3/1.4/1.9 amendees. Action porteur post-1.1b mergee : run `python scripts/firebase_seed/seed_catalogue.py --project valide-edu` pour peupler Firestore.
-- **Accord backend BASE-DE-DONNEES.md** : Story 1.1a ajoute 6 collections (filieres, niveaux, series, subjects, exam_targets, derivation_rules) au schema partage. Per CLAUDE.md regle § doc/partage, necessite commentaire approval backend lead sur la PR 1.1a.
+- **Sprint change 2026-06-09** : alignement nomenclature officielle (cf. [sprint-change-proposal-2026-06-09.md](../../sprint-change-proposal-2026-06-09.md)). +8 stories 1.11a/b, 1.12, 1.13, 1.14, 1.15, 1.16, 1.17. Stories 1.1c/1.3/1.4 amendées (non-breaking : DerivedProfile v2 défaults safe, SerieChoicePage 12 cards Tle franco, SubjectsOptOutPage refactorisée en SubjectsPickerPage polymorphe). Critère de sortie élargi : Mariam (Form 5 panier) + Eyong (TVE AL) + Aïssatou (Tle A1) en plus de Fatou/James. Action porteur post-1.12 mergée : re-run script seed sur valide-edu.
+- **Accord backend BASE-DE-DONNEES.md** : Story 1.1a ajoute 6 collections (filieres, niveaux, series, subjects, exam_targets, derivation_rules) au schema partage. Story 1.11a ajoute 6 nouveaux champs (3 sur `series`, 2 sur `derivation_rules`, 1 sur `users/{uid}`). Per CLAUDE.md regle § doc/partage, necessite commentaire approval backend lead sur les PR 1.1a et 1.11a.
 - **Nouveau dossier `scripts/firebase_seed/`** : exception au principe « ce depot = mobile only » de CLAUDE.md, documentee dans Story 1.1b. Justification : pas de backend deploye V1, le script Python d'init est l'unique mecanisme de seed.
 - **CI/CD (0.17 deferred)** : pas de pipeline GitHub Actions. Tests à lancer manuellement (`flutter test` + `pytest scripts/firebase_seed/tests/`) avant chaque PR.
 - **iOS validation** : Stories 1.6 (Apple Sign-In) et 1.9 (responsive tablet) gagnent à être validées sur iOS — session Mac à planifier.
