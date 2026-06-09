@@ -44,6 +44,12 @@ class _FakeRepo implements UserProfileRepository {
       const Right(null);
 
   @override
+  Future<Either<ProfileFailure, void>> updatePickedSubjects(
+    List<String> pickedSubjectIds,
+  ) async =>
+      const Right(null);
+
+  @override
   Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async =>
       const Right(null);
 }

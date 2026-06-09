@@ -59,6 +59,25 @@ abstract interface class UserProfileRepository {
     List<String> optedOutSubjectIds,
   );
 
+  /// Story 1.15 — Persiste `pickedSubjects` (panier polymorphe, modes
+  /// `free_with_obligatory`, `series_plus_optional`, `tve_picker`).
+  ///
+  /// La liste DOIT contenir OBLIGATOIRES + OPTIONNELS sélectionnés (pas
+  /// uniquement les optionnels). Cohérent avec BASE-DE-DONNEES.md ligne 75
+  /// (`obligatorySubjectIds ⊂ pickedSubjects`).
+  ///
+  /// Utilise `update()` partiel (CLAUDE.md règle 10.l) sur `{pickedSubjects,
+  /// updatedAt}`. La validation côté serveur (firestore.rules Story 1.15
+  /// `pickedSubjectsValid()`) garantit `pickedSubjects ⊆ derivedSubjects`
+  /// (version pragmatique MVP, cf. Story 1.15 Décision 3).
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException (rule violation, network, etc.) → firestoreError
+  Future<Either<ProfileFailure, void>> updatePickedSubjects(
+    List<String> pickedSubjectIds,
+  );
+
   /// Story 1.7 — Met a jour le champ `schoolId` du doc users/{uid}.
   ///
   /// Update partiel sur `{schoolId, updatedAt}`. Les regles Story 1.3

@@ -410,6 +410,48 @@ abstract class AppLocalizations {
   /// **'Valider'**
   String get onboardingOptOutValidateCta;
 
+  /// Titre H2 de SubjectsPickerPage mode free_with_obligatory (Story 1.15 FR-3 mode panier O-Level).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis tes matières'**
+  String get onboardingPickerTitle;
+
+  /// Sous-titre de SubjectsPickerPage mode panier (Story 1.15).
+  ///
+  /// In fr, this message translates to:
+  /// **'Sélectionne les matières que tu présentes à ton examen.'**
+  String get onboardingPickerSubtitle;
+
+  /// Titre H3 section matières obligatoires (lockées) mode free_with_obligatory (Story 1.15).
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières obligatoires'**
+  String get onboardingPickerObligatoryTitle;
+
+  /// Titre H3 section matières sélectionnables mode free_with_obligatory (Story 1.15).
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières au choix'**
+  String get onboardingPickerOptionalTitle;
+
+  /// Compteur live mode free_with_obligatory. Couleur primaire si valide, danger sinon (Story 1.15).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{Tu présentes 1/{max} matière} other{Tu présentes {count}/{max} matières}}'**
+  String onboardingPickerCounterLive(int count, int max);
+
+  /// Toast warning sur tap matière obligatoire (Story 1.15 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette matière est obligatoire et ne peut pas être retirée.'**
+  String get onboardingPickerErrorObligatoryToast;
+
+  /// Bouton primaire SubjectsPickerPage mode panier. Disabled hors [min, max] (Story 1.15).
+  ///
+  /// In fr, this message translates to:
+  /// **'Valider mon choix'**
+  String get onboardingPickerValidateCta;
+
   /// Lien sur ProfileRecapPage quand optedOutSubjects non vide (Story 1.4). Remplace onboardingRecapOptOutLink quand au moins une matière a déjà été retirée.
   ///
   /// In fr, this message translates to:

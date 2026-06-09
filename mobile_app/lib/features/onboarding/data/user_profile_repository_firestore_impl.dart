@@ -160,6 +160,48 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
   }
 
   // ===================================================================
+  // Story 1.15 — updatePickedSubjects() : panier polymorphe (FR-3 mode
+  // free_with_obligatory / series_plus_optional / tve_picker)
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updatePickedSubjects(
+    List<String> pickedSubjectIds,
+  ) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updatePickedSubjects() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+
+    try {
+      await _firestore.collection(_kCollection).doc(uid).update({
+        'pickedSubjects': pickedSubjectIds,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+      // CLAUDE.md securite 4 : on log count uniquement, JAMAIS les IDs
+      // (combinaison niveau + matieres peut identifier un eleve).
+      AppLogger.i(
+        'Subjects picked: count=${pickedSubjectIds.length}',
+      );
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updatePickedSubjects() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updatePickedSubjects() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+      );
+    } catch (e, st) {
+      AppLogger.w('updatePickedSubjects() unexpected error: $e', error: e);
+      AppLogger.w('updatePickedSubjects() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
+
+  // ===================================================================
   // Story 1.7 — updateSchoolId() : liaison ecole optionnelle (FR-6)
   // ===================================================================
 
