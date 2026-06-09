@@ -1,6 +1,6 @@
-// Models domain du catalogue scolaire — Story 1.1c.
+// Models domain du catalogue scolaire — Story 1.1c + extension v2 Story 1.13.
 //
-// 7 classes immutables Equatable. Couche DOMAIN pure :
+// 7 classes immutables Equatable + 1 enum PickerMode. Couche DOMAIN pure :
 //   - PAS d'import Flutter
 //   - PAS d'import Firebase
 //   - PAS d'import Riverpod
@@ -12,10 +12,61 @@
 // Règle d'or des dépendances.
 //
 // Schéma Firestore canonique : cf. doc/partage/BASE-DE-DONNEES.md §
-// « Catalogue scolaire (6 collections — Story 1.1a) ».
+// « Catalogue scolaire (6 collections — Story 1.1a) » + extension v2 ADR-016.
 // Conventions IDs snake_case prefixe subSystem.
 
 import 'package:equatable/equatable.dart';
+
+/// Mode de sélection des matières — Story 1.11a / ADR-016 Décision 3.
+///
+/// 5 valeurs alignées sur `series.pickerMode` Firestore (snake_case côté JSON,
+/// `lowerCamelCase` côté Dart). Le mapper [PickerMode.fromString] parse la
+/// valeur Firestore et fallback sur [PickerMode.derived] si valeur inconnue
+/// (rétrocompat v1 / défense en profondeur).
+///
+/// Sémantique :
+/// - [derived] — default : matières dérivées non modifiables (Tle franco).
+/// - [optOut] — legacy Story 1.4 : retrait simple (Anglo Lower/Upper Sixth
+///   avant le refactor Story 1.16).
+/// - [freeWithObligatory] — O-Level Form 3-5 : sélection libre 6-11 +
+///   obligatoires EN+FR+Math.
+/// - [seriesPlusOptional] — A-Level Lower/Upper Sixth : Series fixe +
+///   transversales optionnelles.
+/// - [tvePicker] — TVEE : Professional + Related obligatoires + Other libres.
+enum PickerMode {
+  derived,
+  optOut,
+  freeWithObligatory,
+  seriesPlusOptional,
+  tvePicker;
+
+  /// Parse une string Firestore (`derived` / `opt_out` / `free_with_obligatory`
+  /// / `series_plus_optional` / `tve_picker`) en [PickerMode].
+  ///
+  /// Fallback sur [PickerMode.derived] si valeur inconnue (rétrocompat v1 où
+  /// le champ Firestore `pickerMode` est absent → defaults safe).
+  static PickerMode fromString(String? raw) {
+    return switch (raw) {
+      'derived' => PickerMode.derived,
+      'opt_out' => PickerMode.optOut,
+      'free_with_obligatory' => PickerMode.freeWithObligatory,
+      'series_plus_optional' => PickerMode.seriesPlusOptional,
+      'tve_picker' => PickerMode.tvePicker,
+      _ => PickerMode.derived,
+    };
+  }
+
+  /// Sérialise vers la string Firestore (utile pour `toJson` debug).
+  String toFirestoreString() {
+    return switch (this) {
+      PickerMode.derived => 'derived',
+      PickerMode.optOut => 'opt_out',
+      PickerMode.freeWithObligatory => 'free_with_obligatory',
+      PickerMode.seriesPlusOptional => 'series_plus_optional',
+      PickerMode.tvePicker => 'tve_picker',
+    };
+  }
+}
 
 /// Filière scolaire (`generale` ou `technique`).
 class Filiere extends Equatable {
@@ -42,7 +93,8 @@ class Filiere extends Equatable {
   List<Object?> get props => [filiereId, name, isActive, sortOrder];
 }
 
-/// Niveau scolaire (ex. `francophone_terminale`, `anglophone_form_5`).
+/// Niveau scolaire (ex. `francophone_terminale`, `anglophone_form_5`,
+/// `anglophone_tve_il`).
 class Niveau extends Equatable {
   const Niveau({
     required this.niveauId,
@@ -74,7 +126,16 @@ class Niveau extends Equatable {
       [niveauId, subSystem, name, filiereIds, isActive, sortOrder];
 }
 
-/// Série / stream (ex. `francophone_terminale_d`, `anglophone_upper_sixth_s2`).
+/// Série / stream (ex. `francophone_terminale_d`, `anglophone_upper_sixth_s2`,
+/// `anglophone_tve_al_elet`).
+///
+/// **Story 1.13 — v2** : 6 nouveaux champs ajoutés (rétrocompat v1 via defaults
+/// safe) pour supporter le panier polymorphe ADR-016 :
+/// - [pickerMode] : default [PickerMode.derived] (comportement v1).
+/// - [minSubjects] / [maxSubjects] : null si pas de borne (mode derived).
+/// - [professionalSubjectIds] / [relatedProfessionalSubjectIds] /
+///   [otherSubjectIds] : spécifiques TVEE (`pickerMode == tvePicker`), listes
+///   vides pour autres modes.
 class Serie extends Equatable {
   const Serie({
     required this.serieId,
@@ -85,6 +146,13 @@ class Serie extends Equatable {
     required this.canOptOut,
     required this.isActive,
     required this.sortOrder,
+    // NEW v2 — Story 1.13 (defaults safe pour rétrocompat v1).
+    this.pickerMode = PickerMode.derived,
+    this.minSubjects,
+    this.maxSubjects,
+    this.professionalSubjectIds = const [],
+    this.relatedProfessionalSubjectIds = const [],
+    this.otherSubjectIds = const [],
   });
 
   final String serieId;
@@ -96,6 +164,14 @@ class Serie extends Equatable {
   final bool isActive;
   final int sortOrder;
 
+  // NEW v2 — Story 1.13
+  final PickerMode pickerMode;
+  final int? minSubjects;
+  final int? maxSubjects;
+  final List<String> professionalSubjectIds;
+  final List<String> relatedProfessionalSubjectIds;
+  final List<String> otherSubjectIds;
+
   Map<String, dynamic> toJson() => {
         'serieId': serieId,
         'subSystem': subSystem,
@@ -105,6 +181,13 @@ class Serie extends Equatable {
         'canOptOut': canOptOut,
         'isActive': isActive,
         'sortOrder': sortOrder,
+        // v2
+        'pickerMode': pickerMode.toFirestoreString(),
+        'minSubjects': minSubjects,
+        'maxSubjects': maxSubjects,
+        'professionalSubjectIds': professionalSubjectIds,
+        'relatedProfessionalSubjectIds': relatedProfessionalSubjectIds,
+        'otherSubjectIds': otherSubjectIds,
       };
 
   @override
@@ -117,6 +200,12 @@ class Serie extends Equatable {
         canOptOut,
         isActive,
         sortOrder,
+        pickerMode,
+        minSubjects,
+        maxSubjects,
+        professionalSubjectIds,
+        relatedProfessionalSubjectIds,
+        otherSubjectIds,
       ];
 }
 
@@ -152,7 +241,8 @@ class Subject extends Equatable {
       [subjectId, subSystem, name, icon, isActive, sortOrder];
 }
 
-/// Examen visé (ex. `exam_bac_francophone_d`, `exam_gce_a_level_anglophone_s2`).
+/// Examen visé (ex. `exam_bac_francophone_d`, `exam_gce_a_level_anglophone_s2`,
+/// `exam_tve_al_anglophone_elet`).
 class ExamTarget extends Equatable {
   const ExamTarget({
     required this.examTargetId,
@@ -186,6 +276,11 @@ class ExamTarget extends Equatable {
 /// `matchFiliere == "*"` est un wildcard (utilisé pour les Forms anglophones
 /// sans distinction filière). `matchSerie == null` est utilisé pour les niveaux
 /// sans série (ex. 6ᵉ, Form 1).
+///
+/// **Story 1.13 — v2** : 2 nouveaux champs (rétrocompat v1 via listes vides) :
+/// - [obligatorySubjectIds] : matières non décochables (mode panier).
+/// - [optionalSubjectIds] : matières ajoutables (mode `series_plus_optional` /
+///   `free_with_obligatory`).
 class DerivationRule extends Equatable {
   const DerivationRule({
     required this.ruleId,
@@ -197,6 +292,9 @@ class DerivationRule extends Equatable {
     required this.examTargetIds,
     required this.canOptOut,
     required this.isActive,
+    // NEW v2 — Story 1.13.
+    this.obligatorySubjectIds = const [],
+    this.optionalSubjectIds = const [],
   });
 
   final String ruleId;
@@ -209,6 +307,10 @@ class DerivationRule extends Equatable {
   final bool canOptOut;
   final bool isActive;
 
+  // NEW v2 — Story 1.13
+  final List<String> obligatorySubjectIds;
+  final List<String> optionalSubjectIds;
+
   Map<String, dynamic> toJson() => {
         'ruleId': ruleId,
         'matchSubSystem': matchSubSystem,
@@ -219,6 +321,9 @@ class DerivationRule extends Equatable {
         'examTargetIds': examTargetIds,
         'canOptOut': canOptOut,
         'isActive': isActive,
+        // v2
+        'obligatorySubjectIds': obligatorySubjectIds,
+        'optionalSubjectIds': optionalSubjectIds,
       };
 
   @override
@@ -232,29 +337,64 @@ class DerivationRule extends Equatable {
         examTargetIds,
         canOptOut,
         isActive,
+        obligatorySubjectIds,
+        optionalSubjectIds,
       ];
 }
 
 /// Résultat de `CatalogueRepository.derive()` — profil dérivé.
+///
+/// **Story 1.13 — v2** : 5 nouveaux champs exposant le panier polymorphe
+/// ADR-016 aux widgets consommateurs (Stories 1.14-1.17) :
+/// - [pickerMode] : default [PickerMode.derived] (comportement v1).
+/// - [obligatorySubjects] : sous-ensemble non décochable (`pickerMode ==
+///   freeWithObligatory` / `tvePicker`).
+/// - [optionalSubjects] : matières ajoutables (`pickerMode ==
+///   seriesPlusOptional` / `freeWithObligatory`).
+/// - [minSubjects] / [maxSubjects] : null si pas de borne (mode derived).
 class DerivedProfile extends Equatable {
   const DerivedProfile({
     required this.subjects,
     required this.examTargets,
     required this.canOptOut,
+    // NEW v2 — Story 1.13.
+    this.pickerMode = PickerMode.derived,
+    this.obligatorySubjects = const [],
+    this.optionalSubjects = const [],
+    this.minSubjects,
+    this.maxSubjects,
   });
 
   final List<Subject> subjects;
   final List<ExamTarget> examTargets;
   final bool canOptOut;
 
+  // NEW v2 — Story 1.13
+  final PickerMode pickerMode;
+  final List<Subject> obligatorySubjects;
+  final List<Subject> optionalSubjects;
+  final int? minSubjects;
+  final int? maxSubjects;
+
   @override
-  List<Object?> get props => [subjects, examTargets, canOptOut];
+  List<Object?> get props => [
+        subjects,
+        examTargets,
+        canOptOut,
+        pickerMode,
+        obligatorySubjects,
+        optionalSubjects,
+        minSubjects,
+        maxSubjects,
+      ];
 }
 
 /// Snapshot agrégé des 6 collections catalogue à un instant t.
 ///
-/// Utilisé par `catalogueProvider` (StreamProvider) pour exposer l'état complet
-/// du catalogue aux widgets consommateurs (Story 1.3 flow profil 3 étapes).
+/// **Story 1.13 — refactor** : utilisé par `catalogueProvider` (désormais
+/// `FutureProvider`, ex-`StreamProvider`) pour exposer l'état complet du
+/// catalogue aux widgets consommateurs (Story 1.3 flow profil 3 étapes).
+/// Cf. CLAUDE.md règle 10.g + BASE-DE-DONNEES.md audit 2026-06-09.
 class CatalogueSnapshot extends Equatable {
   const CatalogueSnapshot({
     required this.filieres,

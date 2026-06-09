@@ -132,9 +132,11 @@ class _NiveauxQuery {
   int get hashCode => Object.hash(subSystem, filiereId);
 }
 
+// Story 1.13 — refactor StreamProvider.family -> FutureProvider.family suite
+// audit règle 10.g CLAUDE.md. AsyncValue consumer-side inchangé.
 final _niveauxStreamProvider =
-    StreamProvider.family<List<Niveau>, _NiveauxQuery>((ref, query) {
-  return ref.watch(catalogueRepositoryProvider).watchNiveaux(
+    FutureProvider.family<List<Niveau>, _NiveauxQuery>((ref, query) {
+  return ref.watch(catalogueRepositoryProvider).fetchNiveaux(
         subSystem: query.subSystem,
         filiereId: query.filiereId,
       );
@@ -196,13 +198,13 @@ class _NiveauxList extends ConsumerWidget {
     if (subSystem == null || flow.filiereId == null) return;
 
     final repo = ref.read(catalogueRepositoryProvider);
+    // Story 1.13 — refactor : Stream.first.timeout(...) -> Future.timeout(...)
     final series = await repo
-        .watchSeries(
+        .fetchSeries(
           subSystem: subSystem.id,
           niveauId: niveau.niveauId,
           filiereId: flow.filiereId,
         )
-        .first
         .timeout(
           const Duration(seconds: 2),
           onTimeout: () => const [],

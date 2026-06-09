@@ -1,12 +1,21 @@
-// Providers Riverpod du catalogue scolaire — Story 1.1c.
+// Providers Riverpod du catalogue scolaire — Story 1.1c + refactor Story 1.13.
 //
 // 3 providers exposés :
 //   - catalogueRepositoryProvider : injection Firestore via firestoreProvider
-//   - catalogueProvider : StreamProvider<CatalogueSnapshot> (combine les 6 streams)
+//   - catalogueProvider : FutureProvider<CatalogueSnapshot> (charge 6
+//                         collections en parallèle, 1 read par doc initial)
 //   - appStartupCatalogueCheckProvider : FutureProvider<bool> pour le redirect
 //                                        global app_router
-
-import 'dart:async';
+//
+// **Story 1.13 — refactor `StreamProvider` → `FutureProvider`** :
+// Cohérent CLAUDE.md règle 10.g + BASE-DE-DONNEES.md audit 2026-06-09.
+// Le catalogue est statique (1-2× admin update / an). Plus économique de lire
+// 1× au boot + cache offline natif Firestore que d'écouter 6 streams en
+// permanence. Économie estimée ~80 % reads à 10k users (600k → 110k reads/mois).
+//
+// Pour forcer un refresh runtime (cas marginal — admin Console active une
+// nouvelle série pendant la session) : `ref.invalidate(catalogueProvider)`.
+// En V1 pas de bouton UI : redémarrer l'app suffit.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,57 +31,34 @@ final catalogueRepositoryProvider = Provider<CatalogueRepository>((ref) {
   return CatalogueRepositoryFirestoreImpl(firestore);
 });
 
-/// Snapshot agrégé des 6 collections, mis à jour à chaque émission d'un des
-/// sous-streams. Utilisé par les widgets qui consomment toute la matrice
-/// catalogue (ex. Story 1.3 flow profil 3 étapes).
+/// Snapshot agrégé des 6 collections, chargé en parallèle au 1er watch via
+/// `Future.wait` (6 reads paralles → max(reads) latence). Sert ensuite depuis
+/// le cache Riverpod jusqu'à `ref.invalidate(...)` explicite.
 ///
-/// Implémentation : combine manuellement les 6 streams via subscriptions +
-/// `StreamController` interne. Évite d'ajouter rxdart juste pour
-/// `CombineLatestStream`.
-final catalogueProvider = StreamProvider<CatalogueSnapshot>((ref) {
+/// Utilisé par les widgets qui consomment toute la matrice catalogue (ex.
+/// Story 1.3 flow profil 3 étapes — SubSystemChoicePage, NiveauChoicePage,
+/// SerieChoicePage). Le widget reçoit un `AsyncValue<CatalogueSnapshot>` —
+/// API consumer-side **inchangée** par le refactor v1 → v2.
+final catalogueProvider = FutureProvider<CatalogueSnapshot>((ref) async {
   final repo = ref.watch(catalogueRepositoryProvider);
-  final controller = StreamController<CatalogueSnapshot>();
-  var snap = const CatalogueSnapshot.empty();
-
-  void emit() {
-    if (!controller.isClosed) controller.add(snap);
-  }
-
-  final subs = <StreamSubscription>[
-    repo.watchFilieres().listen((list) {
-      snap = snap.copyWith(filieres: list);
-      emit();
-    }, onError: controller.addError),
-    repo.watchNiveaux().listen((list) {
-      snap = snap.copyWith(niveaux: list);
-      emit();
-    }, onError: controller.addError),
-    repo.watchSeries().listen((list) {
-      snap = snap.copyWith(series: list);
-      emit();
-    }, onError: controller.addError),
-    repo.watchSubjects().listen((list) {
-      snap = snap.copyWith(subjects: list);
-      emit();
-    }, onError: controller.addError),
-    repo.watchExamTargets().listen((list) {
-      snap = snap.copyWith(examTargets: list);
-      emit();
-    }, onError: controller.addError),
-    repo.watchDerivationRules().listen((list) {
-      snap = snap.copyWith(derivationRules: list);
-      emit();
-    }, onError: controller.addError),
-  ];
-
-  ref.onDispose(() async {
-    for (final s in subs) {
-      await s.cancel();
-    }
-    await controller.close();
-  });
-
-  return controller.stream;
+  // 6 fetchXxx() en parallèle — max(reads) latence vs sum(reads) séquentiel.
+  // Cache offline natif Firestore servira les requêtes suivantes instantanément.
+  final results = await Future.wait<dynamic>([
+    repo.fetchFilieres(),
+    repo.fetchNiveaux(),
+    repo.fetchSeries(),
+    repo.fetchSubjects(),
+    repo.fetchExamTargets(),
+    repo.fetchDerivationRules(),
+  ]);
+  return CatalogueSnapshot(
+    filieres: results[0] as List<Filiere>,
+    niveaux: results[1] as List<Niveau>,
+    series: results[2] as List<Serie>,
+    subjects: results[3] as List<Subject>,
+    examTargets: results[4] as List<ExamTarget>,
+    derivationRules: results[5] as List<DerivationRule>,
+  );
 });
 
 /// Vrai si au moins 1 `derivation_rule` active existe (catalogue prêt à

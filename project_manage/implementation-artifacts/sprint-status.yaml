@@ -28,7 +28,7 @@
 #   - cancelled: Story annulee suite a sprint change (pivot strategique). Le fichier story est conserve en archive avec banner SUPERSEDED + reference au sprint-change-proposal.
 
 generated: 2026-06-03
-last_updated: 2026-06-09  # Story 1.12 mergee main (PR #67 commit 7f3628d). review -> done. Regle 10 CLAUDE.md + BASE-DE-DONNEES.md update rules mergees (PRs #68/#69). Audit conformite Firestore 7 OK + 1 non-conforme (catalogue snapshots a refactor Story 1.13) + 1 partiel. Debloque cascade 1.14/1.15/1.16/1.17 + facilite 1.13.
+last_updated: 2026-06-09  # Story 1.13 dev complet : modeles v2 (PickerMode enum + Serie/Rule/DerivedProfile) + derive() v2 parallel 5 futures Future.wait + refactor catalogue snapshots -> get (audit regle 10.g passe de 1 non-conforme a 0). Amendement scope mineur : 3 widgets onboarding StreamProvider.family -> FutureProvider.family (AsyncValue consumer-side inchange). flutter analyze 0 issue + flutter test 207 verts (vs baseline 196 = +11 nets). ready-for-dev -> review.
 project: Valide School MVP
 project_key: VALIDE
 tracking_system: file-system

@@ -148,9 +148,11 @@ class _SeriesQuery {
   int get hashCode => Object.hash(subSystem, niveauId, filiereId);
 }
 
+// Story 1.13 — refactor StreamProvider.family -> FutureProvider.family suite
+// audit règle 10.g CLAUDE.md. AsyncValue consumer-side inchangé.
 final _seriesStreamProvider =
-    StreamProvider.family<List<Serie>, _SeriesQuery>((ref, query) {
-  return ref.watch(catalogueRepositoryProvider).watchSeries(
+    FutureProvider.family<List<Serie>, _SeriesQuery>((ref, query) {
+  return ref.watch(catalogueRepositoryProvider).fetchSeries(
         subSystem: query.subSystem,
         niveauId: query.niveauId,
         filiereId: query.filiereId,

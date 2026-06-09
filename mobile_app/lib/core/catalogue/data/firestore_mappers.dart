@@ -74,6 +74,14 @@ Serie serieFromFirestore(DocumentSnapshot<Map<String, dynamic>> snap) {
     canOptOut: (data['canOptOut'] as bool?) ?? false,
     isActive: (data['isActive'] as bool?) ?? false,
     sortOrder: (data['sortOrder'] as num?)?.toInt() ?? 0,
+    // NEW v2 — Story 1.13 (defaults safe pour docs v1 sans ces champs)
+    pickerMode: PickerMode.fromString(data['pickerMode'] as String?),
+    minSubjects: (data['minSubjects'] as num?)?.toInt(),
+    maxSubjects: (data['maxSubjects'] as num?)?.toInt(),
+    professionalSubjectIds: _readStringList(data['professionalSubjectIds']),
+    relatedProfessionalSubjectIds:
+        _readStringList(data['relatedProfessionalSubjectIds']),
+    otherSubjectIds: _readStringList(data['otherSubjectIds']),
   );
 }
 
@@ -125,5 +133,8 @@ DerivationRule derivationRuleFromFirestore(
     examTargetIds: _readStringList(data['examTargetIds']),
     canOptOut: (data['canOptOut'] as bool?) ?? false,
     isActive: (data['isActive'] as bool?) ?? false,
+    // NEW v2 — Story 1.13 (defaults safe : listes vides si champs absents)
+    obligatorySubjectIds: _readStringList(data['obligatorySubjectIds']),
+    optionalSubjectIds: _readStringList(data['optionalSubjectIds']),
   );
 }

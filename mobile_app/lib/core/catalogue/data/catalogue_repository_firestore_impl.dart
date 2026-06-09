@@ -1,4 +1,4 @@
-// CatalogueRepositoryFirestoreImpl — Story 1.1c.
+// CatalogueRepositoryFirestoreImpl — Story 1.1c + refactor Story 1.13.
 //
 // Implémentation Firestore du `CatalogueRepository`. Couche DATA — peut
 // importer Firebase, log et fpdart.
@@ -8,6 +8,21 @@
 //   - `orderBy('sortOrder')` quand applicable
 //   - Traduire toute `Exception` en `CatalogueFailure` (NFR-7)
 //   - Logger `AppLogger.i` au 1er succès, `AppLogger.w` aux erreurs gérables
+//
+// **Story 1.13 — refactor `snapshots()` → `get()`** :
+// - Cohérent CLAUDE.md règle 10.g + BASE-DE-DONNEES.md audit 2026-06-09
+// - 1 read facturé par doc à la première requête, puis cache offline natif
+// - Économie estimée ~80 % reads Firestore vs pattern stream v1
+// - Pas de réactivité runtime à l'admin Console (acceptable trade-off,
+//   admin agit rarement, redémarrage app suffit)
+//
+// **Story 1.13 — `derive()` v2** :
+// - DerivedProfile enrichi (pickerMode + obligatorySubjects + optionalSubjects
+//   + min/maxSubjects)
+// - 5 futures parallélisées via `Future.wait` (série + subjects + examTargets
+//   + obligatorySubjects + optionalSubjects)
+// - Helper privé `_fetchSubjectsByIds` factorisé 3×
+// - `canOptOut` source = série v2 (fallback rule)
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
@@ -32,42 +47,40 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
   static const String _kDerivationRules = 'derivation_rules';
 
   @override
-  Stream<List<Filiere>> watchFilieres() {
-    return _firestore
+  Future<List<Filiere>> fetchFilieres() async {
+    final qs = await _firestore
         .collection(_kFilieres)
         .where('isActive', isEqualTo: true)
         .orderBy('sortOrder')
-        .snapshots()
-        .map(
-          (qs) => qs.docs.map(filiereFromFirestore).toList(growable: false),
-        );
+        .get();
+    return qs.docs.map(filiereFromFirestore).toList(growable: false);
   }
 
   @override
-  Stream<List<Niveau>> watchNiveaux({String? subSystem, String? filiereId}) {
-    Query<Map<String, dynamic>> query = _firestore
-        .collection(_kNiveaux)
-        .where('isActive', isEqualTo: true);
+  Future<List<Niveau>> fetchNiveaux({
+    String? subSystem,
+    String? filiereId,
+  }) async {
+    Query<Map<String, dynamic>> query =
+        _firestore.collection(_kNiveaux).where('isActive', isEqualTo: true);
     if (subSystem != null) {
       query = query.where('subSystem', isEqualTo: subSystem);
     }
     if (filiereId != null) {
       query = query.where('filiereIds', arrayContains: filiereId);
     }
-    return query.orderBy('sortOrder').snapshots().map(
-          (qs) => qs.docs.map(niveauFromFirestore).toList(growable: false),
-        );
+    final qs = await query.orderBy('sortOrder').get();
+    return qs.docs.map(niveauFromFirestore).toList(growable: false);
   }
 
   @override
-  Stream<List<Serie>> watchSeries({
+  Future<List<Serie>> fetchSeries({
     String? subSystem,
     String? niveauId,
     String? filiereId,
-  }) {
-    Query<Map<String, dynamic>> query = _firestore
-        .collection(_kSeries)
-        .where('isActive', isEqualTo: true);
+  }) async {
+    Query<Map<String, dynamic>> query =
+        _firestore.collection(_kSeries).where('isActive', isEqualTo: true);
     if (subSystem != null) {
       query = query.where('subSystem', isEqualTo: subSystem);
     }
@@ -77,40 +90,35 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
     if (filiereId != null) {
       query = query.where('filiereId', isEqualTo: filiereId);
     }
-    return query.orderBy('sortOrder').snapshots().map(
-          (qs) => qs.docs.map(serieFromFirestore).toList(growable: false),
-        );
+    final qs = await query.orderBy('sortOrder').get();
+    return qs.docs.map(serieFromFirestore).toList(growable: false);
   }
 
   @override
-  Stream<List<Subject>> watchSubjects({String? subSystem}) {
-    Query<Map<String, dynamic>> query = _firestore
-        .collection(_kSubjects)
-        .where('isActive', isEqualTo: true);
+  Future<List<Subject>> fetchSubjects({String? subSystem}) async {
+    Query<Map<String, dynamic>> query =
+        _firestore.collection(_kSubjects).where('isActive', isEqualTo: true);
     if (subSystem != null) {
       query = query.where('subSystem', isEqualTo: subSystem);
     }
-    return query.orderBy('sortOrder').snapshots().map(
-          (qs) => qs.docs.map(subjectFromFirestore).toList(growable: false),
-        );
+    final qs = await query.orderBy('sortOrder').get();
+    return qs.docs.map(subjectFromFirestore).toList(growable: false);
   }
 
   @override
-  Stream<List<ExamTarget>> watchExamTargets({String? subSystem}) {
+  Future<List<ExamTarget>> fetchExamTargets({String? subSystem}) async {
     Query<Map<String, dynamic>> query = _firestore
         .collection(_kExamTargets)
         .where('isActive', isEqualTo: true);
     if (subSystem != null) {
       query = query.where('subSystem', isEqualTo: subSystem);
     }
-    return query.orderBy('sortOrder').snapshots().map(
-          (qs) =>
-              qs.docs.map(examTargetFromFirestore).toList(growable: false),
-        );
+    final qs = await query.orderBy('sortOrder').get();
+    return qs.docs.map(examTargetFromFirestore).toList(growable: false);
   }
 
   @override
-  Stream<List<DerivationRule>> watchDerivationRules({String? subSystem}) {
+  Future<List<DerivationRule>> fetchDerivationRules({String? subSystem}) async {
     Query<Map<String, dynamic>> query = _firestore
         .collection(_kDerivationRules)
         .where('isActive', isEqualTo: true);
@@ -118,11 +126,8 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
       query = query.where('matchSubSystem', isEqualTo: subSystem);
     }
     // Pas de orderBy('sortOrder') — derivation_rules n'a pas ce champ.
-    return query.snapshots().map(
-          (qs) => qs.docs
-              .map(derivationRuleFromFirestore)
-              .toList(growable: false),
-        );
+    final qs = await query.get();
+    return qs.docs.map(derivationRuleFromFirestore).toList(growable: false);
   }
 
   @override
@@ -167,47 +172,62 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
 
       final rule = candidates.first;
 
-      // 2. Résoudre subjects + exam_targets en parallèle (filtrer isActive).
-      //    Firestore `whereIn` limité à 30 — une rule typique a 5-10 subjects.
-      final subjectsFuture = rule.subjectIds.isEmpty
-          ? Future.value(<Subject>[])
-          : _firestore
-              .collection(_kSubjects)
-              .where(FieldPath.documentId, whereIn: rule.subjectIds)
-              .where('isActive', isEqualTo: true)
-              .get()
-              .then(
-                (qs) =>
-                    qs.docs.map(subjectFromFirestore).toList(growable: false),
-              );
+      // 2. NEW v2 — Récupérer la série en parallèle des subjects/examTargets/
+      //    obligatorySubjects/optionalSubjects (5 futures via Future.wait).
+      //    Pattern critique : latence max(5 reads) au lieu de sum(5 reads) —
+      //    gain ~3 RTT sur 3G Cameroun (~1.5s).
+      final Future<Serie?> serieFuture = (serie != null)
+          ? _firestore.collection(_kSeries).doc(serie).get().then(
+              (snap) => snap.exists ? serieFromFirestore(snap) : null,
+            )
+          : Future.value(null);
 
-      final examTargetsFuture = rule.examTargetIds.isEmpty
-          ? Future.value(<ExamTarget>[])
-          : _firestore
-              .collection(_kExamTargets)
-              .where(FieldPath.documentId, whereIn: rule.examTargetIds)
-              .where('isActive', isEqualTo: true)
-              .get()
-              .then(
-                (qs) => qs.docs
-                    .map(examTargetFromFirestore)
-                    .toList(growable: false),
-              );
+      final subjectsFuture = _fetchSubjectsByIds(rule.subjectIds);
+      final examTargetsFuture = _fetchExamTargetsByIds(rule.examTargetIds);
+      final obligatorySubjectsFuture =
+          _fetchSubjectsByIds(rule.obligatorySubjectIds);
+      final optionalSubjectsFuture =
+          _fetchSubjectsByIds(rule.optionalSubjectIds);
 
-      final results = await Future.wait([subjectsFuture, examTargetsFuture]);
-      final subjects = results[0] as List<Subject>;
-      final examTargets = results[1] as List<ExamTarget>;
+      final results = await Future.wait<dynamic>([
+        serieFuture,
+        subjectsFuture,
+        examTargetsFuture,
+        obligatorySubjectsFuture,
+        optionalSubjectsFuture,
+      ]);
+
+      final Serie? serieDoc = results[0] as Serie?;
+      final subjects = results[1] as List<Subject>;
+      final examTargets = results[2] as List<ExamTarget>;
+      final obligatorySubjects = results[3] as List<Subject>;
+      final optionalSubjects = results[4] as List<Subject>;
+
+      // 3. NEW v2 — canOptOut source de vérité = série (fallback rule)
+      final canOptOut = serieDoc?.canOptOut ?? rule.canOptOut;
+      // pickerMode default derived si pas de série (niveau sans série, ex.
+      // Form 5 anglo) — comportement v1 compat.
+      final pickerMode = serieDoc?.pickerMode ?? PickerMode.derived;
 
       AppLogger.i(
         'derive() OK: profile=($subSystem/$filiere/$niveau/${serie ?? "-"}) '
-        'subjects=${subjects.length} examTargets=${examTargets.length}',
+        'subjects=${subjects.length} examTargets=${examTargets.length} '
+        'obligatory=${obligatorySubjects.length} '
+        'optional=${optionalSubjects.length} '
+        'pickerMode=${pickerMode.name} '
+        'min=${serieDoc?.minSubjects ?? "-"} max=${serieDoc?.maxSubjects ?? "-"}',
       );
 
       return Right(
         DerivedProfile(
           subjects: subjects,
           examTargets: examTargets,
-          canOptOut: rule.canOptOut,
+          canOptOut: canOptOut,
+          pickerMode: pickerMode,
+          obligatorySubjects: obligatorySubjects,
+          optionalSubjects: optionalSubjects,
+          minSubjects: serieDoc?.minSubjects,
+          maxSubjects: serieDoc?.maxSubjects,
         ),
       );
     } on FirebaseException catch (e, st) {
@@ -221,6 +241,36 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
       AppLogger.w('derive() stack: $st');
       return Left(CatalogueFailure.networkError(e.toString()));
     }
+  }
+
+  /// Helper privé v2 — résout une liste d'IDs subjects vers leurs models.
+  ///
+  /// Factorisé 3× dans `derive()` : subjects (dérivés), obligatorySubjects,
+  /// optionalSubjects. Filtre `isActive == true` côté serveur.
+  /// Limite Firestore `whereIn` = 30 IDs (toutes rules v2 ≤ 17 — cf. Form 5
+  /// optionalSubjectIds 17 matières au choix O-Level).
+  Future<List<Subject>> _fetchSubjectsByIds(List<String> ids) async {
+    if (ids.isEmpty) return const [];
+    final qs = await _firestore
+        .collection(_kSubjects)
+        .where(FieldPath.documentId, whereIn: ids)
+        .where('isActive', isEqualTo: true)
+        .get();
+    return qs.docs.map(subjectFromFirestore).toList(growable: false);
+  }
+
+  /// Helper privé v2 — résout une liste d'IDs exam_targets vers leurs models.
+  ///
+  /// Symétrique de `_fetchSubjectsByIds` pour les examens visés. Filtre
+  /// `isActive == true` côté serveur.
+  Future<List<ExamTarget>> _fetchExamTargetsByIds(List<String> ids) async {
+    if (ids.isEmpty) return const [];
+    final qs = await _firestore
+        .collection(_kExamTargets)
+        .where(FieldPath.documentId, whereIn: ids)
+        .where('isActive', isEqualTo: true)
+        .get();
+    return qs.docs.map(examTargetFromFirestore).toList(growable: false);
   }
 
   @override
