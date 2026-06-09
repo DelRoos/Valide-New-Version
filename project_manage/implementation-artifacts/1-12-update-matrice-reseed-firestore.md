@@ -3,8 +3,11 @@ story_id: 1.12
 title: Update matrice.json v2 + re-seed Firestore valide-edu (alignement nomenclature officielle)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
+merge_commit: 7f3628d
+pr: 67
 baseline_commit: e1753d4  # merge contexte engine Story 1.12 (PR #66)
 estimation: M (~4h)
 sprint_change: sprint-change-proposal-2026-06-09.md (mergée commit 3f69c9d)
