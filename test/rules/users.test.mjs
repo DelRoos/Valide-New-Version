@@ -175,4 +175,56 @@ describe('Firestore rules — users/{uid}', () => {
       ),
     );
   });
+
+  // Story 1.15 — validation pickedSubjects subset derivedSubjects
+  // (Decision 3 pragmatique : pas de validation `obligatorySubjectIds`
+  // cote serveur, garantie client uniquement).
+
+  test('(l) update pickedSubjects valide (sous-ensemble derivedSubjects) -> OK', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertSucceeds(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          // alice = francophone Tle D, derivedSubjects = [math, pct, svt].
+          // Subset valide (3 oblig pour ce profil v1).
+          pickedSubjects: ['francophone_math', 'francophone_pct'],
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
+
+  test('(m) update pickedSubjects invalide (matiere hors derivedSubjects) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertFails(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          // 'anglophone_biology' n'existe pas dans derivedSubjects d'alice.
+          pickedSubjects: ['francophone_math', 'anglophone_biology'],
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
+
+  test('(n) update pickedSubjects vide (subset trivial) -> OK pragmatique', async () => {
+    // Pragmatique MVP : pas de validation cardinalite cote serveur. Si client
+    // bypass et POST une liste vide ou sans obligatoires, Firestore accepte
+    // mais profil est UX-casse (re-evaluable Epic 2+).
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertSucceeds(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          pickedSubjects: [],
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
 });

@@ -195,6 +195,37 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingOptOutValidateCta => 'Save';
 
   @override
+  String get onboardingPickerTitle => 'Choose your subjects';
+
+  @override
+  String get onboardingPickerSubtitle =>
+      'Select the subjects you\'ll sit for at your exam.';
+
+  @override
+  String get onboardingPickerObligatoryTitle => 'Mandatory subjects';
+
+  @override
+  String get onboardingPickerOptionalTitle => 'Optional subjects';
+
+  @override
+  String onboardingPickerCounterLive(int count, int max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You take $count/$max subjects',
+      one: 'You take 1/$max subject',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingPickerErrorObligatoryToast =>
+      'This subject is mandatory and cannot be removed.';
+
+  @override
+  String get onboardingPickerValidateCta => 'Confirm my choice';
+
+  @override
   String get onboardingRecapModifyLink => 'Edit my subjects';
 
   @override

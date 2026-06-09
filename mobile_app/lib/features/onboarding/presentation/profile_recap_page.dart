@@ -277,7 +277,7 @@ class _RecapDataView extends StatelessWidget {
                   : l10n.onboardingRecapModifyLink;
               return TextButton(
                 onPressed: () =>
-                    GoRouter.of(context).go('/onboarding/profile/opt-out'),
+                    GoRouter.of(context).go('/onboarding/profile/picker'),
                 child: Text(label),
               );
             },

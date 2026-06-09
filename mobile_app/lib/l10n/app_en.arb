@@ -82,6 +82,21 @@
     }
   },
   "onboardingOptOutValidateCta": "Save",
+
+  "onboardingPickerTitle": "Choose your subjects",
+  "onboardingPickerSubtitle": "Select the subjects you'll sit for at your exam.",
+  "onboardingPickerObligatoryTitle": "Mandatory subjects",
+  "onboardingPickerOptionalTitle": "Optional subjects",
+  "onboardingPickerCounterLive": "{count, plural, =1{You take 1/{max} subject} other{You take {count}/{max} subjects}}",
+  "@onboardingPickerCounterLive": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "onboardingPickerErrorObligatoryToast": "This subject is mandatory and cannot be removed.",
+  "onboardingPickerValidateCta": "Confirm my choice",
+
   "onboardingRecapModifyLink": "Edit my subjects",
 
   "onboardingAccountTitle": "Create your account",

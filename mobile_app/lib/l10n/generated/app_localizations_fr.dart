@@ -195,6 +195,37 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingOptOutValidateCta => 'Valider';
 
   @override
+  String get onboardingPickerTitle => 'Choisis tes matières';
+
+  @override
+  String get onboardingPickerSubtitle =>
+      'Sélectionne les matières que tu présentes à ton examen.';
+
+  @override
+  String get onboardingPickerObligatoryTitle => 'Matières obligatoires';
+
+  @override
+  String get onboardingPickerOptionalTitle => 'Matières au choix';
+
+  @override
+  String onboardingPickerCounterLive(int count, int max) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Tu présentes $count/$max matières',
+      one: 'Tu présentes 1/$max matière',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get onboardingPickerErrorObligatoryToast =>
+      'Cette matière est obligatoire et ne peut pas être retirée.';
+
+  @override
+  String get onboardingPickerValidateCta => 'Valider mon choix';
+
+  @override
   String get onboardingRecapModifyLink => 'Modifier mes matières';
 
   @override

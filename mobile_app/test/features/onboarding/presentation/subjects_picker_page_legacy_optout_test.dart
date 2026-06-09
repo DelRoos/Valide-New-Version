@@ -1,4 +1,10 @@
-// Story 1.4 AC2/AC7 — Widget tests SubjectsOptOutPage.
+// Story 1.4 + 1.15 AC6 — Widget tests SubjectsPickerPage mode legacy opt_out.
+//
+// Story 1.15 a refactore SubjectsOptOutPage en SubjectsPickerPage polymorphe
+// (dispatch sur DerivedProfile.pickerMode). Ce fichier de tests preserve le
+// pattern Story 1.4 a 100% (AC6 non-regression) en forcant explicitement
+// pickerMode: PickerMode.optOut dans _jamesProfile() pour atterrir sur le
+// rendu _LegacyOptOutBody (sinon default PickerMode.derived -> redirect recap).
 //
 // 3 cas :
 //   (a) page rendue avec 3 checkboxes initialement cochees (toutes incluses)
@@ -19,7 +25,7 @@ import 'package:valide_school/features/onboarding/domain/onboarding_flow_state.d
 import 'package:valide_school/features/onboarding/domain/profile_failure.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
 import 'package:valide_school/features/onboarding/domain/user_profile_repository.dart';
-import 'package:valide_school/features/onboarding/presentation/subjects_opt_out_page.dart';
+import 'package:valide_school/features/onboarding/presentation/subjects_picker_page.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
 import 'package:valide_school/l10n/generated/app_localizations.dart';
 
@@ -45,6 +51,12 @@ class _FakeRepo implements UserProfileRepository {
   @override
   Future<Either<ProfileFailure, void>> updateOptedOutSubjects(
     List<String> optedOutSubjectIds,
+  ) async =>
+      const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, void>> updatePickedSubjects(
+    List<String> pickedSubjectIds,
   ) async =>
       const Right(null);
 
@@ -90,6 +102,9 @@ DerivedProfile _jamesProfile() {
     ],
     examTargets: const [],
     canOptOut: true,
+    // Story 1.15 — force le mode legacy explicite pour atterrir sur
+    // _LegacyOptOutBody (sinon default PickerMode.derived -> redirect recap).
+    pickerMode: PickerMode.optOut,
   );
 }
 
@@ -132,7 +147,7 @@ Future<void> _pumpOptOut(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('en'),
-          home: const SubjectsOptOutPage(),
+          home: const SubjectsPickerPage(),
         ),
       ),
     ),
@@ -141,7 +156,7 @@ Future<void> _pumpOptOut(
 }
 
 void main() {
-  group('SubjectsOptOutPage — Story 1.4', () {
+  group('SubjectsPickerPage — Story 1.4 + 1.15 mode legacy opt_out', () {
     testWidgets(
       '(a) Page rendue : 3 checkboxes cochees + compteur "3 of 3 subjects"',
       (tester) async {

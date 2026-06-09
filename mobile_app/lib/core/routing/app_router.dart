@@ -18,7 +18,7 @@ import '../../features/onboarding/presentation/profile_recap_page.dart';
 import '../../features/onboarding/presentation/account_creation_page.dart';
 import '../../features/onboarding/presentation/school_picker_page.dart';
 import '../../features/onboarding/presentation/serie_choice_page.dart';
-import '../../features/onboarding/presentation/subjects_opt_out_page.dart';
+import '../../features/onboarding/presentation/subjects_picker_page.dart';
 import '../../features/onboarding/presentation/subsystem_choice_page.dart';
 import '../../features/onboarding/providers.dart';
 import '../../features/splash/presentation/splash_page.dart';
@@ -128,12 +128,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/onboarding/profile/recap',
         builder: (context, state) => const ProfileRecapPage(),
       ),
-      // Story 1.4 — page de retrait conditionnel des matieres (FR-3).
+      // Story 1.4 + 1.15 — page de selection des matieres polymorphe (FR-3).
       // Bypassee par le redirect Story 1.5 (toutes les routes /onboarding/* le
-      // sont). Guard in-component verifie derivedProfile.canOptOut.
+      // sont). Guard in-component dispatche sur DerivedProfile.pickerMode :
+      //   - derived            -> redirect recap (Fatou Tle D)
+      //   - optOut             -> _LegacyOptOutBody (James Upper Sixth S2)
+      //   - freeWithObligatory -> _FreeWithObligatoryBody (Mariam Form 5)
+      //   - seriesPlusOptional -> placeholder Story 1.16
+      //   - tvePicker          -> placeholder Story 1.17
       GoRoute(
-        path: '/onboarding/profile/opt-out',
-        builder: (context, state) => const SubjectsOptOutPage(),
+        path: '/onboarding/profile/picker',
+        builder: (context, state) => const SubjectsPickerPage(),
       ),
       // Story 1.6 — creation de compte Google/Apple (FR-5). Affichee
       // post-recap (Story 1.3 _onValidate succes navigue ici au lieu de
