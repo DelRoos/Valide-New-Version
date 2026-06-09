@@ -23,6 +23,17 @@
 //   + obligatorySubjects + optionalSubjects)
 // - Helper privé `_fetchSubjectsByIds` factorisé 3×
 // - `canOptOut` source = série v2 (fallback rule)
+//
+// **Story 1.17 — `derive()` v3** : TVEE Pro/Related/Other
+// - `await serieFuture` standalone EN PREMIER (1 RTT)
+// - PUIS `Future.wait` sur 7 futures en parallèle (subjects + examTargets +
+//   obligatorySubjects + optionalSubjects + professionalSubjects +
+//   relatedProfessionalSubjects + otherSubjects)
+// - 3 nouvelles lectures conditionnelles depuis `serieDoc.{professional,
+//   relatedProfessional, other}SubjectIds` — `_fetchSubjectsByIds([])` retourne
+//   `const []` immédiat pour les modes non-TVEE (préserve comportement v2)
+// - Trade-off latence : 2 RTT au lieu de 1 RTT, acceptable car one-shot +
+//   cache offline ensuite
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
@@ -172,38 +183,53 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
 
       final rule = candidates.first;
 
-      // 2. NEW v2 — Récupérer la série en parallèle des subjects/examTargets/
-      //    obligatorySubjects/optionalSubjects (5 futures via Future.wait).
-      //    Pattern critique : latence max(5 reads) au lieu de sum(5 reads) —
-      //    gain ~3 RTT sur 3G Cameroun (~1.5s).
-      final Future<Serie?> serieFuture = (serie != null)
-          ? _firestore.collection(_kSeries).doc(serie).get().then(
+      // 2. NEW v3 — Story 1.17 : résoudre la série EN PREMIER (1 RTT) afin
+      //    de pouvoir lire les listes TVEE (Pro/Related/Other) depuis la
+      //    Serie résolue. Trade-off : +1 RTT vs v2 mais nécessaire pour TVEE
+      //    sans casser le pattern d'isolation.
+      final Serie? serieDoc = (serie != null)
+          ? await _firestore.collection(_kSeries).doc(serie).get().then(
               (snap) => snap.exists ? serieFromFirestore(snap) : null,
             )
-          : Future.value(null);
+          : null;
 
+      // 3. Puis 7 futures en parallèle (1 RTT max).
+      //    - 4 futures héritées Story 1.13 (subjects + examTargets + oblig + opt)
+      //    - 3 futures NEW Story 1.17 (Pro + Related + Other depuis Serie).
+      //      Modes non-TVEE : listes Serie vides → `_fetchSubjectsByIds([])`
+      //      retourne `const []` immédiat (cf. helper ligne 253).
       final subjectsFuture = _fetchSubjectsByIds(rule.subjectIds);
       final examTargetsFuture = _fetchExamTargetsByIds(rule.examTargetIds);
       final obligatorySubjectsFuture =
           _fetchSubjectsByIds(rule.obligatorySubjectIds);
       final optionalSubjectsFuture =
           _fetchSubjectsByIds(rule.optionalSubjectIds);
+      final professionalSubjectsFuture =
+          _fetchSubjectsByIds(serieDoc?.professionalSubjectIds ?? const []);
+      final relatedProfessionalSubjectsFuture = _fetchSubjectsByIds(
+          serieDoc?.relatedProfessionalSubjectIds ?? const []);
+      final otherSubjectsFuture =
+          _fetchSubjectsByIds(serieDoc?.otherSubjectIds ?? const []);
 
       final results = await Future.wait<dynamic>([
-        serieFuture,
         subjectsFuture,
         examTargetsFuture,
         obligatorySubjectsFuture,
         optionalSubjectsFuture,
+        professionalSubjectsFuture,
+        relatedProfessionalSubjectsFuture,
+        otherSubjectsFuture,
       ]);
 
-      final Serie? serieDoc = results[0] as Serie?;
-      final subjects = results[1] as List<Subject>;
-      final examTargets = results[2] as List<ExamTarget>;
-      final obligatorySubjects = results[3] as List<Subject>;
-      final optionalSubjects = results[4] as List<Subject>;
+      final subjects = results[0] as List<Subject>;
+      final examTargets = results[1] as List<ExamTarget>;
+      final obligatorySubjects = results[2] as List<Subject>;
+      final optionalSubjects = results[3] as List<Subject>;
+      final professionalSubjects = results[4] as List<Subject>;
+      final relatedProfessionalSubjects = results[5] as List<Subject>;
+      final otherSubjects = results[6] as List<Subject>;
 
-      // 3. NEW v2 — canOptOut source de vérité = série (fallback rule)
+      // 4. NEW v2 — canOptOut source de vérité = série (fallback rule)
       final canOptOut = serieDoc?.canOptOut ?? rule.canOptOut;
       // pickerMode default derived si pas de série (niveau sans série, ex.
       // Form 5 anglo) — comportement v1 compat.
@@ -214,6 +240,9 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
         'subjects=${subjects.length} examTargets=${examTargets.length} '
         'obligatory=${obligatorySubjects.length} '
         'optional=${optionalSubjects.length} '
+        'pro=${professionalSubjects.length} '
+        'related=${relatedProfessionalSubjects.length} '
+        'other=${otherSubjects.length} '
         'pickerMode=${pickerMode.name} '
         'min=${serieDoc?.minSubjects ?? "-"} max=${serieDoc?.maxSubjects ?? "-"}',
       );
@@ -228,6 +257,10 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
           optionalSubjects: optionalSubjects,
           minSubjects: serieDoc?.minSubjects,
           maxSubjects: serieDoc?.maxSubjects,
+          // NEW v3 — Story 1.17
+          professionalSubjects: professionalSubjects,
+          relatedProfessionalSubjects: relatedProfessionalSubjects,
+          otherSubjects: otherSubjects,
         ),
       );
     } on FirebaseException catch (e, st) {

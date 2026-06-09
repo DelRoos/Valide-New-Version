@@ -446,6 +446,24 @@ abstract class AppLocalizations {
   /// **'Transversales optionnelles'**
   String get onboardingPickerTransversalesTitle;
 
+  /// Titre H3 section Professional Subjects (lockées) mode tve_picker TVEE (Story 1.17). Ex. pour ELET : Electrotechnique theory, Electrotechnique practical, Electrical machines.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières professionnelles (obligatoires)'**
+  String get onboardingPickerProfessionalTitle;
+
+  /// Titre H3 section Related Professional Subjects (lockées) mode tve_picker TVEE (Story 1.17). Ex. pour ELET : Mathematics for Industrial, Physics, Drawing.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières connexes (obligatoires)'**
+  String get onboardingPickerRelatedTitle;
+
+  /// Titre H3 section Other Subjects mode tve_picker TVEE (Story 1.17). Mix : EN+FR lockées + matières culturelles au choix (Hist/Geo/RS).
+  ///
+  /// In fr, this message translates to:
+  /// **'Autres matières'**
+  String get onboardingPickerOtherTitle;
+
   /// Compteur live mode free_with_obligatory. Couleur primaire si valide, danger sinon (Story 1.15).
   ///
   /// In fr, this message translates to:

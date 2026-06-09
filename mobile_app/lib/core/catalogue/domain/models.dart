@@ -352,6 +352,17 @@ class DerivationRule extends Equatable {
 /// - [optionalSubjects] : matières ajoutables (`pickerMode ==
 ///   seriesPlusOptional` / `freeWithObligatory`).
 /// - [minSubjects] / [maxSubjects] : null si pas de borne (mode derived).
+///
+/// **Story 1.17 — v3** : 3 nouveaux champs exposant la structure TVEE pour
+/// `_TvePickerBody` (mode `tvePicker` Eyong TVE AL Electrotechnique) :
+/// - [professionalSubjects] : matières Professional lockées (ex. ELET theory /
+///   practical / Electrical machines).
+/// - [relatedProfessionalSubjects] : matières Related lockées (ex. Math
+///   Industrial / Physics / Drawing).
+/// - [otherSubjects] : RÉSERVÉ FUTUR (Story 1.17 utilise [obligatorySubjects]
+///   pour EN+FR locked + [optionalSubjects] pour Hist/Geo/RS au choix). Le
+///   champ est présent pour cohérence schéma `Serie.otherSubjectIds` mais
+///   pas consommé par `_TvePickerBody` v1. Defaults vides pour rétrocompat.
 class DerivedProfile extends Equatable {
   const DerivedProfile({
     required this.subjects,
@@ -363,6 +374,10 @@ class DerivedProfile extends Equatable {
     this.optionalSubjects = const [],
     this.minSubjects,
     this.maxSubjects,
+    // NEW v3 — Story 1.17 (defaults vides, non-breaking).
+    this.professionalSubjects = const [],
+    this.relatedProfessionalSubjects = const [],
+    this.otherSubjects = const [],
   });
 
   final List<Subject> subjects;
@@ -376,6 +391,11 @@ class DerivedProfile extends Equatable {
   final int? minSubjects;
   final int? maxSubjects;
 
+  // NEW v3 — Story 1.17 (TVEE Pro/Related/Other)
+  final List<Subject> professionalSubjects;
+  final List<Subject> relatedProfessionalSubjects;
+  final List<Subject> otherSubjects;
+
   @override
   List<Object?> get props => [
         subjects,
@@ -386,6 +406,9 @@ class DerivedProfile extends Equatable {
         optionalSubjects,
         minSubjects,
         maxSubjects,
+        professionalSubjects,
+        relatedProfessionalSubjects,
+        otherSubjects,
       ];
 }
 

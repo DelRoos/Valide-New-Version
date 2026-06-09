@@ -214,6 +214,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPickerTransversalesTitle => 'Transversales optionnelles';
 
   @override
+  String get onboardingPickerProfessionalTitle =>
+      'Matières professionnelles (obligatoires)';
+
+  @override
+  String get onboardingPickerRelatedTitle => 'Matières connexes (obligatoires)';
+
+  @override
+  String get onboardingPickerOtherTitle => 'Autres matières';
+
+  @override
   String onboardingPickerCounterLive(int count, int max) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
