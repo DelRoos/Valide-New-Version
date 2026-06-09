@@ -3,9 +3,12 @@ story_id: 1.11a
 title: Audit matrice exhaustive v2 + ADR-016 modélisation + BASE-DE-DONNEES.md update
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
 baseline_commit: a9e0035ae0c17815d09be784c152393a86f57359
+merge_commit: afe5113
+pr: 61
 estimation: S (~3h)
 sprint_change: sprint-change-proposal-2026-06-09.md (mergé PR #59 commit 3f69c9d sur main e1eb9fa)
 dependencies:
@@ -38,7 +41,7 @@ amendments_downstream:
 
 # Story 1.11a — Audit matrice exhaustive v2 + ADR-016 modélisation + BASE-DE-DONNEES.md update
 
-Status: **ready-for-dev**
+Status: **done** — mergée main commit `afe5113` (PR #61) le 2026-06-09
 
 ## Objectif
 
