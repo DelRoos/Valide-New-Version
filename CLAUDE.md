@@ -159,6 +159,46 @@ Et pour les modes (`Fast` / `Coaching`) :
 8. **Models** : ne sortent jamais de `data/` — `toEntity()` à la frontière.
 9. **Firestore indexes — source de vérité = `firestore.indexes.json`**. Toute PR qui ajoute ou modifie une requête Firestore avec **multi-`where`** ou **`where` + `orderBy`** sur champs différents DOIT déclarer le composite index correspondant dans `firestore.indexes.json` (racine du repo) **et** le déployer via `firebase deploy --only firestore:indexes --project valide-edu`. Critères qui imposent un index composite : (a) plus d'un `.where(...)` sur champs différents (incl. `arrayContains`), (b) `.where(...)` + `.orderBy(...)` sur des champs distincts, (c) requête `collectionGroup`. Les requêtes par ID de document (`.doc(id).get()`, `.snapshots()`) et les requêtes single-field sont auto-indexées par Firestore — pas besoin de déclaration. **Ne jamais créer un index uniquement via la console Firebase** : la déclaration locale est l'autorité (sinon staging/CI/nouveau projet repartent à zéro). Pour aligner après création console manuelle : `firebase firestore:indexes --project valide-edu > tmp.json` puis merger dans `firestore.indexes.json`.
 
+10. **Modélisation Firestore optimisée pour lecture, latence et coût**. Firestore est facturé **par document lu** (pas par octet), et chaque écran chargé sur le réseau camerounais (2G/3G dégradé) coûte en latence ET en consommation data utilisateur. Toute nouvelle collection, sous-collection, requête ou champ DOIT être conçu en suivant les principes ci-dessous. Si une story propose une modélisation qui les viole sans justification écrite (ex. trade-off explicite vs simplicité MVP), **stop et signale à l'utilisateur** avant de coder.
+
+    **a. Modéliser par requête, pas par entité.** Identifie les 1-3 lectures principales d'un écran AVANT de définir la structure. Un seul `.get()` ou `.snapshots()` par écran cible idéal. Si un écran nécessite >3 reads pour s'afficher, c'est un signal fort de remodélisation (dénormalisation, composition de champ, sous-collection).
+
+    **b. Dénormalisation > jointures.** Firestore n'a pas de JOIN. Au lieu de stocker `userId` puis lire `users/{userId}` séparément, **dupliquer** les champs lus fréquemment (`userDisplayName`, `userPhotoUrl`) dans le document parent. Trade-off accepté : écritures plus coûteuses (multi-doc updates via `WriteBatch` ou Cloud Function), lectures massivement moins chères. Pour Valide School : dupliquer `schoolName` dans `users/{uid}` plutôt que re-fetch `schools/{schoolId}` à chaque ouverture dashboard.
+
+    **c. Plafonner `limit()` et paginer.** Aucune requête `collection().get()` sans `.limit(N)` explicite. Les listes paginées utilisent `startAfterDocument(lastDoc)` (curseur), jamais `offset()` (Firestore facture les docs sautés). Cibles V1 : `limit(20)` pour les listes UI, `limit(10)` pour les autocomplete (recherche école Story 1.7), `limit(50)` max pour les flux temps réel.
+
+    **d. Préfiltrer côté serveur — pas dans Flutter.** Toute logique de filtrage métier (`isActive: true`, `subSystem == 'francophone'`, etc.) doit passer par `.where(...)` dans la requête, jamais en `.where((doc) => ...)` côté Dart après réception. Filtrer côté client = lire et facturer des docs inutiles.
+
+    **e. `arrayContains` plutôt que sous-collection pour les listes courtes (<10 éléments).** Pour les relations N-M de petite taille (matières d'une série, examens visés), un champ `subjectIds: string[]` indexé par `arrayContains` coûte 1 read vs N reads via sous-collection. Au-delà de 10-15 éléments, basculer en sous-collection avec pagination.
+
+    **f. Sous-collection vs racine — règle de propagation.** Une sous-collection (`users/{uid}/sessions/{sid}`) coûte la même chose qu'une collection racine en lecture **mais** elle est invisible aux requêtes globales (sauf `collectionGroup` — exige un index composite explicite, cf. règle 9). Choisir sous-collection quand : (a) les docs n'ont de sens que dans le contexte du parent, (b) on veut une isolation des règles Firestore par parent. Choisir racine quand : on veut interroger globalement OU partager entre utilisateurs.
+
+    **g. Streams `snapshots()` — uniquement sur data mutable.** Chaque snapshot listener actif facture **1 read par doc à chaque update** + 1 read initial. Réserver `snapshots()` aux écrans dont la donnée change pendant la session (chat, statut paiement). Pour la donnée statique (catalogue scolaire, contenu pédagogique, profil utilisateur immuable), **toujours** `.get()` (cache offline Firestore prend le relais, cf. règle 5). Anti-pattern explicite : `.snapshots()` sur la collection `subjects` ou `derivation_rules` (changent rarement → gaspillage).
+
+    **h. Cache offline par défaut, source explicite si critique.** Sauf raison forte, accepter le cache Firestore natif (`Source.serverAndCache`). Forcer `Source.server` uniquement quand la fraîcheur est non négociable (paiement, suppression compte). Forcer `Source.cache` uniquement pour des UX explicites (mode offline, écran de chargement instantané avant refresh).
+
+    **i. Aggrégations — `count()` server-side > scan côté client.** Pour les compteurs (nombre de stories vues, total quiz réussis), utiliser `query.count()` (1 read facturé pour le résultat, pas N docs). Ne JAMAIS faire `.get()` + `.length` côté Dart pour compter.
+
+    **j. Champs lourds isolés en sous-doc.** Les blobs (Markdown long de cours, JSON de quiz complet) doivent vivre dans un sous-document ou Cloud Storage, **pas** dans le document parent listé en grille. Sinon chaque scroll d'une grille de 20 cours = 20 reads de 50 KB = data + latence. Pattern : `lessons/{lid}` (métadonnées listables : titre, icône, durée) + `lessons/{lid}/content/main` (Markdown lourd lu uniquement à l'ouverture).
+
+    **k. Identifiants stables et déterministes en chemin de lecture critique.** Privilégier les lectures par ID (`.doc(id).get()` — auto-indexé, 1 read, 0 latence d'index) plutôt que par requête (`.where(...).limit(1).get()` — 1 read + temps d'index). Quand un objet est lu via un ID connu (uid utilisateur, examTargetId, subjectId), structurer le chemin pour le permettre.
+
+    **l. Mises à jour partielles — `update()` ou `set(merge: true)`.** Ne jamais réécrire un doc entier pour modifier un champ : utiliser `update({champ: valeur})` ou `set(payload, SetOptions(merge: true))`. Préserve les champs absents du payload + évite les race conditions. Pattern obligatoire dans toutes les `*_repository_impl.dart` (cf. Stories 1.3, 1.4, 1.6, 1.7, 1.10, 1.12).
+
+    **m. Cost-benefit documenté dans la story.** Toute story qui introduit une nouvelle collection, un nouvel index composite, un nouveau `snapshots()` ou une dénormalisation DOIT inclure dans ses Dev Notes une estimation : **(i) nombre de reads/écriture par session utilisateur moyenne**, **(ii) volumétrie estimée à 10 000 utilisateurs**, **(iii) trade-off accepté vs alternative**. Si non documenté, c'est un rouge en revue.
+
+    **Anti-patterns interdits** :
+    - ❌ Lire toute une collection sans `limit()`
+    - ❌ `snapshots()` sur du catalogue (matières, séries, niveaux) ou contenu pédagogique statique
+    - ❌ Filtrer en Dart ce qui peut être filtré en `.where(...)` Firestore
+    - ❌ N+1 reads (boucler une liste et lire chaque détail séparément quand une dénormalisation l'aurait évité)
+    - ❌ Écrire un doc entier pour modifier 1 champ
+    - ❌ `offset()` pour paginer (utiliser `startAfterDocument`)
+    - ❌ Stocker des blobs (>10 KB Markdown, JSON exam complet) dans un doc qui sera listé en grille
+    - ❌ Re-fetcher des champs déjà disponibles dans le doc déjà lu
+
+    **Réfs** : [Firestore data model](https://firebase.google.com/docs/firestore/data-model) + [Firestore pricing](https://firebase.google.com/docs/firestore/pricing) + [BASE-DE-DONNEES.md](doc/partage/BASE-DE-DONNEES.md) (schéma autoritaire).
+
 ### Cross-platform & responsive (V1 = Android + iOS, phone + tablet)
 
 1. **Pas de code plateforme-spécifique non isolé.** Tout `if (Platform.isAndroid)` ou `if (Platform.isIOS)` est confiné à `core/platform/*` (un wrapper par capability divergente : silent mode detection, haptic mapping, etc.). Les couches `domain` et `presentation` ne `import 'dart:io'` jamais.
