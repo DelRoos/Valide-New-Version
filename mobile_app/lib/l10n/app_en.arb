@@ -135,5 +135,37 @@
   "dashboardTabHome": "Home",
   "dashboardTabSubjects": "Subjects",
   "dashboardTabActivities": "Activities",
-  "dashboardTabProfile": "Profile"
+  "dashboardTabProfile": "Profile",
+
+  "dashboardTabSettingsCta": "Settings",
+  "profileSettingsTitle": "Settings",
+  "profileSettingsAccountSection": "My account",
+  "profileSettingsDangerSection": "Danger zone",
+  "profileSettingsDeleteCta": "Delete my account",
+  "profileSettingsDeleteSubtitle": "This action is irreversible after 7 days.",
+  "profileSettingsVisitorMessage": "Create a permanent account first to delete it",
+  "profileSettingsCreateAccountCta": "Create my account",
+  "profileSettingsLinkedAccount": "Linked account",
+  "accountDeletionConfirmTitle": "Are you sure?",
+  "accountDeletionConfirmBody": "Your account will be deleted in 7 days. You can cancel at any time by signing back in during this period.",
+  "accountDeletionConfirmCta": "Confirm deletion",
+  "accountDeletionRequestedToast": "Request saved. Sign back in before {date} to cancel.",
+  "@accountDeletionRequestedToast": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "accountDeletionScheduledBanner": "Your account will be deleted on {date}. Tap to cancel.",
+  "@accountDeletionScheduledBanner": {
+    "placeholders": {
+      "date": { "type": "String" }
+    }
+  },
+  "accountDeletionCancelConfirmTitle": "Cancel deletion?",
+  "accountDeletionCancelConfirmBody": "Your account will not be deleted. You can still request deletion later.",
+  "accountDeletionCancelConfirmCta": "Yes, cancel deletion",
+  "accountDeletionKeepDeletionCta": "No, keep deletion",
+  "accountDeletionCancelledToast": "Deletion cancelled.",
+  "accountDeletionAutoCancelledToast": "Your account is active again.",
+  "accountDeletionNotAvailableToast": "Feature coming soon."
 }

@@ -637,6 +637,132 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Profil'**
   String get dashboardTabProfile;
+
+  /// Bouton secondaire sur le placeholder de l'onglet Profil (Story 1.9 modifie 1.10) qui nav vers /profil/settings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paramètres'**
+  String get dashboardTabSettingsCta;
+
+  /// Titre AppBar ProfileSettingsPage (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Paramètres'**
+  String get profileSettingsTitle;
+
+  /// Titre de la section info compte sur ProfileSettingsPage (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon compte'**
+  String get profileSettingsAccountSection;
+
+  /// Titre de la section danger zone (Story 1.10 AC2). Annonce visuellement l'action destructive.
+  ///
+  /// In fr, this message translates to:
+  /// **'Zone de danger'**
+  String get profileSettingsDangerSection;
+
+  /// CTA danger qui ouvre la modale de confirmation suppression (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Supprimer mon compte'**
+  String get profileSettingsDeleteCta;
+
+  /// Texte explicatif sous la section danger zone (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Cette action est irréversible après 7 jours.'**
+  String get profileSettingsDeleteSubtitle;
+
+  /// Message info affiche aux visiteurs Anonymous Auth a la place de la danger zone (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Crée d\'abord un compte permanent pour pouvoir le supprimer'**
+  String get profileSettingsVisitorMessage;
+
+  /// Bouton secondary pour visiteur vers /onboarding/account (Story 1.10 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Créer mon compte'**
+  String get profileSettingsCreateAccountCta;
+
+  /// Fallback affiche dans la section Mon compte quand l'email du provider n'est pas disponible (cas Apple Sign-In avec email masque).
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte lié'**
+  String get profileSettingsLinkedAccount;
+
+  /// Titre AlertDialog de confirmation suppression (Story 1.10 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Es-tu sûr ?'**
+  String get accountDeletionConfirmTitle;
+
+  /// Corps AlertDialog confirmation (Story 1.10 AC4). Explicite la grace 7j.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte sera supprimé dans 7 jours. Tu peux annuler à tout moment en te reconnectant pendant cette période.'**
+  String get accountDeletionConfirmBody;
+
+  /// Bouton danger dans la modale confirmation (Story 1.10 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer la suppression'**
+  String get accountDeletionConfirmCta;
+
+  /// Toast info apres succes requestAccountDeletion (Story 1.10 AC4). {date} = J+7 format DD/MM/YYYY.
+  ///
+  /// In fr, this message translates to:
+  /// **'Demande enregistrée. Reconnecte-toi avant le {date} pour annuler.'**
+  String accountDeletionRequestedToast(String date);
+
+  /// Texte banner warning sur DashboardPage si deletionRequestedAt non null (Story 1.10 AC5). {date} = deletionRequestedAt + 7j.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte sera supprimé le {date}. Toucher pour annuler.'**
+  String accountDeletionScheduledBanner(String date);
+
+  /// Titre AlertDialog d'annulation suppression depuis banner dashboard (Story 1.10 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Annuler la suppression ?'**
+  String get accountDeletionCancelConfirmTitle;
+
+  /// Corps AlertDialog annulation (Story 1.10 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte ne sera plus supprimé. Tu peux toujours en demander la suppression plus tard.'**
+  String get accountDeletionCancelConfirmBody;
+
+  /// Bouton primary qui declenche cancelAccountDeletion (Story 1.10 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Oui, annuler la suppression'**
+  String get accountDeletionCancelConfirmCta;
+
+  /// Bouton secondary qui ferme la modale sans annuler (Story 1.10 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Non, garder la suppression'**
+  String get accountDeletionKeepDeletionCta;
+
+  /// Toast info apres succes manuel cancelAccountDeletion (Story 1.10 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Suppression annulée.'**
+  String get accountDeletionCancelledToast;
+
+  /// Toast info apres auto-cancel au boot (Story 1.10 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte est de nouveau actif.'**
+  String get accountDeletionAutoCancelledToast;
+
+  /// Toast warning si Cloud Function non deployee cote backend (Story 1.10 fallback gracefull, CONTRATS-API.md cancelAccountDeletion en attente accord backend).
+  ///
+  /// In fr, this message translates to:
+  /// **'Fonctionnalité bientôt disponible.'**
+  String get accountDeletionNotAvailableToast;
 }
 
 class _AppLocalizationsDelegate

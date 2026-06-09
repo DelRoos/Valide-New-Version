@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
+import '../../features/account/presentation/profile_settings_page.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
 import '../../features/dashboard/presentation/placeholder_tab_page.dart';
 import '../../features/dashboard/presentation/subject_detail_placeholder_page.dart';
@@ -101,6 +102,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/profil',
         builder: (context, state) =>
             const PlaceholderTabPage(title: 'Profil', tabIndex: 3),
+      ),
+      // Story 1.10 — page parametres (suppression compte FR-7). Sous-route
+      // de /profil, accessible via bouton "Parametres" sur le placeholder.
+      GoRoute(
+        path: '/profil/settings',
+        builder: (context, state) => const ProfileSettingsPage(),
       ),
       // Story 1.2 — premier ecran utilisateur (FR-1 + ADR-006). Affichee par
       // le redirect global ci-dessus quand subSystem absent en SharedPreferences.

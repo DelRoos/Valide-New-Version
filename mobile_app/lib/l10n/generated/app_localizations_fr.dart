@@ -322,4 +322,77 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardTabProfile => 'Profil';
+
+  @override
+  String get dashboardTabSettingsCta => 'Paramètres';
+
+  @override
+  String get profileSettingsTitle => 'Paramètres';
+
+  @override
+  String get profileSettingsAccountSection => 'Mon compte';
+
+  @override
+  String get profileSettingsDangerSection => 'Zone de danger';
+
+  @override
+  String get profileSettingsDeleteCta => 'Supprimer mon compte';
+
+  @override
+  String get profileSettingsDeleteSubtitle =>
+      'Cette action est irréversible après 7 jours.';
+
+  @override
+  String get profileSettingsVisitorMessage =>
+      'Crée d\'abord un compte permanent pour pouvoir le supprimer';
+
+  @override
+  String get profileSettingsCreateAccountCta => 'Créer mon compte';
+
+  @override
+  String get profileSettingsLinkedAccount => 'Compte lié';
+
+  @override
+  String get accountDeletionConfirmTitle => 'Es-tu sûr ?';
+
+  @override
+  String get accountDeletionConfirmBody =>
+      'Ton compte sera supprimé dans 7 jours. Tu peux annuler à tout moment en te reconnectant pendant cette période.';
+
+  @override
+  String get accountDeletionConfirmCta => 'Confirmer la suppression';
+
+  @override
+  String accountDeletionRequestedToast(String date) {
+    return 'Demande enregistrée. Reconnecte-toi avant le $date pour annuler.';
+  }
+
+  @override
+  String accountDeletionScheduledBanner(String date) {
+    return 'Ton compte sera supprimé le $date. Toucher pour annuler.';
+  }
+
+  @override
+  String get accountDeletionCancelConfirmTitle => 'Annuler la suppression ?';
+
+  @override
+  String get accountDeletionCancelConfirmBody =>
+      'Ton compte ne sera plus supprimé. Tu peux toujours en demander la suppression plus tard.';
+
+  @override
+  String get accountDeletionCancelConfirmCta => 'Oui, annuler la suppression';
+
+  @override
+  String get accountDeletionKeepDeletionCta => 'Non, garder la suppression';
+
+  @override
+  String get accountDeletionCancelledToast => 'Suppression annulée.';
+
+  @override
+  String get accountDeletionAutoCancelledToast =>
+      'Ton compte est de nouveau actif.';
+
+  @override
+  String get accountDeletionNotAvailableToast =>
+      'Fonctionnalité bientôt disponible.';
 }

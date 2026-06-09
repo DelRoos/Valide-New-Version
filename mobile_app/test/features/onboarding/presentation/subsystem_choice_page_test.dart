@@ -49,9 +49,16 @@ void main() {
             overrides: [
               sharedPreferencesProvider.overrideWithValue(prefs),
               appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-              // Story 1.5 — bypass garde profil-incomplet (Firebase indispo en test).
               profileCompletionProvider.overrideWith(
                 (ref) => Stream.value(ProfileCompletionState.complete),
+              ),
+              // Story 1.10 — ValideApp ref.watch autoAccountDeletionCancellerProvider
+              // qui lit userProfileRepository -> firebase crash sans overrides.
+              firebaseAuthProvider.overrideWithValue(
+                FakeAuth(isAnonymous: false, displayName: null),
+              ),
+              userProfileRepositoryProvider.overrideWithValue(
+                FakeUserProfileRepository(profileData: null),
               ),
             ],
             child: const ValideApp(),
@@ -77,9 +84,16 @@ void main() {
             overrides: [
               sharedPreferencesProvider.overrideWithValue(prefs),
               appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
-              // Story 1.5 — bypass garde profil-incomplet (Firebase indispo en test).
               profileCompletionProvider.overrideWith(
                 (ref) => Stream.value(ProfileCompletionState.complete),
+              ),
+              // Story 1.10 — ValideApp ref.watch autoAccountDeletionCancellerProvider
+              // qui lit userProfileRepository -> firebase crash sans overrides.
+              firebaseAuthProvider.overrideWithValue(
+                FakeAuth(isAnonymous: false, displayName: null),
+              ),
+              userProfileRepositoryProvider.overrideWithValue(
+                FakeUserProfileRepository(profileData: null),
               ),
             ],
             child: const ValideApp(),
