@@ -3,10 +3,11 @@ story_id: 1.9
 title: Dashboard skeleton + filtrage matieres par profil (FR-10 partiel)
 epic: 1
 phase: P1
-status: review
+status: done
 created: 2026-06-08
 branch: feat/1.9-dashboard-skeleton-filtrage-profil
 baseline_commit: b14af4d  # merge PR #54 (cloture 1.7 + contexte 1.9)
+merge_commit: 9fa64bc  # PR #55 mergee 2026-06-08
 estimation: M (~5h)
 dependencies:
   - 1.1c  # CatalogueRepository (utilise indirectement via derivedProfile + isActive filter cote Firestore)
@@ -29,7 +30,7 @@ sourceArtifacts:
 
 # Story 1.9 — Dashboard skeleton + filtrage matieres par profil (FR-10 partiel)
 
-Status: **review**
+Status: **done**
 
 > **AMENDED 2026-06-05** (sprint change) : la grille matieres filtre `derivedSubjects \ optedOutSubjects` par `subject.isActive == true` lu depuis Firestore via `CatalogueRepository`. Une matiere desactivee admin runtime disparait automatiquement de la grille au prochain stream tick. **Note d'implementation** : `effectiveDerivedSubjectsProvider` Story 1.4 consomme `derivedProfileProvider` qui appelle `catalogueRepository.derive()` qui filtre deja `where(isActive == true)` (Story 1.1c). Donc AMENDED est satisfait sans code supplementaire — verifier juste que le stream tick rafraichit bien quand l'admin desactive une matiere.
 
