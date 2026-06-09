@@ -3,8 +3,11 @@ story_id: 1.15
 title: SubjectsOptOutPage → SubjectsPickerPage polymorphe (modes derived / opt_out legacy / free_with_obligatory O-Level — Mariam Form 5)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
+merge_commit: 9ec62dd  # PR #78 merge (dev commit 664aa63)
+pr: 78
 baseline_commit: cf2d102  # merge PR #77 (contexte engine Story 1.15) — main aligné post Stories 1.11a/1.11b/1.12/1.13/1.14 done
 estimation: M (~5h)
 sprint_change: sprint-change-proposal-2026-06-09.md
