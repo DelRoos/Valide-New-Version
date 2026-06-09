@@ -38,7 +38,7 @@ Si l'admin recalcule ces valeurs avec une formule différente du backend, elle a
 
 ## 1. Dérivation profil → matières + examens
 
-**Statut** : 🟢 Validé Story 1.1a (pivot Firestore-driven, cf. [ADR-015](../../project_manage/planning-artifacts/architecture/adrs/ADR-015-catalogue-firestore-runtime-activation.md)).
+**Statut** : 🟢 Validé Story 1.1a (pivot Firestore-driven, cf. [ADR-015](../../project_manage/planning-artifacts/architecture/adrs/ADR-015-catalogue-firestore-runtime-activation.md)). **Étendu Story 1.11a** (catalogue v2 alignement nomenclature officielle, cf. [ADR-016](../../project_manage/planning-artifacts/architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md)) : retour enrichi `DerivedProfile` v2 avec champs `pickerMode`, `obligatorySubjects`, `optionalSubjects`, `minSubjects`, `maxSubjects`. Non-breaking via defaults safe (`pickerMode == 'derived'` par défaut).
 
 **Lieu d'exécution V1** : Helper Dart pur dans `CatalogueRepository.derive()` (mobile, Story 1.1c). Résultat retourné via `Either<CatalogueFailure, DerivedProfile>` (NFR-7) et persisté dans `users/{uid}.derivedSubjects` et `users/{uid}.examTargets` au moment de la création du profil (Story 1.3).
 
@@ -55,29 +55,73 @@ Si l'admin recalcule ces valeurs avec une formule différente du backend, elle a
 ### Algorithme
 
 ```typescript
-// 1. Match la première derivation_rule active compatible
-rule = derivation_rules.firstWhere(r =>
-    r.isActive
-    && r.matchSubSystem === user.subSystem
-    && (r.matchFiliere === "*" || r.matchFiliere === user.filiere)
-    && r.matchNiveau === user.niveau
-    && (r.matchSerie === null || r.matchSerie === user.serie)
-)
+// v2 Story 1.11a — DerivedProfile enrichi (non-breaking via defaults safe)
+interface DerivedProfile {
+  // v1 (existant Story 1.1c)
+  subjects: Subject[];                  // matières dérivées
+  examTargets: ExamTarget[];            // examens visés
+  canOptOut: boolean;                   // retrait autorisé (legacy mode opt_out)
 
-// 2. Résoudre les references vers subjects + exam_targets (filtrer isActive)
-subjects = rule.subjectIds.map(id =>
-    subjects.firstWhere(s => s.subjectId === id && s.isActive)
-)
-examens = rule.examTargetIds.map(id =>
-    exam_targets.firstWhere(e => e.examTargetId === id && e.isActive)
-)
+  // NEW v2 Story 1.11a (impl Story 1.13)
+  pickerMode: PickerMode;               // default 'derived' si pickerMode absent sur series Firestore
+  obligatorySubjects: Subject[];        // sous-ensemble de subjects, non décochable (modes free_with_obligatory + tve_picker)
+  optionalSubjects: Subject[];          // matières ajoutables (transversales A-Level + Other Subjects TVEE)
+  minSubjects: number | null;           // null = pas de min (mode 'derived')
+  maxSubjects: number | null;
+}
+
+type PickerMode =
+  | 'derived'               // default : matières dérivées non modifiables (Tle franco)
+  | 'opt_out'               // legacy Story 1.4 : retrait simple (Lower/Upper Sixth A-Level avant 1.16)
+  | 'free_with_obligatory'  // O-Level Form 3-5 : sélection libre 6-11 + obligatoires
+  | 'series_plus_optional'  // A-Level Lower/Upper Sixth : Series fixe + transversales optionnelles, max 5
+  | 'tve_picker';           // TVEE : Professional + Related obligatoires + Other libres
+
+function derive(profile: Profile): Either<CatalogueFailure, DerivedProfile> {
+  // 1. Match la première derivation_rule active compatible (v1, inchangé)
+  rule = derivation_rules.firstWhere(r =>
+      r.isActive
+      && r.matchSubSystem === user.subSystem
+      && (r.matchFiliere === "*" || r.matchFiliere === user.filiere)
+      && r.matchNiveau === user.niveau
+      && (r.matchSerie === null || r.matchSerie === user.serie)
+  );
+  if (!rule) return Left(CatalogueFailure.noMatchingRule(profile));
+
+  // 2. Résoudre les references vers subjects + exam_targets (filtrer isActive)
+  subjects = rule.subjectIds.map(id =>
+      subjects.firstWhere(s => s.subjectId === id && s.isActive)
+  );
+  examens = rule.examTargetIds.map(id =>
+      exam_targets.firstWhere(e => e.examTargetId === id && e.isActive)
+  );
+
+  // 3. NEW v2 Story 1.11a — récupérer la série pour pickerMode + min/max
+  series = getSeries(profile.serieId);
+
+  // 4. NEW v2 Story 1.11a — defaults safe pour rétrocompat v1
+  pickerMode = series.pickerMode ?? 'derived';
+  minSubjects = series.minSubjects ?? null;
+  maxSubjects = series.maxSubjects ?? null;
+
+  // 5. NEW v2 Story 1.11a — obligatoires / optionnelles
+  obligatorySubjects = (rule.obligatorySubjectIds ?? []).map(id => /* map vers Subject */);
+  optionalSubjects = (rule.optionalSubjectIds ?? []).map(id => /* map vers Subject */);
+
+  return Right({
+    subjects, examTargets: examens,
+    canOptOut: series.canOptOut ?? false,
+    pickerMode, obligatorySubjects, optionalSubjects,
+    minSubjects, maxSubjects,
+  });
+}
 ```
 
 **Cas pas de match** : `derive()` retourne `Left(CatalogueFailure.noMatchingRule(profile))` — l'écran récap (Story 1.3) affiche un message d'erreur clair et permet à l'utilisateur de corriger son profil. Ne devrait pas arriver en pratique si la matrice catalogue est complète (cf. AC1 Story 1.1a → 🟢).
 
 **Cas catalogue vide + offline** : `derive()` n'est même pas atteint — l'écran « En attente de connexion » bloquant (UX-DR-24, Story 1.1c) est affiché en amont. Cf. ADR-015 § Conséquences négatives.
 
-### Règles d'exception (retrait de matières)
+### Règles d'exception (retrait de matières) — v1 legacy
 
 L'élève peut retirer une matière de `derivedSubjects` (la mettre dans `optedOutSubjects`) **uniquement dans les cas suivants** :
 
@@ -88,9 +132,36 @@ Source runtime : flag `series/{id}.canOptOut: bool` Firestore. Story 1.4 lit ce 
 
 Dans tous les autres cas, `optedOutSubjects` doit être vide. La règle Firestore `users/{uid}` (Story 1.4) valide `optedOutSubjects ⊂ derivedSubjects` côté serveur.
 
+⚠️ **Étendu Story 1.11a** (ADR-016) : Story 1.4 implémente le mode legacy `opt_out`. Les Stories 1.15-1.17 étendent à 4 autres modes via `series.pickerMode`. Le mode `opt_out` reste actif pour rétrocompat (profils existants Story 1.4) et continue à utiliser `optedOutSubjects`. Les nouveaux modes utilisent le champ `users/{uid}.pickedSubjects` à la place (cf. § « Modes panier (PickerMode) v2 » ci-dessous).
+
+### Modes panier (PickerMode) — v2 Story 1.11a
+
+| Mode | Sémantique | Validation client UI | Validation Firestore rule | Champ users |
+|---|---|---|---|---|
+| `derived` | Matières dérivées non modifiables (default Tle franco A/C/D/E v1) | Aucune (pas de page picker) | `pickedSubjects` non utilisé | aucun |
+| `opt_out` | Retrait simple (legacy Story 1.4 — Anglo Form 3-5, Lower/Upper Sixth avant 1.16) | `optedOutSubjects ⊂ derivedSubjects` | `optedOutSubjects ⊂ derivedSubjects` (v1) | `optedOutSubjects` |
+| `free_with_obligatory` | Sélection libre min-max avec obligatoires (O-Level Form 3-5, Story 1.15) | min/max + obligatoires non décochables | `pickedSubjectsValid()` | `pickedSubjects` |
+| `series_plus_optional` | Series fige + transversales (A-Level Lower/Upper Sixth, Story 1.16) | max 5 incl. Series | `pickedSubjectsValid()` | `pickedSubjects` |
+| `tve_picker` | Professional + Related obligatoires + Other libres (TVEE IL/AL, Story 1.17) | min/max + Professional + Related obligatoires | `pickedSubjectsValid()` | `pickedSubjects` |
+
+**Règle Firestore commune `pickedSubjectsValid()`** (cf. ADR-016 § Décision 4 + BASE-DE-DONNEES.md) :
+
+```javascript
+function pickedSubjectsValid(data) {
+  let picked = data.get('pickedSubjects', []).toSet();
+  let derived = data.derivedSubjects.toSet();
+  let obligatory = data.get('obligatorySubjectIds', []).toSet();
+  let optional = data.get('optionalSubjectIds', []).toSet();
+  return picked.difference(derived.union(optional)).size() == 0   // picked ⊂ allowed
+      && obligatory.difference(picked).size() == 0;                // obligatoires présents
+}
+```
+
+Cette règle est ajoutée par Story 1.15 au bloc `match /users/{uid}` de `firestore.rules`. Validation client (UI) + serveur duppliquée pour UX rapide + intégrité.
+
 ### Référence pour les matières dérivables
 
-Voir [DONNEES-REFERENCE.md § Tableau de dérivation](DONNEES-REFERENCE.md#tableau-de-d%C3%A9rivation-subsystem-filiere-niveau-serie--examtargetids) — la matrice (subSystem, filiere, niveau, serie) → (matières, examens) est exhaustive 🟢 (79 `derivation_rules` totales, ~50 activées au seed initial, 29 étendues `isActive: false` runtime).
+Voir [DONNEES-REFERENCE.md § Tableau de dérivation](DONNEES-REFERENCE.md#tableau-de-d%C3%A9rivation-subsystem-filiere-niveau-serie--examtargetids) — la matrice (subSystem, filiere, niveau, serie) → (matières, examens) est exhaustive 🟢 v2 (Story 1.11a : ~140 `derivation_rules` totales — +50% vs v1, ~50 activées au seed initial post-1.12, ~90 étendues `isActive: false` runtime incluant TVEE complet + sous-séries ABI/SH/AC/AI/TI + matières A-Level Bilingual French/Philosophy/ICT activables progressivement).
 
 ### Implications pour l'admin
 
@@ -635,3 +706,4 @@ Liste prévisionnelle ; chaque entrée sera une Cloud Function admin protégée 
 |---|---|---|
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture et du Decoupage MVP |
 | 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — § 1 « Dérivation profil → matières + examens » amendé : statut 🟡 → 🟢, lieu d'exécution V1 = helper Dart pur dans `CatalogueRepository.derive()` (mobile-only, pas de Cloud Function déployée), pseudo-code mis à jour pour matcher `derivation_rules` Firestore (ADR-015). Règle d'exception retrait : `series/{id}.canOptOut` lu Firestore (amendement Story 1.4 sprint-change-proposal-2026-06-05.md). Sprint-change-proposal-2026-06-05.md. |
+| 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — § 1 « Dérivation profil → matières + examens » étendu v2 (catalogue v2 alignement nomenclature officielle, ADR-016). Pseudo-code `derive()` retourne `DerivedProfile` v2 enrichi (`pickerMode`, `obligatorySubjects`, `optionalSubjects`, `minSubjects`, `maxSubjects`) avec defaults safe (`pickerMode == 'derived'` si champ absent — rétrocompat v1). Nouvelle sous-section « Modes panier (PickerMode) v2 » avec table 5 modes × 5 colonnes (sémantique + validation client + validation Firestore rule `pickedSubjectsValid()` + champ `users/{uid}`). Sous-section « Règles d'exception » amendée avec note Story 1.4 mode legacy + Stories 1.15-1.17 nouveaux modes. Référence matrice : ~140 `derivation_rules` v2 (vs 79 v1). Sprint-change-proposal-2026-06-09.md. |

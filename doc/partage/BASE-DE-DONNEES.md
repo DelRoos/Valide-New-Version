@@ -67,7 +67,13 @@ interface UserDoc {
   niveau: string;                       // ex. "Tle", "Form 5", "Lower Sixth" — cf. DONNEES-REFERENCE.md
   serie: string;                        // ex. "D", "Sciences", "Arts" — cf. DONNEES-REFERENCE.md
   derivedSubjects: string[];            // matières déduites du profil (refs vers subjects/{id})
-  optedOutSubjects: string[];           // matières retirées par l'élève (anglophones Form 3+, Lower/Upper Sixth) — un sous-ensemble de derivedSubjects
+  optedOutSubjects: string[];           // matières retirées par l'élève (mode opt_out legacy Story 1.4) — un sous-ensemble de derivedSubjects
+  // NEW Story 1.11a (v2 catalogue, ADR-016) — utilisé par modes panier (free_with_obligatory, series_plus_optional, tve_picker)
+  // Optionnel : absent sur profils v1 (modes derived/opt_out). Présent sur profils créés en mode panier.
+  // Doit satisfaire pickedSubjectsValid() Firestore rule (Story 1.15) :
+  //   pickedSubjects ⊂ (derivedSubjects ∪ derivation_rules.optionalSubjectIds)
+  //   ET derivation_rules.obligatorySubjectIds ⊂ pickedSubjects
+  pickedSubjects?: string[];            // matières finalement sélectionnées (panier polymorphe)
   examTargets: string[];                // examens visés (refs vers une collection exams ou ids constants)
   schoolId: string | null;              // ref vers schools/{id} si lié
   displayName: string;
@@ -126,18 +132,38 @@ interface NiveauDoc {
 ```typescript
 interface SerieDoc {
   serieId: string;                       // = doc ID. Convention: {subSystem}_{niveau_slug}_{serie_slug}
-                                         // ex. "francophone_terminale_d", "francophone_terminale_f1",
-                                         //     "anglophone_upper_sixth_s2", "anglophone_upper_sixth_a3"
+                                         // ex. "francophone_terminale_d", "francophone_terminale_a1",
+                                         //     "anglophone_upper_sixth_s2", "anglophone_tve_il_elet"
   subSystem: "francophone" | "anglophone";
   niveauId: string;                      // ref vers niveaux/{id}
   filiereId: string;                     // ref vers filieres/{id}
   name: { fr: string; en: string };
-  canOptOut: boolean;                    // Story 1.4 — retrait conditionnel matières.
+  canOptOut: boolean;                    // Story 1.4 — retrait conditionnel matières (mode opt_out legacy).
                                          // Anglophone Form 3+ et Lower/Upper Sixth toutes filières => true.
                                          // Sinon false.
   isActive: boolean;
   sortOrder: number;
+
+  // NEW Story 1.11a (v2 catalogue, ADR-016) — panier polymorphe
+  pickerMode?: PickerMode;               // default 'derived' si absent (rétrocompat v1 — comportement Story 1.4 préservé).
+  minSubjects?: number;                  // default null = pas de min.
+  maxSubjects?: number;                  // default null = pas de max.
+
+  // NEW Story 1.11a — spécifique TVEE (uniquement si pickerMode == 'tve_picker')
+  // Présents pour les séries TVE IL/AL (anglophone_tve_il_*, anglophone_tve_al_*).
+  // Optionnels = undefined sur séries non-TVEE.
+  professionalSubjectIds?: string[];     // matières professionnelles obligatoires
+  relatedProfessionalSubjectIds?: string[]; // matières related obligatoires
+  otherSubjectIds?: string[];            // matières libres (Other Subjects) au choix
 }
+
+// NEW Story 1.11a — type enum panier (ADR-016 Décision 3)
+type PickerMode =
+  | 'derived'                // default : matières dérivées non modifiables (Tle franco A/C/D/E v1)
+  | 'opt_out'                // legacy Story 1.4 : retrait simple (Lower/Upper Sixth A-Level avant 1.16)
+  | 'free_with_obligatory'   // O-Level Form 3-5 (Story 1.15) : sélection libre 6-11 + obligatoires
+  | 'series_plus_optional'   // A-Level Lower/Upper Sixth (Story 1.16) : Series fixe + transversales optionnelles
+  | 'tve_picker';            // TVEE IL/AL (Story 1.17) : Professional + Related obligatoires + Other libres
 ```
 
 ### `subjects/{subjectId}` 🟢
@@ -192,8 +218,36 @@ interface DerivationRuleDoc {
   canOptOut: boolean;                    // doublon avec series.canOptOut pour requête directe
                                          // (figé à la création de la rule)
   isActive: boolean;
+
+  // NEW Story 1.11a (v2 catalogue, ADR-016) — panier polymorphe
+  // Présents uniquement pour rules dont la série a pickerMode != 'derived'.
+  // Sinon undefined (rétrocompat v1).
+  obligatorySubjectIds?: string[];       // matières non décochables (modes free_with_obligatory + tve_picker)
+                                         // ex. O-Level Form 5 : ['anglophone_english_lang', 'anglophone_french', 'anglophone_math']
+  optionalSubjectIds?: string[];         // matières ajoutables (mode series_plus_optional A-Level)
+                                         // ex. ['anglophone_computer_science', 'anglophone_ict', 'anglophone_religious_studies', 'anglophone_commerce']
 }
 ```
+
+### Validation panier polymorphe (Story 1.11a, ADR-016 Décision 4)
+
+Pour les modes `free_with_obligatory`, `series_plus_optional`, `tve_picker`, le champ `users/{uid}.pickedSubjects` est validé côté serveur via une règle Firestore commune `pickedSubjectsValid()` (à implémenter dans `firestore.rules` par Story 1.15) :
+
+```javascript
+// firestore.rules — extrait Story 1.15 (sur match /users/{uid})
+function pickedSubjectsValid(data) {
+  let picked = data.get('pickedSubjects', []).toSet();
+  let derived = data.derivedSubjects.toSet();
+  let obligatory = data.get('obligatorySubjectIds', []).toSet();
+  let optional = data.get('optionalSubjectIds', []).toSet();
+  // pickedSubjects ⊂ (derivedSubjects ∪ optionalSubjectIds)
+  // ET obligatorySubjectIds ⊂ pickedSubjects
+  return picked.difference(derived.union(optional)).size() == 0
+      && obligatory.difference(picked).size() == 0;
+}
+```
+
+Validation **client (UI) + serveur (Firestore rule)** dupliquée pour UX rapide + intégrité (cf. ADR-016 § Décision 4). Tests ajoutés à `test/rules/users.test.mjs` par Story 1.15 : (n) `pickedSubjects` valide OK, (o) obligatoire manquant KO, (p) extra hors `derivedSubjects` ∪ `optionalSubjectIds` KO.
 
 ### Indexes composés (les 6 collections catalogue)
 
@@ -614,7 +668,7 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 
 | Collection | Lecture | Écriture |
 |---|---|---|
-| `users/{uid}` | `uid` | `uid` (sauf champs dérivés écrits par CF) |
+| `users/{uid}` | `uid` | `uid` (sauf champs dérivés écrits par CF) + **`pickedSubjects` validé par `pickedSubjectsValid()` Story 1.15** |
 | `subscriptions/{uid}` | `uid` | **Cloud Function uniquement** |
 | `credits/{uid}` | `uid` | **Cloud Function uniquement** |
 | `credits/{uid}/transactions/*` | `uid` | **Cloud Function uniquement** |
@@ -644,3 +698,4 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture mobile et backend |
 | 2026-06-04 | DelRoos / Claude | Story 0.9 — lien vers `firestore.rules` racine + `test/rules/` (règles initiales P0 : default deny + users self-only + `_smoketest/*` temporaire) |
 | 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — pivot Firestore catalogue scolaire (ADR-015). Ajout 6 collections `filieres`, `niveaux`, `series`, `subjects` (schema migré), `exam_targets`, `derivation_rules` avec flag `isActive: bool` runtime + 3 indexes composites + règles d'accès `read: auth / write: false` (seed via script Python externe Story 1.1b). Updates : Vue d'ensemble (+5 lignes, `subjects` 🟡→🟢 Stream), nouvelle section « Catalogue scolaire » entre `users` et `subscriptions`, tables Indexes + Règles sécurité résumé étendues. Sprint-change-proposal-2026-06-05.md. |
+| 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — catalogue v2 alignement nomenclature officielle (ADR-016). Schema v2 étendu non-breaking : **+3 champs `SerieDoc`** (`pickerMode` enum 5 valeurs + `minSubjects` + `maxSubjects`) + **3 champs `SerieDoc` TVEE-spécifiques** (`professionalSubjectIds` + `relatedProfessionalSubjectIds` + `otherSubjectIds`) + **2 champs `DerivationRuleDoc`** (`obligatorySubjectIds` + `optionalSubjectIds`) + **1 champ `UserDoc`** (`pickedSubjects` optionnel mode panier). Nouveau type `PickerMode` documenté. Nouvelle sous-section « Validation panier polymorphe » avec règle Firestore `pickedSubjectsValid()` (impl Story 1.15). Table Règles de sécurité — résumé : ligne `users/{uid}` annotée pour validation `pickedSubjects`. **AUCUN nouvel index Firestore** (CLAUDE.md règle 9 enforcement explicite : les nouveaux champs sont lus sur docs déjà filtrés par indexes Story 1.1a existants). Defaults safe (`pickerMode == 'derived'` si absent) → rétrocompat Story 1.4 préservée. Sprint-change-proposal-2026-06-09.md. |

@@ -573,6 +573,7 @@ Tester sur **≥ 2 gabarits** : petit (360×640) et standard (393×873).
 | [ADR-013](adrs/ADR-013-freemopay-as-momo-aggregator.md) | Freemopay v2 retenu comme agrégateur Mobile Money V1 | 🟢 Accepté |
 | [ADR-014](adrs/ADR-014-gpt-markdown-replaces-smooth-markdown.md) | `gpt_markdown` remplace `flutter_smooth_markdown` | 🟢 Accepté |
 | [ADR-015](adrs/ADR-015-catalogue-firestore-runtime-activation.md) | Catalogue scolaire Firestore + activation runtime via `isActive` | 🟢 Accepté |
+| [ADR-016](adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md) | Catalogue v2 : sous-séries flat francophone + TVEE filière technique anglophone + panier polymorphe (`pickerMode` enum 5 valeurs) | 🟢 Accepté |
 
 ---
 
