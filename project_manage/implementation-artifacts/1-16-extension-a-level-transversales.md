@@ -3,8 +3,11 @@ story_id: 1.16
 title: SubjectsPickerPage mode `series_plus_optional` A-Level transversales (Computer Science / ICT / Religious Studies / Commerce — James Upper Sixth S2 + ICT)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
+merge_commit: bc538de  # PR #81 merge (dev commit 973e795)
+pr: 81
 baseline_commit: e71a368  # merge PR #80 (contexte engine Story 1.16) — main aligné post Stories 1.11a/1.11b/1.12/1.13/1.14/1.15 done
 estimation: S (~3h)
 sprint_change: sprint-change-proposal-2026-06-09.md
