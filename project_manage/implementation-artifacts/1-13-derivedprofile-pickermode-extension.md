@@ -3,9 +3,9 @@ story_id: 1.13
 title: DerivedProfile v2 + PickerMode extension + refactor catalogue snapshots -> get (audit règle 10.g)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: ready-for-dev
+status: review
 created: 2026-06-09
-baseline_commit: 162497c  # merge PR #69 (CLAUDE.md règle 10 + BASE-DE-DONNEES.md update rules)
+baseline_commit: 8a084f6  # merge PR #71 (contexte engine Story 1.13)
 estimation: M (~5-7h) — S originale 3h + 2-4h refactor catalogue dette technique audit règle 10.g
 sprint_change: sprint-change-proposal-2026-06-09.md + audit règle 10 BASE-DE-DONNEES.md 2026-06-09
 dependencies:
@@ -678,16 +678,87 @@ ffa4dd2 docs(partage): BASE-DE-DONNEES.md +section Regles d'optimisation lecture
 ## Dev Agent Record
 
 ### Implementation Plan
-<!-- À remplir par le dev agent -->
+
+Stratégie exécutée :
+1. **T1** Réécriture complète `models.dart` avec enum `PickerMode` (5 valeurs `lowerCamelCase`) + `fromString` parse Firestore `snake_case` + fallback `derived` + `toFirestoreString` symétrique. Serie/Rule/DerivedProfile étendus avec defaults safe.
+2. **T2** Extension `firestore_mappers.dart` : `serieFromFirestore` +6 lignes, `derivationRuleFromFirestore` +2 lignes. Defaults safe via `_readStringList` qui retourne `const []` si champ absent.
+3. **T3+T4 combinés** : interface `catalogue_repository.dart` watchXxx → fetchXxx (Stream → Future) + impl `catalogue_repository_firestore_impl.dart` snapshots → get + `derive()` v2 (5 futures Future.wait + helper privé `_fetchSubjectsByIds` factorisé 3× + helper `_fetchExamTargetsByIds`) + providers `catalogueProvider` StreamProvider → FutureProvider (suppression StreamController + 6 subscriptions).
+4. **Amendement scope mineur** : 3 widgets onboarding (filiere_choice_page + niveau_choice_page + serie_choice_page) utilisaient des StreamProvider.family locaux qui appelaient watchXxx() directement (pas via catalogueProvider). Conversion en FutureProvider.family avec rename `.watchSeries(...).first.timeout(...)` → `.fetchSeries(...).timeout(...)`. AsyncValue consumer-side inchangé.
+5. **T5+T6** : 1 test existant adapté (`fetchSubjects` au lieu de `watchSubjects.first`) + 1 nouveau fichier 7 tests `picker_mode_test.dart` (fromString 5 valeurs + fallback + round-trip) + 1 nouveau fichier 4 tests `catalogue_repository_derive_v2_test.dart` (Fatou Tle D + James Upper Sixth S2 + Eyong TVE AL ELET + Form 1 sans série).
+6. **T7** validation : `flutter analyze` 0 issue + `flutter test` 207 tests verts (vs baseline 196 = +11 nets).
 
 ### Completion Notes List
-<!-- À remplir par le dev agent -->
+
+**Volumétrie réelle vs estimée** :
+
+| Aspect | Estimé | Réel |
+|---|---|---|
+| Nouveaux tests | ~15 | 11 (7 picker_mode + 4 derive_v2) |
+| Adaptation tests existants | ~5 | 1 (catalogue_repository_firestore_impl_test.dart) |
+| Total tests | ~211 | **207** (vs baseline 196 = +11 nets) |
+| Diff hors tests | ≤600 lignes | À mesurer au commit |
+
+**Décisions techniques prises pendant implémentation** :
+
+1. **Amendement scope mineur — 3 widgets onboarding modifiés** : le contexte engine Story 1.13 prévoyait "AUCUNE modification widgets" mais l'hypothèse était que `catalogueProvider` agrégé était le seul consumer. Découverte : filiere/niveau/serie_choice_page ont chacun leur `StreamProvider.family` local qui appelle `repo.watchXxx()` directement. Conversion en `FutureProvider.family` (3 providers + 1 appel `niveau_choice_page` ligne 199 où `.first.timeout` devient `.timeout` direct sur le Future). AsyncValue côté UI consumer inchangé.
+2. **Conservation des noms** `filieresStreamProvider` / `_niveauxStreamProvider` / `_seriesStreamProvider` malgré le passage à FutureProvider (commentaire explicatif). Évite le scope creep cascade sur les consumers.
+3. **Helper `_fetchSubjectsByIds`** + symétrique `_fetchExamTargetsByIds` extrait dans l'impl (factorisation 3× + 1×). Code lisible et testable.
+4. **5 futures parallèles via `Future.wait<dynamic>`** dans `derive()` : type erasure assumé pour le mélange `Serie?` + `List<Subject>` + `List<ExamTarget>`. Cast explicite à la sortie. Latence max(5 reads) vs sum(5 reads) — gain critique 3G Cameroun.
+5. **Logging `derive() OK` enrichi** : ajout pickerMode, obligatory/optional counts, min/max. Aucun ID utilisateur logged (CLAUDE.md règle sécurité 4 respectée).
+6. **Defaults safe partout** : profils v1 (sans `pickerMode` Firestore) → fallback `PickerMode.derived`. Tests v1 continuent à passer (régression 0).
+
+**Smoke tests device Fatou + James + Mariam + Eyong** : différés à la session porteur post-merge (Pixel 4a ou émulateur). Le seed valide-edu post-Story 1.12 est déjà en place avec pickerMode + obligatorySubjectIds + min/max sur tous les docs catalogue v2.
+
+**Audit conformité règle 10.g** : passe de "1 non-conforme" à "0 non-conforme" post-Story 1.13. À mettre à jour dans BASE-DE-DONNEES.md historique au prochain audit.
+
+**Procédure exacte exécutée** :
+
+```bash
+git checkout main && git pull origin main          # sync post-merge #70/#71 -> 8a084f6
+git checkout -b feat/1.13-derivedprofile-pickermode-extension
+
+# T1-T4 implementation (5 fichiers lib/ + 3 widgets)
+# T5-T6 tests (1 adapté + 2 nouveaux fichiers)
+
+cd mobile_app
+flutter analyze   # No issues found! (70.3s)
+flutter test      # All tests passed! 207 tests
+
+# Commit + push
+```
 
 ### File List
-<!-- À remplir par le dev agent -->
+
+**Modifiés (lib)** :
+
+- `mobile_app/lib/core/catalogue/domain/models.dart` (REWRITE — +enum PickerMode + Serie/Rule/DerivedProfile v2)
+- `mobile_app/lib/core/catalogue/domain/catalogue_repository.dart` (REWRITE — interface watchXxx → fetchXxx)
+- `mobile_app/lib/core/catalogue/data/firestore_mappers.dart` (UPDATE — Serie +6 champs + Rule +2 champs)
+- `mobile_app/lib/core/catalogue/data/catalogue_repository_firestore_impl.dart` (REWRITE — snapshots → get + derive() v2 + 2 helpers privés)
+- `mobile_app/lib/core/catalogue/providers.dart` (REWRITE — catalogueProvider StreamProvider → FutureProvider)
+- `mobile_app/lib/features/onboarding/presentation/filiere_choice_page.dart` (UPDATE 3 lignes — filieresStreamProvider FutureProvider)
+- `mobile_app/lib/features/onboarding/presentation/niveau_choice_page.dart` (UPDATE — _niveauxStreamProvider FutureProvider.family + .fetchSeries().timeout)
+- `mobile_app/lib/features/onboarding/presentation/serie_choice_page.dart` (UPDATE — _seriesStreamProvider FutureProvider.family)
+
+**Modifiés (test)** :
+
+- `mobile_app/test/core/catalogue/data/catalogue_repository_firestore_impl_test.dart` (UPDATE 2 lignes — watchSubjects → fetchSubjects)
+
+**Nouveaux (test)** :
+
+- `mobile_app/test/core/catalogue/domain/picker_mode_test.dart` (NEW — 7 tests enum PickerMode)
+- `mobile_app/test/core/catalogue/data/catalogue_repository_derive_v2_test.dart` (NEW — 4 tests derive() v2 sur 3 personas + 1 cas sans série)
+
+**Modifiés (planning)** :
+
+- `project_manage/implementation-artifacts/1-13-derivedprofile-pickermode-extension.md` (frontmatter status review + Dev Agent Record + baseline_commit 8a084f6)
+- `project_manage/implementation-artifacts/sprint-status.yaml` (1-13 ready-for-dev → review)
 
 ### Change Log
-<!-- À remplir par le dev agent -->
+
+| Date | Auteur | Description |
+|---|---|---|
+| 2026-06-09 | Delano + Claude (Amelia agent) | Story 1.13 dev complet : enum PickerMode 5 valeurs + Serie/Rule/DerivedProfile v2 (defaults safe rétrocompat v1) + firestore_mappers lit nouveaux champs + derive() v2 parallélise 5 futures via Future.wait + helpers privés _fetchSubjectsByIds + _fetchExamTargetsByIds + refactor catalogue snapshots → get (audit règle 10.g) + catalogueProvider StreamProvider → FutureProvider + 3 widgets onboarding StreamProvider.family → FutureProvider.family (amendement scope mineur, AsyncValue consumer-side inchangé) + 11 nouveaux tests (7 picker_mode + 4 derive_v2) + 1 test adapté. flutter analyze 0 issue. flutter test 207 tests verts (vs baseline 196 = +11 nets). Smoke device Fatou + James + Mariam + Eyong différés session porteur. |
 
 ## Definition of Done
 

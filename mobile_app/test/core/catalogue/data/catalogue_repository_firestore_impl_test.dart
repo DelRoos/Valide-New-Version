@@ -1,7 +1,7 @@
-// Tests CatalogueRepositoryFirestoreImpl — Story 1.1c AC2+AC6.
+// Tests CatalogueRepositoryFirestoreImpl — Story 1.1c AC2+AC6 + refactor Story 1.13.
 //
 // Vérifient :
-//  1. watchSubjects filtre `isActive == true` + `subSystem` + ordonne par sortOrder
+//  1. fetchSubjects filtre `isActive == true` + `subSystem` + ordonne par sortOrder
 //  2. derive(francophone, generale, Tle D) → Right(DerivedProfile) avec 3 subjects
 //  3. derive(francophone, generale, Tle, "unknown_serie") → Left(noMatchingRule)
 
@@ -81,13 +81,13 @@ Future<void> _seedDerivationForTleD(FakeFirebaseFirestore fs) async {
 
 void main() {
   group('CatalogueRepositoryFirestoreImpl — Story 1.1c', () {
-    test('watchSubjects filtre isActive=true + subSystem francophone, '
+    test('fetchSubjects filtre isActive=true + subSystem francophone, '
         'ordonne par sortOrder', () async {
       final fs = FakeFirebaseFirestore();
       await _seedSubjects(fs);
 
       final repo = CatalogueRepositoryFirestoreImpl(fs);
-      final result = await repo.watchSubjects(subSystem: 'francophone').first;
+      final result = await repo.fetchSubjects(subSystem: 'francophone');
 
       // 3 subjects francophones actifs, l'anglophone et le disabled sont filtrés
       expect(result.length, 3);
