@@ -84,10 +84,12 @@ class FiliereChoicePage extends ConsumerWidget {
   }
 }
 
-/// FutureProvider lazy : on consomme le stream une fois pour le widget,
-/// pas besoin d'AsyncValue rebuild a chaque snap (les filieres sont stables).
-final filieresStreamProvider = StreamProvider<List<Filiere>>((ref) {
-  return ref.watch(catalogueRepositoryProvider).watchFilieres();
+/// FutureProvider — Story 1.13 refactor `StreamProvider` -> `FutureProvider`
+/// suite à audit règle 10.g CLAUDE.md (catalogue statique → pas besoin de
+/// stream actif, cache offline natif Firestore suffit). Le widget continue
+/// à recevoir un `AsyncValue<List<Filiere>>` (API consumer-side inchangée).
+final filieresStreamProvider = FutureProvider<List<Filiere>>((ref) {
+  return ref.watch(catalogueRepositoryProvider).fetchFilieres();
 });
 
 class _FilieresList extends ConsumerWidget {
