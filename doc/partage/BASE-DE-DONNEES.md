@@ -691,6 +691,149 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 
 ---
 
+## Règles d'optimisation lecture / écriture (V1)
+
+> **Cohérent avec [CLAUDE.md § Architecture mobile règle 10](../../CLAUDE.md)** (modélisation Firestore optimisée — lecture, latence, coût). Cette section est l'application concrète à chaque collection et champ.
+
+### Principes fondamentaux (rappel)
+
+1. **Firestore facture par document lu**, pas par octet. Tout `.get()` ou émission `.snapshots()` = 1 read facturable.
+2. **Marché Cameroun = réseau dégradé** : chaque round-trip coûte en latence (≥ 500ms typique 3G) et en data utilisateur.
+3. **Cache offline natif Firestore** (NFR-5, ADR-010) = lecture instantanée sur docs déjà chargés. Privilégier ce mode.
+4. **Toute story qui ajoute une lecture/écriture DOIT documenter** : (i) reads/session moyenne, (ii) volumétrie estimée à 10 000 users, (iii) trade-off vs alternative.
+
+### Read patterns recommandés par collection
+
+| Collection | Pattern V1 | Recommandation cible | Justification |
+|---|---|---|---|
+| `users/{uid}` | `.snapshots()` self-read | OK Stream conservé | Doc mutable pendant la session (Story 1.4 opt-out, Story 1.7 schoolId, Story 1.10 deletionRequestedAt). Self-read uniquement. |
+| `subscriptions/{uid}` | `.snapshots()` self-read | OK Stream conservé | Statut paiement webhook-driven, doit refléter en live. |
+| `credits/{uid}` | `.snapshots()` self-read | OK Stream conservé | Solde décrémente côté Cloud Function, live nécessaire. |
+| **`filieres`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()` + cache offline** | Catalogue statique (~2 docs). Update admin rare (1-2x/an). Anti-pattern règle 10.g. |
+| **`niveaux`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~16 docs v2). |
+| **`series`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~95 docs v2). |
+| **`subjects`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~70 docs v2). |
+| **`exam_targets`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~82 docs v2). |
+| **`derivation_rules`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~104 docs v2). |
+| `chapters`, `lessons`, `notions` | À spécifier Epic 2 | `.get()` + cache | Statique, lecture par chapter/lessonId. |
+| `exercises`, `quizzes` | À spécifier Epic 3 | `.get()` par ID | Lecture déclenchée au lancement quiz. |
+| `users/{uid}/health/{notionId}` | À spécifier Epic 5 | `.snapshots()` | Mise à jour live après chaque session. |
+| `users/{uid}/sessions/{sid}` | À spécifier Epic 3 | `.snapshots()` sur session courante uniquement | Mutable durant la session. |
+| `schools` (recherche) | `.get()` + `.limit(10)` + paginé | OK | Story 1.7 — pattern conforme règle 10.c. |
+
+**Décision V1 sur catalogue** : le refactor `snapshots → get` est tracé comme dette technique (impact économique tolérable à 10k users : ~$0.36/mois). À prioriser **Story 1.13** (qui touche déjà le repository pour `DerivedProfile v2`) ou **dès qu'on dépasse 50k users**, selon priorité produit.
+
+### Update patterns détaillés par champ
+
+> **Règle absolue** : toujours `.update({champ: valeur, updatedAt: FieldValue.serverTimestamp()})` ou `.set(payload, SetOptions(merge: true))`. **Jamais** `.set(payload)` complet (réécrit le doc entier → race conditions + coût).
+
+#### `users/{uid}` — champ par champ
+
+| Champ | Mutabilité | Méthode d'update | Quand | Validation | Story |
+|---|---|---|---|---|---|
+| `uid` | **Immutable** | N/A (= doc ID) | À la création | rules : doc ID == auth.uid | 1.3 |
+| `subSystem` | **Immutable** | `.set(merge: true)` à la création | Étape 1 onboarding | rules : impossible de modifier post-création | 1.2 / 1.3 |
+| `language` | **Immutable** | `.set(merge: true)` à la création | Étape 1 onboarding | dérivé de subSystem | 1.2 / 1.3 |
+| `filiere` | **Immutable post-création** | `.set(merge: true)` à la création | Étape 2 onboarding | rules : impossible de modifier post-création (`request.resource.data.filiere == resource.data.filiere`) | 1.3 |
+| `niveau` | **Immutable post-création** | `.set(merge: true)` à la création | Étape 2 onboarding | rules : idem filiere | 1.3 |
+| `serie` | **Immutable post-création** | `.set(merge: true)` à la création | Étape 3 onboarding | rules : idem filiere | 1.3 |
+| `derivedSubjects` | **Immutable post-création** | `.set(merge: true)` à la création | Calculé par `derive()` | rules : idem filiere | 1.3 |
+| `optedOutSubjects` | **Mutable** | `.update({optedOutSubjects: [...], updatedAt: ...})` | Tap Save sur SubjectsOptOutPage | rules : `subset(derivedSubjects)` via `diff.affectedKeys` | 1.4 |
+| `pickedSubjects` (v2) | **Mutable** | `.update({pickedSubjects: [...], updatedAt: ...})` | Tap Save sur SubjectsPickerPage | rules : `pickedSubjectsValid()` (cf. ci-dessus) | 1.15 |
+| `examTargets` | **Immutable post-création** | `.set(merge: true)` à la création | Calculé par `derive()` | rules : idem filiere | 1.3 |
+| `schoolId` | **Mutable** | `.update({schoolId: X, updatedAt: ...})` | Tap card school OU Skip sur SchoolPickerPage | rules : peut être `null` ou ref valide | 1.7 |
+| `displayName` | **Mutable** | `.update({displayName: X, updatedAt: ...})` | Après linkWithCredential Google/Apple | rules : self-write | 1.6 |
+| `photoUrl` | **Mutable** | `.update({photoUrl: X, updatedAt: ...})` | Après linkWithCredential Google/Apple | rules : self-write | 1.6 |
+| `createdAt` | **Immutable** | `FieldValue.serverTimestamp()` à la création | Étape 3 onboarding | rules : `request.resource.data.createdAt == resource.data.createdAt` | 1.3 |
+| `updatedAt` | **Auto-update** | `FieldValue.serverTimestamp()` sur chaque update | Toute écriture | rules : doit être présent à chaque update | toutes |
+| `deletionRequestedAt` | **Mutable** (par Cloud Function) | Cloud Function `requestAccountDeletion` / `cancelAccountDeletion` | Tap "Supprimer mon compte" | rules : write côté serveur uniquement | 1.10 |
+
+**Pattern de référence (Story 1.4)** :
+```dart
+await _firestore.collection('users').doc(uid).update({
+  'optedOutSubjects': ids,
+  'updatedAt': FieldValue.serverTimestamp(),
+});
+```
+- Update partiel (n'écrase pas `displayName`, `schoolId`, etc.)
+- `updatedAt` = serveur (jamais `DateTime.now()` client — évite skew d'horloge)
+- Sans `set(merge: true)` car le doc existe déjà (post-onboarding)
+
+#### Catalogue scolaire (6 collections) — write côté mobile
+
+| Collection | Mutabilité mobile | Méthode | Justification |
+|---|---|---|---|
+| `filieres` | **Read-only mobile** | Aucune (rules `write: false`) | Seul `seed_catalogue.py` (Story 1.1b / 1.12) écrit via service-account |
+| `niveaux` | Read-only mobile | Aucune | idem |
+| `series` | Read-only mobile | Aucune | idem |
+| `subjects` | Read-only mobile | Aucune | idem |
+| `exam_targets` | Read-only mobile | Aucune | idem |
+| `derivation_rules` | Read-only mobile | Aucune | idem |
+
+**Activation runtime** : l'admin pédagogique modifie `isActive: false → true` directement dans Firebase Console (ADR-015). Le mobile observe (post-refactor `get()` : au prochain refresh ; en `snapshots()` actuel : immédiat).
+
+#### `schools` — recherche + création de demande
+
+| Champ | Mutabilité | Méthode | Story |
+|---|---|---|---|
+| `schoolId` | Immutable | N/A (= doc ID) | 1.7 |
+| `name`, `city`, `region`, `subSystem` | Immutable post-seed | Modifié uniquement par admin console | 1.7 |
+| `isValidated` | Mutable (admin uniquement) | Console | 1.7 (admin) |
+| `schools/_pending/requests/{auto}` | **Create-only mobile** | `.collection('requests').add({...})` | Pattern Story 1.7 — séparation pour modération admin |
+
+#### `users/{uid}` sous-collections — patterns futurs
+
+| Sous-collection | Pattern d'écriture cible | Story |
+|---|---|---|
+| `users/{uid}/completions/{sessionId}` | `.set(payload)` une fois (idempotent par sessionId) | Epic 3 |
+| `users/{uid}/health/{notionId}` | `.update({...})` après chaque session | Epic 5 |
+| `users/{uid}/stats` (doc unique) | `.update({...})` avec `FieldValue.increment()` pour les compteurs | Epic 5 |
+| `users/{uid}/sessions/{sid}` | `.set(payload)` création + `.update(...)` durant la session + `.delete()` à la fin | Epic 3 |
+
+**Pattern critique** : pour les compteurs (`stats.totalQuizzes`, `stats.streak`), utiliser `FieldValue.increment(N)` plutôt que `read + computeNewValue + write`. Évite race conditions + 1 read épargné par session.
+
+### Dénormalisations recommandées
+
+| Cas | Dénormalisation | Pourquoi | Story |
+|---|---|---|---|
+| Dashboard affiche "École : Lycée X" (Epic 2+) | Dupliquer `schoolName: string` dans `users/{uid}` | Évite 1 read `schools/{schoolId}` à chaque ouverture dashboard | À tracer Epic 2 |
+| Ranking par école (Epic 5) | Dupliquer `schoolName`, `schoolRegion` dans `rankings/{board}/entries/{uid}` | Évite N reads `schools` pour afficher la liste | Epic 5 |
+| Chat IA conversation list (Epic 6) | Stocker `lastMessage: string` (1 ligne) + `lastMessageAt: Timestamp` dans `users/{uid}/conversations/{cid}` | Évite de lire toute la sous-collection messages pour afficher la liste | Epic 6 |
+
+**Trade-off accepté** : écritures plus coûteuses (multi-doc updates via `WriteBatch` ou Cloud Function quand un `school` change de nom — rare). Lectures massivement moins chères. À documenter dans la story qui introduit la dénormalisation.
+
+### Anti-patterns interdits (rappel CLAUDE.md règle 10)
+
+1. ❌ `.collection(X).get()` sans `.limit()` → coût explosif
+2. ❌ `.snapshots()` sur catalogue ou contenu statique (chapters, lessons) → idem
+3. ❌ Filtrer en `.where((doc) => ...)` côté Dart ce qui peut être filtré côté serveur `.where(...)` Firestore
+4. ❌ N+1 reads (boucler une liste de docs et faire `.get()` pour chaque détail) — utiliser `whereIn` (max 30 IDs) ou dénormaliser
+5. ❌ `.set(payload)` complet pour modifier 1 champ → `update({})` ou `set(merge: true)`
+6. ❌ `.offset(N)` pour paginer (Firestore facture les docs sautés) → `.startAfterDocument(lastDoc)`
+7. ❌ Stocker des blobs > 10 KB dans un doc listé en grille → isoler en sous-doc
+8. ❌ Re-fetcher un champ déjà disponible dans le doc déjà lu
+9. ❌ `DateTime.now()` client pour les timestamps → `FieldValue.serverTimestamp()`
+10. ❌ Compteur incrémenté via read + write → `FieldValue.increment(N)`
+
+### Audit conformité 2026-06-09 (snapshot post Story 1.12)
+
+| Aspect | Statut | Détail |
+|---|---|---|
+| `.update()` / `.set(merge: true)` partout | ✅ Conforme | user_profile / account_linking / main confirmés |
+| `.limit()` sur listes | ✅ Conforme | school_picker `.limit(10)`, catalogue check `.limit(1)` |
+| `.where()` préfiltre serveur | ✅ Conforme (à 95 %) | Sauf `derive()` cas `matchFiliere == '*'` (mineur, ≤ 100 rules) |
+| `arrayContains` pour listes courtes | ✅ Conforme | `niveaux.filiereIds` (max 2 entrées) |
+| Cache offline natif Firestore | ✅ Conforme | Aucun `Source.server`/`cache` explicite |
+| `FieldValue.serverTimestamp()` | ✅ Conforme | partout pour `createdAt` / `updatedAt` |
+| `.snapshots()` sur catalogue | ⚠️ **Non-conforme** | 6 streams actifs sur catalogue statique. À refactor Story 1.13 cible. |
+| Dénormalisation `schoolName` | 🟡 Non-applicable V1 | Tracé pour Epic 2+. |
+| Sous-document pour blobs | 🟡 Non-applicable V1 | Pas de contenu pédagogique chargé encore. |
+| Cost-benefit documenté en story | 🟡 Partiel | Stories 1.3-1.12 ont Dev Notes mais sans estimation reads/session formelle. À systématiser. |
+
+**Action de remédiation** : refactor `catalogue_repository_firestore_impl.dart` `watchXxx()` → `fetchXxx()` (Future au lieu de Stream) + `catalogueProvider` `StreamProvider` → `FutureProvider`. Estimation : **S ~2-3h** + adaptation 11 tests existants. Trigger : intégrer à **Story 1.13** (DerivedProfile v2 — touche déjà ce repository) ou **dès qu'on atteint 50k users**.
+
+---
+
 ## Historique
 
 | Date | Auteur | Modification |
@@ -698,4 +841,5 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | 2026-06-03 | Setup initial | Création du squelette à partir des docs d'architecture mobile et backend |
 | 2026-06-04 | DelRoos / Claude | Story 0.9 — lien vers `firestore.rules` racine + `test/rules/` (règles initiales P0 : default deny + users self-only + `_smoketest/*` temporaire) |
 | 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — pivot Firestore catalogue scolaire (ADR-015). Ajout 6 collections `filieres`, `niveaux`, `series`, `subjects` (schema migré), `exam_targets`, `derivation_rules` avec flag `isActive: bool` runtime + 3 indexes composites + règles d'accès `read: auth / write: false` (seed via script Python externe Story 1.1b). Updates : Vue d'ensemble (+5 lignes, `subjects` 🟡→🟢 Stream), nouvelle section « Catalogue scolaire » entre `users` et `subscriptions`, tables Indexes + Règles sécurité résumé étendues. Sprint-change-proposal-2026-06-05.md. |
+| 2026-06-09 | DelRoos / Claude (Amelia agent) | Ajout section majeure « Règles d'optimisation lecture / écriture (V1) » avant Historique. Inclut : (a) principes fondamentaux Firestore tarification (read facturé par doc + marché Cameroun 3G), (b) table Read patterns recommandés par collection (alignement règle 10.g CLAUDE.md — catalogue snapshots() flag refactor cible vers get() + cache), (c) table Update patterns détaillés `users/{uid}` champ par champ (mutabilité + méthode + validation rules + story), (d) tables catalogue write-readonly + `schools` + `users/{uid}` sous-collections futures, (e) dénormalisations recommandées (schoolName Epic 2+, ranking, chat conversation list), (f) 10 anti-patterns interdits rappel, (g) audit conformité 2026-06-09 snapshot post Story 1.12 (1 non-conformité catalogue snapshots, reste OK). Cohérent CLAUDE.md règle 10. Aucune modification schema existant. |
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — catalogue v2 alignement nomenclature officielle (ADR-016). Schema v2 étendu non-breaking : **+3 champs `SerieDoc`** (`pickerMode` enum 5 valeurs + `minSubjects` + `maxSubjects`) + **3 champs `SerieDoc` TVEE-spécifiques** (`professionalSubjectIds` + `relatedProfessionalSubjectIds` + `otherSubjectIds`) + **2 champs `DerivationRuleDoc`** (`obligatorySubjectIds` + `optionalSubjectIds`) + **1 champ `UserDoc`** (`pickedSubjects` optionnel mode panier). Nouveau type `PickerMode` documenté. Nouvelle sous-section « Validation panier polymorphe » avec règle Firestore `pickedSubjectsValid()` (impl Story 1.15). Table Règles de sécurité — résumé : ligne `users/{uid}` annotée pour validation `pickedSubjects`. **AUCUN nouvel index Firestore** (CLAUDE.md règle 9 enforcement explicite : les nouveaux champs sont lus sur docs déjà filtrés par indexes Story 1.1a existants). Defaults safe (`pickerMode == 'derived'` si absent) → rétrocompat Story 1.4 préservée. Sprint-change-proposal-2026-06-09.md. |
