@@ -3,8 +3,11 @@ story_id: 1.14
 title: SerieChoicePage 12 cards Tle franco générale groupées par famille (sous-séries flat A1-A5/ABI/SH/AC/C/D/E/TI)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
+merge_commit: 59efdf6  # PR #74 merge (dev commit ac79929)
+pr: 74
 baseline_commit: ca04698  # merge PR #73 (contexte engine Story 1.14) post Story 1.13 mergée
 estimation: M (~5h)
 sprint_change: sprint-change-proposal-2026-06-09.md
