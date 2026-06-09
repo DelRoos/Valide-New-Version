@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/feedback/offline_banner.dart';
+import 'features/account/providers.dart';
 import 'features/onboarding/providers.dart';
 import 'l10n/generated/app_localizations.dart';
 
@@ -33,6 +34,11 @@ class ValideApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
+    // Story 1.10 — amorce l'auto-canceller de suppression au boot. Le provider
+    // ecoute le stream `userProfileRepository.watchProfile()` et appelle
+    // `cancelAccountDeletion` automatiquement si `deletionRequestedAt` est
+    // anterieur au sessionStart (cad. demande d'une session passee).
+    ref.watch(autoAccountDeletionCancellerProvider);
     return ScreenUtilInit(
       designSize: kDesignSize,
       minTextAdapt: true,

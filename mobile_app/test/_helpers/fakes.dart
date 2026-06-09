@@ -13,19 +13,30 @@ import 'package:valide_school/features/onboarding/domain/sub_system.dart';
 import 'package:valide_school/features/onboarding/domain/user_profile_repository.dart';
 
 class FakeAuth implements FirebaseAuth {
-  FakeAuth({this.uid = 'test-uid', this.isAnonymous = false, this.displayName});
+  FakeAuth({
+    this.uid = 'test-uid',
+    this.isAnonymous = false,
+    this.displayName,
+    this.email,
+  });
 
   final String? uid;
   final bool isAnonymous;
   final String? displayName;
+  final String? email;
 
   @override
   User? get currentUser => uid == null
       ? null
-      : _FakeUser(uid: uid!, isAnonymous: isAnonymous, displayName: displayName);
+      : _FakeUser(
+          uid: uid!,
+          isAnonymous: isAnonymous,
+          displayName: displayName,
+          email: email,
+        );
 
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 class _FakeUser implements User {
@@ -33,6 +44,7 @@ class _FakeUser implements User {
     required this.uid,
     required this.isAnonymous,
     this.displayName,
+    this.email,
   });
 
   @override
@@ -45,7 +57,18 @@ class _FakeUser implements User {
   final String? displayName;
 
   @override
-  dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
+  final String? email;
+
+  // Liste vide par defaut (`user.providerData` est consomme par les widgets
+  // Story 1.10 pour detecter le provider lie Google/Apple).
+  @override
+  List<UserInfo> get providerData => const [];
+
+  // Default null sur tous les autres getters (les widgets de test n'y
+  // touchent pas — si un nouveau widget en a besoin, ajouter une propriete
+  // explicite ci-dessus).
+  @override
+  dynamic noSuchMethod(Invocation invocation) => null;
 }
 
 /// Audit NEW-BUG-17 — Factory publique pour les tests qui doivent stubber

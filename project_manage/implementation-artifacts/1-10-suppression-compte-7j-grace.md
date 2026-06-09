@@ -3,10 +3,10 @@ story_id: 1.10
 title: Suppression compte avec delai grace 7 jours (FR-7)
 epic: 1
 phase: P1
-status: ready-for-dev
+status: review
 created: 2026-06-09
 branch: feat/1.10-suppression-compte-7j-grace
-baseline_commit: 2511cd5  # merge PR #57 (Story 1.8 done)
+baseline_commit: 46a2bb3  # merge PR #58 (cloture 1.8 + contexte 1.10)
 estimation: M (~5h)
 dependencies:
   - 1.5   # profileCompletionProvider + evaluateRedirect (garde + auto-cancel au boot)
@@ -25,7 +25,7 @@ sourceArtifacts:
 
 # Story 1.10 — Suppression compte avec delai grace 7 jours (FR-7)
 
-Status: **ready-for-dev**
+Status: **review**
 
 ## Objectif
 

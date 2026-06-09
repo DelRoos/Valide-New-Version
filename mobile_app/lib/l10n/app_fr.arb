@@ -646,5 +646,78 @@
   "@onboardingHaveAccount": { "description": "Step 0 — bouton principal pour un utilisateur qui reinstalle sur un nouveau telephone." },
 
   "onboardingNoAccount": "Je n'ai pas encore de compte",
-  "@onboardingNoAccount": { "description": "Step 1 — CTA principal pour demarrer l'onboarding classique." }
+  "@onboardingNoAccount": { "description": "Step 1 — CTA principal pour demarrer l'onboarding classique." },
+
+  "dashboardTabSettingsCta": "Paramètres",
+  "@dashboardTabSettingsCta": { "description": "Bouton secondaire sur le placeholder de l'onglet Profil qui nav vers /profil/settings." },
+
+  "profileSettingsTitle": "Paramètres",
+  "@profileSettingsTitle": { "description": "Titre AppBar ProfileSettingsPage (Story 1.10 AC2)." },
+
+  "profileSettingsAccountSection": "Mon compte",
+  "@profileSettingsAccountSection": { "description": "Titre de la section info compte sur ProfileSettingsPage (Story 1.10 AC2)." },
+
+  "profileSettingsDangerSection": "Zone de danger",
+  "@profileSettingsDangerSection": { "description": "Titre de la section danger zone (Story 1.10 AC2)." },
+
+  "profileSettingsDeleteCta": "Supprimer mon compte",
+  "@profileSettingsDeleteCta": { "description": "CTA danger qui ouvre la modale de confirmation suppression (Story 1.10 AC2)." },
+
+  "profileSettingsDeleteSubtitle": "Cette action est irréversible après 7 jours.",
+  "@profileSettingsDeleteSubtitle": { "description": "Texte explicatif sous la section danger zone (Story 1.10 AC2)." },
+
+  "profileSettingsVisitorMessage": "Crée d'abord un compte permanent pour pouvoir le supprimer",
+  "@profileSettingsVisitorMessage": { "description": "Message info affiché aux visiteurs Anonymous Auth (Story 1.10 AC2)." },
+
+  "profileSettingsCreateAccountCta": "Créer mon compte",
+  "@profileSettingsCreateAccountCta": { "description": "Bouton secondary pour visiteur vers /onboarding/account (Story 1.10 AC2)." },
+
+  "profileSettingsLinkedAccount": "Compte lié",
+  "@profileSettingsLinkedAccount": { "description": "Fallback affiché dans la section Mon compte quand l'email n'est pas disponible (Apple Sign-In email masqué)." },
+
+  "accountDeletionConfirmTitle": "Es-tu sûr ?",
+  "@accountDeletionConfirmTitle": { "description": "Titre AlertDialog de confirmation suppression (Story 1.10 AC4)." },
+
+  "accountDeletionConfirmBody": "Ton compte sera supprimé dans 7 jours. Tu peux annuler à tout moment en te reconnectant pendant cette période.",
+  "@accountDeletionConfirmBody": { "description": "Corps AlertDialog confirmation (Story 1.10 AC4)." },
+
+  "accountDeletionConfirmCta": "Confirmer la suppression",
+  "@accountDeletionConfirmCta": { "description": "Bouton danger dans la modale confirmation (Story 1.10 AC4)." },
+
+  "accountDeletionRequestedToast": "Demande enregistrée. Reconnecte-toi avant le {date} pour annuler.",
+  "@accountDeletionRequestedToast": {
+    "description": "Toast info apres succes requestAccountDeletion (Story 1.10 AC4). {date} = J+7 format DD/MM/YYYY.",
+    "placeholders": {
+      "date": { "type": "String", "example": "16/06/2026" }
+    }
+  },
+
+  "accountDeletionScheduledBanner": "Ton compte sera supprimé le {date}. Toucher pour annuler.",
+  "@accountDeletionScheduledBanner": {
+    "description": "Texte banner warning sur DashboardPage si deletionRequestedAt non null (Story 1.10 AC5).",
+    "placeholders": {
+      "date": { "type": "String", "example": "16/06/2026" }
+    }
+  },
+
+  "accountDeletionCancelConfirmTitle": "Annuler la suppression ?",
+  "@accountDeletionCancelConfirmTitle": { "description": "Titre AlertDialog d'annulation suppression depuis banner dashboard (Story 1.10 AC7)." },
+
+  "accountDeletionCancelConfirmBody": "Ton compte ne sera plus supprimé. Tu peux toujours en demander la suppression plus tard.",
+  "@accountDeletionCancelConfirmBody": { "description": "Corps AlertDialog annulation (Story 1.10 AC7)." },
+
+  "accountDeletionCancelConfirmCta": "Oui, annuler la suppression",
+  "@accountDeletionCancelConfirmCta": { "description": "Bouton primary qui déclenche cancelAccountDeletion (Story 1.10 AC7)." },
+
+  "accountDeletionKeepDeletionCta": "Non, garder la suppression",
+  "@accountDeletionKeepDeletionCta": { "description": "Bouton secondary qui ferme la modale sans annuler (Story 1.10 AC7)." },
+
+  "accountDeletionCancelledToast": "Suppression annulée.",
+  "@accountDeletionCancelledToast": { "description": "Toast info apres succes manuel cancelAccountDeletion (Story 1.10 AC7)." },
+
+  "accountDeletionAutoCancelledToast": "Ton compte est de nouveau actif.",
+  "@accountDeletionAutoCancelledToast": { "description": "Toast info apres auto-cancel au boot (Story 1.10 AC6)." },
+
+  "accountDeletionNotAvailableToast": "Fonctionnalité bientôt disponible.",
+  "@accountDeletionNotAvailableToast": { "description": "Toast warning si Cloud Function non deployée côté backend (Story 1.10 fallback graceful)." }
 }

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../logging/perf_logger.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
+import '../../features/account/presentation/profile_settings_page.dart';
 import '../../features/dashboard/presentation/_main_shell.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
 import '../../features/dashboard/presentation/placeholder_tab_page.dart';
@@ -117,6 +118,11 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/v2',
         builder: (context, state) => const OnboardingShell(),
+      ),
+      // Story 1.10 — page paramètres (suppression compte FR-7).
+      GoRoute(
+        path: '/profil/settings',
+        builder: (context, state) => const ProfileSettingsPage(),
       ),
       GoRoute(
         path: '/catalogue-waiting',
