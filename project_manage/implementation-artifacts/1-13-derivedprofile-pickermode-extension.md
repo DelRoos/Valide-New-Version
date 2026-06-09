@@ -3,8 +3,11 @@ story_id: 1.13
 title: DerivedProfile v2 + PickerMode extension + refactor catalogue snapshots -> get (audit règle 10.g)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
+merge_commit: 6414f21
+pr: 72
 baseline_commit: 8a084f6  # merge PR #71 (contexte engine Story 1.13)
 estimation: M (~5-7h) — S originale 3h + 2-4h refactor catalogue dette technique audit règle 10.g
 sprint_change: sprint-change-proposal-2026-06-09.md + audit règle 10 BASE-DE-DONNEES.md 2026-06-09
