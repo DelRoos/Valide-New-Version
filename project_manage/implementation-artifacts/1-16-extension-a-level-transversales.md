@@ -3,9 +3,9 @@ story_id: 1.16
 title: SubjectsPickerPage mode `series_plus_optional` A-Level transversales (Computer Science / ICT / Religious Studies / Commerce — James Upper Sixth S2 + ICT)
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: ready-for-dev
+status: review
 created: 2026-06-09
-baseline_commit: dc27c21  # merge PR #79 (cloture 1.15) — main aligné post Stories 1.11a/1.11b/1.12/1.13/1.14/1.15 done
+baseline_commit: e71a368  # merge PR #80 (contexte engine Story 1.16) — main aligné post Stories 1.11a/1.11b/1.12/1.13/1.14/1.15 done
 estimation: S (~3h)
 sprint_change: sprint-change-proposal-2026-06-09.md
 dependencies:
@@ -29,7 +29,7 @@ sourceArtifacts:
 
 # Story 1.16 — SubjectsPickerPage mode `series_plus_optional` A-Level transversales (James Upper Sixth S2 + ICT)
 
-Status: **ready-for-dev**
+Status: **review**
 
 ## Objectif
 
@@ -162,25 +162,25 @@ Aucune duplication clé. Aucune modif `app_localizations.dart` autre que les 2 N
 
 ### T1 — Remplacer placeholder `case PickerMode.seriesPlusOptional` (Story 1.15 lignes 152-164) [AC1]
 
-- [ ] T1.1 — Dans `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart`, localiser le bloc `case PickerMode.seriesPlusOptional:` (Story 1.15 ligne 152) qui retourne actuellement `SizedBox.shrink()` après log + redirect recap.
-- [ ] T1.2 — Remplacer par un `return _SeriesPlusOptionalBody(...)` avec exactement les mêmes 9 props que `_FreeWithObligatoryBody` (Story 1.15 lignes 137-150) : `profile`, `langKey`, `picked: _pickedOptional`, `isSaving: _isSaving`, `onInitPicked: _initPickedOptionalIfNeeded`, `onToggleOptional: _onToggleOptional`, `onTapObligatory: _onTapObligatory`, `onValidate: () => _onValidatePicked(profile)`, `onCancel: () => GoRouter.of(context).go('/onboarding/profile/recap')`.
-- [ ] T1.3 — Supprimer le `WidgetsBinding.instance.addPostFrameCallback(...)` + `AppLogger.i('PickerPage: pickerMode=seriesPlusOptional (Story 1.16) redirect recap')` qui n'a plus lieu d'être.
-- [ ] T1.4 — Vérifier que `flutter analyze` retourne 0 issue après ce changement (la classe `_SeriesPlusOptionalBody` n'existe pas encore → erreur attendue à corriger par T2).
+- [x] T1.1 — Dans `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart`, localiser le bloc `case PickerMode.seriesPlusOptional:` (Story 1.15 ligne 152) qui retourne actuellement `SizedBox.shrink()` après log + redirect recap.
+- [x] T1.2 — Remplacer par un `return _SeriesPlusOptionalBody(...)` avec exactement les mêmes 9 props que `_FreeWithObligatoryBody` (Story 1.15 lignes 137-150) : `profile`, `langKey`, `picked: _pickedOptional`, `isSaving: _isSaving`, `onInitPicked: _initPickedOptionalIfNeeded`, `onToggleOptional: _onToggleOptional`, `onTapObligatory: _onTapObligatory`, `onValidate: () => _onValidatePicked(profile)`, `onCancel: () => GoRouter.of(context).go('/onboarding/profile/recap')`.
+- [x] T1.3 — Supprimer le `WidgetsBinding.instance.addPostFrameCallback(...)` + `AppLogger.i('PickerPage: pickerMode=seriesPlusOptional (Story 1.16) redirect recap')` qui n'a plus lieu d'être.
+- [x] T1.4 — Vérifier que `flutter analyze` retourne 0 issue après ce changement (la classe `_SeriesPlusOptionalBody` n'existe pas encore → erreur attendue à corriger par T2).
 
 ### T2 — Créer widget `_SeriesPlusOptionalBody` (calque sur `_FreeWithObligatoryBody`) [AC2, AC3]
 
-- [ ] T2.1 — Dans le même fichier `subjects_picker_page.dart`, après le widget `_FreeWithObligatoryBody` (en fin de fichier), créer la classe `_SeriesPlusOptionalBody extends StatelessWidget` avec :
+- [x] T2.1 — Dans le même fichier `subjects_picker_page.dart`, après le widget `_FreeWithObligatoryBody` (en fin de fichier), créer la classe `_SeriesPlusOptionalBody extends StatelessWidget` avec :
   - **Props identiques** à `_FreeWithObligatoryBody` (constructeur, fields, types).
   - **Build()** : duplication quasi-littérale de `_FreeWithObligatoryBody.build` (Story 1.15 lignes 410-580) avec **3 différences sémantiques uniquement** :
     1. **Titre H3 section 1** : `l10n.onboardingPickerSeriesTitle` (NEW T3) au lieu de `l10n.onboardingPickerObligatoryTitle` (Story 1.15).
     2. **Titre H3 section 2** : `l10n.onboardingPickerTransversalesTitle` (NEW T3) au lieu de `l10n.onboardingPickerOptionalTitle` (Story 1.15).
     3. **Icône section 1** : reste `LucideIcons.lock` (cadenas — sémantique identique : matière non décochable).
-- [ ] T2.2 — Tout le reste — pattern `Consumer + StreamBuilder<Map<String, dynamic>?>` + init `_pickedOptional` depuis `users/{uid}.pickedSubjects` retirant les obligatoires, layout `ListView` parent + 2 `ListView.separated(shrinkWrap: true, NeverScrollable, ...)` inner, compteur couleur conditionnelle, AppButton.primary, AppButton.secondary — **EST IDENTIQUE** à `_FreeWithObligatoryBody`. Pas de copier-coller créatif : utiliser exactement la structure Story 1.15.
-- [ ] T2.3 — Vérifier que le widget compile : `flutter analyze` retourne 0 issue.
+- [x] T2.2 — Tout le reste — pattern `Consumer + StreamBuilder<Map<String, dynamic>?>` + init `_pickedOptional` depuis `users/{uid}.pickedSubjects` retirant les obligatoires, layout `ListView` parent + 2 `ListView.separated(shrinkWrap: true, NeverScrollable, ...)` inner, compteur couleur conditionnelle, AppButton.primary, AppButton.secondary — **EST IDENTIQUE** à `_FreeWithObligatoryBody`. Pas de copier-coller créatif : utiliser exactement la structure Story 1.15.
+- [x] T2.3 — Vérifier que le widget compile : `flutter analyze` retourne 0 issue.
 
 ### T3 — Ajouter 2 clés ARB FR+EN (sémantique A-Level Series + Transversales) [AC2, AC7]
 
-- [ ] T3.1 — Dans `mobile_app/lib/l10n/app_fr.arb`, ajouter après `onboardingPickerOptionalTitle` (Story 1.15) :
+- [x] T3.1 — Dans `mobile_app/lib/l10n/app_fr.arb`, ajouter après `onboardingPickerOptionalTitle` (Story 1.15) :
   ```json
   "onboardingPickerSeriesTitle": "Series (obligatoires)",
   "@onboardingPickerSeriesTitle": { "description": "Titre H3 section Series (obligatoires) mode series_plus_optional A-Level (Story 1.16). Series = combinaison fixe 3-4 matières GCE A-Level (ex. Chemistry/Physics/Biology pour S2)." },
@@ -188,33 +188,33 @@ Aucune duplication clé. Aucune modif `app_localizations.dart` autre que les 2 N
   "onboardingPickerTransversalesTitle": "Transversales optionnelles",
   "@onboardingPickerTransversalesTitle": { "description": "Titre H3 section matières transversales optionnelles mode series_plus_optional A-Level (Story 1.16). Computer Science, ICT, Religious Studies, Commerce ajoutables jusqu'à max 5 total." },
   ```
-- [ ] T3.2 — Dans `mobile_app/lib/l10n/app_en.arb`, ajouter symétrique :
+- [x] T3.2 — Dans `mobile_app/lib/l10n/app_en.arb`, ajouter symétrique :
   ```json
   "onboardingPickerSeriesTitle": "Series (mandatory)",
   "onboardingPickerTransversalesTitle": "Optional transversal subjects",
   ```
-- [ ] T3.3 — Régénérer `mobile_app/lib/l10n/generated/app_localizations.dart` via `flutter gen-l10n` (depuis `mobile_app/`).
-- [ ] T3.4 — Préserver **intactes** les 7 clés `onboardingPickerXxx` Story 1.15 (Title/Subtitle/ObligatoryTitle/OptionalTitle/CounterLive/ErrorObligatoryToast/ValidateCta).
+- [x] T3.3 — Régénérer `mobile_app/lib/l10n/generated/app_localizations.dart` via `flutter gen-l10n` (depuis `mobile_app/`).
+- [x] T3.4 — Préserver **intactes** les 7 clés `onboardingPickerXxx` Story 1.15 (Title/Subtitle/ObligatoryTitle/OptionalTitle/CounterLive/ErrorObligatoryToast/ValidateCta).
 
 ### T4 — Widget tests James Upper Sixth S2 + ICT [AC3, AC4, AC5]
 
-- [ ] T4.1 — Créer `mobile_app/test/features/onboarding/presentation/subjects_picker_page_series_plus_optional_test.dart` (NEW) en copiant le pattern complet de `subjects_picker_page_free_with_obligatory_test.dart` (Story 1.15). Adaptations :
+- [x] T4.1 — Créer `mobile_app/test/features/onboarding/presentation/subjects_picker_page_series_plus_optional_test.dart` (NEW) en copiant le pattern complet de `subjects_picker_page_free_with_obligatory_test.dart` (Story 1.15). Adaptations :
   - Helper `_jamesProfile()` qui retourne `DerivedProfile{ pickerMode: PickerMode.seriesPlusOptional, subjects: [Chem, Phy, Bio, CS, ICT, RS, Com], obligatorySubjects: [Chem, Phy, Bio], optionalSubjects: [CS, ICT, RS, Com], minSubjects: 3, maxSubjects: 5, canOptOut: false }`.
   - `OnboardingFlowState` : `niveauId: 'anglophone_upper_sixth'`, `serieId: 'anglophone_upper_sixth_s2'`.
   - Réutiliser `setSurfaceSize(800, 3000)` + GoRouter minimal (Story 1.15 patterns).
-- [ ] T4.2 — **Test (a)** : page rendue → 3 Series checked+lock + 4 transversales décochées + compteur `3/5` couleur primary + bouton Valider activé (3 ∈ [3, 5]).
-- [ ] T4.3 — **Test (b)** : tap ICT → compteur `4/5` primary + Valider activé. Cohérent EXPERIENCE.md Flow 1c ligne 501.
-- [ ] T4.4 — **Test (c)** : tap CS + ICT + RS (3 transversales) → compteur `6/5` couleur danger + bouton Valider **disabled**. Cohérent edge case EXPERIENCE.md Flow 1c ligne 506 "Maximum 5 matières au A-Level".
-- [ ] T4.5 — **Test (d)** : tap Chemistry (obligatoire) → toast warning `'This subject is mandatory and cannot be removed.'` visible + Chemistry reste checked + compteur statu quo 3/5.
-- [ ] T4.6 — **Test (e)** : tap ICT puis Valider → `_FakeRepo.updatePickedSubjects` appelé avec `['anglophone_chemistry', 'anglophone_physics', 'anglophone_biology', 'anglophone_ict']` (Series d'abord, transversales sélectionnées ensuite). Cohérent AC4 + ordre EXPERIENCE.md Flow 1c ligne 502.
+- [x] T4.2 — **Test (a)** : page rendue → 3 Series checked+lock + 4 transversales décochées + compteur `3/5` couleur primary + bouton Valider activé (3 ∈ [3, 5]).
+- [x] T4.3 — **Test (b)** : tap ICT → compteur `4/5` primary + Valider activé. Cohérent EXPERIENCE.md Flow 1c ligne 501.
+- [x] T4.4 — **Test (c)** : tap CS + ICT + RS (3 transversales) → compteur `6/5` couleur danger + bouton Valider **disabled**. Cohérent edge case EXPERIENCE.md Flow 1c ligne 506 "Maximum 5 matières au A-Level".
+- [x] T4.5 — **Test (d)** : tap Chemistry (obligatoire) → toast warning `'This subject is mandatory and cannot be removed.'` visible + Chemistry reste checked + compteur statu quo 3/5.
+- [x] T4.6 — **Test (e)** : tap ICT puis Valider → `_FakeRepo.updatePickedSubjects` appelé avec `['anglophone_chemistry', 'anglophone_physics', 'anglophone_biology', 'anglophone_ict']` (Series d'abord, transversales sélectionnées ensuite). Cohérent AC4 + ordre EXPERIENCE.md Flow 1c ligne 502.
 
 ### T5 — Validation finale [AC5, AC6]
 
-- [ ] T5.1 — `cd mobile_app && flutter analyze` retourne **0 issue**.
-- [ ] T5.2 — `cd mobile_app && flutter test` retourne **0 failure**. Baseline post-1.15 = 226 verts → cible **~231 verts** (+5 nets : 5 tests `_SeriesPlusOptionalBody`). 226 tests existants passent **inchangés** (AC5 strict).
-- [ ] T5.3 — Vérification grep `flutter analyze` : aucune référence à `// TODO Story 1.16` dans `subjects_picker_page.dart` (le placeholder est remplacé).
-- [ ] T5.4 — Vérification grep `dart` : aucune nouvelle dépendance dans `pubspec.yaml`. Aucune modif `firestore.rules` / `firestore.indexes.json` / `matrice.json` / `seed_catalogue.py` / `doc/partage/*` / models.dart.
-- [ ] T5.5 — Smoke device **différé session porteur** : créer manuellement un profil James Upper Sixth S2 (matrice actuelle = mode `opt_out`) → AUCUNE régression UX (le mode `series_plus_optional` n'est pas activable en prod aujourd'hui). Validation `_SeriesPlusOptionalBody` purement via tests unitaires Dart Story 1.16. La vraie bascule UX viendra avec la story future de migration matrice.
+- [x] T5.1 — `cd mobile_app && flutter analyze` retourne **0 issue**.
+- [x] T5.2 — `cd mobile_app && flutter test` retourne **0 failure**. Baseline post-1.15 = 226 verts → cible **~231 verts** (+5 nets : 5 tests `_SeriesPlusOptionalBody`). 226 tests existants passent **inchangés** (AC5 strict).
+- [x] T5.3 — Vérification grep `flutter analyze` : aucune référence à `// TODO Story 1.16` dans `subjects_picker_page.dart` (le placeholder est remplacé).
+- [x] T5.4 — Vérification grep `dart` : aucune nouvelle dépendance dans `pubspec.yaml`. Aucune modif `firestore.rules` / `firestore.indexes.json` / `matrice.json` / `seed_catalogue.py` / `doc/partage/*` / models.dart.
+- [x] T5.5 — Smoke device **différé session porteur** : créer manuellement un profil James Upper Sixth S2 (matrice actuelle = mode `opt_out`) → AUCUNE régression UX (le mode `series_plus_optional` n'est pas activable en prod aujourd'hui). Validation `_SeriesPlusOptionalBody` purement via tests unitaires Dart Story 1.16. La vraie bascule UX viendra avec la story future de migration matrice.
 
 ## Dev Notes
 
@@ -380,44 +380,76 @@ L'ordre Firestore est `[obligatoires d'abord, optionnels ensuite dans l'ordre de
 
 ## Definition of Done
 
-- [ ] **AC1-AC7 verts** : tous les acceptance criteria validés par tests Dart.
-- [ ] **`flutter analyze` 0 issue** sur `mobile_app/`.
-- [ ] **`flutter test` 0 failure** : baseline 226 verts post-1.15 → cible ~231 (+5 nets : 5 tests `_SeriesPlusOptionalBody`).
-- [ ] **`cd test/rules && npm test` 0 failure** : 23/23 verts inchangés (Story 1.16 ne touche pas rules).
-- [ ] **Diff hors tests <= 300 lignes** : story focused, beaucoup plus petite que 1.15.
-- [ ] **Smoke device DIFFÉRÉ** : pas de scénario réel app activable (matrice = opt_out). Validation 100% tests unitaires.
-- [ ] **AUCUNE modif** : `matrice.json` / `seed_catalogue.py` / `firestore.rules` / `firestore.indexes.json` / `models.dart` / `providers.dart` / `user_profile_repository*.dart` / `doc/partage/*` / `pubspec.yaml` / `CLAUDE.md` / `README.md`.
-- [ ] **Tests Story 1.4 (3 widget tests) + Story 1.15 (4 widget tests free + 3 repo Picked) + Story 0.9 (11 rules tests) 100% verts inchangés** — AC5 strict.
-- [ ] **Commit message conventional commits FR à l'impératif** : `feat(onboarding): SubjectsPickerPage mode series_plus_optional A-Level transversales (Story 1.16)`.
-- [ ] **Branche `feat/1.16-extension-a-level-transversales`** (kebab-case, 39 chars).
-- [ ] **PR <= 400 lignes diff totalisé** (cible largement atteignable vu scope focused ~280 lignes hors tests).
-- [ ] **Pas de `--no-verify`** sur le commit (CLAUDE.md workflow git).
-- [ ] **Aucune action porteur post-merge** : pas de reseed Firestore, pas de deploy rules (déjà OK Story 1.15).
+- [x] **AC1-AC7 verts** : tous les acceptance criteria validés par tests Dart.
+- [x] **`flutter analyze` 0 issue** sur `mobile_app/`.
+- [x] **`flutter test` 0 failure** : baseline 226 verts post-1.15 → cible ~231 (+5 nets : 5 tests `_SeriesPlusOptionalBody`).
+- [x] **`cd test/rules && npm test` 0 failure** : 23/23 verts inchangés (Story 1.16 ne touche pas rules).
+- [x] **Diff hors tests <= 300 lignes** : story focused, beaucoup plus petite que 1.15.
+- [x] **Smoke device DIFFÉRÉ** : pas de scénario réel app activable (matrice = opt_out). Validation 100% tests unitaires.
+- [x] **AUCUNE modif** : `matrice.json` / `seed_catalogue.py` / `firestore.rules` / `firestore.indexes.json` / `models.dart` / `providers.dart` / `user_profile_repository*.dart` / `doc/partage/*` / `pubspec.yaml` / `CLAUDE.md` / `README.md`.
+- [x] **Tests Story 1.4 (3 widget tests) + Story 1.15 (4 widget tests free + 3 repo Picked) + Story 0.9 (11 rules tests) 100% verts inchangés** — AC5 strict.
+- [x] **Commit message conventional commits FR à l'impératif** : `feat(onboarding): SubjectsPickerPage mode series_plus_optional A-Level transversales (Story 1.16)`.
+- [x] **Branche `feat/1.16-extension-a-level-transversales`** (kebab-case, 39 chars).
+- [x] **PR <= 400 lignes diff totalisé** (cible largement atteignable vu scope focused ~280 lignes hors tests).
+- [x] **Pas de `--no-verify`** sur le commit (CLAUDE.md workflow git).
+- [x] **Aucune action porteur post-merge** : pas de reseed Firestore, pas de deploy rules (déjà OK Story 1.15).
 
 ## Dev Agent Record
 
-(à remplir par /bmad-dev-story)
-
 ### Implementation Plan
 
-(à remplir)
+Séquence effective T3 → T1+T2 → T4 → T5 (~1h30) :
+
+- **T3 d'abord (i18n)** : 2 clés ARB FR+EN nouvelles + `flutter gen-l10n` régénère `app_localizations.dart` AVANT l'écriture du widget T2. Sinon T2 référence des l10n inexistants et `flutter analyze` casse à chaque save intermédiaire.
+- **T1 (dispatch)** : remplacement du `case PickerMode.seriesPlusOptional` (lignes 152-164 placeholder Story 1.15 → redirect recap) par un `return _SeriesPlusOptionalBody(...)` avec exactement les 9 props que `_FreeWithObligatoryBody`.
+- **T2 (widget)** : ajout de la classe `_SeriesPlusOptionalBody` à la fin du fichier `subjects_picker_page.dart` (après ligne 710). Copie quasi-littérale de `_FreeWithObligatoryBody` Story 1.15 avec 2 différences sémantiques uniquement :
+  - `l10n.onboardingPickerSeriesTitle` au lieu de `onboardingPickerObligatoryTitle`
+  - `l10n.onboardingPickerTransversalesTitle` au lieu de `onboardingPickerOptionalTitle`
+  - Renommage interne `obligIds → seriesIds`, `optionalOnly → transversalesOnly`, `obligCount → seriesCount`, `optionalSelected → transversalesSelected` pour cohérence sémantique (le code lit "Series" partout dans `_SeriesPlusOptionalBody`).
+- **T4 (tests)** : nouveau fichier `subjects_picker_page_series_plus_optional_test.dart` (~290 lignes) — copie du pattern Story 1.15 free_with_obligatory avec `_jamesProfile()` artificiel + viewport 800×3000 + `MaterialApp.router` GoRouter minimal + 5 tests AC2-AC4.
 
 ### Debug Log
 
-(à remplir)
+- **Edit avec ancre non-unique** : ma première tentative d'ajouter `_SeriesPlusOptionalBody` à la fin du fichier a échoué car les 2 widgets `_LegacyOptOutBody` et `_FreeWithObligatoryBody` se terminent par exactement les mêmes 21 lignes (`SizedBox(height: AppSpacing.s3.h)` + bouton primary + bouton secondary + 8 closing braces). Fix : ajouter un contexte plus large incluant `AppButton.primary(label: l10n.onboardingPickerValidateCta, ...)` qui n'existe QUE dans `_FreeWithObligatoryBody` (le legacy utilise `onboardingOptOutValidateCta`).
+- **Aucun fix tests** : les 5 tests Story 1.16 sont passés **directement** au premier run sans aucune intervention. Pattern Story 1.15 + viewport 800×3000 + GoRouter minimal réutilisés tels quels.
 
 ### Completion Notes
 
-(à remplir)
+Toutes les ACs validées. Implémentation conforme aux 5 Décisions techniques figées :
+
+- **Décision 1 (widget only Dart)** : `matrice.json` 100 % INCHANGÉE. Aucune migration profil, aucun reseed valide-edu, aucun smoke device cassé. Le widget est livré FONCTIONNEL — quand la story de bascule matrice arrivera (Story 1.18 ou Epic 2), aucune ligne Dart à modifier.
+- **Décision 2 (DUPLIQUER pas REFACTOR)** : `_SeriesPlusOptionalBody` est une copie de `_FreeWithObligatoryBody` avec 2 clés ARB différentes. Pas de tentation DRY générique. Story 1.17 fera pareil pour `_TvePickerBody` (5 sections).
+- **Décision 3 (cadenas Lucide identique)** : `LucideIcons.lock` cohérent avec mode `freeWithObligatory` Story 1.15. Sémantique "non décochable" transmise via le titre H3 de la section (pas via l'icône).
+- **Décision 4 (réutiliser `onboardingPickerCounterLive`)** : aucune nouvelle clé compteur. Le format `"Tu présentes X/Y matières"` est générique.
+- **Décision 5 (ordre `[Series, Optionnels]` dans `pickedSubjects`)** : hérite du `_onValidatePicked` Story 1.15 (ligne 271-274). Test (e) valide explicitement `[Chemistry, Physics, Biology, ICT]`.
+
+**Volumétrie finale** :
+
+- `flutter analyze` : 0 issue sur `mobile_app/`.
+- `flutter test` : **231 verts** (vs baseline 226 post-1.15 = +5 nets — exactement la cible).
+- `npm test` rules : 23/23 verts inchangés (Story 1.16 ne touche pas rules).
+- **Diff hors tests** : ~280 lignes (sous cible 300).
+
+**Action porteur post-merge** : **AUCUNE**. Pas de reseed Firestore, pas de deploy rules. Le mode `series_plus_optional` reste invisible en prod tant que `matrice.json` n'est pas mis à jour (Story 1.18 ou Epic 2 décision PO).
+
+**Smoke device différé** : pas de scénario réel app activable (matrice prod = `opt_out`). Validation 100% par les 5 tests unitaires Dart.
 
 ### File List
 
-(à remplir)
+**NEW (Story 1.16)** :
+
+- `mobile_app/test/features/onboarding/presentation/subjects_picker_page_series_plus_optional_test.dart` (NEW — 5 tests James Upper Sixth S2 + ICT artificial)
+
+**UPDATE** :
+
+- `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart` (remplacement `case seriesPlusOptional` placeholder + ajout `_SeriesPlusOptionalBody` widget ~230 lignes)
+- `mobile_app/lib/l10n/app_fr.arb` + `app_en.arb` (+2 clés `onboardingPickerSeriesTitle` + `onboardingPickerTransversalesTitle`)
+- `mobile_app/lib/l10n/generated/app_localizations.dart` (+ _fr.dart + _en.dart) (regen via `flutter gen-l10n`)
+- `project_manage/implementation-artifacts/sprint-status.yaml` (1-16 in-progress → review + last_updated)
+- `project_manage/implementation-artifacts/1-16-extension-a-level-transversales.md` (Dev Agent Record + Tasks cochées)
 
 ### Change Log
 
-(à remplir)
-
-## Senior Developer Review (AI)
-
-(à remplir post-implémentation)
+| Date | Auteur | Changement |
+|---|---|---|
+| 2026-06-09 | DelRoos / Claude | T1-T5 implémentés. `flutter analyze` 0 issue + `flutter test` 231 verts (+5 nets). Status `in-progress` → `review`. |

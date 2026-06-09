@@ -87,6 +87,8 @@
   "onboardingPickerSubtitle": "Select the subjects you'll sit for at your exam.",
   "onboardingPickerObligatoryTitle": "Mandatory subjects",
   "onboardingPickerOptionalTitle": "Optional subjects",
+  "onboardingPickerSeriesTitle": "Series (mandatory)",
+  "onboardingPickerTransversalesTitle": "Optional transversal subjects",
   "onboardingPickerCounterLive": "{count, plural, =1{You take 1/{max} subject} other{You take {count}/{max} subjects}}",
   "@onboardingPickerCounterLive": {
     "placeholders": {
