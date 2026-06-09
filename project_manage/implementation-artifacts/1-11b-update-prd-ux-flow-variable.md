@@ -3,9 +3,12 @@ story_id: 1.11b
 title: Update PRD FR-2/FR-3 + EXPERIENCE.md Flow 1 variants alignement nomenclature
 epic: 1
 phase: P1 extension v2 (sprint change 2026-06-09)
-status: review
+status: done
 created: 2026-06-09
+merged: 2026-06-09
 baseline_commit: 96d6444a5679ebe0a0e496c7b97c9bd70f55ffa8
+merge_commit: 0664f1a
+pr: 64
 estimation: S (~2h)
 sprint_change: sprint-change-proposal-2026-06-09.md (mergé PR #59)
 dependencies:
