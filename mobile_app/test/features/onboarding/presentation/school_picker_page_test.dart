@@ -95,7 +95,7 @@ class _FakeUserProfileRepo implements UserProfileRepository {
       const Right(null);
 
   @override
-  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async {
+  Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school) async {
     updateCalled = true;
     return const Right(null);
   }

@@ -10,6 +10,7 @@
 import 'package:fpdart/fpdart.dart';
 
 import 'profile_failure.dart';
+import 'school.dart';
 import 'sub_system.dart';
 
 abstract interface class UserProfileRepository {
@@ -78,14 +79,28 @@ abstract interface class UserProfileRepository {
     List<String> pickedSubjectIds,
   );
 
-  /// Story 1.7 — Met a jour le champ `schoolId` du doc users/{uid}.
+  /// Story 1.5.d — Lie (ou délie) une école au doc users/{uid} en
+  /// dénormalisant les 4 champs `{schoolId, schoolCity, schoolRegion,
+  /// schoolName}` en 1 seul update partiel (CLAUDE.md règle 10.l). Préparation
+  /// des features downstream (Epic 2+ dashboard, Epic 5 rankings régionaux,
+  /// Epic 6 IA contextualisée) qui pourront lire ces champs sans N+1 reads
+  /// sur la collection `schools`.
   ///
-  /// Update partiel sur `{schoolId, updatedAt}`. Les regles Story 1.3
-  /// (immuables : subSystem/filiere/niveau/serie/createdAt) ne touchent pas
-  /// a `schoolId` — l'update passe sans modification rules.
+  /// - Si [school] est non-null : les 4 champs sont écrits cohérents
+  ///   (`schoolId = school.schoolId`, `schoolCity = school.city`, etc.).
+  /// - Si [school] est `null` : les 4 champs deviennent `null` ensemble
+  ///   (unlink — pas de mismatch `schoolId=null` + `schoolName='Lycée X'`).
   ///
-  /// Passer `null` "skipperait" la liaison, mais en pratique la page Story 1.7
-  /// court-circuite : le `schoolId` est deja `null` par defaut (Story 1.3),
-  /// pas besoin d'update Firestore quand on skip.
-  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId);
+  /// L'entité [School] est passée par le caller (le tap sur une card du
+  /// catalogue a déjà l'objet) — aucune lecture supplémentaire
+  /// `schools/{schoolId}` n'est effectuée (CLAUDE.md règle 10.k).
+  ///
+  /// Les règles Story 1.3 (immuables : subSystem/filiere/niveau/serie/createdAt)
+  /// ne touchent pas à ces 4 champs — l'update passe sans validation
+  /// supplémentaire côté rules V1 (cf. firestore.rules § users/{uid}).
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school);
 }

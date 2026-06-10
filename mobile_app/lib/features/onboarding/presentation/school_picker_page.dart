@@ -157,14 +157,14 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
     setState(() => _isLinking = true);
 
     final repo = ref.read(userProfileRepositoryProvider);
-    final result = await repo.updateSchoolId(school.schoolId);
+    final result = await repo.updateLinkedSchool(school);
 
     if (!mounted) return;
     setState(() => _isLinking = false);
 
     result.fold(
       (failure) {
-        AppLogger.w('updateSchoolId failed: ${failure.message}');
+        AppLogger.w('updateLinkedSchool failed: ${failure.message}');
         AppToast.show(
           context,
           message: l10n.onboardingSchoolGenericErrorToast,

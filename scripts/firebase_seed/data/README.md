@@ -370,4 +370,56 @@ rejectionReason: "<explication courte, ex. 'École déjà présente sous nom X' 
 - **subSystem absent** : si l'utilisateur a coché « Je ne sais pas », l'admin doit déterminer le sous-système (recherche Wikipedia / MINESEC / site école) avant de créer le doc `schools/`.
 - **Pas d'API de notification utilisateur V1** : si l'utilisateur veut connaître le statut, il devra contacter le support hors-app. Un écran « Mes demandes » mobile est différé V2.
 
-Le flow écrit dans la sous-collection `schools/_pending_<timestamp>/requests/<auto>` (cf. [`BASE-DE-DONNEES.md § schools requests`](../../../doc/partage/BASE-DE-DONNEES.md)). Une école demandée + modérée admin doit ensuite être promue dans `schools.json` (workflow PR séparé) puis re-seedée pour ancrer la source de vérité versionnée.
+---
+
+## Migration users legacy (Story 1.5.d) — `migrate_user_school_denorm.py`
+
+À lancer **1 seule fois** après le merge de Story 1.5.d, pour dénormaliser les 3 champs `schoolCity`, `schoolRegion`, `schoolName` dans `users/{uid}` pour les users legacy (créés avant Story 1.5.d via Stories 1.6/1.7) qui ont `schoolId != null` mais pas ces 3 champs cosmétiques.
+
+### Commande
+
+```bash
+cd scripts/firebase_seed
+
+# Dry-run d'abord (recommandé) : liste les users à migrer sans écrire.
+python migrate_user_school_denorm.py --project valide-edu --dry-run
+
+# Migration réelle.
+python migrate_user_school_denorm.py --project valide-edu
+```
+
+### Comportement
+
+Pour chaque user avec `schoolId != null` :
+1. Si `schoolCity` déjà renseigné → **skip** (idempotence : la migration a déjà été faite ou Story 1.5.d a écrit les 4 champs directement à la liaison).
+2. Sinon : fetch `schools/{schoolId}` (lookup par ID auto-indexé), puis `set(merge=True)` sur `{schoolCity, schoolRegion, schoolName, updatedAt}`.
+3. Si le `schoolId` du user pointe vers une école **absente** (cas rare : doc `schools/` supprimé manuellement par admin) → log `[WARN]` + skip (l'admin doit traiter manuellement le user via Firebase Console).
+
+### Idempotence + rejouabilité
+
+Le script est **idempotent** : re-run sur un projet déjà migré → 0 nouvelle écriture (tous les users sont détectés `already_done`). Safe à re-lancer si interruption réseau ou besoin de vérifier l'état.
+
+### Edge case — école supprimée manuellement
+
+Si un user a `schoolId: "school_x"` mais `schools/school_x` n'existe plus, le script affiche :
+
+```text
+[WARN] user uid_xx... references schoolId='school_x' which does not exist in schools/ -> skip
+```
+
+Action manuelle admin pour ces users : ouvrir Firebase Console > `users/<uid>` et soit (a) repositionner `schoolId` sur une école valide, soit (b) le passer à `null` (les 4 champs deviennent null cohérents lors de la prochaine `updateLinkedSchool(null)` depuis l'app).
+
+### Sortie attendue
+
+```text
+[OK] Auth: Application Default Credentials, projectId=valide-edu
+
+[OK] Migration terminee en 1.23 s.
+  scanned                 : 152
+  migrated                : 47
+  already_done (idempot.) : 95
+  no_school_id            : 8
+  skipped_missing_school  : 2
+```
+
+> **Important** : ne **PAS** lancer ce script avant le merge de Story 1.5.d. Les users actifs entre-temps écrivent déjà les 4 champs cohérents via l'app (`updateLinkedSchool` depuis `school_picker_page`) ; le script ne migre que les users legacy antérieurs au refactor.

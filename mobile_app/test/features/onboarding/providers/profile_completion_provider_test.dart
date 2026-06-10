@@ -20,6 +20,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:valide_school/core/firebase/providers.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/domain/profile_failure.dart';
+import 'package:valide_school/features/onboarding/domain/school.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
 import 'package:valide_school/features/onboarding/domain/user_profile_repository.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
@@ -55,7 +56,7 @@ class _FakeRepo implements UserProfileRepository {
       const Right(null);
 
   @override
-  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async =>
+  Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school) async =>
       const Right(null);
 }
 

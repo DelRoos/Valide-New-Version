@@ -10,6 +10,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../core/logging/app_logger.dart';
 import '../domain/profile_failure.dart';
+import '../domain/school.dart';
 import '../domain/sub_system.dart';
 import '../domain/user_profile_repository.dart';
 
@@ -202,38 +203,52 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
   }
 
   // ===================================================================
-  // Story 1.7 — updateSchoolId() : liaison ecole optionnelle (FR-6)
+  // Story 1.5.d — updateLinkedSchool() : liaison ecole + denorm 4 champs (FR-6)
+  //
+  // Ecrit en 1 seul update partiel (CLAUDE.md regle 10.l) les 4 champs
+  // schoolId/schoolCity/schoolRegion/schoolName (ou tous null si unlink).
+  // L'entite School est passee par le caller (school_picker_page : tap card
+  // -> entite deja disponible) -> 0 read supplementaire schools/{id} (regle
+  // 10.k). Prepare downstream : Epic 2+ dashboard, Epic 5 rankings regionaux,
+  // Epic 6 IA contextualisee.
   // ===================================================================
 
   @override
-  Future<Either<ProfileFailure, void>> updateSchoolId(String? schoolId) async {
+  Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school) async {
     final uid = _getUid();
     if (uid == null) {
-      AppLogger.w('updateSchoolId() aborted: no current user uid');
+      AppLogger.w('updateLinkedSchool() aborted: no current user uid');
       return const Left(ProfileFailure.notAuthenticated());
     }
 
     try {
       await _firestore.collection(_kCollection).doc(uid).update({
-        'schoolId': schoolId,
+        'schoolId': school?.schoolId,
+        'schoolCity': school?.city,
+        'schoolRegion': school?.region,
+        'schoolName': school?.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
-      // schoolId est public (un identifiant catalogue), OK a logger.
-      // CLAUDE.md securite 4 : on ne logue PAS l'uid.
-      AppLogger.i('School linked: schoolId=${schoolId ?? "(null)"}');
+      // schoolId est public (identifiant catalogue), OK a logger. city OK
+      // (catalogue public). CLAUDE.md securite 4 : on ne logue PAS l'uid
+      // ni le nom complet du user.
+      AppLogger.i(
+        'School linked: schoolId=${school?.schoolId ?? "(null)"} '
+        'city=${school?.city ?? "(null)"}',
+      );
       return const Right(null);
     } on FirebaseException catch (e, st) {
       AppLogger.w(
-        'updateSchoolId() FirebaseException: ${e.code} ${e.message}',
+        'updateLinkedSchool() FirebaseException: ${e.code} ${e.message}',
         error: e,
       );
-      AppLogger.w('updateSchoolId() stack: $st');
+      AppLogger.w('updateLinkedSchool() stack: $st');
       return Left(
         ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
       );
     } catch (e, st) {
-      AppLogger.w('updateSchoolId() unexpected error: $e', error: e);
-      AppLogger.w('updateSchoolId() stack: $st');
+      AppLogger.w('updateLinkedSchool() unexpected error: $e', error: e);
+      AppLogger.w('updateLinkedSchool() stack: $st');
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }
