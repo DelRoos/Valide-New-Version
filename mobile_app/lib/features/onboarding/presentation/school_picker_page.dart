@@ -23,6 +23,7 @@ import '../../../core/widgets/app_toast.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../domain/school.dart';
 import '../providers.dart';
+import '_profile_failure_message.dart';
 
 class SchoolPickerPage extends ConsumerStatefulWidget {
   const SchoolPickerPage({super.key});
@@ -164,10 +165,13 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
 
     result.fold(
       (failure) {
-        AppLogger.w('updateLinkedSchool failed: ${failure.message}');
+        AppLogger.w(
+          'updateLinkedSchool failed: kind=${failure.kind.name} '
+          'message=${failure.message}',
+        );
         AppToast.show(
           context,
-          message: l10n.onboardingSchoolGenericErrorToast,
+          message: profileFailureUserMessage(l10n, failure),
           tone: ToastTone.warning,
         );
       },

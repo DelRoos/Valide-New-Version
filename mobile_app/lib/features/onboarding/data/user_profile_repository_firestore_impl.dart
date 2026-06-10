@@ -87,7 +87,7 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       );
       AppLogger.w('createProfile() stack: $st');
       return Left(
-        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+        ProfileFailure.firestoreError(e.message ?? "Firebase: ${e.code}", code: e.code),
       );
     } catch (e, st) {
       AppLogger.w('createProfile() unexpected error: $e', error: e);
@@ -158,7 +158,7 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       );
       AppLogger.w('updateOptedOutSubjects() stack: $st');
       return Left(
-        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+        ProfileFailure.firestoreError(e.message ?? "Firebase: ${e.code}", code: e.code),
       );
     } catch (e, st) {
       AppLogger.w('updateOptedOutSubjects() unexpected error: $e', error: e);
@@ -203,7 +203,7 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       );
       AppLogger.w('updatePickedSubjects() stack: $st');
       return Left(
-        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+        ProfileFailure.firestoreError(e.message ?? "Firebase: ${e.code}", code: e.code),
       );
     } catch (e, st) {
       AppLogger.w('updatePickedSubjects() unexpected error: $e', error: e);
@@ -257,7 +257,7 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       );
       AppLogger.w('updateLinkedSchool() stack: $st');
       return Left(
-        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
+        ProfileFailure.firestoreError(e.message ?? "Firebase: ${e.code}", code: e.code),
       );
     } catch (e, st) {
       AppLogger.w('updateLinkedSchool() unexpected error: $e', error: e);

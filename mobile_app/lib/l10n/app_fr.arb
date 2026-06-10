@@ -60,6 +60,15 @@
   "errorGeneric": "Une erreur est survenue. Réessaie ?",
   "@errorGeneric": { "description": "Erreur fourre-tout quand la cause précise n'est pas exposable." },
 
+  "errorPermissionDenied": "Session expirée. Re-lance l'app pour rafraîchir.",
+  "@errorPermissionDenied": { "description": "Erreur explicite quand FirebaseException code=permission-denied. Cause probable : auth perdu (signOut) ou doc users/{uid} dans un etat incoherent. Action utilisateur : re-lancer l'app force un signInAnonymously frais." },
+
+  "errorNetworkUnavailable": "Pas de connexion. Vérifie ton réseau et réessaie.",
+  "@errorNetworkUnavailable": { "description": "Erreur explicite quand FirebaseException code=unavailable ou network-related. Affichee en toast warning." },
+
+  "errorFirestoreUnknown": "Erreur technique. Réessaie dans un instant.",
+  "@errorFirestoreUnknown": { "description": "Fallback toast quand FirebaseException avec code non geré (autre que permission-denied / unavailable)." },
+
   "errorNoConnection": "Pas de connexion. Tu peux continuer ce que tu as ouvert.",
   "@errorNoConnection": { "description": "Erreur affichée quand le réseau est coupé. Rassure l'élève sur le cache offline." },
 

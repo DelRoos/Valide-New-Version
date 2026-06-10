@@ -194,6 +194,24 @@ abstract class AppLocalizations {
   /// **'Une erreur est survenue. Réessaie ?'**
   String get errorGeneric;
 
+  /// Erreur explicite quand FirebaseException code=permission-denied. Cause probable : auth perdu (signOut) ou doc users/{uid} dans un etat incoherent. Action utilisateur : re-lancer l'app force un signInAnonymously frais.
+  ///
+  /// In fr, this message translates to:
+  /// **'Session expirée. Re-lance l\'app pour rafraîchir.'**
+  String get errorPermissionDenied;
+
+  /// Erreur explicite quand FirebaseException code=unavailable ou network-related. Affichee en toast warning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion. Vérifie ton réseau et réessaie.'**
+  String get errorNetworkUnavailable;
+
+  /// Fallback toast quand FirebaseException avec code non geré (autre que permission-denied / unavailable).
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur technique. Réessaie dans un instant.'**
+  String get errorFirestoreUnknown;
+
   /// Erreur affichée quand le réseau est coupé. Rassure l'élève sur le cache offline.
   ///
   /// In fr, this message translates to:

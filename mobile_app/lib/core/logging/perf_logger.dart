@@ -8,19 +8,26 @@
 //   final user = await logPerf('users.read', () => repo.watchProfile().first);
 //   await logPerf('users.update.school', () => repo.updateLinkedSchool(s));
 
+import 'package:firebase_core/firebase_core.dart';
+
 import 'app_logger.dart';
 
 /// Tag prefix utilise sur tous les logs perf. Permet de filtrer la console
 /// avec `flutter run | grep PERF` pendant un audit de parcours.
 const String _kPerfTag = 'PERF';
 
-/// Wrappe une operation async dans un Stopwatch et log sa duree.
+/// Wrappe une operation async dans un Stopwatch et log sa duree + capture
+/// le type/code d'erreur si throw.
 ///
 /// Le [name] doit etre court et stable (pattern `<collection>.<verb>`,
 /// ex. `users.create`, `schools.search`, `nav.dashboard`). Eviter les IDs
 /// utilisateur dans le nom.
 ///
-/// Si l'operation throw, le log inclut [error] mais propage l'exception.
+/// Sur erreur :
+/// - FirebaseException : log [PERF] name FAIL Nms code=... message=...
+/// - autre exception : log [PERF] name FAIL Nms type=... message=...
+///   et inclut la stack via AppLogger.w(error: e) pour Crashlytics.
+/// L'exception est toujours rethrown.
 Future<T> logPerf<T>(String name, Future<T> Function() op) async {
   final stopwatch = Stopwatch()..start();
   try {
@@ -28,11 +35,23 @@ Future<T> logPerf<T>(String name, Future<T> Function() op) async {
     stopwatch.stop();
     AppLogger.i('[$_kPerfTag] $name ok ${stopwatch.elapsedMilliseconds}ms');
     return result;
-  } catch (e) {
+  } on FirebaseException catch (e, st) {
     stopwatch.stop();
     AppLogger.w(
-      '[$_kPerfTag] $name FAIL ${stopwatch.elapsedMilliseconds}ms error=$e',
+      '[$_kPerfTag] $name FAIL ${stopwatch.elapsedMilliseconds}ms '
+      'code=${e.code} message=${e.message ?? "(none)"}',
+      error: e,
     );
+    AppLogger.w('[$_kPerfTag] $name stack: $st');
+    rethrow;
+  } catch (e, st) {
+    stopwatch.stop();
+    AppLogger.w(
+      '[$_kPerfTag] $name FAIL ${stopwatch.elapsedMilliseconds}ms '
+      'type=${e.runtimeType} error=$e',
+      error: e,
+    );
+    AppLogger.w('[$_kPerfTag] $name stack: $st');
     rethrow;
   }
 }

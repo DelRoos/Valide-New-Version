@@ -59,6 +59,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get errorGeneric => 'Une erreur est survenue. Réessaie ?';
 
   @override
+  String get errorPermissionDenied =>
+      'Session expirée. Re-lance l\'app pour rafraîchir.';
+
+  @override
+  String get errorNetworkUnavailable =>
+      'Pas de connexion. Vérifie ton réseau et réessaie.';
+
+  @override
+  String get errorFirestoreUnknown =>
+      'Erreur technique. Réessaie dans un instant.';
+
+  @override
   String get errorNoConnection =>
       'Pas de connexion. Tu peux continuer ce que tu as ouvert.';
 

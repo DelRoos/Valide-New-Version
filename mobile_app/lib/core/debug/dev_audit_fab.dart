@@ -85,11 +85,19 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       ref.invalidate(onboardingFlowProvider);
       ref.invalidate(profileCompletionProvider);
       messenger.showSnackBar(
-        SnackBar(content: Text('$label OK')),
+        SnackBar(
+          content: Text(
+            '$label OK — redemarrage flow depuis le choix de section',
+          ),
+        ),
       );
       if (mounted) {
         navigator.pop();
-        GoRouter.of(context).go('/');
+        // Nav DIRECT a /onboarding/subsystem (pas /) pour skip toute logique
+        // de redirect router qui pourrait avoir un cache stale (les invalidate
+        // ci-dessus sont async, le go('/') redirect pouvait re-evaluer avant
+        // que les notifiers re-build).
+        GoRouter.of(context).go('/onboarding/subsystem');
       }
     } catch (e) {
       messenger.showSnackBar(

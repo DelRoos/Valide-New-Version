@@ -37,6 +37,7 @@ import '../../../core/widgets/picker/picker_section_scaffold.dart';
 import '../../../core/widgets/picker/picker_validate_bar.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../providers.dart';
+import '_profile_failure_message.dart';
 import '_subject_icons.dart';
 
 class SubjectsPickerPage extends ConsumerStatefulWidget {
@@ -483,10 +484,13 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
 
     result.fold(
       (failure) {
-        AppLogger.w('updateOptedOutSubjects failed: ${failure.message}');
+        AppLogger.w(
+          'updateOptedOutSubjects failed: kind=${failure.kind.name} '
+          'message=${failure.message}',
+        );
         AppToast.show(
           context,
-          message: l10n.onboardingRecapFirestoreErrorToast,
+          message: profileFailureUserMessage(l10n, failure),
           tone: ToastTone.warning,
         );
       },
@@ -554,10 +558,13 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
 
     result.fold(
       (failure) {
-        AppLogger.w('updatePickedSubjects failed: ${failure.message}');
+        AppLogger.w(
+          'updatePickedSubjects failed: kind=${failure.kind.name} '
+          'message=${failure.message}',
+        );
         AppToast.show(
           context,
-          message: l10n.onboardingRecapFirestoreErrorToast,
+          message: profileFailureUserMessage(l10n, failure),
           tone: ToastTone.warning,
         );
       },
