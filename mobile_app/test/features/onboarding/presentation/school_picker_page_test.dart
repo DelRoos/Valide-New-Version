@@ -199,5 +199,37 @@ void main() {
         expect(find.text('Ajouter mon école'), findsNothing);
       },
     );
+
+    testWidgets(
+      '(e) Story 1.18 AC8 — Tablet 900x1200 : rendu sans overflow + maxWidth 600dp applique',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(900, 1200));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        await _pump(tester, schoolRepo: _FakeSchoolRepo());
+
+        // Rendu nominal preserve sur tablet (champ + bouton skip presents)
+        expect(find.byType(TextField), findsOneWidget);
+        expect(find.text('Passer cette étape'), findsOneWidget);
+
+        // SchoolPickerPage applique deja maxWidth: 600 en tablet (Story 1.7,
+        // lignes 52-58). Story 1.18 AC8 verifie que ce comportement est
+        // bien actif au-dessus du breakpoint 840dp.
+        final constrainedBoxes = tester
+            .widgetList<ConstrainedBox>(find.byType(ConstrainedBox))
+            .toList();
+        final has600maxWidth = constrainedBoxes.any(
+          (cb) => cb.constraints.maxWidth == 600,
+        );
+        expect(
+          has600maxWidth,
+          isTrue,
+          reason:
+              'En tablet (900dp >= 840), SchoolPickerPage doit appliquer maxWidth 600',
+        );
+
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }

@@ -213,5 +213,38 @@ void main() {
         expect(btn.onPressed, isNull);
       },
     );
+
+    testWidgets(
+      '(d) Story 1.18 AC8 — Tablet 900x1200 : rendu sans overflow + maxWidth 720dp applique',
+      (tester) async {
+        await tester.binding.setSurfaceSize(const Size(900, 1200));
+        addTearDown(() => tester.binding.setSurfaceSize(null));
+
+        final prefs = await _prefsAnglophone();
+        await _pumpOptOut(tester, prefs: prefs, profile: _jamesProfile());
+
+        // Rendu nominal preserve sur tablet
+        expect(find.text('Pick your subjects'), findsOneWidget);
+        expect(find.byType(CheckboxListTile), findsNWidgets(3));
+
+        // PickerSectionScaffold doit appliquer ConstrainedBox(maxWidth: 720)
+        // au-dessus du breakpoint 840dp (CLAUDE.md regle 5 durcie).
+        final constrainedBoxes = tester
+            .widgetList<ConstrainedBox>(find.byType(ConstrainedBox))
+            .toList();
+        final has720maxWidth = constrainedBoxes.any(
+          (cb) => cb.constraints.maxWidth == 720,
+        );
+        expect(
+          has720maxWidth,
+          isTrue,
+          reason:
+              'En tablet (900dp >= 840), PickerSectionScaffold doit appliquer maxWidth 720',
+        );
+
+        // Aucune exception de layout (overflow, hasSize, etc.)
+        expect(tester.takeException(), isNull);
+      },
+    );
   });
 }

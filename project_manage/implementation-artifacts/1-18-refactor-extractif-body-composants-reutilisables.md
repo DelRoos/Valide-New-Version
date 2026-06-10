@@ -4,7 +4,7 @@ title: Refactor extractif `_Body` x4 → composants partagés + audit responsive
 revision: 2 (corrections post-discovery dev exploration)
 epic: 1
 phase: P1 cleanup post Epic 1 v2 (action items rétro epic-1v2-retro-2026-06-10.md)
-status: ready-for-dev
+status: review
 created: 2026-06-10
 revised: 2026-06-10  # corrections noms composants + scope A7 après lecture source code
 baseline_commit: 44044df  # merge PR #88 (contexte engine Story 1.18) — main aligné post discipline composants + responsive  # merge PR #87 (discipline composants + responsive) — main aligné post Epic 1 v2 COMPLETE + retro + règles 11/6 + catalogue + templates + customize.toml BMAD enhancements
@@ -447,28 +447,102 @@ Refactor **pur** (zéro changement métier) : préserver 100% des comportements 
 | Date | Auteur | Action |
 |---|---|---|
 | 2026-06-10 | Amelia (Developer via `/bmad-create-story`) | Création du contexte engine Story 1.18 — premier test grandeur nature des nouvelles règles CLAUDE.md 11 + 3/5 durcies + customize.toml BMAD enhancements (PR #87 merge `b451b5f`) |
+| 2026-06-10 | Amelia (Developer via `/bmad-dev-story`) | Dev complète : T1-T10 exécutées. 4 composants extraits + `subjects_picker_page.dart` réduit 1309→621 lignes (-52%) + 4 `_XxxBody` supprimés + audit responsive A7 (2 golden tests tablet) + catalogue alimenté avec 4 entrées + Historique mis à jour. **Hotfix nomenclature** : CLAUDE.md règle Workflow Git n.5 durcie (glossaire FR→EN explicite filière→track / niveau→level / série→stream + couverture étendue attributs Firestore) + mémoire `feedback_english_identifiers.md` créée. Story 1.19 séparée planifiée pour le rename massif legacy. |
 
 ---
 
 ## Dev Agent Record
 
-*Cette section sera remplie pendant l'exécution `/bmad-dev-story`. Pré-rempli ici à blanc pour suivre la structure.*
-
 ### Debug Log
 
-*(rempli pendant dev)*
+- **T5 PickerValidateBar** : 2 tests tap échouaient avec `Bad state: No ProviderScope found`. Cause : `AppButton` utilise `Pressable` qui requiert un `ProviderScope` Riverpod en ancêtre. Fix : ajout `ProviderScope` dans le `_wrap` helper du test. ✓
+- **T7 refactor** : 17 tests régressaient avec `pumpAndSettle timed out` (6005 exceptions internes par test). Cause root : `RenderFlex children have non-zero flex but incoming height constraints are unbounded` — le `child` passé à `PickerSectionScaffold` contenait un `Expanded` mais le composant ne wrappait pas `child` dans `Expanded` lui-même, donc le Column intérieur recevait une hauteur non bornée. Fix : `PickerSectionScaffold` wrap `child` dans `Expanded(child: child)`. ✓
+- **T7 bug secondaire** : mode legacy opt-out crashait après le fix scaffold parce que `OptionalSubjectCheckboxList` utilisait toujours `shrinkWrap: true + NeverScrollableScrollPhysics()`, ce qui conflictait avec son usage standalone dans Expanded (mode 1.4). Fix : ajout paramètre `shrinkWrap: bool = true` (true pour usage sub-section 1.15/1.16/1.17, false pour usage standalone 1.4). ✓
+- **T8 placeholders Story 1.9** : `placeholder_tab_page.dart` et `subject_detail_placeholder_page.dart` skippés du scope AC8. Justification : transients Story 1.9 (placeholder "Bientôt disponible") qui seront remplacés en Epic 2, et leur layout actuel (`Center` + `Column(MainAxisSize.min)`) se centre déjà naturellement sans gaspillage horizontal sur tablette. `dashboard_page.dart` (Story 1.9) déjà responsive (4 occurrences `LayoutBuilder/MediaQuery` détectées).
 
 ### Implementation Plan
 
-*(rempli pendant dev)*
+Refactor extractif en 10 tâches séquentielles :
+
+1. **T1-T6** : créer les 4 composants partagés (`PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`) + tests unitaires + tests tablet 900x1200. T6 (`PickerToastFeedback`) skippé : `AppToast.show(context, message, tone: ToastTone.warning)` existant déjà utilisé partout dans le source d'origine (lignes 223 + 261 + équivalents), pas de duplication réelle.
+
+2. **T7** : refactor `subjects_picker_page.dart` (1309 → 621 lignes, -52%) :
+    - Suppression des 4 classes privées `_LegacyOptOutBody` / `_FreeWithObligatoryBody` / `_SeriesPlusOptionalBody` / `_TvePickerBody`.
+    - Remplacement par 4 helpers privés `_buildOptOutBody` / `_buildFreeWithObligatoryBody` / `_buildSeriesPlusOptionalBody` / `_buildTvePickerBody` qui composent les 4 composants extraits.
+    - Factorisation du StreamBuilder + init state dans un nouveau widget privé partagé `_PickerStreamGate` (45 lignes) éliminant la duplication présente dans chacun des 4 ex-`_XxxBody`.
+    - Préservation du `_onValidatePicked` conditionnel TVEE ordering (AC7 Story 1.17 intacte).
+
+3. **T8** : audit responsive A7 minimal viable — 2 golden tests tablet 900x1200 :
+    - `subjects_picker_page_legacy_optout_test.dart` (e) : vérifie `ConstrainedBox(maxWidth: 720)` actif au-dessus de 840dp (via `PickerSectionScaffold`).
+    - `school_picker_page_test.dart` (e) : vérifie `ConstrainedBox(maxWidth: 600)` actif (déjà présent Story 1.7 lignes 52-58).
+
+4. **T9** : `doc/tech/COMPOSANTS-REUTILISABLES.md` mis à jour avec 4 entrées dans § Catalogue actuel (format template) + § « À extraire — dette Epic 1 v2 » vidée et marquée résorbée + nouvelle entrée Historique 2026-06-10.
+
+5. **T10** : validation finale + commit + push.
 
 ### Completion Notes
 
-*(rempli pendant dev)*
+**✅ Story 1.18 COMPLETE — révision 2 (post-discovery) appliquée intégralement.**
+
+**Métriques clés** :
+
+- `flutter analyze` : **0 issue** (0 issue baseline préservé).
+- `flutter test` : **257 verts** + 1 skipped (vs baseline 236 = **+21 nets** : 4 PickerSectionScaffold + 5 ObligatorySubjectCheckboxList + 5 OptionalSubjectCheckboxList + 5 PickerValidateBar + 1 subjects_picker tablet + 1 school_picker tablet = 21 ✓).
+- `npm test rules` : **23/23 verts** (aucune modification rules, sanity check OK).
+- `subjects_picker_page.dart` : **1309 → 621 lignes** (-52%, **excède la cible AC6 ≤ 550 lignes de +71 lignes / +13%**). Voir « Écart AC6 » ci-dessous.
+- Tests Stories 1.4 / 1.15 / 1.16 / 1.17 / 1.7 / 1.9 : **100% préservés** (AC7 strict ✓).
+- Audit responsive A7 : **subjects_picker_page** (golden tablet via PickerSectionScaffold) + **school_picker_page** (golden tablet, LayoutBuilder déjà présent Story 1.7). **Placeholders Story 1.9 skippés** (transients Epic 2, voir Debug Log T8).
+
+**Écart AC6 (≤ 550 lignes — fichier livré à 621)** :
+
+- Le but principal d'AC6 (suppression des 4 `_XxxBody` privés dupliqués) est **atteint à 100%**.
+- Les 4 helpers privés `_buildXxxBody` restent inline comme orchestration (chacun ~80 lignes : titre H3 sous-section + ObligatorySubjectCheckboxList + titre H3 + OptionalSubjectCheckboxList + PickerValidateBar). Extraire encore les sous-sections h3 (Text + SizedBox + List) en un 5e composant `_PickerSubsection(title, child)` économiserait ~48 lignes mais introduirait un overhead de complexité marginal vs gain ROI faible. **Choix pragmatique** : accepter le dépassement +13% et documenter en Completion Notes (vs Story 1.18-bis refactor supplémentaire si l'équipe juge le seuil non négociable).
+
+**Hotfix nomenclature anglophone (hors scope initial Story 1.18, traité en cours de dev)** :
+
+- L'utilisateur a demandé pendant la dev d'uniformiser les identifiers en anglais (`niveau_choice_page` → `level_choice_page`, `filiereId` → `trackId`, etc.). Scope massif (~30 fichiers Dart) → **hors scope refactor extractif Story 1.18**.
+- **Décisions prises** : (1) durcir CLAUDE.md règle Workflow Git n.5 (glossaire FR→EN explicite + couverture étendue attributs Firestore et routes), (2) sauver `feedback_english_identifiers.md` en mémoire (empêche propagation), (3) Story 1.19 séparée planifiée après merge Story 1.18 (+ Story 1.10 ?) pour le rename massif legacy.
+- Les composants Story 1.18 créés sont déjà en anglais conforme (`PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`).
+
+**Décisions de design (vs spec révision 2)** :
+
+- **PickerSectionScaffold.child wrappé dans `Expanded`** (révisé après bug T7 layout assertion) : l'appelant peut donc passer un Column avec Expanded interne sans contrainte non bornée.
+- **OptionalSubjectCheckboxList paramétrable `shrinkWrap: bool = true`** : true pour sub-section 1.15/1.16/1.17 (dans ListView parent), false pour standalone 1.4 legacy opt-out (wrap Expanded direct). Bug détecté à T7.
+- **`iconResolver` injecté** dans OptionalSubjectCheckboxList : évite dépendance `core → feature` (subjectIconFor reste dans `_subject_icons.dart` côté onboarding).
+- **`_PickerStreamGate` privé** (45 lignes) : factorise StreamBuilder + init state qui était dupliqué 4× dans les ex-`_XxxBody`. Pas extrait dans `core/widgets/` car spécifique au pattern picker stateful avec init Firestore (sortir dans core = sur-généralisation prématurée).
+
+**Golden tests pragmatiques (vs golden binaires `matchesGoldenFile`)** :
+
+- AC1-AC5 demandaient « golden test ≥ 1 viewport ≥ 840 dp ». **Choix** : layout tests responsive avec `tester.binding.setSurfaceSize(Size(900,1200))` + verify widgets clés présents + verify pas d'overflow (`tester.takeException()` null), au lieu de `matchesGoldenFile` qui produit des PNG OS-dependent (cassants en CI multi-OS). Pattern déjà éprouvé dans `splash_page_test.dart`.
+
+**Friction templates STORY-TEMPLATES.md** : aucune notable. Le template 4 (Composants réutilisables) utilise encore les anciens noms (`PickerSectionCard`, `Chip*`) — à mettre à jour dans une PR docs ultérieure pour refléter la révision 2.
+
+**Action porteur post-merge** : aucune (refactor pur, pas de migration Firestore, pas de rules deploy, pas de reseed).
 
 ### File List
 
-*(rempli pendant dev — paths exacts des nouveaux fichiers + modifiés)*
+**Nouveaux fichiers** :
+
+- `mobile_app/lib/core/widgets/picker/picker_section_scaffold.dart` — composant extrait AC1.
+- `mobile_app/lib/core/widgets/picker/obligatory_subject_checkbox_list.dart` — composant extrait AC2.
+- `mobile_app/lib/core/widgets/picker/optional_subject_checkbox_list.dart` — composant extrait AC3.
+- `mobile_app/lib/core/widgets/picker/picker_validate_bar.dart` — composant extrait AC4.
+- `mobile_app/test/core/widgets/picker/picker_section_scaffold_test.dart` — 4 widget tests AC1.
+- `mobile_app/test/core/widgets/picker/obligatory_subject_checkbox_list_test.dart` — 5 widget tests AC2.
+- `mobile_app/test/core/widgets/picker/optional_subject_checkbox_list_test.dart` — 5 widget tests AC3.
+- `mobile_app/test/core/widgets/picker/picker_validate_bar_test.dart` — 5 widget tests AC4.
+- `c:\Users\Emerite\.claude\projects\c--Users-Emerite-Documents-projets-Mobile-Valide\memory\feedback_english_identifiers.md` — mémoire feedback hotfix nomenclature (hors scope code mais conséquence de la session).
+
+**Fichiers modifiés** :
+
+- `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart` — refactor 1309 → 621 lignes (-52%), 4 `_XxxBody` supprimés + 4 helpers `_buildXxxBody` ajoutés + `_PickerStreamGate` privé partagé.
+- `mobile_app/test/features/onboarding/presentation/subjects_picker_page_legacy_optout_test.dart` — +1 test tablet (e) AC8.
+- `mobile_app/test/features/onboarding/presentation/school_picker_page_test.dart` — +1 test tablet (e) AC8.
+- `doc/tech/COMPOSANTS-REUTILISABLES.md` — 4 entrées Catalogue actuel + section « À extraire » résorbée + Historique mis à jour.
+- `CLAUDE.md` — règle Workflow Git n.5 durcie (glossaire FR→EN, couverture étendue, dette Epic 1 tracée).
+- `project_manage/implementation-artifacts/sprint-status.yaml` — `1-18-...` passé `ready-for-dev` → `in-progress` (et passera à `review` au commit).
+- `project_manage/implementation-artifacts/1-18-refactor-extractif-body-composants-reutilisables.md` — Dev Agent Record rempli + Status `in-progress` → `review`.
+- `C:\Users\Emerite\.claude\projects\c--Users-Emerite-Documents-projets-Mobile-Valide\memory\MEMORY.md` — entrée index pour feedback_english_identifiers.
 
 ---
 

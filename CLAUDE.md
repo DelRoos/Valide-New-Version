@@ -239,7 +239,30 @@ Et pour les modes (`Fast` / `Coaching`) :
 2. Commits : **Conventional Commits** en français à l'impératif présent, sans point final. Scope obligatoire (auth, exercises, billing, content, health, gamification, chat, notifications, sharing, core, docs, partage, ci).
 3. PR ≤ 400 lignes de diff. Squash & merge.
 4. Pas de force-push sur `main`. Pas de merge commit dans une feature branch. Pas de `--no-verify`.
-5. Identifiers code en **anglais**, commentaires et doc en **français**.
+5. **Identifiers code uniformément en anglais** — pas d'exception. Couverture obligatoire :
+   - **Noms de fichiers** Dart (`level_choice_page.dart`, pas `niveau_choice_page.dart`).
+   - **Noms de classes** (`LevelChoicePage`, pas `NiveauChoicePage`).
+   - **Noms de variables, paramètres, fonctions, méthodes** (`trackId`, pas `filiereId`).
+   - **Noms de routes** (`/onboarding/level`, pas `/onboarding/niveau`).
+   - **Noms d'attributs Firestore** (champs de documents : `trackId`, `levelId`, `streamId` — pas `filiereId`, `niveauId`, `serieId`).
+   - **Noms de collections Firestore** (`tracks`, `levels`, `streams` — pas `filieres`, `niveaux`, `series`).
+   - **Clés ARB i18n** côté Dart (`onboardingLevelTitle`, pas `onboardingNiveauTitle`). Les **valeurs** ARB restent dans la langue cible (FR/EN).
+
+   **Exceptions explicites** :
+   - **Commentaires et docstrings Dart** : en français (CLAUDE.md règle implicite : doc = FR).
+   - **Valeurs string contenu** (labels UI, messages utilisateur dans ARB FR/EN) : dans la langue cible.
+   - **IDs Firestore (clés de documents)** : peuvent rester en langue (data lexicale, pas du code) — ex. `francophone_terminale_d` est un ID de série acceptable car c'est de la donnée référentielle. Mais le **champ** qui le porte est en anglais : `streamId: 'francophone_terminale_d'`.
+
+   **Glossaire termes camerounais → anglais** (obligatoire pour la nomenclature scolaire) :
+   - `filière` (Générale / Technique) → `track`
+   - `niveau` (6e, 5e, …, Terminale) → `level`
+   - `série` (D, A1, S2, …) → `stream`
+   - `matière` → `subject` (déjà majoritairement appliqué)
+   - `sous-système` (francophone / anglophone) → `subSystem` (déjà appliqué)
+   - `examen visé` (BAC, BEPC, GCE…) → `examTarget` (déjà appliqué)
+   - `école` → `school` (déjà appliqué)
+
+   **Dette historique** : Epic 1 (Stories 1.1-1.17) a introduit `filiere/niveau/serie/matiere` dans le code, les fichiers, les classes, les attributs Firestore et les routes en violation de cette règle. Résorption planifiée Story 1.19 dédiée (rename massif coordonné, hors scope refactor visuel). **Tout nouveau code (post-2026-06-10) doit utiliser l'anglais sans exception.**
 6. **Séquencement strict : 1 PR à la fois — JAMAIS deux PR enchaînées sans attendre merge intermédiaire.** Quand une cascade implique plusieurs PR (contexte → dev → cloture par story, ou suite de stories), pousser et **attendre la confirmation de merge** avant de pousser la PR suivante. Justification : empêche les collisions main (cf. incident merge Story 1.13 PR #74/#75 mai 2026 — fix dans PR #77). Cette règle s'applique aux PR consécutives sur la même branche ou des branches dépendantes. Exceptions : (a) deux PR sur des branches **strictement indépendantes** sans dépendance code/doc commune, (b) chez le porteur (hotfix urgent isolé) avec accord explicite utilisateur. Pas d'exception « ça va se mélanger gentiment » — toujours séquentialiser.
 
 ### Code & qualité
