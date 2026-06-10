@@ -12,6 +12,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/catalogue/providers.dart';
+import '../../../core/firebase/providers.dart';
+import '../../../core/logging/app_logger.dart';
 import '../../../core/widgets/app_empty_state.dart';
 import '../../../l10n/generated/app_localizations.dart';
 
@@ -28,10 +30,28 @@ class CatalogueWaitingPage extends ConsumerWidget {
           title: l.catalogueWaitingTitle,
           subtitle: l.catalogueWaitingMessage,
           ctaLabel: l.catalogueWaitingRetry,
-          onCtaPressed: () =>
-              ref.invalidate(appStartupCatalogueCheckProvider),
+          onCtaPressed: () => _onRetry(ref),
         ),
       ),
     );
+  }
+
+  /// Réessayer : (1) assure une session anonyme si le user a été signed out
+  /// ou si le boot a couru avant que `signInAnonymously()` complete (race
+  /// `_bootstrap` unawaited dans main.dart). Sans ça, les rules Firestore
+  /// `read: if request.auth != null` refusent toutes les lectures catalogue
+  /// et `hasNonEmptyCatalogue()` retourne false en boucle.
+  /// (2) invalide le provider pour relancer le check.
+  Future<void> _onRetry(WidgetRef ref) async {
+    final auth = ref.read(firebaseAuthProvider);
+    if (auth.currentUser == null) {
+      try {
+        await auth.signInAnonymously();
+        AppLogger.i('CatalogueWaiting retry: signInAnonymously OK');
+      } catch (e) {
+        AppLogger.w('CatalogueWaiting retry: signInAnonymously failed: $e');
+      }
+    }
+    ref.invalidate(appStartupCatalogueCheckProvider);
   }
 }

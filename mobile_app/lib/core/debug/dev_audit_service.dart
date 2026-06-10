@@ -31,10 +31,16 @@ class DevAuditService {
   final FirebaseFirestore _firestore;
   final SharedPreferences _prefs;
 
-  /// Vide SharedPreferences + cache Firestore + sign out FirebaseAuth.
-  /// L'utilisateur redevient un visiteur anonyme frais au prochain boot.
-  /// Le doc users/{uid} reste en place — utile pour conserver un compte
-  /// existant entre 2 audits du parcours.
+  /// Vide SharedPreferences + cache Firestore + sign out FirebaseAuth, puis
+  /// re-signInAnonymously immediatement pour que les rules Firestore
+  /// (qui exigent `request.auth != null` pour lire le catalogue) ne
+  /// refusent pas le premier read au reboot. Sans ce re-sign-in, l'app
+  /// retombe sur `CatalogueWaitingPage` car `hasNonEmptyCatalogue()` echoue
+  /// sur permission-denied.
+  ///
+  /// Le doc users/{uid} de l'eventuel compte precedent reste en place —
+  /// le re-sign-in cree un NOUVEL uid anonyme. Utile pour tester le parcours
+  /// onboarding depuis l'etat « visiteur frais » sans toucher au compte.
   Future<void> clearLocalAndSignOut() async {
     AppLogger.i('[DEV] clearLocalAndSignOut start');
     await logPerf(
@@ -52,6 +58,12 @@ class DevAuditService {
     await logPerf(
       'dev.auth.signOut',
       () => _auth.signOut(),
+    );
+    // Re-sign-in anonyme : sinon les reads catalogue echouent en
+    // permission-denied -> CatalogueWaitingPage affichee meme avec reseau OK.
+    await logPerf(
+      'dev.auth.signInAnonymously',
+      () => _auth.signInAnonymously(),
     );
     AppLogger.i('[DEV] clearLocalAndSignOut OK');
   }
