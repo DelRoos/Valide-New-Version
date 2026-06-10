@@ -210,6 +210,41 @@ Et pour les modes (`Fast` / `Coaching`) :
     - `bmad-dev-story` : checkpoint avant codage widget — relire le catalogue + déclarer la stratégie de réutilisation dans Dev Notes.
     - Quand un composant existe mais a besoin d'une adaptation mineure : ajouter un paramètre optionnel au composant existant **plutôt que** dupliquer. Si l'adaptation est majeure (logique différente), créer un composant frère distinct (pas une copie modifiée).
 
+12. **Taille des fichiers Dart — un fichier = un sujet**. Cible : **≤ 300 lignes par fichier** dans `lib/features/**/presentation/`, `lib/core/widgets/`, `lib/core/debug/`. Plafond dur : **≤ 500 lignes** (au-delà, refactor obligatoire avant merge sauf justification écrite dans le commit). Justification : un fichier qui dépasse 500 lignes contient typiquement plusieurs sujets sémantiquement disjoints qui mériteraient leur propre fichier (cf. anti-patterns historiques `subjects_picker_page.dart` 1309 → 621 lignes via Story 1.18, `dashboard_page.dart` 603 → 102 lignes via chore juin 2026).
+
+    **Anti-pattern interdit** : une `Page` qui contient ≥ 3 widgets privés `_Xxx extends StatelessWidget` ET dépasse 400 lignes. **Extrait** chaque widget privé sémantiquement distinct vers `lib/features/<feature>/presentation/widgets/<feature>_<role>.dart` (rendre la classe publique au passage). Les helpers (`_crossAxisCountFor`, `_examLabelFor`) déménagent **avec** les widgets qui les utilisent — préserve la cohésion.
+
+    **Critère d'extraction sémantique** :
+    - Widget « morceau visuel autonome » (hero banner, card, list area) → **fichier séparé** (rendre publique).
+    - Widget « morceau de découpe interne UNIQUEMENT consommé par la page parent dans le même render tree » → peut rester privé `_Xxx` dans le fichier parent.
+    - Fonctionnalité **disjointe du métier de la page** (ex. FAB dev audit sur DashboardPage) → **toujours extraire** vers son propre dossier (`core/debug/`, `core/widgets/`, etc.).
+
+    **Exceptions explicites** (peuvent dépasser 500 lignes) :
+    - `lib/**/data/*_firestore_impl.dart` (couche data : multiples méthodes Firestore + traduction Exception → Failure, cohésion forte).
+    - `lib/**/domain/models.dart` (catalogue de models domain, regroupement par feature OK).
+    - `lib/features/**/providers.dart` (catalogue de Notifier/FutureProvider d'une feature).
+
+    **Workflow BMAD** :
+    - `bmad-create-story` : si la story prévoit une page avec ≥ 3 sous-widgets, **lister** explicitement dans Dev Notes les fichiers cibles `widgets/<role>.dart` plutôt que tout mettre dans la page.
+    - `bmad-dev-story` : checkpoint avant push PR — si le diff ajoute > 400 lignes à un seul fichier `*_page.dart`, **stop** et propose le découpage à l'utilisateur.
+    - Refactor extractif autorisé en chore PR séparée (pas obligé d'attendre une story).
+
+13. **Erreurs Firestore explicites pour l'utilisateur — pas de message générique opaque**. Toute couche `presentation` qui consomme un `Either<Failure, T>` issu d'un repository Firestore **doit** afficher un message d'erreur **localisé spécifique au type d'erreur**, pas un fallback générique du type « Une erreur est survenue ».
+
+    **Convention** : la couche `data` propage le `FirebaseException.code` dans le `Failure` (via un champ `code` optionnel). Le `Failure` expose un getter `kind` (enum {permissionDenied, networkUnavailable, notAuthenticated, unknown}). La couche `presentation` mappe `kind` → clé ARB explicite via un helper dédié (cf. `lib/features/onboarding/presentation/_profile_failure_message.dart` comme référence d'implémentation).
+
+    **Trois catégories minimum à distinguer** :
+    - `permissionDenied` / `notAuthenticated` → message « Session expirée, re-lance l'app » (cf. ARB `errorPermissionDenied`).
+    - `networkUnavailable` (codes `unavailable`, `network-request-failed`, `deadline-exceeded`) → message « Pas de connexion, vérifie ton réseau » (cf. ARB `errorNetworkUnavailable`).
+    - `unknown` → fallback technique « Erreur technique, réessaie » (cf. ARB `errorFirestoreUnknown`).
+
+    **Logging** : tout `failure.fold((f) → ...)` doit logger AU MINIMUM `kind=${f.kind.name} message=${f.message}` (et le code FirebaseException si disponible via `perf_logger`). Pas de log silencieux. Pas de message tronqué.
+
+    **Anti-pattern interdit** :
+    - ❌ `AppToast.show(message: l10n.errorGeneric)` sans dispatch sur le type d'erreur.
+    - ❌ `AppLogger.w('xxx failed: ${failure.message}')` sans `kind` (perd l'info diagnostique).
+    - ❌ Catch silencieux (`catch (_) {}` ou logger sans rethrow + nav comme si succès).
+
 ### Cross-platform & responsive (V1 = Android + iOS, phone + tablet)
 
 1. **Pas de code plateforme-spécifique non isolé.** Tout `if (Platform.isAndroid)` ou `if (Platform.isIOS)` est confiné à `core/platform/*` (un wrapper par capability divergente : silent mode detection, haptic mapping, etc.). Les couches `domain` et `presentation` ne `import 'dart:io'` jamais.
