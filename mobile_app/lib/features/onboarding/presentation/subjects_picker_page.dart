@@ -1,13 +1,22 @@
-// Story 1.4 + 1.15 — Page polymorphe de selection des matieres (FR-3).
+// Story 1.4 + 1.15 + 1.16 + 1.17 — Page polymorphe de selection des matieres
+// (FR-3). Refactor Story 1.18 : les 4 ex-widgets prives _LegacyOptOutBody /
+// _FreeWithObligatoryBody / _SeriesPlusOptionalBody / _TvePickerBody ont ete
+// supprimes et remplaces par composition des composants partages :
+//   - PickerSectionScaffold (wrapper responsive page-level)
+//   - ObligatorySubjectCheckboxList (sous-section verrouillee + cadenas)
+//   - OptionalSubjectCheckboxList (sous-section interactive)
+//   - PickerValidateBar (compteur + 2 boutons)
 //
 // Dispatch sur `DerivedProfile.pickerMode` (Story 1.13, ADR-016) :
 //   - PickerMode.derived            -> redirect immediate recap (Fatou Tle D)
-//   - PickerMode.optOut             -> _LegacyOptOutBody (James Upper Sixth S2,
-//                                     pattern Story 1.4 quasi-litteral)
-//   - PickerMode.freeWithObligatory -> _FreeWithObligatoryBody NEW (Mariam
+//   - PickerMode.optOut             -> _buildOptOutBody (James Upper Sixth S2,
+//                                     pattern Story 1.4)
+//   - PickerMode.freeWithObligatory -> _buildFreeWithObligatoryBody (Mariam
 //                                     Form 5, panier O-Level 2 sections)
-//   - PickerMode.seriesPlusOptional -> placeholder Story 1.16 (redirect recap)
-//   - PickerMode.tvePicker          -> placeholder Story 1.17 (redirect recap)
+//   - PickerMode.seriesPlusOptional -> _buildSeriesPlusOptionalBody (James S2
+//                                     + ICT, A-Level transversales)
+//   - PickerMode.tvePicker          -> _buildTvePickerBody (Eyong TVE AL,
+//                                     3 sections TVEE)
 //
 // Garde in-component : si derivedProfile.canOptOut == false ET pickerMode ==
 // derived, redirige immediatement vers /onboarding/profile/recap + log warn
@@ -17,13 +26,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/catalogue/domain/models.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
-import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_toast.dart';
+import '../../../core/widgets/picker/obligatory_subject_checkbox_list.dart';
+import '../../../core/widgets/picker/optional_subject_checkbox_list.dart';
+import '../../../core/widgets/picker/picker_section_scaffold.dart';
+import '../../../core/widgets/picker/picker_validate_bar.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../providers.dart';
 import '_subject_icons.dart';
@@ -40,9 +51,8 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
   /// Initialise depuis `users/{uid}.optedOutSubjects` au 1er snapshot.
   Set<String>? _optedOut;
 
-  /// IDs des matieres optionnelles actuellement selectionnees (mode
-  /// `freeWithObligatory`). Ne contient PAS les obligatoires (forcees en
-  /// permanence). Initialise depuis `users/{uid}.pickedSubjects` au 1er snap.
+  /// IDs des matieres optionnelles actuellement selectionnees (modes v2/v3).
+  /// Initialise depuis `users/{uid}.pickedSubjects` au 1er snapshot.
   Set<String>? _pickedOptional;
 
   bool _isSaving = false;
@@ -69,8 +79,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
         child: derivedAsync.when(
           data: (either) => either.fold(
             (failure) {
-              // Profil non resolu -> retour recap (cas edge si user atterrit
-              // ici sans flow valide en memoire).
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 if (context.mounted) {
                   GoRouter.of(context).go('/onboarding/profile/recap');
@@ -97,8 +105,8 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
     );
   }
 
-  /// Dispatch central Story 1.15 sur `profile.pickerMode`. 5 cas, 3
-  /// placeholders (derived + seriesPlusOptional + tvePicker -> redirect recap).
+  /// Dispatch central sur `profile.pickerMode`. Refactor Story 1.18 : appelle
+  /// les builders prives qui composent les composants partages.
   Widget _dispatchByPickerMode({
     required BuildContext context,
     required DerivedProfile profile,
@@ -106,9 +114,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
   }) {
     switch (profile.pickerMode) {
       case PickerMode.derived:
-        // Mode v1 default : matieres dérivées non modifiables. Si Fatou tape
-        // /picker direct (cas impossible nominal car lien Story 1.3 masqué
-        // quand canOptOut: false), defensive redirect recap.
         AppLogger.w(
           'PickerPage: pickerMode=derived canOptOut=${profile.canOptOut} '
           'redirect to recap',
@@ -121,71 +126,330 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
         return const SizedBox.shrink();
 
       case PickerMode.optOut:
-        // Mode v1 legacy Story 1.4 (James Upper Sixth S2). Layout inchangé.
-        return _LegacyOptOutBody(
-          profile: profile,
-          langKey: langKey,
-          optedOut: _optedOut,
-          isSaving: _isSaving,
-          onInitOptedOut: _initOptedOutIfNeeded,
-          onToggle: _onToggleOptOut,
-          onValidate: () => _onValidateOptOut(profile),
-          onCancel: () =>
-              GoRouter.of(context).go('/onboarding/profile/recap'),
+        return _PickerStreamGate(
+          isStateReady: _optedOut != null,
+          initFromFs: (data) {
+            final initial =
+                (data?['optedOutSubjects'] as List?)?.cast<String>() ??
+                    const <String>[];
+            _initOptedOutIfNeeded(initial);
+          },
+          builder: () => _buildOptOutBody(profile, langKey),
         );
 
       case PickerMode.freeWithObligatory:
-        // Mode v2 NEW Story 1.15 (Mariam Form 5). Panier O-Level 2 sections.
-        return _FreeWithObligatoryBody(
-          profile: profile,
-          langKey: langKey,
-          picked: _pickedOptional,
-          isSaving: _isSaving,
-          onInitPicked: _initPickedOptionalIfNeeded,
-          onToggleOptional: _onToggleOptional,
-          onTapObligatory: _onTapObligatory,
-          onValidate: () => _onValidatePicked(profile),
-          onCancel: () =>
-              GoRouter.of(context).go('/onboarding/profile/recap'),
+        return _PickerStreamGate(
+          isStateReady: _pickedOptional != null,
+          initFromFs: (data) {
+            final pickedFromFs =
+                (data?['pickedSubjects'] as List?)?.cast<String>() ??
+                    const <String>[];
+            final obligIds =
+                profile.obligatorySubjects.map((s) => s.subjectId).toSet();
+            final optionalOnly = pickedFromFs
+                .where((id) => !obligIds.contains(id))
+                .toList(growable: false);
+            _initPickedOptionalIfNeeded(optionalOnly);
+          },
+          builder: () => _buildFreeWithObligatoryBody(profile, langKey),
         );
 
       case PickerMode.seriesPlusOptional:
-        // Mode v2 NEW Story 1.16 (James Upper Sixth S2 + ICT). Series A-Level
-        // figees (3-4 matieres) + transversales optionnelles (max 5 total).
-        return _SeriesPlusOptionalBody(
-          profile: profile,
-          langKey: langKey,
-          picked: _pickedOptional,
-          isSaving: _isSaving,
-          onInitPicked: _initPickedOptionalIfNeeded,
-          onToggleOptional: _onToggleOptional,
-          onTapObligatory: _onTapObligatory,
-          onValidate: () => _onValidatePicked(profile),
-          onCancel: () =>
-              GoRouter.of(context).go('/onboarding/profile/recap'),
+        return _PickerStreamGate(
+          isStateReady: _pickedOptional != null,
+          initFromFs: (data) {
+            final pickedFromFs =
+                (data?['pickedSubjects'] as List?)?.cast<String>() ??
+                    const <String>[];
+            final seriesIds =
+                profile.obligatorySubjects.map((s) => s.subjectId).toSet();
+            final transversalesOnly = pickedFromFs
+                .where((id) => !seriesIds.contains(id))
+                .toList(growable: false);
+            _initPickedOptionalIfNeeded(transversalesOnly);
+          },
+          builder: () => _buildSeriesPlusOptionalBody(profile, langKey),
         );
 
       case PickerMode.tvePicker:
-        // Mode v3 NEW Story 1.17 (Eyong TVE AL Electrotechnique). 3 sections :
-        // Professional Subjects + Related Professional Subjects + Other (mix
-        // EN/FR locked + Hist/Geo/RS interactif).
-        return _TvePickerBody(
-          profile: profile,
-          langKey: langKey,
-          picked: _pickedOptional,
-          isSaving: _isSaving,
-          onInitPicked: _initPickedOptionalIfNeeded,
-          onToggleOptional: _onToggleOptional,
-          onTapObligatory: _onTapObligatory,
-          onValidate: () => _onValidatePicked(profile),
-          onCancel: () =>
-              GoRouter.of(context).go('/onboarding/profile/recap'),
+        return _PickerStreamGate(
+          isStateReady: _pickedOptional != null,
+          initFromFs: (data) {
+            final pickedFromFs =
+                (data?['pickedSubjects'] as List?)?.cast<String>() ??
+                    const <String>[];
+            final lockedIds = <String>{
+              ...profile.professionalSubjects.map((s) => s.subjectId),
+              ...profile.relatedProfessionalSubjects.map((s) => s.subjectId),
+              ...profile.obligatorySubjects.map((s) => s.subjectId),
+            };
+            final optionalsOnly = pickedFromFs
+                .where((id) => !lockedIds.contains(id))
+                .toList(growable: false);
+            _initPickedOptionalIfNeeded(optionalsOnly);
+          },
+          builder: () => _buildTvePickerBody(profile, langKey),
         );
     }
   }
 
   // ===================================================================
-  // Mode legacy optOut (Story 1.4) — handlers preserves
+  // Body builders — composition des composants partages
+  // ===================================================================
+
+  Widget _buildOptOutBody(DerivedProfile profile, String langKey) {
+    final l10n = AppLocalizations.of(context);
+    final total = profile.subjects.length;
+    final takingCount = total - _optedOut!.length;
+    final canSave = takingCount > 0;
+
+    // Mode opt-out : derive "picked" depuis subjects - optedOut.
+    final picked = profile.subjects
+        .map((s) => s.subjectId)
+        .where((id) => !_optedOut!.contains(id))
+        .toSet();
+
+    return PickerSectionScaffold(
+      title: l10n.onboardingOptOutTitle,
+      subtitle: l10n.onboardingOptOutSubtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: OptionalSubjectCheckboxList(
+              subjects: profile.subjects,
+              picked: picked,
+              onToggle: (subjectId, selected) =>
+                  _onToggleOptOut(subjectId, selected),
+              langKey: langKey,
+              isSaving: _isSaving,
+              iconResolver: subjectIconFor,
+              shrinkWrap: false,
+            ),
+          ),
+          SizedBox(height: AppSpacing.s4.h),
+          PickerValidateBar(
+            counterText: l10n.onboardingOptOutTakingCount(takingCount, total),
+            isValid: canSave,
+            isSaving: _isSaving,
+            onValidate: () => _onValidateOptOut(profile),
+            onCancel: () =>
+                GoRouter.of(context).go('/onboarding/profile/recap'),
+            validateLabel: l10n.onboardingOptOutValidateCta,
+            cancelLabel: l10n.back,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFreeWithObligatoryBody(DerivedProfile profile, String langKey) {
+    final l10n = AppLocalizations.of(context);
+    final obligCount = profile.obligatorySubjects.length;
+    final pickedTotal = obligCount + _pickedOptional!.length;
+    final min = profile.minSubjects ?? 1;
+    final max = profile.maxSubjects ?? profile.subjects.length;
+    final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
+
+    return PickerSectionScaffold(
+      title: l10n.onboardingPickerTitle,
+      subtitle: l10n.onboardingPickerSubtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Text(
+                  l10n.onboardingPickerObligatoryTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                ObligatorySubjectCheckboxList(
+                  subjects: profile.obligatorySubjects,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  onTapBlocked: _onTapObligatory,
+                ),
+                SizedBox(height: AppSpacing.s5.h),
+                Text(
+                  l10n.onboardingPickerOptionalTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                OptionalSubjectCheckboxList(
+                  subjects: profile.optionalSubjects,
+                  picked: _pickedOptional!,
+                  onToggle: _onToggleOptional,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  iconResolver: subjectIconFor,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSpacing.s4.h),
+          PickerValidateBar(
+            counterText: l10n.onboardingPickerCounterLive(pickedTotal, max),
+            isValid: isWithinBounds,
+            isSaving: _isSaving,
+            onValidate: () => _onValidatePicked(profile),
+            onCancel: () =>
+                GoRouter.of(context).go('/onboarding/profile/recap'),
+            validateLabel: l10n.onboardingPickerValidateCta,
+            cancelLabel: l10n.back,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSeriesPlusOptionalBody(DerivedProfile profile, String langKey) {
+    final l10n = AppLocalizations.of(context);
+    final seriesCount = profile.obligatorySubjects.length;
+    final pickedTotal = seriesCount + _pickedOptional!.length;
+    final min = profile.minSubjects ?? 1;
+    final max = profile.maxSubjects ?? profile.subjects.length;
+    final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
+
+    return PickerSectionScaffold(
+      title: l10n.onboardingPickerTitle,
+      subtitle: l10n.onboardingPickerSubtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Text(
+                  l10n.onboardingPickerSeriesTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                ObligatorySubjectCheckboxList(
+                  subjects: profile.obligatorySubjects,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  onTapBlocked: _onTapObligatory,
+                ),
+                SizedBox(height: AppSpacing.s5.h),
+                Text(
+                  l10n.onboardingPickerTransversalesTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                OptionalSubjectCheckboxList(
+                  subjects: profile.optionalSubjects,
+                  picked: _pickedOptional!,
+                  onToggle: _onToggleOptional,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  iconResolver: subjectIconFor,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSpacing.s4.h),
+          PickerValidateBar(
+            counterText: l10n.onboardingPickerCounterLive(pickedTotal, max),
+            isValid: isWithinBounds,
+            isSaving: _isSaving,
+            onValidate: () => _onValidatePicked(profile),
+            onCancel: () =>
+                GoRouter.of(context).go('/onboarding/profile/recap'),
+            validateLabel: l10n.onboardingPickerValidateCta,
+            cancelLabel: l10n.back,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTvePickerBody(DerivedProfile profile, String langKey) {
+    final l10n = AppLocalizations.of(context);
+    final proCount = profile.professionalSubjects.length;
+    final relatedCount = profile.relatedProfessionalSubjects.length;
+    final obligCount = profile.obligatorySubjects.length;
+    final pickedTotal =
+        proCount + relatedCount + obligCount + _pickedOptional!.length;
+    final min = profile.minSubjects ?? 1;
+    final max = profile.maxSubjects ?? profile.subjects.length;
+    final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
+
+    return PickerSectionScaffold(
+      title: l10n.onboardingPickerTitle,
+      subtitle: l10n.onboardingPickerSubtitle,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: ListView(
+              children: [
+                Text(
+                  l10n.onboardingPickerProfessionalTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                ObligatorySubjectCheckboxList(
+                  subjects: profile.professionalSubjects,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  onTapBlocked: _onTapObligatory,
+                ),
+                SizedBox(height: AppSpacing.s5.h),
+                Text(
+                  l10n.onboardingPickerRelatedTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                ObligatorySubjectCheckboxList(
+                  subjects: profile.relatedProfessionalSubjects,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  onTapBlocked: _onTapObligatory,
+                ),
+                SizedBox(height: AppSpacing.s5.h),
+                Text(
+                  l10n.onboardingPickerOtherTitle,
+                  style: AppTypography.h3,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                ObligatorySubjectCheckboxList(
+                  subjects: profile.obligatorySubjects,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  onTapBlocked: _onTapObligatory,
+                ),
+                SizedBox(height: AppSpacing.s2.h),
+                OptionalSubjectCheckboxList(
+                  subjects: profile.optionalSubjects,
+                  picked: _pickedOptional!,
+                  onToggle: _onToggleOptional,
+                  langKey: langKey,
+                  isSaving: _isSaving,
+                  iconResolver: subjectIconFor,
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: AppSpacing.s4.h),
+          PickerValidateBar(
+            counterText: l10n.onboardingPickerCounterLive(pickedTotal, max),
+            isValid: isWithinBounds,
+            isSaving: _isSaving,
+            onValidate: () => _onValidatePicked(profile),
+            onCancel: () =>
+                GoRouter.of(context).go('/onboarding/profile/recap'),
+            validateLabel: l10n.onboardingPickerValidateCta,
+            cancelLabel: l10n.back,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ===================================================================
+  // Handlers (preserves Stories 1.4 + 1.15 + 1.17)
   // ===================================================================
 
   void _initOptedOutIfNeeded(List<String> initial) {
@@ -232,10 +496,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
     );
   }
 
-  // ===================================================================
-  // Mode freeWithObligatory (Story 1.15) — handlers NEW
-  // ===================================================================
-
   void _initPickedOptionalIfNeeded(List<String> initial) {
     if (_pickedOptional != null) return;
     setState(() => _pickedOptional = Set<String>.from(initial));
@@ -254,8 +514,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
   }
 
   void _onTapObligatory(String subjectId) {
-    // CLAUDE.md securite 4 : ID matiere n'est PAS du PII direct, OK a logger
-    // pour debug, mais bref. Pas de console flood.
     AppLogger.w('PickerPage: tap obligatoire bloque subject=$subjectId');
     final l10n = AppLocalizations.of(context);
     AppToast.show(
@@ -269,9 +527,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
     if (_isSaving) return;
     final l10n = AppLocalizations.of(context);
 
-    // CRITIQUE : la liste posee Firestore DOIT contenir oblig + optionnels
-    // selectionnes (cf. BASE-DE-DONNEES.md ligne 75, story Decision 3).
-    //
     // Story 1.17 — Decision 5 figee : branchement conditionnel TVEE-specifique.
     // Ordre TVEE : [Pro, Related, Obligatoires EN+FR, Optionnels selectionnes].
     // Ordre 1.15+1.16 : [Obligatoires, Optionnels] - inchange.
@@ -284,8 +539,6 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
         ...(_pickedOptional ?? <String>{}),
       ];
     } else {
-      // Pattern Story 1.15 + 1.16 — inchange pour freeWithObligatory +
-      // seriesPlusOptional.
       allPicked = <String>[
         ...profile.obligatorySubjects.map((s) => s.subjectId),
         ...(_pickedOptional ?? <String>{}),
@@ -316,995 +569,53 @@ class _SubjectsPickerPageState extends ConsumerState<SubjectsPickerPage> {
 }
 
 // ============================================================================
-// _LegacyOptOutBody — copie quasi-litterale du _OptOutBody Story 1.4. Aucun
-// changement logique : preserve les 3 widget tests Story 1.4 (AC6 strict).
+// _PickerStreamGate — wrapper StreamBuilder factorise pour les 4 modes du
+// picker. Lit `users/{uid}` via watchProfile() et appelle `initFromFs` au 1er
+// event avant de rendre le `builder`. Si le state local n'est pas encore pret
+// (isStateReady=false), affiche un spinner.
+//
+// Extrait Story 1.18 du pattern Consumer + StreamBuilder + init in
+// addPostFrameCallback qui etait dupplique dans chacun des 4 ex-_XxxBody.
 // ============================================================================
 
-class _LegacyOptOutBody extends StatelessWidget {
-  const _LegacyOptOutBody({
-    required this.profile,
-    required this.langKey,
-    required this.optedOut,
-    required this.isSaving,
-    required this.onInitOptedOut,
-    required this.onToggle,
-    required this.onValidate,
-    required this.onCancel,
+class _PickerStreamGate extends ConsumerWidget {
+  const _PickerStreamGate({
+    required this.isStateReady,
+    required this.initFromFs,
+    required this.builder,
   });
 
-  final DerivedProfile profile;
-  final String langKey;
-  final Set<String>? optedOut;
-  final bool isSaving;
-  final void Function(List<String>) onInitOptedOut;
-  final void Function(String subjectId, bool included) onToggle;
-  final VoidCallback onValidate;
-  final VoidCallback onCancel;
+  /// True si `_optedOut` ou `_pickedOptional` (selon mode) est deja initialise.
+  /// Si true, on rend directement `builder()` sans attendre Firestore.
+  final bool isStateReady;
+
+  /// Callback declenche au 1er event Firestore (en postFrameCallback) pour
+  /// initialiser le state local depuis users/{uid}.optedOutSubjects ou
+  /// users/{uid}.pickedSubjects.
+  final void Function(Map<String, dynamic>? data) initFromFs;
+
+  /// Builder du corps de la page (PickerSectionScaffold...). Appele uniquement
+  /// quand le state local est pret.
+  final Widget Function() builder;
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
-    return Consumer(builder: (context, ref, _) {
-      // Pre-populate _optedOut depuis users/{uid}.optedOutSubjects au 1er build.
-      final profileStream =
-          ref.watch(userProfileRepositoryProvider).watchProfile();
-      return StreamBuilder<Map<String, dynamic>?>(
-        stream: profileStream,
-        builder: (context, snap) {
-          if (optedOut == null) {
-            // Attendre le 1er event du stream avant d'initialiser : sinon on
-            // ecrirait `_optedOut = []` avant que les donnees Firestore ne
-            // soient remontees, en perdant l'etat persiste.
-            if (snap.connectionState == ConnectionState.waiting &&
-                !snap.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            final initial =
-                (snap.data?['optedOutSubjects'] as List?)?.cast<String>() ??
-                    const <String>[];
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onInitOptedOut(initial);
-            });
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final total = profile.subjects.length;
-          final takingCount = total - optedOut!.length;
-          final canSave = takingCount > 0 && !isSaving;
-
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final isTablet = constraints.maxWidth >= 840;
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isTablet ? 720 : double.infinity,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s5.w,
-                      vertical: AppSpacing.s6.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          l10n.onboardingOptOutTitle,
-                          style: AppTypography.h2,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        Text(
-                          l10n.onboardingOptOutSubtitle,
-                          style: AppTypography.body.copyWith(
-                            color: AppColors.inkSoft,
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s5.h),
-                        Expanded(
-                          child: ListView.separated(
-                            itemCount: profile.subjects.length,
-                            separatorBuilder: (_, _) =>
-                                SizedBox(height: AppSpacing.s2.h),
-                            itemBuilder: (context, index) {
-                              final s = profile.subjects[index];
-                              final included = !optedOut!.contains(s.subjectId);
-                              return CheckboxListTile(
-                                value: included,
-                                onChanged: isSaving
-                                    ? null
-                                    : (v) => onToggle(
-                                          s.subjectId,
-                                          v ?? false,
-                                        ),
-                                secondary: Icon(
-                                  subjectIconFor(s.icon),
-                                  color: AppColors.primary,
-                                ),
-                                title: Text(
-                                  s.name[langKey] ??
-                                      s.name['fr'] ??
-                                      s.subjectId,
-                                  style: AppTypography.bodyStrong,
-                                ),
-                                controlAffinity:
-                                    ListTileControlAffinity.leading,
-                                activeColor: AppColors.primary,
-                              );
-                            },
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s4.h),
-                        Row(
-                          children: [
-                            Icon(
-                              LucideIcons.listChecks,
-                              color: AppColors.primary,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: AppSpacing.s2.w),
-                            Expanded(
-                              child: Text(
-                                l10n.onboardingOptOutTakingCount(
-                                  takingCount,
-                                  total,
-                                ),
-                                style: AppTypography.bodyStrong,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.s3.h),
-                        AppButton.primary(
-                          label: l10n.onboardingOptOutValidateCta,
-                          onPressed: canSave ? onValidate : null,
-                          loading: isSaving,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        AppButton.secondary(
-                          label: l10n.back,
-                          onPressed: isSaving ? null : onCancel,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
-    });
-  }
-}
-
-// ============================================================================
-// _FreeWithObligatoryBody — NEW Story 1.15 (Mariam Form 5 panier O-Level).
-//
-// 2 sections empilees :
-//   1. "Matieres obligatoires" : N checkboxes checked + disabled + cadenas.
-//      Tap -> onTapObligatory (toast warning + log warn).
-//   2. "Matieres au choix" : N checkboxes interactifs.
-//      Init depuis users/{uid}.pickedSubjects (modulo retrait des obligatoires
-//      qui y sont aussi).
-//
-// Compteur live + couleur conditionnelle (primary si valide, danger sinon).
-// Bouton Valider active si pickedTotal ∈ [minSubjects, maxSubjects].
-// ============================================================================
-
-class _FreeWithObligatoryBody extends StatelessWidget {
-  const _FreeWithObligatoryBody({
-    required this.profile,
-    required this.langKey,
-    required this.picked,
-    required this.isSaving,
-    required this.onInitPicked,
-    required this.onToggleOptional,
-    required this.onTapObligatory,
-    required this.onValidate,
-    required this.onCancel,
-  });
-
-  final DerivedProfile profile;
-  final String langKey;
-  final Set<String>? picked;
-  final bool isSaving;
-  final void Function(List<String>) onInitPicked;
-  final void Function(String subjectId, bool selected) onToggleOptional;
-  final void Function(String subjectId) onTapObligatory;
-  final VoidCallback onValidate;
-  final VoidCallback onCancel;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
-    return Consumer(builder: (context, ref, _) {
-      final profileStream =
-          ref.watch(userProfileRepositoryProvider).watchProfile();
-      return StreamBuilder<Map<String, dynamic>?>(
-        stream: profileStream,
-        builder: (context, snap) {
-          if (picked == null) {
-            if (snap.connectionState == ConnectionState.waiting &&
-                !snap.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            // Lire `pickedSubjects` initial Firestore + retirer les
-            // obligatoires (forcees en permanence cote UI -> ne pas les
-            // afficher cochees deux fois).
-            final pickedFromFs =
-                (snap.data?['pickedSubjects'] as List?)?.cast<String>() ??
-                    const <String>[];
-            final obligIds =
-                profile.obligatorySubjects.map((s) => s.subjectId).toSet();
-            final optionalOnly = pickedFromFs
-                .where((id) => !obligIds.contains(id))
-                .toList(growable: false);
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onInitPicked(optionalOnly);
-            });
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final obligCount = profile.obligatorySubjects.length;
-          final optionalSelected = picked!.length;
-          final pickedTotal = obligCount + optionalSelected;
-
-          final min = profile.minSubjects ?? 1;
-          final max = profile.maxSubjects ?? (profile.subjects.length);
-          final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
-          final canSave = isWithinBounds && !isSaving;
-
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final isTablet = constraints.maxWidth >= 840;
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isTablet ? 720 : double.infinity,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s5.w,
-                      vertical: AppSpacing.s6.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // -- Titre H2 + sous-titre ---
-                        Text(
-                          l10n.onboardingPickerTitle,
-                          style: AppTypography.h2,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        Text(
-                          l10n.onboardingPickerSubtitle,
-                          style: AppTypography.body.copyWith(
-                            color: AppColors.inkSoft,
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s5.h),
-
-                        // -- Sections scrollables (ListView parent) ---
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              // -- Section obligatoires ---
-                              Text(
-                                l10n.onboardingPickerObligatoryTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.obligatorySubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.obligatorySubjects[index];
-                                  return CheckboxListTile(
-                                    value: true,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (_) => onTapObligatory(s.subjectId),
-                                    secondary: Icon(
-                                      LucideIcons.lock,
-                                      color: AppColors.primary,
-                                      size: 18.sp,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-
-                              SizedBox(height: AppSpacing.s5.h),
-
-                              // -- Section optionnels ---
-                              Text(
-                                l10n.onboardingPickerOptionalTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.optionalSubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.optionalSubjects[index];
-                                  final selected =
-                                      picked!.contains(s.subjectId);
-                                  return CheckboxListTile(
-                                    value: selected,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (v) => onToggleOptional(
-                                              s.subjectId,
-                                              v ?? false,
-                                            ),
-                                    secondary: Icon(
-                                      subjectIconFor(s.icon),
-                                      color: AppColors.primary,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: AppSpacing.s4.h),
-
-                        // -- Compteur live (couleur conditionnelle) ---
-                        Row(
-                          children: [
-                            Icon(
-                              LucideIcons.listChecks,
-                              color: isWithinBounds
-                                  ? AppColors.primary
-                                  : AppColors.danger,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: AppSpacing.s2.w),
-                            Expanded(
-                              child: Text(
-                                l10n.onboardingPickerCounterLive(
-                                  pickedTotal,
-                                  max,
-                                ),
-                                style: AppTypography.bodyStrong.copyWith(
-                                  color: isWithinBounds
-                                      ? AppColors.primary
-                                      : AppColors.danger,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.s3.h),
-                        AppButton.primary(
-                          label: l10n.onboardingPickerValidateCta,
-                          onPressed: canSave ? onValidate : null,
-                          loading: isSaving,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        AppButton.secondary(
-                          label: l10n.back,
-                          onPressed: isSaving ? null : onCancel,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
-    });
-  }
-}
-
-// ============================================================================
-// _SeriesPlusOptionalBody — NEW Story 1.16 (James Upper Sixth S2 + ICT).
-//
-// 2 sections empilees (semantique A-Level GCE Board) :
-//   1. "Series (obligatoires)" : Series figee 3-4 matieres lockees + cadenas.
-//      Tap -> onTapObligatory (toast warning + log warn).
-//   2. "Transversales optionnelles" : Computer Science / ICT / Religious
-//      Studies / Commerce - checkboxes interactives ajoutables jusqu'a max 5.
-//      Init depuis users/{uid}.pickedSubjects (modulo retrait des Series qui
-//      y sont aussi).
-//
-// Compteur live + couleur conditionnelle (primary si valide, danger sinon).
-// Bouton Valider active si pickedTotal ∈ [minSubjects, maxSubjects].
-//
-// Decision 2 Story 1.16 figee : copie quasi-litterale de _FreeWithObligatoryBody
-// (3 differences semantiques uniquement : 2 cles ARB titres + meme cadenas).
-// Pas de refactor generique - ROI negatif a 2 widgets.
-// ============================================================================
-
-class _SeriesPlusOptionalBody extends StatelessWidget {
-  const _SeriesPlusOptionalBody({
-    required this.profile,
-    required this.langKey,
-    required this.picked,
-    required this.isSaving,
-    required this.onInitPicked,
-    required this.onToggleOptional,
-    required this.onTapObligatory,
-    required this.onValidate,
-    required this.onCancel,
-  });
-
-  final DerivedProfile profile;
-  final String langKey;
-  final Set<String>? picked;
-  final bool isSaving;
-  final void Function(List<String>) onInitPicked;
-  final void Function(String subjectId, bool selected) onToggleOptional;
-  final void Function(String subjectId) onTapObligatory;
-  final VoidCallback onValidate;
-  final VoidCallback onCancel;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
-    return Consumer(builder: (context, ref, _) {
-      final profileStream =
-          ref.watch(userProfileRepositoryProvider).watchProfile();
-      return StreamBuilder<Map<String, dynamic>?>(
-        stream: profileStream,
-        builder: (context, snap) {
-          if (picked == null) {
-            if (snap.connectionState == ConnectionState.waiting &&
-                !snap.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            // Lire `pickedSubjects` initial Firestore + retirer les Series
-            // (forcees en permanence cote UI -> ne pas les afficher cochees
-            // deux fois).
-            final pickedFromFs =
-                (snap.data?['pickedSubjects'] as List?)?.cast<String>() ??
-                    const <String>[];
-            final seriesIds =
-                profile.obligatorySubjects.map((s) => s.subjectId).toSet();
-            final transversalesOnly = pickedFromFs
-                .where((id) => !seriesIds.contains(id))
-                .toList(growable: false);
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onInitPicked(transversalesOnly);
-            });
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final seriesCount = profile.obligatorySubjects.length;
-          final transversalesSelected = picked!.length;
-          final pickedTotal = seriesCount + transversalesSelected;
-
-          final min = profile.minSubjects ?? 1;
-          final max = profile.maxSubjects ?? (profile.subjects.length);
-          final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
-          final canSave = isWithinBounds && !isSaving;
-
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final isTablet = constraints.maxWidth >= 840;
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isTablet ? 720 : double.infinity,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s5.w,
-                      vertical: AppSpacing.s6.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // -- Titre H2 + sous-titre (reutilise cles Story 1.15) -
-                        Text(
-                          l10n.onboardingPickerTitle,
-                          style: AppTypography.h2,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        Text(
-                          l10n.onboardingPickerSubtitle,
-                          style: AppTypography.body.copyWith(
-                            color: AppColors.inkSoft,
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s5.h),
-
-                        // -- Sections scrollables (ListView parent) ---
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              // -- Section Series (obligatoires) NEW Story 1.16
-                              Text(
-                                l10n.onboardingPickerSeriesTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.obligatorySubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.obligatorySubjects[index];
-                                  return CheckboxListTile(
-                                    value: true,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (_) => onTapObligatory(s.subjectId),
-                                    secondary: Icon(
-                                      LucideIcons.lock,
-                                      color: AppColors.primary,
-                                      size: 18.sp,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-
-                              SizedBox(height: AppSpacing.s5.h),
-
-                              // -- Section Transversales (optionnelles) NEW
-                              Text(
-                                l10n.onboardingPickerTransversalesTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.optionalSubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.optionalSubjects[index];
-                                  final selected =
-                                      picked!.contains(s.subjectId);
-                                  return CheckboxListTile(
-                                    value: selected,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (v) => onToggleOptional(
-                                              s.subjectId,
-                                              v ?? false,
-                                            ),
-                                    secondary: Icon(
-                                      subjectIconFor(s.icon),
-                                      color: AppColors.primary,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        SizedBox(height: AppSpacing.s4.h),
-
-                        // -- Compteur live (couleur conditionnelle) ---
-                        Row(
-                          children: [
-                            Icon(
-                              LucideIcons.listChecks,
-                              color: isWithinBounds
-                                  ? AppColors.primary
-                                  : AppColors.danger,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: AppSpacing.s2.w),
-                            Expanded(
-                              child: Text(
-                                l10n.onboardingPickerCounterLive(
-                                  pickedTotal,
-                                  max,
-                                ),
-                                style: AppTypography.bodyStrong.copyWith(
-                                  color: isWithinBounds
-                                      ? AppColors.primary
-                                      : AppColors.danger,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.s3.h),
-                        AppButton.primary(
-                          label: l10n.onboardingPickerValidateCta,
-                          onPressed: canSave ? onValidate : null,
-                          loading: isSaving,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        AppButton.secondary(
-                          label: l10n.back,
-                          onPressed: isSaving ? null : onCancel,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
-    });
-  }
-}
-
-// ============================================================================
-// _TvePickerBody — NEW Story 1.17 (Eyong TVE AL Electrotechnique).
-//
-// 3 sections empilees (semantique TVEE GCE Board) :
-//   1. "Matieres professionnelles (obligatoires)" : profile.professionalSubjects
-//      lockees + cadenas (Ex. ELET : Electrotechnique theory/practical/Electrical
-//      machines). Tap -> onTapObligatory (toast warning).
-//   2. "Matieres connexes (obligatoires)" : profile.relatedProfessionalSubjects
-//      lockees + cadenas (Ex. ELET : Math Industrial / Physics / Drawing).
-//      Tap -> onTapObligatory.
-//   3. "Autres matieres" : Mix
-//      - Obligatoires Other : profile.obligatorySubjects (EN+FR) lockees + cadenas.
-//      - Au choix : profile.optionalSubjects (Hist/Geo/RS) interactives.
-//
-// Init depuis users/{uid}.pickedSubjects : retirer les 3 ensembles lockes
-// (Pro + Related + Obligatoires Other) pour pre-populer _pickedOptional avec
-// uniquement les au-choix selectionnes.
-//
-// Compteur live + couleur conditionnelle (primary si valide, danger sinon).
-// pickedTotal = Pro + Related + Obligatoires + picked.length (auto-comptes).
-// Bouton Valider active si pickedTotal in [minSubjects, maxSubjects].
-//
-// Decision 3 Story 1.17 figee : copie quasi-litterale de _SeriesPlusOptionalBody
-// avec 1 section additionnelle (Pro) + sous-loops dans Other. Pas de refactor
-// generique - ROI negatif a 3 widgets.
-// ============================================================================
-
-class _TvePickerBody extends StatelessWidget {
-  const _TvePickerBody({
-    required this.profile,
-    required this.langKey,
-    required this.picked,
-    required this.isSaving,
-    required this.onInitPicked,
-    required this.onToggleOptional,
-    required this.onTapObligatory,
-    required this.onValidate,
-    required this.onCancel,
-  });
-
-  final DerivedProfile profile;
-  final String langKey;
-  final Set<String>? picked;
-  final bool isSaving;
-  final void Function(List<String>) onInitPicked;
-  final void Function(String subjectId, bool selected) onToggleOptional;
-  final void Function(String subjectId) onTapObligatory;
-  final VoidCallback onValidate;
-  final VoidCallback onCancel;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-
-    return Consumer(builder: (context, ref, _) {
-      final profileStream =
-          ref.watch(userProfileRepositoryProvider).watchProfile();
-      return StreamBuilder<Map<String, dynamic>?>(
-        stream: profileStream,
-        builder: (context, snap) {
-          if (picked == null) {
-            if (snap.connectionState == ConnectionState.waiting &&
-                !snap.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            final pickedFromFs =
-                (snap.data?['pickedSubjects'] as List?)?.cast<String>() ??
-                    const <String>[];
-            final lockedIds = <String>{
-              ...profile.professionalSubjects.map((s) => s.subjectId),
-              ...profile.relatedProfessionalSubjects.map((s) => s.subjectId),
-              ...profile.obligatorySubjects.map((s) => s.subjectId),
-            };
-            final optionalsOnly = pickedFromFs
-                .where((id) => !lockedIds.contains(id))
-                .toList(growable: false);
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              onInitPicked(optionalsOnly);
-            });
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final proCount = profile.professionalSubjects.length;
-          final relatedCount = profile.relatedProfessionalSubjects.length;
-          final obligCount = profile.obligatorySubjects.length;
-          final optionalSelected = picked!.length;
-          final pickedTotal =
-              proCount + relatedCount + obligCount + optionalSelected;
-
-          final min = profile.minSubjects ?? 1;
-          final max = profile.maxSubjects ?? (profile.subjects.length);
-          final isWithinBounds = pickedTotal >= min && pickedTotal <= max;
-          final canSave = isWithinBounds && !isSaving;
-
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              final isTablet = constraints.maxWidth >= 840;
-              return Center(
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: isTablet ? 720 : double.infinity,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s5.w,
-                      vertical: AppSpacing.s6.h,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Text(
-                          l10n.onboardingPickerTitle,
-                          style: AppTypography.h2,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        Text(
-                          l10n.onboardingPickerSubtitle,
-                          style: AppTypography.body.copyWith(
-                            color: AppColors.inkSoft,
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s5.h),
-                        Expanded(
-                          child: ListView(
-                            children: [
-                              Text(
-                                l10n.onboardingPickerProfessionalTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount:
-                                    profile.professionalSubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s =
-                                      profile.professionalSubjects[index];
-                                  return CheckboxListTile(
-                                    value: true,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (_) => onTapObligatory(s.subjectId),
-                                    secondary: Icon(
-                                      LucideIcons.lock,
-                                      color: AppColors.primary,
-                                      size: 18.sp,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                              SizedBox(height: AppSpacing.s5.h),
-                              Text(
-                                l10n.onboardingPickerRelatedTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile
-                                    .relatedProfessionalSubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile
-                                      .relatedProfessionalSubjects[index];
-                                  return CheckboxListTile(
-                                    value: true,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (_) => onTapObligatory(s.subjectId),
-                                    secondary: Icon(
-                                      LucideIcons.lock,
-                                      color: AppColors.primary,
-                                      size: 18.sp,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                              SizedBox(height: AppSpacing.s5.h),
-                              Text(
-                                l10n.onboardingPickerOtherTitle,
-                                style: AppTypography.h3,
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.obligatorySubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.obligatorySubjects[index];
-                                  return CheckboxListTile(
-                                    value: true,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (_) => onTapObligatory(s.subjectId),
-                                    secondary: Icon(
-                                      LucideIcons.lock,
-                                      color: AppColors.primary,
-                                      size: 18.sp,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                              SizedBox(height: AppSpacing.s2.h),
-                              ListView.separated(
-                                shrinkWrap: true,
-                                physics:
-                                    const NeverScrollableScrollPhysics(),
-                                itemCount: profile.optionalSubjects.length,
-                                separatorBuilder: (_, _) =>
-                                    SizedBox(height: AppSpacing.s2.h),
-                                itemBuilder: (context, index) {
-                                  final s = profile.optionalSubjects[index];
-                                  final selected =
-                                      picked!.contains(s.subjectId);
-                                  return CheckboxListTile(
-                                    value: selected,
-                                    onChanged: isSaving
-                                        ? null
-                                        : (v) => onToggleOptional(
-                                              s.subjectId,
-                                              v ?? false,
-                                            ),
-                                    secondary: Icon(
-                                      subjectIconFor(s.icon),
-                                      color: AppColors.primary,
-                                    ),
-                                    title: Text(
-                                      s.name[langKey] ??
-                                          s.name['fr'] ??
-                                          s.subjectId,
-                                      style: AppTypography.bodyStrong,
-                                    ),
-                                    controlAffinity:
-                                        ListTileControlAffinity.leading,
-                                    activeColor: AppColors.primary,
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s4.h),
-                        Row(
-                          children: [
-                            Icon(
-                              LucideIcons.listChecks,
-                              color: isWithinBounds
-                                  ? AppColors.primary
-                                  : AppColors.danger,
-                              size: 20.sp,
-                            ),
-                            SizedBox(width: AppSpacing.s2.w),
-                            Expanded(
-                              child: Text(
-                                l10n.onboardingPickerCounterLive(
-                                  pickedTotal,
-                                  max,
-                                ),
-                                style: AppTypography.bodyStrong.copyWith(
-                                  color: isWithinBounds
-                                      ? AppColors.primary
-                                      : AppColors.danger,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: AppSpacing.s3.h),
-                        AppButton.primary(
-                          label: l10n.onboardingPickerValidateCta,
-                          onPressed: canSave ? onValidate : null,
-                          loading: isSaving,
-                        ),
-                        SizedBox(height: AppSpacing.s2.h),
-                        AppButton.secondary(
-                          label: l10n.back,
-                          onPressed: isSaving ? null : onCancel,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            },
-          );
-        },
-      );
-    });
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (isStateReady) {
+      return builder();
+    }
+    final profileStream =
+        ref.watch(userProfileRepositoryProvider).watchProfile();
+    return StreamBuilder<Map<String, dynamic>?>(
+      stream: profileStream,
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.waiting && !snap.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          initFromFs(snap.data);
+        });
+        return const Center(child: CircularProgressIndicator());
+      },
+    );
   }
 }
