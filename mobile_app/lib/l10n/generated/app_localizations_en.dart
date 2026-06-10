@@ -104,11 +104,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subsystemAnglophone => 'Anglophone';
 
   @override
-  String get subsystemConfirmTitle => 'Confirm your choice';
+  String get subsystemConfirmTitle => 'Which section are you in?';
 
   @override
   String get subsystemConfirmBody =>
-      'This choice locks your language and program. You won\'t be able to change it later.';
+      'Final choice: language (FR/EN) + school curriculum.';
 
   @override
   String onboardingStepLabel(int step, int total) {

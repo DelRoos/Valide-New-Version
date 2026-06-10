@@ -103,11 +103,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subsystemAnglophone => 'Anglophone';
 
   @override
-  String get subsystemConfirmTitle => 'Confirmer ton choix';
+  String get subsystemConfirmTitle => 'Tu fais quelle section ?';
 
   @override
   String get subsystemConfirmBody =>
-      'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.';
+      'Choix définitif : langue (FR/EN) + cursus scolaire.';
 
   @override
   String onboardingStepLabel(int step, int total) {

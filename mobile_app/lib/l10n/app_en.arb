@@ -35,8 +35,8 @@
   "subsystemChoiceSubtitle": "You won't be able to change this later.",
   "subsystemFrancophone": "Francophone",
   "subsystemAnglophone": "Anglophone",
-  "subsystemConfirmTitle": "Confirm your choice",
-  "subsystemConfirmBody": "This choice locks your language and program. You won't be able to change it later.",
+  "subsystemConfirmTitle": "Which section are you in?",
+  "subsystemConfirmBody": "Final choice: language (FR/EN) + school curriculum.",
 
   "onboardingStepLabel": "Step {step} of {total}",
   "@onboardingStepLabel": {

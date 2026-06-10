@@ -91,11 +91,9 @@ void main() {
         await tester.pumpAndSettle();
 
         // Modale : titre + body + 2 boutons (Annuler secondary + Continuer primary).
-        expect(find.text('Confirmer ton choix'), findsOneWidget);
+        expect(find.text('Tu fais quelle section ?'), findsOneWidget);
         expect(
-          find.text(
-            'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.',
-          ),
+          find.text('Choix définitif : langue (FR/EN) + cursus scolaire.'),
           findsOneWidget,
         );
         expect(find.text('Annuler'), findsOneWidget);
@@ -157,7 +155,7 @@ void main() {
         expect(prefs.getString('onboarding.language'), 'en');
 
         // La modale n'est plus a l'ecran.
-        expect(find.text('Confirmer ton choix'), findsNothing);
+        expect(find.text('Tu fais quelle section ?'), findsNothing);
       },
     );
 

@@ -102,11 +102,11 @@
   "subsystemAnglophone": "Anglophone",
   "@subsystemAnglophone": { "description": "Label du bouton qui sélectionne le sous-système anglophone (langue EN + curriculum Cameroon GCE)." },
 
-  "subsystemConfirmTitle": "Confirmer ton choix",
-  "@subsystemConfirmTitle": { "description": "Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone." },
+  "subsystemConfirmTitle": "Tu fais quelle section ?",
+  "@subsystemConfirmTitle": { "description": "Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone. Wording camerounais : 'section' = francophone/anglophone au MINESEC." },
 
-  "subsystemConfirmBody": "Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.",
-  "@subsystemConfirmBody": { "description": "Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2)." },
+  "subsystemConfirmBody": "Choix définitif : langue (FR/EN) + cursus scolaire.",
+  "@subsystemConfirmBody": { "description": "Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2) de manière courte et directe." },
 
   "onboardingStepLabel": "Étape {step} sur {total}",
   "@onboardingStepLabel": {

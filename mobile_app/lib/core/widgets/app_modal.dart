@@ -6,6 +6,12 @@ import 'app_button.dart';
 
 /// Modale plein écran centrée, UX-DR-10 : au moins UN bouton explicite —
 /// pas de close X seul. `primary` est obligatoire, `secondary` optionnel.
+///
+/// Layout boutons :
+/// - Si `secondary` present : Row [secondary | primary] cote-a-cote
+///   (Expanded chacun). Pattern Material Design standard pour les dialogues
+///   de confirmation.
+/// - Si pas de `secondary` : primary seul stretched full-width.
 class AppModal {
   AppModal._();
 
@@ -39,17 +45,29 @@ class AppModal {
                   ],
                   child,
                   SizedBox(height: AppSpacing.s6.h),
-                  if (secondary != null) ...[
-                    AppButton.secondary(
-                      label: secondary.label,
-                      onPressed: () => secondary.onTap(ctx),
+                  if (secondary != null)
+                    Row(
+                      children: [
+                        Expanded(
+                          child: AppButton.secondary(
+                            label: secondary.label,
+                            onPressed: () => secondary.onTap(ctx),
+                          ),
+                        ),
+                        SizedBox(width: AppSpacing.s3.w),
+                        Expanded(
+                          child: AppButton.primary(
+                            label: primary.label,
+                            onPressed: () => primary.onTap(ctx),
+                          ),
+                        ),
+                      ],
+                    )
+                  else
+                    AppButton.primary(
+                      label: primary.label,
+                      onPressed: () => primary.onTap(ctx),
                     ),
-                    SizedBox(height: AppSpacing.s2.h),
-                  ],
-                  AppButton.primary(
-                    label: primary.label,
-                    onPressed: () => primary.onTap(ctx),
-                  ),
                 ],
               ),
             ),

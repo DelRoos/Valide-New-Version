@@ -278,16 +278,16 @@ abstract class AppLocalizations {
   /// **'Anglophone'**
   String get subsystemAnglophone;
 
-  /// Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone.
+  /// Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone. Wording camerounais : 'section' = francophone/anglophone au MINESEC.
   ///
   /// In fr, this message translates to:
-  /// **'Confirmer ton choix'**
+  /// **'Tu fais quelle section ?'**
   String get subsystemConfirmTitle;
 
-  /// Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2).
+  /// Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2) de manière courte et directe.
   ///
   /// In fr, this message translates to:
-  /// **'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.'**
+  /// **'Choix définitif : langue (FR/EN) + cursus scolaire.'**
   String get subsystemConfirmBody;
 
   /// Label de progression du flow profil 3 étapes (Story 1.3).

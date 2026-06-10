@@ -42,12 +42,18 @@ class CatalogueWaitingPage extends ConsumerWidget {
   /// `read: if request.auth != null` refusent toutes les lectures catalogue
   /// et `hasNonEmptyCatalogue()` retourne false en boucle.
   /// (2) invalide le provider pour relancer le check.
+  ///
+  /// Defensif : si Firebase n'est pas initialise (tests widget, degraded
+  /// mode Phase B pending), on skip l'auth et on invalide directement le
+  /// provider. Pattern aligne sur subsystem_choice_page.dart:80.
   Future<void> _onRetry(WidgetRef ref) async {
-    final auth = ref.read(firebaseAuthProvider);
-    if (auth.currentUser == null) {
+    if (ref.read(firebaseAvailableProvider)) {
       try {
-        await auth.signInAnonymously();
-        AppLogger.i('CatalogueWaiting retry: signInAnonymously OK');
+        final auth = ref.read(firebaseAuthProvider);
+        if (auth.currentUser == null) {
+          await auth.signInAnonymously();
+          AppLogger.i('CatalogueWaiting retry: signInAnonymously OK');
+        }
       } catch (e) {
         AppLogger.w('CatalogueWaiting retry: signInAnonymously failed: $e');
       }
