@@ -3,8 +3,10 @@
 // sur keywords[] lower-case sans accents. Permet une UX insensible a la casse,
 // aux accents (« lycee » matche « Lycée »), et aux abreviations communes
 // (« ghs » matche « Government High School »).
-//
-// Demande d'ajout via ecriture sous-collection `schools/_pending_$ts/requests/$autoId`.
+// Story 1.5.c — Refactor demande d'ajout : sous-collection
+// schools/_pending_$ts/requests -> collection racine school_requests/<auto>.
+// Le champ subSystem est optionnel + le status est force a 'pending' par les
+// rules au create (anti-escalade).
 
 import 'dart:math' as math;
 
@@ -30,6 +32,7 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
   final GetUidFn _getUid;
 
   static const String _kCollection = 'schools';
+  static const String _kRequestsCollection = 'school_requests';
   static const int _kMaxResults = 10;
   static const int _kMinTokenLength = 2;
 
@@ -130,48 +133,49 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
   }
 
   @override
-  Future<Either<SchoolFailure, void>> requestSchool({
+  Future<Either<SchoolFailure, void>> createSchoolRequest({
     required String name,
     required String city,
     String? region,
+    String? subSystem,
   }) async {
     final uid = _getUid();
     if (uid == null) {
-      AppLogger.w('requestSchool() aborted: no current user uid');
+      AppLogger.w('createSchoolRequest() aborted: no current user uid');
       return const Left(
         SchoolFailure.firestoreError('User not authenticated'),
       );
     }
 
-    final tempId = '_pending_${DateTime.now().millisecondsSinceEpoch}';
     try {
-      await _firestore
-          .collection(_kCollection)
-          .doc(tempId)
-          .collection('requests')
-          .add({
+      await _firestore.collection(_kRequestsCollection).add({
         'requestedBy': uid,
         'requestedAt': FieldValue.serverTimestamp(),
         'status': 'pending',
         'name': name,
         'city': city,
-        'region': region,
+        // Story 1.5.c — conditional fields : seuls ajoutes si non-null pour
+        // eviter de stocker `null` (les rules verifient l'absence du champ,
+        // pas la valeur null). Syntaxe null-aware marker Dart 3.x.
+        'region': ?region,
+        'subSystem': ?subSystem,
       });
-      // tempId est public (pas de PII), OK a logger. Le nom de l'ecole NON.
-      AppLogger.i('School request submitted: tempId=$tempId');
+      // CLAUDE.md regle 4 (logs) : ni uid, ni nom complet ecole, ni ville
+      // logges. Le compteur suffit pour la trace d'usage.
+      AppLogger.i('School request submitted');
       return const Right(null);
     } on FirebaseException catch (e, st) {
       AppLogger.w(
-        'requestSchool() FirebaseException: ${e.code} ${e.message}',
+        'createSchoolRequest() FirebaseException: ${e.code} ${e.message}',
         error: e,
       );
-      AppLogger.w('requestSchool() stack: $st');
+      AppLogger.w('createSchoolRequest() stack: $st');
       return Left(
         SchoolFailure.firestoreError(e.message ?? 'Firebase: ${e.code}'),
       );
     } catch (e, st) {
-      AppLogger.w('requestSchool() unexpected error: $e', error: e);
-      AppLogger.w('requestSchool() stack: $st');
+      AppLogger.w('createSchoolRequest() unexpected error: $e', error: e);
+      AppLogger.w('createSchoolRequest() stack: $st');
       return Left(SchoolFailure.firestoreError(e.toString()));
     }
   }

@@ -289,6 +289,21 @@
   "onboardingSchoolAddDialogRegionLabel": "Région (optionnel)",
   "@onboardingSchoolAddDialogRegionLabel": { "description": "Label champ Region (optionnel) dans la modale d'ajout." },
 
+  "onboardingSchoolAddDialogSubSystemLabel": "Sous-système (optionnel)",
+  "@onboardingSchoolAddDialogSubSystemLabel": { "description": "Label groupe radio Sous-systeme (Story 1.5.c) dans la modale d'ajout." },
+
+  "onboardingSchoolAddDialogSubSystemFrancophone": "Francophone",
+  "@onboardingSchoolAddDialogSubSystemFrancophone": { "description": "Option radio Sous-systeme francophone (Story 1.5.c)." },
+
+  "onboardingSchoolAddDialogSubSystemAnglophone": "Anglophone",
+  "@onboardingSchoolAddDialogSubSystemAnglophone": { "description": "Option radio Sous-systeme anglophone (Story 1.5.c)." },
+
+  "onboardingSchoolAddDialogSubSystemBoth": "Bilingue",
+  "@onboardingSchoolAddDialogSubSystemBoth": { "description": "Option radio Sous-systeme bilingue/multi-langues (Story 1.5.c)." },
+
+  "onboardingSchoolAddDialogSubSystemUnknown": "Je ne sais pas",
+  "@onboardingSchoolAddDialogSubSystemUnknown": { "description": "Option radio par defaut quand l'utilisateur ne connait pas le sous-systeme (Story 1.5.c)." },
+
   "onboardingSchoolAddDialogSubmitCta": "Envoyer la demande",
   "@onboardingSchoolAddDialogSubmitCta": { "description": "CTA primaire de la modale d'ajout. Disabled si nom ou ville vides." },
 

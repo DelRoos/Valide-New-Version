@@ -590,6 +590,36 @@ abstract class AppLocalizations {
   /// **'Région (optionnel)'**
   String get onboardingSchoolAddDialogRegionLabel;
 
+  /// Label groupe radio Sous-systeme (Story 1.5.c) dans la modale d'ajout.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sous-système (optionnel)'**
+  String get onboardingSchoolAddDialogSubSystemLabel;
+
+  /// Option radio Sous-systeme francophone (Story 1.5.c).
+  ///
+  /// In fr, this message translates to:
+  /// **'Francophone'**
+  String get onboardingSchoolAddDialogSubSystemFrancophone;
+
+  /// Option radio Sous-systeme anglophone (Story 1.5.c).
+  ///
+  /// In fr, this message translates to:
+  /// **'Anglophone'**
+  String get onboardingSchoolAddDialogSubSystemAnglophone;
+
+  /// Option radio Sous-systeme bilingue/multi-langues (Story 1.5.c).
+  ///
+  /// In fr, this message translates to:
+  /// **'Bilingue'**
+  String get onboardingSchoolAddDialogSubSystemBoth;
+
+  /// Option radio par defaut quand l'utilisateur ne connait pas le sous-systeme (Story 1.5.c).
+  ///
+  /// In fr, this message translates to:
+  /// **'Je ne sais pas'**
+  String get onboardingSchoolAddDialogSubSystemUnknown;
+
   /// CTA primaire de la modale d'ajout. Disabled si nom ou ville vides.
   ///
   /// In fr, this message translates to:

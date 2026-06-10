@@ -302,6 +302,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingSchoolAddDialogRegionLabel => 'Région (optionnel)';
 
   @override
+  String get onboardingSchoolAddDialogSubSystemLabel =>
+      'Sous-système (optionnel)';
+
+  @override
+  String get onboardingSchoolAddDialogSubSystemFrancophone => 'Francophone';
+
+  @override
+  String get onboardingSchoolAddDialogSubSystemAnglophone => 'Anglophone';
+
+  @override
+  String get onboardingSchoolAddDialogSubSystemBoth => 'Bilingue';
+
+  @override
+  String get onboardingSchoolAddDialogSubSystemUnknown => 'Je ne sais pas';
+
+  @override
   String get onboardingSchoolAddDialogSubmitCta => 'Envoyer la demande';
 
   @override

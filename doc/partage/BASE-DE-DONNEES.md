@@ -47,6 +47,7 @@ Pour chaque collection :
 | `users/{uid}/sharing_links` | Liens de partage générés | 🟡 | Mutable |
 | `rankings/{board}/entries/{uid}` | Classements (5 boards) | 🟡 | **Stream** (board courant uniquement) |
 | `schools` | Catalogue des écoles (~198 MINESEC+GCE V1 — Story 1.5.a) | 🟢 | Statique |
+| `school_requests` | Demandes d'ajout d'école par les élèves (Story 1.5.c — modération admin Console) | 🟢 | Privé (read self only) |
 | `payment_intents` | Intentions de paiement (créées par Cloud Function) | 🟡 | Privé (suivi côté serveur) |
 | `webhook_events` | Trace des webhooks d'agrégateur (idempotence) | 🟡 | Inaccessible au mobile |
 
@@ -619,7 +620,45 @@ interface SchoolDoc {
 
 > **Note pratique** : beaucoup de grandes écoles francophones (Lycée Joss, Lycée Général Leclerc, etc.) ont en pratique une **section bilingue** opérationnelle, ce qui pourrait justifier `both`. Le seed Story 1.5.a a privilégié l'**identité dominante** (francophone si le nom contient « Lycée », anglophone si « Government High School ») par défaut. Une école peut être promue `francophone` → `both` ultérieurement via PR sur `data/schools.json` + re-seed, ou directement par toggle admin Firebase Console.
 
-Sous-collection `schools/{schoolId}/requests` 🔴 : demandes d'ajout par les élèves en attente de validation admin (Story 1.5.c à venir — actuellement écrit par Story 1.7 dans `schools/_pending_<ts>/requests/` en attendant la formalisation).
+> **Story 1.5.c (2026-06-10)** : la sous-collection `schools/{schoolId}/requests` POC Story 1.7 est **supprimée**. Les demandes d'ajout vivent désormais dans la collection racine [`school_requests/{requestId}`](#school_requestsrequestid--story-15c) (cf. ci-dessous).
+
+### `school_requests/{requestId}` 🟢 (Story 1.5.c)
+
+Demandes d'ajout d'école soumises par les élèves dont l'école n'est pas dans le seed Story 1.5.a (198 écoles V1 — couverture ~80%, le reste passe par ce flow). L'admin modère via Firebase Console + workflow `scripts/firebase_seed/data/README.md`.
+
+```typescript
+interface SchoolRequestDoc {
+  requestId: string;                     // = doc ID Firestore (autoId)
+  requestedBy: string;                   // uid de l'utilisateur authentifié
+  requestedAt: Timestamp;                // SERVER_TIMESTAMP au create
+  status: "pending" | "approved" | "rejected";  // initial: "pending" (forcé par rules)
+  name: string;                          // nom de l'école (3-200 chars)
+  city: string;                          // ville (2-100 chars)
+  region?: string;                       // région (optionnel, max 100 chars)
+  subSystem?: "francophone" | "anglophone" | "both";  // optionnel (« je ne sais pas »)
+  // Champs admin (jamais écrits côté client) :
+  decidedBy?: string;                    // uid de l'admin qui a décidé
+  decidedAt?: Timestamp;                 // SERVER_TIMESTAMP à la décision
+  schoolIdCreated?: string;              // si approved : ref vers schools/{schoolIdCreated}
+  rejectionReason?: string;              // si rejected : explication courte
+}
+```
+
+**Path** : collection racine (vs sous-collection schools/{id}/requests POC). Justifications :
+- Découple sémantiquement de `schools/` (pas de pollution Firebase Console avec faux docs `_pending_<ts>`)
+- Permet query `where('requestedBy', '==', uid)` naturelle pour read self (rules + futur écran « Mes demandes »)
+- Rules simples (1 path explicite vs wildcard dynamique)
+
+**Sécurité (cf. `firestore.rules` § `school_requests/{requestId}`)** :
+- Create : owner uniquement (`requestedBy == auth.uid`) + champs valides + `status` forcé à `'pending'` (anti-escalade : un client malveillant ne peut pas créer une demande déjà `approved`)
+- Read : self uniquement (`resource.data.requestedBy == auth.uid`)
+- Update/delete : interdits côté client (modération admin via Console ou Cloud Function future)
+
+**Cost-benefit (CLAUDE.md règle 10m)** :
+- 1 write par demande (taux moyen ~5% des onboardings → ~42 demandes/mois @10k users)
+- 0 read V1 (toast feedback suffit), 1-3 reads V2 (futur écran « Mes demandes »)
+- Storage : ~150 KB après 1 an à 10k users (négligeable)
+- Index V1 : aucun (single-field `requestedBy` auto-indexé). Index composite à ajouter si V2 ajoute un écran « Mes demandes » avec query `where('requestedBy') + where('status') + orderBy('requestedAt')`.
 
 ### `payment_intents/{intentId}` 🟡
 
@@ -870,3 +909,4 @@ await _firestore.collection('users').doc(uid).update({
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — catalogue v2 alignement nomenclature officielle (ADR-016). Schema v2 étendu non-breaking : **+3 champs `SerieDoc`** (`pickerMode` enum 5 valeurs + `minSubjects` + `maxSubjects`) + **3 champs `SerieDoc` TVEE-spécifiques** (`professionalSubjectIds` + `relatedProfessionalSubjectIds` + `otherSubjectIds`) + **2 champs `DerivationRuleDoc`** (`obligatorySubjectIds` + `optionalSubjectIds`) + **1 champ `UserDoc`** (`pickedSubjects` optionnel mode panier). Nouveau type `PickerMode` documenté. Nouvelle sous-section « Validation panier polymorphe » avec règle Firestore `pickedSubjectsValid()` (impl Story 1.15). Table Règles de sécurité — résumé : ligne `users/{uid}` annotée pour validation `pickedSubjects`. **AUCUN nouvel index Firestore** (CLAUDE.md règle 9 enforcement explicite : les nouveaux champs sont lus sur docs déjà filtrés par indexes Story 1.1a existants). Defaults safe (`pickerMode == 'derived'` si absent) → rétrocompat Story 1.4 préservée. Sprint-change-proposal-2026-06-09.md. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.a — seed initial collection `schools` sur `valide-edu`. Statut `schools/{schoolId}` 🟡 → 🟢 (Vue d'ensemble + section dédiée). Ajout précisions sur seed : ~198 établissements MINESEC + GCE Board V1 couvrant 10 régions officielles (Centre 40, Littoral 38, Ouest 34, Sud-Ouest 20, Nord-Ouest 16, Nord 13, Sud 11, Extrême-Nord 10, Adamaoua 8, Est 8). Convention `schoolId` formalisée (slug `school_<slug_nom>_<slug_ville>` pattern `^school_[a-z0-9_]+$`). Mix subSystem : 136 francophone / 35 both / 27 anglophone. Script Python autonome [`scripts/firebase_seed/seed_schools.py`](../../scripts/firebase_seed/seed_schools.py) calqué sur pattern Story 1.1b (`set(merge=True)`, ADC ou service-account, dry-run, idempotent). Matrice versionnée [`scripts/firebase_seed/data/schools.json`](../../scripts/firebase_seed/data/schools.json). 9 tests pytest sans Firestore live valident la matrice statique. **Aucun nouvel index Firestore** (l'index composite `(isValidated ASC, name ASC)` déjà déployé Story 1.7 suffit pour `school_repository_firestore_impl.searchByPrefix`). Sous-collection `schools/{schoolId}/requests` 🔴 reste à formaliser Story 1.5.c. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.b — refactor recherche écoles vers `keywords[] arrayContains` case-insensitive sans accents. Schema `SchoolDoc` étendu avec champ `keywords: string[]` (lower-case ASCII tokens, dépendance `unidecode>=1.3.0` côté seed Python + map accents manuel côté Dart). Script `seed_schools.py` étendu avec flag `--regen-keywords` qui régénère la matrice (pipeline déterministe : name + city + region tokenisés + 7 abréviations communes ghs/gbhs/pss/lb/chs/gths/gtbhs). 198 écoles regénérées avec keywords[] (min 3 / max 10 / avg 5.6 tokens par école, GHS 14, LB 25, GBHS 6, PSS 2). **Nouvel index Firestore composite** `(isValidated ASC, keywords ARRAY-CONTAINS)` déclaré dans `firestore.indexes.json` + déployé sur `valide-edu`. Ancien index `(isValidated, name)` conservé pour audit. Tests : pytest 24/24 verts (Story 1.1b 6 + 1.5.a 9 + 1.5.b 9 = +9 nets) + Dart `school_repository_test.dart` 11/11 verts (Story 1.7 5 adapté avec keywords + Story 1.5.b 6 nouveaux : case-insensitive, accents, GHS abréviation, court-circuit, tri client). Read patterns table mise à jour. Reseed `valide-edu` OK : 198 docs en 43.35 s via ADC. |
+| 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.c — flow demande ajout école production-ready. **Nouvelle collection racine `school_requests/{requestId}`** 🟢 avec schema `SchoolRequestDoc` complet (requestedBy + requestedAt + status + name + city + region? + subSystem? + decidedBy? + decidedAt? + schoolIdCreated? + rejectionReason?). Sous-collection POC `schools/{schoolId}/requests` Story 1.7 **supprimée** (refactor non-breaking : `requestSchool` → `createSchoolRequest({name, city, region?, subSystem?})` dans le repository Dart). Rules Firestore étendues : create par owner (uid match + champs valides + status forcé `'pending'` anti-escalade) + read self (`requestedBy == auth.uid` → futur écran « Mes demandes ») + update/delete refusés côté client (modération admin via Console). Aucun nouvel index Firestore V1 (single-field `requestedBy` auto-indexé). Tests : npm test rules 30/30 verts (baseline 23 + 7 Story 1.5.c : create owner valide, uid d'autrui refusé, name trop court refusé, status != pending refusé, subSystem invalide refusé, subSystem valide accepté, read self OK, read other refusé, update/delete refusés) + Dart `school_repository_test.dart` 15/15 verts (Story 1.7 4 adaptés + Story 1.5.b 6 + Story 1.5.c 4 nouveaux : subSystem renseigné/null, region renseigné/null) + widget `school_picker_page_test.dart` 7/7 verts (Story 1.7 5 + Story 1.5.c 2 : modale rendue avec 4 RadioListTile, submit avec subSystem). UI modale `_AddSchoolDialog` étendue avec `RadioGroup<_SubSystemChoice>` 4 options (Francophone, Anglophone, Bilingue, Je ne sais pas par défaut) + 5 clés ARB FR/EN ajoutées. Cost-benefit V1 : ~42 demandes/mois @10k users = négligeable. Workflow admin modération documenté dans `scripts/firebase_seed/data/README.md`. |

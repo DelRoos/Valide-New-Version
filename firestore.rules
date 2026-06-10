@@ -178,24 +178,64 @@ service cloud.firestore {
     // Ecriture interdite cote client : seul l'admin (via Console) peut
     // valider une ecole (poser isValidated = true) ou ajouter un doc.
     //
-    // Sous-collection requests/ : demandes d'ajout d'ecole soumises par les
-    // utilisateurs (modeles dans schools/_pending_$ts/requests/$autoId).
-    // Create autorise si requestedBy == auth.uid + name + city sont des
-    // strings. Pas de read/update/delete cote client (donnees admin).
+    // Story 1.5.c — La sous-collection requests/ est SUPPRIMEE. Les demandes
+    // d'ajout vivent maintenant dans la collection racine school_requests/
+    // (cf. match /school_requests/{requestId} plus bas).
     // -----------------------------------------------------------------
     match /schools/{schoolId} {
       allow read: if request.auth != null;
       allow write: if false;
+    }
 
-      match /requests/{requestId} {
-        allow create: if request.auth != null
-          && request.resource.data.requestedBy == request.auth.uid
-          && request.resource.data.name is string
-          && request.resource.data.name.size() > 0
-          && request.resource.data.city is string
-          && request.resource.data.city.size() > 0;
-        allow read, update, delete: if false;
-      }
+    // -----------------------------------------------------------------
+    // school_requests/{requestId} — demandes d'ajout d'ecole (Story 1.5.c)
+    //
+    // Collection racine (vs sous-collection schools/{id}/requests Story 1.7
+    // POC supprimee). Permet :
+    //   - Admin lit toutes les demandes pending dans Firebase Console en 1 read
+    //   - Read self : utilisateur peut suivre SES demandes (futur ecran)
+    //     via query where('requestedBy', '==', auth.uid)
+    //   - Rules simples (1 path explicite, pas de wildcard dynamique)
+    //
+    // Schema autoritatif : doc/partage/BASE-DE-DONNEES.md
+    // § school_requests/{requestId}
+    //
+    // Cost-benefit : ~42 demandes/mois @10k users (5% taux demande × 10k
+    // onboardings/an / 12 mois). Storage negligeable. Read/jour admin = 1-2
+    // polls Console manuels.
+    // -----------------------------------------------------------------
+    match /school_requests/{requestId} {
+      // Create par owner avec champs valides + status force a 'pending'
+      // (anti-escalade : un client malveillant ne peut pas creer une demande
+      // deja 'approved').
+      allow create: if request.auth != null
+        && request.resource.data.requestedBy == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() >= 3
+        && request.resource.data.name.size() <= 200
+        && request.resource.data.city is string
+        && request.resource.data.city.size() >= 2
+        && request.resource.data.city.size() <= 100
+        && request.resource.data.status == 'pending'
+        && (
+          !('subSystem' in request.resource.data)
+          || request.resource.data.subSystem in ['francophone', 'anglophone', 'both']
+        )
+        && (
+          !('region' in request.resource.data)
+          || (request.resource.data.region is string
+              && request.resource.data.region.size() <= 100)
+        );
+
+      // Read self : l'utilisateur peut lire UNIQUEMENT ses propres demandes.
+      // Permet un futur ecran « Mes demandes » avec query
+      // where('requestedBy', '==', auth.uid).
+      allow read: if request.auth != null
+        && resource.data.requestedBy == request.auth.uid;
+
+      // Update/delete : interdit cote client. La moderation passe par Cloud
+      // Function (futur Epic admin) ou par Firebase Console admin manuellement.
+      allow update, delete: if false;
     }
   }
 }

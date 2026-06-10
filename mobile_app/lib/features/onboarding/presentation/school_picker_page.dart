@@ -197,16 +197,17 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
 
     final l10n = AppLocalizations.of(context);
     final repo = ref.read(schoolRepositoryProvider);
-    final outcome = await repo.requestSchool(
+    final outcome = await repo.createSchoolRequest(
       name: result.name,
       city: result.city,
       region: result.region,
+      subSystem: result.subSystem,
     );
 
     if (!mounted) return;
     outcome.fold(
       (failure) {
-        AppLogger.w('requestSchool failed: ${failure.message}');
+        AppLogger.w('createSchoolRequest failed: ${failure.message}');
         AppToast.show(
           context,
           message: l10n.onboardingSchoolGenericErrorToast,
@@ -343,10 +344,15 @@ class _AddSchoolFormData {
     required this.name,
     required this.city,
     this.region,
+    this.subSystem,
   });
   final String name;
   final String city;
   final String? region;
+
+  /// Story 1.5.c — `francophone` | `anglophone` | `both` | `null` (utilisateur
+  /// a choisi « Je ne sais pas »).
+  final String? subSystem;
 }
 
 class _AddSchoolDialog extends StatefulWidget {
@@ -356,10 +362,15 @@ class _AddSchoolDialog extends StatefulWidget {
   State<_AddSchoolDialog> createState() => _AddSchoolDialogState();
 }
 
+/// Story 1.5.c — 4 choix UI pour le champ subSystem. `null` = « Je ne sais
+/// pas » (defaut). Les 3 autres valeurs matchent le schema Firestore.
+enum _SubSystemChoice { unknown, francophone, anglophone, both }
+
 class _AddSchoolDialogState extends State<_AddSchoolDialog> {
   final _nameCtrl = TextEditingController();
   final _cityCtrl = TextEditingController();
   final _regionCtrl = TextEditingController();
+  _SubSystemChoice _subSystem = _SubSystemChoice.unknown;
 
   @override
   void dispose() {
@@ -372,35 +383,97 @@ class _AddSchoolDialogState extends State<_AddSchoolDialog> {
   bool get _canSubmit =>
       _nameCtrl.text.trim().isNotEmpty && _cityCtrl.text.trim().isNotEmpty;
 
+  String? _subSystemValue() {
+    switch (_subSystem) {
+      case _SubSystemChoice.unknown:
+        return null;
+      case _SubSystemChoice.francophone:
+        return 'francophone';
+      case _SubSystemChoice.anglophone:
+        return 'anglophone';
+      case _SubSystemChoice.both:
+        return 'both';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return AlertDialog(
       title: Text(l10n.onboardingSchoolAddDialogTitle),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          TextField(
-            controller: _nameCtrl,
-            decoration: InputDecoration(
-              labelText: l10n.onboardingSchoolAddDialogNameLabel,
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              controller: _nameCtrl,
+              decoration: InputDecoration(
+                labelText: l10n.onboardingSchoolAddDialogNameLabel,
+              ),
+              onChanged: (_) => setState(() {}),
             ),
-            onChanged: (_) => setState(() {}),
-          ),
-          TextField(
-            controller: _cityCtrl,
-            decoration: InputDecoration(
-              labelText: l10n.onboardingSchoolAddDialogCityLabel,
+            TextField(
+              controller: _cityCtrl,
+              decoration: InputDecoration(
+                labelText: l10n.onboardingSchoolAddDialogCityLabel,
+              ),
+              onChanged: (_) => setState(() {}),
             ),
-            onChanged: (_) => setState(() {}),
-          ),
-          TextField(
-            controller: _regionCtrl,
-            decoration: InputDecoration(
-              labelText: l10n.onboardingSchoolAddDialogRegionLabel,
+            TextField(
+              controller: _regionCtrl,
+              decoration: InputDecoration(
+                labelText: l10n.onboardingSchoolAddDialogRegionLabel,
+              ),
             ),
-          ),
-        ],
+            SizedBox(height: AppSpacing.s3.h),
+            Text(
+              l10n.onboardingSchoolAddDialogSubSystemLabel,
+              style: AppTypography.bodyStrong,
+            ),
+            RadioGroup<_SubSystemChoice>(
+              groupValue: _subSystem,
+              onChanged: (v) => setState(() => _subSystem = v!),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RadioListTile<_SubSystemChoice>(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      l10n.onboardingSchoolAddDialogSubSystemFrancophone,
+                    ),
+                    value: _SubSystemChoice.francophone,
+                  ),
+                  RadioListTile<_SubSystemChoice>(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      l10n.onboardingSchoolAddDialogSubSystemAnglophone,
+                    ),
+                    value: _SubSystemChoice.anglophone,
+                  ),
+                  RadioListTile<_SubSystemChoice>(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      l10n.onboardingSchoolAddDialogSubSystemBoth,
+                    ),
+                    value: _SubSystemChoice.both,
+                  ),
+                  RadioListTile<_SubSystemChoice>(
+                    dense: true,
+                    contentPadding: EdgeInsets.zero,
+                    title: Text(
+                      l10n.onboardingSchoolAddDialogSubSystemUnknown,
+                    ),
+                    value: _SubSystemChoice.unknown,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       actions: [
         TextButton(
@@ -416,6 +489,7 @@ class _AddSchoolDialogState extends State<_AddSchoolDialog> {
                       name: _nameCtrl.text.trim(),
                       city: _cityCtrl.text.trim(),
                       region: regionInput.isEmpty ? null : regionInput,
+                      subSystem: _subSystemValue(),
                     ),
                   );
                 }
