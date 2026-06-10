@@ -200,6 +200,42 @@ Sortie attendue :
 2. Re-run `python seed_schools.py --project valide-edu --dry-run` pour valider
 3. Re-run sans `--dry-run` pour propager dans Firestore
 
+### Régénérer le champ `keywords[]` (Story 1.5.b)
+
+Le champ `keywords[]` (tokens lower-case sans accents pour la query `arrayContains` côté mobile) est généré déterministiquement à partir de `name + city + region + abréviations`. À régénérer après tout ajout/modification d'une école :
+
+```bash
+# Dry-run : log les keywords générés pour 5 écoles sample, sans modifier le JSON
+python seed_schools.py --project valide-edu --regen-keywords --dry-run
+
+# Régénérer + écrire data/schools.json + seed Firestore en un seul run
+python seed_schools.py --project valide-edu --regen-keywords
+```
+
+Sortie attendue avec `--regen-keywords --dry-run` :
+
+```text
+[DRY-RUN] keywords[] regenere pour 198 ecoles
+[DRY-RUN] Sample des keywords generes (5 premieres ecoles) :
+  school_lycee_general_leclerc_yaounde     keywords=['centre', 'general', 'leclerc', 'lycee', 'yaounde']
+  school_lycee_bilingue_application_yaounde keywords=['application', 'bilingue', 'centre', 'lb', 'lba', 'lycee', 'yaounde']
+  ...
+[OK] Matrice schools chargée : version=1.0.0, count=198
+[DRY-RUN] schools : 198 docs (198 validated, 0 unvalidated)
+```
+
+Abréviations communes ajoutées automatiquement (cf. dict `ABBREVIATIONS` dans [`seed_schools.py`](./seed_schools.py)) :
+
+| Pattern dans le nom (lower-case sans accents) | Abréviation ajoutée |
+|---|---|
+| `government high school` | `ghs` |
+| `government bilingual high school` | `gbhs` |
+| `government technical high school` | `gths` |
+| `government technical bilingual high school` | `gtbhs` |
+| `presbyterian secondary school` | `pss` |
+| `comprehensive high school` | `chs` |
+| `lycee bilingue` | `lb` |
+
 ### Tests
 
 ```bash

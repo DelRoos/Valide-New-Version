@@ -596,6 +596,10 @@ interface SchoolDoc {
   subSystem: "francophone" | "anglophone" | "both";
   isValidated: boolean;                  // ajoutée par admin (les élèves peuvent demander un ajout)
   createdAt: Timestamp;
+  keywords: string[];                    // Story 1.5.b — tokens lower-case ASCII sans accents
+                                         // pour query arrayContains case-insensitive + abreviations
+                                         // (ghs, gbhs, pss, lb, chs, gths, gtbhs). Genere cote seed Python
+                                         // via _generate_keywords(name + city + region).
 }
 ```
 
@@ -666,6 +670,11 @@ interface WebhookEventDoc {
 - `subjects` : `(subSystem, isActive, sortOrder)` — grille matières dashboard
 - `derivation_rules` : `(matchSubSystem, matchFiliere, matchNiveau, matchSerie, isActive)` — match dérivation
 
+🟢 **Validés Story 1.7 + 1.5.b** (catalogue écoles) :
+
+- `schools` : `(isValidated ASC, name ASC)` — Story 1.7 query prefix range (conservé pour audit + retro-compat)
+- `schools` : `(isValidated ASC, keywords ARRAY-CONTAINS)` — **Story 1.5.b** recherche `arrayContains` case-insensitive sans accents (search principal V2)
+
 🔴 **À compléter pendant la mise en place** :
 
 - `users` : `(subSystem, niveau, serie)` — pour les stats par profil
@@ -735,7 +744,7 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | `exercises`, `quizzes` | À spécifier Epic 3 | `.get()` par ID | Lecture déclenchée au lancement quiz. |
 | `users/{uid}/health/{notionId}` | À spécifier Epic 5 | `.snapshots()` | Mise à jour live après chaque session. |
 | `users/{uid}/sessions/{sid}` | À spécifier Epic 3 | `.snapshots()` sur session courante uniquement | Mutable durant la session. |
-| `schools` (recherche) | `.get()` + `.limit(10)` + paginé | OK | Story 1.7 — pattern conforme règle 10.c. |
+| `schools` (recherche) | `.get()` + `.where(isValidated)` + `.where(keywords, arrayContains)` + `.limit(10)` + tri client | OK Story 1.5.b | Story 1.7 query prefix range refactoree Story 1.5.b en `arrayContains keywords[]` (case-insensitive + sans accents + abreviations ghs/gbhs/pss/lb/chs). Tri alphabetique cote Dart sur 10 items (orderBy Firestore + arrayContains necessiterait un index complexe — sur-engineering V1). |
 
 **Décision V1 sur catalogue** : le refactor `snapshots → get` est tracé comme dette technique (impact économique tolérable à 10k users : ~$0.36/mois). À prioriser **Story 1.13** (qui touche déjà le repository pour `DerivedProfile v2`) ou **dès qu'on dépasse 50k users**, selon priorité produit.
 
@@ -860,3 +869,4 @@ await _firestore.collection('users').doc(uid).update({
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Ajout section majeure « Règles d'optimisation lecture / écriture (V1) » avant Historique. Inclut : (a) principes fondamentaux Firestore tarification (read facturé par doc + marché Cameroun 3G), (b) table Read patterns recommandés par collection (alignement règle 10.g CLAUDE.md — catalogue snapshots() flag refactor cible vers get() + cache), (c) table Update patterns détaillés `users/{uid}` champ par champ (mutabilité + méthode + validation rules + story), (d) tables catalogue write-readonly + `schools` + `users/{uid}` sous-collections futures, (e) dénormalisations recommandées (schoolName Epic 2+, ranking, chat conversation list), (f) 10 anti-patterns interdits rappel, (g) audit conformité 2026-06-09 snapshot post Story 1.12 (1 non-conformité catalogue snapshots, reste OK). Cohérent CLAUDE.md règle 10. Aucune modification schema existant. |
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — catalogue v2 alignement nomenclature officielle (ADR-016). Schema v2 étendu non-breaking : **+3 champs `SerieDoc`** (`pickerMode` enum 5 valeurs + `minSubjects` + `maxSubjects`) + **3 champs `SerieDoc` TVEE-spécifiques** (`professionalSubjectIds` + `relatedProfessionalSubjectIds` + `otherSubjectIds`) + **2 champs `DerivationRuleDoc`** (`obligatorySubjectIds` + `optionalSubjectIds`) + **1 champ `UserDoc`** (`pickedSubjects` optionnel mode panier). Nouveau type `PickerMode` documenté. Nouvelle sous-section « Validation panier polymorphe » avec règle Firestore `pickedSubjectsValid()` (impl Story 1.15). Table Règles de sécurité — résumé : ligne `users/{uid}` annotée pour validation `pickedSubjects`. **AUCUN nouvel index Firestore** (CLAUDE.md règle 9 enforcement explicite : les nouveaux champs sont lus sur docs déjà filtrés par indexes Story 1.1a existants). Defaults safe (`pickerMode == 'derived'` si absent) → rétrocompat Story 1.4 préservée. Sprint-change-proposal-2026-06-09.md. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.a — seed initial collection `schools` sur `valide-edu`. Statut `schools/{schoolId}` 🟡 → 🟢 (Vue d'ensemble + section dédiée). Ajout précisions sur seed : ~198 établissements MINESEC + GCE Board V1 couvrant 10 régions officielles (Centre 40, Littoral 38, Ouest 34, Sud-Ouest 20, Nord-Ouest 16, Nord 13, Sud 11, Extrême-Nord 10, Adamaoua 8, Est 8). Convention `schoolId` formalisée (slug `school_<slug_nom>_<slug_ville>` pattern `^school_[a-z0-9_]+$`). Mix subSystem : 136 francophone / 35 both / 27 anglophone. Script Python autonome [`scripts/firebase_seed/seed_schools.py`](../../scripts/firebase_seed/seed_schools.py) calqué sur pattern Story 1.1b (`set(merge=True)`, ADC ou service-account, dry-run, idempotent). Matrice versionnée [`scripts/firebase_seed/data/schools.json`](../../scripts/firebase_seed/data/schools.json). 9 tests pytest sans Firestore live valident la matrice statique. **Aucun nouvel index Firestore** (l'index composite `(isValidated ASC, name ASC)` déjà déployé Story 1.7 suffit pour `school_repository_firestore_impl.searchByPrefix`). Sous-collection `schools/{schoolId}/requests` 🔴 reste à formaliser Story 1.5.c. |
+| 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.b — refactor recherche écoles vers `keywords[] arrayContains` case-insensitive sans accents. Schema `SchoolDoc` étendu avec champ `keywords: string[]` (lower-case ASCII tokens, dépendance `unidecode>=1.3.0` côté seed Python + map accents manuel côté Dart). Script `seed_schools.py` étendu avec flag `--regen-keywords` qui régénère la matrice (pipeline déterministe : name + city + region tokenisés + 7 abréviations communes ghs/gbhs/pss/lb/chs/gths/gtbhs). 198 écoles regénérées avec keywords[] (min 3 / max 10 / avg 5.6 tokens par école, GHS 14, LB 25, GBHS 6, PSS 2). **Nouvel index Firestore composite** `(isValidated ASC, keywords ARRAY-CONTAINS)` déclaré dans `firestore.indexes.json` + déployé sur `valide-edu`. Ancien index `(isValidated, name)` conservé pour audit. Tests : pytest 24/24 verts (Story 1.1b 6 + 1.5.a 9 + 1.5.b 9 = +9 nets) + Dart `school_repository_test.dart` 11/11 verts (Story 1.7 5 adapté avec keywords + Story 1.5.b 6 nouveaux : case-insensitive, accents, GHS abréviation, court-circuit, tri client). Read patterns table mise à jour. Reseed `valide-edu` OK : 198 docs en 43.35 s via ADC. |

@@ -9,3 +9,9 @@
 
 firebase-admin>=7.2.0,<8.0.0
 pytest>=8.0.0,<9.0.0
+
+# Story 1.5.b : unidecode pour normaliser les noms d'ecoles en ASCII
+#   (lower-case + sans accents) avant generation des keywords[].
+#   Necessaire pour le seed_schools.py --regen-keywords (genere les tokens
+#   stockes dans Firestore + utilises par la query arrayContains cote mobile).
+unidecode>=1.3.0,<2.0.0
