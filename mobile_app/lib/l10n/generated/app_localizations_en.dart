@@ -91,7 +91,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogueWaitingRetry => 'Retry';
 
   @override
-  String get subsystemChoiceTitle => 'Choose your language and program';
+  String get subsystemChoiceTitle => 'Which section are you in?';
 
   @override
   String get subsystemChoiceSubtitle =>

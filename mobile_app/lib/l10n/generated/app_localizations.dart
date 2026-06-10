@@ -254,10 +254,10 @@ abstract class AppLocalizations {
   /// **'Réessayer'**
   String get catalogueWaitingRetry;
 
-  /// Titre H2 de la page /onboarding/subsystem (Story 1.2). Tutoiement UX-DR-39.
+  /// Titre H2 de la page /onboarding/subsystem (Story 1.2). Wording MINESEC : 'section' = francophone/anglophone (vs 'programme' qui evoquait la programmation informatique).
   ///
   /// In fr, this message translates to:
-  /// **'Choisis ta langue et ton programme'**
+  /// **'Tu fais quelle section ?'**
   String get subsystemChoiceTitle;
 
   /// Sous-titre court qui avertit du caractère immuable du choix (ADR-006).

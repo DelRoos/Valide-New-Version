@@ -90,8 +90,8 @@
   "catalogueWaitingRetry": "Réessayer",
   "@catalogueWaitingRetry": { "description": "CTA primaire pour re-tenter le chargement du catalogue." },
 
-  "subsystemChoiceTitle": "Choisis ta langue et ton programme",
-  "@subsystemChoiceTitle": { "description": "Titre H2 de la page /onboarding/subsystem (Story 1.2). Tutoiement UX-DR-39." },
+  "subsystemChoiceTitle": "Tu fais quelle section ?",
+  "@subsystemChoiceTitle": { "description": "Titre H2 de la page /onboarding/subsystem (Story 1.2). Wording MINESEC : 'section' = francophone/anglophone (vs 'programme' qui evoquait la programmation informatique)." },
 
   "subsystemChoiceSubtitle": "Tu ne pourras pas changer après.",
   "@subsystemChoiceSubtitle": { "description": "Sous-titre court qui avertit du caractère immuable du choix (ADR-006)." },

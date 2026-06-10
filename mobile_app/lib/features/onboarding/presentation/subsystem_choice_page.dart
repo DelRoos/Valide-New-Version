@@ -1,10 +1,10 @@
 // Story 1.2 — Page de choix du sous-système (premier écran utilisateur).
 //
 // Affiche 2 boutons primaires plein largeur (« Francophone » / « Anglophone »),
-// aucun défaut suggéré (EXPERIENCE.md Flow 1 étape 2). Au tap, une modale
-// de confirmation explicite (ADR-006 — choix irréversible) avec « Annuler »
-// + « Continuer ». À la confirmation, persistance SharedPreferences (via
-// `subSystemNotifierProvider.set`) + log + navigation vers `/hello`.
+// aucun défaut suggéré (EXPERIENCE.md Flow 1 étape 2). Au tap : persistance
+// SharedPreferences directe (via `subSystemNotifierProvider.set`) + log +
+// navigation vers `/dashboard`. Pas de popup de confirmation V1 (l'avertissement
+// d'irreversibilite est dans le sous-titre de la page, sufficient pour ADR-006).
 //
 // La locale `MaterialApp` bascule automatiquement : `LocaleNotifier` watch
 // `subSystemNotifierProvider` (cf. app.dart Story 1.2 T4).
@@ -18,7 +18,6 @@ import '../../../core/firebase/providers.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/app_button.dart';
-import '../../../core/widgets/app_modal.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../domain/sub_system.dart';
 import '../providers.dart';
@@ -41,28 +40,6 @@ class _SubsystemChoicePageState extends ConsumerState<SubsystemChoicePage> {
 
   Future<void> _confirmChoice(SubSystem subSystem) async {
     if (_isProcessing) return;
-
-    final l10n = AppLocalizations.of(context);
-
-    final confirmed = await AppModal.show<bool>(
-      context,
-      title: l10n.subsystemConfirmTitle,
-      child: Text(
-        l10n.subsystemConfirmBody,
-        style: AppTypography.body,
-        textAlign: TextAlign.center,
-      ),
-      primary: (
-        label: l10n.continueLabel,
-        onTap: (ctx) => Navigator.pop(ctx, true),
-      ),
-      secondary: (
-        label: l10n.cancelLabel,
-        onTap: (ctx) => Navigator.pop(ctx, false),
-      ),
-    );
-
-    if (confirmed != true) return;
     if (!mounted) return;
 
     setState(() => _isProcessing = true);

@@ -60,7 +60,7 @@ void main() {
         await _settleSplash(tester);
 
         // Page de choix affichee : titre FR + 2 boutons.
-        expect(find.text('Choisis ta langue et ton programme'), findsOneWidget);
+        expect(find.text('Tu fais quelle section ?'), findsOneWidget);
         expect(find.text('Tu ne pourras pas changer après.'), findsOneWidget);
         expect(find.text('Francophone'), findsOneWidget);
         expect(find.text('Anglophone'), findsOneWidget);
@@ -87,17 +87,12 @@ void main() {
         );
         await _settleSplash(tester);
 
-        await tester.tap(find.text('Anglophone'));
-        await tester.pumpAndSettle();
-
-        // Modale : titre + body + 2 boutons (Annuler secondary + Continuer primary).
+        // V2 — pas de popup de confirmation : le tap persiste direct.
+        // L'avertissement d'irreversibilite est dans le sous-titre de la page.
+        // Avant tap : le titre de la page est present.
         expect(find.text('Tu fais quelle section ?'), findsOneWidget);
-        expect(
-          find.text('Choix définitif : langue (FR/EN) + cursus scolaire.'),
-          findsOneWidget,
-        );
-        expect(find.text('Annuler'), findsOneWidget);
-        expect(find.text('Continuer'), findsOneWidget);
+        expect(find.text('Anglophone'), findsOneWidget);
+        expect(find.text('Francophone'), findsOneWidget);
       },
     );
 
@@ -141,12 +136,9 @@ void main() {
         );
         await _settleSplash(tester);
 
-        // Tap Anglophone puis Continuer.
+        // V2 — tap Anglophone persiste direct sans popup.
         await tester.tap(find.text('Anglophone'));
-        await tester.pumpAndSettle();
-        await tester.tap(find.text('Continuer'));
-        // Pump quelques frames pour propager la fermeture modale + set state.
-        // On evite pumpAndSettle qui boucle sur l'anim splash relance.
+        // Pump quelques frames pour propager la persistance + nav.
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 300));
 
@@ -154,7 +146,7 @@ void main() {
         expect(prefs.getString('onboarding.subsystem'), 'anglophone');
         expect(prefs.getString('onboarding.language'), 'en');
 
-        // La modale n'est plus a l'ecran.
+        // La page subSystem n'est plus a l'ecran (nav vers /dashboard).
         expect(find.text('Tu fais quelle section ?'), findsNothing);
       },
     );
