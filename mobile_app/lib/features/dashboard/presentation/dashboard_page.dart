@@ -22,6 +22,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/catalogue/domain/catalogue_failure.dart';
 import '../../../core/catalogue/domain/models.dart';
+import '../../../core/debug/dev_audit_service.dart';
 import '../../../core/firebase/providers.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/app_button.dart';
@@ -94,6 +95,137 @@ class DashboardPage extends ConsumerWidget {
         ),
       ),
       bottomNavigationBar: const MainBottomNav(currentIndex: 0),
+      floatingActionButton: const _DevAuditFab(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+    );
+  }
+}
+
+/// Dev audit toolkit — bouton flottant visible en haut a droite du dashboard.
+/// Tap -> ouvre un BottomSheet avec 2 actions destructives (reset slate +
+/// delete account). Permet de re-iterer le parcours onboarding rapidement.
+class _DevAuditFab extends ConsumerWidget {
+  const _DevAuditFab();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: EdgeInsets.only(top: AppSpacing.s2.h),
+      child: FloatingActionButton.small(
+        heroTag: 'dev-audit-fab',
+        backgroundColor: AppColors.danger,
+        tooltip: 'Dev audit (reset / delete)',
+        onPressed: () => _showSheet(context, ref),
+        child: const Icon(LucideIcons.bug, color: Colors.white),
+      ),
+    );
+  }
+
+  void _showSheet(BuildContext context, WidgetRef ref) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (sheetContext) => const _DevAuditSheet(),
+    );
+  }
+}
+
+class _DevAuditSheet extends ConsumerStatefulWidget {
+  const _DevAuditSheet();
+
+  @override
+  ConsumerState<_DevAuditSheet> createState() => _DevAuditSheetState();
+}
+
+class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
+  bool _busy = false;
+
+  DevAuditService _buildService() {
+    return DevAuditService(
+      auth: ref.read(firebaseAuthProvider),
+      firestore: ref.read(firestoreProvider),
+      prefs: ref.read(sharedPreferencesProvider),
+    );
+  }
+
+  Future<void> _run(
+    String label,
+    Future<void> Function(DevAuditService svc) op,
+  ) async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    final messenger = ScaffoldMessenger.of(context);
+    final navigator = Navigator.of(context);
+    try {
+      await op(_buildService());
+      messenger.showSnackBar(
+        SnackBar(content: Text('$label OK')),
+      );
+      if (mounted) {
+        navigator.pop();
+        // Apres clear/delete : redirect / pour redemarrer le flow onboarding.
+        // GoRouter.refreshListenable re-evalue le redirect via les providers
+        // qui changent (subSystem -> null apres prefs.clear()).
+        GoRouter.of(context).go('/');
+      }
+    } catch (e) {
+      messenger.showSnackBar(
+        SnackBar(content: Text('$label FAIL: $e')),
+      );
+      if (mounted) {
+        setState(() => _busy = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.s4.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Dev audit — parcours onboarding',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            const Text(
+              'Outils de debug pour re-iterer le parcours. Operations '
+              'destructives — confirme avant de tap.',
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            AppButton.primary(
+              label: _busy ? 'En cours...' : 'Vider cache + sign out',
+              onPressed: _busy
+                  ? null
+                  : () => _run(
+                        'Clear local',
+                        (svc) => svc.clearLocalAndSignOut(),
+                      ),
+              icon: LucideIcons.eraser,
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            AppButton.secondary(
+              label: _busy ? 'En cours...' : 'Supprimer compte + tout vider',
+              onPressed: _busy
+                  ? null
+                  : () => _run(
+                        'Delete account',
+                        (svc) => svc.deleteAccountAndClear(),
+                      ),
+              icon: LucideIcons.trash2,
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            TextButton(
+              onPressed: _busy ? null : () => Navigator.of(context).pop(),
+              child: const Text('Annuler'),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

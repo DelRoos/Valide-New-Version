@@ -18,6 +18,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/perf_logger.dart';
 import '../domain/account_linking_failure.dart';
 import '../domain/account_linking_repository.dart';
 import '../domain/linked_account.dart';
@@ -58,7 +59,7 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
   @override
   Future<Either<AccountLinkingFailure, LinkedAccount>> linkGoogle() async {
     try {
-      final account = await _googleSignIn();
+      final account = await logPerf('auth.google.signIn', _googleSignIn);
       final idToken = account.authentication.idToken;
       if (idToken == null) {
         AppLogger.w('linkGoogle: idToken null after authenticate()');
@@ -82,7 +83,10 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: idToken,
         accessToken: accessToken,
       );
-      final result = await _linkCredential(credential);
+      final result = await logPerf(
+        'auth.google.linkCredential',
+        () => _linkCredential(credential),
+      );
 
       final uid = result.user!.uid;
       final displayName = result.user!.displayName ?? account.displayName;
@@ -116,7 +120,7 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
   @override
   Future<Either<AccountLinkingFailure, LinkedAccount>> linkApple() async {
     try {
-      final apple = await _appleSignIn();
+      final apple = await logPerf('auth.apple.signIn', _appleSignIn);
       final identityToken = apple.identityToken;
       if (identityToken == null) {
         AppLogger.w('linkApple: identityToken null');
@@ -129,7 +133,10 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: identityToken,
         accessToken: apple.authorizationCode,
       );
-      final result = await _linkCredential(credential);
+      final result = await logPerf(
+        'auth.apple.linkCredential',
+        () => _linkCredential(credential),
+      );
 
       final uid = result.user!.uid;
       // Apple ne fournit givenName/familyName qu'au PREMIER sign-in.

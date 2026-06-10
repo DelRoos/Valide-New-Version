@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/perf_logger.dart';
 import '../domain/profile_failure.dart';
 import '../domain/school.dart';
 import '../domain/sub_system.dart';
@@ -65,10 +66,13 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     };
 
     try {
-      await _firestore
-          .collection(_kCollection)
-          .doc(uid)
-          .set(payload, SetOptions(merge: true));
+      await logPerf(
+        'users.create',
+        () => _firestore
+            .collection(_kCollection)
+            .doc(uid)
+            .set(payload, SetOptions(merge: true)),
+      );
       // CLAUDE.md § Securite : on log subSystem + niveau + count, JAMAIS l'uid.
       AppLogger.i(
         'Profile created: subSystem=${subSystem.id} '
@@ -134,10 +138,13 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     }
 
     try {
-      await _firestore.collection(_kCollection).doc(uid).update({
-        'optedOutSubjects': optedOutSubjectIds,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await logPerf(
+        'users.update.optedOut',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'optedOutSubjects': optedOutSubjectIds,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
       // CLAUDE.md securite 4 : on log count, JAMAIS la liste des IDs
       // (combinaison niveau + matieres retirees peut identifier un eleve).
       AppLogger.i(
@@ -176,10 +183,13 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     }
 
     try {
-      await _firestore.collection(_kCollection).doc(uid).update({
-        'pickedSubjects': pickedSubjectIds,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await logPerf(
+        'users.update.picked',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'pickedSubjects': pickedSubjectIds,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
       // CLAUDE.md securite 4 : on log count uniquement, JAMAIS les IDs
       // (combinaison niveau + matieres peut identifier un eleve).
       AppLogger.i(
@@ -222,13 +232,16 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     }
 
     try {
-      await _firestore.collection(_kCollection).doc(uid).update({
-        'schoolId': school?.schoolId,
-        'schoolCity': school?.city,
-        'schoolRegion': school?.region,
-        'schoolName': school?.name,
-        'updatedAt': FieldValue.serverTimestamp(),
-      });
+      await logPerf(
+        'users.update.linkedSchool',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'schoolId': school?.schoolId,
+          'schoolCity': school?.city,
+          'schoolRegion': school?.region,
+          'schoolName': school?.name,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
       // schoolId est public (identifiant catalogue), OK a logger. city OK
       // (catalogue public). CLAUDE.md securite 4 : on ne logue PAS l'uid
       // ni le nom complet du user.

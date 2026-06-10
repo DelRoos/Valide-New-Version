@@ -1,6 +1,8 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+
+import '../logging/perf_logger.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
@@ -52,6 +54,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     initialLocation: '/',
     refreshListenable: notifier,
+    observers: [_PerfNavigatorObserver()],
     redirect: (context, state) => evaluateRedirect(
       location: state.matchedLocation,
       catalogueCheck: ref.read(appStartupCatalogueCheckProvider),
@@ -185,6 +188,43 @@ final routerProvider = Provider<GoRouter>((ref) {
     ],
   );
 });
+
+/// Dev audit toolkit — NavigatorObserver qui trace entree / sortie de chaque
+/// route GoRouter. Permet de chiffrer le temps utilisateur dans chaque page
+/// (subSystem -> filiere -> niveau -> serie -> recap -> picker -> school ->
+/// dashboard) en croisant les timestamps `event:nav.push.<route>` et
+/// `event:nav.pop.<route>` dans la console.
+class _PerfNavigatorObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPush(route, previousRoute);
+    final name = _routeName(route);
+    if (name != null) logPerfEvent('nav.push.$name');
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    super.didPop(route, previousRoute);
+    final name = _routeName(route);
+    if (name != null) logPerfEvent('nav.pop.$name');
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    super.didReplace(newRoute: newRoute, oldRoute: oldRoute);
+    final newName = _routeName(newRoute);
+    if (newName != null) logPerfEvent('nav.replace.$newName');
+  }
+
+  String? _routeName(Route<dynamic>? route) {
+    if (route == null) return null;
+    // GoRouter expose la path config via `route.settings.name` (settable via
+    // GoRoute.name) ou via `route.settings.arguments`. En pratique pour notre
+    // setup actuel sans `name:` declare, on retombe sur le runtimeType — c'est
+    // suffisant pour distinguer les pages dans la console.
+    return route.settings.name ?? route.runtimeType.toString();
+  }
+}
 
 /// Pure helper qui calcule la redirect target pour une location donnee.
 /// Extrait pour testabilite (cf. test/core/routing/app_router_redirect_test.dart).

@@ -39,6 +39,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../logging/app_logger.dart';
+import '../../logging/perf_logger.dart';
 import '../domain/catalogue_failure.dart';
 import '../domain/catalogue_repository.dart';
 import '../domain/models.dart';
@@ -153,12 +154,15 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
       //    Le wildcard "*" sur matchFiliere et le matchSerie nullable sont
       //    filtrés côté client (Firestore ne supporte pas les OR cross-field
       //    sans index dédié — pas la peine pour <100 rules par subSystem).
-      final rulesSnap = await _firestore
-          .collection(_kDerivationRules)
-          .where('matchSubSystem', isEqualTo: subSystem)
-          .where('matchNiveau', isEqualTo: niveau)
-          .where('isActive', isEqualTo: true)
-          .get();
+      final rulesSnap = await logPerf(
+        'catalogue.derivationRules.fetch',
+        () => _firestore
+            .collection(_kDerivationRules)
+            .where('matchSubSystem', isEqualTo: subSystem)
+            .where('matchNiveau', isEqualTo: niveau)
+            .where('isActive', isEqualTo: true)
+            .get(),
+      );
 
       final candidates = rulesSnap.docs
           .map(derivationRuleFromFirestore)
@@ -211,15 +215,18 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
       final otherSubjectsFuture =
           _fetchSubjectsByIds(serieDoc?.otherSubjectIds ?? const []);
 
-      final results = await Future.wait<dynamic>([
-        subjectsFuture,
-        examTargetsFuture,
-        obligatorySubjectsFuture,
-        optionalSubjectsFuture,
-        professionalSubjectsFuture,
-        relatedProfessionalSubjectsFuture,
-        otherSubjectsFuture,
-      ]);
+      final results = await logPerf(
+        'catalogue.derive.parallel7',
+        () => Future.wait<dynamic>([
+          subjectsFuture,
+          examTargetsFuture,
+          obligatorySubjectsFuture,
+          optionalSubjectsFuture,
+          professionalSubjectsFuture,
+          relatedProfessionalSubjectsFuture,
+          otherSubjectsFuture,
+        ]),
+      );
 
       final subjects = results[0] as List<Subject>;
       final examTargets = results[1] as List<ExamTarget>;
