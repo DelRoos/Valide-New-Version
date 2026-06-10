@@ -108,6 +108,7 @@
   "onboardingAccountSubtitle": "Save your progress, pick up on any device.",
   "onboardingAccountGoogleCta": "Continue with Google",
   "onboardingAccountAppleCta": "Continue with Apple",
+  "onboardingAccountGuestCta": "Continue as guest",
   "onboardingAccountNetworkErrorToast": "No connection. Check your connection and try again.",
   "onboardingAccountConflictTitle": "Account already in use",
   "onboardingAccountConflictBody": "This account is already linked to another Valide profile. If you sign in with it, you'll lose your current profile.",

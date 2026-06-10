@@ -260,6 +260,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingAccountAppleCta => 'Continue with Apple';
 
   @override
+  String get onboardingAccountGuestCta => 'Continue as guest';
+
+  @override
   String get onboardingAccountNetworkErrorToast =>
       'No connection. Check your connection and try again.';
 

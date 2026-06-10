@@ -247,6 +247,9 @@
   "onboardingAccountAppleCta": "Continuer avec Apple",
   "@onboardingAccountAppleCta": { "description": "CTA Apple sign-in. Toujours visible, cross-platform (sign_in_with_apple supporte Android via OAuth web)." },
 
+  "onboardingAccountGuestCta": "Continuer en mode visiteur",
+  "@onboardingAccountGuestCta": { "description": "CTA secondaire AccountCreationPage : skip la creation de compte Google/Apple et continuer le flow en anonyme (session anonymous Firebase deja active). Le doc users/{uid} est deja cree (Story 1.3), seule la liaison Google/Apple est skippee. L'utilisateur reste anonyme jusqu'a une eventuelle creation de compte ulterieure." },
+
   "onboardingAccountNetworkErrorToast": "Pas de connexion. Vérifie ta connexion et réessaie.",
   "@onboardingAccountNetworkErrorToast": { "description": "Toast warning si OAuth ou linkWithCredential echoue pour cause reseau (AC6)." },
 

@@ -258,6 +258,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingAccountAppleCta => 'Continuer avec Apple';
 
   @override
+  String get onboardingAccountGuestCta => 'Continuer en mode visiteur';
+
+  @override
   String get onboardingAccountNetworkErrorToast =>
       'Pas de connexion. Vérifie ta connexion et réessaie.';
 

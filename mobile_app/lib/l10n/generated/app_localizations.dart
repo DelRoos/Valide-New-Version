@@ -512,6 +512,12 @@ abstract class AppLocalizations {
   /// **'Continuer avec Apple'**
   String get onboardingAccountAppleCta;
 
+  /// CTA secondaire AccountCreationPage : skip la creation de compte Google/Apple et continuer le flow en anonyme (session anonymous Firebase deja active). Le doc users/{uid} est deja cree (Story 1.3), seule la liaison Google/Apple est skippee. L'utilisateur reste anonyme jusqu'a une eventuelle creation de compte ulterieure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer en mode visiteur'**
+  String get onboardingAccountGuestCta;
+
   /// Toast warning si OAuth ou linkWithCredential echoue pour cause reseau (AC6).
   ///
   /// In fr, this message translates to:
