@@ -1,6 +1,8 @@
 // Story 1.7 — Tests SchoolRepositoryFirestoreImpl avec fake_cloud_firestore.
 // Story 1.5.b — Adaptation : seed avec keywords[] pre-genere + nouveaux tests
 // case-insensitive + accents + abreviations + tri client.
+// Story 1.5.c — Refactor (d) (e) pour createSchoolRequest + collection racine
+// school_requests + 4 nouveaux tests (l) (m) (n) (o) (subSystem/region opt).
 
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -126,18 +128,20 @@ void main() {
     });
 
     test(
-        '(d) requestSchool : succes -> doc cree dans schools/_pending/requests',
+        '(d) createSchoolRequest : succes -> doc cree dans school_requests/<auto>',
         () async {
       final repo = buildRepo(uid: 'alice');
 
-      final result = await repo.requestSchool(
+      final result = await repo.createSchoolRequest(
         name: 'Lycee Inconnu',
         city: 'Buea',
         region: 'Sud-Ouest',
       );
 
       expect(result.isRight(), isTrue);
-      final all = await firestore.collectionGroup('requests').get();
+      // Story 1.5.c — collection racine school_requests, plus de
+      // schools/_pending_<ts>/requests
+      final all = await firestore.collection('school_requests').get();
       expect(all.docs.length, 1);
       final data = all.docs.first.data();
       expect(data['requestedBy'], 'alice');
@@ -145,14 +149,25 @@ void main() {
       expect(data['city'], 'Buea');
       expect(data['region'], 'Sud-Ouest');
       expect(data['status'], 'pending');
+      // Verifie qu'on n'a PAS pollue la collection schools/ (POC Story 1.7
+      // supprime).
+      final schoolsDocs = await firestore.collection('schools').get();
+      expect(
+        schoolsDocs.docs.where((d) => d.id.startsWith('_pending_')).length,
+        0,
+      );
     });
 
-    test('(e) requestSchool : pas d\'auth -> Left(firestoreError)', () async {
+    test('(e) createSchoolRequest : pas d\'auth -> Left(firestoreError)',
+        () async {
       final repo = buildRepo(uid: null);
 
-      final result = await repo.requestSchool(name: 'X', city: 'Y');
+      final result = await repo.createSchoolRequest(name: 'X', city: 'Y');
 
       expect(result.isLeft(), isTrue);
+      // Verifie qu'aucun doc n'est cree.
+      final all = await firestore.collection('school_requests').get();
+      expect(all.docs, isEmpty);
     });
 
     // ===================================================================
@@ -280,6 +295,83 @@ void main() {
         (_) => fail('expected Right'),
         (schools) => expect(schools, isEmpty),
       );
+    });
+
+    // ===================================================================
+    // Story 1.5.c — Tests createSchoolRequest avec subSystem + region opt
+    // ===================================================================
+
+    test(
+        '(l) createSchoolRequest avec subSystem renseigne -> doc contient subSystem',
+        () async {
+      final repo = buildRepo(uid: 'alice');
+
+      final result = await repo.createSchoolRequest(
+        name: 'Lycee Bilingue Test',
+        city: 'Buea',
+        region: 'Sud-Ouest',
+        subSystem: 'both',
+      );
+
+      expect(result.isRight(), isTrue);
+      final all = await firestore.collection('school_requests').get();
+      expect(all.docs.length, 1);
+      final data = all.docs.first.data();
+      expect(data['subSystem'], 'both');
+      expect(data['name'], 'Lycee Bilingue Test');
+    });
+
+    test(
+        '(m) createSchoolRequest sans subSystem (null) -> doc n\'a PAS le champ subSystem',
+        () async {
+      final repo = buildRepo(uid: 'alice');
+
+      final result = await repo.createSchoolRequest(
+        name: 'Lycee Sans SubSystem',
+        city: 'Yaounde',
+      );
+
+      expect(result.isRight(), isTrue);
+      final all = await firestore.collection('school_requests').get();
+      expect(all.docs.length, 1);
+      final data = all.docs.first.data();
+      // Le champ ne doit PAS etre present (conditional field). Important
+      // pour les rules : `!('subSystem' in request.resource.data)`.
+      expect(data.containsKey('subSystem'), isFalse);
+    });
+
+    test('(n) createSchoolRequest avec region renseigne -> doc contient region',
+        () async {
+      final repo = buildRepo(uid: 'alice');
+
+      final result = await repo.createSchoolRequest(
+        name: 'Lycee Avec Region',
+        city: 'Bamenda',
+        region: 'Nord-Ouest',
+      );
+
+      expect(result.isRight(), isTrue);
+      final all = await firestore.collection('school_requests').get();
+      expect(all.docs.length, 1);
+      final data = all.docs.first.data();
+      expect(data['region'], 'Nord-Ouest');
+    });
+
+    test(
+        '(o) createSchoolRequest sans region (null) -> doc n\'a PAS le champ region',
+        () async {
+      final repo = buildRepo(uid: 'alice');
+
+      final result = await repo.createSchoolRequest(
+        name: 'Lycee Sans Region',
+        city: 'Garoua',
+      );
+
+      expect(result.isRight(), isTrue);
+      final all = await firestore.collection('school_requests').get();
+      expect(all.docs.length, 1);
+      final data = all.docs.first.data();
+      expect(data.containsKey('region'), isFalse);
     });
   });
 }

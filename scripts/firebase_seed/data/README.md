@@ -292,8 +292,82 @@ Si ambigu (école bilingue privée, nom mixte) : choisir `both` par défaut. Cor
 
 Pour les **micro-corrections** (typo dans un nom, toggle `isValidated`), passer directement par Firebase Console est plus rapide et acceptable — pas besoin de re-run le script.
 
-### Source complémentaire — flow demande ajout Story 1.5.c (à venir)
+### Source complémentaire — flow demande ajout Story 1.5.c
 
-Les écoles absentes de `schools.json` peuvent être ajoutées par les utilisateurs via le flow « Mon école n'est pas dans la liste » (Story 1.7 — temporaire jusqu'à Story 1.5.c).
+Les écoles absentes de `schools.json` peuvent être ajoutées par les utilisateurs via le flow « Mon école n'est pas dans la liste » dans `school_picker_page` (Stories 1.7 + 1.5.c).
+
+Le flow écrit dans la **collection racine** `school_requests/{requestId}` (cf. [`BASE-DE-DONNEES.md § school_requests/{requestId}`](../../../doc/partage/BASE-DE-DONNEES.md)). Schéma du doc :
+
+```text
+school_requests/{requestId}:
+  requestedBy: <uid>
+  requestedAt: <serverTimestamp>
+  status: "pending" | "approved" | "rejected"
+  name: <string 3-200>
+  city: <string 2-100>
+  region?: <string max 100>
+  subSystem?: "francophone" | "anglophone" | "both"
+  decidedBy?: <admin uid>
+  decidedAt?: <serverTimestamp>
+  schoolIdCreated?: <ref vers schools/{id}>
+  rejectionReason?: <string>
+```
+
+---
+
+## Workflow admin modération des demandes d'ajout (Story 1.5.c)
+
+Cette section décrit le workflow opérationnel pour traiter les demandes d'ajout d'école soumises par les utilisateurs. Pas de Cloud Function de modération V1 (over-engineering pour 1-3 admins et ~42 demandes/mois @10k users) — l'admin modère manuellement via Firebase Console + ce script.
+
+### Étape 1 — Lister les demandes pending
+
+1. Ouvrir [Firebase Console > Firestore Database > school_requests](https://console.firebase.google.com/project/valide-edu/firestore/data/~2Fschool_requests)
+2. Filtrer : ajouter un filtre `status == 'pending'`
+3. Inspecter les champs `name` + `city` + `region` + `subSystem` (optionnel) de chaque demande
+
+### Étape 2 — Valider une demande (créer le doc `schools/<newId>`)
+
+**Option A — Rapide / ad-hoc (à éviter pour la traçabilité Git)** : ajouter manuellement l'école dans Firebase Console > `schools/<newId>` avec le schéma `SchoolDoc` complet (cf. BASE-DE-DONNEES.md § schools/{schoolId}), puis run `python seed_schools.py --project valide-edu --regen-keywords` depuis `scripts/firebase_seed/` pour générer les `keywords[]`.
+
+**Option B — Canonique / recommandée** :
+
+1. Slugifier le nom + ville pour obtenir un `schoolId` stable : `school_<slug_nom>_<slug_ville>` (pattern `^school_[a-z0-9_]+$`)
+2. Ajouter une entrée dans `scripts/firebase_seed/data/schools.json` avec `schoolId` + `name` + `city` + `region` + `subSystem`
+3. Commit + PR (Conventional Commits scope `core`) — assure la traçabilité Git
+4. Après merge : run `python seed_schools.py --project valide-edu` (génère `keywords[]` automatiquement via `_generate_keywords()`)
+5. Vérifier dans Firebase Console que `schools/<newId>` est créé avec `isValidated: true` + `keywords` non-vide
+
+> **Pourquoi Option B est canonique** : `schools.json` est la source de vérité versionnée. Si l'option A est utilisée sans suivi dans `schools.json`, un re-seed depuis un poste neuf (nouveau dev, CI, autre projet) effacera l'ajout fait directement en Console. Option B garantit que toute promotion est rejouable depuis Git.
+
+### Étape 3 — Marquer la demande modérée
+
+Une fois la décision prise (approved ou rejected), mettre à jour le doc `school_requests/{requestId}` via Firebase Console :
+
+**Si approved** :
+
+```text
+status: "approved"
+decidedBy: <ton uid admin>
+decidedAt: <serverTimestamp ou date courante>
+schoolIdCreated: <newId du doc schools/ créé en étape 2>
+```
+
+**Si rejected** :
+
+```text
+status: "rejected"
+decidedBy: <ton uid admin>
+decidedAt: <serverTimestamp ou date courante>
+rejectionReason: "<explication courte, ex. 'École déjà présente sous nom X' ou 'Données incohérentes'>"
+```
+
+> Les champs `update/delete` sont **interdits côté client** par les rules Firestore — seul l'admin via Console (ou une future Cloud Function de modération) peut écrire `decidedBy/decidedAt/status/schoolIdCreated/rejectionReason`. Cela garantit qu'un utilisateur ne peut pas s'auto-modérer.
+
+### Notes opérationnelles
+
+- **Fréquence de check** : poll Firebase Console ~1×/semaine au lancement, ajuster selon volume. À 10k users, ~42 demandes/mois → 1×/2-3 jours.
+- **Doublons** : si la même école est demandée plusieurs fois, garder 1 doc approved + marquer les autres rejected avec `rejectionReason: "Doublon de school_requests/<idRetenu>"`.
+- **subSystem absent** : si l'utilisateur a coché « Je ne sais pas », l'admin doit déterminer le sous-système (recherche Wikipedia / MINESEC / site école) avant de créer le doc `schools/`.
+- **Pas d'API de notification utilisateur V1** : si l'utilisateur veut connaître le statut, il devra contacter le support hors-app. Un écran « Mes demandes » mobile est différé V2.
 
 Le flow écrit dans la sous-collection `schools/_pending_<timestamp>/requests/<auto>` (cf. [`BASE-DE-DONNEES.md § schools requests`](../../../doc/partage/BASE-DE-DONNEES.md)). Une école demandée + modérée admin doit ensuite être promue dans `schools.json` (workflow PR séparé) puis re-seedée pour ancrer la source de vérité versionnée.
