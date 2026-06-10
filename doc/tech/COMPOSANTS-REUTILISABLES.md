@@ -89,29 +89,32 @@ ComponentName(
 
 ## À extraire — dette Epic 1 v2
 
-Périmètre Story 1.18 : extraire les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` de `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart` (1297 lignes) en **composants partagés** réutilisables.
+Périmètre Story 1.18 (révision 2 post-discovery 2026-06-10) : extraire les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` de `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart` (1309 lignes confirmées) en **composants partagés** réutilisables.
 
-### Composants candidats à extraire
+### Composants candidats à extraire (révision 2 — noms corrigés)
 
 | Composant cible | Path cible | Source actuelle | Présent dans |
 |---|---|---|---|
-| `PickerSectionCard(title, subtitle?, child)` | `lib/core/widgets/picker/picker_section_card.dart` | wrapper section reconstruit 4× dans chaque `_Body` | `subjects_picker_page.dart` lignes ~250-280, ~520-550, ~750-780, ~1000-1030 |
-| `ObligatorySubjectChipList(subjects, locked: true)` | `lib/core/widgets/picker/obligatory_subject_chip_list.dart` | chips lockées reconstruites 4× | `subjects_picker_page.dart` lignes ~300, ~570, ~800, ~1050 |
-| `OptionalSubjectChipGrid(subjects, picked, onToggle, max?, dangerBannerOnOverpick: true)` | `lib/core/widgets/picker/optional_subject_chip_grid.dart` | grille toggleable + danger banner reconstruite 3× (1.4, 1.15, 1.16) | `subjects_picker_page.dart` lignes ~350, ~620, ~850 |
-| `PickerValidateBar(picked, total, onValidate, isValid)` | `lib/core/widgets/picker/picker_validate_bar.dart` | bar CTA reconstruite 4× | `subjects_picker_page.dart` lignes ~430, ~700, ~930, ~1180 |
-| `PickerToastFeedback(message)` | `lib/core/widgets/feedback/picker_toast_feedback.dart` | pattern toast locked-out dupliqué | `subjects_picker_page.dart` lignes ~140-160 (helper privé) + handlers dans chaque `_Body` |
+| `PickerSectionScaffold(title, subtitle?, child)` | `lib/core/widgets/picker/picker_section_scaffold.dart` | wrapper `LayoutBuilder + Center + ConstrainedBox(maxWidth: isTablet ? 720 : ∞) + Padding + Column` reconstruit 4× dans chaque `_Body` (responsive déjà fait — cf. Discovery 2026-06-10) | `subjects_picker_page.dart` lignes 376-395 (`_LegacyOptOutBody`), 559-578 (`_FreeWithObligatoryBody`), équivalent dans `_SeriesPlusOptionalBody` et `_TvePickerBody` |
+| `ObligatorySubjectCheckboxList(subjects, langKey, isSaving, onTapBlocked)` | `lib/core/widgets/picker/obligatory_subject_checkbox_list.dart` | `ListView.separated` + `CheckboxListTile(value: true, secondary: Icon(LucideIcons.lock))` reconstruit 3× (1.15, 1.16, 1.17 — pas 1.4 qui n'a pas d'obligatoires) | `subjects_picker_page.dart` lignes 599-629 + équivalents 1.16/1.17 |
+| `OptionalSubjectCheckboxList(subjects, picked, onToggle, langKey, isSaving, maxPicks?)` | `lib/core/widgets/picker/optional_subject_checkbox_list.dart` | `ListView.separated` + `CheckboxListTile` interactif reconstruit 4× (1.4 optedOut + 1.15 optionnels + 1.16 transversales + 1.17 sub-loop interactif) | `subjects_picker_page.dart` lignes 405-435, 639+, équivalents 1.16/1.17 |
+| `PickerValidateBar(pickedCount, totalCount?, onValidate, onCancel, isValid, isSaving, validateLabel, cancelLabel)` | `lib/core/widgets/picker/picker_validate_bar.dart` | `Row(Icon + Text counter)` + `AppButton.primary(loading: isSaving)` + `AppButton.secondary` reconstruit 4× | `subjects_picker_page.dart` lignes 438-468 + équivalents |
+| ~~`PickerToastFeedback`~~ **N/A** | — | Déjà unifié via `AppToast.show(context, message, tone: ToastTone.warning)` existant (ligne 261-265 + équivalents). Pas de duplication réelle. | — |
 
-### Objectifs de l'extraction
+### Objectifs de l'extraction (révision 2)
 
 1. **Tests Stories 1.4 / 1.15 / 1.16 / 1.17 : 100% préservés.** Le refactor ne doit casser aucun test existant (236 baseline post-1.17).
-2. **Réduction `subjects_picker_page.dart` de ~1297 lignes à ≤ ~500 lignes** (l'orchestrateur + le `switch (pickerMode)` + assemblage de composants).
+2. **Réduction `subjects_picker_page.dart` de 1309 lignes à ≤ ~550 lignes** (orchestrateur + `switch (pickerMode)` + assemblage de composants).
 3. **Tests unitaires nouveaux** : 1 test par composant extrait avec golden test ≥ 1 breakpoint tablet (CLAUDE.md règle 5).
-4. **Documentation catalogue alimentée** : chaque composant extrait reçoit son entrée dans la section [Catalogue actuel](#catalogue-actuel) ci-dessus.
-5. **Audit responsive screens existants (A7)** : `subjects_picker`, `school_picker`, `dashboard_placeholder` reçoivent un `LayoutBuilder` + golden test baseline tablet pendant le refactor.
+4. **Documentation catalogue alimentée** : 4 entrées dans la section [Catalogue actuel](#catalogue-actuel) ci-dessus (réduit de 5 à 4 — skip `PickerToastFeedback` car `AppToast` existant suffit).
+5. **Audit responsive screens existants (A7)** :
+   - `subjects_picker_page` : **partiellement déjà fait** (LayoutBuilder en place lignes 376/559). Reste à ajouter golden test baseline tablet ≥ 840 dp.
+   - `school_picker_page` (~428 lignes) : audit complet à faire — vérifier présence/absence `LayoutBuilder` + ajouter si manquant + golden test tablet.
+   - `dashboard_page` + `placeholder_tab_page` : audit complet à faire.
 
 ### Composants Story 1.7 à auditer pour réutilisation
 
-Le `school_picker_page.dart` (Story 1.7) contient sans doute des widgets équivalents (chips matières → chips écoles, validate bar, etc.). Lors de Story 1.18, vérifier si les composants à extraire de `subjects_picker_page.dart` peuvent **également** servir le `school_picker_page.dart` (chips de résultats de recherche école, par exemple).
+Le `school_picker_page.dart` (Story 1.7) contient probablement des widgets équivalents (listes résultats recherche école, validate bar). Lors de Story 1.18, vérifier si `OptionalSubjectCheckboxList` (renommé `SelectableItemCheckboxList` si générique) peut servir aussi pour les résultats de recherche école (Epic 1.5 future).
 
 ---
 
@@ -120,3 +123,4 @@ Le `school_picker_page.dart` (Story 1.7) contient sans doute des widgets équiva
 | Date | Action | Story / PR | Auteur |
 |---|---|---|---|
 | 2026-06-10 | Création du catalogue (PR discipline composants + responsive) — squelette + section dette Epic 1 v2 | PR discipline-composants-responsive | Amelia |
+| 2026-06-10 | Révision 2 section « À extraire — dette Epic 1 v2 » post-discovery code source : renommage `Chip*` → `Checkbox*` (réel = `CheckboxListTile`, pas `Chip`), `PickerSectionCard` → `PickerSectionScaffold` (réel = LayoutBuilder+ConstrainedBox+Padding+Column, pas Card visuel), suppression `PickerToastFeedback` (`AppToast` existant suffit). 5 composants → 4 composants. AC8 audit responsive sur `subjects_picker_page` réduit (LayoutBuilder déjà présent lignes 376/559). | PR docs/1.18-correction-scope | Amelia |
