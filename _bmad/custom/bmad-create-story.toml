@@ -1,0 +1,27 @@
+# Team override pour bmad-create-story.
+# Cf. {project-root}/.claude/skills/bmad-create-story/customize.toml pour la base.
+#
+# Convention BMAD : les arrays sont append. Donc ces persistent_facts s'ajoutent
+# à ceux du base customize.toml ({project-root}/**/project-context.md).
+
+[workflow]
+
+# Persistent facts chargés au début de chaque invocation /bmad-create-story.
+# Forcent le LLM à avoir CLAUDE.md + catalogue composants + templates en vue
+# AVANT d'écrire la story.
+
+persistent_facts = [
+  "file:{project-root}/CLAUDE.md",
+  "file:{project-root}/doc/tech/COMPOSANTS-REUTILISABLES.md",
+  "file:{project-root}/doc/tech/STORY-TEMPLATES.md",
+  # Règle composants réutilisables (CLAUDE.md règle 11) : avant d'écrire la story, identifier les composants existants à réutiliser et les nouveaux à créer.
+  "Pour toute story qui ajoute ou modifie un widget Flutter, la story DOIT inclure une section 'Composants réutilisables' (template 4 de STORY-TEMPLATES.md) listant : (a) composants existants réutilisés, (b) composants existants adaptés via paramètre optionnel, (c) nouveaux composants créés (avec engagement à les documenter dans COMPOSANTS-REUTILISABLES.md dans la même PR).",
+  # Règle responsive (CLAUDE.md règles 3/5 durcies) : avant d'écrire la story, déclarer la stratégie responsive.
+  "Pour toute story qui ajoute ou modifie un écran (un fichier *_page.dart ou un widget plein-écran), la story DOIT inclure une section 'Stratégie responsive' (template 3 de STORY-TEMPLATES.md) précisant : form factors cibles (phone < 600 dp / phone landscape 600-840 dp / tablet ≥ 840 dp), breakpoints à utiliser, layout strategy par form factor, et golden tests prévus dont ≥ 1 viewport tablet ≥ 840 dp obligatoire. La story DOIT inclure une Acceptance Criteria explicite 'le widget X s'adapte en tablette'.",
+  # Règle cost-benefit Firestore (CLAUDE.md règle 10m opérationnalisée) : avant d'écrire la story, documenter le cost-benefit.
+  "Pour toute story qui introduit une nouvelle collection Firestore, un nouvel index composite, un nouveau snapshots(), une dénormalisation ou une requête collectionGroup, la story DOIT inclure une section 'Cost-benefit Firestore' (template 2 de STORY-TEMPLATES.md) avec : (i) reads/écriture par session, (ii) volumétrie 10k users, (iii) trade-off accepté vs alternative, (iv) check des 12 sous-règles CLAUDE.md règle 10. Si aucun de ces 5 critères ne s'applique : marquer 'N/A pour cette story'.",
+  # Règle Dev Notes condensés (apprentissage rétro Epic 1 v2 Challenge 6) : utiliser le template A4.
+  "Les Dev Notes de la story DOIVENT suivre le template condensé (template 1 de STORY-TEMPLATES.md) cible ≤ 80 lignes structurées. Anti-patterns à éviter : recopier les ACs, lister tous les imports, décrire l'algorithme ligne par ligne, inclure un Mermaid architecture entière à chaque story.",
+  # Règle séquencement PR (CLAUDE.md règle 6 Workflow Git) : la story est une unité de travail = 1 PR à la fois.
+  "Une fois la story validée, l'implémentation se fait via /bmad-dev-story PUIS push d'UNE seule PR. JAMAIS deux PR enchaînées (contexte + dev, ou dev + cloture) sans attendre merge intermédiaire. Cf. CLAUDE.md Workflow Git règle 6.",
+]
