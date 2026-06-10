@@ -199,13 +199,24 @@ Et pour les modes (`Fast` / `Coaching`) :
 
     **Réfs** : [Firestore data model](https://firebase.google.com/docs/firestore/data-model) + [Firestore pricing](https://firebase.google.com/docs/firestore/pricing) + [BASE-DE-DONNEES.md](doc/partage/BASE-DE-DONNEES.md) (schéma autoritaire).
 
+11. **Composants réutilisables — catalogue obligatoire**. **AVANT** d'écrire le moindre `StatelessWidget` / `StatefulWidget` / fonction de build dans `lib/features/**/presentation/` ou `lib/core/widgets/`, **CONSULTER** [doc/tech/COMPOSANTS-REUTILISABLES.md](doc/tech/COMPOSANTS-REUTILISABLES.md) (catalogue source de vérité). Si un composant existant fait déjà le job (ou peut être adapté avec un paramètre optionnel supplémentaire), **le réutiliser** — pas de classe privée dupliquée d'un autre fichier (anti-pattern `_LegacyOptOutBody` / `_FreeWithObligatoryBody` / `_SeriesPlusOptionalBody` / `_TvePickerBody` dans `subjects_picker_page.dart`, identifié rétro Epic 1 v2 — à extraire Story 1.18).
+
+    **Quand créer un nouveau composant** : si rien du catalogue ne convient, créer dans `lib/core/widgets/` (ou sous-dossier sémantique : `lib/core/widgets/picker/`, `lib/core/widgets/cards/`). **Documenter** simultanément dans `doc/tech/COMPOSANTS-REUTILISABLES.md` (nom, path, props, contexte d'usage, comportement responsive `phone-only` / `phone + tablet` / `tablet-adaptive`, exemple, story d'origine). Une PR qui ajoute un widget réutilisable sans entrée dans le catalogue **se renvoie**.
+
+    **Périmètre actuel** : widgets UI uniquement (couche `presentation`). Ne s'étend pas aux usecases/repositories/models qui suivent l'architecture clean existante.
+
+    **Workflow BMAD** :
+    - `bmad-create-story` : étape obligatoire « Composants existants à réutiliser ? » — lister explicitement dans la story les composants du catalogue à consommer, et nommer les nouveaux composants à créer si besoin.
+    - `bmad-dev-story` : checkpoint avant codage widget — relire le catalogue + déclarer la stratégie de réutilisation dans Dev Notes.
+    - Quand un composant existe mais a besoin d'une adaptation mineure : ajouter un paramètre optionnel au composant existant **plutôt que** dupliquer. Si l'adaptation est majeure (logique différente), créer un composant frère distinct (pas une copie modifiée).
+
 ### Cross-platform & responsive (V1 = Android + iOS, phone + tablet)
 
 1. **Pas de code plateforme-spécifique non isolé.** Tout `if (Platform.isAndroid)` ou `if (Platform.isIOS)` est confiné à `core/platform/*` (un wrapper par capability divergente : silent mode detection, haptic mapping, etc.). Les couches `domain` et `presentation` ne `import 'dart:io'` jamais.
 2. **Pas de package Android-only sans wrapper.** Avant d'ajouter une dépendance, vérifier qu'elle supporte iOS. Sinon : choisir une alternative cross-platform, ou wrapper avec fallback iOS dans `core/platform/`.
-3. **Pas de pixel hardcodé pour layouts responsives.** Au-delà de `flutter_screenutil` (échelle phone-référence 375×812), tout écran doit utiliser un `LayoutBuilder` ou `MediaQuery.sizeOf(context).width` pour adapter à 3 form factors : phone (< 600 dp), phone landscape (600-840 dp), tablet (≥ 840 dp).
+3. **Pas de pixel hardcodé pour layouts responsives — règle enforced par BMAD.** Au-delà de `flutter_screenutil` (échelle phone-référence 375×812), tout écran doit utiliser un `LayoutBuilder` ou `MediaQuery.sizeOf(context).width` pour adapter à 3 form factors : phone (< 600 dp), phone landscape (600-840 dp), tablet (≥ 840 dp). **`bmad-create-story` exige** une section « Stratégie responsive » dans chaque story ajoutant/modifiant un écran (form factors cibles + breakpoints + layout strategy). **`bmad-dev-story` exige** une Acceptance Criteria explicite « le widget s'adapte en tablette ». Une story qui ajoute un écran sans déclaration responsive est **renvoyée**.
 4. **Pas de design portrait-only sur tablette.** Tablette doit fonctionner en portrait ET paysage. Phone landscape est optionnel (peut être verrouillé portrait en V1 si stories le justifient).
-5. **Tester chaque écran sur 4 form factors** : Android phone (Pixel 4a), Android tablet (Pixel Tablet), iOS phone (iPhone 14), iOS tablet (iPad mini). Au minimum, un golden test par breakpoint.
+5. **Tester chaque écran sur 4 form factors — règle enforced par BMAD** : Android phone (Pixel 4a), Android tablet (Pixel Tablet), iOS phone (iPhone 14), iOS tablet (iPad mini). Au minimum, un golden test par breakpoint (≥ 1 viewport ≥ 840 dp = tablet **obligatoire**). **`bmad-dev-story` exige** ce golden test breakpoint tablet comme checkpoint avant push de PR. Dette technique connue (à résorber Story 1.18 + A7) : `subjects_picker_page`, `school_picker_page`, `dashboard_placeholder` actuellement non couverts.
 6. **Conventions iOS quand divergentes** : utiliser les widgets Material par défaut (l'app est Material visual sur les deux), mais respecter les comportements iOS attendus quand ils ne contredisent pas le design (swipe-back navigation iOS via `CupertinoPageRoute` autorisée si elle améliore l'UX).
 7. **Assets audio en AAC/M4A** (pas OGG — non supporté nativement iOS).
 
@@ -229,6 +240,7 @@ Et pour les modes (`Fast` / `Coaching`) :
 3. PR ≤ 400 lignes de diff. Squash & merge.
 4. Pas de force-push sur `main`. Pas de merge commit dans une feature branch. Pas de `--no-verify`.
 5. Identifiers code en **anglais**, commentaires et doc en **français**.
+6. **Séquencement strict : 1 PR à la fois — JAMAIS deux PR enchaînées sans attendre merge intermédiaire.** Quand une cascade implique plusieurs PR (contexte → dev → cloture par story, ou suite de stories), pousser et **attendre la confirmation de merge** avant de pousser la PR suivante. Justification : empêche les collisions main (cf. incident merge Story 1.13 PR #74/#75 mai 2026 — fix dans PR #77). Cette règle s'applique aux PR consécutives sur la même branche ou des branches dépendantes. Exceptions : (a) deux PR sur des branches **strictement indépendantes** sans dépendance code/doc commune, (b) chez le porteur (hotfix urgent isolé) avec accord explicite utilisateur. Pas d'exception « ça va se mélanger gentiment » — toujours séquentialiser.
 
 ### Code & qualité
 
@@ -256,6 +268,8 @@ Et pour les modes (`Fast` / `Coaching`) :
 | Matrice profil → matières/examens | [doc/partage/DONNEES-REFERENCE.md](doc/partage/DONNEES-REFERENCE.md) |
 | Design System (tokens, composants) | [doc/tech/Valide - Design System.html](doc/tech/Valide%20-%20Design%20System.html) |
 | Maquettes par module | [doc/tech/Valide - Design.html](doc/tech/Valide%20-%20Design.html) |
+| **Catalogue composants réutilisables Flutter** (règle 11) | [doc/tech/COMPOSANTS-REUTILISABLES.md](doc/tech/COMPOSANTS-REUTILISABLES.md) |
+| **Templates Dev Notes condensés + cost-benefit Firestore** (règle 10m) | [doc/tech/STORY-TEMPLATES.md](doc/tech/STORY-TEMPLATES.md) |
 
 **Avant d'utiliser un terme métier ou technique du projet**, vérifie qu'il existe dans le glossaire de [CONTRIBUTING.md](doc/tools/CONTRIBUTING.md) ou de [BMAD_METHOD_GUIDE.md](doc/tools/BMAD_METHOD_GUIDE.md). Si tu inventes un terme, signale-le explicitement à l'utilisateur.
 

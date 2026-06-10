@@ -1,0 +1,28 @@
+# Team override pour bmad-dev-story.
+# Cf. {project-root}/.claude/skills/bmad-dev-story/customize.toml pour la base.
+#
+# Convention BMAD : les arrays sont append. Ces persistent_facts s'ajoutent
+# à ceux du base customize.toml ({project-root}/**/project-context.md).
+
+[workflow]
+
+# Persistent facts chargés au début de chaque invocation /bmad-dev-story.
+# Imposent au LLM de consulter CLAUDE.md + catalogue + templates AVANT codage.
+
+persistent_facts = [
+  "file:{project-root}/CLAUDE.md",
+  "file:{project-root}/doc/tech/COMPOSANTS-REUTILISABLES.md",
+  "file:{project-root}/doc/tech/STORY-TEMPLATES.md",
+  # Checkpoint composants réutilisables (CLAUDE.md règle 11) : AVANT d'écrire un widget, consulter le catalogue.
+  "AVANT d'écrire le moindre widget Flutter (StatelessWidget, StatefulWidget, fonction de build) dans lib/features/**/presentation/ ou lib/core/widgets/, RELIRE doc/tech/COMPOSANTS-REUTILISABLES.md section 'Catalogue actuel'. Si un composant existant peut être réutilisé (tel quel ou avec un paramètre optionnel ajouté), le réutiliser. JAMAIS créer une classe privée _XxxBody dupliquée d'un autre fichier. Si nouveau composant créé : ajouter l'entrée catalogue dans la MÊME PR (sinon PR renvoyée).",
+  # Checkpoint stratégie responsive (CLAUDE.md règles 3/5 durcies) : story DOIT déclarer responsive, code DOIT inclure golden test breakpoint tablet.
+  "Si la story ajoute/modifie un écran : AVANT push de PR, VÉRIFIER que (a) la section 'Stratégie responsive' de la story est présente et cohérente avec le code livré, (b) ≥ 1 golden test viewport ≥ 840 dp (tablet) est inclus dans les tests widget livrés, (c) le LayoutBuilder ou MediaQuery.sizeOf adapte le layout entre phone < 600 dp et tablet ≥ 840 dp (cf. template 3 de STORY-TEMPLATES.md). PR sans golden test tablet = renvoyée.",
+  # Checkpoint cost-benefit Firestore (CLAUDE.md règle 10m opérationnalisée) : section présente dans Dev Notes si applicable.
+  "Si la story introduit une nouvelle collection Firestore, un nouvel index composite, un nouveau snapshots(), une dénormalisation ou une collectionGroup : AVANT push de PR, VÉRIFIER que la section 'Cost-benefit Firestore' des Dev Notes est complète avec reads/écriture par session + volumétrie 10k + trade-off + check des 12 sous-règles (template 2 de STORY-TEMPLATES.md). Si manquante : renseigner avant push.",
+  # Checkpoint anti-régression tests (CLAUDE.md Code & qualité règle 4) : tous les tests passants avant push.
+  "AVANT push de PR : (a) flutter analyze 0 issue, (b) flutter test 100% verts (aucune régression sur la baseline pré-story), (c) si rules Firestore modifiées : npm test rules 100% verts. Si l'un échoue : NE PAS push. Diagnostiquer et corriger d'abord.",
+  # Checkpoint séquencement PR (CLAUDE.md Workflow Git règle 6) : 1 PR à la fois.
+  "Après push de la PR de cette story, ATTENDRE la confirmation utilisateur du merge AVANT d'ouvrir la PR suivante (contexte story suivante, ou cloture, ou autre). JAMAIS deux PR enchaînées dans la même session. Cf. CLAUDE.md Workflow Git règle 6 + apprentissage rétro Epic 1 v2 Challenge 3 (collision merge Story 1.13).",
+  # Checkpoint surface partagée (CLAUDE.md règle Surface partagée 1) : si schéma/algorithme/contrat impacté, MAJ doc/partage/ dans la MÊME PR.
+  "Si le code modifie le schéma Firestore (collection/champ ajouté), un algorithme métier (cf. doc/partage/ALGORITHMES.md), ou un contrat Cloud Function (cf. doc/partage/CONTRATS-API.md) : la PR DOIT mettre à jour le fichier doc/partage/ correspondant dans la même PR. PR qui touche schéma sans MAJ doc/partage/ = renvoyée. + accord équipe backend requis si contrat Cloud Function modifié.",
+]
