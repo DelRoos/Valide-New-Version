@@ -240,13 +240,17 @@ Exemples :
 
 ### Heuristique `subSystem`
 
-| Nom contient... | subSystem |
-|---|---|
-| « Lycée » / « Collège » / « CES » (FR pur) | `francophone` |
-| « Government High School » / « GHS » / « PSS » / « Comprehensive » | `anglophone` |
-| « Lycée Bilingue » / « Government Bilingual High School » / « GBHS » | `both` |
+| Nom contient... | subSystem | Sémantique |
+|---|---|---|
+| « Lycée » / « Collège » / « CES » (FR pur) | `francophone` | Section uniquement francophone |
+| « Government High School » / « GHS » / « PSS » / « Comprehensive » | `anglophone` | Section uniquement anglophone |
+| « Lycée Bilingue » / « Government Bilingual High School » / « GBHS » | `both` | **Sections multiples francophone + anglophone** coexistantes |
 
-Si ambigu (école bilingue privée, nom mixte) : choisir `both` par défaut. Corrections possibles via Firebase Console toggle ultérieur.
+**Note importante** : la valeur `both` couvre toutes les écoles avec **plusieurs langues coexistantes** dans le même établissement — pas seulement les écoles « bilingues » dans le nom officiel. Beaucoup de grands lycées francophones (Lycée Joss, Lycée Général Leclerc, etc.) ont en pratique une section bilingue opérationnelle et peuvent être promus `francophone` → `both` ultérieurement.
+
+Si ambigu (école bilingue privée, nom mixte) : choisir `both` par défaut. Corrections possibles via Firebase Console toggle ultérieur OU PR sur `schools.json` + re-seed.
+
+> **Évolution future** : si un nouveau sous-système devait être ajouté (ex. arabophone via madrasas), une migration vers `subSystems: string[]` (array Firestore avec `arrayContains`) serait privilégiée. À tracer en sprint-change si le cas survient. Cf. note dans [BASE-DE-DONNEES.md § schools/{schoolId}](../../../doc/partage/BASE-DE-DONNEES.md#schoolsschoolid-).
 
 ### Volumétrie V1 (post-seed Story 1.5.a)
 

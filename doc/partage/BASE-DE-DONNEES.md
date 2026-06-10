@@ -603,6 +603,18 @@ interface SchoolDoc {
 
 **Convention `schoolId`** : slug reproductible `school_<slug_nom>_<slug_ville>` (ex. `school_lycee_general_leclerc_yaounde`, `school_ghs_buea_town_buea`). Pattern : `^school_[a-z0-9_]+$`.
 
+**Sémantique `subSystem`** :
+
+| Valeur | Signification |
+|---|---|
+| `francophone` | École avec **uniquement** une section francophone (Lycée FR, Collège FR pur) |
+| `anglophone` | École avec **uniquement** une section anglophone (Government High School, PSS, Comprehensive) |
+| `both` | École avec **sections multiples** : francophone ET anglophone coexistantes au sein du même établissement (Lycée Bilingue, GBHS Government Bilingual High School, écoles avec annexes bilingues actives) |
+
+> **Note V1** : la valeur `both` couvre tous les cas multi-langues du système camerounais (uniquement francophone + anglophone à ce jour). Si un nouveau sous-système devait être ajouté (ex. arabophone via madrasas, biculturelle, etc.), une migration vers `subSystems: string[]` (array Firestore avec `arrayContains`) serait privilégiée. À tracer en sprint-change si le cas survient.
+
+> **Note pratique** : beaucoup de grandes écoles francophones (Lycée Joss, Lycée Général Leclerc, etc.) ont en pratique une **section bilingue** opérationnelle, ce qui pourrait justifier `both`. Le seed Story 1.5.a a privilégié l'**identité dominante** (francophone si le nom contient « Lycée », anglophone si « Government High School ») par défaut. Une école peut être promue `francophone` → `both` ultérieurement via PR sur `data/schools.json` + re-seed, ou directement par toggle admin Firebase Console.
+
 Sous-collection `schools/{schoolId}/requests` 🔴 : demandes d'ajout par les élèves en attente de validation admin (Story 1.5.c à venir — actuellement écrit par Story 1.7 dans `schools/_pending_<ts>/requests/` en attendant la formalisation).
 
 ### `payment_intents/{intentId}` 🟡
