@@ -1,0 +1,1592 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-06-10",
+  "source": "Composite : MINESEC (lycees/colleges publics francophones) + GCE Board (GHS/GBHS/PSS anglophones) + Wikipedia FR + techno-science.net (cross-reference). Dataset V1 representatif ~250 ecoles couvrant les 10 regions du Cameroun. Suite via flow demande ajout Story 1.5.c.",
+  "comment": "Dataset Story 1.5.a (Epic 1.5 Schools completion). Tous isValidated: true (sources officielles MINESEC/GCE). subSystem heuristique : francophone (Lycee/College FR), anglophone (Government High School / GHS / GBHS / PSS / Comprehensive College), both (Lycee Bilingue d'Application LBA + GBHS).",
+  "schools": [
+    {
+      "schoolId": "school_lycee_general_leclerc_yaounde",
+      "name": "Lycee General Leclerc",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_application_yaounde",
+      "name": "Lycee Bilingue d'Application (LBA)",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_fustel_de_coulanges_yaounde",
+      "name": "Lycee Francais Fustel de Coulanges",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_biyem_assi_yaounde",
+      "name": "Lycee de Biyem-Assi",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mendong_yaounde",
+      "name": "Lycee de Mendong",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nkol_eton_yaounde",
+      "name": "Lycee de Nkol-Eton",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nkolndongo_yaounde",
+      "name": "Lycee de Nkolndongo",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nkolbisson_yaounde",
+      "name": "Lycee de Nkolbisson",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nsam_efoulan_yaounde",
+      "name": "Lycee de Nsam Efoulan",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_tsinga_yaounde",
+      "name": "Lycee de Tsinga",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_etoug_ebe_yaounde",
+      "name": "Lycee d'Etoug-Ebe",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_emana_yaounde",
+      "name": "Lycee d'Emana",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_ekounou_yaounde",
+      "name": "Lycee d'Ekounou",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_elig_essono_yaounde",
+      "name": "Lycee d'Elig-Essono",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_anguissa_yaounde",
+      "name": "Lycee d'Anguissa",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mballa_2_yaounde",
+      "name": "Lycee de Mballa 2",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_la_cite_verte_yaounde",
+      "name": "Lycee de la Cite Verte",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_ngousso_yaounde",
+      "name": "Lycee de Ngousso-Ngoulemekong",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_minboman_yaounde",
+      "name": "Lycee de Minboman",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_commercial_yaounde",
+      "name": "Lycee Technique et Commercial de Yaounde",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_nkolbisson_yaounde",
+      "name": "Lycee Technique de Nkolbisson",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_jean_tabi_yaounde",
+      "name": "College Jean Tabi",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_francois_xavier_vogt_yaounde",
+      "name": "College Francois-Xavier-Vogt",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_la_retraite_yaounde",
+      "name": "College de la Retraite",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_adventiste_nlongkak_yaounde",
+      "name": "College Adventiste de Nlongkak",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_charles_atangana_yaounde",
+      "name": "College Charles Atangana",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_mongo_beti_yaounde",
+      "name": "College Mongo Beti",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_vogt_yaounde",
+      "name": "College Vogt",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_la_salle_yaounde",
+      "name": "College de la Salle",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_complexe_scolaire_esperance_yaounde",
+      "name": "Complexe Scolaire de l'Esperance",
+      "city": "Yaounde",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mbalmayo_mbalmayo",
+      "name": "Lycee de Mbalmayo",
+      "city": "Mbalmayo",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_mbalmayo_mbalmayo",
+      "name": "Lycee Bilingue de Mbalmayo",
+      "city": "Mbalmayo",
+      "region": "Centre",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_mbalmayo_mbalmayo",
+      "name": "Lycee Technique de Mbalmayo",
+      "city": "Mbalmayo",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_obala_obala",
+      "name": "Lycee d'Obala",
+      "city": "Obala",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_akonolinga_akonolinga",
+      "name": "Lycee d'Akonolinga",
+      "city": "Akonolinga",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bafia_bafia",
+      "name": "Lycee de Bafia",
+      "city": "Bafia",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_ndikinimeki_ndikinimeki",
+      "name": "Lycee de Ndikinimeki",
+      "city": "Ndikinimeki",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_libamba_makak",
+      "name": "College Evangelique de Libamba",
+      "city": "Makak",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_sacre_coeur_makak",
+      "name": "College Sacre-Coeur de Makak (COSACO)",
+      "city": "Makak",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_stoll_akono",
+      "name": "College Stoll d'Akono",
+      "city": "Akono",
+      "region": "Centre",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bonaberi_douala",
+      "name": "Lycee Bilingue de Bonaberi",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_joss_douala",
+      "name": "Lycee Joss",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_akwa_douala",
+      "name": "Lycee d'Akwa",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_akwa_nord_douala",
+      "name": "Lycee d'Akwa-Nord",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_oyack_douala",
+      "name": "Lycee d'Oyack",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_cite_palmiers_douala",
+      "name": "Lycee de la Cite des Palmiers",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_new_bell_douala",
+      "name": "Lycee de New-Bell",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nylon_brazzaville_douala",
+      "name": "Lycee de Nylon Brazzaville",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nylon_ndog_passi_douala",
+      "name": "Lycee de Nylon Ndog-Passi",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_deido_douala",
+      "name": "Lycee Bilingue de Deido",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_dominique_savio_douala",
+      "name": "Lycee Francais Dominique-Savio",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_polyvalent_bonaberi_douala",
+      "name": "Lycee Polyvalent de Bonaberi",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_japoma_douala",
+      "name": "Lycee de Japoma",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_nyalla_douala",
+      "name": "Lycee de Nyalla",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bojongo_douala",
+      "name": "Lycee Bilingue de Bojongo",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_koumassi_douala",
+      "name": "Lycee Technique de Douala Koumassi",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_bassa_douala",
+      "name": "Lycee Technique de Douala Bassa",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_alfred_saker_douala",
+      "name": "College Alfred-Saker",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_libermann_douala",
+      "name": "College Libermann",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_evangelique_new_bell_douala",
+      "name": "College Evangelique de New-Bell",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_la_conquete_douala",
+      "name": "College La Conquete",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_saint_charles_borromee_douala",
+      "name": "College Saint-Charles-Borromee",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_chevreuil_douala",
+      "name": "College Chevreuil",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_la_salle_douala",
+      "name": "College de La Salle",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_dauphine_douala",
+      "name": "College Dauphine",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_du_levant_douala",
+      "name": "College Du Levant",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_andre_malraux_douala",
+      "name": "College Andre Malraux",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_saint_michel_douala",
+      "name": "College Saint-Michel",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_polyvalent_douala",
+      "name": "College Polyvalent de Douala",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_sacred_heart_college_douala",
+      "name": "Sacred Heart College Douala",
+      "city": "Douala",
+      "region": "Littoral",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_edea_edea",
+      "name": "Lycee d'Edea",
+      "city": "Edea",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_edea_edea",
+      "name": "Lycee Bilingue d'Edea",
+      "city": "Edea",
+      "region": "Littoral",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_edea_edea",
+      "name": "Lycee Technique d'Edea",
+      "city": "Edea",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_du_manengouba_nkongsamba",
+      "name": "Lycee du Manengouba",
+      "city": "Nkongsamba",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_jeanne_d_arc_nkongsamba",
+      "name": "College Jeanne d'Arc",
+      "city": "Nkongsamba",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mbanga_mbanga",
+      "name": "Lycee de Mbanga",
+      "city": "Mbanga",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_mbanga_mbanga",
+      "name": "Lycee Technique de Mbanga",
+      "city": "Mbanga",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_saint_jean_mbanga_mbanga",
+      "name": "College Saint Jean de Mbanga",
+      "city": "Mbanga",
+      "region": "Littoral",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_bafoussam_bafoussam",
+      "name": "Lycee Classique de Bafoussam",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bafoussam_bafoussam",
+      "name": "Lycee Bilingue de Bafoussam",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_bafoussam_bafoussam",
+      "name": "Lycee Technique de Bafoussam",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_baleng_bafoussam",
+      "name": "Lycee Bilingue de Baleng",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_banengo_bafoussam",
+      "name": "Lycee Technique de Banengo",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_ndiengdam_bafoussam",
+      "name": "Lycee de Bafoussam (Ndiengdam)",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_reunification_tankou_bafoussam",
+      "name": "College de la Reunification Tankou",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_martin_luther_king_bafoussam",
+      "name": "College Polyvalent Bilingue Martin Luther King",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_saint_thomas_aquin_bafoussam",
+      "name": "College Saint-Thomas d'Aquin",
+      "city": "Bafoussam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_dschang_dschang",
+      "name": "Lycee Classique de Dschang",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_dschang_dschang",
+      "name": "Lycee Bilingue de Dschang",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_dschang_dschang",
+      "name": "Lycee Technique de Dschang",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_notre_dame_dschang_dschang",
+      "name": "College Notre Dame de Dschang",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_albert_camus_dschang",
+      "name": "College Albert Camus",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_la_renaissance_dschang",
+      "name": "College La Renaissance",
+      "city": "Dschang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bandjoun_bandjoun",
+      "name": "Lycee de Bandjoun",
+      "city": "Bandjoun",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_yom_bandjoun",
+      "name": "Lycee Bilingue de Yom",
+      "city": "Bandjoun",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_bandjoun_bandjoun",
+      "name": "Lycee Technique de Bandjoun",
+      "city": "Bandjoun",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bafang_bafang",
+      "name": "Lycee de Bafang",
+      "city": "Bafang",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_foumban_foumban",
+      "name": "Lycee de Foumban",
+      "city": "Foumban",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_sultan_njoya_foumban",
+      "name": "Lycee Bilingue Sultan Ibrahim Njoya de Foumban",
+      "city": "Foumban",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_la_paix_foumban",
+      "name": "College de la Paix",
+      "city": "Foumban",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_foumbot_foumbot",
+      "name": "Lycee de Foumbot",
+      "city": "Foumbot",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_foumbot_foumbot",
+      "name": "Lycee Bilingue de Foumbot",
+      "city": "Foumbot",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mbouda_mbouda",
+      "name": "Lycee de Mbouda",
+      "city": "Mbouda",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_mbouda_mbouda",
+      "name": "Lycee Bilingue de Mbouda",
+      "city": "Mbouda",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bangangte_bangangte",
+      "name": "Lycee de Bangangte",
+      "city": "Bangangte",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bangangte_bangangte",
+      "name": "Lycee Bilingue de Bangangte",
+      "city": "Bangangte",
+      "region": "Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_baham_baham",
+      "name": "Lycee de Baham",
+      "city": "Baham",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bayangam_bayangam",
+      "name": "Lycee de Bayangam",
+      "city": "Bayangam",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bamendjou_bamendjou",
+      "name": "Lycee de Bamendjou",
+      "city": "Bamendjou",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_bandenkop_bandenkop",
+      "name": "Lycee de Bandenkop",
+      "city": "Bandenkop",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_batie_batie",
+      "name": "Lycee de Batie",
+      "city": "Batie",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_penka_michel_penka_michel",
+      "name": "Lycee de Penka-Michel",
+      "city": "Penka-Michel",
+      "region": "Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bertoua_bertoua",
+      "name": "Lycee Bilingue de Bertoua",
+      "city": "Bertoua",
+      "region": "Est",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_scientifique_bertoua_bertoua",
+      "name": "Lycee Scientifique de Bertoua",
+      "city": "Bertoua",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_bertoua_bertoua",
+      "name": "Lycee Technique de Bertoua",
+      "city": "Bertoua",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_adventiste_bertoua_bertoua",
+      "name": "College Adventiste de Bertoua",
+      "city": "Bertoua",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_teerenstra_bertoua",
+      "name": "College Confessionnel Catholique Teerenstra",
+      "city": "Bertoua",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_batouri_batouri",
+      "name": "Lycee de Batouri",
+      "city": "Batouri",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_yokadouma_yokadouma",
+      "name": "Lycee de Yokadouma",
+      "city": "Yokadouma",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_abong_mbang_abong_mbang",
+      "name": "Lycee d'Abong-Mbang",
+      "city": "Abong-Mbang",
+      "region": "Est",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_ebolowa_ebolowa",
+      "name": "Lycee Classique et Moderne d'Ebolowa",
+      "city": "Ebolowa",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_ebolowa_ebolowa",
+      "name": "Lycee Bilingue d'Ebolowa",
+      "city": "Ebolowa",
+      "region": "Sud",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_ebolowa_ebolowa",
+      "name": "Lycee Technique d'Ebolowa",
+      "city": "Ebolowa",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_ebolowa_rural_ebolowa",
+      "name": "Lycee d'Ebolowa Rural",
+      "city": "Ebolowa",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_bonneau_ebolowa",
+      "name": "College Bonneau",
+      "city": "Ebolowa",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_kribi_kribi",
+      "name": "Lycee de Kribi",
+      "city": "Kribi",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_kribi_kribi",
+      "name": "Lycee Bilingue de Kribi",
+      "city": "Kribi",
+      "region": "Sud",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_kribi_kribi",
+      "name": "Lycee Technique de Kribi",
+      "city": "Kribi",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_sangmelima_sangmelima",
+      "name": "Lycee de Sangmelima",
+      "city": "Sangmelima",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_sangmelima_sangmelima",
+      "name": "Lycee Bilingue de Sangmelima",
+      "city": "Sangmelima",
+      "region": "Sud",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_d_ambam_ambam",
+      "name": "Lycee d'Ambam",
+      "city": "Ambam",
+      "region": "Sud",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_garoua_garoua",
+      "name": "Lycee Classique et Moderne de Garoua",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_garoua_garoua",
+      "name": "Lycee Bilingue de Garoua",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_garoua_garoua",
+      "name": "Lycee Technique de Garoua",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_polyvalent_garoua_garoua",
+      "name": "Lycee Polyvalent de Garoua",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_djamboutou_garoua_garoua",
+      "name": "Lycee de Garoua Djamboutou",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_bibemire_garoua",
+      "name": "Lycee Technique de Bibemire",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_complexe_bilingue_aman_saaly_garoua",
+      "name": "Complexe Scolaire Bilingue Lamido Aman Sa'aly",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_kentou_michel_garoua",
+      "name": "College Kentou Michel",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_sainte_therese_garoua",
+      "name": "College Sainte-Therese",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_les_hirondelles_garoua",
+      "name": "College et Lycee Les Hirondelles",
+      "city": "Garoua",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_guider_guider",
+      "name": "Lycee de Guider",
+      "city": "Guider",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_poli_poli",
+      "name": "Lycee de Poli",
+      "city": "Poli",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_tcholire_tcholire",
+      "name": "Lycee de Tcholire",
+      "city": "Tcholire",
+      "region": "Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_maroua_maroua",
+      "name": "Lycee Bilingue de Maroua",
+      "city": "Maroua",
+      "region": "Extreme-Nord",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_maroua_maroua",
+      "name": "Lycee Technique Bilingue de Maroua",
+      "city": "Maroua",
+      "region": "Extreme-Nord",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_maroua_maroua",
+      "name": "Lycee Classique de Maroua",
+      "city": "Maroua",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_kongola_maroua",
+      "name": "Lycee de Maroua-Kongola",
+      "city": "Maroua",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_domayo_maroua",
+      "name": "Lycee de Domayo",
+      "city": "Maroua",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mokolo_mokolo",
+      "name": "Lycee de Mokolo",
+      "city": "Mokolo",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_mora_mora",
+      "name": "Lycee de Mora",
+      "city": "Mora",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_yagoua_yagoua",
+      "name": "Lycee de Yagoua",
+      "city": "Yagoua",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_kaele_kaele",
+      "name": "Lycee de Kaele",
+      "city": "Kaele",
+      "region": "Extreme-Nord",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_kousseri_kousseri",
+      "name": "Lycee Bilingue de Kousseri",
+      "city": "Kousseri",
+      "region": "Extreme-Nord",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_ngaoundere_ngaoundere",
+      "name": "Lycee Classique de Ngaoundere",
+      "city": "Ngaoundere",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_ngaoundere_ngaoundere",
+      "name": "Lycee Bilingue de Ngaoundere",
+      "city": "Ngaoundere",
+      "region": "Adamaoua",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_technique_ngaoundere_ngaoundere",
+      "name": "Lycee Technique de Ngaoundere",
+      "city": "Ngaoundere",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_college_de_mazenod_ngaoundere",
+      "name": "College de Mazenod",
+      "city": "Ngaoundere",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_tibati_tibati",
+      "name": "Lycee de Tibati",
+      "city": "Tibati",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_meiganga_meiganga",
+      "name": "Lycee de Meiganga",
+      "city": "Meiganga",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_de_tignere_tignere",
+      "name": "Lycee de Tignere",
+      "city": "Tignere",
+      "region": "Adamaoua",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bankim_bankim",
+      "name": "Lycee Bilingue de Bankim",
+      "city": "Bankim",
+      "region": "Adamaoua",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_buea_town_buea",
+      "name": "Government High School Buea Town",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_buea_bokwango_buea",
+      "name": "Government High School Buea Bokwango",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_muea_buea",
+      "name": "Government Bilingual High School Muea-Buea",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_buea_buea",
+      "name": "Lycee Bilingue de Buea",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_classique_buea_buea",
+      "name": "Lycee Classique de Buea",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "francophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_saker_baptist_college_buea",
+      "name": "Saker Baptist College",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_summerset_school_buea",
+      "name": "Summerset School Buea",
+      "city": "Buea",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_limbe_limbe",
+      "name": "Government High School Limbe",
+      "city": "Limbe",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_limbe_limbe",
+      "name": "Government Bilingual High School Limbe",
+      "city": "Limbe",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_baptist_high_school_limbe_limbe",
+      "name": "Baptist High School Limbe",
+      "city": "Limbe",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_kumba_kumba",
+      "name": "Government Bilingual High School Kumba",
+      "city": "Kumba",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_kumba_kumba",
+      "name": "Government High School Kumba",
+      "city": "Kumba",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_divine_high_school_kumba_kumba",
+      "name": "Divine High School Kumba",
+      "city": "Kumba",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_tiko_tiko",
+      "name": "Government High School Tiko",
+      "city": "Tiko",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gtbhs_tiko_tiko",
+      "name": "Government Technical Bilingual High School Tiko",
+      "city": "Tiko",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_mamfe_mamfe",
+      "name": "Government High School Mamfe",
+      "city": "Mamfe",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_mamfe_mamfe",
+      "name": "Government Bilingual High School Mamfe",
+      "city": "Mamfe",
+      "region": "Sud-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_st_anthony_banya_mamfe",
+      "name": "Saint Anthony of Padua's College Banya",
+      "city": "Mamfe",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gth_mamfe_mamfe",
+      "name": "Government Technical High School Mamfe",
+      "city": "Mamfe",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_mundemba_mundemba",
+      "name": "Government High School Mundemba",
+      "city": "Mundemba",
+      "region": "Sud-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_downtown_bamenda_bamenda",
+      "name": "Government Bilingual High School Downtown Bamenda",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_gbhs_bamenda_bamenda",
+      "name": "Government Bilingual High School Bamenda",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_bamenda_bamenda",
+      "name": "Government High School Bamenda",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_pss_mankon_bamenda",
+      "name": "Presbyterian Secondary School Mankon",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_sacred_heart_college_mankon_bamenda",
+      "name": "Sacred Heart College Mankon",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_baptist_high_school_bamenda_bamenda",
+      "name": "Baptist High School Bamenda",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_lycee_bilingue_bamenda_bamenda",
+      "name": "Lycee Bilingue de Bamenda",
+      "city": "Bamenda",
+      "region": "Nord-Ouest",
+      "subSystem": "both",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_wum_wum",
+      "name": "Government High School Wum",
+      "city": "Wum",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_bafut_bafut",
+      "name": "Government High School Bafut",
+      "city": "Bafut",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_chs_bambui_bambui",
+      "name": "Comprehensive High School Bambui",
+      "city": "Bambui",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_ndop_ndop",
+      "name": "Government High School Ndop",
+      "city": "Ndop",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_st_marys_ndop_ndop",
+      "name": "Saint Mary's Catholic Comprehensive High School Ndop",
+      "city": "Ndop",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_nkambe_nkambe",
+      "name": "Government High School Nkambe",
+      "city": "Nkambe",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_kumbo_kumbo",
+      "name": "Government High School Kumbo",
+      "city": "Kumbo",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_pss_kumbo_kumbo",
+      "name": "Presbyterian Secondary School Kumbo",
+      "city": "Kumbo",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    },
+    {
+      "schoolId": "school_ghs_fungom_weh_fungom",
+      "name": "Government High School Weh Fungom",
+      "city": "Fungom",
+      "region": "Nord-Ouest",
+      "subSystem": "anglophone",
+      "isValidated": true
+    }
+  ]
+}

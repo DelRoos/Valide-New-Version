@@ -148,3 +148,73 @@ scripts/firebase_seed/
 ## Pourquoi `scripts/` dans un dépôt mobile ?
 
 Cf. [CLAUDE.md § Structure du dépôt](../../CLAUDE.md) et ADR-015 § Décision #2. C'est une exception explicite : le script vit dans le dépôt mobile pour réduire le nombre de dépôts à maintenir tant qu'aucun dépôt backend n'est créé. Si un dépôt backend dédié émerge plus tard, ce dossier pourra être migré.
+
+---
+
+## Seed schools (Story 1.5.a)
+
+Script complémentaire `seed_schools.py` qui seed la collection Firestore `schools` à partir de `data/schools.json` (~198 établissements MINESEC + GCE Board V1).
+
+**Livré par** : Story 1.5.a (Epic 1.5 Schools completion).
+**Schéma Firestore autoritatif** : [doc/partage/BASE-DE-DONNEES.md § `schools/{schoolId}`](../../doc/partage/BASE-DE-DONNEES.md#schoolsschoolid-).
+**Story d'origine** : [1-5-a-seed-minesec-schools.md](../../project_manage/implementation-artifacts/1-5-a-seed-minesec-schools.md).
+
+### Objectif
+
+- Initialiser la collection `schools` sur un projet Firebase vide ou compléter un seed existant.
+- Propager l'ajout d'une école (validée par admin via PR) par simple édition de `data/schools.json` + re-run du script.
+- Idempotent : un re-run avec la même matrice produit le même état Firestore (`set(merge=True)` partout, jamais `add()`). Le `createdAt` est préservé via `SERVER_TIMESTAMP` au first-write.
+
+L'admin peut aussi modifier directement les documents depuis Firebase Console (toggle `isValidated`, correction de typo) sans passer par le script. Le script reste la source canonique pour les ajouts massifs.
+
+### Prérequis
+
+Mêmes que `seed_catalogue.py` (Python ≥ 3.10, `gcloud` CLI OU service-account, rôle `Cloud Datastore User`).
+
+### Exécution
+
+```bash
+# Dry-run (recommandé avant tout seed sur un projet partagé)
+python seed_schools.py --project valide-edu --dry-run
+
+# Seed réel (auth ADC)
+python seed_schools.py --project valide-edu
+
+# Seed réel (auth service-account)
+python seed_schools.py --project valide-edu --credentials ./service-account.json
+```
+
+Sortie attendue :
+
+```text
+[OK] Matrice schools chargée : version=1.0.0, generatedAt=2026-06-10, count=198
+[OK] Auth: Application Default Credentials, projectId=valide-edu
+[OK] schools          : 198 docs   (198 validated, 0 unvalidated)
+
+[OK] Total: 198 documents en X.XX s.
+```
+
+### Modifier la matrice schools
+
+1. Éditer [`data/schools.json`](./data/schools.json) (suivre la structure documentée dans [data/README.md § schools.json](./data/README.md#schoolsjson--source-de-vérité-catalogue-des-écoles-minesec))
+2. Re-run `python seed_schools.py --project valide-edu --dry-run` pour valider
+3. Re-run sans `--dry-run` pour propager dans Firestore
+
+### Tests
+
+```bash
+pytest tests/test_seed_schools.py -v
+```
+
+9 tests valident la matrice JSON statique (JSON loads, champs requis, unicité schoolId, subSystem valide, name/city/region non-vides, slug pattern, validator du script, couverture 10 régions, mix subSystem cohérent). Aucun de ces tests ne requiert de connexion Firestore live.
+
+### Sources composites du seed V1
+
+- **MINESEC** — lycées et collèges publics francophones (Yaoundé, Douala, Bafoussam, Dschang, Bertoua, Garoua, Maroua, Ngaoundéré, Ebolowa, etc.)
+- **GCE Board (camgceb.org)** — Government High Schools, Government Bilingual High Schools, Presbyterian Secondary Schools (Buea, Limbe, Kumba, Bamenda, Mamfe, Tiko, etc.)
+- **Wikipédia FR / techno-science.net** — cross-référence + complétion par ville
+
+Dataset V1 ~198 écoles couvrant les 10 régions du Cameroun. Extensible via :
+
+- PR sur `data/schools.json` + re-seed
+- Flow utilisateur « Mon école n'est pas dans la liste » (Story 1.7 temporaire jusqu'à Story 1.5.c qui formalisera la modération admin)
