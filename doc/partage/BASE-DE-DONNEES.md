@@ -46,7 +46,7 @@ Pour chaque collection :
 | `users/{uid}/notifications` | Notifications in-app | 🟡 | **Stream** |
 | `users/{uid}/sharing_links` | Liens de partage générés | 🟡 | Mutable |
 | `rankings/{board}/entries/{uid}` | Classements (5 boards) | 🟡 | **Stream** (board courant uniquement) |
-| `schools` | Catalogue des écoles | 🟡 | Statique |
+| `schools` | Catalogue des écoles (~198 MINESEC+GCE V1 — Story 1.5.a) | 🟢 | Statique |
 | `payment_intents` | Intentions de paiement (créées par Cloud Function) | 🟡 | Privé (suivi côté serveur) |
 | `webhook_events` | Trace des webhooks d'agrégateur (idempotence) | 🟡 | Inaccessible au mobile |
 
@@ -583,7 +583,7 @@ interface RankingEntryDoc {
 
 > Recalcul déclenché par un Firestore trigger sur `users/{uid}/stats` (cf. archi backend § 4.2). Attention au piège des triggers en boucle (cf. archi backend § 9.4) : le trigger écrit dans `rankings/`, pas dans `stats/`.
 
-### `schools/{schoolId}` 🟡
+### `schools/{schoolId}` 🟢
 
 Catalogue d'écoles.
 
@@ -599,7 +599,11 @@ interface SchoolDoc {
 }
 ```
 
-Sous-collection `schools/{schoolId}/requests` 🔴 : demandes d'ajout par les élèves en attente de validation admin.
+**Seed (Story 1.5.a)** : ~198 établissements MINESEC + GCE Board (V1) seedés sur `valide-edu` via [`scripts/firebase_seed/seed_schools.py`](../../scripts/firebase_seed/seed_schools.py) à partir de [`scripts/firebase_seed/data/schools.json`](../../scripts/firebase_seed/data/schools.json). Couvre les 10 régions officielles (Centre, Littoral, Ouest, Sud-Ouest, Nord-Ouest, Nord, Sud, Extrême-Nord, Adamaoua, Est). Extensible via PR + re-seed.
+
+**Convention `schoolId`** : slug reproductible `school_<slug_nom>_<slug_ville>` (ex. `school_lycee_general_leclerc_yaounde`, `school_ghs_buea_town_buea`). Pattern : `^school_[a-z0-9_]+$`.
+
+Sous-collection `schools/{schoolId}/requests` 🔴 : demandes d'ajout par les élèves en attente de validation admin (Story 1.5.c à venir — actuellement écrit par Story 1.7 dans `schools/_pending_<ts>/requests/` en attendant la formalisation).
 
 ### `payment_intents/{intentId}` 🟡
 
@@ -843,3 +847,4 @@ await _firestore.collection('users').doc(uid).update({
 | 2026-06-05 | DelRoos / Claude (Amelia agent) | Story 1.1a — pivot Firestore catalogue scolaire (ADR-015). Ajout 6 collections `filieres`, `niveaux`, `series`, `subjects` (schema migré), `exam_targets`, `derivation_rules` avec flag `isActive: bool` runtime + 3 indexes composites + règles d'accès `read: auth / write: false` (seed via script Python externe Story 1.1b). Updates : Vue d'ensemble (+5 lignes, `subjects` 🟡→🟢 Stream), nouvelle section « Catalogue scolaire » entre `users` et `subscriptions`, tables Indexes + Règles sécurité résumé étendues. Sprint-change-proposal-2026-06-05.md. |
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Ajout section majeure « Règles d'optimisation lecture / écriture (V1) » avant Historique. Inclut : (a) principes fondamentaux Firestore tarification (read facturé par doc + marché Cameroun 3G), (b) table Read patterns recommandés par collection (alignement règle 10.g CLAUDE.md — catalogue snapshots() flag refactor cible vers get() + cache), (c) table Update patterns détaillés `users/{uid}` champ par champ (mutabilité + méthode + validation rules + story), (d) tables catalogue write-readonly + `schools` + `users/{uid}` sous-collections futures, (e) dénormalisations recommandées (schoolName Epic 2+, ranking, chat conversation list), (f) 10 anti-patterns interdits rappel, (g) audit conformité 2026-06-09 snapshot post Story 1.12 (1 non-conformité catalogue snapshots, reste OK). Cohérent CLAUDE.md règle 10. Aucune modification schema existant. |
 | 2026-06-09 | DelRoos / Claude (Amelia agent) | Story 1.11a — catalogue v2 alignement nomenclature officielle (ADR-016). Schema v2 étendu non-breaking : **+3 champs `SerieDoc`** (`pickerMode` enum 5 valeurs + `minSubjects` + `maxSubjects`) + **3 champs `SerieDoc` TVEE-spécifiques** (`professionalSubjectIds` + `relatedProfessionalSubjectIds` + `otherSubjectIds`) + **2 champs `DerivationRuleDoc`** (`obligatorySubjectIds` + `optionalSubjectIds`) + **1 champ `UserDoc`** (`pickedSubjects` optionnel mode panier). Nouveau type `PickerMode` documenté. Nouvelle sous-section « Validation panier polymorphe » avec règle Firestore `pickedSubjectsValid()` (impl Story 1.15). Table Règles de sécurité — résumé : ligne `users/{uid}` annotée pour validation `pickedSubjects`. **AUCUN nouvel index Firestore** (CLAUDE.md règle 9 enforcement explicite : les nouveaux champs sont lus sur docs déjà filtrés par indexes Story 1.1a existants). Defaults safe (`pickerMode == 'derived'` si absent) → rétrocompat Story 1.4 préservée. Sprint-change-proposal-2026-06-09.md. |
+| 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.a — seed initial collection `schools` sur `valide-edu`. Statut `schools/{schoolId}` 🟡 → 🟢 (Vue d'ensemble + section dédiée). Ajout précisions sur seed : ~198 établissements MINESEC + GCE Board V1 couvrant 10 régions officielles (Centre 40, Littoral 38, Ouest 34, Sud-Ouest 20, Nord-Ouest 16, Nord 13, Sud 11, Extrême-Nord 10, Adamaoua 8, Est 8). Convention `schoolId` formalisée (slug `school_<slug_nom>_<slug_ville>` pattern `^school_[a-z0-9_]+$`). Mix subSystem : 136 francophone / 35 both / 27 anglophone. Script Python autonome [`scripts/firebase_seed/seed_schools.py`](../../scripts/firebase_seed/seed_schools.py) calqué sur pattern Story 1.1b (`set(merge=True)`, ADC ou service-account, dry-run, idempotent). Matrice versionnée [`scripts/firebase_seed/data/schools.json`](../../scripts/firebase_seed/data/schools.json). 9 tests pytest sans Firestore live valident la matrice statique. **Aucun nouvel index Firestore** (l'index composite `(isValidated ASC, name ASC)` déjà déployé Story 1.7 suffit pour `school_repository_firestore_impl.searchByPrefix`). Sous-collection `schools/{schoolId}/requests` 🔴 reste à formaliser Story 1.5.c. |
