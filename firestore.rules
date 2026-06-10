@@ -87,6 +87,14 @@ service cloud.firestore {
       // (Story 1.6), schoolId (Story 1.7), updatedAt (a chaque update qui passe
       // la regle).
       //
+      // Story 1.5.d — Denormalisation 4 champs school* en 1 update partiel :
+      // schoolId + schoolCity + schoolRegion + schoolName (ou tous null si
+      // unlink). Pas de validation stricte coherence schoolCity <-> schools/
+      // {schoolId}.city cote rules V1 : un client malveillant ne ferait que
+      // falsifier SON propre profil (pas d'escalade securite, pas d'impact
+      // ranking equipe). Re-evaluable Epic 5 si rankings utilisent ces champs
+      // pour des recompenses (Cloud Function validation post-write a ajouter).
+      //
       // Story 1.4 — Si optedOutSubjects est modifie dans la requete, il doit
       // etre un sous-ensemble de derivedSubjects (validation stricte cote
       // serveur). On utilise diff().affectedKeys() pour skip la validation

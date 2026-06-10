@@ -227,4 +227,60 @@ describe('Firestore rules — users/{uid}', () => {
       ),
     );
   });
+
+  // Story 1.5.d — Denormalisation 4 champs school* en 1 update partiel.
+  // Pas de validation stricte coherence schoolCity <-> schools/{id}.city V1
+  // (un client malveillant ne ferait que falsifier SON propre profil — pas
+  // d'escalade securite, pas d'impact ranking equipe).
+
+  test('(o) update schoolId + schoolCity + schoolRegion + schoolName coherents -> OK', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertSucceeds(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          schoolId: 'school_test_lycee_x',
+          schoolCity: 'Yaounde',
+          schoolRegion: 'Centre',
+          schoolName: 'Lycee Test X',
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
+
+  test('(p) update unlink : 4 champs school* = null coherents -> OK', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    await assertSucceeds(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          schoolId: null,
+          schoolCity: null,
+          schoolRegion: null,
+          schoolName: null,
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
+
+  test('(q) update subSystem reste refuse meme avec school* (immuable Story 1.3) -> KO', async () => {
+    const { db, cleanup } = await createAuthedClient(aliceUid);
+    cleanups.push(cleanup);
+    // Tentative de bypass : payer le bypass schoolCity pour passer subSystem.
+    // La rule immutable Story 1.3 reste preservee Story 1.5.d.
+    await assertFails(
+      updateDoc(
+        doc(db, 'users', aliceUid),
+        {
+          subSystem: 'anglophone',
+          schoolCity: 'Bamenda',
+          updatedAt: serverTimestamp(),
+        },
+      ),
+    );
+  });
 });

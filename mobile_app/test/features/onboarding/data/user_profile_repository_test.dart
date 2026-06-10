@@ -8,6 +8,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/features/onboarding/data/user_profile_repository_firestore_impl.dart';
+import 'package:valide_school/features/onboarding/domain/school.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
 
 void main() {
@@ -202,34 +203,80 @@ void main() {
     });
 
     // ================================================================
-    // Story 1.7 — updateSchoolId()
+    // Story 1.5.d — updateLinkedSchool() : denormalisation 4 champs
+    // (schoolId + schoolCity + schoolRegion + schoolName) en 1 update partiel.
+    // Refactor de updateSchoolId(String?) Story 1.7 -> updateLinkedSchool(School?).
     // ================================================================
 
+    const testSchool = School(
+      schoolId: 'school_bonaberi_dla',
+      name: 'Lycee Bonaberi',
+      city: 'Douala',
+      region: 'Littoral',
+      subSystem: 'francophone',
+      isValidated: true,
+    );
+
     test(
-        '(n) updateSchoolId : doc existant -> met a jour schoolId + updatedAt',
+        '(d) Story 1.5.d — updateLinkedSchool(school) avec uid auth -> 4 champs coherents ecrits',
         () async {
       await firestore.collection('users').doc('delta').set(<String, dynamic>{
         'uid': 'delta',
         'schoolId': null,
+        'schoolCity': null,
+        'schoolRegion': null,
+        'schoolName': null,
       });
       final repo = buildRepo(uid: 'delta');
 
-      final result = await repo.updateSchoolId('school_bonaberi_dla');
+      final result = await repo.updateLinkedSchool(testSchool);
 
       expect(result.isRight(), isTrue);
       final snap = await firestore.collection('users').doc('delta').get();
-      expect(snap.data()!['schoolId'], 'school_bonaberi_dla');
-      expect(snap.data()!['updatedAt'], isNotNull);
+      final data = snap.data()!;
+      expect(data['schoolId'], 'school_bonaberi_dla');
+      expect(data['schoolCity'], 'Douala');
+      expect(data['schoolRegion'], 'Littoral');
+      expect(data['schoolName'], 'Lycee Bonaberi');
+      expect(data['updatedAt'], isNotNull);
     });
 
     test(
-        '(o) updateSchoolId : pas d\'auth -> Left(notAuthenticated)',
+        '(e) Story 1.5.d — updateLinkedSchool(null) avec uid auth -> 4 champs deviennent null (unlink coherent)',
+        () async {
+      // Seed un user deja lie (post Story 1.5.d, 4 champs cosmetiques renseignes).
+      await firestore.collection('users').doc('epsilon').set(<String, dynamic>{
+        'uid': 'epsilon',
+        'schoolId': 'school_bonaberi_dla',
+        'schoolCity': 'Douala',
+        'schoolRegion': 'Littoral',
+        'schoolName': 'Lycee Bonaberi',
+      });
+      final repo = buildRepo(uid: 'epsilon');
+
+      final result = await repo.updateLinkedSchool(null);
+
+      expect(result.isRight(), isTrue);
+      final snap = await firestore.collection('users').doc('epsilon').get();
+      final data = snap.data()!;
+      expect(data['schoolId'], isNull);
+      expect(data['schoolCity'], isNull);
+      expect(data['schoolRegion'], isNull);
+      expect(data['schoolName'], isNull);
+      expect(data['updatedAt'], isNotNull);
+    });
+
+    test(
+        '(f) Story 1.5.d — updateLinkedSchool sans uid -> Left(notAuthenticated) + aucune ecriture',
         () async {
       final repo = buildRepo(uid: null);
 
-      final result = await repo.updateSchoolId('school_xxx');
+      final result = await repo.updateLinkedSchool(testSchool);
 
       expect(result.isLeft(), isTrue);
+      // Aucun doc cree (preconditions getUid() == null -> early return).
+      final all = await firestore.collection('users').get();
+      expect(all.docs, isEmpty);
     });
   });
 }
