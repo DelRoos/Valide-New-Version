@@ -1,11 +1,13 @@
 ---
 story_id: 1.18
-title: Refactor extractif `_Body` x4 → composants partagés + audit responsive screens (dette Epic 1 v2 — Action Items A5 + A7)
+title: Refactor extractif `_Body` x4 → composants partagés + audit responsive screens (dette Epic 1 v2 — Action Items A5 + A7) — V2 corrigée 2026-06-10
+revision: 2 (corrections post-discovery dev exploration)
 epic: 1
 phase: P1 cleanup post Epic 1 v2 (action items rétro epic-1v2-retro-2026-06-10.md)
 status: ready-for-dev
 created: 2026-06-10
-baseline_commit: b451b5f  # merge PR #87 (discipline composants + responsive) — main aligné post Epic 1 v2 COMPLETE + retro + règles 11/6 + catalogue + templates + customize.toml BMAD enhancements
+revised: 2026-06-10  # corrections noms composants + scope A7 après lecture source code
+baseline_commit: 44044df  # merge PR #88 (contexte engine Story 1.18) — main aligné post discipline composants + responsive  # merge PR #87 (discipline composants + responsive) — main aligné post Epic 1 v2 COMPLETE + retro + règles 11/6 + catalogue + templates + customize.toml BMAD enhancements
 estimation: M (~5-6h)
 sprint_change: epic-1v2-retro-2026-06-10.md (action items A5 + A7)
 dependencies:
@@ -31,7 +33,61 @@ sourceArtifacts:
 
 # Story 1.18 — Refactor extractif `_Body` x4 → composants partagés + audit responsive screens
 
-Status: **ready-for-dev**
+Status: **ready-for-dev** (révision 2 — corrections post-discovery 2026-06-10)
+
+## ⚠️ Discovery & révision 2 (2026-06-10)
+
+Lors d'une première exploration du dev de cette story, lecture des ~480 premières lignes de `mobile_app/lib/features/onboarding/presentation/subjects_picker_page.dart` a révélé **2 écarts importants** avec les hypothèses de la révision 1 :
+
+### Écart 1 : `LayoutBuilder` responsive **déjà en place** dans les 4 `_Body`
+
+Lignes 376-378 (`_LegacyOptOutBody`) et 559-561 (`_FreeWithObligatoryBody`) confirment :
+
+```dart
+return LayoutBuilder(
+  builder: (context, constraints) {
+    final isTablet = constraints.maxWidth >= 840;
+    return Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxWidth: isTablet ? 720 : double.infinity),
+        ...
+```
+
+Les Stories 1.15-1.17 ont **déjà** introduit `LayoutBuilder + ConstrainedBox(maxWidth: 720 si tablet)` sans le tracer en Dev Notes. La rétro Epic 1 v2 Challenge 2 a sur-estimé la dette responsive sur ce fichier — **l'AC8 sur `subjects_picker_page` est partiellement déjà résolu** (manque uniquement les golden tests baseline tablet).
+
+→ Conséquence : **AC8 + T8 sont réduits** sur `subjects_picker_page` (golden tests uniquement) et **conservés intégralement** sur `school_picker_page` + `dashboard_page` + `placeholder_tab_page` (audit à faire).
+
+### Écart 2 : Le code utilise `CheckboxListTile` + `ListView.separated`, **pas** `Chip` ni `Grid`
+
+Les noms d'origine du catalogue + de cette story (révision 1) — `ObligatorySubjectChipList`, `OptionalSubjectChipGrid` — étaient basés sur des hypothèses incorrectes. Le code réel utilise :
+
+- `ListView.separated` + `CheckboxListTile` avec `secondary: Icon(LucideIcons.lock)` pour les obligatoires
+- `ListView.separated` + `CheckboxListTile` interactif pour les optionnels
+
+→ Conséquence : **renommer les composants** pour refléter l'implémentation réelle :
+
+| Nom révision 1 (incorrect) | Nom révision 2 (corrigé) | Pourquoi |
+|---|---|---|
+| `ObligatorySubjectChipList` | `ObligatorySubjectCheckboxList` | Le widget réel est `CheckboxListTile`, pas `Chip` |
+| `OptionalSubjectChipGrid` | `OptionalSubjectCheckboxList` | `ListView.separated` (vertical), pas `Grid` |
+| `PickerSectionCard` | `PickerSectionScaffold` (proposition) ou `PickerSectionWrapper` | Pattern réel = LayoutBuilder + Center + ConstrainedBox + Padding + Column scaffold, pas un Card visuel |
+| `PickerValidateBar` | `PickerValidateBar` (inchangé) | Nom toujours correct |
+| `PickerToastFeedback` | **À ne pas créer** — `AppToast.show(context, message, tone: ToastTone.warning)` existant suffit | Découverte ligne 261-265 : pattern déjà unifié via `AppToast` |
+
+→ Conséquence catalogue : `doc/tech/COMPOSANTS-REUTILISABLES.md` § « À extraire — dette Epic 1 v2 » mis à jour avec les noms corrigés (PR de cette révision 2).
+
+→ Conséquence T6 : la sous-tâche « Extraire `PickerToastFeedback` » est **supprimée** (déjà résolue par `AppToast`). T6 devient une simple confirmation dans Completion Notes que les 4 `_Body` consomment bien `AppToast.show(...)` (déjà le cas).
+
+### Décision périmètre révisé
+
+- **5 composants → 4 composants** à créer (skip `PickerToastFeedback`).
+- **AC8 audit responsive sur `subjects_picker_page`** : réduit à « ajouter ≥ 1 golden test baseline tablet » (le `LayoutBuilder` existe déjà).
+- **AC8 sur `school_picker_page` + `dashboard_page` + `placeholder_tab_page`** : conservé intégralement (à auditer).
+- **Estimation** : M (~4-5h) au lieu de ~5-6h (skip T6 PickerToastFeedback + scope T8 réduit).
+
+Les AC + Tasks ci-dessous restent valides avec ces corrections de noms et de scope. Le dev `/bmad-dev-story` (session dédiée fresh-context recommandée) utilisera la révision 2.
+
+---
 
 ## Objectif
 
