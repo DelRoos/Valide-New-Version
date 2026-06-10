@@ -143,10 +143,15 @@ flutter:
     # HelloPage via rootBundle. Hors arb car contient LaTeX `$$...$$` qui
     # casse gen-l10n (Mermaid ok mais $$ confond le parser ICU).
     - assets/sentinel/
-    # Story 0.22 — assets identite visuelle. logo.png (1254x1254 brute,
-    # conserve pour future re-gen haute-res). logo_master.png (1024x1024,
-    # 60.7 KB, palette 256 FASTOCTREE) est consomme par flutter_launcher_icons
-    # ET flutter_native_splash ET la SplashPage Flutter.
+    # Story 0.22 — assets identite visuelle. logo.png = source utilisateur
+    # (taille variable, peut etre re-fournie). logo_master.png (1024x1024,
+    # ~86 KB, palette 256 FASTOCTREE) est genere via upscale Lanczos depuis
+    # logo.png et consomme par flutter_launcher_icons ET flutter_native_splash.
+    # Pour re-generer master apres remplacement de logo.png :
+    #   cd mobile_app
+    #   python -c "from PIL import Image; im = Image.open('assets/images/logo.png'); up = im.resize((1024,1024), Image.Resampling.LANCZOS); q = up.quantize(colors=256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.FLOYDSTEINBERG); q.save('assets/images/logo_master.png', 'PNG', optimize=True)"
+    #   dart run flutter_launcher_icons
+    #   dart run flutter_native_splash:create
     - assets/images/
 
 # ============================================================
