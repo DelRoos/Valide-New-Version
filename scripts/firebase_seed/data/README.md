@@ -228,11 +228,17 @@ Exemples :
   "city": "Douala",                                     // ville
   "region": "Littoral",                                 // une des 10 régions officielles MINESEC
   "subSystem": "both",                                  // "francophone" | "anglophone" | "both"
-  "isValidated": true                                   // true pour toutes les écoles MINESEC officielles
+  "isValidated": true,                                  // true pour toutes les écoles MINESEC officielles
+  "keywords": [                                         // Story 1.5.b — tokens lower-case ASCII pour query arrayContains
+    "bilingue", "bonaberi", "de",                       // tokens du name + city + region (sans accents)
+    "douala", "lb", "littoral", "lycee"                 // + abréviations communes (lb=Lycée Bilingue)
+  ]
 }
 ```
 
-> **Note** : le champ `createdAt: Timestamp` est posé automatiquement par le script de seed (`firestore.SERVER_TIMESTAMP`), pas dans le JSON.
+> **Note `createdAt`** : posé automatiquement par le script de seed (`firestore.SERVER_TIMESTAMP`), pas dans le JSON.
+
+> **Note `keywords[]`** (Story 1.5.b) : régénéré déterministiquement par `_generate_keywords()` à partir de `name + city + region + abréviations communes`. **Ne pas éditer manuellement** — utiliser `python seed_schools.py --regen-keywords` pour propager toute modification de `name/city/region`. Cf. [README.md § Régénérer le champ keywords[]](../README.md#régénérer-le-champ-keywords-story-15b).
 
 ### Régions MINESEC officielles (10)
 

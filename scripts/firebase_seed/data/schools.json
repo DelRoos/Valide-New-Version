@@ -10,7 +10,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "general",
+        "leclerc",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_application_yaounde",
@@ -18,7 +25,16 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "application",
+        "bilingue",
+        "centre",
+        "lb",
+        "lba",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_fustel_de_coulanges_yaounde",
@@ -26,7 +42,16 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "coulanges",
+        "de",
+        "francais",
+        "fustel",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_biyem_assi_yaounde",
@@ -34,7 +59,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "assi",
+        "biyem",
+        "centre",
+        "de",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mendong_yaounde",
@@ -42,7 +75,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "mendong",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nkol_eton_yaounde",
@@ -50,7 +90,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "eton",
+        "lycee",
+        "nkol",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nkolndongo_yaounde",
@@ -58,7 +106,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "nkolndongo",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nkolbisson_yaounde",
@@ -66,7 +121,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "nkolbisson",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nsam_efoulan_yaounde",
@@ -74,7 +136,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "efoulan",
+        "lycee",
+        "nsam",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_tsinga_yaounde",
@@ -82,7 +152,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "tsinga",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_d_etoug_ebe_yaounde",
@@ -90,7 +167,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "ebe",
+        "etoug",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_d_emana_yaounde",
@@ -98,7 +182,13 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "emana",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_d_ekounou_yaounde",
@@ -106,7 +196,13 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "ekounou",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_d_elig_essono_yaounde",
@@ -114,7 +210,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "elig",
+        "essono",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_d_anguissa_yaounde",
@@ -122,7 +225,13 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "anguissa",
+        "centre",
+        "lycee",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mballa_2_yaounde",
@@ -130,7 +239,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "mballa",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_la_cite_verte_yaounde",
@@ -138,7 +254,16 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "cite",
+        "de",
+        "la",
+        "lycee",
+        "verte",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_ngousso_yaounde",
@@ -146,7 +271,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "ngoulemekong",
+        "ngousso",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_minboman_yaounde",
@@ -154,7 +287,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "minboman",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_commercial_yaounde",
@@ -162,7 +302,16 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "commercial",
+        "de",
+        "et",
+        "lycee",
+        "technique",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_nkolbisson_yaounde",
@@ -170,7 +319,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "nkolbisson",
+        "technique",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_jean_tabi_yaounde",
@@ -178,7 +335,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "jean",
+        "tabi",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_francois_xavier_vogt_yaounde",
@@ -186,7 +350,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "francois",
+        "vogt",
+        "xavier",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_de_la_retraite_yaounde",
@@ -194,7 +366,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "de",
+        "la",
+        "retraite",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_adventiste_nlongkak_yaounde",
@@ -202,7 +382,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adventiste",
+        "centre",
+        "college",
+        "de",
+        "nlongkak",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_charles_atangana_yaounde",
@@ -210,7 +398,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "atangana",
+        "centre",
+        "charles",
+        "college",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_mongo_beti_yaounde",
@@ -218,7 +413,14 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "beti",
+        "centre",
+        "college",
+        "mongo",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_vogt_yaounde",
@@ -226,7 +428,13 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "vogt",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_college_de_la_salle_yaounde",
@@ -234,7 +442,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "de",
+        "la",
+        "salle",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_complexe_scolaire_esperance_yaounde",
@@ -242,7 +458,15 @@
       "city": "Yaounde",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "complexe",
+        "de",
+        "esperance",
+        "scolaire",
+        "yaounde"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mbalmayo_mbalmayo",
@@ -250,7 +474,13 @@
       "city": "Mbalmayo",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "mbalmayo"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_mbalmayo_mbalmayo",
@@ -258,7 +488,15 @@
       "city": "Mbalmayo",
       "region": "Centre",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "centre",
+        "de",
+        "lb",
+        "lycee",
+        "mbalmayo"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_mbalmayo_mbalmayo",
@@ -266,7 +504,14 @@
       "city": "Mbalmayo",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "mbalmayo",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_de_obala_obala",
@@ -274,7 +519,12 @@
       "city": "Obala",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "lycee",
+        "obala"
+      ]
     },
     {
       "schoolId": "school_lycee_d_akonolinga_akonolinga",
@@ -282,7 +532,12 @@
       "city": "Akonolinga",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "akonolinga",
+        "centre",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bafia_bafia",
@@ -290,7 +545,13 @@
       "city": "Bafia",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafia",
+        "centre",
+        "de",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_de_ndikinimeki_ndikinimeki",
@@ -298,7 +559,13 @@
       "city": "Ndikinimeki",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "de",
+        "lycee",
+        "ndikinimeki"
+      ]
     },
     {
       "schoolId": "school_college_de_libamba_makak",
@@ -306,7 +573,15 @@
       "city": "Makak",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "college",
+        "de",
+        "evangelique",
+        "libamba",
+        "makak"
+      ]
     },
     {
       "schoolId": "school_college_sacre_coeur_makak",
@@ -314,7 +589,16 @@
       "city": "Makak",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "centre",
+        "coeur",
+        "college",
+        "cosaco",
+        "de",
+        "makak",
+        "sacre"
+      ]
     },
     {
       "schoolId": "school_college_stoll_akono",
@@ -322,7 +606,13 @@
       "city": "Akono",
       "region": "Centre",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "akono",
+        "centre",
+        "college",
+        "stoll"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bonaberi_douala",
@@ -330,7 +620,16 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "bonaberi",
+        "de",
+        "douala",
+        "lb",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_joss_douala",
@@ -338,7 +637,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "douala",
+        "joss",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_d_akwa_douala",
@@ -346,7 +651,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "akwa",
+        "douala",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_d_akwa_nord_douala",
@@ -354,7 +665,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "akwa",
+        "douala",
+        "littoral",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_d_oyack_douala",
@@ -362,7 +680,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "douala",
+        "littoral",
+        "lycee",
+        "oyack"
+      ]
     },
     {
       "schoolId": "school_lycee_cite_palmiers_douala",
@@ -370,7 +694,17 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "cite",
+        "de",
+        "des",
+        "douala",
+        "la",
+        "littoral",
+        "lycee",
+        "palmiers"
+      ]
     },
     {
       "schoolId": "school_lycee_de_new_bell_douala",
@@ -378,7 +712,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bell",
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "new"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nylon_brazzaville_douala",
@@ -386,7 +728,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "brazzaville",
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "nylon"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nylon_ndog_passi_douala",
@@ -394,7 +744,16 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "ndog",
+        "nylon",
+        "passi"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_deido_douala",
@@ -402,7 +761,16 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "deido",
+        "douala",
+        "lb",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_dominique_savio_douala",
@@ -410,7 +778,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "dominique",
+        "douala",
+        "francais",
+        "littoral",
+        "lycee",
+        "savio"
+      ]
     },
     {
       "schoolId": "school_lycee_polyvalent_bonaberi_douala",
@@ -418,7 +794,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bonaberi",
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "polyvalent"
+      ]
     },
     {
       "schoolId": "school_lycee_de_japoma_douala",
@@ -426,7 +810,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "douala",
+        "japoma",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_de_nyalla_douala",
@@ -434,7 +825,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "nyalla"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bojongo_douala",
@@ -442,7 +840,16 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "bojongo",
+        "de",
+        "douala",
+        "lb",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_koumassi_douala",
@@ -450,7 +857,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "douala",
+        "koumassi",
+        "littoral",
+        "lycee",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_bassa_douala",
@@ -458,7 +873,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bassa",
+        "de",
+        "douala",
+        "littoral",
+        "lycee",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_college_alfred_saker_douala",
@@ -466,7 +889,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "alfred",
+        "college",
+        "douala",
+        "littoral",
+        "saker"
+      ]
     },
     {
       "schoolId": "school_college_libermann_douala",
@@ -474,7 +904,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "douala",
+        "libermann",
+        "littoral"
+      ]
     },
     {
       "schoolId": "school_college_evangelique_new_bell_douala",
@@ -482,7 +918,16 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bell",
+        "college",
+        "de",
+        "douala",
+        "evangelique",
+        "littoral",
+        "new"
+      ]
     },
     {
       "schoolId": "school_college_la_conquete_douala",
@@ -490,7 +935,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "conquete",
+        "douala",
+        "la",
+        "littoral"
+      ]
     },
     {
       "schoolId": "school_college_saint_charles_borromee_douala",
@@ -498,7 +950,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "borromee",
+        "charles",
+        "college",
+        "douala",
+        "littoral",
+        "saint"
+      ]
     },
     {
       "schoolId": "school_college_chevreuil_douala",
@@ -506,7 +966,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "chevreuil",
+        "college",
+        "douala",
+        "littoral"
+      ]
     },
     {
       "schoolId": "school_college_de_la_salle_douala",
@@ -514,7 +980,15 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "de",
+        "douala",
+        "la",
+        "littoral",
+        "salle"
+      ]
     },
     {
       "schoolId": "school_college_dauphine_douala",
@@ -522,7 +996,13 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "dauphine",
+        "douala",
+        "littoral"
+      ]
     },
     {
       "schoolId": "school_college_du_levant_douala",
@@ -530,7 +1010,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "douala",
+        "du",
+        "levant",
+        "littoral"
+      ]
     },
     {
       "schoolId": "school_college_andre_malraux_douala",
@@ -538,7 +1025,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "andre",
+        "college",
+        "douala",
+        "littoral",
+        "malraux"
+      ]
     },
     {
       "schoolId": "school_college_saint_michel_douala",
@@ -546,7 +1040,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "douala",
+        "littoral",
+        "michel",
+        "saint"
+      ]
     },
     {
       "schoolId": "school_college_polyvalent_douala",
@@ -554,7 +1055,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "de",
+        "douala",
+        "littoral",
+        "polyvalent"
+      ]
     },
     {
       "schoolId": "school_sacred_heart_college_douala",
@@ -562,7 +1070,14 @@
       "city": "Douala",
       "region": "Littoral",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "douala",
+        "heart",
+        "littoral",
+        "sacred"
+      ]
     },
     {
       "schoolId": "school_lycee_d_edea_edea",
@@ -570,7 +1085,12 @@
       "city": "Edea",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "edea",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_edea_edea",
@@ -578,7 +1098,14 @@
       "city": "Edea",
       "region": "Littoral",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "edea",
+        "lb",
+        "littoral",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_edea_edea",
@@ -586,7 +1113,13 @@
       "city": "Edea",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "edea",
+        "littoral",
+        "lycee",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_du_manengouba_nkongsamba",
@@ -594,7 +1127,14 @@
       "city": "Nkongsamba",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "du",
+        "littoral",
+        "lycee",
+        "manengouba",
+        "nkongsamba"
+      ]
     },
     {
       "schoolId": "school_college_jeanne_d_arc_nkongsamba",
@@ -602,7 +1142,14 @@
       "city": "Nkongsamba",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "arc",
+        "college",
+        "jeanne",
+        "littoral",
+        "nkongsamba"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mbanga_mbanga",
@@ -610,7 +1157,13 @@
       "city": "Mbanga",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "littoral",
+        "lycee",
+        "mbanga"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_mbanga_mbanga",
@@ -618,7 +1171,14 @@
       "city": "Mbanga",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "littoral",
+        "lycee",
+        "mbanga",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_college_saint_jean_mbanga_mbanga",
@@ -626,7 +1186,15 @@
       "city": "Mbanga",
       "region": "Littoral",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "de",
+        "jean",
+        "littoral",
+        "mbanga",
+        "saint"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_bafoussam_bafoussam",
@@ -634,7 +1202,14 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "classique",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bafoussam_bafoussam",
@@ -642,7 +1217,15 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_bafoussam_bafoussam",
@@ -650,7 +1233,14 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "de",
+        "lycee",
+        "ouest",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_baleng_bafoussam",
@@ -658,7 +1248,16 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "baleng",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_banengo_bafoussam",
@@ -666,7 +1265,15 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "banengo",
+        "de",
+        "lycee",
+        "ouest",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_de_ndiengdam_bafoussam",
@@ -674,7 +1281,14 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "de",
+        "lycee",
+        "ndiengdam",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_college_reunification_tankou_bafoussam",
@@ -682,7 +1296,16 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "college",
+        "de",
+        "la",
+        "ouest",
+        "reunification",
+        "tankou"
+      ]
     },
     {
       "schoolId": "school_college_martin_luther_king_bafoussam",
@@ -690,7 +1313,17 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafoussam",
+        "bilingue",
+        "college",
+        "king",
+        "luther",
+        "martin",
+        "ouest",
+        "polyvalent"
+      ]
     },
     {
       "schoolId": "school_college_saint_thomas_aquin_bafoussam",
@@ -698,7 +1331,15 @@
       "city": "Bafoussam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "aquin",
+        "bafoussam",
+        "college",
+        "ouest",
+        "saint",
+        "thomas"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_dschang_dschang",
@@ -706,7 +1347,14 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "classique",
+        "de",
+        "dschang",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_dschang_dschang",
@@ -714,7 +1362,15 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "dschang",
+        "lb",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_dschang_dschang",
@@ -722,7 +1378,14 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "dschang",
+        "lycee",
+        "ouest",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_college_notre_dame_dschang_dschang",
@@ -730,7 +1393,15 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "dame",
+        "de",
+        "dschang",
+        "notre",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_college_albert_camus_dschang",
@@ -738,7 +1409,14 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "albert",
+        "camus",
+        "college",
+        "dschang",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_college_la_renaissance_dschang",
@@ -746,7 +1424,14 @@
       "city": "Dschang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "dschang",
+        "la",
+        "ouest",
+        "renaissance"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bandjoun_bandjoun",
@@ -754,7 +1439,13 @@
       "city": "Bandjoun",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bandjoun",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_yom_bandjoun",
@@ -762,7 +1453,16 @@
       "city": "Bandjoun",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bandjoun",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "ouest",
+        "yom"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_bandjoun_bandjoun",
@@ -770,7 +1470,14 @@
       "city": "Bandjoun",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bandjoun",
+        "de",
+        "lycee",
+        "ouest",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bafang_bafang",
@@ -778,7 +1485,13 @@
       "city": "Bafang",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafang",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_foumban_foumban",
@@ -786,7 +1499,13 @@
       "city": "Foumban",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "foumban",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_sultan_njoya_foumban",
@@ -794,7 +1513,18 @@
       "city": "Foumban",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "foumban",
+        "ibrahim",
+        "lb",
+        "lycee",
+        "njoya",
+        "ouest",
+        "sultan"
+      ]
     },
     {
       "schoolId": "school_college_de_la_paix_foumban",
@@ -802,7 +1532,15 @@
       "city": "Foumban",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "de",
+        "foumban",
+        "la",
+        "ouest",
+        "paix"
+      ]
     },
     {
       "schoolId": "school_lycee_de_foumbot_foumbot",
@@ -810,7 +1548,13 @@
       "city": "Foumbot",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "foumbot",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_foumbot_foumbot",
@@ -818,7 +1562,15 @@
       "city": "Foumbot",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "foumbot",
+        "lb",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mbouda_mbouda",
@@ -826,7 +1578,13 @@
       "city": "Mbouda",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "lycee",
+        "mbouda",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_mbouda_mbouda",
@@ -834,7 +1592,15 @@
       "city": "Mbouda",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "mbouda",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bangangte_bangangte",
@@ -842,7 +1608,13 @@
       "city": "Bangangte",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bangangte",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bangangte_bangangte",
@@ -850,7 +1622,15 @@
       "city": "Bangangte",
       "region": "Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bangangte",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_baham_baham",
@@ -858,7 +1638,13 @@
       "city": "Baham",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "baham",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bayangam_bayangam",
@@ -866,7 +1652,13 @@
       "city": "Bayangam",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bayangam",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bamendjou_bamendjou",
@@ -874,7 +1666,13 @@
       "city": "Bamendjou",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamendjou",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_bandenkop_bandenkop",
@@ -882,7 +1680,13 @@
       "city": "Bandenkop",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bandenkop",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_batie_batie",
@@ -890,7 +1694,13 @@
       "city": "Batie",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "batie",
+        "de",
+        "lycee",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_lycee_de_penka_michel_penka_michel",
@@ -898,7 +1708,14 @@
       "city": "Penka-Michel",
       "region": "Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "lycee",
+        "michel",
+        "ouest",
+        "penka"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bertoua_bertoua",
@@ -906,7 +1723,15 @@
       "city": "Bertoua",
       "region": "Est",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bertoua",
+        "bilingue",
+        "de",
+        "est",
+        "lb",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_scientifique_bertoua_bertoua",
@@ -914,7 +1739,14 @@
       "city": "Bertoua",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bertoua",
+        "de",
+        "est",
+        "lycee",
+        "scientifique"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_bertoua_bertoua",
@@ -922,7 +1754,14 @@
       "city": "Bertoua",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bertoua",
+        "de",
+        "est",
+        "lycee",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_college_adventiste_bertoua_bertoua",
@@ -930,7 +1769,14 @@
       "city": "Bertoua",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adventiste",
+        "bertoua",
+        "college",
+        "de",
+        "est"
+      ]
     },
     {
       "schoolId": "school_college_teerenstra_bertoua",
@@ -938,7 +1784,15 @@
       "city": "Bertoua",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bertoua",
+        "catholique",
+        "college",
+        "confessionnel",
+        "est",
+        "teerenstra"
+      ]
     },
     {
       "schoolId": "school_lycee_de_batouri_batouri",
@@ -946,7 +1800,13 @@
       "city": "Batouri",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "batouri",
+        "de",
+        "est",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_lycee_de_yokadouma_yokadouma",
@@ -954,7 +1814,13 @@
       "city": "Yokadouma",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "est",
+        "lycee",
+        "yokadouma"
+      ]
     },
     {
       "schoolId": "school_lycee_d_abong_mbang_abong_mbang",
@@ -962,7 +1828,13 @@
       "city": "Abong-Mbang",
       "region": "Est",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "abong",
+        "est",
+        "lycee",
+        "mbang"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_ebolowa_ebolowa",
@@ -970,7 +1842,15 @@
       "city": "Ebolowa",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "classique",
+        "ebolowa",
+        "et",
+        "lycee",
+        "moderne",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_ebolowa_ebolowa",
@@ -978,7 +1858,14 @@
       "city": "Ebolowa",
       "region": "Sud",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "ebolowa",
+        "lb",
+        "lycee",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_ebolowa_ebolowa",
@@ -986,7 +1873,13 @@
       "city": "Ebolowa",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ebolowa",
+        "lycee",
+        "sud",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_ebolowa_rural_ebolowa",
@@ -994,7 +1887,13 @@
       "city": "Ebolowa",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ebolowa",
+        "lycee",
+        "rural",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_college_bonneau_ebolowa",
@@ -1002,7 +1901,13 @@
       "city": "Ebolowa",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bonneau",
+        "college",
+        "ebolowa",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_de_kribi_kribi",
@@ -1010,7 +1915,13 @@
       "city": "Kribi",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "kribi",
+        "lycee",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_kribi_kribi",
@@ -1018,7 +1929,15 @@
       "city": "Kribi",
       "region": "Sud",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "kribi",
+        "lb",
+        "lycee",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_kribi_kribi",
@@ -1026,7 +1945,14 @@
       "city": "Kribi",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "kribi",
+        "lycee",
+        "sud",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_sangmelima_sangmelima",
@@ -1034,7 +1960,13 @@
       "city": "Sangmelima",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "lycee",
+        "sangmelima",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_sangmelima_sangmelima",
@@ -1042,7 +1974,15 @@
       "city": "Sangmelima",
       "region": "Sud",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "sangmelima",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_d_ambam_ambam",
@@ -1050,7 +1990,12 @@
       "city": "Ambam",
       "region": "Sud",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ambam",
+        "lycee",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_garoua_garoua",
@@ -1058,7 +2003,16 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "classique",
+        "de",
+        "et",
+        "garoua",
+        "lycee",
+        "moderne",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_garoua_garoua",
@@ -1066,7 +2020,15 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "garoua",
+        "lb",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_garoua_garoua",
@@ -1074,7 +2036,14 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "garoua",
+        "lycee",
+        "nord",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_polyvalent_garoua_garoua",
@@ -1082,7 +2051,14 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "garoua",
+        "lycee",
+        "nord",
+        "polyvalent"
+      ]
     },
     {
       "schoolId": "school_lycee_djamboutou_garoua_garoua",
@@ -1090,7 +2066,14 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "djamboutou",
+        "garoua",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_bibemire_garoua",
@@ -1098,7 +2081,15 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bibemire",
+        "de",
+        "garoua",
+        "lycee",
+        "nord",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_complexe_bilingue_aman_saaly_garoua",
@@ -1106,7 +2097,18 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "aly",
+        "aman",
+        "bilingue",
+        "complexe",
+        "garoua",
+        "lamido",
+        "nord",
+        "sa",
+        "scolaire"
+      ]
     },
     {
       "schoolId": "school_college_kentou_michel_garoua",
@@ -1114,7 +2116,14 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "garoua",
+        "kentou",
+        "michel",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_college_sainte_therese_garoua",
@@ -1122,7 +2131,14 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "garoua",
+        "nord",
+        "sainte",
+        "therese"
+      ]
     },
     {
       "schoolId": "school_college_les_hirondelles_garoua",
@@ -1130,7 +2146,16 @@
       "city": "Garoua",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "college",
+        "et",
+        "garoua",
+        "hirondelles",
+        "les",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_guider_guider",
@@ -1138,7 +2163,13 @@
       "city": "Guider",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "guider",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_poli_poli",
@@ -1146,7 +2177,13 @@
       "city": "Poli",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "lycee",
+        "nord",
+        "poli"
+      ]
     },
     {
       "schoolId": "school_lycee_de_tcholire_tcholire",
@@ -1154,7 +2191,13 @@
       "city": "Tcholire",
       "region": "Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "lycee",
+        "nord",
+        "tcholire"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_maroua_maroua",
@@ -1162,7 +2205,16 @@
       "city": "Maroua",
       "region": "Extreme-Nord",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "extreme",
+        "lb",
+        "lycee",
+        "maroua",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_maroua_maroua",
@@ -1170,7 +2222,16 @@
       "city": "Maroua",
       "region": "Extreme-Nord",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "extreme",
+        "lycee",
+        "maroua",
+        "nord",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_maroua_maroua",
@@ -1178,7 +2239,15 @@
       "city": "Maroua",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "classique",
+        "de",
+        "extreme",
+        "lycee",
+        "maroua",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_kongola_maroua",
@@ -1186,7 +2255,15 @@
       "city": "Maroua",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "extreme",
+        "kongola",
+        "lycee",
+        "maroua",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_domayo_maroua",
@@ -1194,7 +2271,15 @@
       "city": "Maroua",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "domayo",
+        "extreme",
+        "lycee",
+        "maroua",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mokolo_mokolo",
@@ -1202,7 +2287,14 @@
       "city": "Mokolo",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "extreme",
+        "lycee",
+        "mokolo",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_mora_mora",
@@ -1210,7 +2302,14 @@
       "city": "Mora",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "extreme",
+        "lycee",
+        "mora",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_de_yagoua_yagoua",
@@ -1218,7 +2317,14 @@
       "city": "Yagoua",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "extreme",
+        "lycee",
+        "nord",
+        "yagoua"
+      ]
     },
     {
       "schoolId": "school_lycee_de_kaele_kaele",
@@ -1226,7 +2332,14 @@
       "city": "Kaele",
       "region": "Extreme-Nord",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "de",
+        "extreme",
+        "kaele",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_kousseri_kousseri",
@@ -1234,7 +2347,16 @@
       "city": "Kousseri",
       "region": "Extreme-Nord",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "de",
+        "extreme",
+        "kousseri",
+        "lb",
+        "lycee",
+        "nord"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_ngaoundere_ngaoundere",
@@ -1242,7 +2364,14 @@
       "city": "Ngaoundere",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "classique",
+        "de",
+        "lycee",
+        "ngaoundere"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_ngaoundere_ngaoundere",
@@ -1250,7 +2379,15 @@
       "city": "Ngaoundere",
       "region": "Adamaoua",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "ngaoundere"
+      ]
     },
     {
       "schoolId": "school_lycee_technique_ngaoundere_ngaoundere",
@@ -1258,7 +2395,14 @@
       "city": "Ngaoundere",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "de",
+        "lycee",
+        "ngaoundere",
+        "technique"
+      ]
     },
     {
       "schoolId": "school_college_de_mazenod_ngaoundere",
@@ -1266,7 +2410,14 @@
       "city": "Ngaoundere",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "college",
+        "de",
+        "mazenod",
+        "ngaoundere"
+      ]
     },
     {
       "schoolId": "school_lycee_de_tibati_tibati",
@@ -1274,7 +2425,13 @@
       "city": "Tibati",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "de",
+        "lycee",
+        "tibati"
+      ]
     },
     {
       "schoolId": "school_lycee_de_meiganga_meiganga",
@@ -1282,7 +2439,13 @@
       "city": "Meiganga",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "de",
+        "lycee",
+        "meiganga"
+      ]
     },
     {
       "schoolId": "school_lycee_de_tignere_tignere",
@@ -1290,7 +2453,13 @@
       "city": "Tignere",
       "region": "Adamaoua",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "de",
+        "lycee",
+        "tignere"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bankim_bankim",
@@ -1298,7 +2467,15 @@
       "city": "Bankim",
       "region": "Adamaoua",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "adamaoua",
+        "bankim",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee"
+      ]
     },
     {
       "schoolId": "school_ghs_buea_town_buea",
@@ -1306,7 +2483,17 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "buea",
+        "ghs",
+        "government",
+        "high",
+        "ouest",
+        "school",
+        "sud",
+        "town"
+      ]
     },
     {
       "schoolId": "school_ghs_buea_bokwango_buea",
@@ -1314,7 +2501,17 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bokwango",
+        "buea",
+        "ghs",
+        "government",
+        "high",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gbhs_muea_buea",
@@ -1322,7 +2519,18 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingual",
+        "buea",
+        "gbhs",
+        "government",
+        "high",
+        "muea",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_buea_buea",
@@ -1330,7 +2538,16 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingue",
+        "buea",
+        "de",
+        "lb",
+        "lycee",
+        "ouest",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_lycee_classique_buea_buea",
@@ -1338,7 +2555,15 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "francophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "buea",
+        "classique",
+        "de",
+        "lycee",
+        "ouest",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_saker_baptist_college_buea",
@@ -1346,7 +2571,15 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "baptist",
+        "buea",
+        "college",
+        "ouest",
+        "saker",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_summerset_school_buea",
@@ -1354,7 +2587,14 @@
       "city": "Buea",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "buea",
+        "ouest",
+        "school",
+        "sud",
+        "summerset"
+      ]
     },
     {
       "schoolId": "school_ghs_limbe_limbe",
@@ -1362,7 +2602,16 @@
       "city": "Limbe",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "limbe",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gbhs_limbe_limbe",
@@ -1370,7 +2619,17 @@
       "city": "Limbe",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingual",
+        "gbhs",
+        "government",
+        "high",
+        "limbe",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_baptist_high_school_limbe_limbe",
@@ -1378,7 +2637,15 @@
       "city": "Limbe",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "baptist",
+        "high",
+        "limbe",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gbhs_kumba_kumba",
@@ -1386,7 +2653,17 @@
       "city": "Kumba",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingual",
+        "gbhs",
+        "government",
+        "high",
+        "kumba",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_ghs_kumba_kumba",
@@ -1394,7 +2671,16 @@
       "city": "Kumba",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "kumba",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_divine_high_school_kumba_kumba",
@@ -1402,7 +2688,15 @@
       "city": "Kumba",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "divine",
+        "high",
+        "kumba",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_ghs_tiko_tiko",
@@ -1410,7 +2704,16 @@
       "city": "Tiko",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "ouest",
+        "school",
+        "sud",
+        "tiko"
+      ]
     },
     {
       "schoolId": "school_gtbhs_tiko_tiko",
@@ -1418,7 +2721,18 @@
       "city": "Tiko",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingual",
+        "government",
+        "gtbhs",
+        "high",
+        "ouest",
+        "school",
+        "sud",
+        "technical",
+        "tiko"
+      ]
     },
     {
       "schoolId": "school_ghs_mamfe_mamfe",
@@ -1426,7 +2740,16 @@
       "city": "Mamfe",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "mamfe",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gbhs_mamfe_mamfe",
@@ -1434,7 +2757,17 @@
       "city": "Mamfe",
       "region": "Sud-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bilingual",
+        "gbhs",
+        "government",
+        "high",
+        "mamfe",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_st_anthony_banya_mamfe",
@@ -1442,7 +2775,18 @@
       "city": "Mamfe",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "anthony",
+        "banya",
+        "college",
+        "mamfe",
+        "of",
+        "ouest",
+        "padua",
+        "saint",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gth_mamfe_mamfe",
@@ -1450,7 +2794,17 @@
       "city": "Mamfe",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "government",
+        "gths",
+        "high",
+        "mamfe",
+        "ouest",
+        "school",
+        "sud",
+        "technical"
+      ]
     },
     {
       "schoolId": "school_ghs_mundemba_mundemba",
@@ -1458,7 +2812,16 @@
       "city": "Mundemba",
       "region": "Sud-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "mundemba",
+        "ouest",
+        "school",
+        "sud"
+      ]
     },
     {
       "schoolId": "school_gbhs_downtown_bamenda_bamenda",
@@ -1466,7 +2829,18 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "bilingual",
+        "downtown",
+        "gbhs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_gbhs_bamenda_bamenda",
@@ -1474,7 +2848,17 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "bilingual",
+        "gbhs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_ghs_bamenda_bamenda",
@@ -1482,7 +2866,16 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "ghs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_pss_mankon_bamenda",
@@ -1490,7 +2883,17 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "mankon",
+        "nord",
+        "ouest",
+        "presbyterian",
+        "pss",
+        "school",
+        "secondary"
+      ]
     },
     {
       "schoolId": "school_sacred_heart_college_mankon_bamenda",
@@ -1498,7 +2901,16 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "college",
+        "heart",
+        "mankon",
+        "nord",
+        "ouest",
+        "sacred"
+      ]
     },
     {
       "schoolId": "school_baptist_high_school_bamenda_bamenda",
@@ -1506,7 +2918,15 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "baptist",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_lycee_bilingue_bamenda_bamenda",
@@ -1514,7 +2934,16 @@
       "city": "Bamenda",
       "region": "Nord-Ouest",
       "subSystem": "both",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bamenda",
+        "bilingue",
+        "de",
+        "lb",
+        "lycee",
+        "nord",
+        "ouest"
+      ]
     },
     {
       "schoolId": "school_ghs_wum_wum",
@@ -1522,7 +2951,16 @@
       "city": "Wum",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school",
+        "wum"
+      ]
     },
     {
       "schoolId": "school_ghs_bafut_bafut",
@@ -1530,7 +2968,16 @@
       "city": "Bafut",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bafut",
+        "ghs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_chs_bambui_bambui",
@@ -1538,7 +2985,16 @@
       "city": "Bambui",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "bambui",
+        "chs",
+        "comprehensive",
+        "high",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_ghs_ndop_ndop",
@@ -1546,7 +3002,16 @@
       "city": "Ndop",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "ndop",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_st_marys_ndop_ndop",
@@ -1554,7 +3019,19 @@
       "city": "Ndop",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "catholic",
+        "chs",
+        "comprehensive",
+        "high",
+        "mary",
+        "ndop",
+        "nord",
+        "ouest",
+        "saint",
+        "school"
+      ]
     },
     {
       "schoolId": "school_ghs_nkambe_nkambe",
@@ -1562,7 +3039,16 @@
       "city": "Nkambe",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "nkambe",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_ghs_kumbo_kumbo",
@@ -1570,7 +3056,16 @@
       "city": "Kumbo",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "ghs",
+        "government",
+        "high",
+        "kumbo",
+        "nord",
+        "ouest",
+        "school"
+      ]
     },
     {
       "schoolId": "school_pss_kumbo_kumbo",
@@ -1578,7 +3073,16 @@
       "city": "Kumbo",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "kumbo",
+        "nord",
+        "ouest",
+        "presbyterian",
+        "pss",
+        "school",
+        "secondary"
+      ]
     },
     {
       "schoolId": "school_ghs_fungom_weh_fungom",
@@ -1586,7 +3090,17 @@
       "city": "Fungom",
       "region": "Nord-Ouest",
       "subSystem": "anglophone",
-      "isValidated": true
+      "isValidated": true,
+      "keywords": [
+        "fungom",
+        "ghs",
+        "government",
+        "high",
+        "nord",
+        "ouest",
+        "school",
+        "weh"
+      ]
     }
   ]
 }

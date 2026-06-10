@@ -1,4 +1,5 @@
 // Story 1.7 — Modele Ecole (catalogue schools/{schoolId}).
+// Story 1.5.b — Ajout champ keywords[] pour la recherche arrayContains.
 //
 // Domain pur : pas d'import Firebase. Cf. doc/partage/BASE-DE-DONNEES.md
 // § schools/{schoolId}.
@@ -13,6 +14,7 @@ class School extends Equatable {
     required this.region,
     required this.subSystem,
     required this.isValidated,
+    this.keywords = const <String>[],
   });
 
   final String schoolId;
@@ -25,7 +27,12 @@ class School extends Equatable {
 
   final bool isValidated;
 
+  /// Story 1.5.b — tokens lower-case sans accents utilises pour la query
+  /// `arrayContains`. Genere cote seed Python (`_generate_keywords`). Vide par
+  /// defaut pour retro-compat des docs Story 1.7 anterieurs au re-seed 1.5.b.
+  final List<String> keywords;
+
   @override
   List<Object?> get props =>
-      [schoolId, name, city, region, subSystem, isValidated];
+      [schoolId, name, city, region, subSystem, isValidated, keywords];
 }
