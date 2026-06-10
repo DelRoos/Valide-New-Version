@@ -31,29 +31,27 @@ class DevAuditService {
   final FirebaseFirestore _firestore;
   final SharedPreferences _prefs;
 
-  /// Vide SharedPreferences + cache Firestore + sign out FirebaseAuth, puis
-  /// re-signInAnonymously immediatement pour que les rules Firestore
-  /// (qui exigent `request.auth != null` pour lire le catalogue) ne
-  /// refusent pas le premier read au reboot. Sans ce re-sign-in, l'app
-  /// retombe sur `CatalogueWaitingPage` car `hasNonEmptyCatalogue()` echoue
-  /// sur permission-denied.
+  /// Vide SharedPreferences + sign out FirebaseAuth, puis re-signInAnonymously
+  /// immediatement pour que les rules Firestore (qui exigent
+  /// `request.auth != null` pour lire le catalogue) ne refusent pas le premier
+  /// read. Sans ce re-sign-in, l'app retombe sur `CatalogueWaitingPage` car
+  /// `hasNonEmptyCatalogue()` echoue sur permission-denied.
   ///
   /// Le doc users/{uid} de l'eventuel compte precedent reste en place —
   /// le re-sign-in cree un NOUVEL uid anonyme. Utile pour tester le parcours
   /// onboarding depuis l'etat « visiteur frais » sans toucher au compte.
+  ///
+  /// NB : `firestore.terminate()` + `firestore.clearPersistence()` ont ete
+  /// volontairement retires. Apres terminate, toute query suivante throw
+  /// jusqu'au restart de l'app (cf. Firestore SDK doc) — incompatible avec
+  /// un audit interactif "clear puis re-test". Le nouvel uid anonyme suffit :
+  /// les rules `request.auth.uid` empechent de lire le cache offline du
+  /// precedent user, donc pas de fuite.
   Future<void> clearLocalAndSignOut() async {
     AppLogger.i('[DEV] clearLocalAndSignOut start');
     await logPerf(
       'dev.prefs.clear',
       () => _prefs.clear(),
-    );
-    await logPerf(
-      'dev.firestore.terminate',
-      () => _firestore.terminate(),
-    );
-    await logPerf(
-      'dev.firestore.clearPersistence',
-      () => _firestore.clearPersistence(),
     );
     await logPerf(
       'dev.auth.signOut',

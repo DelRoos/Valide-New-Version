@@ -158,14 +158,23 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
     final navigator = Navigator.of(context);
     try {
       await op(_buildService());
+      // INVALIDATION CRITIQUE : prefs.clear() vide le storage mais les
+      // Notifier Riverpod gardent leur state in-memory (build() ne re-lit
+      // les prefs qu'une fois au demarrage). Sans invalidate, le router
+      // redirect voit l'ancien subSystem en memoire -> renvoie a /filiere
+      // au lieu de /onboarding/subsystem.
+      // 4 providers consommes par evaluateRedirect (cf. app_router.dart:58) :
+      ref.invalidate(subSystemNotifierProvider);
+      ref.invalidate(onboardingFlowProvider);
+      ref.invalidate(profileCompletionProvider);
+      // catalogue check garde son etat (le catalogue Firestore est intact).
       messenger.showSnackBar(
         SnackBar(content: Text('$label OK')),
       );
       if (mounted) {
         navigator.pop();
-        // Apres clear/delete : redirect / pour redemarrer le flow onboarding.
-        // GoRouter.refreshListenable re-evalue le redirect via les providers
-        // qui changent (subSystem -> null apres prefs.clear()).
+        // Apres clear/delete + invalidate : redirect / pour redemarrer le
+        // flow onboarding from scratch (subSystem == null -> /onboarding/subsystem).
         GoRouter.of(context).go('/');
       }
     } catch (e) {
