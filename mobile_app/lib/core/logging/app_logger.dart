@@ -15,7 +15,7 @@ class AppLogger {
     printer: PrettyPrinter(
       methodCount: 0,
       errorMethodCount: 5,
-      colors: false,
+      colors: true,
       printEmojis: false,
     ),
     level: resolveLevel(isRelease: kReleaseMode),
