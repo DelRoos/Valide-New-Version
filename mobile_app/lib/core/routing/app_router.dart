@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../config/feature_flags.dart';
 import '../logging/perf_logger.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
@@ -16,6 +17,7 @@ import '../../features/onboarding/domain/onboarding_flow_state.dart';
 import '../../features/onboarding/domain/profile_completion_state.dart';
 import '../../features/onboarding/presentation/filiere_choice_page.dart';
 import '../../features/onboarding/presentation/niveau_choice_page.dart';
+import '../../features/onboarding/presentation/pages/onboarding_shell.dart';
 import '../../features/onboarding/presentation/profile_recap_page.dart';
 import '../../features/onboarding/presentation/account_creation_page.dart';
 import '../../features/onboarding/presentation/school_picker_page.dart';
@@ -61,6 +63,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       hasSubSystem: ref.read(subSystemNotifierProvider) != null,
       profileCompletion: ref.read(profileCompletionProvider),
       flowState: ref.read(onboardingFlowProvider),
+      useNewOnboardingFlow: FeatureFlags.useNewOnboardingFlow,
     ),
     routes: [
       GoRoute(
@@ -110,6 +113,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/onboarding/subsystem',
         builder: (context, state) => const SubsystemChoicePage(),
+      ),
+      // Story E1bis-2 — nouveau flow onboarding refonte (10 etapes). Les deux
+      // routes pointent vers le meme OnboardingShell qui route en interne par
+      // currentStep du OnboardingNotifier (E1bis-1). La distinction d'URL est
+      // cosmetique (debug, deep link). Le redirect ci-dessus aiguille vers
+      // /onboarding/sub-system-v2 quand FeatureFlags.useNewOnboardingFlow=true.
+      GoRoute(
+        path: '/onboarding/sub-system-v2',
+        builder: (context, state) => const OnboardingShell(),
+      ),
+      GoRoute(
+        path: '/onboarding/hero',
+        builder: (context, state) => const OnboardingShell(),
       ),
       // Story 1.3 — flow profil scolaire 3 etapes (Filiere -> Niveau ->
       // Serie -> Recap). Chaque page a son propre guard de coherence (si
@@ -247,6 +263,7 @@ String? evaluateRedirect({
   required bool hasSubSystem,
   required AsyncValue<ProfileCompletionState> profileCompletion,
   required OnboardingFlowState flowState,
+  bool useNewOnboardingFlow = false,
 }) {
   // 1. Bypass inconditionnel : routes systeme + debug.
   if (location == '/' ||
@@ -263,6 +280,16 @@ String? evaluateRedirect({
       error: (_, _) => false,
     );
     if (!catalogueOk) return '/catalogue-waiting';
+  }
+
+  // 2.bis Story E1bis-2 — feature flag refonte onboarding.
+  // Si flag ON, force l'aiguillage vers le nouveau flow E1bis a partir de
+  // la route legacy Epic 1. Anti-replay symetrique pour la nouvelle route.
+  if (useNewOnboardingFlow && location == '/onboarding/subsystem') {
+    return '/onboarding/sub-system-v2';
+  }
+  if (hasSubSystem && location == '/onboarding/sub-system-v2') {
+    return '/';
   }
 
   // 3. Story 1.2 — anti-replay sur subsystem-choice.

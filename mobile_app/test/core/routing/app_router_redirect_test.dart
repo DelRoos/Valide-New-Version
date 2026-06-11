@@ -269,4 +269,50 @@ void main() {
       },
     );
   });
+
+  group('evaluateRedirect — Story E1bis-2 feature flag refonte onboarding', () {
+    test(
+        '(e1bis-a) flag ON + /onboarding/subsystem -> /onboarding/sub-system-v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/subsystem',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: false,
+        profileCompletion:
+            _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/sub-system-v2');
+    });
+
+    test(
+        '(e1bis-b) flag ON + hasSubSystem + /onboarding/sub-system-v2 -> /'
+        ' (anti-replay)', () {
+      final result = evaluateRedirect(
+        location: '/onboarding/sub-system-v2',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.filiereMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/');
+    });
+
+    test(
+        '(e1bis-c) flag OFF + /onboarding/subsystem -> null (preservation Epic 1)',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/subsystem',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: false,
+        profileCompletion:
+            _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: false,
+      );
+      expect(result, isNull);
+    });
+  });
 }

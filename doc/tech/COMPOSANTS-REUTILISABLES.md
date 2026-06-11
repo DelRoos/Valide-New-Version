@@ -709,6 +709,49 @@ PickerValidateBar(
 
 ---
 
+### OnboardingCtaFooter
+
+**Path** : `lib/core/widgets/onboarding/onboarding_cta_footer.dart`
+**Story d'origine** : E1bis-2 — extrait pour les pages onboarding refonte (E1bis-2 à E1bis-7)
+**Catégorie** : `onboarding`
+**Responsive** : `phone + tablet` (composant pur — la page gère la contrainte de largeur)
+
+**Quand l'utiliser** :
+- Footer CTA sticky bas de tout écran du flow onboarding refonte (steps 0 à 9).
+- Pose en `Scaffold.bottomNavigationBar` pour rester ancré bas avec safe area.
+
+**Props** :
+- `label: String` — Texte du CTA, déjà localisé par le caller.
+- `onPressed: VoidCallback?` — `null` = bouton disabled (visuel + non interactif).
+- `secondaryAction: Widget?` — Action secondaire optionnelle rendue AU-DESSUS du CTA (ex. `TextButton("Passer pour l'instant")` aux steps 7 / 8).
+
+**Comportement** :
+- Compose `AppButton.primary` (Story 0.13) en pleine largeur via `SizedBox(width: double.infinity)`.
+- `BoxShadow` doux vers le haut (`Offset(0, -4)`, blur 12) + bg `AppColors.bg` pour démarquer du contenu scrollable.
+- `SafeArea(top: false)` interne — protège uniquement le bord inférieur (notch / home indicator iOS).
+- Pas de Riverpod, pas d'i18n interne.
+
+**Exemple** :
+
+```dart
+Scaffold(
+  body: SingleChildScrollView(...),
+  bottomNavigationBar: OnboardingCtaFooter(
+    label: l10n.onboardingContinue,
+    onPressed: state.subSystem != null ? notifier.next : null,
+    secondaryAction: TextButton(
+      onPressed: notifier.skipPhone,
+      child: const Text('Passer pour l\'instant'),
+    ),
+  ),
+)
+```
+
+**Tests** :
+- `test/core/widgets/onboarding/onboarding_cta_footer_test.dart` — 3 interactions (tap propage callback, `onPressed: null` → AppButton disabled, secondaryAction rendu au-dessus du CTA) + 3 goldens phone (enabled / disabled / avec secondaryAction).
+
+---
+
 ## Historique des composants extraits (post-création)
 
 > **✅ Résorbée Story 1.18 (2026-06-10)** — voir [Catalogue actuel](#catalogue-actuel) ci-dessus. Les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` ont été supprimés de `subjects_picker_page.dart` (1309 → 621 lignes, -52%) et remplacés par compositions de 4 composants extraits (`PickerSectionScaffold` + `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerValidateBar`) + un wrapper privé `_PickerStreamGate` qui factorise le StreamBuilder + init state. La 5e candidate `PickerToastFeedback` a été **skippée** (`AppToast` existant Stories 0.14 suffit, pattern déjà unifié dans le source d'origine).
@@ -724,3 +767,4 @@ PickerValidateBar(
 | 2026-06-10 | Story 1.18 livrée — 4 composants extraits ajoutés au [Catalogue actuel](#catalogue-actuel) : `PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`. `subjects_picker_page.dart` réduit 1309 → 621 lignes (-52%) ; 4 ex-`_XxxBody` supprimés. Audit responsive A7 : 2 golden tests tablet 900x1200 ajoutés (`subjects_picker_page` mode opt-out + `school_picker_page`). Placeholders Story 1.9 skippés (transients Epic 2). | PR feat/1-18-refacto | Amelia |
 | 2026-06-11 | Ajout section « À créer — Refonte Onboarding 10 étapes (Epic E1bis) » : spécifications de 6 composants à créer pour le flow refonte templates `doc/templates/` (`SubSystemHeroCard`, `SelectionCard` générique, `PhoneInputWithCountryFlag`, `SchoolSearchWithAdd`, `CelebrationConfettiSuccess`, `PickerCounterBadge`). Source : DESIGN.md § Composants Onboarding + EXPERIENCE.md § Flow 1 v3 + decision log D-UX-Update-20. Pas encore de code livré ; les composants seront créés en story E1bis-0 (foundation widgets) avant les pages. | bmad-ux Update 3 (pré-stories E1bis) | Sally |
 | 2026-06-11 | Story 1bis-0 livrée — 5 nouveaux composants au [Catalogue actuel](#catalogue-actuel) : `SelectionCard` (variant `hero` absorbe `SubSystemHeroCard` cf. décision AC2), `PickerCounterBadge`, `PhoneInputWithCountryFlag` (+ helper `maskPhone()` dans `lib/core/logging/log_safe.dart` + méthode statique passthrough `maskedForLogs`), `SchoolSearchWithAdd` (+ record `SchoolEntry`), `CelebrationConfettiSuccess` (package `confetti: ^0.8.0`). Tests : 38 goldens phone+tablet + 10 tests `maskPhone` + interactions par composant (7 + 3 + 6 + 4 + 5). `flutter analyze` 0 issue. Package `golden_toolkit: ^0.15.0` ajouté en dev_dependency (discontinued mais fonctionnel ; alternative future possible). Test setup pattern : `tester.view.physicalSize + devicePixelRatio = 1.0` AVANT `pumpWidget` pour que MediaQuery + ScreenUtilInit voient la viewportSize correcte (sinon ScreenUtil scale ×2.22 sur surface 800×600 default). | feat/1bis-0-foundation-widgets | Amelia |
+| 2026-06-11 | Story 1bis-2 livrée — 1 nouveau composant au [Catalogue actuel](#catalogue-actuel) : `OnboardingCtaFooter` (footer CTA sticky bas avec safe area + secondary action optionnelle + shadow doux top). Réutilisé par les pages onboarding refonte E1bis-2 à E1bis-7. Tests : 3 goldens phone (enabled / disabled / avec secondaryAction) + 3 interactions. `_FeatureCard` reste widget privé dans `hero_intro_page.dart` (décision : pas réutilisé hors de cette page tant que `HeroIntroPage` reste seule à le consommer ; extraction au catalogue si besoin futur). | feat/1bis-2-pages-sub-system-hero | Amelia |
