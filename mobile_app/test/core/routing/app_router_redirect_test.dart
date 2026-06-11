@@ -270,9 +270,9 @@ void main() {
     );
   });
 
-  group('evaluateRedirect — Story E1bis-2 feature flag refonte onboarding', () {
+  group('evaluateRedirect — Story E1bis-2bis feature flag refonte (route unique)', () {
     test(
-        '(e1bis-a) flag ON + /onboarding/subsystem -> /onboarding/sub-system-v2',
+        '(e1bis-a) flag ON + /onboarding/subsystem -> /onboarding/v2',
         () {
       final result = evaluateRedirect(
         location: '/onboarding/subsystem',
@@ -283,14 +283,14 @@ void main() {
         flowState: _emptyFlow,
         useNewOnboardingFlow: true,
       );
-      expect(result, '/onboarding/sub-system-v2');
+      expect(result, '/onboarding/v2');
     });
 
     test(
-        '(e1bis-b) flag ON + hasSubSystem + /onboarding/sub-system-v2 -> /'
+        '(e1bis-b) flag ON + hasSubSystem + /onboarding/v2 -> /'
         ' (anti-replay)', () {
       final result = evaluateRedirect(
-        location: '/onboarding/sub-system-v2',
+        location: '/onboarding/v2',
         catalogueCheck: _catalogueOk,
         hasSubSystem: true,
         profileCompletion: _completion(ProfileCompletionState.filiereMissing),

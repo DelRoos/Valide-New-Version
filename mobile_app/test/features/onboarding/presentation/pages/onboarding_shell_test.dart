@@ -1,10 +1,12 @@
-// Tests Story E1bis-2 AC1 + AC12 — OnboardingShell.
+// Tests Story E1bis-2bis AC1 + AC6 — OnboardingShell refactor (vrai shell).
 //
 // Couvre :
-//   - mount appelle loadFromPersistence (subSystem persiste -> currentStep 1)
-//   - currentStep 0 -> rend SubSystemChoicePageV2
-//   - currentStep 1 -> rend HeroIntroPage
-//   - currentStep 2 -> rend placeholder "Etape 2 — a venir"
+//   - mount vide -> currentStep 0 + rend SubSystemStepBody
+//   - mount + subSystem persiste -> loadFromPersistence + step 1 + rend HeroIntroStepBody
+//   - step 0 + subSystem null -> footer disabled (onPressed null)
+//   - step 0 + tap card -> subSystem mis a jour + step passe a 1 (animation)
+//   - step 1 + tap CTA Decouvrir (depuis le shell) -> step passe a 2
+//   - currentStep placeholder (2, 9) -> rend _StepPlaceholder + pas de footer
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,10 +14,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:valide_school/core/widgets/app_button.dart';
+import 'package:valide_school/core/widgets/cards/selection_card.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
-import 'package:valide_school/features/onboarding/presentation/pages/hero_intro_page.dart';
+import 'package:valide_school/features/onboarding/presentation/pages/hero_intro_step_body.dart';
 import 'package:valide_school/features/onboarding/presentation/pages/onboarding_shell.dart';
-import 'package:valide_school/features/onboarding/presentation/pages/sub_system_choice_page_v2.dart';
+import 'package:valide_school/features/onboarding/presentation/pages/sub_system_step_body.dart';
 import 'package:valide_school/features/onboarding/presentation/state/onboarding_providers.dart';
 import 'package:valide_school/features/onboarding/presentation/state/onboarding_state.dart';
 import 'package:valide_school/features/onboarding/providers.dart'
@@ -70,17 +74,17 @@ Future<void> _pump(
 }
 
 void main() {
-  group('OnboardingShell', () {
+  group('OnboardingShell — structure shell + dispatch', () {
     testWidgets(
-        'mount + SharedPreferences vide -> currentStep reste 0 + rend SubSystemChoicePageV2',
+        'mount + prefs vide -> currentStep 0 + SubSystemStepBody visible',
         (tester) async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
       await _pump(tester, container: container);
 
-      expect(find.byType(SubSystemChoicePageV2), findsOneWidget);
-      expect(find.byType(HeroIntroPage), findsNothing);
+      expect(find.byType(SubSystemStepBody), findsOneWidget);
+      expect(find.byType(HeroIntroStepBody), findsNothing);
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.currentStep, 0);
@@ -88,7 +92,7 @@ void main() {
     });
 
     testWidgets(
-        'mount + subSystem persiste -> loadFromPersistence hydrate + step 1 + rend HeroIntroPage',
+        'mount + subSystem persiste -> loadFromPersistence hydrate + step 1 + HeroIntroStepBody',
         (tester) async {
       final container = await _buildContainer(initial: {
         'onboarding.subsystem': 'francophone',
@@ -102,11 +106,63 @@ void main() {
       expect(state.subSystem, SubSystem.francophone);
       expect(state.currentStep, 1);
 
-      expect(find.byType(HeroIntroPage), findsOneWidget);
-      expect(find.byType(SubSystemChoicePageV2), findsNothing);
+      expect(find.byType(HeroIntroStepBody), findsOneWidget);
+      expect(find.byType(SubSystemStepBody), findsNothing);
     });
 
-    testWidgets('currentStep 2 -> placeholder "Etape 2 — a venir"',
+    testWidgets('step 0 + subSystem null -> footer CTA disabled (onPressed null)',
+        (tester) async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      await _pump(tester, container: container);
+
+      final btn = tester.widget<AppButton>(find.byType(AppButton));
+      expect(btn.onPressed, isNull);
+    });
+
+    testWidgets(
+        'step 0 + tap card Francophone -> setSubSystem + transition step 1',
+        (tester) async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      await _pump(tester, container: container);
+
+      await tester.tap(find.byType(SelectionCard).first);
+      await tester.pumpAndSettle();
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.subSystem, SubSystem.francophone);
+      expect(state.currentStep, 1);
+
+      expect(find.byType(HeroIntroStepBody), findsOneWidget);
+      expect(find.byType(SubSystemStepBody), findsNothing);
+    });
+
+    testWidgets(
+        'step 1 + tap CTA footer (shell) -> notifier.next() + step passe a 2',
+        (tester) async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+      container.read(onboardingNotifierProvider.notifier).state =
+          const OnboardingState(
+        currentStep: 1,
+        subSystem: SubSystem.francophone,
+      );
+
+      await _pump(tester, container: container);
+
+      expect(find.byType(HeroIntroStepBody), findsOneWidget);
+      await tester.tap(find.byType(AppButton), warnIfMissed: false);
+      await tester.pumpAndSettle();
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.currentStep, 2);
+    });
+
+    testWidgets(
+        'step 2 (placeholder) -> "Etape 2 — a venir" visible + pas de footer',
         (tester) async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
@@ -116,11 +172,11 @@ void main() {
       await _pump(tester, container: container);
 
       expect(find.textContaining('Etape 2'), findsOneWidget);
-      expect(find.byType(SubSystemChoicePageV2), findsNothing);
-      expect(find.byType(HeroIntroPage), findsNothing);
+      expect(find.byType(AppButton), findsNothing);
     });
 
-    testWidgets('currentStep 9 -> placeholder "Etape 9 — a venir"',
+    testWidgets(
+        'step 9 (placeholder) -> "Etape 9 — a venir" visible + pas de footer',
         (tester) async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
@@ -130,6 +186,7 @@ void main() {
       await _pump(tester, container: container);
 
       expect(find.textContaining('Etape 9'), findsOneWidget);
+      expect(find.byType(AppButton), findsNothing);
     });
   });
 }
