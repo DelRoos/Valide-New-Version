@@ -764,16 +764,16 @@ abstract class AppLocalizations {
   /// **'Profil'**
   String get dashboardTabProfile;
 
-  /// Story E1bis-2 — Titre H1 step 0 sub-system choice.
+  /// Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle).
   ///
   /// In fr, this message translates to:
-  /// **'Bienvenue !'**
+  /// **'Quelle section suis-tu ?'**
   String get onboardingSubSystemTitle;
 
   /// Story E1bis-2 — Sous-titre step 0 sub-system choice.
   ///
   /// In fr, this message translates to:
-  /// **'Choisis ton système scolaire pour démarrer.'**
+  /// **'Choisis ton systeme scolaire pour demarrer.'**
   String get onboardingSubSystemSubtitle;
 
   /// Story E1bis-2 — Label SelectionCard Francophone step 0.
@@ -782,11 +782,23 @@ abstract class AppLocalizations {
   /// **'Francophone'**
   String get onboardingSubSystemFrancophone;
 
+  /// Story E1bis-2bis — Description sous le label Francophone, aide l'eleve a se reperer.
+  ///
+  /// In fr, this message translates to:
+  /// **'Programme officiel camerounais (BEPC, Probatoire, BAC)'**
+  String get onboardingSubSystemFrancophoneDesc;
+
   /// Story E1bis-2 — Label SelectionCard Anglophone step 0.
   ///
   /// In fr, this message translates to:
   /// **'Anglophone'**
   String get onboardingSubSystemAnglophone;
+
+  /// Story E1bis-2bis — Description sous le label Anglophone, aide l'eleve a se reperer.
+  ///
+  /// In fr, this message translates to:
+  /// **'GCE O-Level vers A-Level (programme anglophone)'**
+  String get onboardingSubSystemAnglophoneDesc;
 
   /// Story E1bis-2 — Label CTA OnboardingCtaFooter step 0.
   ///

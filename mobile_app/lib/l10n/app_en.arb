@@ -166,10 +166,12 @@
   "dashboardTabActivities": "Activities",
   "dashboardTabProfile": "Profile",
 
-  "onboardingSubSystemTitle": "Welcome!",
-  "onboardingSubSystemSubtitle": "Choose your school system to get started.",
+  "onboardingSubSystemTitle": "Choose Your System",
+  "onboardingSubSystemSubtitle": "Pick the school system you follow to get started.",
   "onboardingSubSystemFrancophone": "Francophone",
+  "onboardingSubSystemFrancophoneDesc": "Cameroonian official curriculum (BEPC, Probatoire, BAC)",
   "onboardingSubSystemAnglophone": "Anglophone",
+  "onboardingSubSystemAnglophoneDesc": "GCE O-Level to A-Level (English-medium curriculum)",
   "onboardingContinue": "Continue",
 
   "heroIntroTitle": "Learn at your pace, your level.",
