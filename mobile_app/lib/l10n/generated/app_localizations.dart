@@ -763,6 +763,90 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Profil'**
   String get dashboardTabProfile;
+
+  /// Story E1bis-2 — Titre H1 step 0 sub-system choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue !'**
+  String get onboardingSubSystemTitle;
+
+  /// Story E1bis-2 — Sous-titre step 0 sub-system choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ton système scolaire pour démarrer.'**
+  String get onboardingSubSystemSubtitle;
+
+  /// Story E1bis-2 — Label SelectionCard Francophone step 0.
+  ///
+  /// In fr, this message translates to:
+  /// **'Francophone'**
+  String get onboardingSubSystemFrancophone;
+
+  /// Story E1bis-2 — Label SelectionCard Anglophone step 0.
+  ///
+  /// In fr, this message translates to:
+  /// **'Anglophone'**
+  String get onboardingSubSystemAnglophone;
+
+  /// Story E1bis-2 — Label CTA OnboardingCtaFooter step 0.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer'**
+  String get onboardingContinue;
+
+  /// Story E1bis-2 — Titre display step 1 hero intro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Apprends à ton rythme, à ton niveau.'**
+  String get heroIntroTitle;
+
+  /// Story E1bis-2 — Sous-titre step 1 hero intro.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cours, exercices, et un assistant IA toujours disponible.'**
+  String get heroIntroSubtitle;
+
+  /// Story E1bis-2 — Feature card 1 titre (Cours).
+  ///
+  /// In fr, this message translates to:
+  /// **'Cours'**
+  String get heroIntroFeatureCoursesTitle;
+
+  /// Story E1bis-2 — Feature card 1 description.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tout le programme, expliqué simplement.'**
+  String get heroIntroFeatureCoursesDesc;
+
+  /// Story E1bis-2 — Feature card 2 titre (Exercices).
+  ///
+  /// In fr, this message translates to:
+  /// **'Exercices'**
+  String get heroIntroFeatureExercisesTitle;
+
+  /// Story E1bis-2 — Feature card 2 description.
+  ///
+  /// In fr, this message translates to:
+  /// **'Entraîne-toi avec correction immédiate.'**
+  String get heroIntroFeatureExercisesDesc;
+
+  /// Story E1bis-2 — Feature card 3 titre (Chat IA).
+  ///
+  /// In fr, this message translates to:
+  /// **'Chat IA'**
+  String get heroIntroFeatureChatTitle;
+
+  /// Story E1bis-2 — Feature card 3 description.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pose toutes tes questions, à toute heure.'**
+  String get heroIntroFeatureChatDesc;
+
+  /// Story E1bis-2 — Label CTA OnboardingCtaFooter step 1 hero intro.
+  ///
+  /// In fr, this message translates to:
+  /// **'C\'est parti'**
+  String get heroIntroCta;
 }
 
 class _AppLocalizationsDelegate

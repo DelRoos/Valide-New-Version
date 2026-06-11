@@ -384,5 +384,47 @@
   "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar (Story 1.9 AC6)." },
 
   "dashboardTabProfile": "Profil",
-  "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." }
+  "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." },
+
+  "onboardingSubSystemTitle": "Bienvenue !",
+  "@onboardingSubSystemTitle": { "description": "Story E1bis-2 — Titre H1 step 0 sub-system choice." },
+
+  "onboardingSubSystemSubtitle": "Choisis ton système scolaire pour démarrer.",
+  "@onboardingSubSystemSubtitle": { "description": "Story E1bis-2 — Sous-titre step 0 sub-system choice." },
+
+  "onboardingSubSystemFrancophone": "Francophone",
+  "@onboardingSubSystemFrancophone": { "description": "Story E1bis-2 — Label SelectionCard Francophone step 0." },
+
+  "onboardingSubSystemAnglophone": "Anglophone",
+  "@onboardingSubSystemAnglophone": { "description": "Story E1bis-2 — Label SelectionCard Anglophone step 0." },
+
+  "onboardingContinue": "Continuer",
+  "@onboardingContinue": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 0." },
+
+  "heroIntroTitle": "Apprends à ton rythme, à ton niveau.",
+  "@heroIntroTitle": { "description": "Story E1bis-2 — Titre display step 1 hero intro." },
+
+  "heroIntroSubtitle": "Cours, exercices, et un assistant IA toujours disponible.",
+  "@heroIntroSubtitle": { "description": "Story E1bis-2 — Sous-titre step 1 hero intro." },
+
+  "heroIntroFeatureCoursesTitle": "Cours",
+  "@heroIntroFeatureCoursesTitle": { "description": "Story E1bis-2 — Feature card 1 titre (Cours)." },
+
+  "heroIntroFeatureCoursesDesc": "Tout le programme, expliqué simplement.",
+  "@heroIntroFeatureCoursesDesc": { "description": "Story E1bis-2 — Feature card 1 description." },
+
+  "heroIntroFeatureExercisesTitle": "Exercices",
+  "@heroIntroFeatureExercisesTitle": { "description": "Story E1bis-2 — Feature card 2 titre (Exercices)." },
+
+  "heroIntroFeatureExercisesDesc": "Entraîne-toi avec correction immédiate.",
+  "@heroIntroFeatureExercisesDesc": { "description": "Story E1bis-2 — Feature card 2 description." },
+
+  "heroIntroFeatureChatTitle": "Chat IA",
+  "@heroIntroFeatureChatTitle": { "description": "Story E1bis-2 — Feature card 3 titre (Chat IA)." },
+
+  "heroIntroFeatureChatDesc": "Pose toutes tes questions, à toute heure.",
+  "@heroIntroFeatureChatDesc": { "description": "Story E1bis-2 — Feature card 3 description." },
+
+  "heroIntroCta": "C'est parti",
+  "@heroIntroCta": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 1 hero intro." }
 }

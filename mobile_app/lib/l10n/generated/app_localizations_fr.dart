@@ -400,4 +400,51 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get dashboardTabProfile => 'Profil';
+
+  @override
+  String get onboardingSubSystemTitle => 'Bienvenue !';
+
+  @override
+  String get onboardingSubSystemSubtitle =>
+      'Choisis ton système scolaire pour démarrer.';
+
+  @override
+  String get onboardingSubSystemFrancophone => 'Francophone';
+
+  @override
+  String get onboardingSubSystemAnglophone => 'Anglophone';
+
+  @override
+  String get onboardingContinue => 'Continuer';
+
+  @override
+  String get heroIntroTitle => 'Apprends à ton rythme, à ton niveau.';
+
+  @override
+  String get heroIntroSubtitle =>
+      'Cours, exercices, et un assistant IA toujours disponible.';
+
+  @override
+  String get heroIntroFeatureCoursesTitle => 'Cours';
+
+  @override
+  String get heroIntroFeatureCoursesDesc =>
+      'Tout le programme, expliqué simplement.';
+
+  @override
+  String get heroIntroFeatureExercisesTitle => 'Exercices';
+
+  @override
+  String get heroIntroFeatureExercisesDesc =>
+      'Entraîne-toi avec correction immédiate.';
+
+  @override
+  String get heroIntroFeatureChatTitle => 'Chat IA';
+
+  @override
+  String get heroIntroFeatureChatDesc =>
+      'Pose toutes tes questions, à toute heure.';
+
+  @override
+  String get heroIntroCta => 'C\'est parti';
 }

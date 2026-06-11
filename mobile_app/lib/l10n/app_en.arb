@@ -164,5 +164,21 @@
   "dashboardTabHome": "Home",
   "dashboardTabSubjects": "Subjects",
   "dashboardTabActivities": "Activities",
-  "dashboardTabProfile": "Profile"
+  "dashboardTabProfile": "Profile",
+
+  "onboardingSubSystemTitle": "Welcome!",
+  "onboardingSubSystemSubtitle": "Choose your school system to get started.",
+  "onboardingSubSystemFrancophone": "Francophone",
+  "onboardingSubSystemAnglophone": "Anglophone",
+  "onboardingContinue": "Continue",
+
+  "heroIntroTitle": "Learn at your pace, your level.",
+  "heroIntroSubtitle": "Courses, exercises, and an AI assistant always available.",
+  "heroIntroFeatureCoursesTitle": "Courses",
+  "heroIntroFeatureCoursesDesc": "All curricula, explained simply.",
+  "heroIntroFeatureExercisesTitle": "Exercises",
+  "heroIntroFeatureExercisesDesc": "Practice with instant feedback.",
+  "heroIntroFeatureChatTitle": "AI Chat",
+  "heroIntroFeatureChatDesc": "Ask any question, anytime.",
+  "heroIntroCta": "Let's go"
 }
