@@ -402,17 +402,25 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardTabProfile => 'Profil';
 
   @override
-  String get onboardingSubSystemTitle => 'Bienvenue !';
+  String get onboardingSubSystemTitle => 'Quelle section suis-tu ?';
 
   @override
   String get onboardingSubSystemSubtitle =>
-      'Choisis ton système scolaire pour démarrer.';
+      'Choisis ton systeme scolaire pour demarrer.';
 
   @override
   String get onboardingSubSystemFrancophone => 'Francophone';
 
   @override
+  String get onboardingSubSystemFrancophoneDesc =>
+      'Programme officiel camerounais (BEPC, Probatoire, BAC)';
+
+  @override
   String get onboardingSubSystemAnglophone => 'Anglophone';
+
+  @override
+  String get onboardingSubSystemAnglophoneDesc =>
+      'GCE O-Level vers A-Level (programme anglophone)';
 
   @override
   String get onboardingContinue => 'Continuer';

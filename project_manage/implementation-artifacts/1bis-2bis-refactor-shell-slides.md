@@ -163,6 +163,45 @@ Le nombre est inférieur à PR #103 (22 tests) car certains tests pages → step
 
 ---
 
+## Directive backend Firestore (à valider équipe backend)
+
+**Feedback porteur produit 2026-06-11** : « les interfaces doivent être la même chose que sur le template, fais en sorte que le backend puisse fournir ça ».
+
+**Implication pour E1bis-3+** : toute `SelectionCard` du flow onboarding (track / level / stream / subjects) doit afficher **descriptions + abréviations** comme dans le template `OnboardingFlow.tsx`. Ces données **ne doivent PAS être hard-codées** en ARB ni en Dart — elles viennent de **Firestore**.
+
+**Schéma proposé à valider avec backend** :
+
+- Collection `streams/{streamId}` (séries scolaires) — ajouter champs :
+  - `descriptionFr: string` — ex. "Mathématiques + Physique-Chimie + SVT"
+  - `descriptionEn: string` — ex. "Mathematics + Physics-Chemistry + Biology"
+  - `abbreviation: string` — ex. "D", "C", "A1", "TI"
+- Collection `subjects/{subjectId}` (matières) — ajouter champs :
+  - `descriptionFr: string` — ex. "Mathématiques générales"
+  - `descriptionEn: string`
+  - `abbreviation: string` — ex. "M", "PC", "SVT", "PH"
+- Collection `levels/{levelId}` (niveaux) — ajouter si pertinent :
+  - `descriptionFr: string` — ex. "Classe d'examen BAC général"
+  - `descriptionEn: string`
+- Collection `tracks/{trackId}` (filières Général/Technique) :
+  - `descriptionFr: string` — ex. "Programme académique général (Lettres, Sciences)"
+  - `descriptionEn: string`
+
+**Sub-system (Francophone / Anglophone)** : reste hard-codé ARB (2 options binaires fixes, pas besoin de Firestore). Description ajoutée dans `app_fr.arb` / `app_en.arb` (clés `onboardingSubSystem*Desc`).
+
+**Workflow à valider avant E1bis-3** :
+
+1. PR séparée `chore(partage): proposer schema enrichi descriptions+abreviations streams/subjects/levels/tracks` qui modifie `doc/partage/BASE-DE-DONNEES.md` avec ces nouveaux champs + accord backend (commentaire mainteneur).
+2. Script seed Python (`scripts/firebase_seed/seed_streams.py`, etc.) mis à jour pour populer les nouveaux champs FR/EN/abbreviation à partir des sources MINESEC/GCE.
+3. Migration des données existantes (script one-shot admin).
+4. Models domain Dart adaptés (`Stream`, `Subject`) avec champs `description` + `abbreviation` localisés via `subSystem` ou langue active.
+5. E1bis-3 consomme ces nouveaux champs dans les `SelectionCard` step 2/3/4.
+
+⚠️ **CLAUDE.md règle** : toute modification de contrat backend doit avoir l'accord écrit de l'équipe backend. Cette section est une **proposition** à valider, pas un fait acquis.
+
+Lié à feedback memory `feedback_card_descriptions_from_firestore`.
+
+---
+
 ## Séquence E1bis post-merge
 
 1. ✅ E1bis-0 PR #101 mergée
