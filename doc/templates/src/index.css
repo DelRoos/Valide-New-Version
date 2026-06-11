@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Nunito+Sans:opsz,wght@6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Nunito Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  /* AppColors Palette */
+  --color-primary: #2563EB;
+  --color-primary-dark: #1E3A8A;
+  --color-primary-light: #DBEAFE;
+  --color-primary-soft: #EFF6FF;
+  --color-primary-soft-border: #BFDBFE;
+
+  --color-ink: #0F172A;
+  --color-ink-soft: #334155;
+  --color-muted: #64748B;
+  --color-mute-2: #94A3B8;
+  --color-border: #E2E8F0;
+  --color-bg: #F8FAFC;
+  --color-card: #FFFFFF;
+
+  --color-success: #16A34A;
+  --color-success-soft: #DCFCE7;
+  --color-success-ink: #166534;
+
+  --color-warning: #F59E0B;
+  --color-warning-soft: #FEF3C7;
+  --color-warning-ink: #92400E;
+
+  --color-danger: #DC2626;
+  --color-danger-soft: #FEE2E2;
+  --color-danger-ink: #991B1B;
+
+  --color-sky: #0284C7;
+  --color-sky-soft: #E0F2FE;
+  --color-sky-ink: #075985;
+
+  /* AppElevation */
+  --shadow-soft: 0 4px 12px rgba(15,23,42,0.06);
+  --shadow-mid: 0 8px 24px rgba(15,23,42,0.08);
+  --shadow-brand: 0 6px 18px rgba(37,99,235,0.35);
+
+  /* AppRadius */
+  --radius-xs: 6px;
+  --radius-sm: 9px;
+  --radius-md: 11px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
+  --radius-xl2: 18px;
+}
+
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+}
+
+/* Hide scrollbar for a seamless mobile layout feel in the browser */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
+}
