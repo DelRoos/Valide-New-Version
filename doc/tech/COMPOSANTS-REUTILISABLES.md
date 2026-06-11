@@ -77,6 +77,265 @@ ComponentName(
 
 ## Catalogue actuel
 
+### SelectionCard
+
+**Path** : `lib/core/widgets/cards/selection_card.dart`
+**Story d'origine** : Story 1bis.0 (Foundation widgets onboarding — Epic E1bis)
+**Catégorie** : `card`
+**Responsive** : `tablet-adaptive` (LayoutBuilder + ConstrainedBox(maxWidth: 600 dp) ≥ 840 dp, centré)
+
+**Quand l'utiliser** :
+
+- Tous les pickers d'option unique du flow onboarding refonte E1bis : step 0 sub-system (variant `hero`), step 2 track, step 3 level, step 4 cards séries / spécialités TVE, step 8 résultats école.
+- Pattern : icône optionnelle + titre + description optionnelle + radio indicateur droit + selected ring 2px primary + scale 1.01.
+- Couvre 3 tailles via `variant` : `compact` (40×40 icon, 15 sp title, padding s3), `standard` (48×48, 17 sp, padding s4), `hero` (56×56, 18 sp, padding s5).
+
+**Props (API publique)** :
+
+- `title: String` — Texte H4 affiché.
+- `selected: bool` — État sélection (contrôlé par le parent).
+- `onTap: VoidCallback` — Callback déclenché au tap (haptic `selection` automatique via Pressable).
+- `icon: Widget?` — Icône optionnelle (Lucide ou Material). Sans icône, la carte n'affiche pas le cercle gauche.
+- `description: String?` — Description courte sous le titre (12 sp / 600 weight).
+- `variant: SelectionCardVariant = standard` — Enum {compact, standard, hero}.
+
+**Décision E1bis-0 AC2** : `SubSystemHeroCard` du catalogue v1 a été fusionné dans `SelectionCard(variant: hero)` (les specs DESIGN.md ne différaient que sur padding +4 dp et taille d'icône +8 dp, paramètres déjà portés par la variant).
+
+**Exemple** :
+
+```dart
+SelectionCard(
+  title: l10n.onboardingSubSystemFrancophone,
+  description: l10n.onboardingSubSystemFrancophoneDesc,
+  selected: state.subSystem == SubSystem.francophone,
+  onTap: () => notifier.setSubSystem(SubSystem.francophone),
+  icon: const Icon(LucideIcons.map),
+  variant: SelectionCardVariant.hero,
+)
+```
+
+**Tests associés** :
+
+- `test/core/widgets/cards/selection_card_test.dart` — 7 interactions (tap, bordure selected/unselected, sans icône, description rendue/null, tablet ConstrainedBox actif) + 12 goldens (3 variants × 2 form factors × 2 états).
+
+---
+
+### PickerCounterBadge
+
+**Path** : `lib/core/widgets/picker/picker_counter_badge.dart`
+**Story d'origine** : Story 1bis.0 (Foundation widgets onboarding — Epic E1bis)
+**Catégorie** : `picker`
+**Responsive** : `phone + tablet` (sticky top, padding horizontal adapté)
+
+**Quand l'utiliser** :
+
+- Indicateur de progression compteur dans les pickers checkbox multi-sélection.
+- Step 4 onboarding (modes `free_with_obligatory` / `series_plus_optional` / `tve_picker`).
+- Pattern : label gauche (texte localisé) + badge droit « X / Y » avec couleurs conditionnelles warning-soft / success-soft selon `isValid`.
+
+**Props (API publique)** :
+
+- `currentCount: int` — Nombre courant (affiché dans le badge).
+- `min: int` — Seuil minimum (informationnel, le parent calcule isValid).
+- `max: int` — Seuil maximum (affiché dans le badge "X / max").
+- `labelText: String` — Texte gauche pré-formaté FR/EN par le caller (pas d'i18n interne).
+- `isValid: bool` — Calculé par le caller. Si true → bg `successSoft` + label `successInk` + icône Check. Si false → bg `warningSoft` + label `warningInk` + pas d'icône.
+
+**Comportement** :
+
+- Transition couleur 300 ms `AppMotion.standardOut` entre les états valid / invalid.
+- Sticky : la responsabilité de wrapper dans `SliverPersistentHeader` ou `SliverAppBar` revient au parent.
+
+**Exemple** :
+
+```dart
+SliverPersistentHeader(
+  pinned: true,
+  delegate: _CounterDelegate(
+    child: PickerCounterBadge(
+      currentCount: state.pickedSubjects.length,
+      min: 6,
+      max: 11,
+      labelText: l10n.onboardingPickerCounterLive(state.pickedSubjects.length, 11),
+      isValid: state.pickedSubjects.length >= 6 &&
+               state.pickedSubjects.length <= 11,
+    ),
+  ),
+)
+```
+
+**Tests associés** :
+
+- `test/core/widgets/picker/picker_counter_badge_test.dart` — 3 interactions (couleurs isValid true/false + labelText passthrough) + 4 goldens (phone + tablet × 2 états).
+
+---
+
+### PhoneInputWithCountryFlag
+
+**Path** : `lib/core/widgets/forms/phone_input_with_country_flag.dart`
+**Story d'origine** : Story 1bis.0 (Foundation widgets onboarding — Epic E1bis)
+**Catégorie** : `form`
+**Responsive** : `phone + tablet` (hauteur 56 dp fixe, largeur fluide)
+
+**Quand l'utiliser** :
+
+- Step 7 onboarding (capture numéro Cameroun).
+- Tout futur écran qui demande un numéro CM (recovery profil, paramètres, KYC paiement).
+- Pattern : drapeau CM (CustomPaint tricolore + étoile) + indicatif `+237` figé + champ numérique avec mask logique 9 chiffres.
+
+**Props (API publique)** :
+
+- `value: String` — Valeur courante au format E.164 (`+237XXXXXXXXX`) ou vide.
+- `onChanged: ValueChanged<String>` — Callback à chaque modification, valeur au format E.164.
+- `errorText: String?` — Message d'erreur affiché sous le champ + bordure danger.
+- `enabled: bool = true` — Désactivation (opacity 0.5, clavier non focus).
+- `autofocus: bool = false` — Focus automatique au render.
+
+**Méthode statique sécurité (CLAUDE.md règle 4)** :
+
+- `static String maskedForLogs(String? e164)` — Helper à utiliser dans tout `AppLogger.x('phone=$maskedForLogs(value)')`. Délègue à [`log_safe.dart`](../../mobile_app/lib/core/logging/log_safe.dart) `maskPhone()` — **algorithme unique, zéro duplication**.
+
+**Comportement non négociable** :
+
+- Le composant **n'expose AUCUN log AppLogger** — il n'a aucune dépendance sur `package:logger`.
+- Tout caller qui veut loguer le numéro passe par `maskPhone(value)` OU `PhoneInputWithCountryFlag.maskedForLogs(value)`.
+- Filtrage `FilteringTextInputFormatter.digitsOnly` + `LengthLimitingTextInputFormatter(9)` — lettres et caractères supprimés à la saisie.
+
+**Exemple** :
+
+```dart
+PhoneInputWithCountryFlag(
+  value: state.phoneNumber,
+  onChanged: (e164) {
+    notifier.setPhoneNumber(e164);
+    AppLogger.info('phone_changed phone=${PhoneInputWithCountryFlag.maskedForLogs(e164)}');
+  },
+  errorText: state.phoneError,
+  autofocus: true,
+)
+```
+
+**Tests associés** :
+
+- `test/core/widgets/forms/phone_input_with_country_flag_test.dart` — 6 interactions (saisie → E.164, vide → '', lettres filtrées, errorText + bordure danger, +237 prefix, maskedForLogs delegation) + 6 goldens (phone + tablet × 3 états : empty / filled / error).
+- `test/core/logging/log_safe_test.dart` — 10 tests `maskPhone()` (valide mobile/fixe, null, vide, format invalide, longueur invalide, caractères non-digits, sans prefix +, 3ème digit invalide, préservation 4 derniers digits).
+
+---
+
+### SchoolEntry + SchoolSearchWithAdd
+
+**Path composant** : `lib/core/widgets/forms/school_search_with_add.dart`
+**Path modèle** : `lib/core/widgets/forms/school_entry.dart` (record léger immutable)
+**Story d'origine** : Story 1bis.0 (Foundation widgets onboarding — Epic E1bis)
+**Catégorie** : `form`
+**Responsive** : `tablet-adaptive` (consomme `SelectionCard` qui plafonne à 600 dp)
+
+**Quand l'utiliser** :
+
+- Step 8 onboarding (recherche école + fallback ajout custom).
+- Profil édition école future (E1bis-8).
+- Pattern : champ recherche avec icône Search + clear button + suggestions liste `SelectionCard` + carte « + Ajouter "<saisie>" » border-dashed si zéro résultat + bandeau warning `AppInlineAlert` si erreur réseau.
+
+**Props (API publique)** :
+
+- `selectedSchool: SchoolEntry?` — État courant (`SchoolEntry(id, name, isPending)`).
+- `onSelect: void Function(SchoolEntry)` — Callback sélection résultat OU ajout custom (avec `isPending: true`).
+- `onAddRequest: Future<String> Function(String name)` — Callback création request, retourne `pendingRequestId` (`school_requests/{autoId}`).
+- `searchProvider: SchoolSearchAsync Function(String query)` — Source des suggestions, retourne sealed-like {idle, loading, data, error}. **Injecté par la page consommatrice** — composant pur, pas de lecture Firestore directe.
+- `placeholder: String` — Texte d'aide (ARB localisé).
+- `emptyAddTemplate: String` — Template `+ Ajouter "{name}"` ({name} remplacé par la saisie).
+- `warningOfflineMessage: String` — Texte du bandeau erreur réseau (ARB localisé).
+
+**Comportement** :
+
+- Debounce 250 ms sur la saisie avant déclenchement `searchProvider`.
+- Suggestions rendues comme `SelectionCard(variant: standard)`.
+- Zéro résultat + saisie non-vide → carte « + Ajouter "..." » (border-dashed primary, `DottedBorderBox` interne CustomPaint).
+- Tap « + Ajouter » → spinner inline + `await onAddRequest(saisie)` → `onSelect(SchoolEntry(id: pendingId, isPending: true))`.
+- `SchoolSearchError(isNetwork: true)` → bandeau warning `AppInlineAlert` + carte ajouter toujours disponible.
+
+**Exemple** :
+
+```dart
+final asyncSchools = ref.watch(schoolsSearchProvider(_query));
+
+SchoolSearchWithAdd(
+  selectedSchool: state.school,
+  onSelect: (s) => notifier.setSchool(s),
+  onAddRequest: (name) => ref.read(schoolRequestsRepoProvider).create(name),
+  searchProvider: (q) => asyncSchools.when(
+    data: (list) => SchoolSearchAsync.data(list),
+    loading: () => SchoolSearchAsync.loading(),
+    error: (e, _) => SchoolSearchAsync.error(isNetwork: e is NetworkFailure),
+  ),
+  placeholder: l10n.onboardingSchoolSearchPlaceholder,
+  emptyAddTemplate: l10n.onboardingSchoolAddTemplate,
+  warningOfflineMessage: l10n.errorNetworkUnavailable,
+)
+```
+
+**Tests associés** :
+
+- `test/core/widgets/forms/school_search_with_add_test.dart` — 4 interactions (debounce 250 ms 1 seul appel, tap résultat → onSelect, tap add → onAddRequest + onSelect pending, error réseau → bandeau + add dispo) + 8 goldens (phone + tablet × 4 états : empty / typing / no_results / error).
+
+---
+
+### CelebrationConfettiSuccess
+
+**Path** : `lib/core/widgets/feedback/celebration_confetti_success.dart`
+**Story d'origine** : Story 1bis.0 (Foundation widgets onboarding — Epic E1bis)
+**Catégorie** : `feedback`
+**Responsive** : `phone + tablet` (cercle central 128 dp constant, canvas confetti pleine largeur)
+
+**Quand l'utiliser** :
+
+- Step 9 onboarding success (variant `success` par défaut).
+- Tout futur écran de célébration majeure (mention BAC obtenue, abonnement premium activé, niveau gamification débloqué).
+- Pattern : cercle central 128×128 avec halo glow + checkmark + 2 ConfettiWidget (left/right blast 45°/135°) + titre H2 + sous-titre + CTA primary.
+
+**Props (API publique)** :
+
+- `title: String` — Titre H2 sous le cercle.
+- `subtitle: String` — Sous-titre body inkSoft.
+- `ctaLabel: String` — Texte du bouton primary.
+- `onComplete: VoidCallback` — Appelé au tap CTA OU après `autoDismissDelay`.
+- `autoDismissDelay: Duration? = const Duration(milliseconds: 3500)` — Délai avant onComplete auto (null pour désactiver).
+- `variant: CelebrationVariant = success` — Enum {success vert, brand bleu, warning ambre}.
+
+**Comportement multisensoriel** :
+
+- Anim entrée : spring 600 ms delay 100 ms sur cercle (`flutter_animate`).
+- Confetti : 2.5 s de génération, 4 particules/frame, 2 origines (left/right blast 45°/135°), couleurs `[primary, success, warning, sky]`.
+- Audio : `AppSfx.bloom` à T+200 ms via `audioServiceProvider` (Riverpod).
+- Haptic : séquence `success` (light + 100 ms + medium) via `hapticServiceProvider` (Riverpod).
+
+**Coupures globales** (CLAUDE.md règle 1) :
+
+- `MediaQuery.disableAnimationsOf == true` → pas de `ConfettiWidget` rendu + halo/titre/sous-titre rendus directement (sans `.animate()`).
+- `AudioService.silent == true` → délégué service (pas de son).
+- `HapticService.disabled == true` → délégué service (pas de vibration).
+
+**Exemple** :
+
+```dart
+CelebrationConfettiSuccess(
+  title: l10n.onboardingSuccessTitle(displayName: profile.displayName ?? 'élève'),
+  subtitle: l10n.onboardingSuccessSubtitle,
+  ctaLabel: profile.isAnonymous
+      ? l10n.onboardingSuccessExploreCta
+      : l10n.onboardingSuccessEnterCta,
+  onComplete: () => context.go('/dashboard'),
+)
+```
+
+**Package** : `confetti: ^0.8.0` (ajouté pubspec Story 1bis.0). Pas de fallback `CustomPaint` activé — mesurer impact APK en E1bis-7 avant prod.
+
+**Tests associés** :
+
+- `test/core/widgets/feedback/celebration_confetti_success_test.dart` — 5 interactions (tap CTA → onComplete, autoDismissDelay → onComplete, disableAnimations → ConfettiWidget absent / présent ×2, variant brand → bg primarySoft) + 4 goldens (phone + tablet × 2 instants).
+
+---
+
 ### PickerSectionScaffold
 
 **Path** : `lib/core/widgets/picker/picker_section_scaffold.dart`
@@ -242,6 +501,8 @@ PickerValidateBar(
 
 ## À créer — Refonte Onboarding 10 étapes (Epic E1bis, 2026-06-11)
 
+> **Statut Story E1bis-0 (2026-06-11)** : ✅ Livrée. Les 6 composants prévus ont été créés et déplacés dans [§ Catalogue actuel](#catalogue-actuel) ci-dessus. **Décision AC2** : `SubSystemHeroCard` a été **fusionné dans `SelectionCard` via `variant: SelectionCardVariant.hero`** (specs DESIGN.md des deux composants ne différaient que sur padding +4 dp et taille d'icône +8 dp — paramètres déjà portés par la variant). 5 composants effectifs au catalogue + helper `maskPhone()` + `SchoolEntry` record.
+>
 > Composants à créer dans le cadre de la refonte intégrale du flow pré-dashboard (cf. [`.decision-log.md` D-UX-Update-20](../../project_manage/planning-artifacts/ux-designs/ux-valide-mvp-2026-06-03/.decision-log.md) + [DESIGN.md § Composants Onboarding](../../project_manage/planning-artifacts/ux-designs/ux-valide-mvp-2026-06-03/DESIGN.md)). Source de vérité du flow : `doc/templates/src/components/OnboardingFlow.tsx`. À déplacer dans § Catalogue actuel au fur et à mesure de leur création en story E1bis.
 
 ### SubSystemHeroCard *(à créer)*
@@ -462,3 +723,4 @@ PickerValidateBar(
 | 2026-06-10 | Révision 2 section « À extraire — dette Epic 1 v2 » post-discovery code source : renommage `Chip*` → `Checkbox*` (réel = `CheckboxListTile`, pas `Chip`), `PickerSectionCard` → `PickerSectionScaffold` (réel = LayoutBuilder+ConstrainedBox+Padding+Column, pas Card visuel), suppression `PickerToastFeedback` (`AppToast` existant suffit). 5 composants → 4 composants. AC8 audit responsive sur `subjects_picker_page` réduit (LayoutBuilder déjà présent lignes 376/559). | PR docs/1.18-correction-scope | Amelia |
 | 2026-06-10 | Story 1.18 livrée — 4 composants extraits ajoutés au [Catalogue actuel](#catalogue-actuel) : `PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`. `subjects_picker_page.dart` réduit 1309 → 621 lignes (-52%) ; 4 ex-`_XxxBody` supprimés. Audit responsive A7 : 2 golden tests tablet 900x1200 ajoutés (`subjects_picker_page` mode opt-out + `school_picker_page`). Placeholders Story 1.9 skippés (transients Epic 2). | PR feat/1-18-refacto | Amelia |
 | 2026-06-11 | Ajout section « À créer — Refonte Onboarding 10 étapes (Epic E1bis) » : spécifications de 6 composants à créer pour le flow refonte templates `doc/templates/` (`SubSystemHeroCard`, `SelectionCard` générique, `PhoneInputWithCountryFlag`, `SchoolSearchWithAdd`, `CelebrationConfettiSuccess`, `PickerCounterBadge`). Source : DESIGN.md § Composants Onboarding + EXPERIENCE.md § Flow 1 v3 + decision log D-UX-Update-20. Pas encore de code livré ; les composants seront créés en story E1bis-0 (foundation widgets) avant les pages. | bmad-ux Update 3 (pré-stories E1bis) | Sally |
+| 2026-06-11 | Story 1bis-0 livrée — 5 nouveaux composants au [Catalogue actuel](#catalogue-actuel) : `SelectionCard` (variant `hero` absorbe `SubSystemHeroCard` cf. décision AC2), `PickerCounterBadge`, `PhoneInputWithCountryFlag` (+ helper `maskPhone()` dans `lib/core/logging/log_safe.dart` + méthode statique passthrough `maskedForLogs`), `SchoolSearchWithAdd` (+ record `SchoolEntry`), `CelebrationConfettiSuccess` (package `confetti: ^0.8.0`). Tests : 38 goldens phone+tablet + 10 tests `maskPhone` + interactions par composant (7 + 3 + 6 + 4 + 5). `flutter analyze` 0 issue. Package `golden_toolkit: ^0.15.0` ajouté en dev_dependency (discontinued mais fonctionnel ; alternative future possible). Test setup pattern : `tester.view.physicalSize + devicePixelRatio = 1.0` AVANT `pumpWidget` pour que MediaQuery + ScreenUtilInit voient la viewportSize correcte (sinon ScreenUtil scale ×2.22 sur surface 800×600 default). | feat/1bis-0-foundation-widgets | Amelia |
