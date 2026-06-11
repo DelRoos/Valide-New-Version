@@ -114,17 +114,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/onboarding/subsystem',
         builder: (context, state) => const SubsystemChoicePage(),
       ),
-      // Story E1bis-2 — nouveau flow onboarding refonte (10 etapes). Les deux
-      // routes pointent vers le meme OnboardingShell qui route en interne par
-      // currentStep du OnboardingNotifier (E1bis-1). La distinction d'URL est
-      // cosmetique (debug, deep link). Le redirect ci-dessus aiguille vers
-      // /onboarding/sub-system-v2 quand FeatureFlags.useNewOnboardingFlow=true.
+      // Story E1bis-2bis — UNE seule route pour le flow onboarding refonte.
+      // Le `OnboardingShell` route en interne par `currentStep` du
+      // `OnboardingNotifier` (E1bis-1) via AnimatedSwitcher slide transition.
+      // Le redirect ci-dessous aiguille vers `/onboarding/v2` quand
+      // `FeatureFlags.useNewOnboardingFlow=true`. Refactor des 2 routes
+      // paralleles PR #103 (`/onboarding/sub-system-v2` + `/onboarding/hero`)
+      // qui dupliquaient l'URL pour la meme destination.
       GoRoute(
-        path: '/onboarding/sub-system-v2',
-        builder: (context, state) => const OnboardingShell(),
-      ),
-      GoRoute(
-        path: '/onboarding/hero',
+        path: '/onboarding/v2',
         builder: (context, state) => const OnboardingShell(),
       ),
       // Story 1.3 — flow profil scolaire 3 etapes (Filiere -> Niveau ->
@@ -282,13 +280,14 @@ String? evaluateRedirect({
     if (!catalogueOk) return '/catalogue-waiting';
   }
 
-  // 2.bis Story E1bis-2 — feature flag refonte onboarding.
+  // 2.bis Story E1bis-2bis — feature flag refonte onboarding (route unique).
   // Si flag ON, force l'aiguillage vers le nouveau flow E1bis a partir de
-  // la route legacy Epic 1. Anti-replay symetrique pour la nouvelle route.
+  // la route legacy Epic 1. Anti-replay symetrique pour la nouvelle route :
+  // si subSystem deja choisi, on sort du flow refonte vers `/`.
   if (useNewOnboardingFlow && location == '/onboarding/subsystem') {
-    return '/onboarding/sub-system-v2';
+    return '/onboarding/v2';
   }
-  if (hasSubSystem && location == '/onboarding/sub-system-v2') {
+  if (hasSubSystem && location == '/onboarding/v2') {
     return '/';
   }
 
