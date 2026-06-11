@@ -1,13 +1,17 @@
 ---
 name: Valide
-status: draft
+status: final
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-11
 sources:
   - ../../../specs/spec-valide-mvp/SPEC.md
   - ../../prds/prd-valide-mvp-2026-06-03/prd.md
   - ../../../../doc/tech/Valide - Design System.html
   - ../../../../doc/tech/Valide - Design.html
+  - ../../../../doc/templates/src/components/OnboardingFlow.tsx
+  - ../../../../doc/templates/src/data/educationData.ts
+  - ../../../../doc/templates/src/types.ts
+  - ../../../../doc/tech/COMPOSANTS-REUTILISABLES.md
 colors:
   primary: '#2563EB'
   primary-dark: '#1E3A8A'
@@ -419,6 +423,105 @@ Spec **visuelle** des composants. La spec **comportementale** (interactions, ét
 - 18 × 18 px (ou 24 px pour overlay)
 - Border 3 px, top-color `{colors.card}` sur fond `{colors.primary}` (rotation 0.7 s linéaire)
 - Réservé aux actions brèves (< 3 s perçues). Au-delà, basculer en skeleton.
+
+### Composants Onboarding (refonte 2026-06-11 — templates `doc/templates/`)
+
+> Composants spécifiques au flow d'onboarding 10 étapes. Spec comportementale dans `EXPERIENCE.md.Component Patterns` + `EXPERIENCE.md.Flow 1`. Cf. `.decision-log.md` D-UX-Update-20.
+
+#### CTA footer gradient
+
+- Position : `position: absolute`, `bottom: 0`, `inset-x: 0`
+- Padding : `{spacing.5}` (20 px) avec safe area bottom
+- Background : `linear-gradient(to top, {colors.bg} 0%, {colors.bg} 70%, transparent 100%)` sur ≈ 80 px de hauteur visible
+- Bouton intérieur : `btn-primary` plein largeur (cf. `{components.button}`), `max-width: 600 dp` centré
+- Step 9 success : `btn-primary` mais background = `{colors.success}` + ombre `0 8px 20px rgba(22,163,74,0.25)`
+- Pointer-events : conteneur `none`, bouton `auto` (laisse passer les taps sur contenu derrière le gradient)
+- Z-index : 40
+
+#### SubSystem hero card (sélecteur sub-system)
+
+- Carte plein largeur (≤ `max-width: 600 dp` tablette)
+- Padding : `{spacing.4}` à `{spacing.5}` (16-20 px)
+- Background : `{colors.card}` ; selected → `{colors.primary-soft}`
+- Bordure : 1 px `{colors.border}/0.5` ; selected → ring 2 px `{colors.primary}` + bordure transparente
+- Radius : `{rounded.2xl}` (18 px)
+- Ombre : `{elevation.shadow-soft}` ; selected → `0 10px 30px rgba(37,99,235,0.15)` + `scale(1.01)`
+- Icône optionnelle 48×48 dans un cercle `{rounded.2xl}` à gauche (background `{colors.bg}` text `{colors.ink-soft}` ; selected → `{colors.primary}` text `{colors.card}` + ombre `{elevation.brand}`)
+- Titre : `{typography.scale.body-strong}` (17 px / 900) → `{colors.ink}` ; selected → `{colors.primary}`
+- Desc optionnel : `{typography.scale.caption}` (12 px / 600) → `{colors.ink-soft}`
+- Indicateur radio 24×24 à droite (cercle bordé 2 px `{colors.border}/0.5` ; selected → background `{colors.primary}` + checkmark 14×14 blanc strokeWidth 3)
+- Tap : haptic `selection` + bg transition 200 ms standardOut
+
+#### Phone input with country flag
+
+- Hauteur : 56 px (un peu plus haut que `{components.input}` standard pour accommoder le drapeau)
+- Padding gauche : 95 px (réservé drapeau + indicatif fixe)
+- Drapeau SVG Cameroun 20×14 px (3 bandes verticales vert/rouge/jaune + étoile jaune centrée bande rouge), positionné absolute left 16 px top 17 px, radius 2 px overflow hidden
+- Indicatif `+237` à droite du drapeau : `{typography.scale.body-strong}` (16 px / 700) `{colors.ink}` + bordure droite 1 px `{colors.border}/0.8` + padding right 8 px
+- Champ input : type `tel`, mask `6 XX XX XX XX`, `{typography.scale.body-strong}` (17 px / 700), placeholder `{colors.mute2}` « 6 -- -- -- -- »
+- Background : `{colors.card}`, radius `{rounded.2xl}` (16-18 px), ombre `0 4px 20px rgba(15,23,42,0.04)`
+- Focus : ring 2 px `{colors.primary}`
+- État disabled : opacity 0.5
+
+#### School search with add
+
+- Champ recherche : hauteur 60 px, padding left 56 px (icône Search 22 px), padding right 48 px (bouton clear XCircle 22 px)
+- Background : `{colors.card}`, radius `{rounded.2xl}`, ombre `0 8px 30px rgba(15,23,42,0.06)`, focus ring 2 px `{colors.primary}`
+- Suggestions liste : cartes `SelectionCard` (cf. composant ci-dessous), gap `{spacing.4}` (16 px)
+- Carte « + Ajouter "<saisie>" » : padding `{spacing.5}` (20 px), radius `{rounded.2xl}` (20 px), border-dashed 2 px `{colors.primary}/0.5`, bg `{colors.primary-soft}`, texte `{colors.primary}` `{typography.scale.body-strong}` (17 px / 700), icône `Plus` 20 px à droite. Hover/tap → bg `{colors.primary-light}`
+
+#### Selection card (générique — pickers, séries, écoles, sous-système, track)
+
+- Standard : padding `{spacing.4}` ou `{spacing.5}` (16-20 px), radius `{rounded.2xl}` (16-18 px)
+- Compact : padding `{spacing.3}` (12 px), radius `{rounded.xl}` (14-16 px)
+- Background : `{colors.card}`, bordure 1 px `{colors.border}/0.5`
+- Ombre : `{elevation.shadow-soft}`
+- Selected : bg `{colors.primary-soft}`, ring 2 px `{colors.primary}`, scale 1.01, ombre `0 10px 30px rgba(37,99,235,0.15)`
+- Icône optionnelle gauche 48×48 (compact 40×40) cercle radius `{rounded.2xl}` ; bg `{colors.bg}` text `{colors.ink-soft}` ; selected → bg `{colors.primary}` text `{colors.card}` + ombre `{elevation.brand}`
+- Titre : `{typography.scale.body-strong}` 17 px / 900 ink ; selected → primary
+- Desc optionnelle : 12 px / 600 ink-soft ; selected → primary-dark/0.8
+- Radio indicateur droit : 24×24 (compact 20×20) cercle bordé 2 px `{colors.border}/0.5` ; selected → bg primary + checkmark blanc 14×14 strokeWidth 3
+- Tap area : la totalité de la carte. Tap → haptic `selection` 30 ms.
+
+#### Picker counter badge (sticky)
+
+- Position : sticky top dans le scroll body, gap 16 px sous le header
+- Padding : `{spacing.3}` à `{spacing.4}` (12-16 px)
+- Background : `{colors.warning-soft}` (compteur sous min) OU `{colors.success-soft}` (compteur valide)
+- Bordure : 1 px transparente
+- Radius : `{rounded.lg}` (14 px)
+- Ombre : `{elevation.shadow-soft}`
+- Layout flex justify-between :
+  - Label gauche : `{typography.scale.caption}` (13 px / 800 uppercase tracking-wider) — couleur `{colors.warning-ink}` ou `{colors.success-ink}`
+  - Badge droit : padding `8x4 px`, radius `{rounded.md}`, bg `{colors.card}/0.5`, font `{typography.scale.caption}` (12 px / 900) « 8 / Min 6 » ou « 8 / Max 11 ✓ »
+
+#### Celebration confetti success
+
+- Plein écran (h-full + w-full + overflow-hidden)
+- Background : `{colors.bg}`
+- Canvas confetti absolute inset-0 z-0 pointer-events-none, particules 4 par frame ×2 origines (left/right), couleurs `#2563EB / #16A34A / #D97706 / #0EA5E9`, durée 2.5 s
+- Cercle central success 128×128 :
+  - background `{colors.success-soft}`
+  - radius full (50%)
+  - ombre `0 0 60px rgba(22,163,74,0.3)` (halo glow)
+  - Checkmark central 64×64 `{colors.success}` strokeWidth 3
+  - Animation entrée : spring damping 15 stiffness 200 delay 100 ms (scale 0→1, opacity 0→1)
+- 3 micro-icônes orbitantes (24-28 px) :
+  - PartyPopper top-left-2 -top-4 : `{colors.warning-ink}`, anim y[0,-20,0] opacity[1,0,1] loop 2 s
+  - Sparkles -bottom-2 -right-4 : `{colors.primary}`, anim y[0,20,0] opacity[1,0,1] loop 2.2 s
+  - CheckCircle2 top-8 -right-6 : `{colors.sky}`, anim x[0,20,0] loop 1.8 s
+- Titre H2 : delay 300 ms anim y[20→0] opacity[0→1] duration 400 ms
+- Sous-titre body : delay 400 ms idem
+- Coupures globales : si `MediaQuery.disableAnimations` → pas de confetti + pas de spring → fade-in 200 ms statique + checkmark sans animation. Si silencieux → pas de son `complete.m4a`.
+
+#### Progress header bar (onboarding)
+
+- Position : sticky top, z-40, padding `{spacing.4}` (16 px) + padding top 24 px safe area
+- Background : `{colors.bg}`, bordure basse 1 px `{colors.border}/0.5`, ombre légère `0 1px 2px rgba(0,0,0,0.04)`
+- Layout flex gap 16 px max-width 600 dp centré
+- Back button : 44×44 cercle `{colors.card}/0.5` hover `{colors.card}`, icône ArrowLeft 20 px `{colors.ink}`, ombre `{elevation.shadow-soft}`
+- Barre progression : flex-1 hauteur 12 px, bg `{colors.card}` ombre intérieure, radius full, fill `{colors.primary}` transition all 500 ms ease-out
+- Compteur droite : `{typography.scale.caption}` (14 px / 700) `{colors.ink-soft}` « 2/3 »
 
 ### Animations & motion
 

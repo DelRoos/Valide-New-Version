@@ -1,13 +1,16 @@
 ---
 name: Valide
-status: draft
+status: final
 created: 2026-06-03
-updated: 2026-06-03
+updated: 2026-06-11
 sources:
   - ../../../specs/spec-valide-mvp/SPEC.md
   - ../../prds/prd-valide-mvp-2026-06-03/prd.md
   - DESIGN.md
   - ../../../../doc/tech/Valide - Design.html
+  - ../../../../doc/templates/src/components/OnboardingFlow.tsx
+  - ../../../../doc/templates/src/data/educationData.ts
+  - ../../../../doc/templates/src/types.ts
 ---
 
 # Valide — Experience Spine
@@ -116,6 +119,82 @@ Stratégique : **`priorité`** plutôt que **« faible »** ou **« mauvais »**
 - Verbes d'action concrets : « Démarrer », « Soumettre », « Partager », « Voir le corrigé ».
 - Pas de boutons-questions (« Voulez-vous… »).
 - Pas de boutons-évidence (« Cliquer ici »).
+
+### Microcopie onboarding (10 étapes — refonte 2026-06-11)
+
+> Source : templates `doc/templates/src/components/OnboardingFlow.tsx` strings améliorés. Règle : viser ≤ 8 mots par titre, ≤ 18 mots par sous-titre, verbes à l'impératif présent ou présent simple. Pas de « Veuillez », pas de « bienvenue ! ». Cf. D-UX-Update-12.
+
+| Step | Champ | FR | EN |
+|---|---|---|---|
+| 0 | Titre | Quelle section suis-tu ? | Pick your system |
+| 0 | CTA | Continuer | Continue |
+| 1 | Titre | Bienvenue dans ton espace 237 | Welcome to your 237 space |
+| 1 | Sous-titre | De la 6e à la Tle, tout pour ta réussite. | From Form 1 to A-Level, everything to ace your exams. |
+| 1 | Feature 1 titre | Cours complets | Full courses |
+| 1 | Feature 1 desc | Leçons claires et fiches de révision | Clear lessons and revision sheets |
+| 1 | Feature 2 titre | Exercices corrigés | Solved exercises |
+| 1 | Feature 2 desc | Entraîne-toi à ton rythme | Practice at your pace |
+| 1 | Feature 3 titre | Chat IA | AI Chat |
+| 1 | Feature 3 desc | Aide personnalisée à tout moment | Personalized help anytime |
+| 1 | CTA | C'est parti | Let's go |
+| 2 | Titre | Tu es dans quel enseignement ? | Pick your track |
+| 2 | Option 1 | Général | General |
+| 2 | Option 2 | Technique | Technical |
+| 3 | Titre | Tu es en quelle classe cette année ? | What class this year? |
+| 4 | Titre `series_only` | Ta série | Your series |
+| 4 | Titre `tve_picker` | Ta spécialité Technique | Your TVEE specialty |
+| 4 | Titre `free_with_obligatory` | Choisis tes matières | Pick your subjects |
+| 4 | Sous-titre `free_with_obligatory` | Choisis tes matières (minimum 6). | Pick your subjects (minimum 6). |
+| 4 | Section locked | Matières obligatoires (verrouillées) | Core subjects (locked) |
+| 4 | Section optionnelle | Matières au choix | Electives |
+| 4 | Compteur | Tu présentes {n}/{max} matières | {n}/{max} subjects picked |
+| 4 | CTA | Valider mon choix | Validate choices |
+| 5 | Titre | Crée ton compte | Create your account |
+| 5 | Sous-titre | Garde ta progression sur tous tes téléphones. | Keep your progress across all your phones. |
+| 5 | CTA Google | Continuer avec Google | Continue with Google |
+| 5 | CTA Apple | Continuer avec Apple | Continue with Apple |
+| 5 | Divider | Ou | Or |
+| 5 | CTA Visiteur | Continuer sans compte | Continue without account |
+| 5 | Visiteur confirmation | Tu pourras créer ton compte plus tard. Tes choix actuels seront gardés. | You can create your account later. Your current choices will be kept. |
+| 5 | Visiteur confirm CTA | Confirmer | Confirm |
+| 6 | Titre | Comment on t'appelle ? | How should we call you? |
+| 6 | Label | Ton nom complet | Your full name |
+| 6 | Placeholder | Prénom Nom | Firstname Lastname |
+| 6 | CTA | Continuer | Continue |
+| 7 | Titre | Ton numéro | Your number |
+| 7 | Sous-titre | Pour récupérer ton compte si besoin. | To recover your account if needed. |
+| 7 | Label | Numéro de téléphone | Phone number |
+| 7 | Skip CTA | Passer pour l'instant | Skip for now |
+| 7 | CTA | Continuer | Continue |
+| 8 | Titre | Tu vas dans quelle école ? | What school are you in? |
+| 8 | Sous-titre | Trouve ton lycée pour rejoindre tes classements (tu peux passer). | Find your school to join your class leaderboard (you can skip). |
+| 8 | Placeholder | Ex : Lycée Joss, Collège… | E.g. GBHS Bamenda, Bilingual Grammar… |
+| 8 | Add CTA | + Ajouter "{name}" | + Add "{name}" |
+| 8 | Add toast | Ton école est ajoutée, on la valide bientôt. | School added, we'll validate it soon. |
+| 8 | CTA principal | C'est mon école | That's my school |
+| 8 | Skip CTA | Passer pour l'instant | Skip for now |
+| 8 | Skip toast | Tu pourras l'ajouter plus tard depuis ton profil. | You can add it later from your profile. |
+| 9 | Titre (compte) | Tout est prêt, {firstName} | All set, {firstName} |
+| 9 | Sous-titre (compte) | Ton espace {levelLabel} est prêt. À toi de jouer. | Your {levelLabel} space is ready. Go get those grades. |
+| 9 | Titre (visiteur) | Tu peux explorer librement | Free to explore |
+| 9 | Sous-titre (visiteur) | Crée ton compte plus tard pour sauvegarder ta progression. | Create your account later to save your progress. |
+| 9 | CTA (compte) | Entrer dans mon espace | Enter my space |
+| 9 | CTA (visiteur) | Explorer | Explore |
+
+### Microcopie erreurs onboarding
+
+| Situation | FR | EN |
+|---|---|---|
+| OAuth refus user | Tu peux toujours continuer sans compte. | You can still continue without an account. |
+| OAuth panne réseau | Pas de connexion. Vérifie ton réseau. | No connection. Check your network. |
+| OAuth erreur technique | Erreur technique. Réessaie. | Technical error. Try again. |
+| Phone format invalide | Numéro invalide. Format attendu : 6 XX XX XX XX. | Invalid number. Expected format: 6 XX XX XX XX. |
+| Name trop court | Nom trop court (2 caractères minimum). | Name too short (2 characters minimum). |
+| Picker compteur sous min | Il te manque {n} matière(s). | You need {n} more subject(s). |
+| Picker compteur au-dessus max | Maximum {max} matières au {levelLabel}. | Maximum {max} subjects at {levelLabel}. |
+| TVEE inactive | Filière TVEE en cours d'activation. Reviens bientôt. | TVEE track is being activated. Come back soon. |
+| Schools fetch down | Pas de connexion à la liste — tu peux quand même ajouter ton école. | No connection to the list — you can still add your school. |
+| Firestore permission-denied post-auth | Une erreur est survenue avec ton profil. Reprends ton parcours. | Something went wrong with your profile. Restart your journey. |
 
 ---
 
@@ -430,105 +509,187 @@ Quelques références explicites pour cadrer la posture.
 
 Les flux suivants reprennent et étendent les UJ-1 à UJ-7 du PRD. Chaque flux a un **climax** : le moment où la valeur est délivrée et où l'élève le sait.
 
-### Flow 1 — Onboarding (Fatou, premier soir)
+### Flow 1 — Onboarding (refonte v3 — 10 étapes, templates `doc/templates/`)
 
-*Réalise UJ-1 du PRD. Personas : Fatou Mballa, Tle D francophone, Yaoundé, Tecno Spark 8.*
+*Réalise UJ-1 du PRD. Voir [`.decision-log.md` § 2026-06-11 Update 3](.decision-log.md) (D-UX-Update-12 à 20). Personas multiples consolidées : **Fatou** (Tle D franco), **Aïssatou** (Tle A1 franco), **Mariam** (Form 5 anglo Gén), **James** (Upper Sixth S2 anglo Gén), **Eyong** (TVE AL anglo Tech).*
 
-> ℹ️ **Flow nominal mode `derived`** (sprint change 2026-06-09, [ADR-016](../../architecture/adrs/ADR-016-catalogue-v2-sous-series-panier-tvee.md)). Pour les variants v2 Story 1.11b couvrant les modes `pickerMode` non-`derived` (sous-séries franco A1-A5/ABI/SH/AC/TI, panier anglo O-Level, extension A-Level transversales, parcours TVEE), voir variants **Flow 1a (Aïssatou)** / **1b (Mariam)** / **1c (James)** / **1d (Eyong)** ci-dessous.
+> ℹ️ **Le flow nominal est désormais à 10 étapes consolidées.** Les 4 variants picker précédents (Story 1.11b + 1.14-1.17) sont **fusionnés** dans l'étape 4 avec rendu conditionnel selon `pickerMode` (`derived` / `series_only` / `free_with_obligatory` / `series_plus_optional` / `tve_picker`). L'authentification est inversée et a lieu à l'étape 5 (post-picker). L'examen visé est dérivé silencieusement.
 
-1. Fatou lance l'app pour la 1ʳᵉ fois. Splash 1.5 s (logo bleu pulsé léger).
-2. Écran sous-système : deux boutons primaires plein largeur **« Francophone »** et **« Anglophone »**. Aucun défaut suggéré. Tap « Francophone » → toute l'app passe en français immédiatement.
-3. Écran profil étape 1/3 : filière. Deux cartes : **Général** et **Technique**. Tap « Général ».
-4. Étape 2/3 : niveau. Liste scrollable (6ᵉ à Terminale). Tap « Terminale ».
-5. Étape 3/3 : série. Pill tabs : A, C, D, E (selon disponibilité). Tap « D ».
-6. Écran récap : matières dérivées affichées en grille (Maths, **Physique**, **Chimie**, SVT, **Environnement**, Français, Anglais, Philo, Histoire-Géo, **Informatique**, EPS — 11 matières — cf. corrections série D Story 1.11a : Physique+Chimie séparés ex-PCT, retrait LV2 erronée v1, ajout Environnement + Informatique) + examen visé en bandeau (« Tu prépares le BAC D »). Bouton primaire « C'est ma classe ».
-7. Écran liaison école (optionnel) : champ recherche + suggestions + bouton secondaire « Passer ». Fatou tape « Lycée Bilingue d'Application », sélectionne dans la liste.
-8. Écran compte : deux boutons « Continuer avec Google » et « Continuer avec Apple ». Fatou tape Google.
-9. Sheet système Google Sign-In → confirmation.
-10. **Climax :** écran d'accueil s'affiche, hero bleu avec « Bienvenue Fatou ! Voici tes matières. ». Mini-carte de rang vide (« Pas encore classée — fais ton premier quiz ! »). 3 recommandations starter (« Commence par les fonctions polynomiales — programme officiel BAC D »). Fatou est dans l'app, prête.
+#### Vue d'ensemble
 
-**Failure : panne Google Sign-In** → écran d'erreur explicite, bouton « Réessayer » + lien « Continuer en visiteur (tu pourras créer un compte plus tard) ». Pas de blocage dur.
+| # | Étape | Surface | Conditionnel | Climax ? |
+|---|---|---|---|---|
+| 0 | Sub-system choice | `/onboarding/sub-system` | — | |
+| 1 | Hero intro (3 features) | `/onboarding/hero` | — | |
+| 2 | Track choice | `/onboarding/track` | — | |
+| 3 | Level choice | `/onboarding/level` | — | |
+| 4 | Stream & subjects picker | `/onboarding/stream-subjects` | uniquement si `level.requiresOrientation` (skip sinon → step 5) | |
+| 5 | Auth choice | `/onboarding/auth` | — | |
+| 6 | Name input | `/onboarding/name` | skip si OAuth a fourni `displayName` | |
+| 7 | Phone input | `/onboarding/phone` | skip si visiteur | |
+| 8 | School search | `/onboarding/school` | skip si visiteur | |
+| 9 | Success celebration | `/onboarding/success` | — | **✓ CLIMAX** |
 
-**Edge case : profil interrompu** → réouverture relance directement l'étape en cours (FR-8 persistance).
+**Footer CTA** : présent sur 0, 1, 2, 3, 4, 6, 7, 8, 9 ; absent sur 5 (3 boutons d'auth se chargent eux-mêmes). Voir `{components.cta-footer-gradient}`.
+**Header progression** : visible sur étapes 2-4 (segment « profil scolaire ») et 6-8 (segment « identité »). Caché sur 0, 1, 5, 9.
+**Bouton back** : présent sur toutes les étapes sauf 0 et 9. Au step 5, back retourne à 4 ou 3 selon `level.requiresOrientation`.
+**Tablette ≥ 840 dp** : container `ConstrainedBox(maxWidth: 600)` centré horizontalement sur toutes les étapes ; le hero step 1 et le success step 9 conservent le 4/3 ratio illustration en plein largeur jusqu'à `maxWidth: 720`. Cf. D-UX-Update-11.
 
-#### Variant Flow 1a — Aïssatou (Tle A1 francophone, sous-série littéraire, Story 1.14)
+#### Step 0 — Sub-system choice
 
-*Personas : Aïssatou Diop, Tle A1 francophone, Bafoussam, Samsung Galaxy A12.*
+**But** : déterminer la langue de l'app (FR ou EN) **avant** tout autre choix scolaire.
+**UI** : icône Map en hero + titre H2 (« Quelle section suis-tu ? » / « Pick your system »), 2 `SelectionCard` plein largeur (« Francophone » / « Anglophone »). Pas d'icône secondaire. Pas de défaut suggéré.
+**Interaction** : tap sur l'une des cartes → state `subSystem` mis à jour + ring 2px primary + bg primary-soft + scale 1.01. Tap sur le footer CTA « Continuer » → step 1. Langue de l'app bascule immédiatement à la sélection (sans attendre Continuer).
+**Validation** : `subSystem ∈ {francophone, anglophone}`. CTA disabled tant que `subSystem == null`.
+**Edge case** : `subSystem` est persisté en SharedPreferences dès la sélection → si l'utilisateur kill l'app maintenant et la relance, il revient à cette étape avec sa sélection préservée (et l'app reste dans la langue choisie).
 
-1-4. Identique au Flow 1 Fatou jusqu'à l'étape 2/3 niveau (Tap « Terminale »).
-5. **Étape 3/3 : série — variant 12 cards Tle franco générale**. Liste scrollable groupée par famille avec headings et icônes Lucide :
-   - **« Lettres »** (icône `BookOpen`) — cards A1, A2, A3, A4, A5, ABI
-   - **« Sciences humaines »** (icône `Users`) — cards SH, AC
-   - **« Sciences »** (icône `Atom`) — cards C, D
-   - **« Sciences techniques »** (icône `Wrench`) — cards E, TI
-   Aïssatou scroll, identifie « Lettres » → tap card **A1**. Critère UX : Aïssatou trouve sa série en < 10s sur Pixel 4a (objectif test 1.14).
-6. Écran récap : matières dérivées (Français, Anglais, Math, Philo, Hist-Géo, EPS, **Latin**, **Grec**, **LV2** — 9 matières) + bandeau « Tu prépares le BAC A1 ». Bouton « C'est ma classe ».
-7-10. Identique au Flow 1 Fatou (école + compte + dashboard).
+#### Step 1 — Hero intro
 
-**Edge case Tle A v1 DEPRECATED** : un élève qui avait choisi série A v1 (DEPRECATED) avant 2026-06-09 reste en série A annotée — pas de migration forcée. Cf. ADR-016 § Décision 1 rétrocompat. La série A est conservée mais `isActive: false` post-1.12 — les nouveaux élèves choisissent A1-A5/ABI/SH/AC directement.
+**But** : présenter la promesse produit avant la friction du picker. Hypothèse : un élève qui voit ce qu'il va gagner avant de remplir 4 écrans abandonne moins.
+**UI** : illustration hero `4/3` (asset propre à commander — cf. OQ-UX-11 ; placeholder `onboarding_hero.png`) + dégradé bg vers le bas + titre display « Bienvenue dans ton espace 237 » / « Welcome to your 237 space » + sous-titre body + **3 features cards** glassmorphic blanc 70% backdrop-blur :
+  - 📘 **Cours complets** / "Full courses" — « Leçons claires et fiches de révision » / "Clear lessons and revision sheets"
+  - 🎓 **Exercices corrigés** / "Solved exercises" — « Entraîne-toi à ton rythme » / "Practice at your pace"
+  - 🧠 **Chat IA** / "AI Chat" — « Aide personnalisée à tout moment » / "Personalized help anytime"
+**Interaction** : tap footer CTA « C'est parti » / "Let's go" → step 2. Pas de skip discret.
+**Edge case** : si l'utilisateur revient à cette étape via back depuis step 2, la sélection sub-system est conservée.
 
-#### Variant Flow 1b — Mariam (Form 5 anglophone, panier O-Level, Story 1.15)
+#### Step 2 — Track choice
 
-*Personas : Mariam Bakari, Form 5 anglophone, Limbé, Tecno Pop 7.*
+**But** : Général ou Technique.
+**UI** : sticky header progress bar en haut (`1/3` segment « profil scolaire ») + back arrow + titre H2 « Tu es dans quel enseignement ? » / "Pick your track" + 2 `SelectionCard` (« Général » / "General" avec icône Library ; « Technique » / "Technical" avec icône Wrench).
+**Interaction** : tap card → state `trackId`. Tap CTA → step 3.
+**Validation** : `trackId ∈ {general, technical}`. CTA disabled si null.
+**Edge case visiteur en zone TVEE non activée** : si user choisit Technique mais qu'en step 4 aucune `tve_specialty` n'est `isActive: true`, message à ce moment-là (pas en step 2). Voir step 4 edge case « TVEE en cours d'activation ».
 
-1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
-3. Étape 1/3 : filière. Tap « General ».
-4. Étape 2/3 : niveau. Liste anglophone (Form 1 à Upper Sixth). Tap « Form 5 ».
-5. **Étape 3/3 : pas de série**. Form 5 anglophone n'a pas de série au sens v1 — skip cette étape, nav direct à l'écran picker O-Level.
-6. **Variant picker O-Level (mode `free_with_obligatory`)** : nouvelle page après step niveau. Sections :
-   - **« Matières obligatoires »** : 3 cards lockées avec checkbox checked + icône cadenas Lucide (English Language, French, Mathematics). Tap décocher → toast erreur « EN, FR et Math sont obligatoires ».
-   - **« Matières au choix »** : ~14-18 checkboxes (Physics, Chemistry, Biology, Geography, History, Economics, Religious Studies, Computer Science, Citizenship Education, ICT, Food & Nutrition, Commerce, **Geology** NEW Story 1.11a, **Human Biology** NEW, **Logic** NEW, **Accounting** NEW, Additional Mathematics, **Bilingual French** NEW). Pre-cochées : Physics + Chemistry + Biology + Geography + History (5 matières populaires sciences) — soit **8 matières au total** avec obligatoires.
-   - **Compteur live en bas** : « Tu présentes 8/11 matières ». Bouton Valider activé si X ∈ [6, 11].
-7. Mariam décoche Geography (préfère parcours sciences pur). Compteur passe à 7/11. Tap Valider.
-8. Écran récap : 7 matières affichées + bandeau « Tu prépares le GCE O-Level ». Bouton « C'est ma classe ».
-9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+#### Step 3 — Level choice
 
-**Validation Firestore (Story 1.15)** : `pickedSubjects ⊂ derivedSubjects ∪ optionalSubjectIds ∧ obligatorySubjectIds ⊂ pickedSubjects`. Cf. firestore.rules + [BASE-DE-DONNEES.md § Validation panier polymorphe](../../../../doc/partage/BASE-DE-DONNEES.md).
+**But** : déterminer le niveau (classe) selon `(subSystem, trackId)`.
+**UI** : sticky progress (`2/3`) + back + titre H2 « Tu es en quelle classe cette année ? » / "What class this year?" + liste scrollable de `SelectionCard` (sans desc, icône Book ou GraduationCap pour les classes d'examen 3e / Tle / Form 5 / Upper Sixth / TVE AL / TVE IL Form 5).
 
-**Edge case bypass client** : un appel API direct depuis outil externe qui POST `pickedSubjects` invalide (ex. sans Math) → Firestore rule rejette. Toast côté client si Firebase remonte l'erreur.
+| (subSystem, trackId) | Liste niveaux (id source `educationData.ts`) |
+|---|---|
+| (`francophone`, `general`) | 6e, 5e, 4e, 3e (BEPC), 2nde, 1ère (Probatoire), Terminale (BAC) — 7 niveaux |
+| (`francophone`, `technical`) | 6e, 5e, 4e, 3e Tech (CAP), 2nde Tech, 1ère Tech (Probatoire), Tle Tech (BAC) — 7 niveaux |
+| (`anglophone`, `general`) | Form 1, Form 2, Form 3, Form 4, Form 5 (O-Level), Lower Sixth, Upper Sixth (A-Level) — 7 niveaux |
+| (`anglophone`, `technical`) | Form 1 Tech à Form 5 Tech (IL), Lower Sixth Tech, Upper Sixth Tech (AL) — 7 niveaux |
 
-#### Variant Flow 1c — James (Upper Sixth S2 + ICT, extension A-Level transversales, Story 1.16)
+**Interaction** : tap card → state `levelId` + recalcul `requiresOrientation`. Si `level.requiresOrientation == false` (classes ≤ 4e / Form 4 en Général uniquement), le step 4 sera **skippé**.
+**Validation** : `levelId ∈ levels[(subSystem, trackId)]`.
+**Edge case** : si un élève a déjà un `streamId` (revient sur le profil), changer de level efface `streamId` et `pickedSubjects` (logique state machine).
 
-*Personas : James Tanyi, Upper Sixth S2 anglophone, Buea, Tecno Spark 8.* (étendu de la persona James du PRD v1)
+#### Step 4 — Stream & subjects picker (5 modes consolidés)
 
-1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
-3. Étape 1/3 : filière. Tap « General ».
-4. Étape 2/3 : niveau. Tap « Upper Sixth ».
-5. Étape 3/3 : série. Cards Sciences (S1-S8) + Arts (A1-A5). Tap **« S2 »** (Chemistry/Physics/Biology).
-6. **Variant extension A-Level (mode `series_plus_optional`)** : nouvelle page après step série. Sections :
-   - **« Series (obligatoires) »** : 3 cards lockées avec checkbox checked + icône cadenas (Chemistry, Physics, Biology — la Series S2 figée).
-   - **« Transversales optionnelles »** : 4 checkboxes décochées par défaut (Computer Science, ICT, Religious Studies, Commerce). James veut ajouter ICT pour son orientation IT.
-   - **Compteur live** : « Tu présentes 3/5 matières ». James coche ICT → 4/5. Save activé tant que X ∈ [3, 5].
-7. Tap Valider. `pickedSubjects = [Chemistry, Physics, Biology, ICT]`.
-8. Écran récap : 4 matières + bandeau « Tu prépares le GCE A-Level ». Bouton « C'est ma classe ».
-9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+**But** : recueillir le détail scolaire selon le `pickerMode` calculé par `derivation_rules` (cf. `doc/partage/DONNEES-REFERENCE.md` matrice profil → matières).
 
-**Edge case max 5** : si James coche ICT + Computer Science + Religious Studies + Commerce (4 transversales) = 7 matières total > 5 → tap Valider disabled + toast « Maximum 5 matières au A-Level ».
+**UI commune** : sticky progress (`3/3`) + back + titre H2 contextuel (voir tableau ci-dessous) + body conditionnel + footer CTA « Valider mon choix » / "Validate choices".
 
-#### Variant Flow 1d — Eyong (TVE AL anglophone, Electrotechnique, parcours TVEE, Story 1.17)
+| pickerMode | Quand | UI body | Composant principal | Validation |
+|---|---|---|---|---|
+| **`derived`** | classes ≤ 4e / Form 4 Gén ; `requiresOrientation == false` | **Step 4 skippé** — nav directe step 5 (auth). `streamId = null`, `pickedSubjects` = `derivedSubjects` du level. | — | — |
+| **`series_only`** | Tle/1ère/2nde Gén FR ; Tle/1ère Tech FR ; Upper/Lower Sixth Anglo Tech | Liste `SelectionCard` séries (avec icône + desc) groupées par famille via `headings` si > 6 séries (Tle franco A1-A5/ABI/SH/AC/C/D/E/TI = 12 cards groupées Lettres / Sciences humaines / Sciences / Sciences techniques cf. variant Aïssatou) | `SelectionCard` standard | `streamId` non-null |
+| **`free_with_obligatory`** | Form 5 (O-Level) ; Lower Sixth standalone (A-Level pré-orientation) Anglo Gén | Section **Mandatory (Core)** : 3 `ObligatorySubjectCheckboxList` lockés (EN, FR, Math) + Section **Electives** : `OptionalSubjectCheckboxList` (~14-18 matières) + **compteur sticky-top** « 8/11 matières » | composants existants Stories 1.15 + sticky counter `PickerCounterBadge` (nouveau) | `pickedSubjects.length ∈ [6, 11]` ∧ `obligatorySubjects ⊂ pickedSubjects` |
+| **`series_plus_optional`** | Upper Sixth Anglo Gén (S1-S8 + transversales) | Section **Series** : 3 lockés (selon stream choisi via secondary cards row au-dessus, ex. S2 = Chemistry/Physics/Biology) + Section **Transversales** : 4 checkboxes décochées + **compteur** « 3/5 matières » | `SelectionCard` row + `OptionalSubjectCheckboxList` + `PickerCounterBadge` | `pickedSubjects.length ∈ [3, 5]` |
+| **`tve_picker`** | TVE IL / TVE AL Anglo Tech | Spécialité TVE (cards groupées Industrial/Commercial/Home Economics) + Section **Pro** lockés (3 obligatoires) + Section **Related Pro** lockés (3) + Section **Other** electives (EN + FR locked + History/Geo/Religious optionnels) + **compteur** « 7/8 matières (≥3 Pro + ≥3 Related ✓) » | `SelectionCard` row + 2× `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerCounterBadge` | `pickedSubjects.length ∈ [6, 8]` ∧ Pro ⊂ ∧ Related ⊂ |
 
-*Personas : Eyong Eboa, TVE Advanced Level anglophone, spécialité Electrotechnique, Bonabéri Douala, Itel A56.*
+**Tablette** : `series_only` à 12 cards (Tle franco gén) utilise 2 colonnes ≥ 840 dp (cf. `{components.icon-grid}` + responsive D-UX-Update-11). Les pickers checkboxes restent en 1 colonne mais largeur ≤ 600 dp centré.
 
-1-2. Identique au Flow 1 Fatou (splash + sous-système Anglophone, toggle EN immediate).
-3. **Étape 1/3 : filière — variant filière technique anglo (NEW Story 1.17)**. Cards affichées : « General » (existant v1) + **« Technique »** (NEW). Tap « Technique ».
-4. **Étape 2/3 : niveau — variant TVEE**. Cards affichées : « TVE Intermediate Level (TVE IL) » + « TVE Advanced Level (TVE AL) ». Eyong tape « TVE AL ».
-5. **Étape 3/3 : spécialité — variant 13 cards groupées TVEE**. Liste scrollable groupée 3 familles avec headings et icônes Lucide :
-   - **« Industrial »** (icône `Wrench`) — 8 cards : ELEQ, ELNI, ELME, ELET, AC, ME, CE, Carpentry
-   - **« Commercial »** (icône `Briefcase`) — 3 cards : Accounting, Commerce, Office Practice
-   - **« Home Economics »** (icône `UtensilsCrossed`) — 2 cards : Food & Nutrition, Clothing & Textiles
-   Eyong tape **« ELET — Electrotechnique »** (famille Industrial).
-6. **Variant picker TVEE (mode `tve_picker`)** : nouvelle page. Sections :
-   - **« Professional Subjects (obligatoires) »** : 3 cards lockées + icône cadenas (Electrotechnique theory, Electrotechnique practical, Electrical machines)
-   - **« Related Professional Subjects (obligatoires) »** : 3 cards lockées (Mathematics for Industrial, Physics, Drawing)
-   - **« Other Subjects (au choix) »** : checkboxes (English Language locked, French locked, History, Geography, Religious Studies)
-   - **Compteur live** : « Tu présentes 7/8 matières (≥3 Pro + ≥3 Related ✓) ». Validation TVE AL : min 6 max 8 dont ≥3 Pro + ≥3 Related.
-7. Eyong garde la sélection par défaut (3 Pro + 3 Related + EN + FR = 8 matières exactement). Tap Valider.
-8. Écran récap : 8 matières TVEE + bandeau « Tu prépares le TVE AL Electrotechnique ». Bouton « C'est ma classe ».
-9-12. Identique au Flow 1 Fatou (école + compte + dashboard).
+**Validation Firestore** : `pickedSubjects ⊂ derivedSubjects ∪ optionalSubjectIds ∧ obligatorySubjectIds ⊂ pickedSubjects` (cf. `firestore.rules` + Story 1.15).
 
-**Edge case `isActive: false` initial** : au seed Story 1.12, les 26 séries TVEE (13 spécialités × 2 niveaux TVE IL/AL) sont `isActive: false`. Eyong tape « Technique » + « TVE AL » mais aucune spécialité disponible → message « Filière TVEE en cours d'activation. Reviens dans quelques semaines. » + bouton secondaire « Continuer en visiteur General Lower Sixth » (fallback). Toggle `isActive: true` par admin pédagogique post-validation enseignant TVEE (action porteur Story 1.17).
+**Edge case `pickerMode == tve_picker` mais aucune spécialité `isActive: true`** : message inline encadré warning + bouton secondaire « Continuer en visiteur Lower Sixth Général » qui (a) écrase `trackId = 'general'`, (b) replace `levelId = lower_sixth`, (c) replace `pickerMode = derived`, (d) navigue à step 5. Cf. ADR-016 activation progressive TVEE.
 
-**Décision activation progressive** : ELEQ + ELNI + ELME + ELET (Industrial électriques) activés en premier (validation Mr Eboa Joseph, Lycée Technique Bonabéri, action porteur post-merge 1.17). Autres spécialités activées au fil de la production de contenu pédagogique.
+**Edge case bypass client** : un appel API direct depuis outil externe qui POST `pickedSubjects` invalide (ex. Form 5 sans Math) → `firestore.rules` rejette. Côté client, le payload écrit au step 5 (post-auth) déclencherait un `FirebaseException.code = 'permission-denied'` → mappé via `failure.kind` à toast « Une erreur est survenue avec ton profil. Reprends ton parcours. » + reset state machine vers step 4.
+
+#### Step 5 — Auth choice (point d'inversion — D-UX-Update-14)
+
+**But** : créer le compte Firebase qui va recevoir le profil partiel (steps 0-4). Premier moment où une écriture Firestore a lieu.
+
+**UI** : pas de header progress (rupture de segment) + back arrow flottant en haut (retour step 4 ou 3 selon `requiresOrientation`) + icône User dans cercle primary-soft 64×64 + titre H1 « Crée ton compte » / "Create your account" + sous-titre body inkSoft « Garde ta progression sur tous tes téléphones. » / "Keep your progress across all your phones." + 3 boutons d'auth empilés verticalement, séparés par un divider centré « Ou » / "Or" :
+1. **Google** (blanc + icône Google + texte ink) — toujours visible.
+2. **Apple** (noir + icône Apple + texte blanc) — visible **uniquement** sur iOS (masqué Android cf. OQ-UX-12 présomption).
+3. **Visiteur** (bouton tertiaire bg-bg border-border + texte inkSoft) — « Continuer sans compte » / "Continue without account".
+
+**Interaction Google/Apple** :
+1. Tap → ouverture sheet système OAuth.
+2. Sur succès → `auth_provider` enregistré + écriture Firestore `users/{uid}` (subSystem + track + level + streamId + pickedSubjects + isAnonymous: false). WriteBatch atomique.
+3. Si OAuth fournit `displayName` non-vide → `state.name = displayName` → step 7 (skip step 6). Sinon → step 6.
+4. Échec OAuth (refus user, panne réseau, App Check rejette) → toast erreur explicite par `failure.kind` (cf. CLAUDE.md règle 13) :
+   - `permissionDenied` → « Session expirée, recommence. » / "Session expired, try again."
+   - `networkUnavailable` → « Pas de connexion. Vérifie ton réseau. » / "No connection. Check your network."
+   - `unknown` → « Erreur technique. Réessaie. » / "Technical error. Try again."
+   L'utilisateur reste au step 5. Aucune écriture Firestore.
+
+**Interaction Visiteur (D-UX-Update-18)** :
+1. Tap → confirmation inline « Tu pourras créer ton compte plus tard. Tes choix actuels seront gardés. » + bouton « Confirmer » + lien « Retour ».
+2. Sur confirmation → `Firebase signInAnonymously()` + écriture Firestore `users/{anonUid}` (profil partiel + `isAnonymous: true` + `auth_provider: 'guest'`).
+3. **Skip** steps 6, 7, 8 → direct step 9 success simplifié.
+
+**Validation** : `auth_provider ∈ {google, apple, guest}` + Firebase auth réussie.
+
+**Edge case kill app entre steps 0 et 4** : profil partiel **perdu** (Riverpod en mémoire). L'utilisateur recommence à 0 (mais `subSystem` est en SharedPreferences donc l'app reste dans la bonne langue). Trade-off accepté V1.
+**Edge case Apple non disponible sur Android** : si l'utilisateur arrive ici sur Android, seuls Google + Visiteur sont rendus. Apple est complètement absent du DOM (pas désactivé).
+**Edge case réinstallation app** : si l'utilisateur réinstalle et tape Google avec le même compte, Firebase reconnaît `users/{uid}` existant → bypass tout le onboarding → direct au dashboard.
+
+#### Step 6 — Name input
+
+**But** : capturer prénom + nom pour personnalisation de l'app et copy émotionnelle.
+
+**UI** : sticky progress (`1/3` segment « identité ») + back + titre H1 « Comment on t'appelle ? » / "How should we call you?" + sous-titre + label « Ton nom complet » / "Your full name" + champ texte large autofocus avec placeholder « Prénom Nom » / "Firstname Lastname".
+
+**Interaction** : saisie clavier → state `name`. Footer CTA « Continuer » → step 7.
+**Validation** : `name.trim().length ∈ [2, 80]`. CTA disabled sinon.
+**Skip auto** : si state `name` était déjà rempli par OAuth (Google/Apple `displayName` non-vide), step 6 est skippé au step 5. Si l'utilisateur revient via back depuis step 7, il atterrit sur step 6 avec le nom OAuth pré-rempli (éditable).
+
+#### Step 7 — Phone input (D-UX-Update-16)
+
+**But** : capturer numéro Cameroun pour récupération de compte + future liaison MoMo.
+
+**UI** : sticky progress (`2/3`) + back + titre H1 « Ton numéro » / "Your number" + sous-titre body « Pour récupérer ton compte si besoin. » / "To recover your account if needed." + label + composant `PhoneInputWithCountryFlag` (SVG drapeau CM + `+237` figé + champ numérique mask `6 XX XX XX XX`).
+
+**Interaction** : saisie clavier numérique uniquement → masking auto-format → state `phoneNumber` au format E.164 (`+2376XXXXXXXX`). Footer CTA « Continuer » → step 8.
+**Validation** : `phoneNumber` matches `^\\+237[26][0-9]{8}$`. CTA disabled sinon.
+**Skip avec micro-friction** : bouton tertiaire « Passer pour l'instant » / "Skip for now" en bas → toast « Tu pourras l'ajouter plus tard depuis ton profil » + step 8 avec `phoneNumber = null`.
+**Logs sécurité** : tout log AppLogger reçoit `maskPhone(phoneNumber)` = `+237 XX XX XX X7 89` (helper dans `core/logging/log_safe.dart`). Jamais le numéro complet. Cf. CLAUDE.md règle 4 sécurité.
+
+#### Step 8 — School search (D-UX-Update-17)
+
+**But** : permettre la liaison à une école pour les classements de classe (optionnel avec skip).
+
+**UI** : sticky progress (`3/3`) + back + titre H2 « Tu vas dans quelle école ? » / "What school are you in?" + sous-titre body inkSoft « Trouve ton lycée pour rejoindre tes classements (tu peux passer). » / "Find your school to join your class leaderboard (you can skip)." + composant `SchoolSearchWithAdd` (champ recherche + icône Search + clear button + suggestions Firestore `arrayContains` sur `name_tokens` + `limit(10)`).
+
+**Interaction** :
+- Saisie → suggestions live (debounce 250ms). Tap sur résultat → `SelectionCard` selected ring 2px primary → state `schoolId = <docId>` + `schoolName = <name>`.
+- Si zéro résultat ET saisie non-vide → carte secondaire pointillée « + Ajouter "<saisie>" » → tap → écriture `school_requests/{id}` (collection modérée admin) + toast « Ton école est ajoutée, on la valide bientôt » + state `schoolId = null` + `pendingSchoolRequestId = <reqId>`.
+- Footer CTA « C'est mon école » / "That's my school" → step 9 (CTA disabled tant que `schoolId == null` ET pas de pending request).
+- Bouton tertiaire « Passer pour l'instant » / "Skip for now" → toast micro-friction + step 9 avec `schoolId = null`.
+
+**Edge case Firestore down** : si `schools` collection inaccessible → fallback liste vide + bouton « Ajouter <saisie> » toujours fonctionnel (écrit dans `school_requests` qui a une règle plus permissive). Inline encadré warning « Pas de connexion à la liste — tu peux quand même ajouter ton école manuellement ».
+**Edge case pending school request ré-ouverture** : si l'utilisateur revient à cette étape via Profil > Édition avant que l'admin n'ait validé `school_requests/{id}`, l'app affiche un état tertiaire « Ton ajout est en attente de validation » sans option de changer.
+
+#### Step 9 — Success celebration (CLIMAX UJ-1)
+
+**But** : marquer émotionnellement la fin de l'onboarding. Le moment où l'élève sait qu'il est dans l'app et que ça lui appartient.
+
+**UI compte normal (Google/Apple)** : pas de header + canvas confetti fullscreen (couleurs `#2563EB / #16A34A / #D97706 / #0EA5E9`) + cercle success-soft 128×128 centré + checkmark blanc 64×64 strokeWidth 3 + 3 micro-icônes orbitantes (PartyPopper top-left warning, Sparkles bottom-right primary, CheckCircle right sky) + titre H2 black animation spring `« Tout est prêt, <prénom> »` / "All set, <firstName>" + sous-titre body inkSoft « Ton espace <levelLabel> est prêt. À toi de jouer. » / "Your <levelLabel> space is ready. Go get those grades." + footer CTA success-vert « Entrer dans mon espace » / "Enter my space".
+
+**UI mode visiteur** : pareil sauf copy alternatif :
+- Titre : « Tu peux explorer librement » / "Free to explore"
+- Sous-titre : « Crée ton compte plus tard pour sauvegarder ta progression. » / "Create your account later to save your progress."
+- CTA : « Explorer » / "Explore"
+
+**Interaction** : auto-dispatch onComplete après 3.5s OU tap CTA → navigation `/dashboard` (replace, pas de back possible).
+
+**Choreography multisensorielle** (greffe sur D-UX-Update-1/2/3 — table ajout step 9 onboarding) :
+- Anim : `celebration` 600ms (spring damping 15 stiffness 200 délai 100ms sur cercle ; fade-in titre + sous-titre delai 300/400ms).
+- Audio : `complete.m4a` (déclenché 200ms après ouverture step).
+- Haptic : `success` (séquence light + medium).
+- Coupures globales : si `MediaQuery.disableAnimations` → pas de confetti + spring → fade-in 200ms statique + checkmark statique. Si silencieux → pas de son. Si Mode Examen → impossible (le step 9 onboarding n'est pas atteignable depuis le Mode Examen, donc N/A).
+
+**Climax narratif** : « Fatou voit son prénom à l'écran. Une seconde, c'est l'app qui lui parle. Elle prend sa place. »
+
+**Edge case Crashlytics interruption pendant confetti** : si crash native pendant le step 9, au prochain lancement Firebase Auth est OK + Firestore profil OK + `users/{uid}.onboardingCompleted = true` (mis à `true` au step 8 → 9 transition) → bypass tout l'onboarding → direct au dashboard.
+**Edge case tablet ≥ 840 dp** : le canvas confetti déborde proportionnellement. Le cercle success-soft reste 128px (pas de scale). Le footer CTA reste 600 dp max centré.
+
+**Failure global step 9** : aucun. C'est le climax — si on est arrivé ici, la valeur est délivrée.
 
 ### Flow 2 — Lecture cours en taxi-brousse (James, trajet Buea-Limbé)
 
