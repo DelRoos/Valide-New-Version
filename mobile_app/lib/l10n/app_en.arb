@@ -18,6 +18,9 @@
   "retryLabel": "Try again",
   "tryAgain": "Try again later",
   "errorGeneric": "Something went wrong. Try again?",
+  "errorPermissionDenied": "Session expired. Restart the app to refresh.",
+  "errorNetworkUnavailable": "No connection. Check your network and try again.",
+  "errorFirestoreUnknown": "Technical error. Try again in a moment.",
   "errorNoConnection": "No connection. You can continue with what you've opened.",
   "successCopied": "Link copied.",
   "emptyStateGeneric": "Nothing to show yet.",
@@ -31,12 +34,12 @@
   "catalogueWaitingMessage": "To get started, Valide needs to connect once. Check your connection and try again.",
   "catalogueWaitingRetry": "Retry",
 
-  "subsystemChoiceTitle": "Choose your language and program",
+  "subsystemChoiceTitle": "Which section are you in?",
   "subsystemChoiceSubtitle": "You won't be able to change this later.",
   "subsystemFrancophone": "Francophone",
   "subsystemAnglophone": "Anglophone",
-  "subsystemConfirmTitle": "Confirm your choice",
-  "subsystemConfirmBody": "This choice locks your language and program. You won't be able to change it later.",
+  "subsystemConfirmTitle": "Which section are you in?",
+  "subsystemConfirmBody": "Final choice: language (FR/EN) + school curriculum.",
 
   "onboardingStepLabel": "Step {step} of {total}",
   "@onboardingStepLabel": {
@@ -108,6 +111,7 @@
   "onboardingAccountSubtitle": "Save your progress, pick up on any device.",
   "onboardingAccountGoogleCta": "Continue with Google",
   "onboardingAccountAppleCta": "Continue with Apple",
+  "onboardingAccountGuestCta": "Continue as guest",
   "onboardingAccountNetworkErrorToast": "No connection. Check your connection and try again.",
   "onboardingAccountConflictTitle": "Account already in use",
   "onboardingAccountConflictBody": "This account is already linked to another Valide profile. If you sign in with it, you'll lose your current profile.",

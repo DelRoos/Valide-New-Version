@@ -14,6 +14,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/perf_logger.dart';
 import '../domain/school.dart';
 import '../domain/school_failure.dart';
 import '../domain/school_repository.dart';
@@ -97,12 +98,15 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
     }
 
     try {
-      final snap = await _firestore
-          .collection(_kCollection)
-          .where('isValidated', isEqualTo: true)
-          .where('keywords', arrayContains: token)
-          .limit(_kMaxResults)
-          .get();
+      final snap = await logPerf(
+        'schools.search',
+        () => _firestore
+            .collection(_kCollection)
+            .where('isValidated', isEqualTo: true)
+            .where('keywords', arrayContains: token)
+            .limit(_kMaxResults)
+            .get(),
+      );
 
       final schools = snap.docs.map(_schoolFromDoc).toList()
         // Story 1.5.b — Firestore ne permet pas arrayContains + orderBy sur
@@ -148,18 +152,21 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
     }
 
     try {
-      await _firestore.collection(_kRequestsCollection).add({
-        'requestedBy': uid,
-        'requestedAt': FieldValue.serverTimestamp(),
-        'status': 'pending',
-        'name': name,
-        'city': city,
-        // Story 1.5.c — conditional fields : seuls ajoutes si non-null pour
-        // eviter de stocker `null` (les rules verifient l'absence du champ,
-        // pas la valeur null). Syntaxe null-aware marker Dart 3.x.
-        'region': ?region,
-        'subSystem': ?subSystem,
-      });
+      await logPerf(
+        'school_requests.create',
+        () => _firestore.collection(_kRequestsCollection).add({
+          'requestedBy': uid,
+          'requestedAt': FieldValue.serverTimestamp(),
+          'status': 'pending',
+          'name': name,
+          'city': city,
+          // Story 1.5.c — conditional fields : seuls ajoutes si non-null pour
+          // eviter de stocker `null` (les rules verifient l'absence du champ,
+          // pas la valeur null). Syntaxe null-aware marker Dart 3.x.
+          'region': ?region,
+          'subSystem': ?subSystem,
+        }),
+      );
       // CLAUDE.md regle 4 (logs) : ni uid, ni nom complet ecole, ni ville
       // logges. Le compteur suffit pour la trace d'usage.
       AppLogger.i('School request submitted');

@@ -194,6 +194,24 @@ abstract class AppLocalizations {
   /// **'Une erreur est survenue. Réessaie ?'**
   String get errorGeneric;
 
+  /// Erreur explicite quand FirebaseException code=permission-denied. Cause probable : auth perdu (signOut) ou doc users/{uid} dans un etat incoherent. Action utilisateur : re-lancer l'app force un signInAnonymously frais.
+  ///
+  /// In fr, this message translates to:
+  /// **'Session expirée. Re-lance l\'app pour rafraîchir.'**
+  String get errorPermissionDenied;
+
+  /// Erreur explicite quand FirebaseException code=unavailable ou network-related. Affichee en toast warning.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion. Vérifie ton réseau et réessaie.'**
+  String get errorNetworkUnavailable;
+
+  /// Fallback toast quand FirebaseException avec code non geré (autre que permission-denied / unavailable).
+  ///
+  /// In fr, this message translates to:
+  /// **'Erreur technique. Réessaie dans un instant.'**
+  String get errorFirestoreUnknown;
+
   /// Erreur affichée quand le réseau est coupé. Rassure l'élève sur le cache offline.
   ///
   /// In fr, this message translates to:
@@ -254,10 +272,10 @@ abstract class AppLocalizations {
   /// **'Réessayer'**
   String get catalogueWaitingRetry;
 
-  /// Titre H2 de la page /onboarding/subsystem (Story 1.2). Tutoiement UX-DR-39.
+  /// Titre H2 de la page /onboarding/subsystem (Story 1.2). Wording MINESEC : 'section' = francophone/anglophone (vs 'programme' qui evoquait la programmation informatique).
   ///
   /// In fr, this message translates to:
-  /// **'Choisis ta langue et ton programme'**
+  /// **'Tu fais quelle section ?'**
   String get subsystemChoiceTitle;
 
   /// Sous-titre court qui avertit du caractère immuable du choix (ADR-006).
@@ -278,16 +296,16 @@ abstract class AppLocalizations {
   /// **'Anglophone'**
   String get subsystemAnglophone;
 
-  /// Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone.
+  /// Titre de la modale de confirmation qui s'affiche après tap sur Francophone/Anglophone. Wording camerounais : 'section' = francophone/anglophone au MINESEC.
   ///
   /// In fr, this message translates to:
-  /// **'Confirmer ton choix'**
+  /// **'Tu fais quelle section ?'**
   String get subsystemConfirmTitle;
 
-  /// Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2).
+  /// Corps de la modale de confirmation. Explicite l'irréversibilité (ADR-006 conséquence négative #2) de manière courte et directe.
   ///
   /// In fr, this message translates to:
-  /// **'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.'**
+  /// **'Choix définitif : langue (FR/EN) + cursus scolaire.'**
   String get subsystemConfirmBody;
 
   /// Label de progression du flow profil 3 étapes (Story 1.3).
@@ -511,6 +529,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Continuer avec Apple'**
   String get onboardingAccountAppleCta;
+
+  /// CTA secondaire AccountCreationPage : skip la creation de compte Google/Apple et continuer le flow en anonyme (session anonymous Firebase deja active). Le doc users/{uid} est deja cree (Story 1.3), seule la liaison Google/Apple est skippee. L'utilisateur reste anonyme jusqu'a une eventuelle creation de compte ulterieure.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer en mode visiteur'**
+  String get onboardingAccountGuestCta;
 
   /// Toast warning si OAuth ou linkWithCredential echoue pour cause reseau (AC6).
   ///

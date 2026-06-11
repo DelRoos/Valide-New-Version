@@ -59,6 +59,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get errorGeneric => 'Une erreur est survenue. Réessaie ?';
 
   @override
+  String get errorPermissionDenied =>
+      'Session expirée. Re-lance l\'app pour rafraîchir.';
+
+  @override
+  String get errorNetworkUnavailable =>
+      'Pas de connexion. Vérifie ton réseau et réessaie.';
+
+  @override
+  String get errorFirestoreUnknown =>
+      'Erreur technique. Réessaie dans un instant.';
+
+  @override
   String get errorNoConnection =>
       'Pas de connexion. Tu peux continuer ce que tu as ouvert.';
 
@@ -91,7 +103,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get catalogueWaitingRetry => 'Réessayer';
 
   @override
-  String get subsystemChoiceTitle => 'Choisis ta langue et ton programme';
+  String get subsystemChoiceTitle => 'Tu fais quelle section ?';
 
   @override
   String get subsystemChoiceSubtitle => 'Tu ne pourras pas changer après.';
@@ -103,11 +115,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get subsystemAnglophone => 'Anglophone';
 
   @override
-  String get subsystemConfirmTitle => 'Confirmer ton choix';
+  String get subsystemConfirmTitle => 'Tu fais quelle section ?';
 
   @override
   String get subsystemConfirmBody =>
-      'Ce choix fixe la langue et le programme. Tu ne pourras pas changer après.';
+      'Choix définitif : langue (FR/EN) + cursus scolaire.';
 
   @override
   String onboardingStepLabel(int step, int total) {
@@ -256,6 +268,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingAccountAppleCta => 'Continuer avec Apple';
+
+  @override
+  String get onboardingAccountGuestCta => 'Continuer en mode visiteur';
 
   @override
   String get onboardingAccountNetworkErrorToast =>

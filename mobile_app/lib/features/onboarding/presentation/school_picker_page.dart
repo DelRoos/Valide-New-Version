@@ -18,11 +18,13 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/app_button.dart';
-import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_toast.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../domain/school.dart';
 import '../providers.dart';
+import '_profile_failure_message.dart';
+import 'widgets/add_school_dialog.dart';
+import 'widgets/school_search_card.dart';
 
 class SchoolPickerPage extends ConsumerStatefulWidget {
   const SchoolPickerPage({super.key});
@@ -132,7 +134,7 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
           separatorBuilder: (_, _) => SizedBox(height: AppSpacing.s2.h),
           itemBuilder: (context, index) {
             final s = schools[index];
-            return _SchoolCard(
+            return SchoolSearchCard(
               school: s,
               onTap: _isLinking ? null : () => _onPickSchool(s),
               validatedLabel: l10n.onboardingSchoolValidatedBadge,
@@ -164,10 +166,13 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
 
     result.fold(
       (failure) {
-        AppLogger.w('updateLinkedSchool failed: ${failure.message}');
+        AppLogger.w(
+          'updateLinkedSchool failed: kind=${failure.kind.name} '
+          'message=${failure.message}',
+        );
         AppToast.show(
           context,
-          message: l10n.onboardingSchoolGenericErrorToast,
+          message: profileFailureUserMessage(l10n, failure),
           tone: ToastTone.warning,
         );
       },
@@ -189,9 +194,9 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
   }
 
   Future<void> _onShowAddDialog() async {
-    final result = await showDialog<_AddSchoolFormData>(
+    final result = await showDialog<AddSchoolFormData>(
       context: context,
-      builder: (dialogContext) => const _AddSchoolDialog(),
+      builder: (dialogContext) => const AddSchoolDialog(),
     );
     if (result == null || !mounted) return;
 
@@ -226,82 +231,6 @@ class _SchoolPickerPageState extends ConsumerState<SchoolPickerPage> {
   }
 }
 
-class _SchoolCard extends StatelessWidget {
-  const _SchoolCard({
-    required this.school,
-    required this.onTap,
-    required this.validatedLabel,
-  });
-
-  final School school;
-  final VoidCallback? onTap;
-  final String validatedLabel;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(AppRadius.md),
-      child: AppCard(
-        padding: EdgeInsets.all(AppSpacing.s4.w),
-        child: Row(
-          children: [
-            Icon(
-              LucideIcons.school,
-              color: AppColors.primary,
-              size: 28.sp,
-            ),
-            SizedBox(width: AppSpacing.s3.w),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(school.name, style: AppTypography.bodyStrong),
-                  SizedBox(height: AppSpacing.s1.h),
-                  Text(
-                    '${school.city}, ${school.region}',
-                    style: AppTypography.caption.copyWith(
-                      color: AppColors.inkSoft,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(width: AppSpacing.s2.w),
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.s2.w,
-                vertical: AppSpacing.s1.h,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.primarySoft,
-                borderRadius: BorderRadius.circular(AppRadius.sm),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    LucideIcons.badgeCheck,
-                    size: 14.sp,
-                    color: AppColors.primary,
-                  ),
-                  SizedBox(width: AppSpacing.s1.w),
-                  Text(
-                    validatedLabel,
-                    style: AppTypography.caption.copyWith(
-                      color: AppColors.primaryDark,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class _EmptyState extends StatelessWidget {
   const _EmptyState({required this.query, required this.onAddSchool});
@@ -339,164 +268,3 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
-class _AddSchoolFormData {
-  const _AddSchoolFormData({
-    required this.name,
-    required this.city,
-    this.region,
-    this.subSystem,
-  });
-  final String name;
-  final String city;
-  final String? region;
-
-  /// Story 1.5.c — `francophone` | `anglophone` | `both` | `null` (utilisateur
-  /// a choisi « Je ne sais pas »).
-  final String? subSystem;
-}
-
-class _AddSchoolDialog extends StatefulWidget {
-  const _AddSchoolDialog();
-
-  @override
-  State<_AddSchoolDialog> createState() => _AddSchoolDialogState();
-}
-
-/// Story 1.5.c — 4 choix UI pour le champ subSystem. `null` = « Je ne sais
-/// pas » (defaut). Les 3 autres valeurs matchent le schema Firestore.
-enum _SubSystemChoice { unknown, francophone, anglophone, both }
-
-class _AddSchoolDialogState extends State<_AddSchoolDialog> {
-  final _nameCtrl = TextEditingController();
-  final _cityCtrl = TextEditingController();
-  final _regionCtrl = TextEditingController();
-  _SubSystemChoice _subSystem = _SubSystemChoice.unknown;
-
-  @override
-  void dispose() {
-    _nameCtrl.dispose();
-    _cityCtrl.dispose();
-    _regionCtrl.dispose();
-    super.dispose();
-  }
-
-  bool get _canSubmit =>
-      _nameCtrl.text.trim().isNotEmpty && _cityCtrl.text.trim().isNotEmpty;
-
-  String? _subSystemValue() {
-    switch (_subSystem) {
-      case _SubSystemChoice.unknown:
-        return null;
-      case _SubSystemChoice.francophone:
-        return 'francophone';
-      case _SubSystemChoice.anglophone:
-        return 'anglophone';
-      case _SubSystemChoice.both:
-        return 'both';
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return AlertDialog(
-      title: Text(l10n.onboardingSchoolAddDialogTitle),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _nameCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogNameLabel,
-              ),
-              onChanged: (_) => setState(() {}),
-            ),
-            TextField(
-              controller: _cityCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogCityLabel,
-              ),
-              onChanged: (_) => setState(() {}),
-            ),
-            TextField(
-              controller: _regionCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogRegionLabel,
-              ),
-            ),
-            SizedBox(height: AppSpacing.s3.h),
-            Text(
-              l10n.onboardingSchoolAddDialogSubSystemLabel,
-              style: AppTypography.bodyStrong,
-            ),
-            RadioGroup<_SubSystemChoice>(
-              groupValue: _subSystem,
-              onChanged: (v) => setState(() => _subSystem = v!),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemFrancophone,
-                    ),
-                    value: _SubSystemChoice.francophone,
-                  ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemAnglophone,
-                    ),
-                    value: _SubSystemChoice.anglophone,
-                  ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemBoth,
-                    ),
-                    value: _SubSystemChoice.both,
-                  ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemUnknown,
-                    ),
-                    value: _SubSystemChoice.unknown,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.back),
-        ),
-        ElevatedButton(
-          onPressed: _canSubmit
-              ? () {
-                  final regionInput = _regionCtrl.text.trim();
-                  Navigator.of(context).pop(
-                    _AddSchoolFormData(
-                      name: _nameCtrl.text.trim(),
-                      city: _cityCtrl.text.trim(),
-                      region: regionInput.isEmpty ? null : regionInput,
-                      subSystem: _subSystemValue(),
-                    ),
-                  );
-                }
-              : null,
-          child: Text(l10n.onboardingSchoolAddDialogSubmitCta),
-        ),
-      ],
-    );
-  }
-}

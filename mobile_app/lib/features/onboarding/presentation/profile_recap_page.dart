@@ -22,6 +22,7 @@ import '../../../core/widgets/app_toast.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../domain/onboarding_flow_state.dart';
 import '../providers.dart';
+import '_profile_failure_message.dart';
 import '_subject_icons.dart';
 
 class ProfileRecapPage extends ConsumerStatefulWidget {
@@ -167,10 +168,13 @@ class _ProfileRecapPageState extends ConsumerState<ProfileRecapPage> {
 
     result.fold(
       (failure) {
-        AppLogger.w('createProfile failed: ${failure.message}');
+        AppLogger.w(
+          'createProfile failed: kind=${failure.kind.name} '
+          'message=${failure.message}',
+        );
         AppToast.show(
           context,
-          message: l10n.onboardingRecapFirestoreErrorToast,
+          message: profileFailureUserMessage(l10n, failure),
           tone: ToastTone.warning,
         );
       },

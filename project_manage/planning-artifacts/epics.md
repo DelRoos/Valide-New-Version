@@ -214,7 +214,8 @@ Exigences techniques transverses nécessitant des stories d'initialisation.
 ## Epic List
 
 - **E0** — Foundation & Bootstrap (P0, semaine 0-1)
-- **E1** — Onboarding & Profil scolaire (P1, semaine 1)
+- **E1** — Onboarding & Profil scolaire (P1, semaine 1) — *livré 2026-06-10*
+- **E1bis** — Refonte intégrale du flow pré-dashboard (P1bis, intercalé semaine 1-2) — *ajouté 2026-06-11*
 - **E2** — Navigation & Lecture contenu (P2, semaine 2)
 - **E3** — Quiz & Pratique active Mode 1/2 (P3, semaine 3)
 - **E4** — Freemium & Paiement Mobile Money (P4, semaine 4)
@@ -239,6 +240,16 @@ Exigences techniques transverses nécessitant des stories d'initialisation.
 **Critère de sortie d'epic** : Personas Fatou Mballa (Tle D francophone) et James Tanyi (Upper Sixth S2 anglophone) peuvent compléter le flow d'onboarding en < 2 minutes chacun et voir leur dashboard personnalisé avec leurs matières correctes.
 
 *Stories détaillées dans `epics/epic-1-onboarding.md` (générées 2026-06-05, 10 stories de FR-1 à FR-8 + FR-10 + audit R4).*
+
+## Epic 1bis : Refonte intégrale du flow pré-dashboard
+
+**Phase MVP** : P1bis (intercalé semaine 1-2, après Epic 1 livré et avant démarrage Epic 2)
+**Objectif business** : Reconstruire le parcours pré-dashboard (10 étapes consolidées : sub-system → hero → track → level → stream/subjects → auth → name → phone → school → success) pour aligner l'expérience sur les templates `doc/templates/`, améliorer le ratio texte / hiérarchie / espacement, inverser l'ordre Auth ↔ Onboarding (auth déclenchée seulement après le picker), réintroduire la capture du numéro de téléphone Cameroun, et homogénéiser les identifiers code en anglais (track / level / stream).
+**Couverture** : FR-1 à FR-8 (refondus) + FR-NEW phoneNumber + UX-DR-31, UX-DR-32, UX-DR-39 (microcopie améliorée FR/EN)
+**Risque clé** : R-E1bis-1 — divergence entre PRD existant et templates (FR-5 mode visiteur, FR-6 école optionnelle confirmée, ordre Auth/Onboarding inversé). À mitiger par `/bmad-prd Update` parallèle ou en amont de E1bis-2.
+**Critère de sortie d'epic** : les 5 personas Epic 1 (Fatou, James, Aïssatou, Mariam, Eyong) peuvent compléter le nouveau flow 10 étapes en < 90 s sur Android entrée de gamme + iPhone SE + Pixel Tablet, avec tests goldens passant sur les 4 form factors (phone < 600 dp, phone landscape 600-840, tablet portrait + paysage ≥ 840). Identifiers code 100% anglais (zéro `filiereId` / `niveauId` / `serieId` dans le code de E1bis). Le step 9 success se déclenche avec confetti + audio `complete.m4a` + haptic `success` + auto-dispatch 3.5 s vers `/dashboard`.
+
+*Stories détaillées dans `epics/epic-1bis-refonte-onboarding.md` (générées 2026-06-11, 10 stories E1bis-0 à E1bis-9 — cf. fichier dédié).*
 
 ## Epic 2 : Navigation & Lecture contenu
 

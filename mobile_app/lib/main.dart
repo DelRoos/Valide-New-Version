@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
 import 'core/logging/app_logger.dart';
+import 'core/logging/perf_logger.dart';
 import 'features/onboarding/providers.dart';
 import 'firebase_options.dart';
 
@@ -20,6 +21,7 @@ import 'firebase_options.dart';
 const String kBuildVersion = '1.0.0+1';
 
 Future<void> main() async {
+  logPerfEvent('boot.main.start');
   final binding = WidgetsFlutterBinding.ensureInitialized();
   // Story 0.22 — garde le splash natif visible jusqu'a ce que la SplashPage
   // Flutter appelle FlutterNativeSplash.remove() au 1er postFrame. Sans
@@ -31,7 +33,10 @@ Future<void> main() async {
   // anglophone qui relance l'app. Le splash natif reste visible pendant ce
   // preload (~10-100ms selon device). Le ProviderScope override injecte
   // l'instance dans `sharedPreferencesProvider` (sinon UnimplementedError).
-  final prefs = await SharedPreferences.getInstance();
+  final prefs = await logPerf(
+    'boot.sharedPreferences.load',
+    SharedPreferences.getInstance,
+  );
 
   // Story 0.22 — Firebase init en background (non bloquant) pour ne pas
   // retarder runApp. Le splash natif resterait fige tant que _bootstrap
@@ -41,6 +46,7 @@ Future<void> main() async {
   // (sentinelle E0). Si /hello tente une operation Firebase avant init,
   // _e0SmokeTest le gere via AppLogger.w non bloquant.
   unawaited(_bootstrap());
+  logPerfEvent('boot.runApp');
   runApp(
     ProviderScope(
       overrides: [
@@ -56,12 +62,16 @@ Future<void> main() async {
 /// — les providers Firebase exposeront `firebaseAvailableProvider == false`.
 Future<void> _bootstrap() async {
   try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
+    await logPerf(
+      'boot.firebase.initializeApp',
+      () => Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      ),
     );
     _setupCrashlytics();
     AppLogger.bindCrashlytics(FirebaseCrashlytics.instance);
     AppLogger.i('Firebase bootstrap OK');
+    logPerfEvent('boot.firebase.ready');
   } catch (e, st) {
     AppLogger.w(
       'Firebase bootstrap skipped — voir Story 0.6 Phase B. Erreur: $e',

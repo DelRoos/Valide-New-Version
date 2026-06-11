@@ -59,6 +59,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorGeneric => 'Something went wrong. Try again?';
 
   @override
+  String get errorPermissionDenied =>
+      'Session expired. Restart the app to refresh.';
+
+  @override
+  String get errorNetworkUnavailable =>
+      'No connection. Check your network and try again.';
+
+  @override
+  String get errorFirestoreUnknown => 'Technical error. Try again in a moment.';
+
+  @override
   String get errorNoConnection =>
       'No connection. You can continue with what you\'ve opened.';
 
@@ -91,7 +102,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get catalogueWaitingRetry => 'Retry';
 
   @override
-  String get subsystemChoiceTitle => 'Choose your language and program';
+  String get subsystemChoiceTitle => 'Which section are you in?';
 
   @override
   String get subsystemChoiceSubtitle =>
@@ -104,11 +115,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get subsystemAnglophone => 'Anglophone';
 
   @override
-  String get subsystemConfirmTitle => 'Confirm your choice';
+  String get subsystemConfirmTitle => 'Which section are you in?';
 
   @override
   String get subsystemConfirmBody =>
-      'This choice locks your language and program. You won\'t be able to change it later.';
+      'Final choice: language (FR/EN) + school curriculum.';
 
   @override
   String onboardingStepLabel(int step, int total) {
@@ -258,6 +269,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingAccountAppleCta => 'Continue with Apple';
+
+  @override
+  String get onboardingAccountGuestCta => 'Continue as guest';
 
   @override
   String get onboardingAccountNetworkErrorToast =>
