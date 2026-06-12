@@ -2,16 +2,11 @@
 //
 // Couche domain pure : aucun import Flutter, Firebase, Riverpod (ADR-001 regle d'or).
 //
-// Les 5 etats encodent les paliers du flow d'onboarding :
-//   1. subsystemMissing  : Story 1.2 pas encore faite
-//   2. filiereMissing    : users/{uid} absent OU sans champ 'filiere'
-//   3. niveauMissing     : 'filiere' OK, 'niveau' absent/vide
-//   4. serieMissing      : 'niveau' OK, 'serie' absent/vide
-//                          (la sentinelle '-' Story 1.3 compte comme presente)
-//   5. complete          : tous champs presents et non vides
-//
-// `nextOnboardingRoute` mappe l'etat vers la route de redirect attendue par
-// `profileCompletionProvider` (Story 1.5) via `GoRouter.redirect`.
+// Les 5 etats encodent les paliers du flow d'onboarding. Story E1bis-9 :
+// le router consomme uniquement `isComplete` (toutes les routes incompletes
+// menent vers `/onboarding/v2`). Le getter Epic 1 `nextOnboardingRoute`
+// (qui mappait chaque etat vers une route /onboarding/profile/*) a ete
+// supprime avec le flow Epic 1.
 
 enum ProfileCompletionState {
   subsystemMissing,
@@ -19,18 +14,6 @@ enum ProfileCompletionState {
   niveauMissing,
   serieMissing,
   complete;
-
-  /// Route cible si l'utilisateur tente une nav metier dans cet etat.
-  /// `/` n'est jamais retourne aux consommateurs (le router gere ce cas
-  /// en laissant passer la route) — la valeur est presente pour exhaustivite
-  /// du switch.
-  String get nextOnboardingRoute => switch (this) {
-        ProfileCompletionState.subsystemMissing => '/onboarding/subsystem',
-        ProfileCompletionState.filiereMissing => '/onboarding/profile/filiere',
-        ProfileCompletionState.niveauMissing => '/onboarding/profile/niveau',
-        ProfileCompletionState.serieMissing => '/onboarding/profile/serie',
-        ProfileCompletionState.complete => '/',
-      };
 
   bool get isComplete => this == ProfileCompletionState.complete;
 }

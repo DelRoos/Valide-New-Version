@@ -49,7 +49,7 @@ class DashboardGuestInviteCard extends StatelessWidget {
                   child: AppButton.secondary(
                     label: l10n.dashboardGuestInviteCta,
                     onPressed: () =>
-                        GoRouter.of(context).go('/onboarding/account'),
+                        GoRouter.of(context).go('/onboarding/v2'),
                   ),
                 ),
               ],

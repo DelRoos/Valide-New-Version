@@ -92,11 +92,11 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       );
       if (mounted) {
         navigator.pop();
-        // Nav DIRECT a /onboarding/subsystem (pas /) pour skip toute logique
-        // de redirect router qui pourrait avoir un cache stale (les invalidate
+        // Nav DIRECT a /onboarding/v2 (pas /) pour skip toute logique de
+        // redirect router qui pourrait avoir un cache stale (les invalidate
         // ci-dessus sont async, le go('/') redirect pouvait re-evaluer avant
         // que les notifiers re-build).
-        GoRouter.of(context).go('/onboarding/subsystem');
+        GoRouter.of(context).go('/onboarding/v2');
       }
     } catch (e) {
       messenger.showSnackBar(
