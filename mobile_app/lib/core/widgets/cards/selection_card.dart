@@ -49,6 +49,7 @@ class SelectionCard extends StatelessWidget {
     this.icon,
     this.description,
     this.variant = SelectionCardVariant.standard,
+    this.showRadio = true,
   });
 
   final String title;
@@ -57,6 +58,11 @@ class SelectionCard extends StatelessWidget {
   final Widget? icon;
   final String? description;
   final SelectionCardVariant variant;
+
+  /// Affiche le cercle radio a droite. Default `true` pour retro-compat.
+  /// Passer `false` quand l'etat selectionne est deja signale par le border
+  /// + bg + scale (cas onboarding refonte E1bis 2026-06-12).
+  final bool showRadio;
 
   /// Padding interieur de la carte selon la variant (DESIGN.md).
   EdgeInsets get _padding {
@@ -187,8 +193,10 @@ class SelectionCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(width: AppSpacing.s3.w),
-          _SelectionCardRadio(size: _radioSize, selected: selected),
+          if (showRadio) ...[
+            SizedBox(width: AppSpacing.s3.w),
+            _SelectionCardRadio(size: _radioSize, selected: selected),
+          ],
         ],
       ),
     );

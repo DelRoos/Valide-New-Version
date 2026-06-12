@@ -12,9 +12,25 @@
       "collectionGroup": "niveaux",
       "queryScope": "COLLECTION",
       "fields": [
+        { "fieldPath": "isActive", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "niveaux",
+      "queryScope": "COLLECTION",
+      "fields": [
         { "fieldPath": "filiereIds", "arrayConfig": "CONTAINS" },
         { "fieldPath": "isActive", "order": "ASCENDING" },
         { "fieldPath": "subSystem", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "series",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "isActive", "order": "ASCENDING" },
         { "fieldPath": "sortOrder", "order": "ASCENDING" }
       ]
     },
@@ -43,7 +59,23 @@
       "collectionGroup": "subjects",
       "queryScope": "COLLECTION",
       "fields": [
+        { "fieldPath": "isActive", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "subjects",
+      "queryScope": "COLLECTION",
+      "fields": [
         { "fieldPath": "subSystem", "order": "ASCENDING" },
+        { "fieldPath": "isActive", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "exam_targets",
+      "queryScope": "COLLECTION",
+      "fields": [
         { "fieldPath": "isActive", "order": "ASCENDING" },
         { "fieldPath": "sortOrder", "order": "ASCENDING" }
       ]

@@ -15,6 +15,7 @@ import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
+import '../../../../core/widgets/onboarding/catalogue_error_retry.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
 import '../state/onboarding_providers.dart';
@@ -38,7 +39,7 @@ class TrackChoiceStepBody extends ConsumerWidget {
           ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
         if (tracks.isEmpty) {
-          return _Message(text: l10n.errorCatalogueEmpty);
+          return CatalogueErrorRetry(message: l10n.errorCatalogueEmpty);
         }
 
         return SingleChildScrollView(
@@ -71,6 +72,7 @@ class TrackChoiceStepBody extends ConsumerWidget {
                   description: _trackHint(l10n, t.filiereId),
                   selected: state.trackId == t.filiereId,
                   onTap: () => notifier.setTrackId(t.filiereId),
+                  showRadio: false,
                 ),
                 SizedBox(height: AppSpacing.s3.h),
               ],
@@ -85,7 +87,7 @@ class TrackChoiceStepBody extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (e, st) => _Message(text: l10n.errorCatalogueLoading),
+      error: (e, st) => const CatalogueErrorRetry(),
     );
   }
 
@@ -103,21 +105,3 @@ class TrackChoiceStepBody extends ConsumerWidget {
   }
 }
 
-class _Message extends StatelessWidget {
-  const _Message({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(AppSpacing.s6.w),
-        child: Text(
-          text,
-          style: AppTypography.body.copyWith(color: AppColors.inkSoft),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}

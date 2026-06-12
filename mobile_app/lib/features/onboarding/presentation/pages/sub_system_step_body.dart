@@ -65,6 +65,7 @@ class SubSystemStepBody extends ConsumerWidget {
             selected: state.subSystem == SubSystem.francophone,
             onTap: () => notifier.setSubSystem(SubSystem.francophone),
             variant: SelectionCardVariant.hero,
+            showRadio: false,
           ),
           SizedBox(height: AppSpacing.s3.h),
           SelectionCard(
@@ -73,6 +74,7 @@ class SubSystemStepBody extends ConsumerWidget {
             selected: state.subSystem == SubSystem.anglophone,
             onTap: () => notifier.setSubSystem(SubSystem.anglophone),
             variant: SelectionCardVariant.hero,
+            showRadio: false,
           ),
           SizedBox(height: AppSpacing.s5.h),
         ],

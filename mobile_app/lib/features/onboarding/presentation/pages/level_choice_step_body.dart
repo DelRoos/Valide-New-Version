@@ -16,6 +16,7 @@ import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
+import '../../../../core/widgets/onboarding/catalogue_error_retry.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
 import '../state/onboarding_providers.dart';
@@ -34,21 +35,21 @@ class LevelChoiceStepBody extends ConsumerWidget {
     return catalogueAsync.when(
       data: (snapshot) {
         final subSystemId = state.subSystem?.id;
-        final trackId = state.trackId;
-        if (subSystemId == null || trackId == null) {
-          return _Message(text: l10n.errorCatalogueLoading);
+        if (subSystemId == null) {
+          return const CatalogueErrorRetry();
         }
 
+        // Fix runtime 2026-06-12 : afficher TOUS les levels du sub-system
+        // (6e -> Terminale FR ou Form 1 -> Upper Sixth EN), sans filtrer
+        // par trackId. Le track determine plus tard la serie/stream, pas la
+        // liste des levels disponibles.
         final levels = snapshot.niveaux
-            .where((n) =>
-                n.isActive &&
-                n.subSystem == subSystemId &&
-                n.filiereIds.contains(trackId))
+            .where((n) => n.isActive && n.subSystem == subSystemId)
             .toList()
           ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
         if (levels.isEmpty) {
-          return _Message(text: l10n.errorCatalogueEmpty);
+          return CatalogueErrorRetry(message: l10n.errorCatalogueEmpty);
         }
 
         return SingleChildScrollView(
@@ -80,6 +81,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
                   title: _localizedName(level, anglo: isAnglo),
                   selected: state.levelId == level.niveauId,
                   variant: SelectionCardVariant.compact,
+                  showRadio: false,
                   onTap: () =>
                       _onLevelTap(notifier, snapshot, level.niveauId),
                 ),
@@ -96,7 +98,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (e, st) => _Message(text: l10n.errorCatalogueLoading),
+      error: (e, st) => const CatalogueErrorRetry(),
     );
   }
 
@@ -119,21 +121,3 @@ class LevelChoiceStepBody extends ConsumerWidget {
   }
 }
 
-class _Message extends StatelessWidget {
-  const _Message({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(AppSpacing.s6.w),
-        child: Text(
-          text,
-          style: AppTypography.body.copyWith(color: AppColors.inkSoft),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}

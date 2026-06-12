@@ -25,6 +25,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/onboarding/catalogue_error_retry.dart';
 import '../../../../core/widgets/picker/obligatory_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/optional_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/picker_section_scaffold.dart';
@@ -56,11 +57,11 @@ class _StreamSubjectsPickerStepBodyState
 
     return derivedAsync.when(
       data: (either) => either.fold(
-        (_) => _Message(text: l10n.errorCatalogueLoading),
+        (_) => const CatalogueErrorRetry(),
         (profile) => _renderForMode(profile, notifier, langKey, l10n),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, _) => _Message(text: l10n.errorCatalogueLoading),
+      error: (_, _) => const CatalogueErrorRetry(),
     );
   }
 
@@ -221,21 +222,3 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-class _Message extends StatelessWidget {
-  const _Message({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.all(AppSpacing.s6.w),
-        child: Text(
-          text,
-          style: AppTypography.body.copyWith(color: AppColors.inkSoft),
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-  }
-}
