@@ -108,6 +108,19 @@ void main() {
       expect(result, isNull);
     });
 
+    test('Story 1bis-2bis fix : catalogue OK + /catalogue-waiting -> / '
+        '(eject post-retry succes)', () {
+      final result = evaluateRedirect(
+        location: '/catalogue-waiting',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: false,
+        profileCompletion:
+            _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
+      );
+      expect(result, '/');
+    });
+
     test('Story 1.2 anti-replay : subSystem present + /onboarding/subsystem '
         '-> /', () {
       final result = evaluateRedirect(

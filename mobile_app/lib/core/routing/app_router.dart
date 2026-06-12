@@ -271,13 +271,20 @@ String? evaluateRedirect({
   }
 
   // 2. Story 1.1c — catalogue check prioritaire.
-  if (location != '/catalogue-waiting') {
-    final catalogueOk = catalogueCheck.when(
-      data: (ok) => ok,
-      loading: () => true,
-      error: (_, _) => false,
-    );
-    if (!catalogueOk) return '/catalogue-waiting';
+  final catalogueOk = catalogueCheck.when(
+    data: (ok) => ok,
+    loading: () => true,
+    error: (_, _) => false,
+  );
+  if (!catalogueOk && location != '/catalogue-waiting') {
+    return '/catalogue-waiting';
+  }
+  // Story 1bis-2bis fix : sortir de /catalogue-waiting quand le catalogue
+  // redevient OK (post-retry ou post-auth ready). Le fix `if (location !=`
+  // initial empechait la boucle infinie au prix de coller le user sur la
+  // page d'attente. Maintenant on l'eject vers `/` qui re-route.
+  if (catalogueOk && location == '/catalogue-waiting') {
+    return '/';
   }
 
   // 2.bis Story E1bis-2bis — feature flag refonte onboarding (route unique).
