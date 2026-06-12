@@ -14,6 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:valide_school/core/catalogue/domain/models.dart';
+import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/widgets/app_button.dart';
 import 'package:valide_school/core/widgets/cards/selection_card.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
@@ -34,7 +36,21 @@ Future<ProviderContainer> _buildContainer({
   SharedPreferences.setMockInitialValues(initial);
   final prefs = await SharedPreferences.getInstance();
   return ProviderContainer(
-    overrides: [sharedPreferencesProvider.overrideWithValue(prefs)],
+    overrides: [
+      sharedPreferencesProvider.overrideWithValue(prefs),
+      // E1bis-3 : step 2-4 consument catalogueProvider qui declenche
+      // catalogueRepositoryProvider -> firestoreProvider (Firebase non
+      // configure en test). Override avec un snapshot vide pour permettre
+      // au shell de transitionner sans crash.
+      catalogueProvider.overrideWith((ref) async => const CatalogueSnapshot(
+            filieres: [],
+            niveaux: [],
+            series: [],
+            subjects: [],
+            examTargets: [],
+            derivationRules: [],
+          )),
+    ],
   );
 }
 
@@ -155,24 +171,11 @@ void main() {
 
       expect(find.byType(HeroIntroStepBody), findsOneWidget);
       await tester.tap(find.byType(AppButton), warnIfMissed: false);
-      await tester.pumpAndSettle();
-
+      await tester.pump(); // E1bis-3 : pas de pumpAndSettle car le picker
+                          // tente de fetch derivedProfileV2 -> CatalogueRepo
+                          // qui leve sans firebase configure en test.
       final state = container.read(onboardingNotifierProvider);
       expect(state.currentStep, 2);
-    });
-
-    testWidgets(
-        'step 2 (placeholder) -> "Etape 2 — a venir" visible + pas de footer',
-        (tester) async {
-      final container = await _buildContainer();
-      addTearDown(container.dispose);
-      container.read(onboardingNotifierProvider.notifier).state =
-          const OnboardingState(currentStep: 2);
-
-      await _pump(tester, container: container);
-
-      expect(find.textContaining('Etape 2'), findsOneWidget);
-      expect(find.byType(AppButton), findsNothing);
     });
 
     testWidgets(

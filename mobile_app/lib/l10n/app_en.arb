@@ -182,5 +182,28 @@
   "heroIntroFeatureExercisesDesc": "Practice with instant feedback.",
   "heroIntroFeatureChatTitle": "AI Chat",
   "heroIntroFeatureChatDesc": "Ask any question, anytime.",
-  "heroIntroCta": "Let's go"
+  "heroIntroCta": "Let's go",
+
+  "onboardingTrackTitle": "What's Your Track?",
+  "onboardingTrackSubtitle": "Pick the type of curriculum you follow.",
+  "onboardingTrackHintGeneral": "Classic academic program (maths, sciences, arts)",
+  "onboardingTrackHintTechnique": "Vocational program (industrial, commercial, services)",
+  "onboardingLevelTitle": "What's Your Class?",
+  "onboardingLevelSubtitle": "Select your current level to tailor content.",
+  "onboardingStreamSubjectsTitle": "Which subjects are you taking?",
+  "onboardingStreamSubjectsSubtitle": "Select your stream and subjects to tailor lessons.",
+  "onboardingPickerSeriesTitle": "Pick your stream",
+  "onboardingPickerObligatoryTitle": "Compulsory subjects",
+  "onboardingPickerOptionalTitle": "Optional subjects",
+  "onboardingPickerRelatedTitle": "Related subjects",
+  "onboardingPickerCounter": "{count}/{max} selected",
+  "@onboardingPickerCounter": {
+    "placeholders": {
+      "count": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+  "onboardingPickerValidate": "Confirm my subjects",
+  "errorCatalogueLoading": "Cannot load catalogue. Check your connection and try again.",
+  "errorCatalogueEmpty": "No data available. Try again later."
 }

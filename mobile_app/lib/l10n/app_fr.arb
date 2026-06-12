@@ -432,5 +432,59 @@
   "@heroIntroFeatureChatDesc": { "description": "Story E1bis-2 — Feature card 3 description." },
 
   "heroIntroCta": "C'est parti",
-  "@heroIntroCta": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 1 hero intro." }
+  "@heroIntroCta": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 1 hero intro." },
+
+  "onboardingTrackTitle": "Quelle filiere suis-tu ?",
+  "@onboardingTrackTitle": { "description": "Story E1bis-3 — Titre H1 step 2 track choice (Generale / Technique)." },
+
+  "onboardingTrackSubtitle": "Choisis le type d'enseignement que tu veux suivre.",
+  "@onboardingTrackSubtitle": { "description": "Story E1bis-3 — Sous-titre step 2 track choice." },
+
+  "onboardingTrackHintGeneral": "Programme academique classique (maths, sciences, lettres)",
+  "@onboardingTrackHintGeneral": { "description": "Story E1bis-3 — Description sous SelectionCard track generale." },
+
+  "onboardingTrackHintTechnique": "Programme professionnel (industriel, commercial, tertiaire)",
+  "@onboardingTrackHintTechnique": { "description": "Story E1bis-3 — Description sous SelectionCard track technique." },
+
+  "onboardingLevelTitle": "Tu es en quelle classe ?",
+  "@onboardingLevelTitle": { "description": "Story E1bis-3 — Titre H1 step 3 level choice." },
+
+  "onboardingLevelSubtitle": "Selectionne ton niveau actuel pour adapter le contenu.",
+  "@onboardingLevelSubtitle": { "description": "Story E1bis-3 — Sous-titre step 3 level choice." },
+
+  "onboardingStreamSubjectsTitle": "Quelles matieres etudies-tu ?",
+  "@onboardingStreamSubjectsTitle": { "description": "Story E1bis-3 — Titre H1 step 4 stream + subjects picker." },
+
+  "onboardingStreamSubjectsSubtitle": "Selectionne ta serie et tes matieres pour personnaliser tes cours.",
+  "@onboardingStreamSubjectsSubtitle": { "description": "Story E1bis-3 — Sous-titre step 4." },
+
+  "onboardingPickerSeriesTitle": "Choisis ta serie",
+  "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },
+
+  "onboardingPickerObligatoryTitle": "Matieres obligatoires",
+  "@onboardingPickerObligatoryTitle": { "description": "Story E1bis-3 — Titre section matieres obligatoires picker." },
+
+  "onboardingPickerOptionalTitle": "Matieres optionnelles",
+  "@onboardingPickerOptionalTitle": { "description": "Story E1bis-3 — Titre section matieres optionnelles picker." },
+
+  "onboardingPickerRelatedTitle": "Matieres connexes",
+  "@onboardingPickerRelatedTitle": { "description": "Story E1bis-3 — Titre section matieres connexes tvePicker." },
+
+  "onboardingPickerCounter": "{count}/{max} selectionnees",
+  "@onboardingPickerCounter": {
+    "description": "Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).",
+    "placeholders": {
+      "count": { "type": "int" },
+      "max": { "type": "int" }
+    }
+  },
+
+  "onboardingPickerValidate": "Valider mes matieres",
+  "@onboardingPickerValidate": { "description": "Story E1bis-3 — Label CTA validation picker." },
+
+  "errorCatalogueLoading": "Impossible de charger le catalogue. Verifie ta connexion et reessaie.",
+  "@errorCatalogueLoading": { "description": "Story E1bis-3 — Message erreur chargement catalogue Firestore." },
+
+  "errorCatalogueEmpty": "Aucune donnee disponible. Reessaie plus tard.",
+  "@errorCatalogueEmpty": { "description": "Story E1bis-3 — Message erreur catalogue vide (cas marginal)." }
 }

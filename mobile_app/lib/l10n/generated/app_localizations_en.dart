@@ -213,13 +213,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select the subjects you\'ll sit for at your exam.';
 
   @override
-  String get onboardingPickerObligatoryTitle => 'Mandatory subjects';
+  String get onboardingPickerObligatoryTitle => 'Compulsory subjects';
 
   @override
   String get onboardingPickerOptionalTitle => 'Optional subjects';
 
   @override
-  String get onboardingPickerSeriesTitle => 'Series (mandatory)';
+  String get onboardingPickerSeriesTitle => 'Pick your stream';
 
   @override
   String get onboardingPickerTransversalesTitle =>
@@ -230,8 +230,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Professional subjects (mandatory)';
 
   @override
-  String get onboardingPickerRelatedTitle =>
-      'Related professional subjects (mandatory)';
+  String get onboardingPickerRelatedTitle => 'Related subjects';
 
   @override
   String get onboardingPickerOtherTitle => 'Other subjects';
@@ -453,4 +452,48 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get heroIntroCta => 'Let\'s go';
+
+  @override
+  String get onboardingTrackTitle => 'What\'s Your Track?';
+
+  @override
+  String get onboardingTrackSubtitle =>
+      'Pick the type of curriculum you follow.';
+
+  @override
+  String get onboardingTrackHintGeneral =>
+      'Classic academic program (maths, sciences, arts)';
+
+  @override
+  String get onboardingTrackHintTechnique =>
+      'Vocational program (industrial, commercial, services)';
+
+  @override
+  String get onboardingLevelTitle => 'What\'s Your Class?';
+
+  @override
+  String get onboardingLevelSubtitle =>
+      'Select your current level to tailor content.';
+
+  @override
+  String get onboardingStreamSubjectsTitle => 'Which subjects are you taking?';
+
+  @override
+  String get onboardingStreamSubjectsSubtitle =>
+      'Select your stream and subjects to tailor lessons.';
+
+  @override
+  String onboardingPickerCounter(int count, int max) {
+    return '$count/$max selected';
+  }
+
+  @override
+  String get onboardingPickerValidate => 'Confirm my subjects';
+
+  @override
+  String get errorCatalogueLoading =>
+      'Cannot load catalogue. Check your connection and try again.';
+
+  @override
+  String get errorCatalogueEmpty => 'No data available. Try again later.';
 }
