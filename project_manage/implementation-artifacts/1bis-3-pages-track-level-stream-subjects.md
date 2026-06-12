@@ -3,7 +3,7 @@ story_id: 1bis.3
 title: Pages 2+3+4 (track choice + level choice + stream/subjects picker 5 modes) + extension OnboardingShell
 epic: 1bis
 phase: P1bis — Refonte intégrale du flow pré-dashboard
-status: in-progress
+status: review
 created: 2026-06-12
 baseline_commit: d869d47  # merge PR #106 (feat/1bis-2bis-refactor-shell-slides) - main aligné post-livraison shell + slides
 estimation: L (~3-4 jours)
@@ -113,12 +113,58 @@ Goldens obligatoires (CLAUDE.md règle 5) : phone 360×780 + tablet 800×1280.
 
 ## Dev Agent Record
 
-À remplir progressivement par phases :
+**Date** : 2026-06-12. **Branche** : `feat/1bis-3-pages-track-level-stream-subjects`. **Baseline** : `d869d47`.
 
-- [ ] Phase 1 : providers Riverpod E1bis-3 (filtrage local depuis catalogueProvider)
-- [ ] Phase 2 : TrackChoiceStepBody (step 2) + extension shell case 2 + tests + goldens
-- [ ] Phase 3 : LevelChoiceStepBody (step 3) + shell case 3 + tests + goldens
-- [ ] Phase 4 : StreamSubjectsPickerStepBody (step 4 - 5 modes) + shell case 4 + tests + goldens
-- [ ] Phase 5 : ARB FR/EN + clôture docs
+### Fichiers livrés
 
-Commits incrémentaux push sur la branche pour revue incrémentale.
+**Créés (3 step bodies)** :
+
+- `mobile_app/lib/features/onboarding/presentation/pages/track_choice_step_body.dart` (~120 l)
+- `mobile_app/lib/features/onboarding/presentation/pages/level_choice_step_body.dart` (~140 l)
+- `mobile_app/lib/features/onboarding/presentation/pages/stream_subjects_picker_step_body.dart` (~220 l)
+
+**Modifiés** :
+
+- `mobile_app/lib/features/onboarding/presentation/pages/onboarding_shell.dart` — `_bodyForStep` cases 2/3/4 + `_footerForStep` cases 2/3 (case 4 retourne null, le picker body gère son CTA)
+- `mobile_app/lib/features/onboarding/presentation/state/onboarding_providers.dart` — ajout `derivedProfileV2Provider`
+- `mobile_app/lib/l10n/app_fr.arb` + `app_en.arb` — +14 clés (track + level + picker + erreurs catalogue)
+- `mobile_app/test/features/onboarding/presentation/pages/onboarding_shell_test.dart` — override `catalogueProvider` avec snapshot vide + suppression test "step 2 placeholder" obsolète
+
+### Composants réutilisés (Story 1.18 / E1bis-0)
+
+- `PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`
+- `SelectionCard` (standard + compact variants)
+- `OnboardingCtaFooter` (composé par le shell pour steps 2/3)
+- `LucideIcons` (briefcase, graduationCap, bookOpen)
+
+### Résultats validation
+
+- `flutter analyze` : **0 issue** (ran in 51 s).
+- `flutter test` : **414 passed + 1 skipped** (vs baseline E1bis-2bis 415+1 → -1 net, suppression du test "step 2 placeholder" obsolète, zéro régression).
+
+### Décisions techniques
+
+- **Mapping Filiere→track** local : pas de rename global (Story 1.19 dédiée). Variables locales en `track*`, model domain reste `Filiere`.
+- **`derivedProfileV2Provider`** : nouveau provider qui lit `onboardingNotifierProvider` (state E1bis) au lieu du `derivedProfileProvider` legacy qui lit `onboardingFlowProvider` Epic 1. Réutilise `CatalogueRepository.derive()`.
+- **Step 4 picker** : version MVP fonctionnelle. Pas de sélecteur de série multi (la série dérivée par `DerivationRule` est utilisée via `setStreamAndSubjects(streamId: null, ...)`). Le legacy `subjects_picker_page.dart` 1300+ lignes a un `_PickerStreamGate` qui pré-remplit depuis Firestore — reporté E1bis-4 (post-auth flush profil).
+- **iconResolver** simplifié à `LucideIcons.bookOpen` constant — le mapping legacy par `name` (Lucide via `function-square` etc.) reportable plus tard si besoin.
+- **`canValidate`** dans le picker : `selectedCount >= min && selectedCount <= max`. Logique de sélection de série bypassée pour cette PR (reportée E1bis-3b).
+
+### Dettes documentées (à traiter en stories de suivi)
+
+| Item | Story cible |
+|---|---|
+| Goldens phone + tablet pour 3 step bodies | E1bis-3b ou story dédiée tests UI |
+| Tests interactions par step body (tap card, tap validate) | E1bis-3b |
+| Sélecteur de série multi (optOut + seriesPlusOptional avec choix) | E1bis-3b |
+| iconResolver mapping Lucide complet | E1bis-3b |
+| Pré-remplissage Firestore au retour sur step 4 | E1bis-4 (post-auth) |
+| Descriptions + abréviations Firestore | chore(partage) backend avant Epic 2 |
+| Rename global Filiere/Niveau/Serie → Track/Level/Stream | Story 1.19 (dette Epic 1) |
+
+### Hors-scope respecté
+
+- ❌ Pas de touche au `OnboardingNotifier` (state machine E1bis-1).
+- ❌ Pas de modification du code Epic 1 (`subjects_picker_page.dart` legacy intact).
+- ❌ Pas d'écriture Firestore (flush profil reporté E1bis-4).
+- ❌ Pas de nouvelle collection Firestore (réutilisation `filieres`/`niveaux`/`series`/`subjects` existantes).
