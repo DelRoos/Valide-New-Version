@@ -80,9 +80,8 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       // les prefs qu'une fois au demarrage). Sans invalidate, le router
       // redirect voit l'ancien subSystem en memoire -> renvoie a /filiere
       // au lieu de /onboarding/subsystem.
-      // 3 providers consommes par evaluateRedirect (cf. app_router.dart) :
+      // 2 providers consommes par evaluateRedirect (cf. app_router.dart) :
       ref.invalidate(subSystemNotifierProvider);
-      ref.invalidate(onboardingFlowProvider);
       ref.invalidate(profileCompletionProvider);
       messenger.showSnackBar(
         SnackBar(

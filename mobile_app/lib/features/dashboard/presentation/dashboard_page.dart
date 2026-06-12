@@ -35,23 +35,17 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final subSystem = ref.watch(subSystemNotifierProvider);
-    final langKey = subSystem?.languageCode ?? 'fr';
     final isAnonymous =
         ref.watch(firebaseAuthProvider).currentUser?.isAnonymous ?? true;
 
     final profileStream =
         ref.watch(userProfileRepositoryProvider).watchProfile();
-    final derivedAsync = ref.watch(derivedProfileProvider);
-    final effectiveAsync = ref.watch(effectiveDerivedSubjectsProvider);
 
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final crossAxisCount =
-                dashboardCrossAxisCountFor(constraints.maxWidth);
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -65,18 +59,13 @@ class DashboardPage extends ConsumerWidget {
                             : null;
                     return DashboardHero(
                       firstName: firstName,
-                      examLabel: dashboardExamLabelFor(derivedAsync, langKey),
+                      examLabel: null,
                       isAnonymous: isAnonymous,
                     );
                   },
                 ),
-                Expanded(
-                  child: DashboardSubjectsArea(
-                    derivedAsync: derivedAsync,
-                    effectiveAsync: effectiveAsync,
-                    crossAxisCount: crossAxisCount,
-                    langKey: langKey,
-                  ),
+                const Expanded(
+                  child: DashboardSubjectsArea(),
                 ),
                 if (isAnonymous)
                   Padding(

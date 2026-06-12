@@ -6,12 +6,9 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fpdart/fpdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
-import 'package:valide_school/core/catalogue/domain/catalogue_failure.dart';
-import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/firebase/providers.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
@@ -61,19 +58,6 @@ void main() {
             userProfileRepositoryProvider.overrideWithValue(
               FakeUserProfileRepository(profileData: null),
             ),
-            derivedProfileProvider.overrideWith(
-              (ref) async => Left(
-                CatalogueFailure.noMatchingRule(
-                  subSystem: 'francophone',
-                  filiere: 'generale',
-                  niveau: 'francophone_terminale',
-                  serie: null,
-                ),
-              ),
-            ),
-            effectiveDerivedSubjectsProvider.overrideWith(
-              (ref) => const Stream<List<Subject>>.empty(),
-            ),
           ],
           child: const ValideApp(),
         ),
@@ -104,19 +88,6 @@ void main() {
             ),
             userProfileRepositoryProvider.overrideWithValue(
               FakeUserProfileRepository(profileData: null),
-            ),
-            derivedProfileProvider.overrideWith(
-              (ref) async => Left(
-                CatalogueFailure.noMatchingRule(
-                  subSystem: 'anglophone',
-                  filiere: 'generale',
-                  niveau: 'anglophone_upper_sixth',
-                  serie: null,
-                ),
-              ),
-            ),
-            effectiveDerivedSubjectsProvider.overrideWith(
-              (ref) => const Stream<List<Subject>>.empty(),
             ),
           ],
           child: const ValideApp(),
