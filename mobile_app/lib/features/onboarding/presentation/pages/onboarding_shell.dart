@@ -25,10 +25,15 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../state/onboarding_notifier.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
+import 'auth_choice_step_body.dart';
 import 'hero_intro_step_body.dart';
 import 'level_choice_step_body.dart';
+import 'name_input_step_body.dart';
+import 'phone_input_step_body.dart';
+import 'school_input_step_body.dart';
 import 'stream_subjects_picker_step_body.dart';
 import 'sub_system_step_body.dart';
+import 'success_celebration_step_body.dart';
 import 'track_choice_step_body.dart';
 
 class OnboardingShell extends ConsumerStatefulWidget {
@@ -100,6 +105,11 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
         2 => const TrackChoiceStepBody(),
         3 => const LevelChoiceStepBody(),
         4 => const StreamSubjectsPickerStepBody(),
+        5 => const AuthChoiceStepBody(),
+        6 => const NameInputStepBody(),
+        7 => const PhoneInputStepBody(),
+        8 => const SchoolInputStepBody(),
+        9 => const SuccessCelebrationStepBody(),
         _ => _StepPlaceholder(stepIndex: step),
       };
 
@@ -141,9 +151,43 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
         // Step 4 picker : footer rendu par le step body (PickerValidateBar
         // gere son propre CTA avec compteur + validation).
         return null;
+      case 6:
+        // Step 6 name : CTA actif si le draft du nom est >= 2 chars.
+        final hasName = (state.userDisplayName?.trim().length ?? 0) >= 2;
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: hasName
+              ? () => notifier.setUserDisplayName(state.userDisplayName!.trim())
+              : null,
+        );
+      case 7:
+        // Step 7 phone : CTA actif si le numero est valide. Skip est dans
+        // le body via bouton tertiaire avec confirmation modale.
+        final hasPhone = state.phoneNumber != null;
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: hasPhone
+              ? () => notifier.setPhoneNumber(state.phoneNumber!)
+              : null,
+        );
+      case 8:
+        // Step 8 school : CTA actif si une ecole (catalogue OU pending) a
+        // ete posee. Skip est dans le body via bouton tertiaire.
+        final hasSchool = state.schoolId != null ||
+            state.pendingSchoolRequestId != null;
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: hasSchool ? notifier.next : null,
+        );
+      case 9:
+        // Step 9 success : footer rendu par CelebrationConfettiSuccess
+        // (CTA "Decouvrir mon dashboard" dans le body).
+        return null;
+      case 5:
+        // Step 5 auth : footer null par design (les 3 boutons d'auth sont
+        // dans le body, pas de CTA generique). Cohere avec template.
+        return null;
       default:
-        // Steps 5-9 : seront livres par E1bis-4 a E1bis-7. Pour l'instant
-        // pas de footer (placeholder visible).
         return null;
     }
   }

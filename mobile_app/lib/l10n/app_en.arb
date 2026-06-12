@@ -209,5 +209,43 @@
   "errorOfflineTitle": "No connection",
   "errorLoadingTitle": "Loading failed",
   "errorGenericTitle": "Oops, something went wrong",
-  "offlineBannerMessage": "No internet connection"
+  "offlineBannerMessage": "No internet connection",
+  "onboardingAuthTitle": "Create your account",
+  "onboardingAuthSubtitle": "One step to save your progress and profile.",
+  "onboardingAuthGoogleLabel": "Continue with Google",
+  "onboardingAuthAppleLabel": "Continue with Apple",
+  "onboardingAuthOrLabel": "or",
+  "onboardingAuthGuestLabel": "Continue as guest",
+  "onboardingAuthErrorCanceled": "Sign-in canceled.",
+  "onboardingAuthErrorConflict": "This account is already linked to another profile.",
+
+  "onboardingNameTitle": "What's your name?",
+  "onboardingNameSubtitle": "Your first name (or a nickname) is enough.",
+  "onboardingNamePlaceholder": "Your first name",
+  "onboardingNameTooShort": "At least 2 characters.",
+  "onboardingNameTooLong": "Maximum 50 characters.",
+
+  "onboardingPhoneTitle": "Your phone number",
+  "onboardingPhoneSubtitle": "So we can reach you if needed. Optional.",
+  "onboardingPhoneSkipLabel": "Skip for now",
+  "onboardingPhoneSkipConfirmTitle": "Skip this step?",
+  "onboardingPhoneSkipConfirmMessage": "You can add your phone number later from your profile.",
+  "onboardingPhoneSkipConfirmYes": "Yes, skip",
+  "onboardingPhoneSkipConfirmNo": "No, add",
+  "onboardingPhoneInvalid": "Invalid number. Format: +237 6XX XXX XXX",
+
+  "onboardingSchoolTitle": "Which school are you in?",
+  "onboardingSchoolSubtitle": "Search for your school. If not listed, you can suggest it.",
+  "onboardingSchoolPlaceholder": "Your school name",
+  "onboardingSchoolAddTemplate": "+ Add \"{name}\"",
+  "@onboardingSchoolAddTemplate": {
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "onboardingSchoolOfflineWarning": "No connection. You can still suggest adding it.",
+  "onboardingSchoolSkipLabel": "Skip for now",
+
+  "onboardingSuccessTitle": "Welcome to Valide!",
+  "onboardingSuccessSubtitle": "Your profile is ready. Let's go!",
+  "onboardingSuccessCta": "Go to my dashboard",
+  "onboardingFlushError": "Could not save your profile. Try again."
 }

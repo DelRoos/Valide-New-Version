@@ -178,18 +178,9 @@ void main() {
       expect(state.currentStep, 2);
     });
 
-    testWidgets(
-        'step 9 (placeholder) -> "Etape 9 — a venir" visible + pas de footer',
-        (tester) async {
-      final container = await _buildContainer();
-      addTearDown(container.dispose);
-      container.read(onboardingNotifierProvider.notifier).state =
-          const OnboardingState(currentStep: 9);
-
-      await _pump(tester, container: container);
-
-      expect(find.textContaining('Etape 9'), findsOneWidget);
-      expect(find.byType(AppButton), findsNothing);
-    });
+    // Story E1bis-7 — step 9 (success celebration) declenche un flush
+    // Firestore qui requiert Firebase init. Test runtime sur appareil
+    // (couvert par E2E manuels) ; pas de widget test ici car le harness
+    // n'init pas Firebase.
   });
 }

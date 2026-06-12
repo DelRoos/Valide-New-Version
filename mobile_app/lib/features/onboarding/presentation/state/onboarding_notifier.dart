@@ -111,6 +111,23 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     );
   }
 
+  /// Pose le draft du displayName SANS transitionner. Utilise par
+  /// NameInputStepBody pour synchroniser le draft avec l'etat (le shell
+  /// footer lit `state.userDisplayName` pour activer le CTA Continuer).
+  /// `null` reset le draft.
+  void setUserDisplayNameDraft(String? draft) {
+    state = state.copyWith(userDisplayName: draft);
+  }
+
+  /// Pose le draft du numero E.164 SANS transitionner. Utilise par
+  /// PhoneInputStepBody pour synchroniser le draft avec l'etat.
+  void setPhoneNumberDraft(String? draft) {
+    state = state.copyWith(
+      phoneNumber: draft,
+      phoneSkipped: false,
+    );
+  }
+
   /// Pose le numero E.164 Cameroun. Transition conditionnelle :
   /// - !isVisitor -> step 8 (school search)
   /// - isVisitor  -> step 9 (skip school, success direct)

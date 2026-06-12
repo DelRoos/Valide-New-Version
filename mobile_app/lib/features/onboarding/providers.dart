@@ -31,9 +31,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
+import '../../core/catalogue/domain/models.dart';
+import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
 import 'data/account_linking_repository_firebase_impl.dart';
+import 'data/onboarding_flush_service.dart';
 import 'data/school_repository_firestore_impl.dart';
 import 'data/subsystem_prefs.dart';
 import 'data/user_profile_repository_firestore_impl.dart';
@@ -83,6 +86,42 @@ final userProfileRepositoryProvider = Provider<UserProfileRepository>((ref) {
     firestore: ref.watch(firestoreProvider),
     getUid: () => ref.read(firebaseAuthProvider).currentUser?.uid,
   );
+});
+
+/// Story E1bis-7 — Service de flush du profil onboarding vers users/{uid}.
+final onboardingFlushServiceProvider = Provider<OnboardingFlushService>((ref) {
+  return OnboardingFlushService(
+    auth: ref.watch(firebaseAuthProvider),
+    firestore: ref.watch(firestoreProvider),
+  );
+});
+
+/// Story E1bis-7 — Liste des matieres du user, derivee depuis users/{uid}
+/// (schema E1bis : pickedSubjects ou subjects[] derivees via trackId/levelId/
+/// streamId). Stream Firestore + jointure catalogueProvider in-memory.
+///
+/// Retourne :
+///   - [] si users/{uid} absent ou pickedSubjects vide
+///   - liste de Subject matchant pickedSubjects (resolus via catalogue)
+final userSubjectsProvider = StreamProvider<List<Subject>>((ref) {
+  final userRepo = ref.watch(userProfileRepositoryProvider);
+  final catalogueAsync = ref.watch(catalogueProvider);
+
+  return userRepo.watchProfile().map((data) {
+    if (data == null) return const <Subject>[];
+    final pickedIds = (data['pickedSubjects'] as List?)?.cast<String>() ??
+        const <String>[];
+    if (pickedIds.isEmpty) return const <Subject>[];
+    return catalogueAsync.maybeWhen(
+      data: (snapshot) {
+        final idSet = pickedIds.toSet();
+        return snapshot.subjects
+            .where((s) => idSet.contains(s.subjectId))
+            .toList(growable: false);
+      },
+      orElse: () => const <Subject>[],
+    );
+  });
 });
 
 // =====================================================================
