@@ -14,6 +14,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/log_safe.dart';
 import '../../../core/logging/perf_logger.dart';
 import '../presentation/state/onboarding_state.dart';
 
@@ -35,14 +36,20 @@ class OnboardingFlushService {
 
   /// Flush l'etat onboarding dans Firestore. Idempotent grace au
   /// `set(merge: true)` (peut etre rejoue si echec partiel).
+  ///
+  /// Logs : avant ecriture, on dump la cle de chaque champ du payload pour
+  /// diagnostiquer permission-denied (regle Firestore qui rejette un champ
+  /// requis manquant). Le numero de telephone passe par `maskPhone()`
+  /// (CLAUDE.md regle 4 securite).
   Future<Either<OnboardingFlushFailure, void>> flush(
       OnboardingState state) async {
     final user = _auth.currentUser;
     if (user == null) {
-      AppLogger.w('flush: no current user');
+      AppLogger.w('flush: no current user (auth required)');
       return const Left(OnboardingFlushFailure('not-authenticated'));
     }
     final uid = user.uid;
+    final uidShort = uid.length >= 6 ? '${uid.substring(0, 6)}...' : uid;
 
     try {
       final payload = <String, dynamic>{
@@ -53,6 +60,38 @@ class OnboardingFlushService {
         'updatedAt': FieldValue.serverTimestamp(),
       };
 
+      AppLogger.i(
+        'flush START uid=$uidShort '
+        'isAuthUser=${!user.isAnonymous} firebaseAnonymous=${user.isAnonymous}',
+      );
+      AppLogger.i(
+        'flush PAYLOAD '
+        'subSystem=${payload['subSystem']} '
+        'language=${payload['language']} '
+        'trackId=${payload['trackId']} '
+        'levelId=${payload['levelId']} '
+        'streamId=${payload['streamId'] ?? "<null>"} '
+        'pickedSubjects=${(payload['pickedSubjects'] as List).length} items '
+        'displayName="${(payload['displayName'] as String).isEmpty ? "<empty>" : payload['displayName']}" '
+        'phoneNumber=${maskPhone(payload['phoneNumber'] as String?)} '
+        'schoolId=${payload['schoolId'] ?? "<null>"} '
+        'schoolName=${payload['schoolName'] ?? "<null>"} '
+        'pendingSchoolRequestId=${payload['pendingSchoolRequestId'] ?? "<null>"} '
+        'authProvider=${payload['authProvider'] ?? "<null>"} '
+        'isAnonymous=${payload['isAnonymous']}',
+      );
+      AppLogger.i(
+        'flush MISSING_FIELDS_CHECK '
+        'subSystem=${payload.containsKey('subSystem')} '
+        'language=${payload.containsKey('language')} '
+        'trackId=${payload.containsKey('trackId')} '
+        'levelId=${payload.containsKey('levelId')} '
+        'pickedSubjects=${payload.containsKey('pickedSubjects')} '
+        'displayName=${payload.containsKey('displayName')} '
+        'authProvider=${payload.containsKey('authProvider')} '
+        'isAnonymous=${payload.containsKey('isAnonymous')}',
+      );
+
       await logPerf(
         'onboarding.flush.users',
         () => _firestore
@@ -62,24 +101,28 @@ class OnboardingFlushService {
       );
 
       AppLogger.i(
-        'flush OK uid=${uid.substring(0, 6)}... '
+        'flush OK uid=$uidShort '
         'authProvider=${state.authProvider?.id} '
         'isAnonymous=${state.isVisitor} '
         'trackId=${state.trackId} levelId=${state.levelId} '
         'streamId=${state.streamId ?? "-"} '
         'subjects=${state.pickedSubjects.length} '
-        'phoneSet=${state.phoneNumber != null} '
+        'phone=${maskPhone(state.phoneNumber)} '
         'schoolSet=${state.schoolId != null || state.pendingSchoolRequestId != null}',
       );
       return const Right(null);
     } on FirebaseException catch (e, st) {
-      AppLogger.w('flush Firebase error code=${e.code}', error: e);
+      AppLogger.w(
+        'flush Firebase error code=${e.code} '
+        'message="${e.message}" plugin=${e.plugin} uid=$uidShort',
+        error: e,
+      );
       AppLogger.w('flush stack: $st');
       return Left(
         OnboardingFlushFailure(e.message ?? 'firebase-error', code: e.code),
       );
     } catch (e, st) {
-      AppLogger.w('flush unexpected: $e', error: e);
+      AppLogger.w('flush unexpected: $e uid=$uidShort', error: e);
       AppLogger.w('flush stack: $st');
       return Left(OnboardingFlushFailure(e.toString()));
     }

@@ -110,20 +110,26 @@ void main() {
   });
 
   group('OnboardingState — toFirestorePayload', () {
-    test('n inclut que les champs non-null + isAnonymous toujours present',
-        () {
+    test(
+        'inclut toujours pickedSubjects + displayName + isAnonymous (champs '
+        'requis create rules) ; champs optionnels seulement si poses', () {
+      // Fix runtime 2026-06-13 : firestore.rules exige pickedSubjects (list)
+      // et displayName (string) en create -> toujours presents avec defaults
+      // safe ('' / []), meme sur etat vide.
       const state = OnboardingState();
 
       final payload = state.toFirestorePayload();
 
-      expect(payload.keys, contains('isAnonymous'));
+      // Champs requis create rules — toujours presents.
       expect(payload['isAnonymous'], isFalse);
+      expect(payload['pickedSubjects'], <String>[]);
+      expect(payload['displayName'], '');
+
+      // Champs optionnels — absents tant que pas poses.
       expect(payload.containsKey('subSystem'), isFalse);
       expect(payload.containsKey('trackId'), isFalse);
       expect(payload.containsKey('levelId'), isFalse);
       expect(payload.containsKey('streamId'), isFalse);
-      expect(payload.containsKey('pickedSubjects'), isFalse);
-      expect(payload.containsKey('displayName'), isFalse);
       expect(payload.containsKey('phoneNumber'), isFalse);
       expect(payload.containsKey('schoolId'), isFalse);
       expect(payload.containsKey('schoolName'), isFalse);

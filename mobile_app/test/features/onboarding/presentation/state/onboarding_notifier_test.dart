@@ -169,8 +169,9 @@ void main() {
       expect(state.currentStep, 6);
     });
 
-    test('Visiteur (guest) -> isVisitor=true + step 6 (pas de name OAuth)',
+    test('Visiteur (guest) -> isVisitor=true + step 9 direct (skip 6+7+8)',
         () async {
+      // Decision produit 2026-06-13 : visiteur saute nom + telephone + ecole.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
@@ -181,7 +182,7 @@ void main() {
       final state = container.read(onboardingNotifierProvider);
       expect(state.authProvider, OnboardingAuthProvider.guest);
       expect(state.isVisitor, isTrue);
-      expect(state.currentStep, 6);
+      expect(state.currentStep, 9);
     });
 
     test('OAuth avec displayName vide string -> step 6 (pas considere fourni)',
@@ -443,16 +444,20 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 6);
     });
 
-    test('step 7 -> 9 si isVisitor=true (skip school)', () async {
+    test('step 5 -> 9 si isVisitor=true (skip name/phone/school direct success)',
+        () async {
+      // Decision produit 2026-06-13 : visiteur ne saisit ni nom, ni telephone,
+      // ni ecole. setAuthProvider(guest) -> step 9 direct.
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
-      notifier.state = const OnboardingState(currentStep: 7, isVisitor: true);
+      notifier.state = const OnboardingState(currentStep: 5, isVisitor: true);
       notifier.next();
       expect(container.read(onboardingNotifierProvider).currentStep, 9);
     });
 
-    test('step 7 -> 8 si isVisitor=false', () async {
+    test('step 7 -> 8 (non visiteur passe par school)', () async {
+      // Le visiteur n'arrive jamais a step 7 (skip via setAuthProvider).
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
@@ -518,13 +523,15 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 5);
     });
 
-    test('step 9 -> 7 si isVisitor=true (symetrie skip step 8)', () async {
+    test('step 9 -> 5 si isVisitor=true (symetrie skip 6+7+8)', () async {
+      // Decision produit 2026-06-13 : visiteur back depuis success ramene au
+      // choix d'auth (etape 5), pas aux ecrans skip.
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
       notifier.state = const OnboardingState(currentStep: 9, isVisitor: true);
       notifier.back();
-      expect(container.read(onboardingNotifierProvider).currentStep, 7);
+      expect(container.read(onboardingNotifierProvider).currentStep, 5);
     });
 
     test('step 9 -> 8 si isVisitor=false', () async {

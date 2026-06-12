@@ -9,8 +9,10 @@
 //
 // Transitions next()/back() :
 // - step 3 -> 4 si levelRequiresPicker, sinon -> 5 (skip mode `derived`)
-// - step 5 -> 6 si userDisplayName vide, sinon -> 7 (skip si OAuth a fourni)
-// - step 7 -> 8 si !isVisitor, sinon -> 9 (visiteur skip step 8 school)
+// - step 5 -> 9 si visiteur (skip nom + telephone + ecole)
+//           -> 6 si compte permanent sans displayName
+//           -> 7 si compte permanent avec displayName OAuth
+// - step 7 -> 8 (compte permanent) — visiteur n'arrive jamais ici
 // - back() symetrique
 //
 // CLAUDE.md regle 4 securite : phoneNumber ne doit JAMAIS etre logue
@@ -84,22 +86,33 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     );
   }
 
+  /// Pose le streamId SANS transitionner. Utilise par
+  /// StreamSubjectsPickerStepBody quand l'utilisateur choisit une serie
+  /// d'abord, pour declencher la re-derivation via `derivedProfileV2Provider`
+  /// (qui watch state). Le passage a l'etape 5 se fera via
+  /// `setStreamAndSubjects` une fois les matieres validees.
+  void setStreamIdDraft(String streamId) {
+    state = state.copyWith(streamId: streamId);
+  }
+
   /// Pose le provider d'auth + capture le displayName eventuel.
   /// Transition conditionnelle :
+  /// - visiteur (`OnboardingAuthProvider.guest`) -> step 9 (skip 6+7+8) :
+  ///   le mode visiteur ne demande ni nom, ni telephone, ni ecole — direct
+  ///   au flush + dashboard (decision produit 2026-06-13).
   /// - displayName non vide -> step 7 (skip step 6 name input)
   /// - displayName vide/null -> step 6 (saisie clavier requise)
-  /// Visiteur (`OnboardingAuthProvider.guest`) -> isVisitor = true (impacte
-  /// transitions next/back ulterieures, cf. step 7 -> 9 skip school).
   void setAuthProvider(
     OnboardingAuthProvider provider, {
     String? displayName,
   }) {
     final hasName = displayName != null && displayName.isNotEmpty;
+    final isVisitor = provider == OnboardingAuthProvider.guest;
     state = state.copyWith(
       authProvider: provider,
       userDisplayName: displayName,
-      isVisitor: provider == OnboardingAuthProvider.guest,
-      currentStep: hasName ? 7 : 6,
+      isVisitor: isVisitor,
+      currentStep: isVisitor ? 9 : (hasName ? 7 : 6),
     );
   }
 
@@ -190,8 +203,12 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   /// Avance d'un cran en consultant l'etat actuel pour les branches
-  /// conditionnelles (skip step 4 si !levelRequiresPicker, skip step 6 si
-  /// OAuth a fourni displayName, skip step 8 si isVisitor). A step 9 -> no-op.
+  /// conditionnelles :
+  /// - skip step 4 si !levelRequiresPicker
+  /// - step 5 -> 9 si visiteur (skip 6+7+8 nom/phone/school)
+  /// - step 5 -> 7 si OAuth a fourni displayName (skip step 6)
+  ///
+  /// A step 9 -> no-op.
   void next() {
     final s = state;
     final target = switch (s.currentStep) {
@@ -200,9 +217,9 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 3,
       3 => s.levelRequiresPicker ? 4 : 5,
       4 => 5,
-      5 => _hasDisplayName(s) ? 7 : 6,
+      5 => s.isVisitor ? 9 : (_hasDisplayName(s) ? 7 : 6),
       6 => 7,
-      7 => s.isVisitor ? 9 : 8,
+      7 => 8,
       8 => 9,
       9 => 9,
       _ => s.currentStep,
@@ -229,7 +246,7 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       6 => 5,
       7 => _hasDisplayName(s) ? 5 : 6,
       8 => 7,
-      9 => s.isVisitor ? 7 : 8,
+      9 => s.isVisitor ? 5 : 8,
       _ => s.currentStep,
     };
     if (target != s.currentStep) {

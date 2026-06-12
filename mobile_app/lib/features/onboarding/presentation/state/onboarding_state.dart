@@ -189,19 +189,32 @@ class OnboardingState extends Equatable {
     );
   }
 
-  /// Payload partiel pour ecriture Firestore. Prepare pour E1bis-4 (post-auth
-  /// WriteBatch) — pas appele dans la story E1bis-1. N'inclut que les champs
-  /// non-null pour permettre `set(merge: true)` (CLAUDE.md regle 10.l).
+  /// Payload pour ecriture Firestore via `set(merge: true)`.
+  ///
+  /// **CHAMPS REQUIS** par les firestore.rules (create) — toujours presents
+  /// avec defaults safe meme si l'utilisateur a saute l'etape ou est visiteur :
+  ///   - `subSystem` / `language` / `trackId` / `levelId` : obligatoires
+  ///     (validation amont au step 0-3, jamais null a l'arrivee step 9).
+  ///   - `pickedSubjects` : `[]` si vide (la regle exige `is list`, pas
+  ///     `size > 0`).
+  ///   - `displayName` : `''` si null (visiteur ou skip OAuth) — la regle
+  ///     exige `is string`, pas `size > 0`.
+  ///   - `authProvider` / `isAnonymous` : poses au step 5 par
+  ///     setAuthProvider().
+  ///
+  /// **CHAMPS OPTIONNELS** (pas dans les rules create) — ecrits seulement
+  /// s'ils ont une valeur, pour ne pas polluer le doc :
+  ///   - `streamId` / `phoneNumber` / `schoolId` / `schoolName` /
+  ///     `pendingSchoolRequestId`.
   Map<String, dynamic> toFirestorePayload() {
     final payload = <String, dynamic>{};
     if (subSystem != null) payload['subSystem'] = subSystem!.id;
     if (trackId != null) payload['trackId'] = trackId;
     if (levelId != null) payload['levelId'] = levelId;
     if (streamId != null) payload['streamId'] = streamId;
-    if (pickedSubjects.isNotEmpty) {
-      payload['pickedSubjects'] = List<String>.unmodifiable(pickedSubjects);
-    }
-    if (userDisplayName != null) payload['displayName'] = userDisplayName;
+    // Champs requis create — defaults safe ('' / []) si pas remplis.
+    payload['pickedSubjects'] = List<String>.unmodifiable(pickedSubjects);
+    payload['displayName'] = userDisplayName ?? '';
     if (phoneNumber != null) payload['phoneNumber'] = phoneNumber;
     if (schoolId != null) payload['schoolId'] = schoolId;
     if (schoolName != null) payload['schoolName'] = schoolName;
