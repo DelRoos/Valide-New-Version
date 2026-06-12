@@ -440,22 +440,22 @@ abstract class AppLocalizations {
   /// **'Sélectionne les matières que tu présentes à ton examen.'**
   String get onboardingPickerSubtitle;
 
-  /// Titre H3 section matières obligatoires (lockées) mode free_with_obligatory (Story 1.15).
+  /// Story E1bis-3 — Titre section matieres obligatoires picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matières obligatoires'**
+  /// **'Matieres obligatoires'**
   String get onboardingPickerObligatoryTitle;
 
-  /// Titre H3 section matières sélectionnables mode free_with_obligatory (Story 1.15).
+  /// Story E1bis-3 — Titre section matieres optionnelles picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matières au choix'**
+  /// **'Matieres optionnelles'**
   String get onboardingPickerOptionalTitle;
 
-  /// Titre H3 section Series (obligatoires) mode series_plus_optional A-Level (Story 1.16). Series = combinaison fixe 3-4 matières GCE A-Level (ex. Chemistry/Physics/Biology pour S2).
+  /// Story E1bis-3 — Titre section selection serie dans le picker.
   ///
   /// In fr, this message translates to:
-  /// **'Series (obligatoires)'**
+  /// **'Choisis ta serie'**
   String get onboardingPickerSeriesTitle;
 
   /// Titre H3 section matières transversales optionnelles mode series_plus_optional A-Level (Story 1.16). Computer Science, ICT, Religious Studies, Commerce ajoutables jusqu'à max 5 total.
@@ -470,10 +470,10 @@ abstract class AppLocalizations {
   /// **'Matières professionnelles (obligatoires)'**
   String get onboardingPickerProfessionalTitle;
 
-  /// Titre H3 section Related Professional Subjects (lockées) mode tve_picker TVEE (Story 1.17). Ex. pour ELET : Mathematics for Industrial, Physics, Drawing.
+  /// Story E1bis-3 — Titre section matieres connexes tvePicker.
   ///
   /// In fr, this message translates to:
-  /// **'Matières connexes (obligatoires)'**
+  /// **'Matieres connexes'**
   String get onboardingPickerRelatedTitle;
 
   /// Titre H3 section Other Subjects mode tve_picker TVEE (Story 1.17). Mix : EN+FR lockées + matières culturelles au choix (Hist/Geo/RS).
@@ -859,6 +859,78 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'C\'est parti'**
   String get heroIntroCta;
+
+  /// Story E1bis-3 — Titre H1 step 2 track choice (Generale / Technique).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle filiere suis-tu ?'**
+  String get onboardingTrackTitle;
+
+  /// Story E1bis-3 — Sous-titre step 2 track choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis le type d\'enseignement que tu veux suivre.'**
+  String get onboardingTrackSubtitle;
+
+  /// Story E1bis-3 — Description sous SelectionCard track generale.
+  ///
+  /// In fr, this message translates to:
+  /// **'Programme academique classique (maths, sciences, lettres)'**
+  String get onboardingTrackHintGeneral;
+
+  /// Story E1bis-3 — Description sous SelectionCard track technique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Programme professionnel (industriel, commercial, tertiaire)'**
+  String get onboardingTrackHintTechnique;
+
+  /// Story E1bis-3 — Titre H1 step 3 level choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es en quelle classe ?'**
+  String get onboardingLevelTitle;
+
+  /// Story E1bis-3 — Sous-titre step 3 level choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Selectionne ton niveau actuel pour adapter le contenu.'**
+  String get onboardingLevelSubtitle;
+
+  /// Story E1bis-3 — Titre H1 step 4 stream + subjects picker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelles matieres etudies-tu ?'**
+  String get onboardingStreamSubjectsTitle;
+
+  /// Story E1bis-3 — Sous-titre step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Selectionne ta serie et tes matieres pour personnaliser tes cours.'**
+  String get onboardingStreamSubjectsSubtitle;
+
+  /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count}/{max} selectionnees'**
+  String onboardingPickerCounter(int count, int max);
+
+  /// Story E1bis-3 — Label CTA validation picker.
+  ///
+  /// In fr, this message translates to:
+  /// **'Valider mes matieres'**
+  String get onboardingPickerValidate;
+
+  /// Story E1bis-3 — Message erreur chargement catalogue Firestore.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de charger le catalogue. Verifie ta connexion et reessaie.'**
+  String get errorCatalogueLoading;
+
+  /// Story E1bis-3 — Message erreur catalogue vide (cas marginal).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune donnee disponible. Reessaie plus tard.'**
+  String get errorCatalogueEmpty;
 }
 
 class _AppLocalizationsDelegate

@@ -26,7 +26,10 @@ import '../state/onboarding_notifier.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
 import 'hero_intro_step_body.dart';
+import 'level_choice_step_body.dart';
+import 'stream_subjects_picker_step_body.dart';
 import 'sub_system_step_body.dart';
+import 'track_choice_step_body.dart';
 
 class OnboardingShell extends ConsumerStatefulWidget {
   const OnboardingShell({super.key});
@@ -94,6 +97,9 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
   Widget _bodyForStep(int step) => switch (step) {
         0 => const SubSystemStepBody(),
         1 => const HeroIntroStepBody(),
+        2 => const TrackChoiceStepBody(),
+        3 => const LevelChoiceStepBody(),
+        4 => const StreamSubjectsPickerStepBody(),
         _ => _StepPlaceholder(stepIndex: step),
       };
 
@@ -118,9 +124,26 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
           label: l10n.heroIntroCta,
           onPressed: notifier.next,
         );
+      case 2:
+        // Step 2 track : CTA pour fallback (le tap card auto-avance via
+        // setTrackId mais le user peut taper Continuer pour confirmer).
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: state.trackId != null ? notifier.next : null,
+        );
+      case 3:
+        // Step 3 level : CTA pour confirmer. setLevelId auto-avance.
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: state.levelId != null ? notifier.next : null,
+        );
+      case 4:
+        // Step 4 picker : footer rendu par le step body (PickerValidateBar
+        // gere son propre CTA avec compteur + validation).
+        return null;
       default:
-        // Steps 2-9 (hors 5) : seront livres par E1bis-3 a E1bis-7. Pour
-        // l'instant pas de footer (placeholder visible).
+        // Steps 5-9 : seront livres par E1bis-4 a E1bis-7. Pour l'instant
+        // pas de footer (placeholder visible).
         return null;
     }
   }

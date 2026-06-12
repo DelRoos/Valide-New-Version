@@ -214,13 +214,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sélectionne les matières que tu présentes à ton examen.';
 
   @override
-  String get onboardingPickerObligatoryTitle => 'Matières obligatoires';
+  String get onboardingPickerObligatoryTitle => 'Matieres obligatoires';
 
   @override
-  String get onboardingPickerOptionalTitle => 'Matières au choix';
+  String get onboardingPickerOptionalTitle => 'Matieres optionnelles';
 
   @override
-  String get onboardingPickerSeriesTitle => 'Series (obligatoires)';
+  String get onboardingPickerSeriesTitle => 'Choisis ta serie';
 
   @override
   String get onboardingPickerTransversalesTitle => 'Transversales optionnelles';
@@ -230,7 +230,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Matières professionnelles (obligatoires)';
 
   @override
-  String get onboardingPickerRelatedTitle => 'Matières connexes (obligatoires)';
+  String get onboardingPickerRelatedTitle => 'Matieres connexes';
 
   @override
   String get onboardingPickerOtherTitle => 'Autres matières';
@@ -455,4 +455,49 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get heroIntroCta => 'C\'est parti';
+
+  @override
+  String get onboardingTrackTitle => 'Quelle filiere suis-tu ?';
+
+  @override
+  String get onboardingTrackSubtitle =>
+      'Choisis le type d\'enseignement que tu veux suivre.';
+
+  @override
+  String get onboardingTrackHintGeneral =>
+      'Programme academique classique (maths, sciences, lettres)';
+
+  @override
+  String get onboardingTrackHintTechnique =>
+      'Programme professionnel (industriel, commercial, tertiaire)';
+
+  @override
+  String get onboardingLevelTitle => 'Tu es en quelle classe ?';
+
+  @override
+  String get onboardingLevelSubtitle =>
+      'Selectionne ton niveau actuel pour adapter le contenu.';
+
+  @override
+  String get onboardingStreamSubjectsTitle => 'Quelles matieres etudies-tu ?';
+
+  @override
+  String get onboardingStreamSubjectsSubtitle =>
+      'Selectionne ta serie et tes matieres pour personnaliser tes cours.';
+
+  @override
+  String onboardingPickerCounter(int count, int max) {
+    return '$count/$max selectionnees';
+  }
+
+  @override
+  String get onboardingPickerValidate => 'Valider mes matieres';
+
+  @override
+  String get errorCatalogueLoading =>
+      'Impossible de charger le catalogue. Verifie ta connexion et reessaie.';
+
+  @override
+  String get errorCatalogueEmpty =>
+      'Aucune donnee disponible. Reessaie plus tard.';
 }
