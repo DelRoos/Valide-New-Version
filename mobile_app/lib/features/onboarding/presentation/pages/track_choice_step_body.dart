@@ -15,7 +15,7 @@ import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
-import '../../../../core/widgets/onboarding/catalogue_error_retry.dart';
+import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
 import '../state/onboarding_providers.dart';
@@ -39,7 +39,10 @@ class TrackChoiceStepBody extends ConsumerWidget {
           ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
         if (tracks.isEmpty) {
-          return CatalogueErrorRetry(message: l10n.errorCatalogueEmpty);
+          return ErrorRetryView(
+            onRetry: () => ref.invalidate(catalogueProvider),
+            message: l10n.errorCatalogueEmpty,
+          );
         }
 
         return SingleChildScrollView(
@@ -87,7 +90,10 @@ class TrackChoiceStepBody extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-      error: (e, st) => const CatalogueErrorRetry(),
+      error: (e, st) => ErrorRetryView(
+        onRetry: () => ref.invalidate(catalogueProvider),
+        kind: ErrorRetryKind.offline,
+      ),
     );
   }
 

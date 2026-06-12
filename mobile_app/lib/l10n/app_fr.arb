@@ -486,5 +486,17 @@
   "@errorCatalogueLoading": { "description": "Story E1bis-3 — Message erreur chargement catalogue Firestore." },
 
   "errorCatalogueEmpty": "Aucune donnee disponible. Reessaie plus tard.",
-  "@errorCatalogueEmpty": { "description": "Story E1bis-3 — Message erreur catalogue vide (cas marginal)." }
+  "@errorCatalogueEmpty": { "description": "Story E1bis-3 — Message erreur catalogue vide (cas marginal)." },
+
+  "errorOfflineTitle": "Pas de connexion",
+  "@errorOfflineTitle": { "description": "Titre H2 de l'ecran ErrorRetryView quand le device est hors ligne." },
+
+  "errorLoadingTitle": "Chargement impossible",
+  "@errorLoadingTitle": { "description": "Titre H2 de l'ecran ErrorRetryView quand une lecture serveur echoue." },
+
+  "errorGenericTitle": "Oups, quelque chose a coince",
+  "@errorGenericTitle": { "description": "Titre H2 de l'ecran ErrorRetryView pour les erreurs generiques non identifiees." },
+
+  "offlineBannerMessage": "Pas de connexion internet",
+  "@offlineBannerMessage": { "description": "Texte du bandeau global offline affiche en haut de l'app tant que la connectivite est absente." }
 }

@@ -496,4 +496,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorCatalogueEmpty => 'No data available. Try again later.';
+
+  @override
+  String get errorOfflineTitle => 'No connection';
+
+  @override
+  String get errorLoadingTitle => 'Loading failed';
+
+  @override
+  String get errorGenericTitle => 'Oops, something went wrong';
+
+  @override
+  String get offlineBannerMessage => 'No internet connection';
 }

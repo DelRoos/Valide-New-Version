@@ -500,4 +500,16 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get errorCatalogueEmpty =>
       'Aucune donnee disponible. Reessaie plus tard.';
+
+  @override
+  String get errorOfflineTitle => 'Pas de connexion';
+
+  @override
+  String get errorLoadingTitle => 'Chargement impossible';
+
+  @override
+  String get errorGenericTitle => 'Oups, quelque chose a coince';
+
+  @override
+  String get offlineBannerMessage => 'Pas de connexion internet';
 }

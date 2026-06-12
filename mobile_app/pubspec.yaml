@@ -93,6 +93,10 @@ dependencies:
   # fallback CustomPaint manuel).
   confetti: ^0.8.0
 
+  # 2026-06-12 — detection connectivite reseau pour banner offline global.
+  # Isole derriere lib/core/connectivity/connectivity_provider.dart.
+  connectivity_plus: ^6.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
