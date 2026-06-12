@@ -96,12 +96,15 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   /// Pose le provider d'auth + capture le displayName eventuel.
+  ///
   /// Transition conditionnelle :
-  /// - visiteur (`OnboardingAuthProvider.guest`) -> step 9 (skip 6+7+8) :
-  ///   le mode visiteur ne demande ni nom, ni telephone, ni ecole — direct
-  ///   au flush + dashboard (decision produit 2026-06-13).
-  /// - displayName non vide -> step 7 (skip step 6 name input)
-  /// - displayName vide/null -> step 6 (saisie clavier requise)
+  /// - visiteur (`OnboardingAuthProvider.guest`) -> NE TRANSITIONNE PAS :
+  ///   le mode visiteur n'a ni nom, ni telephone, ni ecole, ni page success.
+  ///   AuthChoiceStepBody fait directement le flush Firestore + nav vers
+  ///   `/dashboard` (decision produit 2026-06-13 : "Mode visiteur il part
+  ///   directement sur le dashboard", pas de celebration).
+  /// - displayName non vide -> step 7 (skip step 6 name input).
+  /// - displayName vide/null -> step 6 (saisie clavier requise).
   void setAuthProvider(
     OnboardingAuthProvider provider, {
     String? displayName,
@@ -112,7 +115,9 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       authProvider: provider,
       userDisplayName: displayName,
       isVisitor: isVisitor,
-      currentStep: isVisitor ? 9 : (hasName ? 7 : 6),
+      // Visiteur reste a step 5 — AuthChoiceStepBody fait le flush + nav.
+      currentStep:
+          isVisitor ? state.currentStep : (hasName ? 7 : 6),
     );
   }
 
@@ -205,8 +210,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   /// Avance d'un cran en consultant l'etat actuel pour les branches
   /// conditionnelles :
   /// - skip step 4 si !levelRequiresPicker
-  /// - step 5 -> 9 si visiteur (skip 6+7+8 nom/phone/school)
   /// - step 5 -> 7 si OAuth a fourni displayName (skip step 6)
+  ///
+  /// Le visiteur (`isVisitor=true`) n'utilise pas next() apres le step 5 :
+  /// AuthChoiceStepBody navigue directement vers `/dashboard`.
   ///
   /// A step 9 -> no-op.
   void next() {
@@ -217,7 +224,7 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 3,
       3 => s.levelRequiresPicker ? 4 : 5,
       4 => 5,
-      5 => s.isVisitor ? 9 : (_hasDisplayName(s) ? 7 : 6),
+      5 => _hasDisplayName(s) ? 7 : 6,
       6 => 7,
       7 => 8,
       8 => 9,
@@ -246,7 +253,7 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       6 => 5,
       7 => _hasDisplayName(s) ? 5 : 6,
       8 => 7,
-      9 => s.isVisitor ? 5 : 8,
+      9 => 8,
       _ => s.currentStep,
     };
     if (target != s.currentStep) {

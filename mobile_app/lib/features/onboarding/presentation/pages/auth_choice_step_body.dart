@@ -14,6 +14,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/firebase/providers.dart';
@@ -171,12 +172,22 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     return null;
   }
 
+  /// Flow visiteur (decision produit 2026-06-13) :
+  ///   1. signInAnonymously() Firebase Auth
+  ///   2. setAuthProvider(guest) — pose isVisitor=true sans transitionner
+  ///   3. flush direct users/{uid} (profil minimal : trackId + levelId +
+  ///      isAnonymous=true + displayName='' + pickedSubjects)
+  ///   4. GoRouter.go('/dashboard')
+  ///
+  /// Pas de page success/celebration pour le visiteur : la celebration
+  /// est reservee aux comptes permanents qui ont saisi nom + phone + ecole.
   Future<void> _onGuestTap() async {
     setState(() {
       _guestLoading = true;
       _guestError = null;
     });
     final l10n = AppLocalizations.of(context);
+    final router = GoRouter.of(context);
     try {
       final auth = ref.read(firebaseAuthProvider);
       if (auth.currentUser == null) {
@@ -186,9 +197,29 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
         AppLogger.i('auth.step5 guest reuse existing anonymous session');
       }
       if (!mounted) return;
-      ref
-          .read(onboardingNotifierProvider.notifier)
-          .setAuthProvider(OnboardingAuthProvider.guest);
+
+      final notifier = ref.read(onboardingNotifierProvider.notifier);
+      notifier.setAuthProvider(OnboardingAuthProvider.guest);
+
+      // Flush direct (pas de page success pour visiteur).
+      final flushService = ref.read(onboardingFlushServiceProvider);
+      final state = ref.read(onboardingNotifierProvider);
+      final result = await flushService.flush(state);
+      if (!mounted) return;
+
+      result.fold(
+        (failure) {
+          AppLogger.w(
+            'auth.step5 guest flush failed code=${failure.code} '
+            'message="${failure.message}"',
+          );
+          setState(() => _guestError = l10n.onboardingFlushError);
+        },
+        (_) {
+          AppLogger.i('auth.step5 guest flush OK -> /dashboard');
+          router.go('/dashboard');
+        },
+      );
     } catch (e, st) {
       AppLogger.w('auth.step5 guest failed: $e', error: e);
       AppLogger.w('auth.step5 guest stack: $st');

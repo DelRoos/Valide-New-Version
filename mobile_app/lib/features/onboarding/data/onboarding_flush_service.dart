@@ -52,17 +52,29 @@ class OnboardingFlushService {
     final uidShort = uid.length >= 6 ? '${uid.substring(0, 6)}...' : uid;
 
     try {
+      final docRef = _firestore.collection('users').doc(uid);
+
+      // Fix runtime 2026-06-13 : verifier l'existence AVANT d'inclure
+      // `createdAt` dans le payload. La regle UPDATE exige `createdAt`
+      // immuable — un set(merge: true) qui ecrit serverTimestamp() a chaque
+      // flush ferait toujours echouer la regle (nouvelle timestamp != stockee).
+      final existing = await docRef.get();
+      final isCreate = !existing.exists;
+
       final payload = <String, dynamic>{
         'uid': uid,
         ...state.toFirestorePayload(),
         'language': state.subSystem?.languageCode ?? 'fr',
-        'createdAt': FieldValue.serverTimestamp(),
         'updatedAt': FieldValue.serverTimestamp(),
       };
+      if (isCreate) {
+        payload['createdAt'] = FieldValue.serverTimestamp();
+      }
 
       AppLogger.i(
         'flush START uid=$uidShort '
-        'isAuthUser=${!user.isAnonymous} firebaseAnonymous=${user.isAnonymous}',
+        'isAuthUser=${!user.isAnonymous} firebaseAnonymous=${user.isAnonymous} '
+        'docExists=${!isCreate} -> ${isCreate ? "CREATE" : "UPDATE"}',
       );
       AppLogger.i(
         'flush PAYLOAD '

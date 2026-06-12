@@ -174,8 +174,29 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 }
 
 /// Helper pur : traduit la map brute Firestore en ProfileCompletionState.
+///
+/// Schema E1bis (post 2026-06-13) : `trackId` + `levelId` + `streamId`
+/// (anglais). `streamId` peut etre null pour les niveaux sans serie (6e,
+/// Form 1...) — on considere le profil complet si trackId + levelId sont
+/// poses. Le visiteur (isAnonymous=true sans displayName/phone/school) est
+/// considere complet — pas de bounce vers l'onboarding.
+///
+/// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
+/// que les docs users existants n'ont pas migre (Story 1.19 dette).
 ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
   if (data == null) return ProfileCompletionState.filiereMissing;
+
+  // Schema E1bis prioritaire (post-2026-06-13).
+  final trackId = data['trackId'];
+  final levelId = data['levelId'];
+  if (trackId is String && trackId.isNotEmpty) {
+    if (levelId is String && levelId.isNotEmpty) {
+      return ProfileCompletionState.complete;
+    }
+    return ProfileCompletionState.niveauMissing;
+  }
+
+  // Schema legacy Epic 1 (filiere / niveau / serie).
   final filiere = data['filiere'];
   final niveau = data['niveau'];
   final serie = data['serie'];
