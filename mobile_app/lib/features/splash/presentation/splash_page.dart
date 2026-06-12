@@ -32,12 +32,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/tokens.dart';
-import '../../onboarding/providers.dart';
 
 const Duration _kStrokeDuration = Duration(milliseconds: 1800);
 const Duration _kHoldAfterStroke = Duration(milliseconds: 300);
-// Story 1.2 — la destination post-splash est dynamique, plus une const :
-// `/onboarding/subsystem` au 1er lancement, `/hello` sinon (cf. _goNext).
+// Story E1bis-9 — destination post-splash = `/dashboard`. Le router redirige
+// vers `/onboarding/v2` si le profil est incomplet (garde Story 1.5).
 const String _kWord = 'VALIDE';
 
 class SplashPage extends ConsumerStatefulWidget {
@@ -74,12 +73,10 @@ class _SplashPageState extends ConsumerState<SplashPage>
   void _goNext() {
     if (_navigated || !mounted) return;
     _navigated = true;
-    // Story 1.9 — destination dynamique : 1er lancement (subSystem null) ->
-    // page de choix ; sinon -> /dashboard. La garde Story 1.5 redirige vers
-    // l'etape onboarding manquante si le profil n'est pas complet.
-    final subSystem = ref.read(subSystemNotifierProvider);
-    final dest = subSystem == null ? '/onboarding/subsystem' : '/dashboard';
-    context.go(dest);
+    // Story E1bis-9 — destination simplifiee : si profil pas complet, le
+    // router redirige vers /onboarding/v2 (cf. evaluateRedirect). On tape
+    // /dashboard et la garde profil-incomplet aiguille au besoin.
+    context.go('/dashboard');
   }
 
   @override
