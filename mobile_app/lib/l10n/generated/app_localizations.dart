@@ -931,6 +931,30 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Aucune donnee disponible. Reessaie plus tard.'**
   String get errorCatalogueEmpty;
+
+  /// Titre H2 de l'ecran ErrorRetryView quand le device est hors ligne.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion'**
+  String get errorOfflineTitle;
+
+  /// Titre H2 de l'ecran ErrorRetryView quand une lecture serveur echoue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement impossible'**
+  String get errorLoadingTitle;
+
+  /// Titre H2 de l'ecran ErrorRetryView pour les erreurs generiques non identifiees.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oups, quelque chose a coince'**
+  String get errorGenericTitle;
+
+  /// Texte du bandeau global offline affiche en haut de l'app tant que la connectivite est absente.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion internet'**
+  String get offlineBannerMessage;
 }
 
 class _AppLocalizationsDelegate

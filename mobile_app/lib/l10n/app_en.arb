@@ -205,5 +205,9 @@
   },
   "onboardingPickerValidate": "Confirm my subjects",
   "errorCatalogueLoading": "Cannot load catalogue. Check your connection and try again.",
-  "errorCatalogueEmpty": "No data available. Try again later."
+  "errorCatalogueEmpty": "No data available. Try again later.",
+  "errorOfflineTitle": "No connection",
+  "errorLoadingTitle": "Loading failed",
+  "errorGenericTitle": "Oops, something went wrong",
+  "offlineBannerMessage": "No internet connection"
 }

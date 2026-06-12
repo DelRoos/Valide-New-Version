@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/widgets/feedback/offline_banner.dart';
 import 'features/onboarding/providers.dart';
 import 'l10n/generated/app_localizations.dart';
 
@@ -44,6 +45,15 @@ class ValideApp extends ConsumerWidget {
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         routerConfig: ref.watch(routerProvider),
+        // 2026-06-12 — banner offline global affiche au-dessus du
+        // current page (router-aware). Le banner se masque automatiquement
+        // quand la connectivite revient.
+        builder: (context, child) => Column(
+          children: [
+            const OfflineBanner(),
+            Expanded(child: child ?? const SizedBox.shrink()),
+          ],
+        ),
       ),
     );
   }

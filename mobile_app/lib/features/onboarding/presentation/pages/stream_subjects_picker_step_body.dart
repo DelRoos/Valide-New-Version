@@ -24,8 +24,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/catalogue/domain/models.dart';
+import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
-import '../../../../core/widgets/onboarding/catalogue_error_retry.dart';
+import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../core/widgets/picker/obligatory_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/optional_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/picker_section_scaffold.dart';
@@ -57,11 +58,16 @@ class _StreamSubjectsPickerStepBodyState
 
     return derivedAsync.when(
       data: (either) => either.fold(
-        (_) => const CatalogueErrorRetry(),
+        (_) => ErrorRetryView(
+          onRetry: () => ref.invalidate(catalogueProvider),
+        ),
         (profile) => _renderForMode(profile, notifier, langKey, l10n),
       ),
       loading: () => const Center(child: CircularProgressIndicator()),
-      error: (_, _) => const CatalogueErrorRetry(),
+      error: (_, _) => ErrorRetryView(
+        onRetry: () => ref.invalidate(catalogueProvider),
+        kind: ErrorRetryKind.offline,
+      ),
     );
   }
 
