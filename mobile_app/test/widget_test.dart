@@ -11,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:valide_school/app.dart';
 import 'package:valide_school/core/catalogue/domain/catalogue_failure.dart';
+import 'package:valide_school/core/config/feature_flags.dart';
 import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/catalogue/providers.dart';
 import 'package:valide_school/core/firebase/providers.dart';
@@ -51,6 +52,9 @@ void main() {
         ProviderScope(
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
+            featureFlagsProvider.overrideWithValue(
+              const FeatureFlags(useNewOnboardingFlow: false),
+            ),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),
@@ -95,6 +99,9 @@ void main() {
         ProviderScope(
           overrides: [
             sharedPreferencesProvider.overrideWithValue(prefs),
+            featureFlagsProvider.overrideWithValue(
+              const FeatureFlags(useNewOnboardingFlow: false),
+            ),
             appStartupCatalogueCheckProvider.overrideWith((ref) async => true),
             profileCompletionProvider.overrideWith(
               (ref) => Stream.value(ProfileCompletionState.complete),

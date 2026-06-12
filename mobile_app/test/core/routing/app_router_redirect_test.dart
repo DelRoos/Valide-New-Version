@@ -300,8 +300,22 @@ void main() {
     });
 
     test(
-        '(e1bis-b) flag ON + hasSubSystem + /onboarding/v2 -> /'
-        ' (anti-replay)', () {
+        '(e1bis-b) flag ON + profil complet + /onboarding/v2 -> /'
+        ' (sortie naturelle post-completion)', () {
+      final result = evaluateRedirect(
+        location: '/onboarding/v2',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/');
+    });
+
+    test(
+        '(e1bis-b2) flag ON + hasSubSystem + profil incomplet + /onboarding/v2'
+        ' -> null (mid-flow, on reste sur le shell)', () {
       final result = evaluateRedirect(
         location: '/onboarding/v2',
         catalogueCheck: _catalogueOk,
@@ -310,7 +324,7 @@ void main() {
         flowState: _emptyFlow,
         useNewOnboardingFlow: true,
       );
-      expect(result, '/');
+      expect(result, isNull);
     });
 
     test(
@@ -322,6 +336,148 @@ void main() {
         hasSubSystem: false,
         profileCompletion:
             _completion(ProfileCompletionState.subsystemMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: false,
+      );
+      expect(result, isNull);
+    });
+
+    test(
+        '(e1bis-c2) flag OFF + hasSubSystem + /onboarding/v2 -> /'
+        ' (deep link rejete cohabitation Epic 1)', () {
+      final result = evaluateRedirect(
+        location: '/onboarding/v2',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: false,
+      );
+      expect(result, '/');
+    });
+  });
+
+  group('evaluateRedirect — fix routing E1bis englobe Epic 1 (2026-06-12)', () {
+    test(
+        '(englobe-a) flag ON + /onboarding/profile/filiere -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/profile/filiere',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.filiereMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-b) flag ON + /onboarding/profile/niveau -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/profile/niveau',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.niveauMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-c) flag ON + /onboarding/profile/serie -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/profile/serie',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.serieMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-d) flag ON + /onboarding/profile/recap -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/profile/recap',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-e) flag ON + /onboarding/account -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/account',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-f) flag ON + /onboarding/school -> /onboarding/v2',
+        () {
+      final result = evaluateRedirect(
+        location: '/onboarding/school',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-g) flag ON + /dashboard + profil incomplet -> /onboarding/v2'
+        ' (smart resume reroute)', () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.niveauMissing),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, '/onboarding/v2');
+    });
+
+    test(
+        '(englobe-h) flag ON + /dashboard + profil complet -> null'
+        ' (pas de redirect, acces metier ok)', () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.complete),
+        flowState: _emptyFlow,
+        useNewOnboardingFlow: true,
+      );
+      expect(result, isNull);
+    });
+
+    test(
+        '(englobe-i) flag OFF + /onboarding/profile/filiere -> null'
+        ' (preservation Epic 1, bypass /onboarding/*)', () {
+      final result = evaluateRedirect(
+        location: '/onboarding/profile/filiere',
+        catalogueCheck: _catalogueOk,
+        hasSubSystem: true,
+        profileCompletion: _completion(ProfileCompletionState.filiereMissing),
         flowState: _emptyFlow,
         useNewOnboardingFlow: false,
       );

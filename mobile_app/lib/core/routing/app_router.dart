@@ -63,7 +63,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       hasSubSystem: ref.read(subSystemNotifierProvider) != null,
       profileCompletion: ref.read(profileCompletionProvider),
       flowState: ref.read(onboardingFlowProvider),
-      useNewOnboardingFlow: FeatureFlags.useNewOnboardingFlow,
+      useNewOnboardingFlow:
+          ref.read(featureFlagsProvider).useNewOnboardingFlow,
     ),
     routes: [
       GoRoute(
@@ -287,33 +288,76 @@ String? evaluateRedirect({
     return '/';
   }
 
-  // 2.bis Story E1bis-2bis — feature flag refonte onboarding (route unique).
-  // Si flag ON, force l'aiguillage vers le nouveau flow E1bis a partir de
-  // la route legacy Epic 1. Anti-replay symetrique pour la nouvelle route :
-  // si subSystem deja choisi, on sort du flow refonte vers `/`.
-  if (useNewOnboardingFlow && location == '/onboarding/subsystem') {
-    return '/onboarding/v2';
-  }
-  if (hasSubSystem && location == '/onboarding/v2') {
-    return '/';
+  // 2.bis Story E1bis-2bis + fix routing — feature flag refonte onboarding.
+  //
+  // Quand le flag est ON, TOUTES les routes onboarding Epic 1 legacy
+  // (`/onboarding/subsystem`, `/onboarding/profile/*`, `/onboarding/account`,
+  // `/onboarding/school`) aiguillent vers la route unique `/onboarding/v2`
+  // (shell E1bis). Sans ce check, un user mid-flow Epic 1 (subSystem
+  // persiste mais profil incomplet) etait renvoye par le smart resume vers
+  // `/onboarding/profile/filiere` au lieu du nouveau flow.
+  //
+  // Pas de boucle infinie : `/onboarding/v2` n'est pas dans la liste captee.
+  if (useNewOnboardingFlow) {
+    const legacyOnboardingRoutes = <String>{
+      '/onboarding/subsystem',
+      '/onboarding/account',
+      '/onboarding/school',
+    };
+    if (legacyOnboardingRoutes.contains(location) ||
+        location.startsWith('/onboarding/profile/')) {
+      return '/onboarding/v2';
+    }
   }
 
-  // 3. Story 1.2 — anti-replay sur subsystem-choice.
+  // Anti-replay sur la route `/onboarding/v2` :
+  // - Flag OFF + hasSubSystem : rejette les deep links vers le nouveau flow
+  //   (cohabitation Epic 1 live preservee).
+  // - Flag ON + profil complet (Firestore) : sortie naturelle vers `/`
+  //   (le user a fini le nouveau flow et a un profil complet).
+  // - Flag ON + profil incomplet : laisser passer (le shell gere son step).
+  if (location == '/onboarding/v2') {
+    if (!useNewOnboardingFlow && hasSubSystem) {
+      return '/';
+    }
+    if (useNewOnboardingFlow) {
+      final complete = profileCompletion.maybeWhen(
+        data: (s) => s.isComplete,
+        orElse: () => false,
+      );
+      if (complete) return '/';
+    }
+  }
+
+  // 3. Story 1.2 — anti-replay sur subsystem-choice. Ne kicke pas quand
+  // le flag E1bis est ON (la route a deja ete capturee + redirigee plus haut).
   if (hasSubSystem && location == '/onboarding/subsystem') {
     return '/';
   }
 
-  // 4. Story 1.5 + 1.8 — garde profil-incomplet pour les routes metier
-  // uniquement, avec smart resume basee sur le flowState SharedPreferences.
+  // 4. Story 1.5 + 1.8 — garde profil-incomplet pour les routes metier.
+  //
+  // Quand le flag E1bis est ON, on court-circuite le smart resume Epic 1
+  // (qui pointe vers `/onboarding/profile/*` routes legacy) pour renvoyer
+  // directement vers `/onboarding/v2`. Le shell consomme le state
+  // OnboardingNotifier pour rejouer l'etape courante.
   if (!location.startsWith('/onboarding/') &&
       location != '/catalogue-waiting') {
-    final nextRoute = profileCompletion.when(
-      data: (state) =>
-          state.isComplete ? null : _smartResumeRoute(state, flowState),
-      loading: () => null,
-      error: (_, _) => '/onboarding/subsystem',
-    );
-    if (nextRoute != null) return nextRoute;
+    if (useNewOnboardingFlow) {
+      final complete = profileCompletion.maybeWhen(
+        data: (s) => s.isComplete,
+        orElse: () => false,
+      );
+      if (!complete) return '/onboarding/v2';
+    } else {
+      final nextRoute = profileCompletion.when(
+        data: (state) =>
+            state.isComplete ? null : _smartResumeRoute(state, flowState),
+        loading: () => null,
+        error: (_, _) => '/onboarding/subsystem',
+      );
+      if (nextRoute != null) return nextRoute;
+    }
   }
 
   return null;

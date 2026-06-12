@@ -1,21 +1,44 @@
-// Story E1bis-2 — Feature flags constants pour la refonte onboarding.
+// Story E1bis-2 — Feature flags pour la refonte onboarding.
 //
-// Toggle au build time (constante compile-time) pour activer/desactiver le
-// nouveau flow onboarding E1bis sans casser le flow Epic 1 live en prod.
-// Si besoin d'un toggle runtime (QA via la page audit toolkit), migrer vers
-// SharedPreferences dans une story dette ulterieure.
+// **Refactor 2026-06-12 (fix routing)** : `useNewOnboardingFlow` est
+// desormais un PROVIDER Riverpod overridable au lieu d'une constante
+// compile-time. Permet aux tests (Story 1.2 subsystem_choice_page_test
+// notamment, qui utilisent ValideApp) d'override le flag a false pendant
+// que le toggle local dev reste a true pour test runtime sur appareil.
 //
-// Defaut OFF : tant que les pages E1bis-3 a E1bis-7 ne sont pas livrees, on
-// ne veut pas envoyer les utilisateurs dans un flow incomplet.
+// La valeur par defaut du provider est lue depuis la constante
+// `FeatureFlags.useNewOnboardingFlow` (toggle build time). Pour QA runtime,
+// modifier la constante puis hot-restart.
+//
+// Pour tests : `featureFlagsProvider.overrideWithValue(const FeatureFlags(useNewOnboardingFlow: false))`.
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FeatureFlags {
-  FeatureFlags._();
+  const FeatureFlags({this.useNewOnboardingFlow = false});
 
-  /// Si vrai, le router redirige `/onboarding/subsystem` (Epic 1 legacy)
-  /// vers `/onboarding/sub-system-v2` (nouveau flow E1bis). Si faux, le
-  /// flow Epic 1 reste actif.
+  /// Si vrai, le router redirige les routes onboarding Epic 1 legacy
+  /// (`/onboarding/subsystem`, `/onboarding/profile/*`, `/onboarding/account`,
+  /// `/onboarding/school`) vers la route unique `/onboarding/v2` (nouveau
+  /// shell E1bis). Si faux, le flow Epic 1 reste actif.
   ///
-  /// Toggle au build pour QA. Migration runtime via SharedPreferences :
-  /// story dette future si besoin.
-  static const bool useNewOnboardingFlow = false;
+  /// Toggle au build pour QA via [defaultFeatureFlags]. Override possible
+  /// en tests via [featureFlagsProvider] (cf. doc en tete de fichier).
+  final bool useNewOnboardingFlow;
 }
+
+/// Valeur par defaut du provider — toggle au build time pour QA runtime.
+///
+/// Modifier `useNewOnboardingFlow: true` puis hot-restart pour tester le
+/// nouveau flow E1bis sur appareil. Remettre `false` avant push si tu veux
+/// que les tests Epic 1 (Story 1.2) continuent de passer SANS modification
+/// des tests eux-memes.
+const FeatureFlags defaultFeatureFlags = FeatureFlags(
+  useNewOnboardingFlow: true,
+);
+
+/// Provider lecture-seule des feature flags. Override en tests via
+/// `featureFlagsProvider.overrideWithValue(const FeatureFlags(useNewOnboardingFlow: false))`.
+final featureFlagsProvider = Provider<FeatureFlags>((ref) {
+  return defaultFeatureFlags;
+});
