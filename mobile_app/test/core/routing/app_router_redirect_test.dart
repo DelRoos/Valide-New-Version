@@ -1,331 +1,138 @@
-// Story 1.5 AC2 + Story 1.8 smart resume — Tests integration redirect router.
+// Story E1bis-9 — Tests redirect router simplifie.
 //
-// Pattern : la logique redirect est extraite dans `evaluateRedirect()`
-// (@visibleForTesting), donc on teste la fonction pure directement sans
-// monter un MaterialApp.router complet.
-//
-// Story 1.8 : ajout du parametre `flowState` pour le smart resume + 3 nouveaux
-// cas (filiere set -> /niveau, filiere+niveau set -> /serie, tout set -> /recap).
+// Epic 1 routes legacy + smart resume + flag useNewOnboardingFlow ont ete
+// supprimes (cf. lib/core/routing/app_router.dart). Le routing se reduit a 4
+// regles : bypass system, catalogue check, anti-replay /onboarding/v2 si
+// profil complet, garde profil-incomplet vers /onboarding/v2.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/core/routing/app_router.dart';
-import 'package:valide_school/features/onboarding/domain/onboarding_flow_state.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 
-AsyncValue<bool> _catalogueOk = const AsyncData(true);
-const AsyncValue<bool> _catalogueEmpty = AsyncData(false);
+AsyncValue<bool> _catalogueOk(bool ok) => AsyncValue.data(ok);
+AsyncValue<bool> _catalogueLoading() => const AsyncValue.loading();
+AsyncValue<bool> _catalogueError() =>
+    AsyncValue.error(Exception('boom'), StackTrace.current);
 
-AsyncValue<ProfileCompletionState> _completion(ProfileCompletionState s) =>
-    AsyncData(s);
-
-const _emptyFlow = OnboardingFlowState();
+AsyncValue<ProfileCompletionState> _completionData(
+        ProfileCompletionState state) =>
+    AsyncValue.data(state);
+AsyncValue<ProfileCompletionState> _completionLoading() =>
+    const AsyncValue.loading();
 
 void main() {
-  group('evaluateRedirect — Story 1.5 AC2', () {
-    test('(a) subSystem null + /hello -> /onboarding/subsystem', () {
+  group('evaluateRedirect — Story E1bis-9', () {
+    test('(a) "/" -> bypass (null)', () {
       final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: false,
-        profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/onboarding/subsystem');
-    });
-
-    test('(b) subSystem OK + profil incomplet + /lessons/maths -> '
-        '/onboarding/profile/filiere', () {
-      final result = evaluateRedirect(
-        location: '/lessons/maths_derivees',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.filiereMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/onboarding/profile/filiere');
-    });
-
-    test('(c) profil complet + /hello -> null (passe)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
+        location: '/',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
       );
       expect(result, isNull);
     });
 
-    test('(d) profil complet + /onboarding/profile/recap -> null '
-        '(bypass /onboarding/*)', () {
+    test('(b) "/splash" -> bypass', () {
       final result = evaluateRedirect(
-        location: '/onboarding/profile/recap',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
+        location: '/splash',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
       );
       expect(result, isNull);
     });
 
-    test('(e) subSystem null + /_crash -> null (bypass /_*)', () {
+    test('(c) "/_crash" debug -> bypass', () {
       final result = evaluateRedirect(
         location: '/_crash',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: false,
-        profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, isNull);
-    });
-  });
-
-  group('evaluateRedirect — couverture supplementaire', () {
-    test('catalogue empty + /hello -> /catalogue-waiting (prioritaire)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: _catalogueEmpty,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/catalogue-waiting');
-    });
-
-    test('catalogue empty + /catalogue-waiting -> null (deja sur place)', () {
-      final result = evaluateRedirect(
-        location: '/catalogue-waiting',
-        catalogueCheck: _catalogueEmpty,
-        hasSubSystem: false,
-        profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
       );
       expect(result, isNull);
     });
 
-    test('Story 1bis-2bis fix : catalogue OK + /catalogue-waiting -> / '
-        '(eject post-retry succes)', () {
-      final result = evaluateRedirect(
-        location: '/catalogue-waiting',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: false,
-        profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/');
-    });
-
-    test('Story 1.2 anti-replay : subSystem present + /onboarding/subsystem '
-        '-> /', () {
-      final result = evaluateRedirect(
-        location: '/onboarding/subsystem',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/');
-    });
-
-    test('niveauMissing -> /onboarding/profile/niveau', () {
-      final result = evaluateRedirect(
-        location: '/lessons/maths',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.niveauMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/onboarding/profile/niveau');
-    });
-
-    test('serieMissing -> /onboarding/profile/serie', () {
+    test('(d) Catalogue vide -> /catalogue-waiting', () {
       final result = evaluateRedirect(
         location: '/dashboard',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.serieMissing),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/onboarding/profile/serie');
-    });
-
-    test('profileCompletion loading -> null (laisse passer, evite flash)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion:
-            const AsyncLoading<ProfileCompletionState>(),
-        flowState: _emptyFlow,
-      );
-      expect(result, isNull);
-    });
-
-    test('profileCompletion error -> /onboarding/subsystem (fail-safe)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: AsyncError<ProfileCompletionState>(
-          Exception('boom'),
-          StackTrace.current,
-        ),
-        flowState: _emptyFlow,
-      );
-      expect(result, '/onboarding/subsystem');
-    });
-
-    test('catalogue loading -> bypass (ne bloque pas)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: const AsyncLoading<bool>(),
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
-      );
-      expect(result, isNull);
-    });
-
-    test('catalogue error -> /catalogue-waiting (fail-safe)', () {
-      final result = evaluateRedirect(
-        location: '/hello',
-        catalogueCheck: AsyncError<bool>(
-          Exception('firestore down'),
-          StackTrace.current,
-        ),
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.complete),
-        flowState: _emptyFlow,
+        catalogueCheck: _catalogueOk(false),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
       );
       expect(result, '/catalogue-waiting');
     });
-  });
 
-  group('evaluateRedirect — Story 1.8 smart resume', () {
-    test(
-      '(smart-a) filiereMissing Firestore + flowState.filiereId set -> '
-      '/onboarding/profile/niveau (saute /filiere)',
-      () {
-        final result = evaluateRedirect(
-          location: '/dashboard',
-          catalogueCheck: _catalogueOk,
-          hasSubSystem: true,
-          profileCompletion:
-              _completion(ProfileCompletionState.filiereMissing),
-          flowState: const OnboardingFlowState(filiereId: 'generale'),
-        );
-        expect(result, '/onboarding/profile/niveau');
-      },
-    );
-
-    test(
-      '(smart-b) filiereMissing Firestore + flowState.filiere+niveau set -> '
-      '/onboarding/profile/serie',
-      () {
-        final result = evaluateRedirect(
-          location: '/dashboard',
-          catalogueCheck: _catalogueOk,
-          hasSubSystem: true,
-          profileCompletion:
-              _completion(ProfileCompletionState.filiereMissing),
-          flowState: const OnboardingFlowState(
-            filiereId: 'generale',
-            niveauId: 'francophone_terminale',
-          ),
-        );
-        expect(result, '/onboarding/profile/serie');
-      },
-    );
-
-    test(
-      '(smart-c) filiereMissing Firestore + flowState complet -> '
-      '/onboarding/profile/recap (cas kill avant tap "C est ma classe")',
-      () {
-        final result = evaluateRedirect(
-          location: '/dashboard',
-          catalogueCheck: _catalogueOk,
-          hasSubSystem: true,
-          profileCompletion:
-              _completion(ProfileCompletionState.filiereMissing),
-          flowState: const OnboardingFlowState(
-            filiereId: 'generale',
-            niveauId: 'francophone_terminale',
-            serieId: 'francophone_terminale_d',
-          ),
-        );
-        expect(result, '/onboarding/profile/recap');
-      },
-    );
-
-    test(
-      '(smart-d) profil complet Firestore + flowState complet -> null '
-      '(profileCompletion prime, flowState ignored)',
-      () {
-        final result = evaluateRedirect(
-          location: '/dashboard',
-          catalogueCheck: _catalogueOk,
-          hasSubSystem: true,
-          profileCompletion: _completion(ProfileCompletionState.complete),
-          flowState: const OnboardingFlowState(
-            filiereId: 'generale',
-            niveauId: 'francophone_terminale',
-            serieId: 'francophone_terminale_d',
-          ),
-        );
-        expect(result, isNull);
-      },
-    );
-  });
-
-  group('evaluateRedirect — Story E1bis-2bis feature flag refonte (route unique)', () {
-    test(
-        '(e1bis-a) flag ON + /onboarding/subsystem -> /onboarding/v2',
-        () {
+    test('(e) Catalogue erreur (offline+vide) -> /catalogue-waiting', () {
       final result = evaluateRedirect(
-        location: '/onboarding/subsystem',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: false,
+        location: '/dashboard',
+        catalogueCheck: _catalogueError(),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
+      );
+      expect(result, '/catalogue-waiting');
+    });
+
+    test('(f) Catalogue loading + dashboard -> null (laisse passer)', () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueLoading(),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
+      );
+      expect(result, isNull);
+    });
+
+    test('(g) /catalogue-waiting + catalogue redevient OK -> /', () {
+      final result = evaluateRedirect(
+        location: '/catalogue-waiting',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
+      );
+      expect(result, '/');
+    });
+
+    test('(h) Profil incomplet sur route metier -> /onboarding/v2', () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk(true),
         profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
-        useNewOnboardingFlow: true,
+            _completionData(ProfileCompletionState.filiereMissing),
       );
       expect(result, '/onboarding/v2');
     });
 
-    test(
-        '(e1bis-b) flag ON + hasSubSystem + /onboarding/v2 -> /'
-        ' (anti-replay)', () {
+    test('(i) Profil complet + dashboard -> null', () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
+      );
+      expect(result, isNull);
+    });
+
+    test('(j) Anti-replay /onboarding/v2 si profil complet -> /', () {
       final result = evaluateRedirect(
         location: '/onboarding/v2',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: true,
-        profileCompletion: _completion(ProfileCompletionState.filiereMissing),
-        flowState: _emptyFlow,
-        useNewOnboardingFlow: true,
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionData(ProfileCompletionState.complete),
       );
       expect(result, '/');
     });
 
-    test(
-        '(e1bis-c) flag OFF + /onboarding/subsystem -> null (preservation Epic 1)',
-        () {
+    test('(k) /onboarding/v2 si profil incomplet -> null (laisse passer)', () {
       final result = evaluateRedirect(
-        location: '/onboarding/subsystem',
-        catalogueCheck: _catalogueOk,
-        hasSubSystem: false,
+        location: '/onboarding/v2',
+        catalogueCheck: _catalogueOk(true),
         profileCompletion:
-            _completion(ProfileCompletionState.subsystemMissing),
-        flowState: _emptyFlow,
-        useNewOnboardingFlow: false,
+            _completionData(ProfileCompletionState.filiereMissing),
       );
       expect(result, isNull);
+    });
+
+    test('(l) Profil loading + route metier -> /onboarding/v2 (fail-safe)',
+        () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: _completionLoading(),
+      );
+      expect(result, '/onboarding/v2');
     });
   });
 }
