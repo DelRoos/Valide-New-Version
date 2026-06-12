@@ -560,16 +560,16 @@ abstract class AppLocalizations {
   /// **'Tu as déjà un compte.'**
   String get onboardingAccountAlreadyLinkedToast;
 
-  /// Titre H2 SchoolPickerPage (Story 1.7 FR-6). Tutoiement, mention 'optionnel'.
+  /// Story E1bis-6 — Titre H1 step 8 school search.
   ///
   /// In fr, this message translates to:
-  /// **'Lie ton école (optionnel)'**
+  /// **'Tu es dans quelle ecole ?'**
   String get onboardingSchoolTitle;
 
-  /// Sous-titre explicatif SchoolPickerPage (Story 1.7).
+  /// Story E1bis-6 — Sous-titre step 8.
   ///
   /// In fr, this message translates to:
-  /// **'Pour participer aux classements de classe et école plus tard.'**
+  /// **'Recherche ton ecole. Si elle n\'est pas listee, tu peux la proposer.'**
   String get onboardingSchoolSubtitle;
 
   /// Placeholder TextField recherche ecole.
@@ -955,6 +955,180 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Pas de connexion internet'**
   String get offlineBannerMessage;
+
+  /// Story E1bis-4 — Titre H1 step 5 auth choice.
+  ///
+  /// In fr, this message translates to:
+  /// **'Cree ton compte'**
+  String get onboardingAuthTitle;
+
+  /// Story E1bis-4 — Sous-titre step 5.
+  ///
+  /// In fr, this message translates to:
+  /// **'Une seule etape pour sauvegarder ton progres et ton profil.'**
+  String get onboardingAuthSubtitle;
+
+  /// Story E1bis-4 — Bouton OAuth Google.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer avec Google'**
+  String get onboardingAuthGoogleLabel;
+
+  /// Story E1bis-4 — Bouton OAuth Apple (iOS seulement).
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer avec Apple'**
+  String get onboardingAuthAppleLabel;
+
+  /// Story E1bis-4 — Separateur visuel entre OAuth et visiteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'ou'**
+  String get onboardingAuthOrLabel;
+
+  /// Story E1bis-4 — Bouton visiteur (signInAnonymously).
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer en visiteur'**
+  String get onboardingAuthGuestLabel;
+
+  /// Story E1bis-4 — Message erreur user cancel OAuth.
+  ///
+  /// In fr, this message translates to:
+  /// **'Connexion annulee.'**
+  String get onboardingAuthErrorCanceled;
+
+  /// Story E1bis-4 — Message erreur credential-already-in-use.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte est deja lie a un autre profil.'**
+  String get onboardingAuthErrorConflict;
+
+  /// Story E1bis-5 — Titre H1 step 6 name input.
+  ///
+  /// In fr, this message translates to:
+  /// **'Comment tu t\'appelles ?'**
+  String get onboardingNameTitle;
+
+  /// Story E1bis-5 — Sous-titre step 6.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton prenom (ou un surnom) suffit.'**
+  String get onboardingNameSubtitle;
+
+  /// Story E1bis-5 — Placeholder input nom.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton prenom'**
+  String get onboardingNamePlaceholder;
+
+  /// Story E1bis-5 — Erreur validation < 2 chars.
+  ///
+  /// In fr, this message translates to:
+  /// **'Au moins 2 caracteres.'**
+  String get onboardingNameTooShort;
+
+  /// Story E1bis-5 — Erreur validation > 50 chars.
+  ///
+  /// In fr, this message translates to:
+  /// **'Maximum 50 caracteres.'**
+  String get onboardingNameTooLong;
+
+  /// Story E1bis-5 — Titre H1 step 7 phone input.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton numero de telephone'**
+  String get onboardingPhoneTitle;
+
+  /// Story E1bis-5 — Sous-titre step 7.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour te contacter en cas de besoin. Optionnel.'**
+  String get onboardingPhoneSubtitle;
+
+  /// Story E1bis-5 — Bouton skip step 7.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer pour l\'instant'**
+  String get onboardingPhoneSkipLabel;
+
+  /// Story E1bis-5 — Titre dialog skip phone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer cette etape ?'**
+  String get onboardingPhoneSkipConfirmTitle;
+
+  /// Story E1bis-5 — Message dialog skip phone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu pourras ajouter ton numero plus tard depuis ton profil.'**
+  String get onboardingPhoneSkipConfirmMessage;
+
+  /// Story E1bis-5 — CTA confirm skip phone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Oui, passer'**
+  String get onboardingPhoneSkipConfirmYes;
+
+  /// Story E1bis-5 — CTA refuser skip phone.
+  ///
+  /// In fr, this message translates to:
+  /// **'Non, ajouter'**
+  String get onboardingPhoneSkipConfirmNo;
+
+  /// Story E1bis-5 — Erreur validation numero.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numero invalide. Format : +237 6XX XXX XXX'**
+  String get onboardingPhoneInvalid;
+
+  /// Story E1bis-6 — Placeholder champ recherche ecole.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nom de ton ecole'**
+  String get onboardingSchoolPlaceholder;
+
+  /// Story E1bis-6 — Template CTA ajouter ecole custom.
+  ///
+  /// In fr, this message translates to:
+  /// **'+ Ajouter \"{name}\"'**
+  String onboardingSchoolAddTemplate(String name);
+
+  /// Story E1bis-6 — Bandeau warning offline.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pas de connexion. Tu peux quand meme proposer l\'ajout.'**
+  String get onboardingSchoolOfflineWarning;
+
+  /// Story E1bis-6 — Bouton skip step 8.
+  ///
+  /// In fr, this message translates to:
+  /// **'Passer pour l\'instant'**
+  String get onboardingSchoolSkipLabel;
+
+  /// Story E1bis-7 — Titre celebration step 9.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bienvenue dans Valide !'**
+  String get onboardingSuccessTitle;
+
+  /// Story E1bis-7 — Sous-titre celebration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton profil est pret. On y va ?'**
+  String get onboardingSuccessSubtitle;
+
+  /// Story E1bis-7 — CTA fin celebration.
+  ///
+  /// In fr, this message translates to:
+  /// **'Decouvrir mon dashboard'**
+  String get onboardingSuccessCta;
+
+  /// Story E1bis-7 — Erreur ecriture Firestore.
+  ///
+  /// In fr, this message translates to:
+  /// **'Impossible de sauvegarder ton profil. Reessaie.'**
+  String get onboardingFlushError;
 }
 
 class _AppLocalizationsDelegate

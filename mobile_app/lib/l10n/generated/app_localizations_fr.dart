@@ -287,11 +287,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingAccountAlreadyLinkedToast => 'Tu as déjà un compte.';
 
   @override
-  String get onboardingSchoolTitle => 'Lie ton école (optionnel)';
+  String get onboardingSchoolTitle => 'Tu es dans quelle ecole ?';
 
   @override
   String get onboardingSchoolSubtitle =>
-      'Pour participer aux classements de classe et école plus tard.';
+      'Recherche ton ecole. Si elle n\'est pas listee, tu peux la proposer.';
 
   @override
   String get onboardingSchoolSearchPlaceholder => 'Rechercher mon école…';
@@ -512,4 +512,100 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get offlineBannerMessage => 'Pas de connexion internet';
+
+  @override
+  String get onboardingAuthTitle => 'Cree ton compte';
+
+  @override
+  String get onboardingAuthSubtitle =>
+      'Une seule etape pour sauvegarder ton progres et ton profil.';
+
+  @override
+  String get onboardingAuthGoogleLabel => 'Continuer avec Google';
+
+  @override
+  String get onboardingAuthAppleLabel => 'Continuer avec Apple';
+
+  @override
+  String get onboardingAuthOrLabel => 'ou';
+
+  @override
+  String get onboardingAuthGuestLabel => 'Continuer en visiteur';
+
+  @override
+  String get onboardingAuthErrorCanceled => 'Connexion annulee.';
+
+  @override
+  String get onboardingAuthErrorConflict =>
+      'Ce compte est deja lie a un autre profil.';
+
+  @override
+  String get onboardingNameTitle => 'Comment tu t\'appelles ?';
+
+  @override
+  String get onboardingNameSubtitle => 'Ton prenom (ou un surnom) suffit.';
+
+  @override
+  String get onboardingNamePlaceholder => 'Ton prenom';
+
+  @override
+  String get onboardingNameTooShort => 'Au moins 2 caracteres.';
+
+  @override
+  String get onboardingNameTooLong => 'Maximum 50 caracteres.';
+
+  @override
+  String get onboardingPhoneTitle => 'Ton numero de telephone';
+
+  @override
+  String get onboardingPhoneSubtitle =>
+      'Pour te contacter en cas de besoin. Optionnel.';
+
+  @override
+  String get onboardingPhoneSkipLabel => 'Passer pour l\'instant';
+
+  @override
+  String get onboardingPhoneSkipConfirmTitle => 'Passer cette etape ?';
+
+  @override
+  String get onboardingPhoneSkipConfirmMessage =>
+      'Tu pourras ajouter ton numero plus tard depuis ton profil.';
+
+  @override
+  String get onboardingPhoneSkipConfirmYes => 'Oui, passer';
+
+  @override
+  String get onboardingPhoneSkipConfirmNo => 'Non, ajouter';
+
+  @override
+  String get onboardingPhoneInvalid =>
+      'Numero invalide. Format : +237 6XX XXX XXX';
+
+  @override
+  String get onboardingSchoolPlaceholder => 'Nom de ton ecole';
+
+  @override
+  String onboardingSchoolAddTemplate(String name) {
+    return '+ Ajouter \"$name\"';
+  }
+
+  @override
+  String get onboardingSchoolOfflineWarning =>
+      'Pas de connexion. Tu peux quand meme proposer l\'ajout.';
+
+  @override
+  String get onboardingSchoolSkipLabel => 'Passer pour l\'instant';
+
+  @override
+  String get onboardingSuccessTitle => 'Bienvenue dans Valide !';
+
+  @override
+  String get onboardingSuccessSubtitle => 'Ton profil est pret. On y va ?';
+
+  @override
+  String get onboardingSuccessCta => 'Decouvrir mon dashboard';
+
+  @override
+  String get onboardingFlushError =>
+      'Impossible de sauvegarder ton profil. Reessaie.';
 }
