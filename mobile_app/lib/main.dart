@@ -17,7 +17,8 @@ import 'features/onboarding/providers.dart';
 import 'firebase_options.dart';
 
 /// Version build courante. Doit refléter `pubspec.yaml` § `version:`.
-/// TODO E1+ : extraire automatiquement via `package_info_plus`.
+/// A migrer vers `package_info_plus` quand on aura un cas d'usage runtime
+/// (telemetrie, crash reports). En attendant, constante manuelle.
 const String kBuildVersion = '1.0.0+1';
 
 Future<void> main() async {

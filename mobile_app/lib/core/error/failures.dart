@@ -20,6 +20,10 @@ abstract class Failure extends Equatable {
   @override
   List<Object?> get props => [message];
 
+  /// Helper generique : utilise par les repository impls quand aucun mapping
+  /// specifique n'est requis. Couvre les exceptions de transport bas niveau.
+  /// Les couches data peuvent (et doivent) catcher avant pour produire des
+  /// failures plus precises (ProfileFailure, AccountLinkingFailure, etc.).
   static Failure from(Object exception) {
     if (exception is TimeoutException) {
       return const NetworkFailure();
@@ -27,13 +31,9 @@ abstract class Failure extends Equatable {
     if (exception is SocketException) {
       return const NetworkFailure();
     }
-    // TODO(0.5): DioException.timeout → NetworkFailure ; DioException.badResponse → ServerFailure(code, msg).
-    // TODO(0.6): FirebaseAuthException → AuthFailure(code) ; FirebaseException(permission-denied) → ServerFailure(403, ...).
     return const UnknownFailure();
   }
 }
-
-// TODO(0.16): localiser les messages via AppLocalizations.
 
 class NetworkFailure extends Failure {
   const NetworkFailure() : super('Pas de connexion internet');

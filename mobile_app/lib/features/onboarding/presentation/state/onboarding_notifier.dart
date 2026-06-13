@@ -2,22 +2,19 @@
 //
 // Notifier Riverpod pur cote logique de transition, MAIS injecte un wrapper
 // SharedPreferences (Audit 2026-06-13 PR1) pour persister le draft entre kill
-// app et relaunch. Pas de Firebase / Firestore directement (les writes
-// arrivent E1bis-4 via WriteBatch post-auth).
-//
-// Cohabite avec OnboardingFlowNotifier legacy Epic 1 (depreciation E1bis-9).
+// app et relaunch. Pas de Firebase / Firestore directement — l'ecriture finale
+// se fait via OnboardingFlushService au step 9 (ou step 5 visiteur).
 //
 // Transitions next()/back() :
 // - step 3 -> 4 si levelRequiresPicker, sinon -> 5 (skip mode `derived`)
-// - step 5 -> 9 si visiteur (skip nom + telephone + ecole)
-//           -> 6 si compte permanent sans displayName
-//           -> 7 si compte permanent avec displayName OAuth
+// - step 5 -> 9 si visiteur (skip nom + telephone + ecole + success)
+//           -> 6 (audit PR3 : toujours, OAuth pre-rempli + editable)
 // - step 7 -> 8 (compte permanent) — visiteur n'arrive jamais ici
 // - back() symetrique
 //
 // CLAUDE.md regle 4 securite : phoneNumber ne doit JAMAIS etre logue
-// complet — utiliser maskPhone() (lib/core/logging/log_safe.dart Story
-// E1bis-0). phoneNumber n'est PAS persiste en SharedPrefs (PII).
+// complet — utiliser maskPhone() (lib/core/logging/log_safe.dart).
+// phoneNumber n'est PAS persiste en SharedPrefs (PII).
 
 import 'dart:async';
 

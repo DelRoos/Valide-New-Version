@@ -1,15 +1,13 @@
 // Story E1bis-1 — State machine onboarding (refonte 10 etapes).
 //
 // State immutable Equatable consomme par OnboardingNotifier (cf.
-// onboarding_notifier.dart). Cohabite avec OnboardingFlowState legacy Epic 1
-// jusqu'a la depreciation E1bis-9. Pas de Firebase / Riverpod / Flutter ici
+// onboarding_notifier.dart). Pas de Firebase / Riverpod / Flutter ici
 // (CLAUDE.md regle 1 domain pur).
 //
 // Conventions :
 // - currentStep dans [0..9] (10 etapes onboarding refonte). Defaut 0.
 // - Tous les champs draft sont nullable / vides au depart. copyWith expose
-//   une sentinelle pour distinguer "non fourni" de "fourni null" — pattern
-//   existant OnboardingFlowState (Story 1.3).
+//   une sentinelle pour distinguer "non fourni" de "fourni null".
 
 import 'package:equatable/equatable.dart';
 
@@ -42,7 +40,7 @@ enum OnboardingAuthProvider {
 }
 
 /// Sentinelle interne pour distinguer "champ non fourni" de "champ fourni a
-/// null" dans `copyWith`. Pattern Story 1.3 (`OnboardingFlowState`).
+/// null" dans `copyWith`.
 class _Sentinel {
   const _Sentinel();
 }
@@ -50,9 +48,8 @@ class _Sentinel {
 const _sentinel = _Sentinel();
 
 /// Etat immutable de la state machine onboarding refonte E1bis (10 etapes).
-///
-/// Cohabite avec [OnboardingFlowState] legacy Epic 1 jusqu'a E1bis-9. Pas
-/// de import Firebase / Flutter / Riverpod / dart:io ici (CLAUDE.md regle 1).
+/// Pas d'import Firebase / Flutter / Riverpod / dart:io ici
+/// (CLAUDE.md regle 1 domain pur).
 class OnboardingState extends Equatable {
   const OnboardingState({
     this.currentStep = 0,
