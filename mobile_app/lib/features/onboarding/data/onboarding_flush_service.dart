@@ -17,6 +17,7 @@ import '../../../core/logging/app_logger.dart';
 import '../../../core/logging/log_safe.dart';
 import '../../../core/logging/perf_logger.dart';
 import '../presentation/state/onboarding_state.dart';
+import 'onboarding_draft_prefs.dart';
 
 class OnboardingFlushFailure {
   const OnboardingFlushFailure(this.message, {this.code});
@@ -28,11 +29,14 @@ class OnboardingFlushService {
   OnboardingFlushService({
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
+    required OnboardingDraftPrefs draftPrefs,
   })  : _auth = auth,
-        _firestore = firestore;
+        _firestore = firestore,
+        _draftPrefs = draftPrefs;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final OnboardingDraftPrefs _draftPrefs;
 
   /// Flush l'etat onboarding dans Firestore. Idempotent grace au
   /// `set(merge: true)` (peut etre rejoue si echec partiel).
@@ -122,6 +126,14 @@ class OnboardingFlushService {
         'phone=${maskPhone(state.phoneNumber)} '
         'schoolSet=${state.schoolId != null || state.pendingSchoolRequestId != null}',
       );
+      // Audit 2026-06-13 (PR1) — Apres flush success, le doc users/{uid}
+      // est source de verite : on clear le draft persiste pour eviter
+      // que loadFromPersistence le restaure au prochain boot.
+      try {
+        await _draftPrefs.clear();
+      } catch (e) {
+        AppLogger.w('flush draft clear failed (non-blocking): $e');
+      }
       return const Right(null);
     } on FirebaseException catch (e, st) {
       AppLogger.w(

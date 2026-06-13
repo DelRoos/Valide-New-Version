@@ -138,7 +138,12 @@ void main() {
   });
 
   group('OnboardingNotifier — setAuthProvider', () {
-    test('OAuth Google avec displayName -> skip step 6 -> step 7', () async {
+    test(
+        'OAuth Google avec displayName -> step 6 (pre-fill, edition autorisee)',
+        () async {
+      // Audit 2026-06-13 (PR3) : avant ce PR, OAuth avec displayName sautait
+      // step 6 (-> step 7) = pas d'edition possible. Maintenant on rentre
+      // toujours step 6 avec le nom OAuth pre-rempli pour permettre l'edit.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
@@ -151,7 +156,7 @@ void main() {
       expect(state.authProvider, OnboardingAuthProvider.google);
       expect(state.userDisplayName, 'Fatou Mballa');
       expect(state.isVisitor, isFalse);
-      expect(state.currentStep, 7);
+      expect(state.currentStep, 6);
     });
 
     test('OAuth Apple sans displayName -> step 6 (saisie requise)', () async {
@@ -188,7 +193,7 @@ void main() {
       expect(state.currentStep, 5);
     });
 
-    test('OAuth avec displayName vide string -> step 6 (pas considere fourni)',
+    test('OAuth avec displayName vide string -> step 6 (saisie requise)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
@@ -425,7 +430,8 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 5);
     });
 
-    test('step 5 -> 7 si userDisplayName non vide (OAuth a fourni)',
+    test(
+        'step 5 -> 6 toujours (audit PR3 : edition displayName toujours autorisee)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
@@ -435,7 +441,7 @@ void main() {
         userDisplayName: 'Fatou',
       );
       notifier.next();
-      expect(container.read(onboardingNotifierProvider).currentStep, 7);
+      expect(container.read(onboardingNotifierProvider).currentStep, 6);
     });
 
     test('step 5 -> 6 si userDisplayName vide', () async {
@@ -502,7 +508,7 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 3);
     });
 
-    test('step 7 -> 5 si userDisplayName non vide (symetrie skip step 6)',
+    test('step 7 -> 6 toujours (audit PR3 : pas de skip step 6 OAuth)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
@@ -512,7 +518,7 @@ void main() {
         userDisplayName: 'Fatou',
       );
       notifier.back();
-      expect(container.read(onboardingNotifierProvider).currentStep, 5);
+      expect(container.read(onboardingNotifierProvider).currentStep, 6);
     });
 
     test('step 9 -> 8 (visiteur n arrive jamais au step 9)', () async {
@@ -595,6 +601,87 @@ void main() {
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.anglophone);
       expect(state.currentStep, 1);
+    });
+
+    test(
+        'audit PR1 — draft persiste (trackId + levelId + currentStep) -> restaure complet',
+        () async {
+      // Simule un user qui kill l'app apres step 3 (level pose, step=4 si
+      // requiresPicker). Au relaunch, il doit reprendre exactement la.
+      const draftJson =
+          '{"currentStep":4,"trackId":"general","levelId":"francophone_terminale",'
+          '"levelRequiresPicker":true,"streamId":null,"pickedSubjects":[],'
+          '"userDisplayName":null,"schoolId":null,"schoolName":null,'
+          '"pendingSchoolRequestId":null,"schoolSkipped":false,"phoneSkipped":false,'
+          '"isVisitor":false,"authProvider":null}';
+      final container = await _buildContainer(initial: {
+        'onboarding.subsystem': 'francophone',
+        'onboarding.language': 'fr',
+        'onboarding.draft': draftJson,
+      });
+      addTearDown(container.dispose);
+
+      await container
+          .read(onboardingNotifierProvider.notifier)
+          .loadFromPersistence();
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.subSystem, SubSystem.francophone);
+      expect(state.trackId, 'general');
+      expect(state.levelId, 'francophone_terminale');
+      expect(state.levelRequiresPicker, isTrue);
+      expect(state.currentStep, 4);
+      expect(state.pickedSubjects, isEmpty);
+    });
+
+    test('draft corrompu (JSON invalide) -> fallback no-op safe', () async {
+      final container = await _buildContainer(initial: {
+        'onboarding.subsystem': 'francophone',
+        'onboarding.draft': '{not-json}',
+      });
+      addTearDown(container.dispose);
+
+      await container
+          .read(onboardingNotifierProvider.notifier)
+          .loadFromPersistence();
+
+      final state = container.read(onboardingNotifierProvider);
+      // Fallback : subSystem restaure, currentStep=1 (comportement pre-PR1).
+      expect(state.subSystem, SubSystem.francophone);
+      expect(state.currentStep, 1);
+    });
+
+    test('setters persistent automatiquement le draft', () async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      notifier.setTrackId('general');
+      notifier.setLevelId('francophone_terminale', requiresPicker: true);
+
+      // Laisser le fire-and-forget completer.
+      await Future<void>.delayed(const Duration(milliseconds: 10));
+
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString('onboarding.draft');
+      expect(raw, isNotNull);
+      expect(raw, contains('"trackId":"general"'));
+      expect(raw, contains('"levelId":"francophone_terminale"'));
+    });
+
+    test('clearPersistedDraft efface le draft (utilise post-flush success)',
+        () async {
+      final container = await _buildContainer(initial: {
+        'onboarding.draft': '{"currentStep":4,"trackId":"general"}',
+      });
+      addTearDown(container.dispose);
+
+      await container
+          .read(onboardingNotifierProvider.notifier)
+          .clearPersistedDraft();
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getString('onboarding.draft'), isNull);
     });
   });
 }

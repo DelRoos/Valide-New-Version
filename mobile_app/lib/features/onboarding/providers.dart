@@ -36,6 +36,7 @@ import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
 import 'data/account_linking_repository_firebase_impl.dart';
+import 'data/onboarding_draft_prefs.dart';
 import 'data/onboarding_flush_service.dart';
 import 'data/school_repository_firestore_impl.dart';
 import 'data/subsystem_prefs.dart';
@@ -62,6 +63,13 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 /// Wrapper lazy autour de SharedPreferences pour le sous-système.
 final subsystemPrefsProvider = Provider<SubsystemPrefs>((ref) {
   return SubsystemPrefs(ref.watch(sharedPreferencesProvider));
+});
+
+/// Audit 2026-06-13 (PR1) — Wrapper SharedPreferences pour le draft du flow
+/// onboarding refonte E1bis. Persiste trackId/levelId/streamId/pickedSubjects/
+/// currentStep entre kill app et relaunch (cf. OnboardingDraftPrefs).
+final onboardingDraftPrefsProvider = Provider<OnboardingDraftPrefs>((ref) {
+  return OnboardingDraftPrefs(ref.watch(sharedPreferencesProvider));
 });
 
 /// État courant du sous-système. Synchrone (le `sharedPreferencesProvider`
@@ -93,6 +101,7 @@ final onboardingFlushServiceProvider = Provider<OnboardingFlushService>((ref) {
   return OnboardingFlushService(
     auth: ref.watch(firebaseAuthProvider),
     firestore: ref.watch(firestoreProvider),
+    draftPrefs: ref.watch(onboardingDraftPrefsProvider),
   );
 });
 
@@ -175,11 +184,16 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 
 /// Helper pur : traduit la map brute Firestore en ProfileCompletionState.
 ///
-/// Schema E1bis (post 2026-06-13) : `trackId` + `levelId` + `streamId`
-/// (anglais). `streamId` peut etre null pour les niveaux sans serie (6e,
-/// Form 1...) — on considere le profil complet si trackId + levelId sont
-/// poses. Le visiteur (isAnonymous=true sans displayName/phone/school) est
-/// considere complet — pas de bounce vers l'onboarding.
+/// Schema E1bis (post 2026-06-13) : `trackId` + `levelId` + `pickedSubjects`.
+/// `streamId` peut etre null pour les niveaux sans serie (6e, Form 1...) —
+/// pas dans l'invariant de completude. Le visiteur (isAnonymous=true sans
+/// displayName/phone/school) est considere complet — pas de bounce vers
+/// l'onboarding.
+///
+/// Audit 2026-06-13 (PR1) — `pickedSubjects` non-vide est maintenant exige.
+/// Avant ce PR, un flush partiel (reseau coupe entre l'ecriture des champs)
+/// laissait `trackId+levelId` poses mais `pickedSubjects=[]` -> profil
+/// considere complet -> redirect dashboard vide. Confusion utilisateur.
 ///
 /// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
 /// que les docs users existants n'ont pas migre (Story 1.19 dette).
@@ -190,10 +204,16 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
   final trackId = data['trackId'];
   final levelId = data['levelId'];
   if (trackId is String && trackId.isNotEmpty) {
-    if (levelId is String && levelId.isNotEmpty) {
-      return ProfileCompletionState.complete;
+    if (levelId is! String || levelId.isEmpty) {
+      return ProfileCompletionState.niveauMissing;
     }
-    return ProfileCompletionState.niveauMissing;
+    // Audit PR1 : exiger des matieres effectivement rattachees au profil
+    // pour eviter les dashboards vides post flush partiel.
+    final picked = data['pickedSubjects'];
+    if (picked is! List || picked.isEmpty) {
+      return ProfileCompletionState.serieMissing;
+    }
+    return ProfileCompletionState.complete;
   }
 
   // Schema legacy Epic 1 (filiere / niveau / serie).
