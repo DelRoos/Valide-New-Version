@@ -467,6 +467,8 @@
   "@onboardingStreamPickerEmptyBody": { "description": "Audit BUG-01 — Body fallback streams.length==0." },
   "onboardingStreamPickerEmptyRetry": "Réessayer",
   "@onboardingStreamPickerEmptyRetry": { "description": "Audit BUG-01 — CTA retry fallback streams empty." },
+  "onboardingLoaderLabel": "Chargement…",
+  "@onboardingLoaderLabel": { "description": "Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore." },
 
   "onboardingPickerObligatoryTitle": "Matieres obligatoires",
   "@onboardingPickerObligatoryTitle": { "description": "Story E1bis-3 — Titre section matieres obligatoires picker." },

@@ -22,6 +22,7 @@ import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
+import '../../../../core/widgets/feedback/onboarding_loader.dart';
 import '../../../../core/widgets/picker/obligatory_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/optional_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/picker_section_scaffold.dart';
@@ -72,7 +73,8 @@ class _StreamSubjectsPickerStepBodyState
           langKey: langKey,
           l10n: l10n,
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () =>
+            OnboardingLoader(label: l10n.onboardingLoaderLabel),
         error: (_, _) => ErrorRetryView(
           onRetry: () => ref.invalidate(catalogueProvider),
           kind: ErrorRetryKind.offline,
@@ -128,7 +130,7 @@ class _StreamSubjectsPickerStepBodyState
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (mounted) notifier.setStreamIdDraft(only);
       });
-      return const Center(child: CircularProgressIndicator());
+      return OnboardingLoader(label: l10n.onboardingLoaderLabel);
     }
 
     // Cas 3 : streamId pose OU niveau sans serie -> derive + dispatch.
@@ -149,7 +151,7 @@ class _StreamSubjectsPickerStepBodyState
         ),
         (profile) => _renderForMode(profile, notifier, langKey, l10n),
       ),
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
       error: (_, _) => ErrorRetryView(
         onRetry: () => ref.invalidate(catalogueProvider),
         kind: ErrorRetryKind.offline,
