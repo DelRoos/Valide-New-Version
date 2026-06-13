@@ -88,7 +88,7 @@ class OnboardingFlushService {
         'levelId=${payload['levelId']} '
         'streamId=${payload['streamId'] ?? "<null>"} '
         'pickedSubjects=${(payload['pickedSubjects'] as List).length} items '
-        'displayName="${(payload['displayName'] as String).isEmpty ? "<empty>" : payload['displayName']}" '
+        'displayName=${maskName(payload['displayName'] as String?)} '
         'phoneNumber=${maskPhone(payload['phoneNumber'] as String?)} '
         'schoolId=${payload['schoolId'] ?? "<null>"} '
         'schoolName=${payload['schoolName'] ?? "<null>"} '
