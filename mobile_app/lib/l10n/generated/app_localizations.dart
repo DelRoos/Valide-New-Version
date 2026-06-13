@@ -782,10 +782,10 @@ abstract class AppLocalizations {
   /// **'Francophone'**
   String get onboardingSubSystemFrancophone;
 
-  /// Story E1bis-2bis — Description sous le label Francophone, aide l'eleve a se reperer.
+  /// Story E1bis-2bis — Description sous le label Francophone, aide l'eleve a se reperer. Audit 2026-06-13 : explicite la plage de niveaux.
   ///
   /// In fr, this message translates to:
-  /// **'Programme officiel camerounais (BEPC, Probatoire, BAC)'**
+  /// **'De la 6ᵉ à la Terminale · BEPC, Probatoire, BAC'**
   String get onboardingSubSystemFrancophoneDesc;
 
   /// Story E1bis-2 — Label SelectionCard Anglophone step 0.
@@ -794,10 +794,10 @@ abstract class AppLocalizations {
   /// **'Anglophone'**
   String get onboardingSubSystemAnglophone;
 
-  /// Story E1bis-2bis — Description sous le label Anglophone, aide l'eleve a se reperer.
+  /// Story E1bis-2bis — Description sous le label Anglophone, aide l'eleve a se reperer. Audit 2026-06-13 : explicite la plage de niveaux.
   ///
   /// In fr, this message translates to:
-  /// **'GCE O-Level vers A-Level (programme anglophone)'**
+  /// **'De Form 1 à Upper Sixth · GCE O-Level, A-Level'**
   String get onboardingSubSystemAnglophoneDesc;
 
   /// Story E1bis-2 — Label CTA OnboardingCtaFooter step 0.

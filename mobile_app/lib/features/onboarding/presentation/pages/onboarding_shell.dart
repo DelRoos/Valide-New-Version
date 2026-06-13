@@ -125,10 +125,9 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
 
     switch (step) {
       case 0:
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.subSystem != null ? notifier.next : null,
-        );
+        // Audit 2026-06-13 — Le tap card auto-avance via setSubSystem :
+        // CTA Continuer redondant + bruit visuel. Footer retire.
+        return null;
       case 1:
         return OnboardingCtaFooter(
           label: l10n.heroIntroCta,

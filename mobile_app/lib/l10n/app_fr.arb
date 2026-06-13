@@ -395,14 +395,14 @@
   "onboardingSubSystemFrancophone": "Francophone",
   "@onboardingSubSystemFrancophone": { "description": "Story E1bis-2 — Label SelectionCard Francophone step 0." },
 
-  "onboardingSubSystemFrancophoneDesc": "Programme officiel camerounais (BEPC, Probatoire, BAC)",
-  "@onboardingSubSystemFrancophoneDesc": { "description": "Story E1bis-2bis — Description sous le label Francophone, aide l'eleve a se reperer." },
+  "onboardingSubSystemFrancophoneDesc": "De la 6ᵉ à la Terminale · BEPC, Probatoire, BAC",
+  "@onboardingSubSystemFrancophoneDesc": { "description": "Story E1bis-2bis — Description sous le label Francophone, aide l'eleve a se reperer. Audit 2026-06-13 : explicite la plage de niveaux." },
 
   "onboardingSubSystemAnglophone": "Anglophone",
   "@onboardingSubSystemAnglophone": { "description": "Story E1bis-2 — Label SelectionCard Anglophone step 0." },
 
-  "onboardingSubSystemAnglophoneDesc": "GCE O-Level vers A-Level (programme anglophone)",
-  "@onboardingSubSystemAnglophoneDesc": { "description": "Story E1bis-2bis — Description sous le label Anglophone, aide l'eleve a se reperer." },
+  "onboardingSubSystemAnglophoneDesc": "De Form 1 à Upper Sixth · GCE O-Level, A-Level",
+  "@onboardingSubSystemAnglophoneDesc": { "description": "Story E1bis-2bis — Description sous le label Anglophone, aide l'eleve a se reperer. Audit 2026-06-13 : explicite la plage de niveaux." },
 
   "onboardingContinue": "Continuer",
   "@onboardingContinue": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 0." },

@@ -126,15 +126,17 @@ void main() {
       expect(find.byType(SubSystemStepBody), findsNothing);
     });
 
-    testWidgets('step 0 + subSystem null -> footer CTA disabled (onPressed null)',
+    testWidgets(
+        'step 0 + subSystem null -> footer absent (audit 2026-06-13 : tap card auto-avance)',
         (tester) async {
+      // Audit 2026-06-13 : le CTA Continuer du step 0 a ete retire (tap
+      // card auto-avance via setSubSystem). Le footer doit etre null.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
       await _pump(tester, container: container);
 
-      final btn = tester.widget<AppButton>(find.byType(AppButton));
-      expect(btn.onPressed, isNull);
+      expect(find.byType(AppButton), findsNothing);
     });
 
     testWidgets(
