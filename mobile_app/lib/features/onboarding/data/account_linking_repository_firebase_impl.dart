@@ -92,7 +92,12 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
       final displayName = result.user!.displayName ?? account.displayName;
       final photoUrl = result.user!.photoURL ?? account.photoUrl;
 
-      await _persistIdentity(uid, displayName, photoUrl);
+      await _persistIdentity(
+        uid,
+        displayName,
+        photoUrl,
+        authProvider: 'google',
+      );
 
       _logSuccess(provider: 'google', uid: uid);
       return Right(
@@ -150,7 +155,12 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
       // Apple ne fournit pas de photoUrl.
       const photoUrl = null;
 
-      await _persistIdentity(uid, displayName, photoUrl);
+      await _persistIdentity(
+        uid,
+        displayName,
+        photoUrl,
+        authProvider: 'apple',
+      );
 
       _logSuccess(provider: 'apple', uid: uid);
       return Right(
@@ -178,11 +188,17 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
   Future<void> _persistIdentity(
     String uid,
     String? displayName,
-    String? photoUrl,
-  ) async {
-    // Update partiel : ne touche que displayName + photoUrl + updatedAt.
-    // Les champs immuables Story 1.3 (subSystem/filiere/niveau/serie/createdAt)
-    // restent inchanges. Les regles Firestore Story 1.3 acceptent ce update.
+    String? photoUrl, {
+    String? authProvider,
+  }) async {
+    // Update partiel : displayName + photoUrl + authProvider + isAnonymous +
+    // updatedAt. Les champs immuables (subSystem/trackId/levelId/streamId/
+    // createdAt) restent inchanges.
+    //
+    // Audit PR5 2026-06-13 : on pose explicitement `isAnonymous: false` et
+    // `authProvider: google|apple` pour signaler l'upgrade visiteur -> compte
+    // permanent. Avant ce PR, le doc Firestore gardait isAnonymous=true alors
+    // que le compte Auth etait passe en non-anonyme.
     final patch = <String, dynamic>{
       'updatedAt': FieldValue.serverTimestamp(),
     };
@@ -192,12 +208,21 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
     if (photoUrl != null && photoUrl.isNotEmpty) {
       patch['photoUrl'] = photoUrl;
     }
+    if (authProvider != null) {
+      patch['authProvider'] = authProvider;
+      patch['isAnonymous'] = false;
+    }
     try {
-      await _firestore.collection(_kCollection).doc(uid).update(patch);
+      // set(merge:true) au lieu de update() : tolère un doc inexistant
+      // (cas linkGoogle au step 5 fresh, sans flush prealable).
+      await _firestore
+          .collection(_kCollection)
+          .doc(uid)
+          .set(patch, SetOptions(merge: true));
     } on FirebaseException catch (e) {
       // Non-bloquant : le compte est cree cote Auth, on log mais on ne fail
       // pas l'operation. L'utilisateur peut re-tenter manuellement.
-      AppLogger.w('_persistIdentity: Firestore update failed code=${e.code}');
+      AppLogger.w('_persistIdentity: Firestore set failed code=${e.code}');
     }
   }
 

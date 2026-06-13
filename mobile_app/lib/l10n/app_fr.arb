@@ -524,6 +524,12 @@
   "@onboardingGuestSwitchConfirm": { "description": "Audit PR2 — CTA destructive modale switch visiteur." },
   "onboardingGuestSwitchCancel": "Garder mon compte",
   "@onboardingGuestSwitchCancel": { "description": "Audit PR2 — CTA annulation modale switch visiteur." },
+  "accountUpgradeSheetTitle": "Sauvegarder ton compte",
+  "@accountUpgradeSheetTitle": { "description": "Audit PR5 — Titre bottomsheet upgrade visiteur -> compte permanent." },
+  "accountUpgradeSheetBody": "En liant ton compte, tu retrouves ta progression sur n'importe quel telephone et tu evites de tout perdre si tu changes d'appareil.",
+  "@accountUpgradeSheetBody": { "description": "Audit PR5 — Body bottomsheet upgrade." },
+  "accountUpgradeSuccess": "Compte sauvegarde ✨",
+  "@accountUpgradeSuccess": { "description": "Audit PR5 — Snackbar success upgrade." },
 
   "onboardingNameTitle": "Comment tu t'appelles ?",
   "@onboardingNameTitle": { "description": "Story E1bis-5 — Titre H1 step 6 name input." },

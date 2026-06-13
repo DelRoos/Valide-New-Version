@@ -549,6 +549,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingGuestSwitchCancel => 'Keep my account';
 
   @override
+  String get accountUpgradeSheetTitle => 'Save your account';
+
+  @override
+  String get accountUpgradeSheetBody =>
+      'Linking your account lets you keep your progress on any phone and avoid losing everything if you switch devices.';
+
+  @override
+  String get accountUpgradeSuccess => 'Account saved ✨';
+
+  @override
   String get onboardingNameTitle => 'What\'s your name?';
 
   @override
