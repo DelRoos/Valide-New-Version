@@ -486,6 +486,16 @@ class AppLocalizationsFr extends AppLocalizations {
       'Selectionne ta serie et tes matieres pour personnaliser tes cours.';
 
   @override
+  String get onboardingStreamPickerEmptyTitle => 'Aucune serie disponible';
+
+  @override
+  String get onboardingStreamPickerEmptyBody =>
+      'Pour ce niveau, aucune serie n\'est encore configuree. Reessaie dans quelques minutes ou contacte l\'equipe Valide.';
+
+  @override
+  String get onboardingStreamPickerEmptyRetry => 'Reessayer';
+
+  @override
   String onboardingPickerCounter(int count, int max) {
     return '$count/$max selectionnees';
   }

@@ -461,6 +461,13 @@
   "onboardingPickerSeriesTitle": "Choisis ta serie",
   "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },
 
+  "onboardingStreamPickerEmptyTitle": "Aucune serie disponible",
+  "@onboardingStreamPickerEmptyTitle": { "description": "Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed)." },
+  "onboardingStreamPickerEmptyBody": "Pour ce niveau, aucune serie n'est encore configuree. Reessaie dans quelques minutes ou contacte l'equipe Valide.",
+  "@onboardingStreamPickerEmptyBody": { "description": "Audit BUG-01 — Body fallback streams.length==0." },
+  "onboardingStreamPickerEmptyRetry": "Reessayer",
+  "@onboardingStreamPickerEmptyRetry": { "description": "Audit BUG-01 — CTA retry fallback streams empty." },
+
   "onboardingPickerObligatoryTitle": "Matieres obligatoires",
   "@onboardingPickerObligatoryTitle": { "description": "Story E1bis-3 — Titre section matieres obligatoires picker." },
 

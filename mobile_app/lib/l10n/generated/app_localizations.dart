@@ -908,6 +908,24 @@ abstract class AppLocalizations {
   /// **'Selectionne ta serie et tes matieres pour personnaliser tes cours.'**
   String get onboardingStreamSubjectsSubtitle;
 
+  /// Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune serie disponible'**
+  String get onboardingStreamPickerEmptyTitle;
+
+  /// Audit BUG-01 — Body fallback streams.length==0.
+  ///
+  /// In fr, this message translates to:
+  /// **'Pour ce niveau, aucune serie n\'est encore configuree. Reessaie dans quelques minutes ou contacte l\'equipe Valide.'**
+  String get onboardingStreamPickerEmptyBody;
+
+  /// Audit BUG-01 — CTA retry fallback streams empty.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reessayer'**
+  String get onboardingStreamPickerEmptyRetry;
+
   /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
   ///
   /// In fr, this message translates to:
