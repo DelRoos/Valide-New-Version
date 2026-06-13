@@ -70,6 +70,7 @@ class OptionalSubjectCheckboxList extends StatelessWidget {
       itemBuilder: (context, index) {
         final s = subjects[index];
         final selected = picked.contains(s.subjectId);
+        final abbr = s.abbreviationFor(langKey);
         return CheckboxListTile(
           value: selected,
           onChanged: isSaving
@@ -79,9 +80,34 @@ class OptionalSubjectCheckboxList extends StatelessWidget {
             iconResolver(s.icon),
             color: AppColors.primary,
           ),
-          title: Text(
-            s.name[langKey] ?? s.name['fr'] ?? s.subjectId,
-            style: AppTypography.bodyStrong,
+          title: Row(
+            children: [
+              Expanded(
+                child: Text(
+                  s.name[langKey] ?? s.name['fr'] ?? s.subjectId,
+                  style: AppTypography.bodyStrong,
+                ),
+              ),
+              if (abbr != null)
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.s2.w,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primarySoft,
+                    borderRadius: BorderRadius.circular(AppRadius.sm),
+                  ),
+                  child: Text(
+                    abbr,
+                    style: AppTypography.caption.copyWith(
+                      fontSize: 10.sp,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+            ],
           ),
           controlAffinity: ListTileControlAffinity.leading,
           activeColor: AppColors.primary,

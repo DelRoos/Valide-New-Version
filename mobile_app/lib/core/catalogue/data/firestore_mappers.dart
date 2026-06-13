@@ -24,6 +24,17 @@ Map<String, String> _readBilingualName(dynamic raw) {
   };
 }
 
+/// Variante optionnelle de [_readBilingualName] pour les champs facultatifs
+/// (`description`, `abbreviation`). Retourne map vide si absent.
+Map<String, String> _readBilingualOptional(dynamic raw) {
+  if (raw == null) return const {};
+  if (raw is! Map) return const {};
+  return {
+    if (raw['fr'] != null) 'fr': raw['fr'] as String,
+    if (raw['en'] != null) 'en': raw['en'] as String,
+  };
+}
+
 List<String> _readStringList(dynamic raw) {
   if (raw == null) return const [];
   if (raw is! List) {
@@ -82,6 +93,7 @@ Serie serieFromFirestore(DocumentSnapshot<Map<String, dynamic>> snap) {
     relatedProfessionalSubjectIds:
         _readStringList(data['relatedProfessionalSubjectIds']),
     otherSubjectIds: _readStringList(data['otherSubjectIds']),
+    description: _readBilingualOptional(data['description']),
   );
 }
 
@@ -97,6 +109,8 @@ Subject subjectFromFirestore(DocumentSnapshot<Map<String, dynamic>> snap) {
     icon: (data['icon'] as String?) ?? 'circle',
     isActive: (data['isActive'] as bool?) ?? false,
     sortOrder: (data['sortOrder'] as num?)?.toInt() ?? 0,
+    abbreviation: _readBilingualOptional(data['abbreviation']),
+    description: _readBilingualOptional(data['description']),
   );
 }
 
