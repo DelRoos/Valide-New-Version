@@ -54,4 +54,29 @@ void main() {
       expect(result.endsWith('67'), isTrue);
     });
   });
+
+  // ===========================================================================
+  // Audit PR3 — maskName : protection PII pour logs (CLAUDE.md regle 4).
+  // ===========================================================================
+  group('maskName', () {
+    test('nom standard 12 chars -> 2 premieres lettres + count', () {
+      expect(maskName('Fatou Mballa'), 'Fa…[12c]');
+    });
+
+    test('null -> sentinelle <no-name>', () {
+      expect(maskName(null), '<no-name>');
+    });
+
+    test('chaine vide -> sentinelle <no-name>', () {
+      expect(maskName(''), '<no-name>');
+    });
+
+    test('nom 1 char (edge case) -> reveal le seul char + count', () {
+      expect(maskName('A'), 'A…[1c]');
+    });
+
+    test('nom 2 chars -> reveal les 2 + count', () {
+      expect(maskName('Bo'), 'Bo…[2c]');
+    });
+  });
 }

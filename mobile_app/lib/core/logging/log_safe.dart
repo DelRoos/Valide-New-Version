@@ -53,3 +53,26 @@ String maskPhone(String? e164) {
   }
   return buffer.toString();
 }
+
+const String _noName = '<no-name>';
+
+/// Masque un nom d'affichage pour les logs (audit PR3 2026-06-13).
+///
+/// CLAUDE.md regle 4 securite — "donnees personnelles sensibles" : le
+/// nom complet est PII. Au lieu de logger "Fatou Mballa" en clair (utile
+/// pour diagnostic mais pas necessaire), on masque a `Fa…[7c]` :
+///   - 2 premieres lettres revelees pour disambiguer en debug
+///   - `…[Nc]` indique le nombre total de caracteres
+///
+/// Exemples :
+/// ```
+/// maskName('Fatou Mballa') // 'Fa…[12c]'
+/// maskName('A')             // 'A…[1c]'
+/// maskName('')              // '<no-name>'
+/// maskName(null)            // '<no-name>'
+/// ```
+String maskName(String? name) {
+  if (name == null || name.isEmpty) return _noName;
+  final visible = name.substring(0, name.length < 2 ? name.length : 2);
+  return '$visible…[${name.length}c]';
+}
