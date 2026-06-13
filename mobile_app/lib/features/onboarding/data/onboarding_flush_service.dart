@@ -73,8 +73,37 @@ class OnboardingFlushService {
       // `createdAt` dans le payload. La regle UPDATE exige `createdAt`
       // immuable — un set(merge: true) qui ecrit serverTimestamp() a chaque
       // flush ferait toujours echouer la regle (nouvelle timestamp != stockee).
-      final existing = await docRef.get();
-      final isCreate = !existing.exists;
+      var existing = await docRef.get();
+      var isCreate = !existing.exists;
+
+      // Audit 2026-06-13 (cursus mismatch) — Si le doc existe DEJA et que
+      // l'utilisateur a change un champ immutable (subSystem/trackId/levelId/
+      // streamId) entre l'ancien doc et le nouveau state, la rule UPDATE
+      // refuse (immutabilite). Pour un visiteur (isAnonymous=true), c'est
+      // legitime : il refait son onboarding avec un autre cursus. On supprime
+      // l'ancien doc puis on cree fresh.
+      //
+      // Pour un compte permanent, on garde la rule stricte : l'utilisateur
+      // ne doit pas pouvoir changer son cursus en silence (necessite UX
+      // explicite "modifier mon profil" future).
+      if (existing.exists && user.isAnonymous) {
+        final existingData = existing.data() ?? <String, dynamic>{};
+        final mismatch = _hasCursusMismatch(existingData, effectiveState);
+        if (mismatch) {
+          AppLogger.i(
+            'flush cursus mismatch detected (visitor) — delete + recreate '
+            'old=(subSystem=${existingData['subSystem']}, '
+            'trackId=${existingData['trackId']}, '
+            'levelId=${existingData['levelId']}) '
+            'new=(subSystem=${effectiveState.subSystem?.id}, '
+            'trackId=${effectiveState.trackId}, '
+            'levelId=${effectiveState.levelId})',
+          );
+          await docRef.delete();
+          existing = await docRef.get();
+          isCreate = true;
+        }
+      }
 
       final payload = <String, dynamic>{
         'uid': uid,
@@ -218,5 +247,46 @@ class OnboardingFlushService {
       AppLogger.w('flush auto-populate threw: $e -> proceed empty');
       return state;
     }
+  }
+
+  /// Audit 2026-06-13 — Detecte un mismatch entre l'ancien doc Firestore et
+  /// le nouveau state E1bis sur les champs immutables (subSystem / trackId /
+  /// levelId / streamId). Utilise par [flush] pour decider si un delete +
+  /// recreate est necessaire (visiteur uniquement).
+  ///
+  /// Compare les valeurs en gerant le schema legacy (filiere/niveau/serie)
+  /// comme equivalentes aux nouveaux champs.
+  bool _hasCursusMismatch(
+    Map<String, dynamic> existingData,
+    OnboardingState state,
+  ) {
+    final existingSubSystem = existingData['subSystem'] as String?;
+    if (existingSubSystem != null &&
+        state.subSystem != null &&
+        existingSubSystem != state.subSystem!.id) {
+      return true;
+    }
+    final existingTrack =
+        (existingData['trackId'] ?? existingData['filiere']) as String?;
+    if (existingTrack != null &&
+        state.trackId != null &&
+        existingTrack != state.trackId) {
+      return true;
+    }
+    final existingLevel =
+        (existingData['levelId'] ?? existingData['niveau']) as String?;
+    if (existingLevel != null &&
+        state.levelId != null &&
+        existingLevel != state.levelId) {
+      return true;
+    }
+    final existingStream =
+        (existingData['streamId'] ?? existingData['serie']) as String?;
+    if (existingStream != null &&
+        state.streamId != null &&
+        existingStream != state.streamId) {
+      return true;
+    }
+    return false;
   }
 }
