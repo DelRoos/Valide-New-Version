@@ -1,6 +1,6 @@
 {
-  "version": "2.0.0",
-  "generatedAt": "2026-06-13T00:00:00Z",
+  "version": "2.1.0",
+  "generatedAt": "2026-06-13T01:00:00Z",
   "comment": "Matrice v2 alignement nomenclature officielle camerounaise (Story 1.12 + 1.11a). Sources : Office du Baccalaureat + Cameroon GCE Board. Modifier ici puis re-run seed_catalogue.py.",
   "filieres": [
     {
@@ -1910,6 +1910,330 @@
       "professionalSubjectIds": [],
       "relatedProfessionalSubjectIds": [],
       "otherSubjectIds": []
+    },
+    {
+      "serieId": "francophone_terminale_f6_bipe",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/BIPE — Genie chimique, Bio-procedes et petrochimie",
+        "en": "F6/BIPE — Chemical eng., Bio-processes and petrochemistry"
+      },
+      "description": {
+        "fr": "Genie chimique — Bio-procedes et petrochimie",
+        "en": "Chemical engineering — Bio-processes and petrochemistry"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 500,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_f6_coph",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/COPH — Genie chimique, Cosmetique et Pharmacie",
+        "en": "F6/COPH — Chemical eng., Cosmetics and Pharmacy"
+      },
+      "description": {
+        "fr": "Genie chimique — Cosmetique et pharmacie",
+        "en": "Chemical engineering — Cosmetics and pharmacy"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 510,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_f6_mipe",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/MIPE — Genie chimique, Mines et Petrole",
+        "en": "F6/MIPE — Chemical eng., Mining and Petroleum"
+      },
+      "description": {
+        "fr": "Genie chimique — Mines et petrole",
+        "en": "Chemical engineering — Mining and petroleum"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 520,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_f7_biolo",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F7/Biolo — Sciences biologiques, Biologie appliquee",
+        "en": "F7/Biolo — Biological sciences, Applied biology"
+      },
+      "description": {
+        "fr": "Sciences biologiques et medico-sanitaires — Biologie appliquee",
+        "en": "Biological and medico-sanitary sciences — Applied biology"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 530,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_f7_bioch",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F7/Bioch — Sciences biologiques, Biotechnologie",
+        "en": "F7/Bioch — Biological sciences, Biotechnology"
+      },
+      "description": {
+        "fr": "Sciences biologiques et medico-sanitaires — Biotechnologie",
+        "en": "Biological and medico-sanitary sciences — Biotechnology"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 540,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_f8",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F8 — Sciences de la sante et du social",
+        "en": "F8 — Health and social sciences"
+      },
+      "description": {
+        "fr": "Sciences et technologies de la sante et du social",
+        "en": "Health and social sciences and technologies"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 550,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_af1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF1 — Artistique, Ceramique",
+        "en": "AF1 — Artistic, Ceramics"
+      },
+      "description": {
+        "fr": "Artistique — option Ceramique",
+        "en": "Artistic — Ceramics option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 600,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_af2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF2 — Artistique, Peinture",
+        "en": "AF2 — Artistic, Painting"
+      },
+      "description": {
+        "fr": "Artistique — option Peinture",
+        "en": "Artistic — Painting option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 610,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_terminale_af3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_terminale",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF3 — Artistique, Sculpture",
+        "en": "AF3 — Artistic, Sculpture"
+      },
+      "description": {
+        "fr": "Artistique — option Sculpture",
+        "en": "Artistic — Sculpture option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 620,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f6_bipe",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/BIPE — Genie chimique, Bio-procedes et petrochimie",
+        "en": "F6/BIPE — Chemical eng., Bio-processes and petrochemistry"
+      },
+      "description": {
+        "fr": "Genie chimique — Bio-procedes et petrochimie",
+        "en": "Chemical engineering — Bio-processes and petrochemistry"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 500,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f6_coph",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/COPH — Genie chimique, Cosmetique et Pharmacie",
+        "en": "F6/COPH — Chemical eng., Cosmetics and Pharmacy"
+      },
+      "description": {
+        "fr": "Genie chimique — Cosmetique et pharmacie",
+        "en": "Chemical engineering — Cosmetics and pharmacy"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 510,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f6_mipe",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F6/MIPE — Genie chimique, Mines et Petrole",
+        "en": "F6/MIPE — Chemical eng., Mining and Petroleum"
+      },
+      "description": {
+        "fr": "Genie chimique — Mines et petrole",
+        "en": "Chemical engineering — Mining and petroleum"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 520,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f7_biolo",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F7/Biolo — Sciences biologiques, Biologie appliquee",
+        "en": "F7/Biolo — Biological sciences, Applied biology"
+      },
+      "description": {
+        "fr": "Sciences biologiques et medico-sanitaires — Biologie appliquee",
+        "en": "Biological and medico-sanitary sciences — Applied biology"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 530,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f7_bioch",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F7/Bioch — Sciences biologiques, Biotechnologie",
+        "en": "F7/Bioch — Biological sciences, Biotechnology"
+      },
+      "description": {
+        "fr": "Sciences biologiques et medico-sanitaires — Biotechnologie",
+        "en": "Biological and medico-sanitary sciences — Biotechnology"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 540,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_f8",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "F8 — Sciences de la sante et du social",
+        "en": "F8 — Health and social sciences"
+      },
+      "description": {
+        "fr": "Sciences et technologies de la sante et du social",
+        "en": "Health and social sciences and technologies"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 550,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_af1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF1 — Artistique, Ceramique",
+        "en": "AF1 — Artistic, Ceramics"
+      },
+      "description": {
+        "fr": "Artistique — option Ceramique",
+        "en": "Artistic — Ceramics option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 600,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_af2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF2 — Artistique, Peinture",
+        "en": "AF2 — Artistic, Painting"
+      },
+      "description": {
+        "fr": "Artistique — option Peinture",
+        "en": "Artistic — Painting option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 610,
+      "pickerMode": "derived"
+    },
+    {
+      "serieId": "francophone_premiere_af3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "technique",
+      "name": {
+        "fr": "AF3 — Artistique, Sculpture",
+        "en": "AF3 — Artistic, Sculpture"
+      },
+      "description": {
+        "fr": "Artistique — option Sculpture",
+        "en": "Artistic — Sculpture option"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 620,
+      "pickerMode": "derived"
     }
   ],
   "subjects": [
@@ -2962,6 +3286,246 @@
         "fr": "TGE",
         "en": "TGE"
       }
+    },
+    {
+      "subjectId": "francophone_dessin_industriel",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin industriel",
+        "en": "Industrial drawing"
+      },
+      "icon": "ruler",
+      "isActive": true,
+      "sortOrder": 250,
+      "abbreviation": {
+        "fr": "DI",
+        "en": "ID"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_genie_chimique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Genie chimique",
+        "en": "Chemical engineering"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 260,
+      "abbreviation": {
+        "fr": "GC",
+        "en": "ChE"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_procedes_chimiques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Procedes chimiques",
+        "en": "Chemical processes"
+      },
+      "icon": "atom",
+      "isActive": true,
+      "sortOrder": 265,
+      "abbreviation": {
+        "fr": "PC",
+        "en": "CP"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_biologie_appliquee",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Biologie appliquee",
+        "en": "Applied biology"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 270,
+      "abbreviation": {
+        "fr": "BioA",
+        "en": "AppBio"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_microbiologie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Microbiologie",
+        "en": "Microbiology"
+      },
+      "icon": "microscope",
+      "isActive": true,
+      "sortOrder": 275,
+      "abbreviation": {
+        "fr": "Micro",
+        "en": "Micro"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_sciences_sanitaires",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences sanitaires et sociales",
+        "en": "Health and social sciences"
+      },
+      "icon": "heart-pulse",
+      "isActive": true,
+      "sortOrder": 280,
+      "abbreviation": {
+        "fr": "SSS",
+        "en": "HSS"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_arts_plastiques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Arts plastiques",
+        "en": "Plastic arts"
+      },
+      "icon": "palette",
+      "isActive": true,
+      "sortOrder": 290,
+      "abbreviation": {
+        "fr": "Arts",
+        "en": "Arts"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_ceramique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Ceramique",
+        "en": "Ceramics"
+      },
+      "icon": "disc",
+      "isActive": true,
+      "sortOrder": 295,
+      "abbreviation": {
+        "fr": "Ceram",
+        "en": "Ceram"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_peinture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Peinture",
+        "en": "Painting"
+      },
+      "icon": "brush",
+      "isActive": true,
+      "sortOrder": 296,
+      "abbreviation": {
+        "fr": "Peint",
+        "en": "Paint"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_sculpture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sculpture",
+        "en": "Sculpture"
+      },
+      "icon": "boxes",
+      "isActive": true,
+      "sortOrder": 297,
+      "abbreviation": {
+        "fr": "Sculpt",
+        "en": "Sculpt"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_hebergement",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hebergement",
+        "en": "Lodging"
+      },
+      "icon": "bed",
+      "isActive": true,
+      "sortOrder": 300,
+      "abbreviation": {
+        "fr": "Heberg",
+        "en": "Lodg"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_restaurant_bar",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Restaurant et bar",
+        "en": "Restaurant and bar"
+      },
+      "icon": "utensils",
+      "isActive": true,
+      "sortOrder": 305,
+      "abbreviation": {
+        "fr": "R&B",
+        "en": "R&B"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_cuisine",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Cuisine",
+        "en": "Culinary arts"
+      },
+      "icon": "chef-hat",
+      "isActive": true,
+      "sortOrder": 310,
+      "abbreviation": {
+        "fr": "Cuis",
+        "en": "Cul"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_accueil_tourisme",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Accueil et animation touristique",
+        "en": "Tourism reception and animation"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 315,
+      "abbreviation": {
+        "fr": "Accueil",
+        "en": "Recept"
+      },
+      "description": {}
+    },
+    {
+      "subjectId": "francophone_agence_voyage",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Agence de voyage",
+        "en": "Travel agency"
+      },
+      "icon": "plane",
+      "isActive": true,
+      "sortOrder": 320,
+      "abbreviation": {
+        "fr": "Agence",
+        "en": "TravAg"
+      },
+      "description": {}
     }
   ],
   "exam_targets": [
@@ -6100,6 +6664,408 @@
         "anglophone_english_lang",
         "anglophone_french"
       ],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f6_bipe",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f6_bipe",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques",
+        "francophone_dessin_industriel"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f6_bipe",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f6_bipe",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques",
+        "francophone_dessin_industriel"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f6_coph",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f6_coph",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f6_coph",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f6_coph",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f6_mipe",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f6_mipe",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f6_mipe",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f6_mipe",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_genie_chimique",
+        "francophone_procedes_chimiques"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f7_biolo",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f7_biolo",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_biologie_appliquee",
+        "francophone_microbiologie"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f7_biolo",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f7_biolo",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_biologie_appliquee",
+        "francophone_microbiologie"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f7_bioch",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f7_bioch",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_biologie_appliquee",
+        "francophone_microbiologie"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f7_bioch",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f7_bioch",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_biologie_appliquee",
+        "francophone_microbiologie"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_f8",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_f8",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_sciences_sanitaires"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_f8",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_f8",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_eps",
+        "francophone_math",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_svt",
+        "francophone_sciences_sanitaires"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_af1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_af1",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_ceramique"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_af1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_af1",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_ceramique"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_af2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_af2",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_peinture"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_af2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_af2",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_peinture"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_terminale_af3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_terminale",
+      "matchSerie": "francophone_terminale_af3",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_sculpture"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_premiere_af3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_af3",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_hg",
+        "francophone_philo",
+        "francophone_arts_plastiques",
+        "francophone_sculpture"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
       "optionalSubjectIds": []
     }
   ]
