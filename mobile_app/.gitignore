@@ -43,3 +43,7 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Audit PR-D 2026-06-13 : Goldens diffs generes par flutter test au runtime
+# (ne pas commiter — artefacts temporaires).
+**/test/**/failures/
