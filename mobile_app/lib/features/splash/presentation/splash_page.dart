@@ -32,11 +32,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/theme/tokens.dart';
+import '../../onboarding/domain/profile_completion_state.dart';
+import '../../onboarding/providers.dart';
 
 const Duration _kStrokeDuration = Duration(milliseconds: 1800);
 const Duration _kHoldAfterStroke = Duration(milliseconds: 300);
-// Story E1bis-9 — destination post-splash = `/dashboard`. Le router redirige
-// vers `/onboarding/v2` si le profil est incomplet (garde Story 1.5).
 const String _kWord = 'VALIDE';
 
 class SplashPage extends ConsumerStatefulWidget {
@@ -73,10 +73,17 @@ class _SplashPageState extends ConsumerState<SplashPage>
   void _goNext() {
     if (_navigated || !mounted) return;
     _navigated = true;
-    // Story E1bis-9 — destination simplifiee : si profil pas complet, le
-    // router redirige vers /onboarding/v2 (cf. evaluateRedirect). On tape
-    // /dashboard et la garde profil-incomplet aiguille au besoin.
-    context.go('/dashboard');
+    // Audit PR4 2026-06-13 — Direct redirect : avant ce PR, le splash
+    // tapait toujours /dashboard puis le router redirigeait /onboarding/v2
+    // si profil incomplet -> 3 frames de transition (splash -> dashboard
+    // -> onboarding) avec flicker visible. Maintenant on lit l'etat de
+    // completion ICI pour viser direct la bonne route.
+    final completion = ref.read(profileCompletionProvider);
+    final isComplete = completion.maybeWhen(
+      data: (s) => s == ProfileCompletionState.complete,
+      orElse: () => false,
+    );
+    context.go(isComplete ? '/dashboard' : '/onboarding/v2');
   }
 
   @override
