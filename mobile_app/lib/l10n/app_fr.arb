@@ -389,7 +389,7 @@
   "onboardingSubSystemTitle": "Quelle section suis-tu ?",
   "@onboardingSubSystemTitle": { "description": "Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle)." },
 
-  "onboardingSubSystemSubtitle": "Choisis ton systeme scolaire pour demarrer.",
+  "onboardingSubSystemSubtitle": "Choisis ton système scolaire pour démarrer.",
   "@onboardingSubSystemSubtitle": { "description": "Story E1bis-2 — Sous-titre step 0 sub-system choice." },
 
   "onboardingSubSystemFrancophone": "Francophone",
@@ -434,7 +434,7 @@
   "heroIntroCta": "C'est parti",
   "@heroIntroCta": { "description": "Story E1bis-2 — Label CTA OnboardingCtaFooter step 1 hero intro." },
 
-  "onboardingTrackTitle": "Quelle filiere suis-tu ?",
+  "onboardingTrackTitle": "Quelle filière suis-tu ?",
   "@onboardingTrackTitle": { "description": "Story E1bis-3 — Titre H1 step 2 track choice (Generale / Technique)." },
 
   "onboardingTrackSubtitle": "Choisis le type d'enseignement que tu veux suivre.",
@@ -449,23 +449,23 @@
   "onboardingLevelTitle": "Tu es en quelle classe ?",
   "@onboardingLevelTitle": { "description": "Story E1bis-3 — Titre H1 step 3 level choice." },
 
-  "onboardingLevelSubtitle": "Selectionne ton niveau actuel pour adapter le contenu.",
+  "onboardingLevelSubtitle": "Sélectionne ton niveau actuel pour adapter le contenu.",
   "@onboardingLevelSubtitle": { "description": "Story E1bis-3 — Sous-titre step 3 level choice." },
 
-  "onboardingStreamSubjectsTitle": "Quelles matieres etudies-tu ?",
+  "onboardingStreamSubjectsTitle": "Quelles matières étudies-tu ?",
   "@onboardingStreamSubjectsTitle": { "description": "Story E1bis-3 — Titre H1 step 4 stream + subjects picker." },
 
-  "onboardingStreamSubjectsSubtitle": "Selectionne ta serie et tes matieres pour personnaliser tes cours.",
+  "onboardingStreamSubjectsSubtitle": "Sélectionne ta série et tes matières pour personnaliser tes cours.",
   "@onboardingStreamSubjectsSubtitle": { "description": "Story E1bis-3 — Sous-titre step 4." },
 
-  "onboardingPickerSeriesTitle": "Choisis ta serie",
+  "onboardingPickerSeriesTitle": "Choisis ta série",
   "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },
 
-  "onboardingStreamPickerEmptyTitle": "Aucune serie disponible",
+  "onboardingStreamPickerEmptyTitle": "Aucune série disponible",
   "@onboardingStreamPickerEmptyTitle": { "description": "Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed)." },
-  "onboardingStreamPickerEmptyBody": "Pour ce niveau, aucune serie n'est encore configuree. Reessaie dans quelques minutes ou contacte l'equipe Valide.",
+  "onboardingStreamPickerEmptyBody": "Pour ce niveau, aucune série n'est encore configurée. Réessaie dans quelques minutes ou contacte l'équipe Valide.",
   "@onboardingStreamPickerEmptyBody": { "description": "Audit BUG-01 — Body fallback streams.length==0." },
-  "onboardingStreamPickerEmptyRetry": "Reessayer",
+  "onboardingStreamPickerEmptyRetry": "Réessayer",
   "@onboardingStreamPickerEmptyRetry": { "description": "Audit BUG-01 — CTA retry fallback streams empty." },
 
   "onboardingPickerObligatoryTitle": "Matieres obligatoires",
@@ -486,10 +486,10 @@
     }
   },
 
-  "onboardingPickerValidate": "Valider mes matieres",
+  "onboardingPickerValidate": "Valider mes matières",
   "@onboardingPickerValidate": { "description": "Story E1bis-3 — Label CTA validation picker." },
 
-  "errorCatalogueLoading": "Impossible de charger le catalogue. Verifie ta connexion et reessaie.",
+  "errorCatalogueLoading": "Impossible de charger le catalogue. Vérifie ta connexion et réessaie.",
   "@errorCatalogueLoading": { "description": "Story E1bis-3 — Message erreur chargement catalogue Firestore." },
 
   "errorCatalogueEmpty": "Aucune donnee disponible. Reessaie plus tard.",
@@ -507,9 +507,9 @@
   "offlineBannerMessage": "Pas de connexion internet",
   "@offlineBannerMessage": { "description": "Texte du bandeau global offline affiche en haut de l'app tant que la connectivite est absente." },
 
-  "onboardingAuthTitle": "Cree ton compte",
+  "onboardingAuthTitle": "Crée ton compte",
   "@onboardingAuthTitle": { "description": "Story E1bis-4 — Titre H1 step 5 auth choice." },
-  "onboardingAuthSubtitle": "Une seule etape pour sauvegarder ton progres et ton profil.",
+  "onboardingAuthSubtitle": "Une seule étape pour sauvegarder ton progrès et ton profil.",
   "@onboardingAuthSubtitle": { "description": "Story E1bis-4 — Sous-titre step 5." },
   "onboardingAuthGoogleLabel": "Continuer avec Google",
   "@onboardingAuthGoogleLabel": { "description": "Story E1bis-4 — Bouton OAuth Google." },
@@ -521,7 +521,7 @@
   "@onboardingAuthGuestLabel": { "description": "Story E1bis-4 — Bouton visiteur (signInAnonymously)." },
   "onboardingAuthErrorCanceled": "Connexion annulee.",
   "@onboardingAuthErrorCanceled": { "description": "Story E1bis-4 — Message erreur user cancel OAuth." },
-  "onboardingAuthErrorConflict": "Ce compte est deja lie a un autre profil.",
+  "onboardingAuthErrorConflict": "Ce compte est déjà lié à un autre profil.",
   "@onboardingAuthErrorConflict": { "description": "Story E1bis-4 — Message erreur credential-already-in-use." },
   "onboardingGuestSwitchTitle": "Continuer en visiteur ?",
   "@onboardingGuestSwitchTitle": { "description": "Audit PR2 — Titre modale de confirmation quand l'user authentifie tape Continuer en visiteur." },
@@ -540,9 +540,9 @@
 
   "onboardingNameTitle": "Comment tu t'appelles ?",
   "@onboardingNameTitle": { "description": "Story E1bis-5 — Titre H1 step 6 name input." },
-  "onboardingNameSubtitle": "Ton prenom (ou un surnom) suffit.",
+  "onboardingNameSubtitle": "Ton prénom (ou un surnom) suffit.",
   "@onboardingNameSubtitle": { "description": "Story E1bis-5 — Sous-titre step 6." },
-  "onboardingNamePlaceholder": "Ton prenom",
+  "onboardingNamePlaceholder": "Ton prénom",
   "@onboardingNamePlaceholder": { "description": "Story E1bis-5 — Placeholder input nom." },
   "onboardingNameTooShort": "Au moins 2 caracteres.",
   "@onboardingNameTooShort": { "description": "Story E1bis-5 — Erreur validation < 2 chars." },
@@ -563,14 +563,14 @@
   "@onboardingPhoneSkipConfirmYes": { "description": "Story E1bis-5 — CTA confirm skip phone." },
   "onboardingPhoneSkipConfirmNo": "Non, ajouter",
   "@onboardingPhoneSkipConfirmNo": { "description": "Story E1bis-5 — CTA refuser skip phone." },
-  "onboardingPhoneInvalid": "Numero invalide. Format : +237 6XX XXX XXX",
+  "onboardingPhoneInvalid": "Numéro invalide. Format : +237 6XX XXX XXX",
   "@onboardingPhoneInvalid": { "description": "Story E1bis-5 — Erreur validation numero." },
 
-  "onboardingSchoolTitle": "Tu es dans quelle ecole ?",
+  "onboardingSchoolTitle": "Tu es dans quelle école ?",
   "@onboardingSchoolTitle": { "description": "Story E1bis-6 — Titre H1 step 8 school search." },
-  "onboardingSchoolSubtitle": "Recherche ton ecole. Si elle n'est pas listee, tu peux la proposer.",
+  "onboardingSchoolSubtitle": "Recherche ton école. Si elle n'est pas listée, tu peux la proposer.",
   "@onboardingSchoolSubtitle": { "description": "Story E1bis-6 — Sous-titre step 8." },
-  "onboardingSchoolPlaceholder": "Nom de ton ecole",
+  "onboardingSchoolPlaceholder": "Nom de ton école",
   "@onboardingSchoolPlaceholder": { "description": "Story E1bis-6 — Placeholder champ recherche ecole." },
   "onboardingSchoolAddTemplate": "+ Ajouter \"{name}\"",
   "@onboardingSchoolAddTemplate": {
