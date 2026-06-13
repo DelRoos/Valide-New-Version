@@ -222,6 +222,9 @@
   "onboardingGuestSwitchBody": "You're signed in with an account. Continuing as a guest will delete your current profile and you'll start over.",
   "onboardingGuestSwitchConfirm": "Delete and continue",
   "onboardingGuestSwitchCancel": "Keep my account",
+  "accountUpgradeSheetTitle": "Save your account",
+  "accountUpgradeSheetBody": "Linking your account lets you keep your progress on any phone and avoid losing everything if you switch devices.",
+  "accountUpgradeSuccess": "Account saved ✨",
 
   "onboardingNameTitle": "What's your name?",
   "onboardingNameSubtitle": "Your first name (or a nickname) is enough.",

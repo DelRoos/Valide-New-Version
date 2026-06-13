@@ -553,6 +553,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingGuestSwitchCancel => 'Garder mon compte';
 
   @override
+  String get accountUpgradeSheetTitle => 'Sauvegarder ton compte';
+
+  @override
+  String get accountUpgradeSheetBody =>
+      'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.';
+
+  @override
+  String get accountUpgradeSuccess => 'Compte sauvegarde ✨';
+
+  @override
   String get onboardingNameTitle => 'Comment tu t\'appelles ?';
 
   @override

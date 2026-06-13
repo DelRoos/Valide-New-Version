@@ -1028,6 +1028,24 @@ abstract class AppLocalizations {
   /// **'Garder mon compte'**
   String get onboardingGuestSwitchCancel;
 
+  /// Audit PR5 — Titre bottomsheet upgrade visiteur -> compte permanent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarder ton compte'**
+  String get accountUpgradeSheetTitle;
+
+  /// Audit PR5 — Body bottomsheet upgrade.
+  ///
+  /// In fr, this message translates to:
+  /// **'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.'**
+  String get accountUpgradeSheetBody;
+
+  /// Audit PR5 — Snackbar success upgrade.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte sauvegarde ✨'**
+  String get accountUpgradeSuccess;
+
   /// Story E1bis-5 — Titre H1 step 6 name input.
   ///
   /// In fr, this message translates to:
