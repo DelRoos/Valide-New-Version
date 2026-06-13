@@ -13,6 +13,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../features/onboarding/presentation/state/onboarding_providers.dart';
 import '../../features/onboarding/providers.dart';
 import '../firebase/providers.dart';
 import '../theme/tokens.dart';
@@ -80,9 +81,15 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       // les prefs qu'une fois au demarrage). Sans invalidate, le router
       // redirect voit l'ancien subSystem en memoire -> renvoie a /filiere
       // au lieu de /onboarding/subsystem.
-      // 2 providers consommes par evaluateRedirect (cf. app_router.dart) :
+      // 3 providers a invalider :
+      //   - subSystemNotifierProvider (Story 1.2 — SharedPreferences subSystem)
+      //   - profileCompletionProvider (router redirect)
+      //   - onboardingNotifierProvider (E1bis state machine — sinon le
+      //     shell reste a currentStep=9 si le user a tape delete depuis
+      //     la page success)
       ref.invalidate(subSystemNotifierProvider);
       ref.invalidate(profileCompletionProvider);
+      ref.invalidate(onboardingNotifierProvider);
       messenger.showSnackBar(
         SnackBar(
           content: Text(

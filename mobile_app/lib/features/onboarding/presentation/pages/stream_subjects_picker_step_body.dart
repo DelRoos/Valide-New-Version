@@ -148,17 +148,22 @@ class _StreamSubjectsPickerStepBodyState
   ) {
     final state = ref.read(onboardingNotifierProvider);
 
-    // Mode derived : flush direct + skip step 4 -> step 5.
+    // Mode derived : afficher les matieres en preview read-only avec un CTA
+    // "Continuer". Pas d'auto-skip : decision produit 2026-06-13 — l'utilisateur
+    // dois VOIR les matieres qui composent sa serie (ex. Terminale D = 11
+    // matieres) avant de continuer. Sinon l'ecran clignote et il croit qu'il
+    // n'y a pas de matieres.
     if (profile.pickerMode == PickerMode.derived) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        notifier.setStreamAndSubjects(
+      return _DerivedPreview(
+        subjects: profile.subjects,
+        langKey: langKey,
+        validateLabel: l10n.onboardingPickerValidate,
+        onValidate: () => notifier.setStreamAndSubjects(
           streamId: state.streamId,
           pickedSubjects:
               profile.subjects.map((s) => s.subjectId).toList(),
-        );
-      });
-      return const Center(child: CircularProgressIndicator());
+        ),
+      );
     }
 
     final obligatorySubjects = _obligatorySubjectsFor(profile);
@@ -265,6 +270,102 @@ class _StreamSubjectsPickerStepBodyState
     notifier.setStreamAndSubjects(
       streamId: state.streamId,
       pickedSubjects: allPicked.toList(),
+    );
+  }
+}
+
+/// Preview read-only des matieres pour le mode `derived` (Terminale D,
+/// Premiere C, ...). L'utilisateur ne peut pas modifier ; il confirme avec
+/// le CTA "Continuer" pour avancer au step 5.
+class _DerivedPreview extends StatelessWidget {
+  const _DerivedPreview({
+    required this.subjects,
+    required this.langKey,
+    required this.validateLabel,
+    required this.onValidate,
+  });
+
+  final List<Subject> subjects;
+  final String langKey;
+  final String validateLabel;
+  final VoidCallback onValidate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final subject in subjects) ...[
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                      horizontal: AppSpacing.s4.w,
+                      vertical: AppSpacing.s1.h,
+                    ),
+                    padding: EdgeInsets.all(AppSpacing.s3.w),
+                    decoration: BoxDecoration(
+                      color: AppColors.bg,
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          LucideIcons.bookOpen,
+                          color: AppColors.primary,
+                          size: 20.sp,
+                        ),
+                        SizedBox(width: AppSpacing.s3.w),
+                        Expanded(
+                          child: Text(
+                            subject.name[langKey] ??
+                                subject.name['fr'] ??
+                                subject.subjectId,
+                            style: AppTypography.bodyStrong,
+                          ),
+                        ),
+                        Icon(
+                          LucideIcons.lock,
+                          color: AppColors.inkSoft,
+                          size: 16.sp,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                SizedBox(height: AppSpacing.s8.h),
+              ],
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(AppSpacing.s4.w),
+          child: SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: onValidate,
+              style: FilledButton.styleFrom(
+                backgroundColor: AppColors.primary,
+                padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                ),
+              ),
+              child: Text(
+                validateLabel,
+                style: AppTypography.bodyStrong.copyWith(
+                  fontSize: 16.sp,
+                  color: AppColors.card,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

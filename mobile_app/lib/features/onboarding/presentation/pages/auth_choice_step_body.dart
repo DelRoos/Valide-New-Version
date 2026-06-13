@@ -190,11 +190,28 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     final router = GoRouter.of(context);
     try {
       final auth = ref.read(firebaseAuthProvider);
-      if (auth.currentUser == null) {
+      final current = auth.currentUser;
+      // Decision produit 2026-06-13 : "quand on passe en mode visiteur on
+      // dois etre en anonymous auth". Si on a deja un user anonyme -> reuse.
+      // Si on a un user NON-anonyme (residu Google/Apple d'un test) ->
+      // signOut puis re-signInAnonymously pour garantir l'invariant.
+      if (current == null) {
         await auth.signInAnonymously();
-        AppLogger.i('auth.step5 guest signInAnonymously OK');
+        AppLogger.i('auth.step5 guest signInAnonymously (no current user)');
+      } else if (current.isAnonymous) {
+        AppLogger.i(
+          'auth.step5 guest reuse existing anonymous session '
+          'uid=${current.uid.substring(0, 6)}...',
+        );
       } else {
-        AppLogger.i('auth.step5 guest reuse existing anonymous session');
+        AppLogger.w(
+          'auth.step5 guest currentUser is non-anonymous '
+          '(providers=${current.providerData.map((p) => p.providerId).toList()}) '
+          '-> signOut + re-signInAnonymously',
+        );
+        await auth.signOut();
+        await auth.signInAnonymously();
+        AppLogger.i('auth.step5 guest re-signInAnonymously OK');
       }
       if (!mounted) return;
 
