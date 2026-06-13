@@ -218,6 +218,10 @@
   "onboardingAuthGuestLabel": "Continue as guest",
   "onboardingAuthErrorCanceled": "Sign-in canceled.",
   "onboardingAuthErrorConflict": "This account is already linked to another profile.",
+  "onboardingGuestSwitchTitle": "Continue as guest?",
+  "onboardingGuestSwitchBody": "You're signed in with an account. Continuing as a guest will delete your current profile and you'll start over.",
+  "onboardingGuestSwitchConfirm": "Delete and continue",
+  "onboardingGuestSwitchCancel": "Keep my account",
 
   "onboardingNameTitle": "What's your name?",
   "onboardingNameSubtitle": "Your first name (or a nickname) is enough.",

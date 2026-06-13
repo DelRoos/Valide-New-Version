@@ -536,6 +536,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'This account is already linked to another profile.';
 
   @override
+  String get onboardingGuestSwitchTitle => 'Continue as guest?';
+
+  @override
+  String get onboardingGuestSwitchBody =>
+      'You\'re signed in with an account. Continuing as a guest will delete your current profile and you\'ll start over.';
+
+  @override
+  String get onboardingGuestSwitchConfirm => 'Delete and continue';
+
+  @override
+  String get onboardingGuestSwitchCancel => 'Keep my account';
+
+  @override
   String get onboardingNameTitle => 'What\'s your name?';
 
   @override
