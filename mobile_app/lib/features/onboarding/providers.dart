@@ -98,6 +98,7 @@ final onboardingFlushServiceProvider = Provider<OnboardingFlushService>((ref) {
     auth: ref.watch(firebaseAuthProvider),
     firestore: ref.watch(firestoreProvider),
     draftPrefs: ref.watch(onboardingDraftPrefsProvider),
+    catalogueRepository: ref.watch(catalogueRepositoryProvider),
   );
 });
 
