@@ -1,9 +1,10 @@
 // Story E1bis-5 — Step body 6 du shell onboarding refonte.
 //
-// NAME INPUT. TextField simple avec validation 2-50 caracteres. Le user
-// arrive ici depuis step 5 quand OAuth n'a PAS fourni de displayName
-// (ou en mode visiteur). Si OAuth fournit un nom, le notifier saute step 6
-// directement vers step 7.
+// NAME INPUT. TextField simple avec validation 2-50 caracteres. Tous les
+// comptes permanents passent par ici (audit 2026-06-13 PR3) : le notifier
+// pre-remplit avec le displayName OAuth (Google/Apple) si fourni, et
+// l'utilisateur peut le modifier avant validation. Le visiteur n'arrive
+// jamais ici (nav direct dashboard depuis AuthChoiceStepBody).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

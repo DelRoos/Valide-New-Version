@@ -223,5 +223,53 @@ void main() {
       );
       expect(state, ProfileCompletionState.complete);
     });
+
+    // =====================================================================
+    // Audit 2026-06-13 (PR1) — Schema E1bis (trackId / levelId / pickedSubjects)
+    // =====================================================================
+    test(
+        'E1bis : trackId + levelId + pickedSubjects non-vide -> complete',
+        () async {
+      final state = await _resolveCompletion(
+        initialSubSystem: SubSystem.francophone,
+        uid: 'alice',
+        profileStream: Stream.value(<String, dynamic>{
+          'trackId': 'general',
+          'levelId': 'francophone_terminale',
+          'streamId': 'francophone_terminale_d',
+          'pickedSubjects': ['math', 'physics'],
+        }),
+      );
+      expect(state, ProfileCompletionState.complete);
+    });
+
+    test(
+        'E1bis PR1 : trackId + levelId mais pickedSubjects vide -> serieMissing '
+        '(fix flush partiel — evite redirect dashboard vide)',
+        () async {
+      final state = await _resolveCompletion(
+        initialSubSystem: SubSystem.francophone,
+        uid: 'alice',
+        profileStream: Stream.value(<String, dynamic>{
+          'trackId': 'general',
+          'levelId': 'francophone_terminale',
+          'streamId': 'francophone_terminale_d',
+          'pickedSubjects': <String>[],
+        }),
+      );
+      expect(state, ProfileCompletionState.serieMissing);
+    });
+
+    test('E1bis : trackId pose mais levelId vide -> niveauMissing', () async {
+      final state = await _resolveCompletion(
+        initialSubSystem: SubSystem.francophone,
+        uid: 'alice',
+        profileStream: Stream.value(<String, dynamic>{
+          'trackId': 'general',
+          'levelId': '',
+        }),
+      );
+      expect(state, ProfileCompletionState.niveauMissing);
+    });
   });
 }
