@@ -220,7 +220,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPickerOptionalTitle => 'Matieres optionnelles';
 
   @override
-  String get onboardingPickerSeriesTitle => 'Choisis ta serie';
+  String get onboardingPickerSeriesTitle => 'Choisis ta série';
 
   @override
   String get onboardingPickerTransversalesTitle => 'Transversales optionnelles';
@@ -287,11 +287,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingAccountAlreadyLinkedToast => 'Tu as déjà un compte.';
 
   @override
-  String get onboardingSchoolTitle => 'Tu es dans quelle ecole ?';
+  String get onboardingSchoolTitle => 'Tu es dans quelle école ?';
 
   @override
   String get onboardingSchoolSubtitle =>
-      'Recherche ton ecole. Si elle n\'est pas listee, tu peux la proposer.';
+      'Recherche ton école. Si elle n\'est pas listée, tu peux la proposer.';
 
   @override
   String get onboardingSchoolSearchPlaceholder => 'Rechercher mon école…';
@@ -406,7 +406,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingSubSystemSubtitle =>
-      'Choisis ton systeme scolaire pour demarrer.';
+      'Choisis ton système scolaire pour démarrer.';
 
   @override
   String get onboardingSubSystemFrancophone => 'Francophone';
@@ -457,7 +457,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get heroIntroCta => 'C\'est parti';
 
   @override
-  String get onboardingTrackTitle => 'Quelle filiere suis-tu ?';
+  String get onboardingTrackTitle => 'Quelle filière suis-tu ?';
 
   @override
   String get onboardingTrackSubtitle =>
@@ -476,24 +476,24 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingLevelSubtitle =>
-      'Selectionne ton niveau actuel pour adapter le contenu.';
+      'Sélectionne ton niveau actuel pour adapter le contenu.';
 
   @override
-  String get onboardingStreamSubjectsTitle => 'Quelles matieres etudies-tu ?';
+  String get onboardingStreamSubjectsTitle => 'Quelles matières étudies-tu ?';
 
   @override
   String get onboardingStreamSubjectsSubtitle =>
-      'Selectionne ta serie et tes matieres pour personnaliser tes cours.';
+      'Sélectionne ta série et tes matières pour personnaliser tes cours.';
 
   @override
-  String get onboardingStreamPickerEmptyTitle => 'Aucune serie disponible';
+  String get onboardingStreamPickerEmptyTitle => 'Aucune série disponible';
 
   @override
   String get onboardingStreamPickerEmptyBody =>
-      'Pour ce niveau, aucune serie n\'est encore configuree. Reessaie dans quelques minutes ou contacte l\'equipe Valide.';
+      'Pour ce niveau, aucune série n\'est encore configurée. Réessaie dans quelques minutes ou contacte l\'équipe Valide.';
 
   @override
-  String get onboardingStreamPickerEmptyRetry => 'Reessayer';
+  String get onboardingStreamPickerEmptyRetry => 'Réessayer';
 
   @override
   String onboardingPickerCounter(int count, int max) {
@@ -501,11 +501,11 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get onboardingPickerValidate => 'Valider mes matieres';
+  String get onboardingPickerValidate => 'Valider mes matières';
 
   @override
   String get errorCatalogueLoading =>
-      'Impossible de charger le catalogue. Verifie ta connexion et reessaie.';
+      'Impossible de charger le catalogue. Vérifie ta connexion et réessaie.';
 
   @override
   String get errorCatalogueEmpty =>
@@ -524,11 +524,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get offlineBannerMessage => 'Pas de connexion internet';
 
   @override
-  String get onboardingAuthTitle => 'Cree ton compte';
+  String get onboardingAuthTitle => 'Crée ton compte';
 
   @override
   String get onboardingAuthSubtitle =>
-      'Une seule etape pour sauvegarder ton progres et ton profil.';
+      'Une seule étape pour sauvegarder ton progrès et ton profil.';
 
   @override
   String get onboardingAuthGoogleLabel => 'Continuer avec Google';
@@ -547,7 +547,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingAuthErrorConflict =>
-      'Ce compte est deja lie a un autre profil.';
+      'Ce compte est déjà lié à un autre profil.';
 
   @override
   String get onboardingGuestSwitchTitle => 'Continuer en visiteur ?';
@@ -576,10 +576,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingNameTitle => 'Comment tu t\'appelles ?';
 
   @override
-  String get onboardingNameSubtitle => 'Ton prenom (ou un surnom) suffit.';
+  String get onboardingNameSubtitle => 'Ton prénom (ou un surnom) suffit.';
 
   @override
-  String get onboardingNamePlaceholder => 'Ton prenom';
+  String get onboardingNamePlaceholder => 'Ton prénom';
 
   @override
   String get onboardingNameTooShort => 'Au moins 2 caracteres.';
@@ -612,10 +612,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingPhoneInvalid =>
-      'Numero invalide. Format : +237 6XX XXX XXX';
+      'Numéro invalide. Format : +237 6XX XXX XXX';
 
   @override
-  String get onboardingSchoolPlaceholder => 'Nom de ton ecole';
+  String get onboardingSchoolPlaceholder => 'Nom de ton école';
 
   @override
   String onboardingSchoolAddTemplate(String name) {

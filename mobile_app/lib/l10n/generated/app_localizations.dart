@@ -455,7 +455,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre section selection serie dans le picker.
   ///
   /// In fr, this message translates to:
-  /// **'Choisis ta serie'**
+  /// **'Choisis ta série'**
   String get onboardingPickerSeriesTitle;
 
   /// Titre H3 section matières transversales optionnelles mode series_plus_optional A-Level (Story 1.16). Computer Science, ICT, Religious Studies, Commerce ajoutables jusqu'à max 5 total.
@@ -563,13 +563,13 @@ abstract class AppLocalizations {
   /// Story E1bis-6 — Titre H1 step 8 school search.
   ///
   /// In fr, this message translates to:
-  /// **'Tu es dans quelle ecole ?'**
+  /// **'Tu es dans quelle école ?'**
   String get onboardingSchoolTitle;
 
   /// Story E1bis-6 — Sous-titre step 8.
   ///
   /// In fr, this message translates to:
-  /// **'Recherche ton ecole. Si elle n\'est pas listee, tu peux la proposer.'**
+  /// **'Recherche ton école. Si elle n\'est pas listée, tu peux la proposer.'**
   String get onboardingSchoolSubtitle;
 
   /// Placeholder TextField recherche ecole.
@@ -773,7 +773,7 @@ abstract class AppLocalizations {
   /// Story E1bis-2 — Sous-titre step 0 sub-system choice.
   ///
   /// In fr, this message translates to:
-  /// **'Choisis ton systeme scolaire pour demarrer.'**
+  /// **'Choisis ton système scolaire pour démarrer.'**
   String get onboardingSubSystemSubtitle;
 
   /// Story E1bis-2 — Label SelectionCard Francophone step 0.
@@ -863,7 +863,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre H1 step 2 track choice (Generale / Technique).
   ///
   /// In fr, this message translates to:
-  /// **'Quelle filiere suis-tu ?'**
+  /// **'Quelle filière suis-tu ?'**
   String get onboardingTrackTitle;
 
   /// Story E1bis-3 — Sous-titre step 2 track choice.
@@ -893,37 +893,37 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Sous-titre step 3 level choice.
   ///
   /// In fr, this message translates to:
-  /// **'Selectionne ton niveau actuel pour adapter le contenu.'**
+  /// **'Sélectionne ton niveau actuel pour adapter le contenu.'**
   String get onboardingLevelSubtitle;
 
   /// Story E1bis-3 — Titre H1 step 4 stream + subjects picker.
   ///
   /// In fr, this message translates to:
-  /// **'Quelles matieres etudies-tu ?'**
+  /// **'Quelles matières étudies-tu ?'**
   String get onboardingStreamSubjectsTitle;
 
   /// Story E1bis-3 — Sous-titre step 4.
   ///
   /// In fr, this message translates to:
-  /// **'Selectionne ta serie et tes matieres pour personnaliser tes cours.'**
+  /// **'Sélectionne ta série et tes matières pour personnaliser tes cours.'**
   String get onboardingStreamSubjectsSubtitle;
 
   /// Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed).
   ///
   /// In fr, this message translates to:
-  /// **'Aucune serie disponible'**
+  /// **'Aucune série disponible'**
   String get onboardingStreamPickerEmptyTitle;
 
   /// Audit BUG-01 — Body fallback streams.length==0.
   ///
   /// In fr, this message translates to:
-  /// **'Pour ce niveau, aucune serie n\'est encore configuree. Reessaie dans quelques minutes ou contacte l\'equipe Valide.'**
+  /// **'Pour ce niveau, aucune série n\'est encore configurée. Réessaie dans quelques minutes ou contacte l\'équipe Valide.'**
   String get onboardingStreamPickerEmptyBody;
 
   /// Audit BUG-01 — CTA retry fallback streams empty.
   ///
   /// In fr, this message translates to:
-  /// **'Reessayer'**
+  /// **'Réessayer'**
   String get onboardingStreamPickerEmptyRetry;
 
   /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
@@ -935,13 +935,13 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Label CTA validation picker.
   ///
   /// In fr, this message translates to:
-  /// **'Valider mes matieres'**
+  /// **'Valider mes matières'**
   String get onboardingPickerValidate;
 
   /// Story E1bis-3 — Message erreur chargement catalogue Firestore.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible de charger le catalogue. Verifie ta connexion et reessaie.'**
+  /// **'Impossible de charger le catalogue. Vérifie ta connexion et réessaie.'**
   String get errorCatalogueLoading;
 
   /// Story E1bis-3 — Message erreur catalogue vide (cas marginal).
@@ -977,13 +977,13 @@ abstract class AppLocalizations {
   /// Story E1bis-4 — Titre H1 step 5 auth choice.
   ///
   /// In fr, this message translates to:
-  /// **'Cree ton compte'**
+  /// **'Crée ton compte'**
   String get onboardingAuthTitle;
 
   /// Story E1bis-4 — Sous-titre step 5.
   ///
   /// In fr, this message translates to:
-  /// **'Une seule etape pour sauvegarder ton progres et ton profil.'**
+  /// **'Une seule étape pour sauvegarder ton progrès et ton profil.'**
   String get onboardingAuthSubtitle;
 
   /// Story E1bis-4 — Bouton OAuth Google.
@@ -1019,7 +1019,7 @@ abstract class AppLocalizations {
   /// Story E1bis-4 — Message erreur credential-already-in-use.
   ///
   /// In fr, this message translates to:
-  /// **'Ce compte est deja lie a un autre profil.'**
+  /// **'Ce compte est déjà lié à un autre profil.'**
   String get onboardingAuthErrorConflict;
 
   /// Audit PR2 — Titre modale de confirmation quand l'user authentifie tape Continuer en visiteur.
@@ -1073,13 +1073,13 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Sous-titre step 6.
   ///
   /// In fr, this message translates to:
-  /// **'Ton prenom (ou un surnom) suffit.'**
+  /// **'Ton prénom (ou un surnom) suffit.'**
   String get onboardingNameSubtitle;
 
   /// Story E1bis-5 — Placeholder input nom.
   ///
   /// In fr, this message translates to:
-  /// **'Ton prenom'**
+  /// **'Ton prénom'**
   String get onboardingNamePlaceholder;
 
   /// Story E1bis-5 — Erreur validation < 2 chars.
@@ -1139,13 +1139,13 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Erreur validation numero.
   ///
   /// In fr, this message translates to:
-  /// **'Numero invalide. Format : +237 6XX XXX XXX'**
+  /// **'Numéro invalide. Format : +237 6XX XXX XXX'**
   String get onboardingPhoneInvalid;
 
   /// Story E1bis-6 — Placeholder champ recherche ecole.
   ///
   /// In fr, this message translates to:
-  /// **'Nom de ton ecole'**
+  /// **'Nom de ton école'**
   String get onboardingSchoolPlaceholder;
 
   /// Story E1bis-6 — Template CTA ajouter ecole custom.
