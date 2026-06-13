@@ -31,6 +31,8 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/catalogue/providers.dart';
+import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
 import '../../onboarding/domain/profile_completion_state.dart';
 import '../../onboarding/providers.dart';
@@ -65,9 +67,24 @@ class _SplashPageState extends ConsumerState<SplashPage>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterNativeSplash.remove();
       _controller.forward();
+      // Audit 2026-06-13 — Precharger le catalogue scolaire en arriere-plan
+      // pendant l'animation splash (~2,1s). Sur connexion correcte le fetch
+      // est termine avant l'arrivee step 2/3/4 -> les loaders sont
+      // invisibles. Si reseau lent, le loader sera affiche normalement.
+      // `ref.read(provider.future)` declenche le build sans bloquer la nav.
+      unawaited(_warmUpCatalogue());
     });
 
     _navigationTimer = Timer(_kStrokeDuration + _kHoldAfterStroke, _goNext);
+  }
+
+  Future<void> _warmUpCatalogue() async {
+    try {
+      await ref.read(catalogueProvider.future);
+      AppLogger.i('splash catalogue warm-up OK');
+    } catch (e) {
+      AppLogger.w('splash catalogue warm-up failed (non-blocking): $e');
+    }
   }
 
   void _goNext() {
