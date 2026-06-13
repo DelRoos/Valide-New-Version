@@ -90,15 +90,18 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       // les prefs qu'une fois au demarrage). Sans invalidate, le router
       // redirect voit l'ancien subSystem en memoire -> renvoie a /filiere
       // au lieu de /onboarding/subsystem.
-      // 3 providers a invalider :
+      // 4 providers a invalider :
       //   - subSystemNotifierProvider (Story 1.2 — SharedPreferences subSystem)
       //   - profileCompletionProvider (router redirect)
       //   - onboardingNotifierProvider (E1bis state machine — sinon le
       //     shell reste a currentStep=9 si le user a tape delete depuis
       //     la page success)
+      //   - currentUserProvider (Audit NEW-BUG-17 — StreamProvider
+      //     authStateChanges, doit reflechir le nouveau uid anonyme)
       ref.invalidate(subSystemNotifierProvider);
       ref.invalidate(profileCompletionProvider);
       ref.invalidate(onboardingNotifierProvider);
+      ref.invalidate(currentUserProvider);
       messenger.showSnackBar(
         SnackBar(
           content: Text(
