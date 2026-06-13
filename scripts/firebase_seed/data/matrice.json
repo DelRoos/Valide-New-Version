@@ -1,6 +1,6 @@
 {
-  "version": "2.2.0",
-  "generatedAt": "2026-06-13T02:00:00Z",
+  "version": "2.3.0",
+  "generatedAt": "2026-06-13T03:00:00Z",
   "comment": "Matrice v2 alignement nomenclature officielle camerounaise (Story 1.12 + 1.11a). Sources : Office du Baccalaureat + Cameroon GCE Board. Modifier ici puis re-run seed_catalogue.py.",
   "filieres": [
     {
@@ -2234,6 +2234,26 @@
       "isActive": true,
       "sortOrder": 620,
       "pickerMode": "derived"
+    },
+    {
+      "serieId": "anglophone_form_5_olevel",
+      "subSystem": "anglophone",
+      "niveauId": "anglophone_form_5",
+      "filiereId": "generale",
+      "name": {
+        "fr": "GCE O-Level (panier libre)",
+        "en": "GCE O-Level (free basket)"
+      },
+      "description": {
+        "fr": "Compose ton panier de 6 a 11 matieres. English + French + Mathematics obligatoires.",
+        "en": "Build your basket of 6 to 11 subjects. English + French + Mathematics required."
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 10,
+      "pickerMode": "free_with_obligatory",
+      "minSubjects": 6,
+      "maxSubjects": 11
     }
   ],
   "subjects": [
@@ -5250,11 +5270,11 @@
       "isActive": true
     },
     {
-      "ruleId": "rule_anglophone_generale_form_5_none",
+      "ruleId": "rule_anglophone_generale_form_5_olevel",
       "matchSubSystem": "anglophone",
       "matchFiliere": "generale",
       "matchNiveau": "anglophone_form_5",
-      "matchSerie": null,
+      "matchSerie": "anglophone_form_5_olevel",
       "subjectIds": [
         "anglophone_english_lang",
         "anglophone_french",
