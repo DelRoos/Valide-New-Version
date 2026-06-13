@@ -96,6 +96,23 @@ class _StreamSubjectsPickerStepBodyState
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
+    // Audit BUG-01 2026-06-13 — Cas 0 : streamId null + aucune serie trouvee
+    // pour ce niveau. Avant ce PR, le code tombait dans Cas 3 -> derive() avec
+    // streamId=null -> noMatchingRule -> ErrorRetryView "Chargement impossible"
+    // (suggere un probleme reseau alors que c'est un probleme de seed
+    // catalogue). On affiche maintenant un message explicite avec retry sur
+    // le catalogue.
+    if (state.streamId == null &&
+        streams.isEmpty &&
+        state.levelRequiresPicker == true) {
+      return _StreamPickerEmpty(
+        title: l10n.onboardingStreamPickerEmptyTitle,
+        body: l10n.onboardingStreamPickerEmptyBody,
+        retryLabel: l10n.onboardingStreamPickerEmptyRetry,
+        onRetry: () => ref.invalidate(catalogueProvider),
+      );
+    }
+
     // Cas 1 : streamId null + plusieurs streams -> picker de serie.
     if (state.streamId == null && streams.length > 1) {
       return _StreamPicker(
@@ -446,6 +463,66 @@ class _SectionTitle extends StatelessWidget {
       child: Text(
         text,
         style: AppTypography.h3.copyWith(fontSize: 15.sp),
+      ),
+    );
+  }
+}
+
+/// Audit BUG-01 2026-06-13 — Fallback affiche quand `streams.isEmpty` pour
+/// un niveau qui requiert pourtant un picker (`levelRequiresPicker == true`).
+/// Cas typique : seed catalogue Firestore desync (les series Terminale FR
+/// n'ont pas ete poussees au projet live). Avant ce widget, le code tombait
+/// dans `_buildDerivedView` -> `derive()` -> noMatchingRule -> ErrorRetryView
+/// "Chargement impossible" (message qui suggere a tort un probleme reseau).
+class _StreamPickerEmpty extends StatelessWidget {
+  const _StreamPickerEmpty({
+    required this.title,
+    required this.body,
+    required this.retryLabel,
+    required this.onRetry,
+  });
+
+  final String title;
+  final String body;
+  final String retryLabel;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              LucideIcons.searchX,
+              size: 48.sp,
+              color: AppColors.inkSoft,
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            Text(
+              title,
+              style: AppTypography.h3.copyWith(fontSize: 18.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s3.h),
+            Text(
+              body,
+              style: AppTypography.body.copyWith(
+                color: AppColors.inkSoft,
+                fontSize: 14.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s5.h),
+            TextButton.icon(
+              onPressed: onRetry,
+              icon: const Icon(LucideIcons.refreshCw, size: 18),
+              label: Text(retryLabel),
+            ),
+          ],
+        ),
       ),
     );
   }

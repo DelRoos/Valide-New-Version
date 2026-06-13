@@ -483,6 +483,16 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select your stream and subjects to tailor lessons.';
 
   @override
+  String get onboardingStreamPickerEmptyTitle => 'No stream available';
+
+  @override
+  String get onboardingStreamPickerEmptyBody =>
+      'No stream is set up for this level yet. Try again in a few minutes or contact the Valide team.';
+
+  @override
+  String get onboardingStreamPickerEmptyRetry => 'Retry';
+
+  @override
   String onboardingPickerCounter(int count, int max) {
     return '$count/$max selected';
   }
