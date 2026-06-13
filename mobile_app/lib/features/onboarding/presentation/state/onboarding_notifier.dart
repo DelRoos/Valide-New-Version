@@ -22,7 +22,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/sub_system.dart';
 import '../../providers.dart'
-    show onboardingDraftPrefsProvider, subsystemPrefsProvider;
+    show
+        onboardingDraftPrefsProvider,
+        subSystemNotifierProvider,
+        subsystemPrefsProvider;
 import 'onboarding_state.dart';
 
 /// State machine onboarding refonte E1bis (10 etapes).
@@ -38,10 +41,18 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   /// Pose le sous-systeme + persiste en SharedPreferences. Transition
   /// step 0 -> 1 (hero intro).
   ///
+  /// Audit BUG-LANG-01 2026-06-13 — propage AUSSI le sub-system au
+  /// `subSystemNotifierProvider` (legacy Story 1.2) qui pilote la locale
+  /// globale via le `LocaleNotifier`. Avant ce fix, le notifier d'onboarding
+  /// ecrivait en SharedPrefs mais ne mettait pas a jour le state Riverpod
+  /// du sub-system -> les Steps 1-5 restaient en FR meme apres choix
+  /// Anglophone. Seul le dashboard final etait en EN (relu depuis SharedPrefs
+  /// au build du LocaleNotifier).
+  ///
   /// Si l'ecriture SharedPreferences echoue (rarissime), l'exception remonte
-  /// — la page consommatrice (E1bis-2) gere le toast erreur.
+  /// — la page consommatrice gere le toast erreur.
   Future<void> setSubSystem(SubSystem subSystem) async {
-    await ref.read(subsystemPrefsProvider).write(subSystem);
+    await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
     state = state.copyWith(subSystem: subSystem, currentStep: 1);
     await _persistDraft();
   }
