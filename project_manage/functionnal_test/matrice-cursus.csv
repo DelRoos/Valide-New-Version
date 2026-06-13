@@ -1,0 +1,36 @@
+TF_ID;Sub-System;Track;Level;Stream/Series;Picker Mode;Test Persona;Note
+TF-4.01;Francophone;Générale;6e;-;derived;Marie, élève entrant en collège;12 matières tronc commun (LV2 exclue)
+TF-4.02;Francophone;Générale;5e;-;derived;Idem TF-4.01;Idem 6e
+TF-4.03;Francophone;Générale;4e;-;derived;Élève entrant en cycle 2;13 matières (LV2 ajoutée)
+TF-4.04;Francophone;Générale;3e;-;derived;Élève préparant le BEPC;13 matières + exam_target BEPC affiché
+TF-4.05;Francophone;Générale;Seconde;A / C / D ?;series_only;Choix de série avant 1ère;À valider : Seconde a-t-elle un picker ?
+TF-4.06;Francophone;Générale;1ère;Série A4;series_only;Littéraire;Matières A4 = Philo, Lettres, LV1, LV2, Hist-Geo, Maths
+TF-4.07;Francophone;Générale;1ère;Série C;series_only;Maths-Phy;Matières C = Maths, Phy, SVT, Philo, LV1, EPS
+TF-4.08;Francophone;Générale;1ère;Série D;series_only;Scientifique;Matières D = SVT, Phy-Chim, Maths, Philo, LV1
+TF-4.09;Francophone;Générale;Terminale;Série A4;series_only;Bac littéraire;Idem 1ère A4 + prépa BAC
+TF-4.10;Francophone;Générale;Terminale;Série C;series_only;Bac Maths-Phy;exam_target BAC C
+TF-4.11;Francophone;Générale;Terminale;Série D;series_only;Bac scientifique;exam_target BAC D — parcours le plus courant
+TF-4.12;Francophone;Technique;Seconde;-;derived;Tronc commun technique;À vérifier si Seconde Tech existe
+TF-4.13;Francophone;Technique;1ère;F1 (Mécanique);series_only;Industriel;
+TF-4.14;Francophone;Technique;1ère;F2 (Électrotechnique);series_only;Idem;
+TF-4.15;Francophone;Technique;1ère;F3 (Électronique);series_only;Idem;
+TF-4.16;Francophone;Technique;1ère;F4 (Génie Civil);series_only;Idem;
+TF-4.17;Francophone;Technique;1ère;F6 (BIPE/COPH/MIPE);series_only;Bureautique/Compta;Ajout PR #118
+TF-4.18;Francophone;Technique;1ère;F7 (Biologie-Biochimie);series_only;Bio Lab;Ajout PR #118
+TF-4.19;Francophone;Technique;1ère;F8 (Sciences Médico-Sociales);series_only;Médico-social;Ajout PR #118
+TF-4.20;Francophone;Technique;1ère;AF1 (Agro);series_only;Agricole;Ajout PR #118
+TF-4.21;Francophone;Technique;Terminale;F2;series_only;Bac Élec;exam_target BAC F2
+TF-4.22;Francophone;Technique;Terminale;F4;series_only;Bac BTP;
+TF-4.23;Francophone;Technique;Terminale;F7;series_only;Bac Bio Lab;
+TF-4.24;Anglophone;General;Form 1;-;derived;Form One student;Tronc commun
+TF-4.25;Anglophone;General;Form 2;-;derived;Idem;
+TF-4.26;Anglophone;General;Form 3;-;derived;Idem;
+TF-4.27;Anglophone;General;Form 4;-;derived;Idem;
+TF-4.28;Anglophone;General;Form 5;GCE O-Level (free basket);free_with_obligatory;Préparation GCE O-Level;PR #120 — 6-11 matières, ENG+FR+MATH locked
+TF-4.29;Anglophone;General;Lower Sixth;S1 / S2 / ... / A5 (13 séries);series_only;A-Level année 1;Cartes de 13 séries
+TF-4.30;Anglophone;General;Lower Sixth;S2 (Math-Phy);series_only;A-Level scientifique;
+TF-4.31;Anglophone;General;Lower Sixth;A3 (Bio-Chem-Maths);series_only;A-Level médecine prep;
+TF-4.32;Anglophone;General;Upper Sixth;S2;series_only;A-Level année 2 = exam_target GCE A;
+TF-4.33;Anglophone;General;Upper Sixth;A1 (Lit-Eco-French);series_only;Littéraire A-Level;
+TF-4.34;Anglophone;Technical;Form 4;TVE-IT / TVE-Catering ?;tve_picker;Technical Voc Ed Intermediate;⚠️ statut actuel : inactif (à activer en story future)
+TF-4.35;Anglophone;Technical;Form 5;TVE Advanced;tve_picker;Idem;⚠️ inactif
