@@ -493,6 +493,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingStreamPickerEmptyRetry => 'Retry';
 
   @override
+  String get onboardingLoaderLabel => 'Loading…';
+
+  @override
   String onboardingPickerCounter(int count, int max) {
     return '$count/$max selected';
   }

@@ -17,6 +17,7 @@ import '../../../../core/catalogue/providers.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
+import '../../../../core/widgets/feedback/onboarding_loader.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
 import '../state/onboarding_providers.dart';
@@ -97,12 +98,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
           ),
         );
       },
-      loading: () => const Center(
-        child: Padding(
-          padding: EdgeInsets.all(24),
-          child: CircularProgressIndicator(),
-        ),
-      ),
+      loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
       error: (e, st) => ErrorRetryView(
         onRetry: () => ref.invalidate(catalogueProvider),
         kind: ErrorRetryKind.offline,

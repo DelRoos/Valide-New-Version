@@ -926,6 +926,12 @@ abstract class AppLocalizations {
   /// **'Réessayer'**
   String get onboardingStreamPickerEmptyRetry;
 
+  /// Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore.
+  ///
+  /// In fr, this message translates to:
+  /// **'Chargement…'**
+  String get onboardingLoaderLabel;
+
   /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
   ///
   /// In fr, this message translates to:
