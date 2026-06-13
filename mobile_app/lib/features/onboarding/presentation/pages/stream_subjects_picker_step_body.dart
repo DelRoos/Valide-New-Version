@@ -301,41 +301,7 @@ class _DerivedPreview extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 for (final subject in subjects) ...[
-                  Container(
-                    margin: EdgeInsets.symmetric(
-                      horizontal: AppSpacing.s4.w,
-                      vertical: AppSpacing.s1.h,
-                    ),
-                    padding: EdgeInsets.all(AppSpacing.s3.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.bg,
-                      borderRadius: BorderRadius.circular(AppRadius.lg),
-                      border: Border.all(color: AppColors.border),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          LucideIcons.bookOpen,
-                          color: AppColors.primary,
-                          size: 20.sp,
-                        ),
-                        SizedBox(width: AppSpacing.s3.w),
-                        Expanded(
-                          child: Text(
-                            subject.name[langKey] ??
-                                subject.name['fr'] ??
-                                subject.subjectId,
-                            style: AppTypography.bodyStrong,
-                          ),
-                        ),
-                        Icon(
-                          LucideIcons.lock,
-                          color: AppColors.inkSoft,
-                          size: 16.sp,
-                        ),
-                      ],
-                    ),
-                  ),
+                  _SubjectPreviewTile(subject: subject, langKey: langKey),
                 ],
                 SizedBox(height: AppSpacing.s8.h),
               ],
@@ -370,6 +336,66 @@ class _DerivedPreview extends StatelessWidget {
   }
 }
 
+/// Tile compacte affichant une matiere en mode preview read-only :
+/// icone livre + nom + abbreviation (si fournie Firestore) + cadenas.
+class _SubjectPreviewTile extends StatelessWidget {
+  const _SubjectPreviewTile({required this.subject, required this.langKey});
+
+  final Subject subject;
+  final String langKey;
+
+  @override
+  Widget build(BuildContext context) {
+    final name = subject.name[langKey] ??
+        subject.name['fr'] ??
+        subject.subjectId;
+    final abbr = subject.abbreviationFor(langKey);
+    return Container(
+      margin: EdgeInsets.symmetric(
+        horizontal: AppSpacing.s4.w,
+        vertical: AppSpacing.s1.h,
+      ),
+      padding: EdgeInsets.all(AppSpacing.s3.w),
+      decoration: BoxDecoration(
+        color: AppColors.bg,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        children: [
+          Icon(LucideIcons.bookOpen, color: AppColors.primary, size: 20.sp),
+          SizedBox(width: AppSpacing.s3.w),
+          Expanded(
+            child: Text(name, style: AppTypography.bodyStrong),
+          ),
+          if (abbr != null) ...[
+            Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSpacing.s2.w,
+                vertical: 2,
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.primarySoft,
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Text(
+                abbr,
+                style: AppTypography.caption.copyWith(
+                  fontSize: 11.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.primary,
+                ),
+              ),
+            ),
+            SizedBox(width: AppSpacing.s2.w),
+          ],
+          Icon(LucideIcons.lock, color: AppColors.inkSoft, size: 16.sp),
+        ],
+      ),
+    );
+  }
+}
+
 /// Stream picker : liste verticale de SelectionCard pour choisir une serie.
 class _StreamPicker extends StatelessWidget {
   const _StreamPicker({
@@ -391,8 +417,9 @@ class _StreamPicker extends StatelessWidget {
           for (final stream in streams) ...[
             SelectionCard(
               title: stream.name[langKey] ?? stream.name.values.first,
+              description: stream.descriptionFor(langKey),
               selected: false,
-              variant: SelectionCardVariant.compact,
+              variant: SelectionCardVariant.standard,
               showRadio: false,
               onTap: () => onSelected(stream.serieId),
             ),

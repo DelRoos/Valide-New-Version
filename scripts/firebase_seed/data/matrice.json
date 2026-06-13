@@ -1,6 +1,6 @@
 {
   "version": "2.0.0",
-  "generatedAt": "2026-06-09",
+  "generatedAt": "2026-06-13T00:00:00Z",
   "comment": "Matrice v2 alignement nomenclature officielle camerounaise (Story 1.12 + 1.11a). Sources : Office du Baccalaureat + Cameroon GCE Board. Modifier ici puis re-run seed_catalogue.py.",
   "filieres": [
     {
@@ -247,7 +247,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 10,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Litteraire — Lettres, Langues, Sciences humaines",
+        "en": "Literary — Letters, Languages, Humanities"
+      }
     },
     {
       "serieId": "francophone_seconde_c",
@@ -261,7 +265,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 20,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Scientifique — Maths, Physique, SVT en dominante",
+        "en": "Scientific — Maths, Physics, Biology dominant"
+      }
     },
     {
       "serieId": "francophone_premiere_a",
@@ -275,7 +283,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 30,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Litteraire — Lettres, Langues, Sciences humaines",
+        "en": "Literary — Letters, Languages, Humanities"
+      }
     },
     {
       "serieId": "francophone_premiere_c",
@@ -289,7 +301,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 40,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques, Physique-Chimie",
+        "en": "Mathematics, Physics-Chemistry"
+      }
     },
     {
       "serieId": "francophone_premiere_d",
@@ -303,7 +319,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 50,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques, SVT, Environnement/Hygiene/Biotech",
+        "en": "Mathematics, Biology, Environment/Hygiene/Biotech"
+      }
     },
     {
       "serieId": "francophone_premiere_e",
@@ -317,7 +337,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 60,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques et Techniques (lycee technique)",
+        "en": "Mathematics and Technical (technical college)"
+      }
     },
     {
       "serieId": "francophone_terminale_a1",
@@ -331,7 +355,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 65,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin + Grec",
+        "en": "Letters + Latin + Greek"
+      }
     },
     {
       "serieId": "francophone_terminale_a2",
@@ -345,7 +373,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 66,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin + Langue Vivante 2",
+        "en": "Letters + Latin + LV2"
+      }
     },
     {
       "serieId": "francophone_terminale_a3",
@@ -359,7 +391,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 67,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin",
+        "en": "Letters + Latin"
+      }
     },
     {
       "serieId": "francophone_terminale_a4",
@@ -373,7 +409,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 68,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Langue Vivante 2 + Philosophie",
+        "en": "Letters + LV2 + Philosophy"
+      }
     },
     {
       "serieId": "francophone_terminale_a5",
@@ -387,7 +427,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 69,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Langues Vivantes 2 et 3 (Probatoire)",
+        "en": "Letters + LV2 + LV3 (Probatoire only)"
+      }
     },
     {
       "serieId": "francophone_terminale_a",
@@ -401,7 +445,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 70,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Litteraire — Lettres, Langues, Sciences humaines",
+        "en": "Literary — Letters, Languages, Humanities"
+      }
     },
     {
       "serieId": "francophone_terminale_abi",
@@ -415,7 +463,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 71,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres Bilingues — Francais + Anglais a parite",
+        "en": "Bilingual Letters — French + English (parity)"
+      }
     },
     {
       "serieId": "francophone_terminale_sh",
@@ -429,7 +481,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 72,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Sciences Humaines — Histoire, Geographie, Philo",
+        "en": "Humanities — History, Geography, Philosophy"
+      }
     },
     {
       "serieId": "francophone_terminale_ac",
@@ -443,7 +499,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 73,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Art et Cinematographie",
+        "en": "Art and Cinematography"
+      }
     },
     {
       "serieId": "francophone_terminale_ti",
@@ -457,7 +517,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 74,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Technologie de l'Information (lycee technique)",
+        "en": "Information Technology (technical college)"
+      }
     },
     {
       "serieId": "francophone_terminale_c",
@@ -471,7 +535,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 80,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques, Physique-Chimie",
+        "en": "Mathematics, Physics-Chemistry"
+      }
     },
     {
       "serieId": "francophone_terminale_d",
@@ -485,7 +553,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 90,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques, SVT, Environnement/Hygiene/Biotechnologie",
+        "en": "Mathematics, Biology, Environment/Hygiene/Biotech"
+      }
     },
     {
       "serieId": "francophone_terminale_e",
@@ -499,7 +571,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 100,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Mathematiques et Techniques (lycee technique)",
+        "en": "Mathematics and Technical (technical college)"
+      }
     },
     {
       "serieId": "francophone_premiere_f1",
@@ -527,7 +603,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 205,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "F1 — Fabrication mecanique",
+        "en": "F1 — Mechanical fabrication"
+      }
     },
     {
       "serieId": "francophone_premiere_f2",
@@ -555,7 +635,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 215,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "F2 — Electronique",
+        "en": "F2 — Electronics"
+      }
     },
     {
       "serieId": "francophone_premiere_f3",
@@ -583,7 +667,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 225,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "F3 — Electrotechnique",
+        "en": "F3 — Electrotechnics"
+      }
     },
     {
       "serieId": "francophone_premiere_f4",
@@ -611,7 +699,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 235,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "F4 — Genie civil (BA / BE / TP)",
+        "en": "F4 — Civil engineering (BA/BE/TP)"
+      }
     },
     {
       "serieId": "francophone_premiere_f5",
@@ -639,7 +731,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 245,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "F5 — Froid et climatisation",
+        "en": "F5 — Refrigeration and air conditioning"
+      }
     },
     {
       "serieId": "francophone_premiere_g1",
@@ -667,7 +763,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 305,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "ACA — Action et Communication Administratives",
+        "en": "ACA — Administrative Action and Communication"
+      }
     },
     {
       "serieId": "francophone_premiere_g2",
@@ -695,7 +795,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 315,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "CG — Comptabilite et Gestion",
+        "en": "CG — Accounting and Management"
+      }
     },
     {
       "serieId": "francophone_premiere_g3",
@@ -723,7 +827,11 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 325,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "ACC — Action et Communication Commerciales",
+        "en": "ACC — Commercial Action and Communication"
+      }
     },
     {
       "serieId": "francophone_terminale_esf",
@@ -737,7 +845,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 400,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "ESF — Economie Sociale et Familiale",
+        "en": "ESF — Social and Family Economics"
+      }
     },
     {
       "serieId": "francophone_terminale_ih",
@@ -751,7 +863,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 410,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "IH — Industrie d'Habillement",
+        "en": "IH — Clothing Industry"
+      }
     },
     {
       "serieId": "francophone_terminale_mvt",
@@ -765,7 +881,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 420,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "CMA/MVT — Construction auto, vehicules tourisme",
+        "en": "CMA/MVT — Auto repair, passenger vehicles"
+      }
     },
     {
       "serieId": "francophone_terminale_aca",
@@ -779,7 +899,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 430,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "ACA — Action et Communication Administratives",
+        "en": "ACA — Administrative Action and Communication"
+      }
     },
     {
       "serieId": "francophone_terminale_mava",
@@ -793,7 +917,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 440,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "MAVA — Maintenance vehicules automobiles",
+        "en": "MAVA — Auto vehicle maintenance"
+      }
     },
     {
       "serieId": "francophone_terminale_meac_auto",
@@ -807,7 +935,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 450,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "MEAC — Maintenance equipements auto",
+        "en": "MEAC — Auto equipment maintenance"
+      }
     },
     {
       "serieId": "francophone_terminale_mem",
@@ -821,7 +953,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 460,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "MEM — Maintenance electromecanique",
+        "en": "MEM — Electromechanical maintenance"
+      }
     },
     {
       "serieId": "francophone_terminale_meca",
@@ -835,7 +971,11 @@
       "canOptOut": false,
       "isActive": false,
       "sortOrder": 470,
-      "pickerMode": "derived"
+      "pickerMode": "derived",
+      "description": {
+        "fr": "MECA — Mecanique d'usinage",
+        "en": "MECA — Mechanical machining"
+      }
     },
     {
       "serieId": "anglophone_lower_sixth_s1",
@@ -851,7 +991,11 @@
       "sortOrder": 510,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S1 — Chemistry, Physics, Pure Mathematics",
+        "en": "S1 — Chemistry, Physics, Pure Mathematics"
+      }
     },
     {
       "serieId": "anglophone_lower_sixth_s2",
@@ -867,7 +1011,11 @@
       "sortOrder": 520,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S2 — Chemistry, Physics, Biology",
+        "en": "S2 — Chemistry, Physics, Biology"
+      }
     },
     {
       "serieId": "anglophone_lower_sixth_s3",
@@ -883,7 +1031,11 @@
       "sortOrder": 530,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S3 — Biology, Chemistry, Pure Mathematics",
+        "en": "S3 — Biology, Chemistry, Pure Mathematics"
+      }
     },
     {
       "serieId": "anglophone_lower_sixth_s4",
@@ -979,7 +1131,11 @@
       "sortOrder": 610,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S1 — Chemistry, Physics, Pure Mathematics",
+        "en": "S1 — Chemistry, Physics, Pure Mathematics"
+      }
     },
     {
       "serieId": "anglophone_upper_sixth_s2",
@@ -995,7 +1151,11 @@
       "sortOrder": 620,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S2 — Chemistry, Physics, Biology",
+        "en": "S2 — Chemistry, Physics, Biology"
+      }
     },
     {
       "serieId": "anglophone_upper_sixth_s3",
@@ -1011,7 +1171,11 @@
       "sortOrder": 630,
       "pickerMode": "opt_out",
       "minSubjects": 3,
-      "maxSubjects": 5
+      "maxSubjects": 5,
+      "description": {
+        "fr": "S3 — Biology, Chemistry, Pure Mathematics",
+        "en": "S3 — Biology, Chemistry, Pure Mathematics"
+      }
     },
     {
       "serieId": "anglophone_upper_sixth_s4",
@@ -1758,7 +1922,11 @@
       },
       "icon": "book-open-text",
       "isActive": true,
-      "sortOrder": 10
+      "sortOrder": 10,
+      "abbreviation": {
+        "fr": "EngL",
+        "en": "EngL"
+      }
     },
     {
       "subjectId": "francophone_math",
@@ -1769,7 +1937,11 @@
       },
       "icon": "function-square",
       "isActive": true,
-      "sortOrder": 10
+      "sortOrder": 10,
+      "abbreviation": {
+        "fr": "Maths",
+        "en": "Maths"
+      }
     },
     {
       "subjectId": "anglophone_english_lit",
@@ -1780,7 +1952,11 @@
       },
       "icon": "book-marked",
       "isActive": true,
-      "sortOrder": 20
+      "sortOrder": 20,
+      "abbreviation": {
+        "fr": "EngLit",
+        "en": "EngLit"
+      }
     },
     {
       "subjectId": "francophone_pct",
@@ -1791,7 +1967,11 @@
       },
       "icon": "atom",
       "isActive": false,
-      "sortOrder": 20
+      "sortOrder": 20,
+      "abbreviation": {
+        "fr": "PCT",
+        "en": "PCT"
+      }
     },
     {
       "subjectId": "francophone_physique",
@@ -1802,7 +1982,11 @@
       },
       "icon": "atom",
       "isActive": true,
-      "sortOrder": 22
+      "sortOrder": 22,
+      "abbreviation": {
+        "fr": "Phys",
+        "en": "Phys"
+      }
     },
     {
       "subjectId": "francophone_chimie",
@@ -1813,7 +1997,11 @@
       },
       "icon": "flask-conical",
       "isActive": true,
-      "sortOrder": 24
+      "sortOrder": 24,
+      "abbreviation": {
+        "fr": "Chim",
+        "en": "Chem"
+      }
     },
     {
       "subjectId": "francophone_sciences_phy",
@@ -1824,7 +2012,11 @@
       },
       "icon": "flask-conical",
       "isActive": true,
-      "sortOrder": 25
+      "sortOrder": 25,
+      "abbreviation": {
+        "fr": "Sc.Phy",
+        "en": "Phy.Sc"
+      }
     },
     {
       "subjectId": "anglophone_french",
@@ -1835,7 +2027,11 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 30
+      "sortOrder": 30,
+      "abbreviation": {
+        "fr": "FR",
+        "en": "Fr"
+      }
     },
     {
       "subjectId": "francophone_svt",
@@ -1846,7 +2042,11 @@
       },
       "icon": "dna",
       "isActive": true,
-      "sortOrder": 30
+      "sortOrder": 30,
+      "abbreviation": {
+        "fr": "SVT",
+        "en": "SVT"
+      }
     },
     {
       "subjectId": "francophone_environnement",
@@ -1857,7 +2057,11 @@
       },
       "icon": "leaf",
       "isActive": true,
-      "sortOrder": 32
+      "sortOrder": 32,
+      "abbreviation": {
+        "fr": "EHB",
+        "en": "EHB"
+      }
     },
     {
       "subjectId": "anglophone_special_bilingual_french",
@@ -1868,7 +2072,11 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 35
+      "sortOrder": 35,
+      "abbreviation": {
+        "fr": "FR-Bil",
+        "en": "FR-Bil"
+      }
     },
     {
       "subjectId": "francophone_si",
@@ -1879,7 +2087,11 @@
       },
       "icon": "cog",
       "isActive": true,
-      "sortOrder": 35
+      "sortOrder": 35,
+      "abbreviation": {
+        "fr": "SI",
+        "en": "IS"
+      }
     },
     {
       "subjectId": "anglophone_a_special_bilingual_french",
@@ -1890,7 +2102,11 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 36
+      "sortOrder": 36,
+      "abbreviation": {
+        "fr": "FR-Bil",
+        "en": "FR-Bil"
+      }
     },
     {
       "subjectId": "francophone_techno",
@@ -1901,7 +2117,11 @@
       },
       "icon": "cog",
       "isActive": true,
-      "sortOrder": 36
+      "sortOrder": 36,
+      "abbreviation": {
+        "fr": "Techno",
+        "en": "Tech"
+      }
     },
     {
       "subjectId": "anglophone_math",
@@ -1912,7 +2132,11 @@
       },
       "icon": "function-square",
       "isActive": true,
-      "sortOrder": 40
+      "sortOrder": 40,
+      "abbreviation": {
+        "fr": "Maths",
+        "en": "Maths"
+      }
     },
     {
       "subjectId": "francophone_fr",
@@ -1923,7 +2147,11 @@
       },
       "icon": "book-open-text",
       "isActive": true,
-      "sortOrder": 40
+      "sortOrder": 40,
+      "abbreviation": {
+        "fr": "FR",
+        "en": "FR"
+      }
     },
     {
       "subjectId": "anglophone_add_math",
@@ -1934,7 +2162,11 @@
       },
       "icon": "sigma",
       "isActive": true,
-      "sortOrder": 50
+      "sortOrder": 50,
+      "abbreviation": {
+        "fr": "Add.M",
+        "en": "Add.M"
+      }
     },
     {
       "subjectId": "francophone_en",
@@ -1945,7 +2177,11 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 50
+      "sortOrder": 50,
+      "abbreviation": {
+        "fr": "EN",
+        "en": "EN"
+      }
     },
     {
       "subjectId": "anglophone_pure_maths",
@@ -1956,7 +2192,11 @@
       },
       "icon": "sigma",
       "isActive": true,
-      "sortOrder": 55
+      "sortOrder": 55,
+      "abbreviation": {
+        "fr": "Maths",
+        "en": "Maths"
+      }
     },
     {
       "subjectId": "anglophone_pure_maths_mechanics",
@@ -1967,7 +2207,11 @@
       },
       "icon": "sigma",
       "isActive": true,
-      "sortOrder": 56
+      "sortOrder": 56,
+      "abbreviation": {
+        "fr": "PMM",
+        "en": "PMM"
+      }
     },
     {
       "subjectId": "anglophone_pure_maths_stats",
@@ -1978,7 +2222,11 @@
       },
       "icon": "sigma",
       "isActive": true,
-      "sortOrder": 57
+      "sortOrder": 57,
+      "abbreviation": {
+        "fr": "PMS",
+        "en": "PMS"
+      }
     },
     {
       "subjectId": "anglophone_further_maths",
@@ -1989,7 +2237,11 @@
       },
       "icon": "sigma",
       "isActive": true,
-      "sortOrder": 58
+      "sortOrder": 58,
+      "abbreviation": {
+        "fr": "FMaths",
+        "en": "FMaths"
+      }
     },
     {
       "subjectId": "anglophone_physics",
@@ -2000,7 +2252,11 @@
       },
       "icon": "atom",
       "isActive": true,
-      "sortOrder": 60
+      "sortOrder": 60,
+      "abbreviation": {
+        "fr": "Phys",
+        "en": "Phys"
+      }
     },
     {
       "subjectId": "francophone_lv2",
@@ -2011,7 +2267,11 @@
       },
       "icon": "globe",
       "isActive": true,
-      "sortOrder": 60
+      "sortOrder": 60,
+      "abbreviation": {
+        "fr": "LV2",
+        "en": "LV2"
+      }
     },
     {
       "subjectId": "anglophone_integrated_science",
@@ -2022,7 +2282,11 @@
       },
       "icon": "flask-conical",
       "isActive": true,
-      "sortOrder": 65
+      "sortOrder": 65,
+      "abbreviation": {
+        "fr": "Sci",
+        "en": "Sci"
+      }
     },
     {
       "subjectId": "anglophone_chemistry",
@@ -2033,7 +2297,11 @@
       },
       "icon": "flask-conical",
       "isActive": true,
-      "sortOrder": 70
+      "sortOrder": 70,
+      "abbreviation": {
+        "fr": "Chem",
+        "en": "Chem"
+      }
     },
     {
       "subjectId": "francophone_philo",
@@ -2044,7 +2312,11 @@
       },
       "icon": "brain",
       "isActive": true,
-      "sortOrder": 70
+      "sortOrder": 70,
+      "abbreviation": {
+        "fr": "Philo",
+        "en": "Philo"
+      }
     },
     {
       "subjectId": "anglophone_biology",
@@ -2055,7 +2327,11 @@
       },
       "icon": "dna",
       "isActive": true,
-      "sortOrder": 80
+      "sortOrder": 80,
+      "abbreviation": {
+        "fr": "Bio",
+        "en": "Bio"
+      }
     },
     {
       "subjectId": "francophone_hg",
@@ -2066,7 +2342,11 @@
       },
       "icon": "landmark",
       "isActive": true,
-      "sortOrder": 80
+      "sortOrder": 80,
+      "abbreviation": {
+        "fr": "HG",
+        "en": "HG"
+      }
     },
     {
       "subjectId": "anglophone_human_biology",
@@ -2077,7 +2357,11 @@
       },
       "icon": "dna",
       "isActive": true,
-      "sortOrder": 85
+      "sortOrder": 85,
+      "abbreviation": {
+        "fr": "H.Bio",
+        "en": "H.Bio"
+      }
     },
     {
       "subjectId": "francophone_info",
@@ -2088,7 +2372,11 @@
       },
       "icon": "code-2",
       "isActive": true,
-      "sortOrder": 85
+      "sortOrder": 85,
+      "abbreviation": {
+        "fr": "Info",
+        "en": "CS"
+      }
     },
     {
       "subjectId": "anglophone_geology",
@@ -2099,7 +2387,11 @@
       },
       "icon": "mountain",
       "isActive": true,
-      "sortOrder": 90
+      "sortOrder": 90,
+      "abbreviation": {
+        "fr": "Geol",
+        "en": "Geol"
+      }
     },
     {
       "subjectId": "francophone_ecv",
@@ -2110,7 +2402,11 @@
       },
       "icon": "scale",
       "isActive": true,
-      "sortOrder": 90
+      "sortOrder": 90,
+      "abbreviation": {
+        "fr": "ECV",
+        "en": "CivEd"
+      }
     },
     {
       "subjectId": "francophone_lcn",
@@ -2121,7 +2417,11 @@
       },
       "icon": "globe",
       "isActive": true,
-      "sortOrder": 95
+      "sortOrder": 95,
+      "abbreviation": {
+        "fr": "LCN",
+        "en": "NLC"
+      }
     },
     {
       "subjectId": "francophone_info_college",
@@ -2132,7 +2432,11 @@
       },
       "icon": "code-2",
       "isActive": true,
-      "sortOrder": 96
+      "sortOrder": 96,
+      "abbreviation": {
+        "fr": "Info",
+        "en": "CS"
+      }
     },
     {
       "subjectId": "francophone_ea",
@@ -2143,7 +2447,11 @@
       },
       "icon": "palette",
       "isActive": true,
-      "sortOrder": 97
+      "sortOrder": 97,
+      "abbreviation": {
+        "fr": "EA",
+        "en": "Arts"
+      }
     },
     {
       "subjectId": "francophone_tm",
@@ -2154,7 +2462,11 @@
       },
       "icon": "hammer",
       "isActive": true,
-      "sortOrder": 98
+      "sortOrder": 98,
+      "abbreviation": {
+        "fr": "TM",
+        "en": "ML"
+      }
     },
     {
       "subjectId": "anglophone_geo",
@@ -2165,7 +2477,11 @@
       },
       "icon": "globe",
       "isActive": true,
-      "sortOrder": 100
+      "sortOrder": 100,
+      "abbreviation": {
+        "fr": "Geo",
+        "en": "Geo"
+      }
     },
     {
       "subjectId": "francophone_eps",
@@ -2176,7 +2492,11 @@
       },
       "icon": "dumbbell",
       "isActive": true,
-      "sortOrder": 100
+      "sortOrder": 100,
+      "abbreviation": {
+        "fr": "EPS",
+        "en": "PE"
+      }
     },
     {
       "subjectId": "anglophone_accounting",
@@ -2187,7 +2507,11 @@
       },
       "icon": "calculator",
       "isActive": true,
-      "sortOrder": 105
+      "sortOrder": 105,
+      "abbreviation": {
+        "fr": "Acct",
+        "en": "Acct"
+      }
     },
     {
       "subjectId": "anglophone_history",
@@ -2198,7 +2522,11 @@
       },
       "icon": "landmark",
       "isActive": true,
-      "sortOrder": 110
+      "sortOrder": 110,
+      "abbreviation": {
+        "fr": "His",
+        "en": "His"
+      }
     },
     {
       "subjectId": "anglophone_economics",
@@ -2209,7 +2537,11 @@
       },
       "icon": "trending-up",
       "isActive": true,
-      "sortOrder": 120
+      "sortOrder": 120,
+      "abbreviation": {
+        "fr": "Eco",
+        "en": "Eco"
+      }
     },
     {
       "subjectId": "anglophone_computer_science",
@@ -2220,7 +2552,11 @@
       },
       "icon": "code-2",
       "isActive": true,
-      "sortOrder": 130
+      "sortOrder": 130,
+      "abbreviation": {
+        "fr": "CS",
+        "en": "CS"
+      }
     },
     {
       "subjectId": "anglophone_ict",
@@ -2231,7 +2567,11 @@
       },
       "icon": "code-2",
       "isActive": true,
-      "sortOrder": 135
+      "sortOrder": 135,
+      "abbreviation": {
+        "fr": "ICT",
+        "en": "ICT"
+      }
     },
     {
       "subjectId": "anglophone_citizenship",
@@ -2242,7 +2582,11 @@
       },
       "icon": "scale",
       "isActive": true,
-      "sortOrder": 140
+      "sortOrder": 140,
+      "abbreviation": {
+        "fr": "Citizen",
+        "en": "Citizen"
+      }
     },
     {
       "subjectId": "anglophone_religious_studies",
@@ -2253,7 +2597,11 @@
       },
       "icon": "book",
       "isActive": true,
-      "sortOrder": 150
+      "sortOrder": 150,
+      "abbreviation": {
+        "fr": "RS",
+        "en": "RS"
+      }
     },
     {
       "subjectId": "anglophone_pe",
@@ -2264,7 +2612,11 @@
       },
       "icon": "dumbbell",
       "isActive": true,
-      "sortOrder": 160
+      "sortOrder": 160,
+      "abbreviation": {
+        "fr": "PE",
+        "en": "PE"
+      }
     },
     {
       "subjectId": "anglophone_literature",
@@ -2275,7 +2627,11 @@
       },
       "icon": "book-marked",
       "isActive": true,
-      "sortOrder": 170
+      "sortOrder": 170,
+      "abbreviation": {
+        "fr": "Lit",
+        "en": "Lit"
+      }
     },
     {
       "subjectId": "anglophone_philosophy",
@@ -2286,7 +2642,11 @@
       },
       "icon": "brain",
       "isActive": true,
-      "sortOrder": 180
+      "sortOrder": 180,
+      "abbreviation": {
+        "fr": "Philo",
+        "en": "Philo"
+      }
     },
     {
       "subjectId": "anglophone_logic",
@@ -2297,7 +2657,11 @@
       },
       "icon": "brain",
       "isActive": true,
-      "sortOrder": 185
+      "sortOrder": 185,
+      "abbreviation": {
+        "fr": "Logic",
+        "en": "Logic"
+      }
     },
     {
       "subjectId": "anglophone_food_science_nutrition",
@@ -2308,7 +2672,11 @@
       },
       "icon": "utensils",
       "isActive": true,
-      "sortOrder": 195
+      "sortOrder": 195,
+      "abbreviation": {
+        "fr": "FSN",
+        "en": "FSN"
+      }
     },
     {
       "subjectId": "francophone_tech_atelier",
@@ -2319,7 +2687,11 @@
       },
       "icon": "wrench",
       "isActive": true,
-      "sortOrder": 200
+      "sortOrder": 200,
+      "abbreviation": {
+        "fr": "Atelier",
+        "en": "Workshop"
+      }
     },
     {
       "subjectId": "francophone_tech_admin",
@@ -2330,7 +2702,11 @@
       },
       "icon": "file-text",
       "isActive": true,
-      "sortOrder": 210
+      "sortOrder": 210,
+      "abbreviation": {
+        "fr": "Admin",
+        "en": "Admin"
+      }
     },
     {
       "subjectId": "francophone_tech_compta",
@@ -2341,7 +2717,11 @@
       },
       "icon": "calculator",
       "isActive": true,
-      "sortOrder": 220
+      "sortOrder": 220,
+      "abbreviation": {
+        "fr": "Cpta",
+        "en": "Acct"
+      }
     },
     {
       "subjectId": "francophone_tech_commerce",
@@ -2352,7 +2732,11 @@
       },
       "icon": "shopping-bag",
       "isActive": true,
-      "sortOrder": 230
+      "sortOrder": 230,
+      "abbreviation": {
+        "fr": "Comm",
+        "en": "Comm"
+      }
     },
     {
       "subjectId": "francophone_latin",
@@ -2363,7 +2747,11 @@
       },
       "icon": "scroll-text",
       "isActive": true,
-      "sortOrder": 300
+      "sortOrder": 300,
+      "abbreviation": {
+        "fr": "Latin",
+        "en": "Latin"
+      }
     },
     {
       "subjectId": "francophone_grec",
@@ -2374,7 +2762,11 @@
       },
       "icon": "scroll-text",
       "isActive": true,
-      "sortOrder": 305
+      "sortOrder": 305,
+      "abbreviation": {
+        "fr": "Grec",
+        "en": "Greek"
+      }
     },
     {
       "subjectId": "francophone_lv3",
@@ -2385,7 +2777,11 @@
       },
       "icon": "globe",
       "isActive": false,
-      "sortOrder": 310
+      "sortOrder": 310,
+      "abbreviation": {
+        "fr": "LV3",
+        "en": "LV3"
+      }
     },
     {
       "subjectId": "francophone_litterature",
@@ -2396,7 +2792,11 @@
       },
       "icon": "book-marked",
       "isActive": true,
-      "sortOrder": 315
+      "sortOrder": 315,
+      "abbreviation": {
+        "fr": "Litt",
+        "en": "Lit"
+      }
     },
     {
       "subjectId": "francophone_intensive_english",
@@ -2407,7 +2807,11 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 320
+      "sortOrder": 320,
+      "abbreviation": {
+        "fr": "Eng+",
+        "en": "Eng+"
+      }
     },
     {
       "subjectId": "francophone_oral_communication",
@@ -2418,7 +2822,11 @@
       },
       "icon": "mic",
       "isActive": true,
-      "sortOrder": 325
+      "sortOrder": 325,
+      "abbreviation": {
+        "fr": "OralCom",
+        "en": "OralCom"
+      }
     },
     {
       "subjectId": "francophone_manual_labour",
@@ -2429,7 +2837,11 @@
       },
       "icon": "hammer",
       "isActive": true,
-      "sortOrder": 330
+      "sortOrder": 330,
+      "abbreviation": {
+        "fr": "TM",
+        "en": "ML"
+      }
     },
     {
       "subjectId": "francophone_arts_cinema",
@@ -2440,7 +2852,11 @@
       },
       "icon": "film",
       "isActive": true,
-      "sortOrder": 335
+      "sortOrder": 335,
+      "abbreviation": {
+        "fr": "Arts",
+        "en": "Arts"
+      }
     },
     {
       "subjectId": "anglophone_electrical_equipment",
@@ -2451,7 +2867,11 @@
       },
       "icon": "zap",
       "isActive": false,
-      "sortOrder": 500
+      "sortOrder": 500,
+      "abbreviation": {
+        "fr": "ElecEq",
+        "en": "ElecEq"
+      }
     },
     {
       "subjectId": "anglophone_electronics",
@@ -2462,7 +2882,11 @@
       },
       "icon": "cpu",
       "isActive": false,
-      "sortOrder": 505
+      "sortOrder": 505,
+      "abbreviation": {
+        "fr": "Electron",
+        "en": "Electron"
+      }
     },
     {
       "subjectId": "anglophone_mechanical_engineering",
@@ -2473,7 +2897,11 @@
       },
       "icon": "cog",
       "isActive": false,
-      "sortOrder": 510
+      "sortOrder": 510,
+      "abbreviation": {
+        "fr": "MechEng",
+        "en": "MechEng"
+      }
     },
     {
       "subjectId": "anglophone_civil_engineering_building",
@@ -2484,7 +2912,11 @@
       },
       "icon": "building",
       "isActive": false,
-      "sortOrder": 515
+      "sortOrder": 515,
+      "abbreviation": {
+        "fr": "CivilEng",
+        "en": "CivilEng"
+      }
     },
     {
       "subjectId": "anglophone_office_practice",
@@ -2495,7 +2927,11 @@
       },
       "icon": "briefcase",
       "isActive": false,
-      "sortOrder": 520
+      "sortOrder": 520,
+      "abbreviation": {
+        "fr": "Office",
+        "en": "Office"
+      }
     },
     {
       "subjectId": "anglophone_clothing_textiles",
@@ -2506,7 +2942,11 @@
       },
       "icon": "shirt",
       "isActive": false,
-      "sortOrder": 525
+      "sortOrder": 525,
+      "abbreviation": {
+        "fr": "Textile",
+        "en": "Textile"
+      }
     },
     {
       "subjectId": "francophone_tech_general_etendu",
@@ -2517,7 +2957,11 @@
       },
       "icon": "book-open",
       "isActive": false,
-      "sortOrder": 999
+      "sortOrder": 999,
+      "abbreviation": {
+        "fr": "TGE",
+        "en": "TGE"
+      }
     }
   ],
   "exam_targets": [

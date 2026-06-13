@@ -153,6 +153,9 @@ class Serie extends Equatable {
     this.professionalSubjectIds = const [],
     this.relatedProfessionalSubjectIds = const [],
     this.otherSubjectIds = const [],
+    // NEW v3 — 2026-06-13 : sous-texte descriptif affiche dans SelectionCard.
+    // Source : doc/templates/src/data/educationData.ts § Serie.desc.
+    this.description = const <String, String>{},
   });
 
   final String serieId;
@@ -171,6 +174,16 @@ class Serie extends Equatable {
   final List<String> professionalSubjectIds;
   final List<String> relatedProfessionalSubjectIds;
   final List<String> otherSubjectIds;
+
+  // NEW v3 — 2026-06-13 (bilingue {fr,en}). Vide si pas defini en Firestore.
+  final Map<String, String> description;
+
+  /// Helper UI : retourne la description dans la langue demandee, ou null
+  /// si vide (caller affiche pas le sous-texte).
+  String? descriptionFor(String langKey) {
+    final v = description[langKey] ?? description['fr'];
+    return (v == null || v.isEmpty) ? null : v;
+  }
 
   Map<String, dynamic> toJson() => {
         'serieId': serieId,
@@ -206,6 +219,7 @@ class Serie extends Equatable {
         professionalSubjectIds,
         relatedProfessionalSubjectIds,
         otherSubjectIds,
+        description,
       ];
 }
 
@@ -218,6 +232,9 @@ class Subject extends Equatable {
     required this.icon,
     required this.isActive,
     required this.sortOrder,
+    // NEW v2 — 2026-06-13 : libelle court affichable a cote du nom long.
+    this.abbreviation = const <String, String>{},
+    this.description = const <String, String>{},
   });
 
   final String subjectId;
@@ -227,6 +244,20 @@ class Subject extends Equatable {
   final bool isActive;
   final int sortOrder;
 
+  // NEW v2 — 2026-06-13. Vide si pas defini en Firestore.
+  final Map<String, String> abbreviation;
+  final Map<String, String> description;
+
+  String? abbreviationFor(String langKey) {
+    final v = abbreviation[langKey] ?? abbreviation['fr'];
+    return (v == null || v.isEmpty) ? null : v;
+  }
+
+  String? descriptionFor(String langKey) {
+    final v = description[langKey] ?? description['fr'];
+    return (v == null || v.isEmpty) ? null : v;
+  }
+
   Map<String, dynamic> toJson() => {
         'subjectId': subjectId,
         'subSystem': subSystem,
@@ -234,11 +265,21 @@ class Subject extends Equatable {
         'icon': icon,
         'isActive': isActive,
         'sortOrder': sortOrder,
+        'abbreviation': abbreviation,
+        'description': description,
       };
 
   @override
-  List<Object?> get props =>
-      [subjectId, subSystem, name, icon, isActive, sortOrder];
+  List<Object?> get props => [
+        subjectId,
+        subSystem,
+        name,
+        icon,
+        isActive,
+        sortOrder,
+        abbreviation,
+        description,
+      ];
 }
 
 /// Examen visé (ex. `exam_bac_francophone_d`, `exam_gce_a_level_anglophone_s2`,
