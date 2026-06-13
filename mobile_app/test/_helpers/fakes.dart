@@ -48,6 +48,20 @@ class _FakeUser implements User {
   dynamic noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }
 
+/// Audit NEW-BUG-17 — Factory publique pour les tests qui doivent stubber
+/// `currentUserProvider` directement (StreamProvider sur authStateChanges).
+User fakeUser({
+  required String uid,
+  required bool isAnonymous,
+  String? displayName,
+}) {
+  return _FakeUser(
+    uid: uid,
+    isAnonymous: isAnonymous,
+    displayName: displayName,
+  );
+}
+
 class FakeUserProfileRepository implements UserProfileRepository {
   FakeUserProfileRepository({this.profileData});
 

@@ -92,11 +92,17 @@ Future<ProfileCompletionState> _resolveCompletion({
   required String? uid,
   required Stream<Map<String, dynamic>?> profileStream,
 }) async {
+  // Audit NEW-BUG-17 — profileCompletionProvider watch maintenant
+  // currentUserProvider (StreamProvider). On override pour emettre un User
+  // factice avec l'uid demande (ou null).
   final container = ProviderContainer(
     overrides: [
       subSystemNotifierProvider
           .overrideWith(() => _StubSubSystemNotifier(initialSubSystem)),
       firebaseAuthProvider.overrideWithValue(_FakeAuth(uid)),
+      currentUserProvider.overrideWith(
+        (ref) => Stream.value(uid == null ? null : _FakeUser(uid)),
+      ),
       userProfileRepositoryProvider
           .overrideWithValue(_FakeRepo(profileStream)),
     ],

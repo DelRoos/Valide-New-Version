@@ -43,6 +43,22 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
   return FirebaseAuth.instance;
 });
 
+/// Audit NEW-BUG-17 2026-06-13 — Stream du `User?` courant qui propage les
+/// changements d'authentification (signIn, signOut, anonymous link).
+///
+/// Pourquoi : avant ce provider, `profileCompletionProvider` lisait
+/// `firebaseAuthProvider.currentUser?.uid` directement. Comme
+/// `firebaseAuthProvider` est un `Provider` STATIQUE (l'instance
+/// `FirebaseAuth` ne change jamais), Riverpod ne rebuild PAS les watchers
+/// quand `currentUser` change. Resultat : apres `signInAnonymously()` au
+/// step 5, le router restait bloque avec uid=null.
+///
+/// Maintenant on watch `authStateChanges()` qui est un vrai Stream emis
+/// a chaque transition d'auth, propage via Riverpod.
+final currentUserProvider = StreamProvider<User?>((ref) {
+  return ref.watch(firebaseAuthProvider).authStateChanges();
+});
+
 /// Taille du cache Firestore en octets. 40 MB borne adaptee aux telephones
 /// modestes du marche cible (NFR-1 stockage limite, NFR-2 perf).
 const int _firestoreCacheSizeBytes = 40 * 1024 * 1024;
