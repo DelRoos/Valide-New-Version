@@ -13,6 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
+import '../../../core/catalogue/domain/catalogue_repository.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/logging/log_safe.dart';
 import '../../../core/logging/perf_logger.dart';
@@ -30,13 +31,16 @@ class OnboardingFlushService {
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
     required OnboardingDraftPrefs draftPrefs,
+    required CatalogueRepository catalogueRepository,
   })  : _auth = auth,
         _firestore = firestore,
-        _draftPrefs = draftPrefs;
+        _draftPrefs = draftPrefs,
+        _catalogueRepository = catalogueRepository;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final OnboardingDraftPrefs _draftPrefs;
+  final CatalogueRepository _catalogueRepository;
 
   /// Flush l'etat onboarding dans Firestore. Idempotent grace au
   /// `set(merge: true)` (peut etre rejoue si echec partiel).
@@ -55,6 +59,13 @@ class OnboardingFlushService {
     final uid = user.uid;
     final uidShort = uid.length >= 6 ? '${uid.substring(0, 6)}...' : uid;
 
+    // Audit BUG-02 2026-06-13 : en mode derive (levelRequiresPicker=false),
+    // le user saute step 4 -> state.pickedSubjects reste []. Le flush ecrirait
+    // pickedSubjects=[] -> profileCompletionProvider retournerait serieMissing
+    // -> redirect /onboarding/v2 -> boucle. Fix : auto-populer pickedSubjects
+    // via derive() AVANT le flush si mode derive + liste vide.
+    final effectiveState = await _autoPopulateDerivedSubjects(state);
+
     try {
       final docRef = _firestore.collection('users').doc(uid);
 
@@ -67,8 +78,8 @@ class OnboardingFlushService {
 
       final payload = <String, dynamic>{
         'uid': uid,
-        ...state.toFirestorePayload(),
-        'language': state.subSystem?.languageCode ?? 'fr',
+        ...effectiveState.toFirestorePayload(),
+        'language': effectiveState.subSystem?.languageCode ?? 'fr',
         'updatedAt': FieldValue.serverTimestamp(),
       };
       if (isCreate) {
@@ -118,13 +129,13 @@ class OnboardingFlushService {
 
       AppLogger.i(
         'flush OK uid=$uidShort '
-        'authProvider=${state.authProvider?.id} '
-        'isAnonymous=${state.isVisitor} '
-        'trackId=${state.trackId} levelId=${state.levelId} '
-        'streamId=${state.streamId ?? "-"} '
-        'subjects=${state.pickedSubjects.length} '
-        'phone=${maskPhone(state.phoneNumber)} '
-        'schoolSet=${state.schoolId != null || state.pendingSchoolRequestId != null}',
+        'authProvider=${effectiveState.authProvider?.id} '
+        'isAnonymous=${effectiveState.isVisitor} '
+        'trackId=${effectiveState.trackId} levelId=${effectiveState.levelId} '
+        'streamId=${effectiveState.streamId ?? "-"} '
+        'subjects=${effectiveState.pickedSubjects.length} '
+        'phone=${maskPhone(effectiveState.phoneNumber)} '
+        'schoolSet=${effectiveState.schoolId != null || effectiveState.pendingSchoolRequestId != null}',
       );
       // Audit 2026-06-13 (PR1) — Apres flush success, le doc users/{uid}
       // est source de verite : on clear le draft persiste pour eviter
@@ -149,6 +160,63 @@ class OnboardingFlushService {
       AppLogger.w('flush unexpected: $e uid=$uidShort', error: e);
       AppLogger.w('flush stack: $st');
       return Left(OnboardingFlushFailure(e.toString()));
+    }
+  }
+
+  /// Audit BUG-02 — Si l'utilisateur a choisi un niveau en mode `derived`
+  /// (ex. 6e francophone, Form 2 anglophone), `state.pickedSubjects` reste
+  /// `[]` car step 4 est skippe et aucun picker ne collecte les matieres.
+  /// Avant ce fix, le doc users/{uid} etait ecrit avec pickedSubjects=[] et
+  /// profileCompletionProvider retournait serieMissing -> redirect onboarding
+  /// boucle.
+  ///
+  /// Ici on appelle `derive()` pour resoudre les matieres dynamiquement et
+  /// les inclure dans le payload. Si derive() echoue (catalogue desync,
+  /// reseau coupe), on flush quand meme avec la liste vide — le user pourra
+  /// completer plus tard et le router renverra eventuellement vers
+  /// onboarding (comportement "soft", pas de blocage du flush).
+  Future<OnboardingState> _autoPopulateDerivedSubjects(
+    OnboardingState state,
+  ) async {
+    final shouldAutoPopulate = !state.levelRequiresPicker &&
+        state.pickedSubjects.isEmpty &&
+        state.subSystem != null &&
+        state.trackId != null &&
+        state.levelId != null;
+    if (!shouldAutoPopulate) return state;
+
+    AppLogger.i(
+      'flush auto-populate derived subjects '
+      'trackId=${state.trackId} levelId=${state.levelId}',
+    );
+    try {
+      final result = await _catalogueRepository.derive(
+        subSystem: state.subSystem!.id,
+        filiere: state.trackId!,
+        niveau: state.levelId!,
+        serie: state.streamId,
+      );
+      return result.fold(
+        (failure) {
+          AppLogger.w(
+            'flush auto-populate failed: ${failure.runtimeType} '
+            '-> proceed with empty pickedSubjects',
+          );
+          return state;
+        },
+        (profile) {
+          final ids = profile.subjects
+              .map((s) => s.subjectId)
+              .toList(growable: false);
+          AppLogger.i(
+            'flush auto-populate OK ${ids.length} subjects',
+          );
+          return state.copyWith(pickedSubjects: ids);
+        },
+      );
+    } catch (e) {
+      AppLogger.w('flush auto-populate threw: $e -> proceed empty');
+      return state;
     }
   }
 }
