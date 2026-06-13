@@ -53,6 +53,16 @@ class DevAuditService {
       'dev.prefs.clear',
       () => _prefs.clear(),
     );
+    // Audit 2026-06-13 — Verification explicite que le draft onboarding est
+    // bien parti (prefs.clear() devrait l'avoir fait, on confirme + log).
+    // Sans ce log, un draft residuel ferait silencieusement loadFromPersistence
+    // restaurer un cursus que le user pensait avoir efface.
+    final residualSubsystem = _prefs.getString('onboarding.subsystem');
+    final residualDraft = _prefs.getString('onboarding.draft');
+    AppLogger.i(
+      '[DEV] prefs cleared. residual subsystem=$residualSubsystem '
+      'draft=${residualDraft == null ? "<null>" : "<present!>"}',
+    );
     await logPerf(
       'dev.auth.signOut',
       () => _auth.signOut(),
@@ -63,7 +73,10 @@ class DevAuditService {
       'dev.auth.signInAnonymously',
       () => _auth.signInAnonymously(),
     );
-    AppLogger.i('[DEV] clearLocalAndSignOut OK');
+    final newUid = _auth.currentUser?.uid;
+    AppLogger.i(
+      '[DEV] clearLocalAndSignOut OK newUid=${newUid?.substring(0, 6)}...',
+    );
   }
 
   /// Delete doc users/{uid} puis delete le compte FirebaseAuth. Brutal — pas
