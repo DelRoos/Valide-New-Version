@@ -1,28 +1,24 @@
 // Providers Riverpod feature onboarding.
 //
-// Story E1bis-9 — Cleanup Epic 1 legacy. Suppression de :
-//   - `onboardingFlowProvider` + `OnboardingFlowNotifier` (state machine
-//     filiere/niveau/serie remplacee par `OnboardingNotifier` E1bis).
-//   - `onboardingFlowPrefsProvider` (persistance flow Story 1.8).
-//   - `derivedProfileProvider` refactor : lit `userProfileRepository.watchProfile()`
-//     au lieu de `onboardingFlowProvider`. Le dashboard consomme toujours ce
-//     provider pour afficher les matieres.
-//
 // Providers exposes :
 //   1. `sharedPreferencesProvider` : instance préchargée en `main.dart`.
 //   2. `subsystemPrefsProvider` : wrapper lazy autour de SharedPreferences.
-//   3. `subSystemNotifierProvider` : state in-memory du sous-système choisi.
-//   4. `userProfileRepositoryProvider` : impl Firestore.
-//   5. `profileCompletionProvider` (Story 1.5) : Stream `ProfileCompletionState`.
-//   6. `derivedProfileProvider` (refactor E1bis-9) : Stream du DerivedProfile
-//      derive de users/{uid}.
-//   7. `effectiveDerivedSubjectsProvider` (Story 1.4) : matieres filtrees
-//      `derivedSubjects \ optedOutSubjects`.
-//   8. `accountLinkingRepositoryProvider` + `accountLinkingNotifierProvider`
-//      (Story 1.6) — reutilises par E1bis-4 future.
-//   9. `schoolRepositoryProvider` + `schoolSearchNotifierProvider` (Story 1.7)
-//      — reutilises par E1bis-6 future.
-//  10. `googleSignInProvider` (Story 1.6).
+//   3. `onboardingDraftPrefsProvider` : persistance du draft flow E1bis
+//      (audit 2026-06-13 PR1).
+//   4. `subSystemNotifierProvider` : state in-memory du sous-système choisi.
+//   5. `userProfileRepositoryProvider` : impl Firestore.
+//   6. `onboardingFlushServiceProvider` : ecrit le profil onboarding dans
+//      users/{uid} apres completion (E1bis-7).
+//   7. `userSubjectsProvider` : Stream des Subject du user derives depuis
+//      users/{uid}.pickedSubjects + jointure catalogue.
+//   8. `profileCompletionProvider` : Stream `ProfileCompletionState` (garde
+//      navigation profil-incomplet).
+//   9. `accountLinkingRepositoryProvider` + `accountLinkingNotifierProvider` :
+//      OAuth Google/Apple, reutilise par auth_choice_step_body + account
+//      upgrade sheet (audit PR5).
+//  10. `schoolRepositoryProvider` + `schoolSearchNotifierProvider` :
+//      recherche autocomplete ecoles.
+//  11. `googleSignInProvider`.
 
 import 'dart:async';
 
@@ -356,14 +352,3 @@ final schoolSearchNotifierProvider =
     NotifierProvider<SchoolSearchNotifier, AsyncValue<List<School>>>(
   SchoolSearchNotifier.new,
 );
-
-// Story E1bis-9 — Suppression des providers Epic 1 :
-//   - `derivedProfileProvider` (FutureProvider derive de onboardingFlowProvider)
-//   - `effectiveDerivedSubjectsProvider` (filtre opted-out matieres)
-//
-// Justification : ces providers consommaient le schema Epic 1 (filiere/
-// niveau/serie/optedOutSubjects) sur users/{uid}. Le schema E1bis-4..7
-// (trackId/levelId/streamId/pickedSubjects) sera defini quand le flush
-// Firestore sera livre. En attendant, le `DashboardPage` affiche un empty
-// state pour les comptes sans profil flush. Pas de mid-state hybride
-// schema Epic 1 / E1bis maintenu cote code.

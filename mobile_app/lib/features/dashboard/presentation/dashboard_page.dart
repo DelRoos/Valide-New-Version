@@ -1,20 +1,14 @@
 // Story 1.9 — Dashboard skeleton (FR-10 partiel).
 //
-// Premier ecran metier post-onboarding. Pure presentation : aucun nouveau
-// provider/repo, on consomme :
-//   - subSystemNotifierProvider (Story 1.2) -> langKey
-//   - firebaseAuthProvider (Story 0.6) -> isAnonymous (lecture sync)
-//   - userProfileRepositoryProvider.watchProfile() (Story 1.5) -> displayName
-//   - derivedProfileProvider (Story 1.3) -> examTargets pour le bandeau
-//   - effectiveDerivedSubjectsProvider (Story 1.4) -> liste filtree des matieres
-//
-// AC5 fallback : si derivedProfile.Left ou effective.data([]) -> empty state.
-// Loading : skeleton shimmer via flutter_animate (Story 0.14 deja au pubspec).
+// Premier ecran metier post-onboarding. Pure presentation : on consomme
+//   - firebaseAuthProvider.currentUser?.isAnonymous -> banner upgrade
+//   - userProfileRepositoryProvider.watchProfile() -> displayName
+//   - userSubjectsProvider -> matieres derivees du profil
 //
 // Composants UI extraits dans widgets/ (CLAUDE.md regle 12 max-lines) :
 //   - DashboardHero (banniere haut)
 //   - DashboardSubjectsArea (grid + skeleton + empty)
-//   - DashboardGuestInviteCard (carte invitation creation compte)
+//   - DashboardGuestInviteCard (carte upgrade visiteur -> compte permanent)
 //   - DevAuditFab (FAB outil dev, dans core/debug/)
 
 import 'package:flutter/material.dart';

@@ -66,7 +66,7 @@ class AudioService {
   bool get _suppressed => !soundsEnabled || examModeActive;
 
   /// Mapping AppSfx → path d'asset. En P0, tous renvoient le placeholder
-  /// `silence.m4a` ; à remplacer en production audio (TODO story future).
+  /// `silence.m4a` (assets sonores reels a recevoir du sound designer P1).
   String _assetFor(AppSfx sfx) {
     // ignore: unused_local_variable
     final _ = sfx;
