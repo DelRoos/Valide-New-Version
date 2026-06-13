@@ -1004,6 +1004,30 @@ abstract class AppLocalizations {
   /// **'Ce compte est deja lie a un autre profil.'**
   String get onboardingAuthErrorConflict;
 
+  /// Audit PR2 — Titre modale de confirmation quand l'user authentifie tape Continuer en visiteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continuer en visiteur ?'**
+  String get onboardingGuestSwitchTitle;
+
+  /// Audit PR2 — Body modale de confirmation switch OAuth -> Visiteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es connecte avec un compte. Continuer en visiteur supprimera ton profil actuel et tu repartiras de zero.'**
+  String get onboardingGuestSwitchBody;
+
+  /// Audit PR2 — CTA destructive modale switch visiteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer et continuer'**
+  String get onboardingGuestSwitchConfirm;
+
+  /// Audit PR2 — CTA annulation modale switch visiteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Garder mon compte'**
+  String get onboardingGuestSwitchCancel;
+
   /// Story E1bis-5 — Titre H1 step 6 name input.
   ///
   /// In fr, this message translates to:

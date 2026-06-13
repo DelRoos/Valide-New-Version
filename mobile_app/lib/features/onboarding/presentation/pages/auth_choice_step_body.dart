@@ -10,6 +10,7 @@
 
 import 'dart:io' show Platform;
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -172,16 +173,34 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     return null;
   }
 
-  /// Flow visiteur (decision produit 2026-06-13) :
-  ///   1. signInAnonymously() Firebase Auth
-  ///   2. setAuthProvider(guest) — pose isVisitor=true sans transitionner
-  ///   3. flush direct users/{uid} (profil minimal : trackId + levelId +
+  /// Flow visiteur (decision produit 2026-06-13 + audit PR2 2026-06-13) :
+  ///   1. Si currentUser est non-anonyme -> modale de confirmation
+  ///      "Continuer en visiteur va effacer ton compte". Annule si refuse.
+  ///   2. Si confirme : delete doc users/{uid} + delete user account (best
+  ///      effort) -> evite orphan Firestore (avant ce PR, signOut laissait
+  ///      le doc precedent vivant et inaccessible).
+  ///   3. signInAnonymously() Firebase Auth (nouvel uid anonyme propre)
+  ///   4. setAuthProvider(guest) — pose isVisitor=true sans transitionner
+  ///   5. flush direct users/{uid} (profil minimal : trackId + levelId +
   ///      isAnonymous=true + displayName='' + pickedSubjects)
-  ///   4. GoRouter.go('/dashboard')
+  ///   6. GoRouter.go('/dashboard')
   ///
   /// Pas de page success/celebration pour le visiteur : la celebration
   /// est reservee aux comptes permanents qui ont saisi nom + phone + ecole.
   Future<void> _onGuestTap() async {
+    final auth = ref.read(firebaseAuthProvider);
+    final current = auth.currentUser;
+    final needsConfirm = current != null && !current.isAnonymous;
+
+    if (needsConfirm) {
+      final confirmed = await _showGuestSwitchConfirm();
+      if (!mounted) return;
+      if (confirmed != true) {
+        AppLogger.i('auth.step5 guest switch canceled by user');
+        return;
+      }
+    }
+
     setState(() {
       _guestLoading = true;
       _guestError = null;
@@ -189,30 +208,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     final l10n = AppLocalizations.of(context);
     final router = GoRouter.of(context);
     try {
-      final auth = ref.read(firebaseAuthProvider);
-      final current = auth.currentUser;
-      // Decision produit 2026-06-13 : "quand on passe en mode visiteur on
-      // dois etre en anonymous auth". Si on a deja un user anonyme -> reuse.
-      // Si on a un user NON-anonyme (residu Google/Apple d'un test) ->
-      // signOut puis re-signInAnonymously pour garantir l'invariant.
-      if (current == null) {
-        await auth.signInAnonymously();
-        AppLogger.i('auth.step5 guest signInAnonymously (no current user)');
-      } else if (current.isAnonymous) {
-        AppLogger.i(
-          'auth.step5 guest reuse existing anonymous session '
-          'uid=${current.uid.substring(0, 6)}...',
-        );
-      } else {
-        AppLogger.w(
-          'auth.step5 guest currentUser is non-anonymous '
-          '(providers=${current.providerData.map((p) => p.providerId).toList()}) '
-          '-> signOut + re-signInAnonymously',
-        );
-        await auth.signOut();
-        await auth.signInAnonymously();
-        AppLogger.i('auth.step5 guest re-signInAnonymously OK');
-      }
+      await _ensureFreshAnonymousSession(auth, current);
       if (!mounted) return;
 
       final notifier = ref.read(onboardingNotifierProvider.notifier);
@@ -244,6 +240,97 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
       setState(() => _guestError = l10n.errorGenericTitle);
     } finally {
       if (mounted) setState(() => _guestLoading = false);
+    }
+  }
+
+  /// Audit PR2 — Modale de confirmation destructive avant de switcher d'un
+  /// compte OAuth vers visiteur. Retourne `true` si l'utilisateur confirme.
+  Future<bool?> _showGuestSwitchConfirm() async {
+    final l10n = AppLocalizations.of(context);
+    return showDialog<bool>(
+      context: context,
+      barrierDismissible: true,
+      builder: (ctx) {
+        return AlertDialog(
+          title: Text(l10n.onboardingGuestSwitchTitle),
+          content: Text(l10n.onboardingGuestSwitchBody),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(ctx).pop(false),
+              child: Text(l10n.onboardingGuestSwitchCancel),
+            ),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: AppColors.danger),
+              onPressed: () => Navigator.of(ctx).pop(true),
+              child: Text(l10n.onboardingGuestSwitchConfirm),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Garantit une session anonyme propre : reuse si deja anonyme, sinon
+  /// cleanup orphan (delete doc + delete account best effort) + nouveau
+  /// signInAnonymously. Audit PR2 — avant ce PR, le simple signOut laissait
+  /// les docs users/{uid_oauth} orphelins.
+  Future<void> _ensureFreshAnonymousSession(
+    FirebaseAuth auth,
+    User? current,
+  ) async {
+    if (current == null) {
+      await auth.signInAnonymously();
+      AppLogger.i('auth.step5 guest signInAnonymously (no current user)');
+      return;
+    }
+    if (current.isAnonymous) {
+      AppLogger.i(
+        'auth.step5 guest reuse existing anonymous session '
+        'uid=${current.uid.substring(0, 6)}...',
+      );
+      return;
+    }
+    // currentUser non-anonyme : l'utilisateur a confirme via la modale.
+    // Cleanup orphan avant signOut pour eviter de laisser un doc vivant
+    // sans propriétaire actif.
+    AppLogger.w(
+      'auth.step5 guest currentUser non-anonymous '
+      '(providers=${current.providerData.map((p) => p.providerId).toList()}) '
+      '-> cleanup orphan + new anonymous session',
+    );
+    await _cleanupOrphanProfile(current);
+    await auth.signOut();
+    await auth.signInAnonymously();
+    AppLogger.i('auth.step5 guest re-signInAnonymously OK');
+  }
+
+  /// Best effort : delete doc users/{uid} + delete user account. Les echecs
+  /// sont logues mais non bloquants — l'objectif premier est de signOut +
+  /// nouvelle session anonyme, le cleanup orphan est un bonus.
+  ///
+  /// Note : `user.delete()` peut throw `requires-recent-login` pour les
+  /// comptes OAuth ayant linkWithCredential il y a longtemps. Dans ce cas
+  /// on log et continue (signOut suivant ferme la session, le doc orphelin
+  /// sera nettoye via une future maintenance backend).
+  Future<void> _cleanupOrphanProfile(User user) async {
+    final uid = user.uid;
+    final firestore = ref.read(firestoreProvider);
+    try {
+      await firestore.collection('users').doc(uid).delete();
+      AppLogger.i(
+        'auth.step5 guest cleanup users/{uid} deleted '
+        'uid=${uid.substring(0, 6)}...',
+      );
+    } catch (e) {
+      AppLogger.w('auth.step5 guest users/{uid} delete failed: $e');
+    }
+    try {
+      await user.delete();
+      AppLogger.i('auth.step5 guest cleanup user account deleted');
+    } catch (e) {
+      AppLogger.w(
+        'auth.step5 guest user.delete() failed (non-blocking): $e',
+      );
     }
   }
 }

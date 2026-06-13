@@ -540,6 +540,19 @@ class AppLocalizationsFr extends AppLocalizations {
       'Ce compte est deja lie a un autre profil.';
 
   @override
+  String get onboardingGuestSwitchTitle => 'Continuer en visiteur ?';
+
+  @override
+  String get onboardingGuestSwitchBody =>
+      'Tu es connecte avec un compte. Continuer en visiteur supprimera ton profil actuel et tu repartiras de zero.';
+
+  @override
+  String get onboardingGuestSwitchConfirm => 'Effacer et continuer';
+
+  @override
+  String get onboardingGuestSwitchCancel => 'Garder mon compte';
+
+  @override
   String get onboardingNameTitle => 'Comment tu t\'appelles ?';
 
   @override
