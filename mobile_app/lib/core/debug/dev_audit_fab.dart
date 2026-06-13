@@ -1,12 +1,15 @@
 // Dev audit toolkit — bouton FAB + bottom sheet pour reset le state utilisateur
 // pendant un audit du parcours d'onboarding.
 //
-// Pas une feature production : visible en haut a droite du dashboard. Tap ->
-// ouvre un BottomSheet avec 2 actions destructives (clear local + delete
-// account) qui delegent au [DevAuditService] (cf. dev_audit_service.dart).
+// Pas une feature production : visible en haut a droite du dashboard UNIQUEMENT
+// en build debug/profile. En release, retourne SizedBox.shrink() (audit
+// BUG-DEVBADGE 2026-06-13). Tap -> ouvre un BottomSheet avec 2 actions
+// destructives (clear local + delete account) qui delegent au [DevAuditService]
+// (cf. dev_audit_service.dart).
 //
 // Extrait de dashboard_page.dart en juin 2026 (CLAUDE.md regle 12 max-lines).
 
+import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,11 +25,17 @@ import 'dev_audit_service.dart';
 
 /// Bouton flottant FAB.small rouge "bug" affiche en haut a droite du
 /// dashboard. Tap -> ouvre le [_DevAuditSheet] avec les 2 actions de reset.
+///
+/// Audit BUG-DEVBADGE 2026-06-13 — Retourne `SizedBox.shrink()` en build
+/// release pour ne PAS exposer un bouton destructif aux vrais utilisateurs.
+/// Le code reste compilé pour minimiser le risque de bit-rot (tests utilisent
+/// le widget directement, hors mode release).
 class DevAuditFab extends ConsumerWidget {
   const DevAuditFab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (kReleaseMode) return const SizedBox.shrink();
     return Padding(
       padding: EdgeInsets.only(top: AppSpacing.s2.h),
       child: FloatingActionButton.small(
