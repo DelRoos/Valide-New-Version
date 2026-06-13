@@ -136,8 +136,16 @@ final userSubjectsProvider = StreamProvider<List<Subject>>((ref) {
 
 /// Stream du `ProfileCompletionState` derive de :
 ///   1. `subSystemNotifierProvider` (sync, SharedPreferences Story 1.2)
-///   2. `firebaseAuthProvider.currentUser?.uid` (auth Story 0.6)
+///   2. `currentUserProvider` — User? courant (Audit NEW-BUG-17 :
+///      `authStateChanges()` propage les transitions signIn/signOut)
 ///   3. `userProfileRepository.watchProfile()` (Firestore users/{uid} Story 1.5)
+///
+/// Audit NEW-BUG-17 2026-06-13 — Avant ce fix, on lisait
+/// `firebaseAuthProvider.currentUser` directement. Le `firebaseAuthProvider`
+/// est un `Provider` STATIQUE, donc Riverpod ne reagissait pas aux
+/// `signInAnonymously()` declenches au step 5 -> le router restait bloque
+/// sur `/onboarding/v2` avec uid=null. Maintenant on watch `currentUserProvider`
+/// (StreamProvider sur `authStateChanges()`) qui propage proprement.
 final profileCompletionProvider =
     StreamProvider<ProfileCompletionState>((ref) {
   final subSystem = ref.watch(subSystemNotifierProvider);
@@ -145,8 +153,12 @@ final profileCompletionProvider =
     return Stream.value(ProfileCompletionState.subsystemMissing);
   }
 
-  final auth = ref.watch(firebaseAuthProvider);
-  final uid = auth.currentUser?.uid;
+  // Watch le StreamProvider auth pour rebuild a chaque transition.
+  final userAsync = ref.watch(currentUserProvider);
+  final uid = userAsync.maybeWhen(
+    data: (user) => user?.uid,
+    orElse: () => null,
+  );
   if (uid == null) {
     AppLogger.w(
       'profileCompletion: fail-safe (filiereMissing) reason=auth-missing '

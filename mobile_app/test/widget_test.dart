@@ -55,6 +55,16 @@ void main() {
             firebaseAuthProvider.overrideWithValue(
               FakeAuth(isAnonymous: false, displayName: null),
             ),
+            // Audit NEW-BUG-17 — currentUserProvider est watched par le
+            // dashboard pour determiner isAnonymous. Sans override, le
+            // StreamProvider reste en loading et l'app affiche le card
+            // upgrade visiteur (overflow potentiel + i18n mismatch).
+            currentUserProvider.overrideWith(
+              (ref) => Stream.value(fakeUser(
+                uid: 'test-uid',
+                isAnonymous: false,
+              )),
+            ),
             userProfileRepositoryProvider.overrideWithValue(
               FakeUserProfileRepository(profileData: null),
             ),
@@ -85,6 +95,16 @@ void main() {
             ),
             firebaseAuthProvider.overrideWithValue(
               FakeAuth(isAnonymous: false, displayName: null),
+            ),
+            // Audit NEW-BUG-17 — currentUserProvider est watched par le
+            // dashboard pour determiner isAnonymous. Sans override, le
+            // StreamProvider reste en loading et l'app affiche le card
+            // upgrade visiteur (overflow potentiel + i18n mismatch).
+            currentUserProvider.overrideWith(
+              (ref) => Stream.value(fakeUser(
+                uid: 'test-uid',
+                isAnonymous: false,
+              )),
             ),
             userProfileRepositoryProvider.overrideWithValue(
               FakeUserProfileRepository(profileData: null),

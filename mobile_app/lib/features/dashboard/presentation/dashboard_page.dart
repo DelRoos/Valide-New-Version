@@ -29,8 +29,14 @@ class DashboardPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAnonymous =
-        ref.watch(firebaseAuthProvider).currentUser?.isAnonymous ?? true;
+    // Audit NEW-BUG-17 — watch currentUserProvider (StreamProvider sur
+    // authStateChanges) au lieu de firebaseAuthProvider (statique) pour que
+    // l'upgrade visiteur -> compte permanent rebuild le dashboard et masque
+    // automatiquement DashboardGuestInviteCard.
+    final isAnonymous = ref.watch(currentUserProvider).maybeWhen(
+          data: (user) => user?.isAnonymous ?? true,
+          orElse: () => true,
+        );
 
     final profileStream =
         ref.watch(userProfileRepositoryProvider).watchProfile();
