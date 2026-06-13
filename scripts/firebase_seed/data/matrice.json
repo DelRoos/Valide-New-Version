@@ -1,6 +1,6 @@
 {
-  "version": "2.1.0",
-  "generatedAt": "2026-06-13T01:00:00Z",
+  "version": "2.2.0",
+  "generatedAt": "2026-06-13T02:00:00Z",
   "comment": "Matrice v2 alignement nomenclature officielle camerounaise (Story 1.12 + 1.11a). Sources : Office du Baccalaureat + Cameroon GCE Board. Modifier ici puis re-run seed_catalogue.py.",
   "filieres": [
     {
@@ -4348,6 +4348,16 @@
       },
       "isActive": false,
       "sortOrder": 462
+    },
+    {
+      "examTargetId": "exam_bepc",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "BEPC",
+        "en": "BEPC (French middle school certificate)"
+      },
+      "isActive": true,
+      "sortOrder": 900
     }
   ],
   "derivation_rules": [
@@ -7063,6 +7073,114 @@
         "francophone_sculpture"
       ],
       "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_generale_6e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_6e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_generale_5e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_5e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_generale_4e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_4e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm",
+        "francophone_lv2"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_generale_3e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_3e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm",
+        "francophone_lv2"
+      ],
+      "examTargetIds": [
+        "exam_bepc"
+      ],
       "canOptOut": false,
       "isActive": true,
       "obligatorySubjectIds": [],
