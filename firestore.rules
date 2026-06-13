@@ -89,9 +89,15 @@ service cloud.firestore {
         && (!('streamId' in resource.data) || request.resource.data.streamId == resource.data.streamId)
         && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
 
-      // Delete : interdit cote client. Passe par Cloud Function
-      // `requestAccountDeletion` (cf. BASE-DE-DONNEES.md).
-      allow delete: if false;
+      // Delete : autorise pour le proprietaire (self-delete). Permet le
+      // bouton dev "Supprimer compte + tout vider" (DevAuditFab) et la
+      // future demande de suppression GDPR cote user.
+      //
+      // Note : on supprime UNIQUEMENT le doc users/{uid}. Les sous-collections
+      // eventuelles (school_requests, sessions, ...) ne sont pas cascade-delete
+      // par Firestore — une Cloud Function `requestAccountDeletion` (futur
+      // Epic admin) fera le menage complet cote serveur.
+      allow delete: if isOwner(uid);
     }
 
     // -----------------------------------------------------------------
