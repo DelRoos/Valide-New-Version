@@ -413,14 +413,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingSubSystemFrancophoneDesc =>
-      'Cameroonian official curriculum (BEPC, Probatoire, BAC)';
+      'From 6ème to Terminale · BEPC, Probatoire, BAC';
 
   @override
   String get onboardingSubSystemAnglophone => 'Anglophone';
 
   @override
   String get onboardingSubSystemAnglophoneDesc =>
-      'GCE O-Level to A-Level (English-medium curriculum)';
+      'From Form 1 to Upper Sixth · GCE O-Level, A-Level';
 
   @override
   String get onboardingContinue => 'Continue';

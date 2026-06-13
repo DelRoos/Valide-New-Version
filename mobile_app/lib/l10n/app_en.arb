@@ -169,9 +169,9 @@
   "onboardingSubSystemTitle": "Choose Your System",
   "onboardingSubSystemSubtitle": "Pick the school system you follow to get started.",
   "onboardingSubSystemFrancophone": "Francophone",
-  "onboardingSubSystemFrancophoneDesc": "Cameroonian official curriculum (BEPC, Probatoire, BAC)",
+  "onboardingSubSystemFrancophoneDesc": "From 6ème to Terminale · BEPC, Probatoire, BAC",
   "onboardingSubSystemAnglophone": "Anglophone",
-  "onboardingSubSystemAnglophoneDesc": "GCE O-Level to A-Level (English-medium curriculum)",
+  "onboardingSubSystemAnglophoneDesc": "From Form 1 to Upper Sixth · GCE O-Level, A-Level",
   "onboardingContinue": "Continue",
 
   "heroIntroTitle": "Learn at your pace, your level.",

@@ -74,6 +74,10 @@ class TrackChoiceStepBody extends ConsumerWidget {
                 SelectionCard(
                   title: _localizedName(t, anglo: isAnglo),
                   description: _trackHint(l10n, t.filiereId),
+                  icon: Icon(
+                    _trackIcon(t.filiereId),
+                    color: AppColors.primary,
+                  ),
                   selected: state.trackId == t.filiereId,
                   onTap: () => notifier.setTrackId(t.filiereId),
                   showRadio: false,
@@ -103,6 +107,16 @@ class TrackChoiceStepBody extends ConsumerWidget {
       'generale' => l10n.onboardingTrackHintGeneral,
       'technique' => l10n.onboardingTrackHintTechnique,
       _ => '',
+    };
+  }
+
+  /// Audit 2026-06-13 — Icone par track pour aider l'eleve a visualiser
+  /// la filiere. Generale = mortier diplome, Technique = cle a molette.
+  IconData _trackIcon(String trackId) {
+    return switch (trackId) {
+      'generale' => LucideIcons.graduationCap,
+      'technique' => LucideIcons.wrench,
+      _ => LucideIcons.bookOpen,
     };
   }
 }
