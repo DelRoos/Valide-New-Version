@@ -2432,7 +2432,8 @@
       "abbreviation": {
         "fr": "EngL",
         "en": "EngL"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_math",
@@ -2492,7 +2493,8 @@
       "abbreviation": {
         "fr": "Phys",
         "en": "Phys"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_chimie",
@@ -2507,7 +2509,8 @@
       "abbreviation": {
         "fr": "Chim",
         "en": "Chem"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_sciences_phy",
@@ -2537,7 +2540,8 @@
       "abbreviation": {
         "fr": "FR",
         "en": "Fr"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_svt",
@@ -2672,7 +2676,8 @@
       "abbreviation": {
         "fr": "Add.M",
         "en": "Add.M"
-      }
+      },
+      "group": "matieres_optionnelles_olevel"
     },
     {
       "subjectId": "francophone_en",
@@ -2747,7 +2752,8 @@
       "abbreviation": {
         "fr": "FMaths",
         "en": "FMaths"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "anglophone_physics",
@@ -2777,8 +2783,7 @@
       "abbreviation": {
         "fr": "ALL",
         "en": "GER"
-      },
-      "group": "lv2"
+      }
     },
     {
       "subjectId": "francophone_espagnol",
@@ -2793,8 +2798,7 @@
       "abbreviation": {
         "fr": "ESP",
         "en": "SPA"
-      },
-      "group": "lv2"
+      }
     },
     {
       "subjectId": "francophone_italien",
@@ -2809,8 +2813,7 @@
       "abbreviation": {
         "fr": "ITA",
         "en": "ITA"
-      },
-      "group": "lv2"
+      }
     },
     {
       "subjectId": "anglophone_integrated_science",
@@ -2870,7 +2873,8 @@
       "abbreviation": {
         "fr": "Bio",
         "en": "Bio"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_hg",
@@ -2915,7 +2919,8 @@
       "abbreviation": {
         "fr": "Info",
         "en": "CS"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "anglophone_geology",
@@ -2930,7 +2935,8 @@
       "abbreviation": {
         "fr": "Geol",
         "en": "Geol"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_ecv",
@@ -3020,7 +3026,8 @@
       "abbreviation": {
         "fr": "Geo",
         "en": "Geo"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_eps",
@@ -3065,7 +3072,8 @@
       "abbreviation": {
         "fr": "His",
         "en": "His"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "anglophone_economics",
@@ -3080,7 +3088,8 @@
       "abbreviation": {
         "fr": "Eco",
         "en": "Eco"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "anglophone_computer_science",
@@ -3125,7 +3134,8 @@
       "abbreviation": {
         "fr": "Citizen",
         "en": "Citizen"
-      }
+      },
+      "group": "matieres_optionnelles_olevel"
     },
     {
       "subjectId": "anglophone_religious_studies",
@@ -3140,7 +3150,8 @@
       "abbreviation": {
         "fr": "RS",
         "en": "RS"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "anglophone_pe",
@@ -3260,7 +3271,8 @@
       "abbreviation": {
         "fr": "Cpta",
         "en": "Acct"
-      }
+      },
+      "group": "matieres_alevel"
     },
     {
       "subjectId": "francophone_tech_commerce",
@@ -3275,7 +3287,8 @@
       "abbreviation": {
         "fr": "Comm",
         "en": "Comm"
-      }
+      },
+      "group": "matieres_optionnelles_olevel"
     },
     {
       "subjectId": "francophone_latin",
@@ -5374,6 +5387,712 @@
       "icon": "book-open",
       "isActive": true,
       "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_arabe",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Arabe",
+        "en": "Arabe"
+      },
+      "icon": "languages",
+      "isActive": false,
+      "sortOrder": 100
+    },
+    {
+      "subjectId": "francophone_chinois",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chinois",
+        "en": "Chinois"
+      },
+      "icon": "languages",
+      "isActive": false,
+      "sortOrder": 100
+    },
+    {
+      "subjectId": "anglophone_literature_in_english",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Literature in English",
+        "en": "Literature in English"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "anglophone_food_and_nutrition",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Food and Nutrition",
+        "en": "Food and Nutrition"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_optionnelles_olevel"
+    },
+    {
+      "subjectId": "anglophone_special_bilingual_education_french",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Special Bilingual Education French",
+        "en": "Special Bilingual Education French"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "anglophone_human_biology",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Human Biology",
+        "en": "Human Biology"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_optionnelles_olevel"
+    },
+    {
+      "subjectId": "anglophone_logic",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Logic",
+        "en": "Logic"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_optionnelles_olevel"
+    },
+    {
+      "subjectId": "anglophone_food_science_and_nutrition",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Food Science and Nutrition",
+        "en": "Food Science and Nutrition"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "anglophone_pure_mathematics_with_mechanics",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Pure Mathematics With Mechanics",
+        "en": "Pure Mathematics With Mechanics"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "anglophone_pure_mathematics_with_statistics",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Pure Mathematics With Statistics",
+        "en": "Pure Mathematics With Statistics"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "anglophone_information_and_communication_technology",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Information and Communication Technology",
+        "en": "Information and Communication Technology"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "matieres_alevel"
+    },
+    {
+      "subjectId": "francophone_allemand_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Allemand",
+        "en": "Allemand"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_espagnol_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Espagnol",
+        "en": "Espagnol"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_italien_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Italien",
+        "en": "Italien"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_arabe_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Arabe",
+        "en": "Arabe"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_chinois_lv2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chinois",
+        "en": "Chinois"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_allemand_lv3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Allemand",
+        "en": "Allemand"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv3"
+    },
+    {
+      "subjectId": "francophone_espagnol_lv3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Espagnol",
+        "en": "Espagnol"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv3"
+    },
+    {
+      "subjectId": "francophone_italien_lv3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Italien",
+        "en": "Italien"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv3"
+    },
+    {
+      "subjectId": "francophone_arabe_lv3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Arabe",
+        "en": "Arabe"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv3"
+    },
+    {
+      "subjectId": "francophone_chinois_lv3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chinois",
+        "en": "Chinois"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "lv3"
+    },
+    {
+      "subjectId": "anglophone_accounting_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Accounting",
+        "en": "Accounting"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_biology_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Biology",
+        "en": "Biology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_chemistry_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Chemistry",
+        "en": "Chemistry"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_commerce_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Commerce",
+        "en": "Commerce"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_economics_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Economics",
+        "en": "Economics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_literature_in_english_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Literature in English",
+        "en": "Literature in English"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_food_and_nutrition_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Food and Nutrition",
+        "en": "Food and Nutrition"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_special_bilingual_education_french_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Special Bilingual Education French",
+        "en": "Special Bilingual Education French"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_geography_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geography",
+        "en": "Geography"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_geology_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geology",
+        "en": "Geology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_history_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "History",
+        "en": "History"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_citizenship_education_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Citizenship Education",
+        "en": "Citizenship Education"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_human_biology_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Human Biology",
+        "en": "Human Biology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_additional_mathematics_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Additional Mathematics",
+        "en": "Additional Mathematics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_physics_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Physics",
+        "en": "Physics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_religious_studies_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Religious Studies",
+        "en": "Religious Studies"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_logic_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Logic",
+        "en": "Logic"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_computer_science_olevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Computer Science",
+        "en": "Computer Science"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "olevel_options"
+    },
+    {
+      "subjectId": "anglophone_accounting_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Accounting",
+        "en": "Accounting"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_biology_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Biology",
+        "en": "Biology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_chemistry_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Chemistry",
+        "en": "Chemistry"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_economics_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Economics",
+        "en": "Economics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_english_language_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "English Language",
+        "en": "English Language"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_literature_in_english_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Literature in English",
+        "en": "Literature in English"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_food_science_and_nutrition_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Food Science and Nutrition",
+        "en": "Food Science and Nutrition"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_french_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "French",
+        "en": "French"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_special_bilingual_education_french_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Special Bilingual Education French",
+        "en": "Special Bilingual Education French"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_geography_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geography",
+        "en": "Geography"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_geology_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Geology",
+        "en": "Geology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_history_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "History",
+        "en": "History"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_pure_mathematics_with_mechanics_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Pure Mathematics With Mechanics",
+        "en": "Pure Mathematics With Mechanics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_pure_mathematics_with_statistics_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Pure Mathematics With Statistics",
+        "en": "Pure Mathematics With Statistics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_further_mathematics_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Further Mathematics",
+        "en": "Further Mathematics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_physics_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Physics",
+        "en": "Physics"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_religious_studies_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Religious Studies",
+        "en": "Religious Studies"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_philosophy_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Philosophy",
+        "en": "Philosophy"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_computer_science_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Computer Science",
+        "en": "Computer Science"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_information_and_communication_technology_alevel_options",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Information and Communication Technology",
+        "en": "Information and Communication Technology"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 100,
+      "group": "alevel_options"
     }
   ],
   "exam_targets": [
@@ -6336,9 +7055,6 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_lcn",
         "francophone_info_college",
         "francophone_ea",
@@ -6362,9 +7078,6 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_sciences_phy",
         "francophone_lcn",
         "francophone_info_college",
@@ -6389,9 +7102,6 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_sciences_phy",
         "francophone_lcn",
         "francophone_info_college",
@@ -6421,7 +7131,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -6460,9 +7175,6 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_math",
@@ -6564,9 +7276,6 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_math",
@@ -7327,7 +8036,43 @@
       "subjectIds": [
         "anglophone_english_lang",
         "anglophone_french",
-        "anglophone_math"
+        "anglophone_math",
+        "francophone_tech_compta",
+        "anglophone_biology",
+        "francophone_chimie",
+        "francophone_tech_commerce",
+        "anglophone_economics",
+        "anglophone_literature_in_english",
+        "anglophone_food_and_nutrition",
+        "anglophone_special_bilingual_education_french",
+        "anglophone_geo",
+        "anglophone_geology",
+        "anglophone_history",
+        "anglophone_citizenship",
+        "anglophone_human_biology",
+        "anglophone_add_math",
+        "francophone_physique",
+        "anglophone_religious_studies",
+        "anglophone_logic",
+        "francophone_info",
+        "anglophone_accounting_olevel_options",
+        "anglophone_biology_olevel_options",
+        "anglophone_chemistry_olevel_options",
+        "anglophone_commerce_olevel_options",
+        "anglophone_economics_olevel_options",
+        "anglophone_literature_in_english_olevel_options",
+        "anglophone_food_and_nutrition_olevel_options",
+        "anglophone_special_bilingual_education_french_olevel_options",
+        "anglophone_geography_olevel_options",
+        "anglophone_geology_olevel_options",
+        "anglophone_history_olevel_options",
+        "anglophone_citizenship_education_olevel_options",
+        "anglophone_human_biology_olevel_options",
+        "anglophone_additional_mathematics_olevel_options",
+        "anglophone_physics_olevel_options",
+        "anglophone_religious_studies_olevel_options",
+        "anglophone_logic_olevel_options",
+        "anglophone_computer_science_olevel_options"
       ],
       "examTargetIds": [
         "exam_gce_o_level_anglophone"
@@ -7365,7 +8110,48 @@
       "matchFiliere": "generale",
       "matchNiveau": "anglophone_lower_sixth",
       "matchSerie": "anglophone_lower_sixth_s1",
-      "subjectIds": [],
+      "subjectIds": [
+        "francophone_tech_compta",
+        "anglophone_biology",
+        "francophone_chimie",
+        "anglophone_economics",
+        "anglophone_english_lang",
+        "anglophone_literature_in_english",
+        "anglophone_food_science_and_nutrition",
+        "anglophone_french",
+        "anglophone_special_bilingual_education_french",
+        "anglophone_geo",
+        "anglophone_geology",
+        "anglophone_history",
+        "anglophone_pure_mathematics_with_mechanics",
+        "anglophone_pure_mathematics_with_statistics",
+        "anglophone_further_maths",
+        "francophone_physique",
+        "anglophone_religious_studies",
+        "francophone_philo",
+        "francophone_info",
+        "anglophone_information_and_communication_technology",
+        "anglophone_accounting_alevel_options",
+        "anglophone_biology_alevel_options",
+        "anglophone_chemistry_alevel_options",
+        "anglophone_economics_alevel_options",
+        "anglophone_english_language_alevel_options",
+        "anglophone_literature_in_english_alevel_options",
+        "anglophone_food_science_and_nutrition_alevel_options",
+        "anglophone_french_alevel_options",
+        "anglophone_special_bilingual_education_french_alevel_options",
+        "anglophone_geography_alevel_options",
+        "anglophone_geology_alevel_options",
+        "anglophone_history_alevel_options",
+        "anglophone_pure_mathematics_with_mechanics_alevel_options",
+        "anglophone_pure_mathematics_with_statistics_alevel_options",
+        "anglophone_further_mathematics_alevel_options",
+        "anglophone_physics_alevel_options",
+        "anglophone_religious_studies_alevel_options",
+        "anglophone_philosophy_alevel_options",
+        "anglophone_computer_science_alevel_options",
+        "anglophone_information_and_communication_technology_alevel_options"
+      ],
       "examTargetIds": [],
       "canOptOut": true,
       "isActive": true,
@@ -7387,7 +8173,48 @@
       "matchFiliere": "generale",
       "matchNiveau": "anglophone_upper_sixth",
       "matchSerie": "anglophone_upper_sixth_s1",
-      "subjectIds": [],
+      "subjectIds": [
+        "francophone_tech_compta",
+        "anglophone_biology",
+        "francophone_chimie",
+        "anglophone_economics",
+        "anglophone_english_lang",
+        "anglophone_literature_in_english",
+        "anglophone_food_science_and_nutrition",
+        "anglophone_french",
+        "anglophone_special_bilingual_education_french",
+        "anglophone_geo",
+        "anglophone_geology",
+        "anglophone_history",
+        "anglophone_pure_mathematics_with_mechanics",
+        "anglophone_pure_mathematics_with_statistics",
+        "anglophone_further_maths",
+        "francophone_physique",
+        "anglophone_religious_studies",
+        "francophone_philo",
+        "francophone_info",
+        "anglophone_information_and_communication_technology",
+        "anglophone_accounting_alevel_options",
+        "anglophone_biology_alevel_options",
+        "anglophone_chemistry_alevel_options",
+        "anglophone_economics_alevel_options",
+        "anglophone_english_language_alevel_options",
+        "anglophone_literature_in_english_alevel_options",
+        "anglophone_food_science_and_nutrition_alevel_options",
+        "anglophone_french_alevel_options",
+        "anglophone_special_bilingual_education_french_alevel_options",
+        "anglophone_geography_alevel_options",
+        "anglophone_geology_alevel_options",
+        "anglophone_history_alevel_options",
+        "anglophone_pure_mathematics_with_mechanics_alevel_options",
+        "anglophone_pure_mathematics_with_statistics_alevel_options",
+        "anglophone_further_mathematics_alevel_options",
+        "anglophone_physics_alevel_options",
+        "anglophone_religious_studies_alevel_options",
+        "anglophone_philosophy_alevel_options",
+        "anglophone_computer_science_alevel_options",
+        "anglophone_information_and_communication_technology_alevel_options"
+      ],
       "examTargetIds": [
         "exam_gce_a_level_anglophone_s1"
       ],
@@ -8087,7 +8914,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a1"
@@ -8112,7 +8944,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a2"
@@ -8137,7 +8974,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a3"
@@ -8161,7 +9003,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a4"
@@ -8184,7 +9031,17 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2",
+        "francophone_allemand_lv3",
+        "francophone_espagnol_lv3",
+        "francophone_italien_lv3",
+        "francophone_arabe_lv3",
+        "francophone_chinois_lv3"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a5"
@@ -8312,7 +9169,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a1"
@@ -8337,7 +9199,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a2"
@@ -8362,7 +9229,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a3"
@@ -8386,7 +9258,12 @@
         "francophone_ecv",
         "francophone_info_college",
         "francophone_lcn",
-        "francophone_eps"
+        "francophone_eps",
+        "francophone_allemand_lv2",
+        "francophone_espagnol_lv2",
+        "francophone_italien_lv2",
+        "francophone_arabe_lv2",
+        "francophone_chinois_lv2"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a4"
@@ -8407,9 +9284,6 @@
         "francophone_philo",
         "francophone_hg",
         "francophone_eps",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_lv3"
       ],
       "examTargetIds": [
@@ -9498,10 +10372,7 @@
         "francophone_info_college",
         "francophone_eps",
         "francophone_ea",
-        "francophone_tm",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_tm"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -9527,10 +10398,7 @@
         "francophone_info_college",
         "francophone_eps",
         "francophone_ea",
-        "francophone_tm",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_tm"
       ],
       "examTargetIds": [
         "exam_bepc"
