@@ -3741,6 +3741,201 @@
         "en": "TravAg"
       },
       "description": {}
+    },
+    {
+      "subjectId": "francophone_economie_generale",
+      "name": {
+        "fr": "Économie générale",
+        "en": "General Economics"
+      },
+      "abbreviation": {
+        "fr": "Éco gén.",
+        "en": "Econ"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 510,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_droit",
+      "name": {
+        "fr": "Droit",
+        "en": "Law"
+      },
+      "abbreviation": {
+        "fr": "Droit",
+        "en": "Law"
+      },
+      "icon": "scale",
+      "isActive": true,
+      "sortOrder": 511,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_communication_administrative",
+      "name": {
+        "fr": "Communication administrative",
+        "en": "Administrative Communication"
+      },
+      "abbreviation": {
+        "fr": "Comm. admin",
+        "en": "Admin Comm"
+      },
+      "icon": "mic",
+      "isActive": true,
+      "sortOrder": 512,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_organisation_gestion_admin",
+      "name": {
+        "fr": "Organisation et gestion administrative",
+        "en": "Administrative Organization & Management"
+      },
+      "abbreviation": {
+        "fr": "Orga & gestion",
+        "en": "Org & Mgmt"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 513,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_bureautique",
+      "name": {
+        "fr": "Bureautique",
+        "en": "Office Software"
+      },
+      "abbreviation": {
+        "fr": "Bureautique",
+        "en": "Office"
+      },
+      "icon": "cpu",
+      "isActive": true,
+      "sortOrder": 514,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_informatique_gestion",
+      "name": {
+        "fr": "Informatique de gestion",
+        "en": "Management Computing"
+      },
+      "abbreviation": {
+        "fr": "Info gestion",
+        "en": "Mgmt IT"
+      },
+      "icon": "cpu",
+      "isActive": true,
+      "sortOrder": 515,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_math_financiere",
+      "name": {
+        "fr": "Mathématiques financières",
+        "en": "Financial Mathematics"
+      },
+      "abbreviation": {
+        "fr": "Maths fin.",
+        "en": "Fin Math"
+      },
+      "icon": "calculator",
+      "isActive": true,
+      "sortOrder": 516,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_comptabilite",
+      "name": {
+        "fr": "Comptabilité",
+        "en": "Accounting"
+      },
+      "abbreviation": {
+        "fr": "Compta",
+        "en": "Acct"
+      },
+      "icon": "calculator",
+      "isActive": true,
+      "sortOrder": 517,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_gestion",
+      "name": {
+        "fr": "Gestion",
+        "en": "Management"
+      },
+      "abbreviation": {
+        "fr": "Gestion",
+        "en": "Mgmt"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 518,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_fiscalite",
+      "name": {
+        "fr": "Fiscalité",
+        "en": "Taxation"
+      },
+      "abbreviation": {
+        "fr": "Fiscalité",
+        "en": "Tax"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 519,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_communication_commerciale",
+      "name": {
+        "fr": "Communication commerciale",
+        "en": "Commercial Communication"
+      },
+      "abbreviation": {
+        "fr": "Comm. com.",
+        "en": "Sales Comm"
+      },
+      "icon": "mic",
+      "isActive": true,
+      "sortOrder": 520,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_marketing",
+      "name": {
+        "fr": "Marketing / Mercatique",
+        "en": "Marketing"
+      },
+      "abbreviation": {
+        "fr": "Marketing",
+        "en": "Marketing"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 521,
+      "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_vente_negociation",
+      "name": {
+        "fr": "Vente et négociation",
+        "en": "Sales & Negotiation"
+      },
+      "abbreviation": {
+        "fr": "Vente",
+        "en": "Sales"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 522,
+      "subSystem": "francophone"
     }
   ],
   "exam_targets": [
@@ -5231,11 +5426,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_g1",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_admin",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_communication_administrative",
+        "francophone_organisation_gestion_admin",
+        "francophone_bureautique",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5251,11 +5452,17 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_g1",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_admin",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_communication_administrative",
+        "francophone_organisation_gestion_admin",
+        "francophone_bureautique",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5271,11 +5478,18 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_g2",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_compta",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_math_financiere",
+        "francophone_comptabilite",
+        "francophone_gestion",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_fiscalite",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5291,11 +5505,18 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_g2",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_compta",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_math_financiere",
+        "francophone_comptabilite",
+        "francophone_gestion",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_fiscalite",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5311,11 +5532,18 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_g3",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_commerce",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_communication_commerciale",
+        "francophone_marketing",
+        "francophone_vente_negociation",
+        "francophone_bureautique",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5331,11 +5559,18 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_g3",
       "subjectIds": [
-        "francophone_math",
-        "francophone_tech_commerce",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_economie_generale",
+        "francophone_droit",
+        "francophone_communication_commerciale",
+        "francophone_marketing",
+        "francophone_vente_negociation",
+        "francophone_bureautique",
+        "francophone_informatique_gestion",
         "francophone_hg",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
