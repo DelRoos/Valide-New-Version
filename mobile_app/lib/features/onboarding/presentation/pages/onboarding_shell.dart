@@ -238,7 +238,10 @@ class _OnboardingHeader extends StatelessWidget {
             icon: const Icon(LucideIcons.arrowLeft),
             color: AppColors.ink,
             onPressed: onBack,
-            tooltip: 'Retour',
+            // Audit 2026-06-14 — Tooltip retire : sur MIUI/Xiaomi le tooltip
+            // reste affiche ~1.5s apres tap-and-release et donne l'impression
+            // d'un bouton parasit (chip "Retour" grise flottante). L'icone
+            // chevron-left etant universelle, le tooltip n'ajoutait rien.
           ),
           if (_showProgress) ...[
             SizedBox(width: AppSpacing.s2.w),

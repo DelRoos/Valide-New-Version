@@ -122,14 +122,39 @@ class DevAuditService {
   /// + clear local prefs + clear Firestore cache. Apres ca, l'app redemarre
   /// avec une slate vierge — parfait pour re-tester le parcours onboarding
   /// from scratch.
+  ///
+  /// Audit 2026-06-14 — `prefs.clear()` est lance AVANT `deleteAccount()`.
+  /// Justification : `user.delete()` declenche un signOut Firebase qui propage
+  /// au currentUserProvider -> router refresh -> redirect /onboarding/v2 ->
+  /// OnboardingShell mount -> loadFromPersistence dans un postFrameCallback.
+  /// Si les prefs n'ont pas ete clean avant, le shell restaure l'ancien
+  /// draft (subSystem + step + level + serie) -> user atterrit a step 3-4
+  /// au lieu de step 0. En clearing avant, le shell load des prefs vides ->
+  /// state reste au default (step 0). Cf. log "fail-safe (filiereMissing)
+  /// reason=auth-missing subSystem=francophone" 2026-06-14.
   Future<void> deleteAccountAndClear() async {
     AppLogger.i('[DEV] deleteAccountAndClear start');
+
+    // 1. Clear prefs EN PREMIER. Le redirect post-signOut va monter un
+    //    OnboardingShell vierge.
+    await logPerf('dev.prefs.clear.early', () => _prefs.clear());
+    AppLogger.i('[DEV] prefs cleared early (before delete account)');
+
+    // 2. Delete users/{uid} + Auth account. user.delete() signOut implicite
+    //    -> router redirect -> shell mount (sur prefs vides).
     try {
       await deleteAccount();
     } catch (e) {
       AppLogger.w('[DEV] deleteAccount step failed: $e (continuing)');
     }
-    await clearLocalAndSignOut();
-    AppLogger.i('[DEV] deleteAccountAndClear OK');
+
+    // 3. Re-signInAnonymously pour que les rules Firestore ne refusent pas
+    //    les reads du catalogue (cf. `clearLocalAndSignOut` doc). `signOut`
+    //    avant le `signInAnonymously` est idempotent — `user.delete()` a
+    //    deja desauthenticate ; ce `signOut` est defensif si delete a echoue.
+    await logPerf('dev.auth.signOut', () => _auth.signOut());
+    await logPerf('dev.auth.signInAnonymously', () => _auth.signInAnonymously());
+    final newUid = _auth.currentUser?.uid;
+    AppLogger.i('[DEV] deleteAccountAndClear OK newUid=${newUid?.substring(0, 6)}...');
   }
 }
