@@ -217,7 +217,7 @@
       "filiereIds": [
         "technique"
       ],
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 280
     },
     {
@@ -230,7 +230,7 @@
       "filiereIds": [
         "technique"
       ],
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 290
     }
   ],
@@ -1589,7 +1589,7 @@
         "en": "TVE IL ELEQ — Electrical Equipment"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1000,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1608,7 +1608,7 @@
         "en": "TVE IL ELNI — Electronics"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1001,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1627,7 +1627,7 @@
         "en": "TVE IL ELME — Electromechanical"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1002,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1646,7 +1646,7 @@
         "en": "TVE IL ELET — Electrotechnique"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1003,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1665,7 +1665,7 @@
         "en": "TVE IL AC — Air Conditioning"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1004,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1684,7 +1684,7 @@
         "en": "TVE IL ME — Mechanical Engineering"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1005,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1703,7 +1703,7 @@
         "en": "TVE IL CE — Civil Engineering / Building"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1006,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1722,7 +1722,7 @@
         "en": "TVE IL WW — Woodwork / Carpentry"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1007,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1741,7 +1741,7 @@
         "en": "TVE IL ACC — Accounting"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1008,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1760,7 +1760,7 @@
         "en": "TVE IL COM — Commerce"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1009,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1779,7 +1779,7 @@
         "en": "TVE IL OP — Office Practice"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1010,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1798,7 +1798,7 @@
         "en": "TVE IL FN — Food & Nutrition"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1011,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1817,7 +1817,7 @@
         "en": "TVE IL CT — Clothing & Textiles"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1012,
       "pickerMode": "tve_picker",
       "minSubjects": 5,
@@ -1836,7 +1836,7 @@
         "en": "TVE AL ELEQ — Electrical Equipment"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1200,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1855,7 +1855,7 @@
         "en": "TVE AL ELNI — Electronics"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1201,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1874,7 +1874,7 @@
         "en": "TVE AL ELME — Electromechanical"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1202,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1893,7 +1893,7 @@
         "en": "TVE AL ELET — Electrotechnique"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1203,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1912,7 +1912,7 @@
         "en": "TVE AL AC — Air Conditioning"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1204,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1931,7 +1931,7 @@
         "en": "TVE AL ME — Mechanical Engineering"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1205,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1950,7 +1950,7 @@
         "en": "TVE AL CE — Civil Engineering / Building"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1206,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1969,7 +1969,7 @@
         "en": "TVE AL WW — Woodwork / Carpentry"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1207,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -1988,7 +1988,7 @@
         "en": "TVE AL ACC — Accounting"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1208,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -2007,7 +2007,7 @@
         "en": "TVE AL COM — Commerce"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1209,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -2026,7 +2026,7 @@
         "en": "TVE AL OP — Office Practice"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1210,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -2045,7 +2045,7 @@
         "en": "TVE AL FN — Food & Nutrition"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1211,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -2064,7 +2064,7 @@
         "en": "TVE AL CT — Clothing & Textiles"
       },
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "sortOrder": 1212,
       "pickerMode": "tve_picker",
       "minSubjects": 6,
@@ -6093,6 +6093,51 @@
       "isActive": true,
       "sortOrder": 100,
       "group": "alevel_options"
+    },
+    {
+      "subjectId": "anglophone_tve_professional",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Matières professionnelles",
+        "en": "Professional Subjects"
+      },
+      "abbreviation": {
+        "fr": "Pro",
+        "en": "Prof"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 700
+    },
+    {
+      "subjectId": "anglophone_tve_related_professional",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Matières professionnelles connexes",
+        "en": "Related Professional Subjects"
+      },
+      "abbreviation": {
+        "fr": "Pro connexes",
+        "en": "Rel Prof"
+      },
+      "icon": "cog",
+      "isActive": true,
+      "sortOrder": 701
+    },
+    {
+      "subjectId": "anglophone_tve_workshop",
+      "subSystem": "anglophone",
+      "name": {
+        "fr": "Atelier / Stage pratique",
+        "en": "Practical / Workshop"
+      },
+      "abbreviation": {
+        "fr": "Atelier",
+        "en": "Workshop"
+      },
+      "icon": "hammer",
+      "isActive": true,
+      "sortOrder": 702
     }
   ],
   "exam_targets": [
@@ -9400,12 +9445,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_eleq",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_eleq"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9418,12 +9470,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_elni",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_elni"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9436,12 +9495,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_elme",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_elme"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9454,12 +9520,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_elet",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_elet"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9472,12 +9545,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_ac",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_ac"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9490,12 +9570,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_me",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_me"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9508,12 +9595,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_ce",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_ce"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9526,12 +9620,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_woodwork",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_woodwork"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9544,12 +9645,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_acc",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_acc"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9562,12 +9670,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_commerce",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_commerce"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9580,12 +9695,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_op",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_op"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9598,12 +9720,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_food_nutrition",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_food_nutrition"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9616,12 +9745,19 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_il",
       "matchSerie": "anglophone_tve_il_clothing_textiles",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_math",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_il_anglophone_clothing_textiles"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9634,12 +9770,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_eleq",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_eleq"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9652,12 +9794,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_elni",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_elni"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9670,12 +9818,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_elme",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_elme"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9688,12 +9842,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_elet",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_elet"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9706,12 +9866,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_ac",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_ac"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9724,12 +9890,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_me",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_me"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9742,12 +9914,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_ce",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_ce"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9760,12 +9938,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_woodwork",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_woodwork"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9778,12 +9962,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_acc",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_acc"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9796,12 +9986,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_commerce",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_commerce"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9814,12 +10010,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_op",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_op"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9832,12 +10034,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_food_nutrition",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_food_nutrition"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
@@ -9850,12 +10058,18 @@
       "matchFiliere": "technique",
       "matchNiveau": "anglophone_tve_al",
       "matchSerie": "anglophone_tve_al_clothing_textiles",
-      "subjectIds": [],
+      "subjectIds": [
+        "anglophone_english_lang",
+        "anglophone_french",
+        "anglophone_tve_professional",
+        "anglophone_tve_related_professional",
+        "anglophone_tve_workshop"
+      ],
       "examTargetIds": [
         "exam_tve_al_anglophone_clothing_textiles"
       ],
       "canOptOut": false,
-      "isActive": false,
+      "isActive": true,
       "obligatorySubjectIds": [
         "anglophone_english_lang",
         "anglophone_french"
