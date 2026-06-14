@@ -1591,12 +1591,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1000,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_elni",
@@ -1610,12 +1605,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1001,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_elme",
@@ -1629,12 +1619,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1002,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_elet",
@@ -1648,12 +1633,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1003,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_ac",
@@ -1667,12 +1647,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1004,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_me",
@@ -1686,12 +1661,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1005,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_ce",
@@ -1705,12 +1675,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1006,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_woodwork",
@@ -1724,12 +1689,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1007,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_acc",
@@ -1743,12 +1703,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1008,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_commerce",
@@ -1762,12 +1717,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1009,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_op",
@@ -1781,12 +1731,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1010,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_food_nutrition",
@@ -1800,12 +1745,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1011,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_il_clothing_textiles",
@@ -1819,12 +1759,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1012,
-      "pickerMode": "tve_picker",
-      "minSubjects": 5,
-      "maxSubjects": 11,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_eleq",
@@ -1838,12 +1773,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1200,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_elni",
@@ -1857,12 +1787,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1201,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_elme",
@@ -1876,12 +1801,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1202,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_elet",
@@ -1895,12 +1815,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1203,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_ac",
@@ -1914,12 +1829,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1204,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_me",
@@ -1933,12 +1843,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1205,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_ce",
@@ -1952,12 +1857,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1206,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_woodwork",
@@ -1971,12 +1871,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1207,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_acc",
@@ -1990,12 +1885,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1208,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_commerce",
@@ -2009,12 +1899,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1209,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_op",
@@ -2028,12 +1913,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1210,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_food_nutrition",
@@ -2047,12 +1927,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1211,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "anglophone_tve_al_clothing_textiles",
@@ -2066,12 +1941,7 @@
       "canOptOut": false,
       "isActive": true,
       "sortOrder": 1212,
-      "pickerMode": "tve_picker",
-      "minSubjects": 6,
-      "maxSubjects": 8,
-      "professionalSubjectIds": [],
-      "relatedProfessionalSubjectIds": [],
-      "otherSubjectIds": []
+      "pickerMode": "derived"
     },
     {
       "serieId": "francophone_terminale_f6_bipe",
