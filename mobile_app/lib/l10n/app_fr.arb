@@ -465,6 +465,8 @@
   "@onboardingRecapLabelLevel": { "description": "Audit 2026-06-14 — Label pour la ligne level dans le recap banner step 4." },
   "onboardingRecapLabelStream": "Série",
   "@onboardingRecapLabelStream": { "description": "Audit 2026-06-14 — Label pour la ligne stream/serie dans le recap banner step 4." },
+  "onboardingRecapLabelExam": "Examen",
+  "@onboardingRecapLabelExam": { "description": "Audit 2026-06-14 — Label pour la ligne examen(s) vise(s) dans le recap banner step 4 (BAC, BEPC, Probatoire, GCE...)." },
 
   "onboardingPickerSeriesTitle": "Choisis ta série",
   "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },

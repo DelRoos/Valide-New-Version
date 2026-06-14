@@ -498,6 +498,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingRecapLabelStream => 'Série';
 
   @override
+  String get onboardingRecapLabelExam => 'Examen';
+
+  @override
   String get onboardingStreamPickerEmptyTitle => 'Aucune série disponible';
 
   @override

@@ -293,7 +293,12 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       0 => 1,
       1 => 2,
       2 => 3,
-      3 => s.levelRequiresPicker ? 4 : 5,
+      // Audit 2026-06-14 — Toutes les classes passent par step 4 (recap),
+      // meme celles sans picker de serie. Justification : le recap (Section/
+      // Filiere/Niveau/Serie + matieres derivees + examen vise) est l'ecran
+      // de confirmation pedagogique. Avant ce fix, les niveaux derived (6e,
+      // 5e, etc.) sautaient direct a step 5 (auth) sans confirmation.
+      3 => 4,
       4 => 5,
       5 => 6,
       6 => 7,
@@ -321,7 +326,9 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 1,
       3 => 2,
       4 => 3,
-      5 => s.levelRequiresPicker ? 4 : 3,
+      // Audit 2026-06-14 — back de step 5 va toujours a step 4 (recap), pas
+      // step 3, pour rester symetrique avec next() qui passe toujours par 4.
+      5 => 4,
       6 => 5,
       7 => 6,
       8 => 7,

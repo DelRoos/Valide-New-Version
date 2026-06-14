@@ -932,6 +932,12 @@ abstract class AppLocalizations {
   /// **'Série'**
   String get onboardingRecapLabelStream;
 
+  /// Audit 2026-06-14 — Label pour la ligne examen(s) vise(s) dans le recap banner step 4 (BAC, BEPC, Probatoire, GCE...).
+  ///
+  /// In fr, this message translates to:
+  /// **'Examen'**
+  String get onboardingRecapLabelExam;
+
   /// Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed).
   ///
   /// In fr, this message translates to:

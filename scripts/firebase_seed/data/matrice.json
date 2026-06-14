@@ -31,7 +31,8 @@
         "en": "6e"
       },
       "filiereIds": [
-        "generale"
+        "generale",
+        "technique"
       ],
       "isActive": true,
       "sortOrder": 110
@@ -44,7 +45,8 @@
         "en": "5e"
       },
       "filiereIds": [
-        "generale"
+        "generale",
+        "technique"
       ],
       "isActive": true,
       "sortOrder": 120
@@ -57,7 +59,8 @@
         "en": "4e"
       },
       "filiereIds": [
-        "generale"
+        "generale",
+        "technique"
       ],
       "isActive": true,
       "sortOrder": 130
@@ -70,7 +73,8 @@
         "en": "3e"
       },
       "filiereIds": [
-        "generale"
+        "generale",
+        "technique"
       ],
       "isActive": true,
       "sortOrder": 140
@@ -83,7 +87,8 @@
         "en": "Seconde"
       },
       "filiereIds": [
-        "generale"
+        "generale",
+        "technique"
       ],
       "isActive": true,
       "sortOrder": 150
@@ -2302,8 +2307,7 @@
       "abbreviation": {
         "fr": "EngL",
         "en": "EngL"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_math",
@@ -2363,8 +2367,7 @@
       "abbreviation": {
         "fr": "Phys",
         "en": "Phys"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_chimie",
@@ -2379,8 +2382,7 @@
       "abbreviation": {
         "fr": "Chim",
         "en": "Chem"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_sciences_phy",
@@ -2410,8 +2412,7 @@
       "abbreviation": {
         "fr": "FR",
         "en": "Fr"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_svt",
@@ -2546,8 +2547,7 @@
       "abbreviation": {
         "fr": "Add.M",
         "en": "Add.M"
-      },
-      "group": "matieres_optionnelles_olevel"
+      }
     },
     {
       "subjectId": "francophone_en",
@@ -2622,8 +2622,7 @@
       "abbreviation": {
         "fr": "FMaths",
         "en": "FMaths"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "anglophone_physics",
@@ -2743,8 +2742,7 @@
       "abbreviation": {
         "fr": "Bio",
         "en": "Bio"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_hg",
@@ -2789,8 +2787,7 @@
       "abbreviation": {
         "fr": "Info",
         "en": "CS"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "anglophone_geology",
@@ -2805,8 +2802,7 @@
       "abbreviation": {
         "fr": "Geol",
         "en": "Geol"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_ecv",
@@ -2896,8 +2892,7 @@
       "abbreviation": {
         "fr": "Geo",
         "en": "Geo"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_eps",
@@ -2942,8 +2937,7 @@
       "abbreviation": {
         "fr": "His",
         "en": "His"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "anglophone_economics",
@@ -2958,8 +2952,7 @@
       "abbreviation": {
         "fr": "Eco",
         "en": "Eco"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "anglophone_computer_science",
@@ -3004,8 +2997,7 @@
       "abbreviation": {
         "fr": "Citizen",
         "en": "Citizen"
-      },
-      "group": "matieres_optionnelles_olevel"
+      }
     },
     {
       "subjectId": "anglophone_religious_studies",
@@ -3020,8 +3012,7 @@
       "abbreviation": {
         "fr": "RS",
         "en": "RS"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "anglophone_pe",
@@ -3141,8 +3132,7 @@
       "abbreviation": {
         "fr": "Cpta",
         "en": "Acct"
-      },
-      "group": "matieres_alevel"
+      }
     },
     {
       "subjectId": "francophone_tech_commerce",
@@ -3157,8 +3147,7 @@
       "abbreviation": {
         "fr": "Comm",
         "en": "Comm"
-      },
-      "group": "matieres_optionnelles_olevel"
+      }
     },
     {
       "subjectId": "francophone_latin",
@@ -5289,8 +5278,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_food_and_nutrition",
@@ -5301,8 +5289,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_optionnelles_olevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_special_bilingual_education_french",
@@ -5313,8 +5300,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_human_biology",
@@ -5325,8 +5311,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_optionnelles_olevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_logic",
@@ -5337,8 +5322,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_optionnelles_olevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_food_science_and_nutrition",
@@ -5349,8 +5333,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_pure_mathematics_with_mechanics",
@@ -5361,8 +5344,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_pure_mathematics_with_statistics",
@@ -5373,8 +5355,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "anglophone_information_and_communication_technology",
@@ -5385,8 +5366,7 @@
       },
       "icon": "languages",
       "isActive": true,
-      "sortOrder": 100,
-      "group": "matieres_alevel"
+      "sortOrder": 100
     },
     {
       "subjectId": "francophone_allemand_lv2",
@@ -10468,6 +10448,208 @@
       "ruleId": "rule_francophone_generale_3e",
       "matchSubSystem": "francophone",
       "matchFiliere": "generale",
+      "matchNiveau": "francophone_3e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [
+        "exam_bepc"
+      ],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_6e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_6e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_5e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_5e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_4e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_4e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_sciences_phy",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_3e_none",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_3e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_ecv",
+        "francophone_sciences_phy",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [
+        "exam_bepc_francophone"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_technique_6e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_6e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_5e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_5e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_4e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
+      "matchNiveau": "francophone_4e",
+      "matchSerie": null,
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_svt",
+        "francophone_sciences_phy",
+        "francophone_hg",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_info_college",
+        "francophone_eps",
+        "francophone_ea",
+        "francophone_tm"
+      ],
+      "examTargetIds": [],
+      "canOptOut": false,
+      "isActive": true,
+      "obligatorySubjectIds": [],
+      "optionalSubjectIds": []
+    },
+    {
+      "ruleId": "rule_francophone_technique_3e",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "technique",
       "matchNiveau": "francophone_3e",
       "matchSerie": null,
       "subjectIds": [

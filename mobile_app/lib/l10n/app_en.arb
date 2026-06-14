@@ -196,6 +196,20 @@
   "onboardingRecapLabelTrack": "Track",
   "onboardingRecapLabelLevel": "Level",
   "onboardingRecapLabelStream": "Stream",
+  "onboardingRecapLabelExam": "Exam",
+  "onboardingGroupLv2": "second language",
+  "onboardingGroupLv3": "third language",
+  "onboardingGroupOlevelOptions": "O-Level subject",
+  "onboardingGroupAlevelOptions": "A-Level subject",
+  "onboardingGroupGeneric": "subject",
+  "onboardingGroupChipPick": "Pick a {label}",
+  "@onboardingGroupChipPick": {
+    "placeholders": { "label": { "type": "String" } }
+  },
+  "onboardingGroupSheetTitle": "Pick your {label}",
+  "@onboardingGroupSheetTitle": {
+    "placeholders": { "label": { "type": "String" } }
+  },
   "onboardingPickerSeriesTitle": "Pick your stream",
   "onboardingStreamPickerEmptyTitle": "No stream available",
   "onboardingStreamPickerEmptyBody": "No stream is set up for this level yet. Try picking another level, or retry in a few minutes.",

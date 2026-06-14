@@ -200,8 +200,10 @@ class _StreamSubjectsPickerStepBodyState
 
     // Audit 2026-06-14 — Step 4 = resume des choix amont (section -> filiere
     // -> niveau -> serie quand applicable) AVANT les chips matieres. Donne le
-    // contexte de ce que le user vient de configurer.
-    final recapEntries = _recapEntriesFor(snapshot, state, langKey, l10n);
+    // contexte de ce que le user vient de configurer. Inclut l'examen vise
+    // (BAC/BEPC/Probatoire/GCE) quand la rule en a un.
+    final recapEntries =
+        _recapEntriesFor(snapshot, state, profile, langKey, l10n);
 
     return _DerivedPreview(
       recapEntries: recapEntries,
@@ -244,13 +246,14 @@ class _StreamSubjectsPickerStepBodyState
   }
 
   /// Construit la liste des entrees a afficher dans le recap header du
-  /// step 4 : Section -> Filiere -> Niveau -> Serie (quand applicable).
-  /// Resout les IDs vers leur nom localise via le snapshot catalogue.
-  /// Chaque entree est un record (label, value) pour un affichage en
-  /// 2 colonnes (label gris + valeur primary).
+  /// step 4 : Section -> Filiere -> Niveau -> Serie -> Examen vise.
+  /// Resout les IDs vers leur nom localise via le snapshot catalogue + le
+  /// profile derive (pour examTargets). Chaque entree = record
+  /// (label, value) pour un affichage en 2 colonnes.
   List<({String label, String value})> _recapEntriesFor(
     CatalogueSnapshot snapshot,
     dynamic state,
+    DerivedProfile profile,
     String langKey,
     AppLocalizations l10n,
   ) {
@@ -293,6 +296,20 @@ class _StreamSubjectsPickerStepBodyState
           value: s.first.name[langKey] ?? s.first.name.values.first,
         ));
       }
+    }
+    // Audit 2026-06-14 — Ajout de l'examen vise au recap (BAC D, BEPC,
+    // Probatoire G1, GCE A-Level...). Plusieurs examens possibles par
+    // niveau (ex: Premiere D -> Probatoire D ; Terminale D -> BAC D). On
+    // joint avec ' / ' si multiple.
+    final activeExams = profile.examTargets
+        .where((e) => e.isActive)
+        .map((e) => e.name[langKey] ?? e.name.values.first)
+        .toList(growable: false);
+    if (activeExams.isNotEmpty) {
+      entries.add((
+        label: l10n.onboardingRecapLabelExam,
+        value: activeExams.join(' / '),
+      ));
     }
     return entries;
   }
