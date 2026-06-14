@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
+import 'core/firebase/providers.dart';
 import 'core/logging/app_logger.dart';
 import 'core/logging/perf_logger.dart';
 import 'features/onboarding/providers.dart';
@@ -46,12 +47,35 @@ Future<void> main() async {
   // SplashPage Flutter n'utilise pas Firebase ; HelloPage non plus
   // (sentinelle E0). Si /hello tente une operation Firebase avant init,
   // _e0SmokeTest le gere via AppLogger.w non bloquant.
-  unawaited(_bootstrap());
+  //
+  // Audit 2026-06-14 — On garde la reference de la Future de _bootstrap
+  // pour la propager dans `firebaseReadyProvider`. Le splash warm-up
+  // catalogue (cf. splash_page.dart) et le catalogue check du router
+  // (cf. catalogue/providers.dart) attendent cette Future avant d'acceder
+  // a Firestore — sans ca, le warm-up echouait systematiquement avec
+  // `[core/no-app] No Firebase App '[DEFAULT]'` (race ~2.9s).
+  final bootstrapFuture = _bootstrap();
+  unawaited(bootstrapFuture);
+  // `_bootstrap` retourne `Future<void>` et catch ses erreurs en interne.
+  // On mappe vers `Future<bool>` en re-checkant `Firebase.app()` apres
+  // resolution : true si l'init a vraiment reussi, false si stub options
+  // ou crash silencieux. Les consommateurs de `firebaseReadyProvider`
+  // gardent ainsi un signal fiable.
+  final firebaseReadyFuture = () async {
+    await bootstrapFuture;
+    try {
+      Firebase.app();
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }();
   logPerfEvent('boot.runApp');
   runApp(
     ProviderScope(
       overrides: [
         sharedPreferencesProvider.overrideWithValue(prefs),
+        firebaseReadyProvider.overrideWith((ref) => firebaseReadyFuture),
       ],
       child: const ValideApp(),
     ),

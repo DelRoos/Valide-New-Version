@@ -64,7 +64,17 @@ final catalogueProvider = FutureProvider<CatalogueSnapshot>((ref) async {
 /// Vrai si au moins 1 `derivation_rule` active existe (catalogue prêt à
 /// servir), faux sinon (offline + cache vide). Lu par le redirect global du
 /// GoRouter pour rediriger vers `/catalogue-waiting` au boot si nécessaire.
+///
+/// Audit 2026-06-14 — Attend `firebaseReadyProvider` avant d'instancier
+/// `catalogueRepositoryProvider`. Sans ce gate, le router (qui watch ce
+/// provider via `ref.listen` dans `app_router.dart`) declenchait la creation
+/// de `firestoreProvider` AVANT que `Firebase.initializeApp()` ne resolve
+/// (~2.9s en parallele de `runApp`), provoquant `[core/no-app]`. L'erreur
+/// se propageait dans le routing initial — masquee par les bypass de `/`
+/// et `/splash` mais polluait les logs et faisait perdre le precharge.
 final appStartupCatalogueCheckProvider = FutureProvider<bool>((ref) async {
+  final firebaseReady = await ref.watch(firebaseReadyProvider.future);
+  if (!firebaseReady) return false;
   final repo = ref.watch(catalogueRepositoryProvider);
   return repo.hasNonEmptyCatalogue();
 });

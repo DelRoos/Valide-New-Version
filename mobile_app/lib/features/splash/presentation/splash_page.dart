@@ -32,6 +32,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/catalogue/providers.dart';
+import '../../../core/firebase/providers.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
 import '../../onboarding/domain/profile_completion_state.dart';
@@ -79,8 +80,27 @@ class _SplashPageState extends ConsumerState<SplashPage>
   }
 
   Future<void> _warmUpCatalogue() async {
+    // Audit 2026-06-14 — Capturer le ProviderContainer AVANT les awaits :
+    // le splash navigue apres 2.1s (kStrokeDuration + kHoldAfterStroke) mais
+    // Firebase init prend ~2.9s sur device entree de gamme. L'await sur
+    // `firebaseReadyProvider.future` resout donc APRES que le splash soit
+    // unmounted -> `ref.read(...)` post-unmount throw
+    // `Using "ref" when a widget is about to or has been unmounted is unsafe`.
+    // Le container vit pour toute la duree de l'app -> safe a utiliser
+    // depuis n'importe quelle Future, meme post-unmount.
+    final container = ProviderScope.containerOf(context, listen: false);
     try {
-      await ref.read(catalogueProvider.future);
+      // Attendre que Firebase soit initialise AVANT de toucher au catalogue.
+      // Sans ce gate, `firestoreProvider` throw `[core/no-app]` car
+      // `_bootstrap()` tourne en parallele de runApp (~2.9s) et n'a pas fini
+      // quand SplashPage mount. Le warm-up echouait donc systematiquement,
+      // perdant tout l'interet UX du precharge (PR #138).
+      final firebaseReady = await container.read(firebaseReadyProvider.future);
+      if (!firebaseReady) {
+        AppLogger.w('splash catalogue warm-up skipped: Firebase unavailable');
+        return;
+      }
+      await container.read(catalogueProvider.future);
       AppLogger.i('splash catalogue warm-up OK');
     } catch (e) {
       AppLogger.w('splash catalogue warm-up failed (non-blocking): $e');

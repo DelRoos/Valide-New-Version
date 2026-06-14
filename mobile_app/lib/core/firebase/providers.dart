@@ -34,6 +34,23 @@ final firebaseAvailableProvider = Provider<bool>((ref) {
   }
 });
 
+/// Future qui resout `true` quand `Firebase.initializeApp()` a fini avec
+/// succes, `false` si l'init a echoue ou n'a jamais ete tentee.
+///
+/// Override-e dans `main.dart` avec la Future reelle de `_bootstrap()`. En
+/// dehors de `main.dart` (tests widgets, tests unitaires), le defaut `false`
+/// signifie « Firebase indisponible » — les consommateurs critiques skippent
+/// proprement sans throw.
+///
+/// Pourquoi : `main.dart` lance `_bootstrap()` en `unawaited` (~2.9s sur
+/// device entree de gamme) en parallele de `runApp` pour ne pas retarder
+/// l'affichage du splash. Tout provider qui touche Firestore/Auth AVANT que
+/// cette Future ne resolve throw `[core/no-app] No Firebase App ...`. Les
+/// consommateurs critiques au boot (splash warm-up catalogue, catalogue
+/// check du router) doivent `await ref.watch(firebaseReadyProvider.future)`
+/// avant d'instancier le repository.
+final firebaseReadyProvider = FutureProvider<bool>((ref) async => false);
+
 /// Région Cloud Functions cible. Confirmée après Story 0.20 R3 (benchmark
 /// latence Cameroun → europe-west1).
 const String _functionsRegion = 'europe-west1';
