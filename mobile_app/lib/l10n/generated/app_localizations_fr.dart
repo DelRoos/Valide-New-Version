@@ -490,10 +490,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingStreamPickerEmptyBody =>
-      'Pour ce niveau, aucune série n\'est encore configurée. Réessaie dans quelques minutes ou contacte l\'équipe Valide.';
+      'Pour ce niveau, aucune série n\'est encore configurée. Essaie un autre niveau, ou réessaie dans quelques minutes.';
 
   @override
   String get onboardingStreamPickerEmptyRetry => 'Réessayer';
+
+  @override
+  String get onboardingStreamPickerEmptyChangeLevel => 'Changer de niveau';
 
   @override
   String get onboardingLoaderLabel => 'Chargement…';

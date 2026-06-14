@@ -463,10 +463,12 @@
 
   "onboardingStreamPickerEmptyTitle": "Aucune série disponible",
   "@onboardingStreamPickerEmptyTitle": { "description": "Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed)." },
-  "onboardingStreamPickerEmptyBody": "Pour ce niveau, aucune série n'est encore configurée. Réessaie dans quelques minutes ou contacte l'équipe Valide.",
+  "onboardingStreamPickerEmptyBody": "Pour ce niveau, aucune série n'est encore configurée. Essaie un autre niveau, ou réessaie dans quelques minutes.",
   "@onboardingStreamPickerEmptyBody": { "description": "Audit BUG-01 — Body fallback streams.length==0." },
   "onboardingStreamPickerEmptyRetry": "Réessayer",
   "@onboardingStreamPickerEmptyRetry": { "description": "Audit BUG-01 — CTA retry fallback streams empty." },
+  "onboardingStreamPickerEmptyChangeLevel": "Changer de niveau",
+  "@onboardingStreamPickerEmptyChangeLevel": { "description": "Audit 2026-06-14 — CTA primaire empty state : revient au step 3 (level choice). Couvre le cas du draft stale (levelId persiste qui n'existe plus dans le catalogue actuel) ou le cas seed gap legitime." },
   "onboardingLoaderLabel": "Chargement…",
   "@onboardingLoaderLabel": { "description": "Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore." },
 

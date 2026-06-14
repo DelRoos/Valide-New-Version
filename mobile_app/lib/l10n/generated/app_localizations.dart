@@ -917,7 +917,7 @@ abstract class AppLocalizations {
   /// Audit BUG-01 — Body fallback streams.length==0.
   ///
   /// In fr, this message translates to:
-  /// **'Pour ce niveau, aucune série n\'est encore configurée. Réessaie dans quelques minutes ou contacte l\'équipe Valide.'**
+  /// **'Pour ce niveau, aucune série n\'est encore configurée. Essaie un autre niveau, ou réessaie dans quelques minutes.'**
   String get onboardingStreamPickerEmptyBody;
 
   /// Audit BUG-01 — CTA retry fallback streams empty.
@@ -925,6 +925,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Réessayer'**
   String get onboardingStreamPickerEmptyRetry;
+
+  /// Audit 2026-06-14 — CTA primaire empty state : revient au step 3 (level choice). Couvre le cas du draft stale (levelId persiste qui n'existe plus dans le catalogue actuel) ou le cas seed gap legitime.
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de niveau'**
+  String get onboardingStreamPickerEmptyChangeLevel;
 
   /// Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore.
   ///

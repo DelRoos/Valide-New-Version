@@ -33,82 +33,101 @@ class LevelChoiceStepBody extends ConsumerWidget {
     final catalogueAsync = ref.watch(catalogueProvider);
     final isAnglo = state.subSystem == SubSystem.anglophone;
 
-    return catalogueAsync.when(
-      data: (snapshot) {
-        final subSystemId = state.subSystem?.id;
-        if (subSystemId == null) {
-          return ErrorRetryView(
-            onRetry: () => ref.invalidate(catalogueProvider),
-          );
-        }
-
-        // Audit 2026-06-13 — Filtrer aussi par trackId quand il est pose.
-        // Avant ce fix, on affichait tous les niveaux du sub-system, ce qui
-        // permettait a un user Anglo + Technique de choisir Form 5 (qui est
-        // generale uniquement) -> step 4 renvoyait "No stream available"
-        // car la serie form_5_olevel a filiereId=generale != track.
-        // La verite est dans niveau.filiereIds (cf. matrice.json).
-        final trackId = state.trackId;
-        final levels = snapshot.niveaux
-            .where((n) =>
-                n.isActive &&
-                n.subSystem == subSystemId &&
-                (trackId == null || n.filiereIds.contains(trackId)))
-            .toList()
-          ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
-        if (levels.isEmpty) {
-          return ErrorRetryView(
-            onRetry: () => ref.invalidate(catalogueProvider),
-            message: l10n.errorCatalogueEmpty,
-          );
-        }
-
-        return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: AppSpacing.s5.h),
-              Icon(LucideIcons.graduationCap,
-                  size: 40.sp, color: AppColors.primary),
-              SizedBox(height: AppSpacing.s4.h),
-              Text(
-                l10n.onboardingLevelTitle,
-                style: AppTypography.h1.copyWith(fontSize: 22.sp),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: AppSpacing.s2.h),
-              Text(
-                l10n.onboardingLevelSubtitle,
-                style: AppTypography.body.copyWith(
-                  fontSize: 13.sp,
-                  color: AppColors.inkSoft,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: AppSpacing.s5.h),
-              for (final level in levels) ...[
-                SelectionCard(
-                  title: _localizedName(level, anglo: isAnglo),
-                  selected: state.levelId == level.niveauId,
-                  variant: SelectionCardVariant.compact,
-                  showRadio: false,
-                  onTap: () =>
-                      _onLevelTap(ref, notifier, snapshot, level.niveauId),
-                ),
-                SizedBox(height: AppSpacing.s2.h),
-              ],
-              SizedBox(height: AppSpacing.s5.h),
-            ],
+    // Audit 2026-06-14 — Header (icone + titre + sous-titre) TOUJOURS rendu,
+    // meme pendant loading/error. Sans ca, un ErrorRetryView cachait tout le
+    // contexte (utilisateur ne savait plus quel choix etait attendu).
+    final header = Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: AppSpacing.s5.h),
+          Icon(LucideIcons.graduationCap,
+              size: 40.sp, color: AppColors.primary),
+          SizedBox(height: AppSpacing.s4.h),
+          Text(
+            l10n.onboardingLevelTitle,
+            style: AppTypography.h1.copyWith(fontSize: 22.sp),
+            textAlign: TextAlign.center,
           ),
-        );
-      },
-      loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
-      error: (e, st) => ErrorRetryView(
-        onRetry: () => ref.invalidate(catalogueProvider),
-        kind: ErrorRetryKind.offline,
+          SizedBox(height: AppSpacing.s2.h),
+          Text(
+            l10n.onboardingLevelSubtitle,
+            style: AppTypography.body.copyWith(
+              fontSize: 13.sp,
+              color: AppColors.inkSoft,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
+    );
+
+    return Column(
+      children: [
+        header,
+        Expanded(
+          child: catalogueAsync.when(
+            data: (snapshot) {
+              final subSystemId = state.subSystem?.id;
+              if (subSystemId == null) {
+                return ErrorRetryView(
+                  onRetry: () => ref.invalidate(catalogueProvider),
+                );
+              }
+
+              // Audit 2026-06-13 — Filtrer aussi par trackId quand il est pose.
+              // Avant ce fix, on affichait tous les niveaux du sub-system, ce qui
+              // permettait a un user Anglo + Technique de choisir Form 5 (qui est
+              // generale uniquement) -> step 4 renvoyait "No stream available"
+              // car la serie form_5_olevel a filiereId=generale != track.
+              // La verite est dans niveau.filiereIds (cf. matrice.json).
+              final trackId = state.trackId;
+              final levels = snapshot.niveaux
+                  .where((n) =>
+                      n.isActive &&
+                      n.subSystem == subSystemId &&
+                      (trackId == null || n.filiereIds.contains(trackId)))
+                  .toList()
+                ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+              if (levels.isEmpty) {
+                return ErrorRetryView(
+                  onRetry: () => ref.invalidate(catalogueProvider),
+                  message: l10n.errorCatalogueEmpty,
+                );
+              }
+
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: AppSpacing.s5.h),
+                    for (final level in levels) ...[
+                      SelectionCard(
+                        title: _localizedName(level, anglo: isAnglo),
+                        selected: state.levelId == level.niveauId,
+                        variant: SelectionCardVariant.compact,
+                        showRadio: false,
+                        onTap: () => _onLevelTap(
+                            ref, notifier, snapshot, level.niveauId),
+                      ),
+                      SizedBox(height: AppSpacing.s2.h),
+                    ],
+                    SizedBox(height: AppSpacing.s5.h),
+                  ],
+                ),
+              );
+            },
+            loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
+            error: (e, st) => ErrorRetryView(
+              onRetry: () => ref.invalidate(catalogueProvider),
+              kind: ErrorRetryKind.offline,
+            ),
+          ),
+        ),
+      ],
     );
   }
 

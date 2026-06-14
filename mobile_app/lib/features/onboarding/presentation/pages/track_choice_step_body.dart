@@ -32,73 +32,83 @@ class TrackChoiceStepBody extends ConsumerWidget {
     final catalogueAsync = ref.watch(catalogueProvider);
     final isAnglo = state.subSystem == SubSystem.anglophone;
 
-    return catalogueAsync.when(
-      data: (snapshot) {
-        final tracks = snapshot.filieres
-            .where((f) => f.isActive)
-            .toList()
-          ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
-
-        if (tracks.isEmpty) {
-          return ErrorRetryView(
-            onRetry: () => ref.invalidate(catalogueProvider),
-            message: l10n.errorCatalogueEmpty,
-          );
-        }
-
-        return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: AppSpacing.s6.h),
-              Icon(LucideIcons.briefcase,
-                  size: 48.sp, color: AppColors.primary),
-              SizedBox(height: AppSpacing.s5.h),
-              Text(
-                l10n.onboardingTrackTitle,
-                style: AppTypography.h1.copyWith(fontSize: 24.sp),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: AppSpacing.s3.h),
-              Text(
-                l10n.onboardingTrackSubtitle,
-                style: AppTypography.body.copyWith(
-                  fontSize: 14.sp,
-                  color: AppColors.inkSoft,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: AppSpacing.s6.h),
-              for (final t in tracks) ...[
-                SelectionCard(
-                  title: _localizedName(t, anglo: isAnglo),
-                  description: _trackHint(l10n, t.filiereId),
-                  // Audit 2026-06-13 — pas de `color:` explicite ici sinon
-                  // l'icone reste primary sur le fond primary quand la card
-                  // est selectionnee (invisible). On laisse SelectionCard
-                  // appliquer son IconTheme : inkSoft hors selection, white
-                  // sur selection. Cf. SelectionCard._SelectionCardIcon.
-                  icon: Icon(_trackIcon(t.filiereId)),
-                  selected: state.trackId == t.filiereId,
-                  // Audit 2026-06-13 — setTrackIdDraft (no transition) :
-                  // l'utilisateur choisit puis confirme via CTA Continuer
-                  // du shell. Permet de changer d'avis sans back.
-                  onTap: () => notifier.setTrackIdDraft(t.filiereId),
-                  showRadio: false,
-                ),
-                SizedBox(height: AppSpacing.s3.h),
-              ],
-              SizedBox(height: AppSpacing.s5.h),
-            ],
+    // Audit 2026-06-14 — Header (icone + titre + sous-titre) TOUJOURS rendu,
+    // meme pendant loading/error. Sans ca, un ErrorRetryView cachait tout le
+    // contexte (utilisateur ne savait plus quelle page il devait remplir).
+    final header = Padding(
+      padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: AppSpacing.s6.h),
+          Icon(LucideIcons.briefcase, size: 48.sp, color: AppColors.primary),
+          SizedBox(height: AppSpacing.s5.h),
+          Text(
+            l10n.onboardingTrackTitle,
+            style: AppTypography.h1.copyWith(fontSize: 24.sp),
+            textAlign: TextAlign.center,
           ),
-        );
-      },
-      loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
-      error: (e, st) => ErrorRetryView(
-        onRetry: () => ref.invalidate(catalogueProvider),
-        kind: ErrorRetryKind.offline,
+          SizedBox(height: AppSpacing.s3.h),
+          Text(
+            l10n.onboardingTrackSubtitle,
+            style: AppTypography.body.copyWith(
+              fontSize: 14.sp,
+              color: AppColors.inkSoft,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ),
+    );
+
+    return Column(
+      children: [
+        header,
+        Expanded(
+          child: catalogueAsync.when(
+            data: (snapshot) {
+              final tracks = snapshot.filieres
+                  .where((f) => f.isActive)
+                  .toList()
+                ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+
+              if (tracks.isEmpty) {
+                return ErrorRetryView(
+                  onRetry: () => ref.invalidate(catalogueProvider),
+                  message: l10n.errorCatalogueEmpty,
+                );
+              }
+
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: AppSpacing.s4.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(height: AppSpacing.s6.h),
+                    for (final t in tracks) ...[
+                      SelectionCard(
+                        title: _localizedName(t, anglo: isAnglo),
+                        description: _trackHint(l10n, t.filiereId),
+                        icon: Icon(_trackIcon(t.filiereId)),
+                        selected: state.trackId == t.filiereId,
+                        onTap: () => notifier.setTrackIdDraft(t.filiereId),
+                        showRadio: false,
+                      ),
+                      SizedBox(height: AppSpacing.s3.h),
+                    ],
+                    SizedBox(height: AppSpacing.s5.h),
+                  ],
+                ),
+              );
+            },
+            loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
+            error: (e, st) => ErrorRetryView(
+              onRetry: () => ref.invalidate(catalogueProvider),
+              kind: ErrorRetryKind.offline,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
