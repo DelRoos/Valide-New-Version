@@ -2388,8 +2388,8 @@
       "subjectId": "francophone_sciences_phy",
       "subSystem": "francophone",
       "name": {
-        "fr": "Sciences Physiques",
-        "en": "Physical Sciences"
+        "fr": "Physique-Chimie",
+        "en": "Physics and Chemistry"
       },
       "icon": "flask-conical",
       "isActive": true,
@@ -2418,8 +2418,8 @@
       "subjectId": "francophone_svt",
       "subSystem": "francophone",
       "name": {
-        "fr": "SVT",
-        "en": "Life & Earth Sciences"
+        "fr": "Sciences de la Vie et de la Terre",
+        "en": "Life and Earth Sciences"
       },
       "icon": "dna",
       "isActive": true,
@@ -2427,7 +2427,8 @@
       "abbreviation": {
         "fr": "SVT",
         "en": "SVT"
-      }
+      },
+      "abbr": "SVT"
     },
     {
       "subjectId": "francophone_environnement",
@@ -2808,8 +2809,8 @@
       "subjectId": "francophone_ecv",
       "subSystem": "francophone",
       "name": {
-        "fr": "Éducation civique",
-        "en": "Civic Education"
+        "fr": "Éducation à la Citoyenneté et à la Morale",
+        "en": "Civic Education and Morality"
       },
       "icon": "scale",
       "isActive": true,
@@ -2817,7 +2818,8 @@
       "abbreviation": {
         "fr": "ECV",
         "en": "CivEd"
-      }
+      },
+      "abbr": "ECM"
     },
     {
       "subjectId": "francophone_lcn",
@@ -2838,8 +2840,8 @@
       "subjectId": "francophone_info_college",
       "subSystem": "francophone",
       "name": {
-        "fr": "Informatique (collège)",
-        "en": "Computer Science (lower cycle)"
+        "fr": "Informatique",
+        "en": "Computer Science"
       },
       "icon": "code-2",
       "isActive": true,
@@ -2898,8 +2900,8 @@
       "subjectId": "francophone_eps",
       "subSystem": "francophone",
       "name": {
-        "fr": "EPS",
-        "en": "PE"
+        "fr": "Éducation Physique et Sportive",
+        "en": "Physical Education and Sports"
       },
       "icon": "dumbbell",
       "isActive": true,
@@ -2907,7 +2909,8 @@
       "abbreviation": {
         "fr": "EPS",
         "en": "PE"
-      }
+      },
+      "abbr": "EPS"
     },
     {
       "subjectId": "anglophone_accounting",
@@ -6924,7 +6927,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_lcn",
@@ -6947,7 +6951,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_lcn",
@@ -6970,7 +6975,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_sciences_phy",
@@ -6994,7 +7000,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_sciences_phy",
@@ -10378,7 +10385,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10404,7 +10412,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10430,7 +10439,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10456,7 +10466,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10483,7 +10494,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_lcn",
@@ -10506,7 +10518,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_lcn",
@@ -10529,7 +10542,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_sciences_phy",
@@ -10553,7 +10567,8 @@
         "francophone_en",
         "francophone_math",
         "francophone_svt",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_eps",
         "francophone_ecv",
         "francophone_sciences_phy",
@@ -10580,7 +10595,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10606,7 +10622,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10632,7 +10649,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
@@ -10658,7 +10676,8 @@
         "francophone_math",
         "francophone_svt",
         "francophone_sciences_phy",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_ecv",
         "francophone_lcn",
         "francophone_info_college",
