@@ -92,6 +92,21 @@ class LevelChoiceStepBody extends ConsumerWidget {
                 ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
               if (levels.isEmpty) {
+                // Audit 2026-06-14 — Discriminer 2 cas :
+                // (a) trackId pose mais 0 niveaux match -> filiere choisie
+                //     incomplete cote seed (ex. anglo+technique = TVE non seede
+                //     en MVP). Le retry catalogue ne resoudra rien : guider
+                //     vers le back step 2 pour changer de filiere.
+                // (b) trackId null + 0 niveaux -> catalogue vide reel -> retry.
+                if (trackId != null) {
+                  return _LevelEmptyForTrack(
+                    title: l10n.onboardingLevelEmptyForTrackTitle,
+                    body: l10n.onboardingLevelEmptyForTrackBody,
+                    changeTrackLabel:
+                        l10n.onboardingLevelEmptyForTrackChangeTrack,
+                    onChangeTrack: () => notifier.back(),
+                  );
+                }
                 return ErrorRetryView(
                   onRetry: () => ref.invalidate(catalogueProvider),
                   message: l10n.errorCatalogueEmpty,
@@ -161,3 +176,61 @@ class LevelChoiceStepBody extends ConsumerWidget {
   }
 }
 
+/// Audit 2026-06-14 — Fallback dedie quand le user a choisi une filiere
+/// (track) pour laquelle 0 niveaux sont seedes actifs. Cas typique : anglo
+/// + technique (TVE non seede en MVP). Le CTA primaire ramene step 3 -> 2
+/// pour permettre de changer de filiere ; pas de "Reessayer le catalogue"
+/// car ca ne resoudra rien (le catalogue est bien charge).
+class _LevelEmptyForTrack extends StatelessWidget {
+  const _LevelEmptyForTrack({
+    required this.title,
+    required this.body,
+    required this.changeTrackLabel,
+    required this.onChangeTrack,
+  });
+
+  final String title;
+  final String body;
+  final String changeTrackLabel;
+  final VoidCallback onChangeTrack;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              LucideIcons.compass,
+              size: 48.sp,
+              color: AppColors.inkSoft,
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            Text(
+              title,
+              style: AppTypography.h3.copyWith(fontSize: 18.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s3.h),
+            Text(
+              body,
+              style: AppTypography.body.copyWith(
+                color: AppColors.inkSoft,
+                fontSize: 14.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s5.h),
+            FilledButton.icon(
+              onPressed: onChangeTrack,
+              icon: const Icon(LucideIcons.arrowLeft, size: 18),
+              label: Text(changeTrackLabel),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

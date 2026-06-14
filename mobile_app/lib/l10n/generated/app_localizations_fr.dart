@@ -499,6 +499,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingStreamPickerEmptyChangeLevel => 'Changer de niveau';
 
   @override
+  String get onboardingLevelEmptyForTrackTitle =>
+      'Aucune classe pour cette filière';
+
+  @override
+  String get onboardingLevelEmptyForTrackBody =>
+      'Aucune classe n\'est encore disponible pour cette filière. Change de filière pour continuer.';
+
+  @override
+  String get onboardingLevelEmptyForTrackChangeTrack => 'Changer de filière';
+
+  @override
   String get onboardingLoaderLabel => 'Chargement…';
 
   @override

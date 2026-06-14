@@ -932,6 +932,24 @@ abstract class AppLocalizations {
   /// **'Changer de niveau'**
   String get onboardingStreamPickerEmptyChangeLevel;
 
+  /// Audit 2026-06-14 — Titre fallback step 3 quand trackId pose mais 0 niveaux actifs match. Cas : anglo + technique (TVE non seede en MVP).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe pour cette filière'**
+  String get onboardingLevelEmptyForTrackTitle;
+
+  /// Audit 2026-06-14 — Body fallback step 3 trackId set + 0 niveaux. Guide vers back step 2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe n\'est encore disponible pour cette filière. Change de filière pour continuer.'**
+  String get onboardingLevelEmptyForTrackBody;
+
+  /// Audit 2026-06-14 — CTA primaire qui fait notifier.back() (step 3 -> 2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de filière'**
+  String get onboardingLevelEmptyForTrackChangeTrack;
+
   /// Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore.
   ///
   /// In fr, this message translates to:

@@ -496,6 +496,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingStreamPickerEmptyChangeLevel => 'Change level';
 
   @override
+  String get onboardingLevelEmptyForTrackTitle => 'No class for this track';
+
+  @override
+  String get onboardingLevelEmptyForTrackBody =>
+      'No class is available yet for this track. Pick another track to continue.';
+
+  @override
+  String get onboardingLevelEmptyForTrackChangeTrack => 'Change track';
+
+  @override
   String get onboardingLoaderLabel => 'Loading…';
 
   @override
