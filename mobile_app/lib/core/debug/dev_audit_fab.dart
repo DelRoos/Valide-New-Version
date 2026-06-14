@@ -9,6 +9,8 @@
 //
 // Extrait de dashboard_page.dart en juin 2026 (CLAUDE.md regle 12 max-lines).
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -82,26 +84,43 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
     if (_busy) return;
     setState(() => _busy = true);
     final messenger = ScaffoldMessenger.of(context);
-    final navigator = Navigator.of(context);
+    final sheetNavigator = Navigator.of(context);
+    final rootNavigator = Navigator.of(context, rootNavigator: true);
+    final router = GoRouter.of(context);
+
+    // Audit 2026-06-13 — Le dev FAB faisait `await op` PUIS pop + go. Mais
+    // pendant `op`, `user.delete()` declenche un signOut Firebase qui propage
+    // a `currentUserProvider` (StreamProvider authStateChanges) -> router
+    // refresh -> redirect `/dashboard` -> `/onboarding/v2` AVANT que op ne
+    // termine. Resultat : le modal bottomsheet disparait, l'utilisateur
+    // arrive sur step 0 mais voit l'app en train de finir la suppression
+    // (loaders aleatoires).
+    //
+    // Fix : pop le bottomsheet immediatement + afficher un dialog bloquant
+    // sur le rootNavigator (sur-toute-route) qui reste visible jusqu'a la
+    // fin de op. Le user voit "Suppression en cours..." pendant ~3-4s,
+    // puis arrivee propre sur step 0.
+    sheetNavigator.pop();
+    unawaited(showDialog<void>(
+      context: rootNavigator.context,
+      barrierDismissible: false,
+      useRootNavigator: true,
+      builder: (_) => const _DeletingDialog(),
+    ));
+
     try {
       await op(_buildService());
       // INVALIDATION CRITIQUE : prefs.clear() vide le storage mais les
-      // Notifier Riverpod gardent leur state in-memory (build() ne re-lit
-      // les prefs qu'une fois au demarrage). Sans invalidate, le router
-      // redirect voit l'ancien subSystem en memoire -> renvoie a /filiere
-      // au lieu de /onboarding/subsystem.
-      // 4 providers a invalider :
-      //   - subSystemNotifierProvider (Story 1.2 — SharedPreferences subSystem)
-      //   - profileCompletionProvider (router redirect)
-      //   - onboardingNotifierProvider (E1bis state machine — sinon le
-      //     shell reste a currentStep=9 si le user a tape delete depuis
-      //     la page success)
-      //   - currentUserProvider (Audit NEW-BUG-17 — StreamProvider
-      //     authStateChanges, doit reflechir le nouveau uid anonyme)
+      // Notifier Riverpod gardent leur state in-memory. Sans invalidate, le
+      // router redirect voit l'ancien subSystem en memoire.
       ref.invalidate(subSystemNotifierProvider);
       ref.invalidate(profileCompletionProvider);
       ref.invalidate(onboardingNotifierProvider);
       ref.invalidate(currentUserProvider);
+
+      // Pop le dialog bloquant.
+      if (rootNavigator.canPop()) rootNavigator.pop();
+
       messenger.showSnackBar(
         SnackBar(
           content: Text(
@@ -109,15 +128,12 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
           ),
         ),
       );
-      if (mounted) {
-        navigator.pop();
-        // Nav DIRECT a /onboarding/v2 (pas /) pour skip toute logique de
-        // redirect router qui pourrait avoir un cache stale (les invalidate
-        // ci-dessus sont async, le go('/') redirect pouvait re-evaluer avant
-        // que les notifiers re-build).
-        GoRouter.of(context).go('/onboarding/v2');
-      }
+
+      // Nav DIRECT a /onboarding/v2 (l'auto-redirect aurait deja amene la,
+      // mais on force pour garantir step 0 quel que soit l'etat du router).
+      router.go('/onboarding/v2');
     } catch (e) {
+      if (rootNavigator.canPop()) rootNavigator.pop();
       messenger.showSnackBar(
         SnackBar(content: Text('$label FAIL: $e')),
       );
@@ -173,6 +189,57 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
               child: const Text('Annuler'),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Audit 2026-06-13 — Dialog bloquant affiche sur le rootNavigator pendant
+/// la suppression compte/local. Bloque le retour au step 0 tant que les
+/// operations Firestore + Auth ne sont pas terminees, evitant le flicker
+/// de l'ancienne UX (modal pop premature + UI en cours de cleanup visible).
+class _DeletingDialog extends StatelessWidget {
+  const _DeletingDialog();
+
+  @override
+  Widget build(BuildContext context) {
+    return PopScope(
+      canPop: false,
+      child: Dialog(
+        backgroundColor: AppColors.card,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppRadius.xl2),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(AppSpacing.s6.w),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(
+                width: 36.w,
+                height: 36.w,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3,
+                  valueColor:
+                      const AlwaysStoppedAnimation<Color>(AppColors.primary),
+                ),
+              ),
+              SizedBox(height: AppSpacing.s4.h),
+              Text(
+                'Suppression en cours...',
+                style: AppTypography.bodyStrong.copyWith(fontSize: 15.sp),
+              ),
+              SizedBox(height: AppSpacing.s2.h),
+              Text(
+                'Patiente quelques secondes',
+                style: AppTypography.body.copyWith(
+                  fontSize: 13.sp,
+                  color: AppColors.inkSoft,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -281,12 +281,174 @@
         "en": "A"
       },
       "canOptOut": false,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 30,
       "pickerMode": "derived",
       "description": {
-        "fr": "Litteraire — Lettres, Langues, Sciences humaines",
-        "en": "Literary — Letters, Languages, Humanities"
+        "fr": "Deprecated — utiliser A1-A5 specifiques (2026-06-13)",
+        "en": "Deprecated — use specific A1-A5"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_a1",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A1",
+        "en": "A1"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 31,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin + Grec",
+        "en": "Letters + Latin + Greek"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_a2",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A2",
+        "en": "A2"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 32,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin + Langue Vivante 2",
+        "en": "Letters + Latin + LV2"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_a3",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A3",
+        "en": "A3"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 33,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Latin",
+        "en": "Letters + Latin"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_a4",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A4",
+        "en": "A4"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 34,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Langue Vivante 2 + Philosophie",
+        "en": "Letters + LV2 + Philosophy"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_a5",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "A5",
+        "en": "A5"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 35,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres + Langues Vivantes 2 et 3 (Probatoire)",
+        "en": "Letters + LV2 + LV3 (Probatoire)"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_abi",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "ABI",
+        "en": "ABI"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 36,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Lettres Bilingues (FR + EN a parite)",
+        "en": "Bilingual Letters — French + English (parity)"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_sh",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "SH",
+        "en": "SH"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 37,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Sciences Humaines",
+        "en": "Human Sciences"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_ac",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "AC",
+        "en": "AC"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 38,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Arts et Cinematographie",
+        "en": "Arts and Cinematography"
+      }
+    },
+    {
+      "serieId": "francophone_premiere_ti",
+      "subSystem": "francophone",
+      "niveauId": "francophone_premiere",
+      "filiereId": "generale",
+      "name": {
+        "fr": "TI",
+        "en": "TI"
+      },
+      "canOptOut": false,
+      "isActive": true,
+      "sortOrder": 39,
+      "pickerMode": "derived",
+      "description": {
+        "fr": "Technologie de l'Information",
+        "en": "Information Technology"
       }
     },
     {
@@ -1111,7 +1273,7 @@
         "en": "S8"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 580,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1251,7 +1413,7 @@
         "en": "S8"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 680,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1267,7 +1429,7 @@
         "en": "A1"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 710,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1283,7 +1445,7 @@
         "en": "A2"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 720,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1299,7 +1461,7 @@
         "en": "A3"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 730,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1315,7 +1477,7 @@
         "en": "A4"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 740,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1331,7 +1493,7 @@
         "en": "A5"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 750,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1347,7 +1509,7 @@
         "en": "A1"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 810,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1363,7 +1525,7 @@
         "en": "A2"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 820,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1379,7 +1541,7 @@
         "en": "A3"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 830,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1395,7 +1557,7 @@
         "en": "A4"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 840,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -1411,7 +1573,7 @@
         "en": "A5"
       },
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 850,
       "pickerMode": "opt_out",
       "minSubjects": 3,
@@ -2603,19 +2765,52 @@
       }
     },
     {
-      "subjectId": "francophone_lv2",
+      "subjectId": "francophone_allemand",
       "subSystem": "francophone",
       "name": {
-        "fr": "LV2",
-        "en": "Second Foreign Lang."
+        "fr": "Allemand",
+        "en": "German"
       },
-      "icon": "globe",
+      "icon": "languages",
       "isActive": true,
       "sortOrder": 60,
       "abbreviation": {
-        "fr": "LV2",
-        "en": "LV2"
-      }
+        "fr": "ALL",
+        "en": "GER"
+      },
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_espagnol",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Espagnol",
+        "en": "Spanish"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 61,
+      "abbreviation": {
+        "fr": "ESP",
+        "en": "SPA"
+      },
+      "group": "lv2"
+    },
+    {
+      "subjectId": "francophone_italien",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Italien",
+        "en": "Italian"
+      },
+      "icon": "languages",
+      "isActive": true,
+      "sortOrder": 62,
+      "abbreviation": {
+        "fr": "ITA",
+        "en": "ITA"
+      },
+      "group": "lv2"
     },
     {
       "subjectId": "anglophone_integrated_science",
@@ -3566,8 +3761,98 @@
         "fr": "Probatoire A",
         "en": "Probatoire A"
       },
-      "isActive": true,
+      "isActive": false,
       "sortOrder": 20
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a1",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A1",
+        "en": "Probatoire A1"
+      },
+      "isActive": true,
+      "sortOrder": 21
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a2",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A2",
+        "en": "Probatoire A2"
+      },
+      "isActive": true,
+      "sortOrder": 22
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a3",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A3",
+        "en": "Probatoire A3"
+      },
+      "isActive": true,
+      "sortOrder": 23
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a4",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A4",
+        "en": "Probatoire A4"
+      },
+      "isActive": true,
+      "sortOrder": 24
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_a5",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire A5",
+        "en": "Probatoire A5"
+      },
+      "isActive": true,
+      "sortOrder": 25
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_abi",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire ABI",
+        "en": "Probatoire ABI"
+      },
+      "isActive": true,
+      "sortOrder": 26
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_sh",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire SH",
+        "en": "Probatoire SH"
+      },
+      "isActive": true,
+      "sortOrder": 27
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_ac",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire AC",
+        "en": "Probatoire AC"
+      },
+      "isActive": true,
+      "sortOrder": 28
+    },
+    {
+      "examTargetId": "exam_probatoire_francophone_ti",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Probatoire TI",
+        "en": "Probatoire TI"
+      },
+      "isActive": true,
+      "sortOrder": 29
     },
     {
       "examTargetId": "exam_probatoire_francophone_c",
@@ -4418,7 +4703,9 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_lcn",
         "francophone_info_college",
         "francophone_ea",
@@ -4442,7 +4729,9 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_sciences_phy",
         "francophone_lcn",
         "francophone_info_college",
@@ -4467,7 +4756,9 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_ecv",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_sciences_phy",
         "francophone_lcn",
         "francophone_info_college",
@@ -4489,7 +4780,9 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_math",
@@ -4511,7 +4804,9 @@
         "francophone_svt",
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_eps"
@@ -4529,7 +4824,9 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_math",
@@ -4553,7 +4850,9 @@
         "francophone_svt",
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_eps"
@@ -4576,7 +4875,9 @@
         "francophone_svt",
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_eps"
@@ -4617,7 +4918,9 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_philo",
         "francophone_hg",
         "francophone_math",
@@ -5718,7 +6021,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_biology",
         "anglophone_chemistry",
@@ -5750,7 +6053,7 @@
         "exam_gce_a_level_anglophone_s8"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_biology",
         "anglophone_chemistry",
@@ -5778,7 +6081,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_literature",
         "anglophone_history",
@@ -5806,7 +6109,7 @@
         "exam_gce_a_level_anglophone_a1"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_literature",
         "anglophone_history",
@@ -5832,7 +6135,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_history",
         "anglophone_geo",
@@ -5860,7 +6163,7 @@
         "exam_gce_a_level_anglophone_a2"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_history",
         "anglophone_geo",
@@ -5886,7 +6189,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_history",
         "anglophone_economics",
@@ -5914,7 +6217,7 @@
         "exam_gce_a_level_anglophone_a3"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_history",
         "anglophone_economics",
@@ -5940,7 +6243,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_economics",
         "anglophone_geo",
@@ -5968,7 +6271,7 @@
         "exam_gce_a_level_anglophone_a4"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_economics",
         "anglophone_geo",
@@ -5994,7 +6297,7 @@
       ],
       "examTargetIds": [],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_literature",
         "anglophone_history",
@@ -6022,7 +6325,7 @@
         "exam_gce_a_level_anglophone_a5"
       ],
       "canOptOut": true,
-      "isActive": true,
+      "isActive": false,
       "obligatorySubjectIds": [
         "anglophone_literature",
         "anglophone_history",
@@ -6034,6 +6337,210 @@
         "anglophone_religious_studies",
         "anglophone_economics"
       ]
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a1",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a1",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_latin",
+        "francophone_grec",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a1"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a2",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a2",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_latin",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a2"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a3",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a3",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_latin",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a3"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a4",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a4",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a4"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_a5",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_a5",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
+        "francophone_lv3"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_a5"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_abi",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_abi",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_litterature",
+        "francophone_intensive_english",
+        "francophone_oral_communication"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_abi"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_sh",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_sh",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_sh"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_ac",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_ac",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_hg",
+        "francophone_eps",
+        "francophone_arts_cinema"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_ac"
+      ],
+      "canOptOut": false,
+      "isActive": true
+    },
+    {
+      "ruleId": "rule_francophone_generale_premiere_ti",
+      "matchSubSystem": "francophone",
+      "matchFiliere": "generale",
+      "matchNiveau": "francophone_premiere",
+      "matchSerie": "francophone_premiere_ti",
+      "subjectIds": [
+        "francophone_fr",
+        "francophone_en",
+        "francophone_math",
+        "francophone_philo",
+        "francophone_physique",
+        "francophone_info",
+        "francophone_eps"
+      ],
+      "examTargetIds": [
+        "exam_probatoire_francophone_ti"
+      ],
+      "canOptOut": false,
+      "isActive": true
     },
     {
       "ruleId": "rule_francophone_generale_terminale_a1",
@@ -6050,7 +6557,9 @@
         "francophone_eps",
         "francophone_latin",
         "francophone_grec",
-        "francophone_lv2"
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a1"
@@ -6072,7 +6581,9 @@
         "francophone_hg",
         "francophone_eps",
         "francophone_latin",
-        "francophone_lv2"
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a2"
@@ -6114,7 +6625,9 @@
         "francophone_philo",
         "francophone_hg",
         "francophone_eps",
-        "francophone_lv2"
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a4"
@@ -6135,7 +6648,9 @@
         "francophone_philo",
         "francophone_hg",
         "francophone_eps",
-        "francophone_lv2",
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien",
         "francophone_lv3"
       ],
       "examTargetIds": [
@@ -7169,7 +7684,9 @@
         "francophone_eps",
         "francophone_ea",
         "francophone_tm",
-        "francophone_lv2"
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7196,7 +7713,9 @@
         "francophone_eps",
         "francophone_ea",
         "francophone_tm",
-        "francophone_lv2"
+        "francophone_allemand",
+        "francophone_espagnol",
+        "francophone_italien"
       ],
       "examTargetIds": [
         "exam_bepc"

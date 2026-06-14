@@ -125,17 +125,24 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
 
     switch (step) {
       case 0:
-        // Audit 2026-06-13 — Le tap card auto-avance via setSubSystem :
-        // CTA Continuer redondant + bruit visuel. Footer retire.
-        return null;
+        // Audit 2026-06-13 (rev2) — Restauration du CTA : le tap card pose
+        // maintenant un draft (setSubSystemDraft) sans avancer. L'utilisateur
+        // peut re-tapper l'autre choix avant de confirmer. Coherent avec
+        // step 2 (track) et step 3 (level).
+        return OnboardingCtaFooter(
+          label: l10n.onboardingContinue,
+          onPressed: state.subSystem != null ? notifier.next : null,
+        );
       case 1:
         return OnboardingCtaFooter(
           label: l10n.heroIntroCta,
           onPressed: notifier.next,
         );
       case 2:
-        // Step 2 track : CTA pour fallback (le tap card auto-avance via
-        // setTrackId mais le user peut taper Continuer pour confirmer).
+        // Step 2 track : tap card pose le draft (setTrackIdDraft) sans
+        // avancer. L'utilisateur confirme via le CTA Continuer ci-dessous.
+        // Audit 2026-06-13 — avant ce PR, auto-avance -> impossible de
+        // changer d'avis sans back.
         return OnboardingCtaFooter(
           label: l10n.onboardingContinue,
           onPressed: state.trackId != null ? notifier.next : null,
@@ -194,24 +201,31 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
 
 /// Header partage : back button + progress bar + step counter.
 ///
-/// Visible uniquement pour les steps de configuration (2-4 et 6-8 cf.
-/// template `configStepsActive`). Steps 0, 1, 5, 9 = pas de header
-/// (entree, hero, auth choice, success celebration).
+/// Politique d'affichage :
+/// - Step 0 (sub-system choice) : pas de header (rien en amont).
+/// - Steps 1 (hero) et 5 (auth choice) : back arrow SEUL (pas de progress
+///   bar — ce sont des interstitiels, pas des steps de configuration).
+/// - Steps 2-4 + 6-8 : header complet (back + progress + counter X/3).
+/// - Step 9 (success) : pas de header (fin du flow, pas de retour).
+///
+/// Audit 2026-06-13 — Avant ce PR, les steps 1 et 5 cachaient le header
+/// entierement. Resultat : impossible de revenir au step 0 (changer FR/EN)
+/// une fois la transition hero passee. Le notifier.back() supporte deja
+/// la chaine 8 -> 0 ; il manquait juste l'affordance UI sur ces 2 steps.
 class _OnboardingHeader extends StatelessWidget {
   const _OnboardingHeader({required this.step, required this.onBack});
 
   final int step;
   final VoidCallback onBack;
 
-  bool get _configStepsActive =>
+  bool get _showHeader => step >= 1 && step <= 8;
+
+  bool get _showProgress =>
       (step >= 2 && step <= 4) || (step >= 6 && step <= 8);
 
   @override
   Widget build(BuildContext context) {
-    if (!_configStepsActive) return const SizedBox.shrink();
-
-    final progress = step <= 4 ? (step - 1) / 3.0 : (step - 5) / 3.0;
-    final counter = step <= 4 ? step - 1 : step - 5;
+    if (!_showHeader) return const SizedBox.shrink();
 
     return Padding(
       padding: EdgeInsets.symmetric(
@@ -226,29 +240,44 @@ class _OnboardingHeader extends StatelessWidget {
             onPressed: onBack,
             tooltip: 'Retour',
           ),
-          SizedBox(width: AppSpacing.s2.w),
-          Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadius.pill),
-              child: LinearProgressIndicator(
-                value: progress.clamp(0.0, 1.0),
-                minHeight: 8.h,
-                backgroundColor: AppColors.border,
-                valueColor:
-                    const AlwaysStoppedAnimation<Color>(AppColors.primary),
+          if (_showProgress) ...[
+            SizedBox(width: AppSpacing.s2.w),
+            Expanded(child: _ProgressBar(step: step)),
+            SizedBox(width: AppSpacing.s3.w),
+            Text(
+              '${_counterFor(step)}/3',
+              style: AppTypography.body.copyWith(
+                fontSize: 13.sp,
+                color: AppColors.inkSoft,
+                fontWeight: FontWeight.w600,
               ),
             ),
-          ),
-          SizedBox(width: AppSpacing.s3.w),
-          Text(
-            '$counter/3',
-            style: AppTypography.body.copyWith(
-              fontSize: 13.sp,
-              color: AppColors.inkSoft,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          ],
         ],
+      ),
+    );
+  }
+
+  static int _counterFor(int step) => step <= 4 ? step - 1 : step - 5;
+}
+
+/// Barre de progression normalisee aux steps de configuration uniquement
+/// (2-4 et 6-8) pour preserver la semantique "3 etapes par bloc" du template.
+class _ProgressBar extends StatelessWidget {
+  const _ProgressBar({required this.step});
+
+  final int step;
+
+  @override
+  Widget build(BuildContext context) {
+    final progress = step <= 4 ? (step - 1) / 3.0 : (step - 5) / 3.0;
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadius.pill),
+      child: LinearProgressIndicator(
+        value: progress.clamp(0.0, 1.0),
+        minHeight: 8.h,
+        backgroundColor: AppColors.border,
+        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
       ),
     );
   }

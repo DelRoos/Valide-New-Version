@@ -23,10 +23,8 @@ import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/selection_card.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../core/widgets/feedback/onboarding_loader.dart';
-import '../../../../core/widgets/picker/obligatory_subject_checkbox_list.dart';
-import '../../../../core/widgets/picker/optional_subject_checkbox_list.dart';
 import '../../../../core/widgets/picker/picker_section_scaffold.dart';
-import '../../../../core/widgets/picker/picker_validate_bar.dart';
+import '../../../../core/widgets/picker/subject_icon_resolver.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
 import '../state/onboarding_notifier.dart';
@@ -42,7 +40,11 @@ class StreamSubjectsPickerStepBody extends ConsumerStatefulWidget {
 
 class _StreamSubjectsPickerStepBodyState
     extends ConsumerState<StreamSubjectsPickerStepBody> {
-  final Set<String> _picked = <String>{};
+  /// Audit 2026-06-13 — Pick utilisateur par groupe de variantes (LV2 etc.).
+  /// Cle = `Subject.group`, valeur = subjectId du variant choisi. Reset au
+  /// changement de streamId (en pratique, le PageView ne ressuscite pas
+  /// l'etat donc OK).
+  final Map<String, String> _picksByGroup = <String, String>{};
 
   @override
   Widget build(BuildContext context) {
@@ -166,147 +168,131 @@ class _StreamSubjectsPickerStepBodyState
     AppLocalizations l10n,
   ) {
     final state = ref.read(onboardingNotifierProvider);
+    final allSubjects = _allSubjectsFor(profile);
 
-    // Mode derived : afficher les matieres en preview read-only avec un CTA
-    // "Continuer". Pas d'auto-skip : decision produit 2026-06-13 — l'utilisateur
-    // dois VOIR les matieres qui composent sa serie (ex. Terminale D = 11
-    // matieres) avant de continuer. Sinon l'ecran clignote et il croit qu'il
-    // n'y a pas de matieres.
-    if (profile.pickerMode == PickerMode.derived) {
-      return _DerivedPreview(
-        subjects: profile.subjects,
-        langKey: langKey,
-        validateLabel: l10n.onboardingPickerValidate,
-        onValidate: () => notifier.setStreamAndSubjects(
+    // Audit 2026-06-13 — Unification de TOUS les pickerModes en preview chips
+    // read-only (decision produit : "on ne choisit pas les matieres, on
+    // affiche tout de la specialite") + exception variantes (LV2 = choix
+    // d'une langue parmi allemand/espagnol/italien/latin).
+    //
+    // `_groupsIn` extrait les groupes (>= 2 variantes meme `subject.group`).
+    // `ungrouped` = matieres autonomes (chip simple). `groups` = mini-pickers.
+    final groups = _groupsIn(allSubjects);
+    final ungrouped =
+        allSubjects.where((s) => s.group == null).toList(growable: false);
+
+    // CTA actif uniquement si chaque groupe a un pick.
+    final allGroupsPicked =
+        groups.keys.every(_picksByGroup.containsKey);
+
+    return _DerivedPreview(
+      ungroupedSubjects: ungrouped,
+      groups: groups,
+      picksByGroup: _picksByGroup,
+      langKey: langKey,
+      validateLabel: l10n.onboardingPickerValidate,
+      isValid: allGroupsPicked,
+      onGroupPick: (groupKey, subjectId) {
+        setState(() => _picksByGroup[groupKey] = subjectId);
+      },
+      onValidate: () {
+        final picked = <String>[
+          ...ungrouped.map((s) => s.subjectId),
+          ..._picksByGroup.values,
+        ];
+        notifier.setStreamAndSubjects(
           streamId: state.streamId,
-          pickedSubjects:
-              profile.subjects.map((s) => s.subjectId).toList(),
-        ),
-      );
-    }
-
-    final obligatorySubjects = _obligatorySubjectsFor(profile);
-    final optionalSubjects = _optionalSubjectsFor(profile);
-    final selectedCount = _picked.length + obligatorySubjects.length;
-    final min = profile.minSubjects ?? obligatorySubjects.length;
-    final max = profile.maxSubjects ?? profile.subjects.length;
-    final isValid = selectedCount >= min && selectedCount <= max;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (obligatorySubjects.isNotEmpty) ...[
-                  _SectionTitle(text: l10n.onboardingPickerObligatoryTitle),
-                  ObligatorySubjectCheckboxList(
-                    subjects: obligatorySubjects,
-                    langKey: langKey,
-                    isSaving: false,
-                    onTapBlocked: (_) {},
-                  ),
-                  SizedBox(height: AppSpacing.s4.h),
-                ],
-                if (optionalSubjects.isNotEmpty) ...[
-                  _SectionTitle(text: l10n.onboardingPickerOptionalTitle),
-                  OptionalSubjectCheckboxList(
-                    subjects: optionalSubjects,
-                    picked: _picked,
-                    onToggle: _onToggle,
-                    langKey: langKey,
-                    isSaving: false,
-                    iconResolver: _iconResolver,
-                  ),
-                  SizedBox(height: AppSpacing.s4.h),
-                ],
-                SizedBox(height: AppSpacing.s8.h),
-              ],
-            ),
-          ),
-        ),
-        PickerValidateBar(
-          counterText:
-              '$selectedCount/$max ${l10n.onboardingPickerObligatoryTitle.toLowerCase()}',
-          isValid: isValid,
-          isSaving: false,
-          onValidate: () => _onValidate(notifier, profile, obligatorySubjects),
-          onCancel: () => Navigator.of(context).maybePop(),
-          validateLabel: l10n.onboardingPickerValidate,
-          cancelLabel: l10n.onboardingContinue,
-        ),
-      ],
+          pickedSubjects: picked,
+        );
+      },
     );
   }
 
-  List<Subject> _obligatorySubjectsFor(DerivedProfile p) {
+  /// Detecte les groupes de variantes dans la liste : retourne
+  /// `{groupKey: [variants]}` pour chaque groupe ayant >= 2 variantes. Un
+  /// groupe avec 1 seule variante est traite comme une matiere autonome
+  /// (pas de picker, juste un chip simple) — evite un bottomsheet inutile.
+  Map<String, List<Subject>> _groupsIn(List<Subject> subjects) {
+    final result = <String, List<Subject>>{};
+    for (final s in subjects) {
+      final g = s.group;
+      if (g != null) {
+        result.putIfAbsent(g, () => <Subject>[]).add(s);
+      }
+    }
+    result.removeWhere((_, variants) => variants.length < 2);
+    return result;
+  }
+
+  /// Aggrege toutes les matieres d'un profil derive, quel que soit le
+  /// pickerMode. Resultat = matieres a afficher dans le resume chips.
+  ///
+  /// Mode derived : `profile.subjects` (deja agregées).
+  /// Mode freeWithObligatory / seriesPlusOptional : obligatoires + optionnelles.
+  /// Mode tvePicker : pro + related + other.
+  /// Mode optOut (legacy) : `profile.subjects`.
+  List<Subject> _allSubjectsFor(DerivedProfile p) {
     return switch (p.pickerMode) {
-      PickerMode.optOut => const <Subject>[],
-      PickerMode.freeWithObligatory => p.obligatorySubjects,
-      PickerMode.seriesPlusOptional => p.obligatorySubjects,
+      PickerMode.derived => p.subjects,
+      PickerMode.optOut => p.subjects,
+      PickerMode.freeWithObligatory => [
+          ...p.obligatorySubjects,
+          ...p.optionalSubjects,
+        ],
+      PickerMode.seriesPlusOptional => [
+          ...p.obligatorySubjects,
+          ...p.optionalSubjects,
+        ],
       PickerMode.tvePicker => [
           ...p.professionalSubjects,
           ...p.relatedProfessionalSubjects,
+          ...p.otherSubjects,
         ],
-      PickerMode.derived => const <Subject>[],
     };
   }
 
-  List<Subject> _optionalSubjectsFor(DerivedProfile p) {
-    return switch (p.pickerMode) {
-      PickerMode.optOut => p.subjects,
-      PickerMode.freeWithObligatory => p.optionalSubjects,
-      PickerMode.seriesPlusOptional => p.optionalSubjects,
-      PickerMode.tvePicker => p.otherSubjects,
-      PickerMode.derived => const <Subject>[],
-    };
-  }
-
-  void _onToggle(String subjectId, bool selected) {
-    setState(() {
-      if (selected) {
-        _picked.add(subjectId);
-      } else {
-        _picked.remove(subjectId);
-      }
-    });
-  }
-
-  IconData _iconResolver(String iconName) => LucideIcons.bookOpen;
-
-  void _onValidate(
-    OnboardingNotifier notifier,
-    DerivedProfile profile,
-    List<Subject> obligatorySubjects,
-  ) {
-    final state = ref.read(onboardingNotifierProvider);
-    final allPicked = <String>{
-      ...obligatorySubjects.map((s) => s.subjectId),
-      ..._picked,
-    };
-    notifier.setStreamAndSubjects(
-      streamId: state.streamId,
-      pickedSubjects: allPicked.toList(),
-    );
-  }
 }
 
 /// Preview read-only des matieres pour le mode `derived` (Terminale D,
 /// Premiere C, ...). L'utilisateur ne peut pas modifier ; il confirme avec
 /// le CTA "Continuer" pour avancer au step 5.
+///
+/// Audit 2026-06-13 — Layout RESUME (chips) au lieu de la liste verticale
+/// de tiles. Justification : Terminale D = 11 matieres, l'ancienne liste
+/// occupait ~600 dp + scroll obligatoire en phone. Le user demande "une
+/// forme de resume" : voir TOUT en un coup d'oeil. Les chips wrap
+/// naturellement sur 3-4 lignes en phone, 2 lignes en tablet, et
+/// transmettent le message "voici les matieres" sans demander d'action.
 class _DerivedPreview extends StatelessWidget {
   const _DerivedPreview({
-    required this.subjects,
+    required this.ungroupedSubjects,
+    required this.groups,
+    required this.picksByGroup,
     required this.langKey,
     required this.validateLabel,
+    required this.isValid,
+    required this.onGroupPick,
     required this.onValidate,
   });
 
-  final List<Subject> subjects;
+  /// Matieres autonomes (sans `group`). Rendues comme chips simples.
+  final List<Subject> ungroupedSubjects;
+
+  /// Groupes de variantes (`{groupKey: [variants]}`). Chaque groupe affiche
+  /// UN chip (placeholder si pas pick, variant pick sinon) + bottomsheet
+  /// d'edition au tap.
+  final Map<String, List<Subject>> groups;
+
+  /// Pick utilisateur par groupe (cle = groupKey, valeur = subjectId pick).
+  final Map<String, String> picksByGroup;
+
   final String langKey;
   final String validateLabel;
+
+  /// Active le CTA Valider. False tant que tous les groupes ne sont pas pick.
+  final bool isValid;
+
+  final void Function(String groupKey, String subjectId) onGroupPick;
   final VoidCallback onValidate;
 
   @override
@@ -319,32 +305,57 @@ class _DerivedPreview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                for (final subject in subjects) ...[
-                  _SubjectPreviewTile(subject: subject, langKey: langKey),
-                ],
+                Wrap(
+                  spacing: AppSpacing.s2.w,
+                  runSpacing: AppSpacing.s2.h,
+                  children: [
+                    for (final subject in ungroupedSubjects)
+                      _SubjectSummaryChip(
+                        subject: subject,
+                        langKey: langKey,
+                      ),
+                    for (final entry in groups.entries)
+                      _GroupChip(
+                        groupKey: entry.key,
+                        variants: entry.value,
+                        pickedId: picksByGroup[entry.key],
+                        langKey: langKey,
+                        onPick: (subjectId) =>
+                            onGroupPick(entry.key, subjectId),
+                      ),
+                  ],
+                ),
                 SizedBox(height: AppSpacing.s8.h),
               ],
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(AppSpacing.s4.w),
-          child: SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: onValidate,
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
+        // Audit 2026-06-13 — SafeArea(top: false) : sur Android Q+ et iPhone
+        // avec gesture nav, le CTA collait a la barre systeme. Le top reste
+        // false parce que le scaffold parent gere deja le top via le shell.
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.all(AppSpacing.s4.w),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: isValid ? onValidate : null,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  disabledBackgroundColor:
+                      AppColors.primary.withValues(alpha: 0.4),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                  ),
                 ),
-              ),
-              child: Text(
-                validateLabel,
-                style: AppTypography.bodyStrong.copyWith(
-                  fontSize: 16.sp,
-                  color: AppColors.card,
+                child: Text(
+                  validateLabel,
+                  style: AppTypography.bodyStrong.copyWith(
+                    fontSize: 16.sp,
+                    color: AppColors.card,
+                  ),
                 ),
               ),
             ),
@@ -355,60 +366,267 @@ class _DerivedPreview extends StatelessWidget {
   }
 }
 
-/// Tile compacte affichant une matiere en mode preview read-only :
-/// icone livre + nom + abbreviation (si fournie Firestore) + cadenas.
-class _SubjectPreviewTile extends StatelessWidget {
-  const _SubjectPreviewTile({required this.subject, required this.langKey});
+/// Chip representant un groupe de variantes (LV2 / LV3...).
+///
+/// Etats :
+///   - non pick : bordure pointillee, label "Choisir LV2", chevron-down.
+///     Tap -> bottomsheet de selection.
+///   - pick : chip plein style normal avec le nom du variant pick. Tap ->
+///     bottomsheet pour re-choisir.
+class _GroupChip extends StatelessWidget {
+  const _GroupChip({
+    required this.groupKey,
+    required this.variants,
+    required this.pickedId,
+    required this.langKey,
+    required this.onPick,
+  });
+
+  final String groupKey;
+  final List<Subject> variants;
+  final String? pickedId;
+  final String langKey;
+  final void Function(String subjectId) onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    final pickedVariant = pickedId == null
+        ? null
+        : variants.firstWhere(
+            (s) => s.subjectId == pickedId,
+            orElse: () => variants.first,
+          );
+    final hasPick = pickedVariant != null;
+    final label = hasPick
+        ? (pickedVariant.name[langKey] ??
+            pickedVariant.name['fr'] ??
+            pickedVariant.subjectId)
+        : 'Choisir ${groupKey.toUpperCase()}';
+    final icon = hasPick
+        ? subjectIconFor(pickedVariant.icon)
+        : LucideIcons.plusCircle;
+
+    return InkWell(
+      borderRadius: BorderRadius.circular(AppRadius.pill),
+      onTap: () => _openSheet(context),
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: AppSpacing.s3.w,
+          vertical: AppSpacing.s2.h,
+        ),
+        decoration: BoxDecoration(
+          color: hasPick ? AppColors.primarySoft : AppColors.card,
+          borderRadius: BorderRadius.circular(AppRadius.pill),
+          border: Border.all(
+            color: hasPick
+                ? AppColors.primary.withValues(alpha: 0.25)
+                : AppColors.primary.withValues(alpha: 0.5),
+            width: hasPick ? 1 : 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(icon, color: AppColors.primary, size: 16.sp),
+            SizedBox(width: AppSpacing.s2.w),
+            Text(
+              label,
+              style: AppTypography.bodyStrong.copyWith(
+                fontSize: 13.sp,
+                color: AppColors.primary,
+              ),
+            ),
+            SizedBox(width: AppSpacing.s1.w),
+            Icon(
+              LucideIcons.chevronDown,
+              color: AppColors.primary,
+              size: 14.sp,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openSheet(BuildContext context) async {
+    final result = await showModalBottomSheet<String>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppColors.card,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppRadius.xl2),
+        ),
+      ),
+      builder: (sheetCtx) => _GroupPickerSheet(
+        groupKey: groupKey,
+        variants: variants,
+        pickedId: pickedId,
+        langKey: langKey,
+      ),
+    );
+    if (result != null) onPick(result);
+  }
+}
+
+/// Bottomsheet de selection d'une variante d'un groupe (LV2 / LV3...).
+class _GroupPickerSheet extends StatelessWidget {
+  const _GroupPickerSheet({
+    required this.groupKey,
+    required this.variants,
+    required this.pickedId,
+    required this.langKey,
+  });
+
+  final String groupKey;
+  final List<Subject> variants;
+  final String? pickedId;
+  final String langKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.s5.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Center(
+              child: Container(
+                width: 36.w,
+                height: 4.h,
+                decoration: BoxDecoration(
+                  color: AppColors.border,
+                  borderRadius: BorderRadius.circular(AppRadius.pill),
+                ),
+              ),
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            Text(
+              'Choisis ta ${groupKey.toUpperCase()}',
+              style: AppTypography.h3.copyWith(fontSize: 18.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            for (final variant in variants) ...[
+              _GroupVariantTile(
+                variant: variant,
+                langKey: langKey,
+                selected: variant.subjectId == pickedId,
+                onTap: () => Navigator.of(context).pop(variant.subjectId),
+              ),
+              SizedBox(height: AppSpacing.s2.h),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _GroupVariantTile extends StatelessWidget {
+  const _GroupVariantTile({
+    required this.variant,
+    required this.langKey,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final Subject variant;
+  final String langKey;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final name = variant.name[langKey] ??
+        variant.name['fr'] ??
+        variant.subjectId;
+    return InkWell(
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(AppSpacing.s3.w),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.primarySoft : AppColors.bg,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(
+            color: selected ? AppColors.primary : AppColors.border,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              subjectIconFor(variant.icon),
+              color: AppColors.primary,
+              size: 20.sp,
+            ),
+            SizedBox(width: AppSpacing.s3.w),
+            Expanded(
+              child: Text(
+                name,
+                style: AppTypography.bodyStrong.copyWith(
+                  fontSize: 15.sp,
+                  color: selected ? AppColors.primary : AppColors.ink,
+                ),
+              ),
+            ),
+            if (selected)
+              Icon(LucideIcons.check,
+                  color: AppColors.primary, size: 18.sp),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Chip compact resume d'une matiere : icone + nom court. Sert le mode
+/// derived ou aucune interaction n'est possible : juste une vue d'ensemble.
+///
+/// Pas d'abbreviation ni de cadenas — le but est de minimiser le bruit
+/// visuel pour qu'on voit les 11 matieres d'un coup. L'abbreviation reste
+/// utile dans les modes picker (CheckboxListTile) ou la liste est longue
+/// et identifiee par tap. Cf. audit 2026-06-13.
+class _SubjectSummaryChip extends StatelessWidget {
+  const _SubjectSummaryChip({required this.subject, required this.langKey});
 
   final Subject subject;
   final String langKey;
 
   @override
   Widget build(BuildContext context) {
-    final name = subject.name[langKey] ??
-        subject.name['fr'] ??
-        subject.subjectId;
-    final abbr = subject.abbreviationFor(langKey);
+    final name =
+        subject.name[langKey] ?? subject.name['fr'] ?? subject.subjectId;
     return Container(
-      margin: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s4.w,
-        vertical: AppSpacing.s1.h,
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.s3.w,
+        vertical: AppSpacing.s2.h,
       ),
-      padding: EdgeInsets.all(AppSpacing.s3.w),
       decoration: BoxDecoration(
-        color: AppColors.bg,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.border),
+        color: AppColors.primarySoft,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(LucideIcons.bookOpen, color: AppColors.primary, size: 20.sp),
-          SizedBox(width: AppSpacing.s3.w),
-          Expanded(
-            child: Text(name, style: AppTypography.bodyStrong),
+          Icon(
+            subjectIconFor(subject.icon),
+            color: AppColors.primary,
+            size: 16.sp,
           ),
-          if (abbr != null) ...[
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.s2.w,
-                vertical: 2,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.primarySoft,
-                borderRadius: BorderRadius.circular(AppRadius.sm),
-              ),
-              child: Text(
-                abbr,
-                style: AppTypography.caption.copyWith(
-                  fontSize: 11.sp,
-                  fontWeight: FontWeight.w700,
-                  color: AppColors.primary,
-                ),
-              ),
+          SizedBox(width: AppSpacing.s2.w),
+          Text(
+            name,
+            style: AppTypography.bodyStrong.copyWith(
+              fontSize: 13.sp,
+              color: AppColors.primary,
             ),
-            SizedBox(width: AppSpacing.s2.w),
-          ],
-          Icon(LucideIcons.lock, color: AppColors.inkSoft, size: 16.sp),
+          ),
         ],
       ),
     );
@@ -446,25 +664,6 @@ class _StreamPicker extends StatelessWidget {
           ],
           SizedBox(height: AppSpacing.s8.h),
         ],
-      ),
-    );
-  }
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle({required this.text});
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s4.w,
-        vertical: AppSpacing.s2.h,
-      ),
-      child: Text(
-        text,
-        style: AppTypography.h3.copyWith(fontSize: 15.sp),
       ),
     );
   }

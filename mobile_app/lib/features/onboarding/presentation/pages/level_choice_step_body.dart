@@ -42,12 +42,18 @@ class LevelChoiceStepBody extends ConsumerWidget {
           );
         }
 
-        // Fix runtime 2026-06-12 : afficher TOUS les levels du sub-system
-        // (6e -> Terminale FR ou Form 1 -> Upper Sixth EN), sans filtrer
-        // par trackId. Le track determine plus tard la serie/stream, pas la
-        // liste des levels disponibles.
+        // Audit 2026-06-13 — Filtrer aussi par trackId quand il est pose.
+        // Avant ce fix, on affichait tous les niveaux du sub-system, ce qui
+        // permettait a un user Anglo + Technique de choisir Form 5 (qui est
+        // generale uniquement) -> step 4 renvoyait "No stream available"
+        // car la serie form_5_olevel a filiereId=generale != track.
+        // La verite est dans niveau.filiereIds (cf. matrice.json).
+        final trackId = state.trackId;
         final levels = snapshot.niveaux
-            .where((n) => n.isActive && n.subSystem == subSystemId)
+            .where((n) =>
+                n.isActive &&
+                n.subSystem == subSystemId &&
+                (trackId == null || n.filiereIds.contains(trackId)))
             .toList()
           ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
@@ -89,7 +95,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
                   variant: SelectionCardVariant.compact,
                   showRadio: false,
                   onTap: () =>
-                      _onLevelTap(notifier, snapshot, level.niveauId),
+                      _onLevelTap(ref, notifier, snapshot, level.niveauId),
                 ),
                 SizedBox(height: AppSpacing.s2.h),
               ],
@@ -107,16 +113,27 @@ class LevelChoiceStepBody extends ConsumerWidget {
   }
 
   void _onLevelTap(
+    WidgetRef ref,
     dynamic notifier,
     CatalogueSnapshot snapshot,
     String niveauId,
   ) {
-    final seriesForLevel =
-        snapshot.series.where((s) => s.isActive && s.niveauId == niveauId);
+    // Audit 2026-06-13 — Filtrer seriesForLevel par trackId quand pose, sinon
+    // requiresPicker peut etre true pour un track auquel le niveau ne
+    // s'applique pas (Form 5 generale avec track technique).
+    final trackId = ref.read(onboardingNotifierProvider).trackId;
+    final seriesForLevel = snapshot.series.where((s) =>
+        s.isActive &&
+        s.niveauId == niveauId &&
+        (trackId == null || s.filiereId == trackId));
     final requiresPicker =
         seriesForLevel.any((s) => s.pickerMode != PickerMode.derived) ||
             seriesForLevel.length > 1;
-    notifier.setLevelId(niveauId, requiresPicker: requiresPicker);
+    // Audit 2026-06-13 — `setLevelIdDraft` (no transition) : l'utilisateur
+    // valide via CTA Continuer du shell (cf. shell `case 3`). Permet de
+    // changer d'avis sans bouton back. Le draft capture `requiresPicker`
+    // pour que `next()` dispatche step 4 ou 5 correctement.
+    notifier.setLevelIdDraft(niveauId, requiresPicker: requiresPicker);
   }
 
   String _localizedName(Niveau n, {required bool anglo}) {

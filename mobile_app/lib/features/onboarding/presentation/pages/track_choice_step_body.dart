@@ -74,12 +74,17 @@ class TrackChoiceStepBody extends ConsumerWidget {
                 SelectionCard(
                   title: _localizedName(t, anglo: isAnglo),
                   description: _trackHint(l10n, t.filiereId),
-                  icon: Icon(
-                    _trackIcon(t.filiereId),
-                    color: AppColors.primary,
-                  ),
+                  // Audit 2026-06-13 — pas de `color:` explicite ici sinon
+                  // l'icone reste primary sur le fond primary quand la card
+                  // est selectionnee (invisible). On laisse SelectionCard
+                  // appliquer son IconTheme : inkSoft hors selection, white
+                  // sur selection. Cf. SelectionCard._SelectionCardIcon.
+                  icon: Icon(_trackIcon(t.filiereId)),
                   selected: state.trackId == t.filiereId,
-                  onTap: () => notifier.setTrackId(t.filiereId),
+                  // Audit 2026-06-13 — setTrackIdDraft (no transition) :
+                  // l'utilisateur choisit puis confirme via CTA Continuer
+                  // du shell. Permet de changer d'avis sans back.
+                  onTap: () => notifier.setTrackIdDraft(t.filiereId),
                   showRadio: false,
                 ),
                 SizedBox(height: AppSpacing.s3.h),

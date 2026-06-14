@@ -8,7 +8,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../catalogue/domain/models.dart';
 import '../../theme/tokens.dart';
@@ -20,6 +19,7 @@ class ObligatorySubjectCheckboxList extends StatelessWidget {
     required this.langKey,
     required this.isSaving,
     required this.onTapBlocked,
+    required this.iconResolver,
   });
 
   /// Matieres a afficher comme obligatoires (verrouillees + cadenas).
@@ -35,6 +35,13 @@ class ObligatorySubjectCheckboxList extends StatelessWidget {
   /// matiere obligatoire. Typiquement : toast warning + log warn.
   final void Function(String subjectId) onTapBlocked;
 
+  /// Resolver d'icone par nom Lucide (cf. subject_icon_resolver.dart). Injecte
+  /// pour eviter une dependance core -> feature, comme dans
+  /// [OptionalSubjectCheckboxList]. Audit 2026-06-13 : avant ce param, la
+  /// secondary affichait un cadenas generique pour TOUTES les matieres
+  /// obligatoires -> l'utilisateur perdait le contexte de la matiere.
+  final IconData Function(String iconName) iconResolver;
+
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
@@ -49,7 +56,7 @@ class ObligatorySubjectCheckboxList extends StatelessWidget {
           value: true,
           onChanged: isSaving ? null : (_) => onTapBlocked(s.subjectId),
           secondary: Icon(
-            LucideIcons.lock,
+            iconResolver(s.icon),
             color: AppColors.primary,
             size: 18.sp,
           ),
