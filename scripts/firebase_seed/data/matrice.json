@@ -3936,6 +3936,1444 @@
       "isActive": true,
       "sortOrder": 522,
       "subSystem": "francophone"
+    },
+    {
+      "subjectId": "francophone_histoire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Histoire",
+        "en": "Histoire"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_geographie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Géographie",
+        "en": "Géographie"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_physique_chimie_sciences_physiques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Physique-Chimie / Sciences Physiques",
+        "en": "Physique-Chimie / Sciences Physiques"
+      },
+      "icon": "atom",
+      "isActive": true,
+      "sortOrder": 1000,
+      "abbreviation": {
+        "fr": "PCT",
+        "en": "PCT"
+      }
+    },
+    {
+      "subjectId": "francophone_anglais_a_parite",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Anglais (à parité)",
+        "en": "Anglais (à parité)"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_arts_cinematographie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Arts / Cinématographie",
+        "en": "Arts / Cinématographie"
+      },
+      "icon": "palette",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_education_a_lenvironnement_hygiene_et_bi",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Éducation à l'environnement, hygiène et biotechnologie",
+        "en": "Éducation à l'environnement, hygiène et biotechnologie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_technologie_sciences_de_l",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques / Technologie / Sciences de l'ingénieur",
+        "en": "Techniques / Technologie / Sciences de l'ingénieur"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_epreuve_pratique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Épreuve pratique",
+        "en": "Épreuve pratique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_informatique_algorithmique_programmation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Informatique (algorithmique, programmation, bases de données, réseaux)",
+        "en": "Informatique (algorithmique, programmation, bases de données, réseaux)"
+      },
+      "icon": "cpu",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_pratiques_ti",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Pratiques TI",
+        "en": "Pratiques TI"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_rapport_de_stage",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Rapport de stage",
+        "en": "Rapport de stage"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_programmation_bases_de_donnees_de_gest",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Programmation / Bases de données de gestion",
+        "en": "Programmation / Bases de données de gestion"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_sciences_economiques_et_sociales",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences Économiques et Sociales",
+        "en": "Sciences Économiques et Sociales"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 1000,
+      "abbreviation": {
+        "fr": "SES",
+        "en": "SES"
+      }
+    },
+    {
+      "subjectId": "francophone_techniques_dhebergement",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques d'hébergement",
+        "en": "Techniques d'hébergement"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_gestion_hoteliere",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Gestion hôtelière",
+        "en": "Gestion hôtelière"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_hygiene_et_securite",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hygiène et sécurité",
+        "en": "Hygiène et sécurité"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_communication_professionnelle",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Communication professionnelle",
+        "en": "Communication professionnelle"
+      },
+      "icon": "mic",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_economie_droit",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Économie / Droit",
+        "en": "Économie / Droit"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_atelier_hebergement",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques (atelier hébergement)",
+        "en": "Travaux pratiques (atelier hébergement)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_de_restaurant_et_de_bar",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques de restaurant et de bar",
+        "en": "Techniques de restaurant et de bar"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_nologie_service_des_boissons",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Œnologie / Service des boissons",
+        "en": "Œnologie / Service des boissons"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_atelier_restaurant_bar",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques (atelier restaurant-bar)",
+        "en": "Travaux pratiques (atelier restaurant-bar)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_culinaires",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques culinaires",
+        "en": "Techniques culinaires"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_nutrition_sciences_des_aliments",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Nutrition / Sciences des aliments",
+        "en": "Nutrition / Sciences des aliments"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_hygiene_et_securite_alimentaire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hygiène et sécurité alimentaire",
+        "en": "Hygiène et sécurité alimentaire"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_atelier_cuisine",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques (atelier cuisine)",
+        "en": "Travaux pratiques (atelier cuisine)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_daccueil_et_danimation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques d'accueil et d'animation",
+        "en": "Techniques d'accueil et d'animation"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_geographie_touristique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Géographie touristique",
+        "en": "Géographie touristique"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_gestion_touristique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Gestion touristique",
+        "en": "Gestion touristique"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques",
+        "en": "Travaux pratiques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_dagence_de_voyage",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques d'agence de voyage",
+        "en": "Techniques d'agence de voyage"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_billetterie_reservation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Billetterie / Réservation",
+        "en": "Billetterie / Réservation"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_economie_sociale_et_familiale",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Économie sociale et familiale",
+        "en": "Économie sociale et familiale"
+      },
+      "icon": "landmark",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_nutrition_alimentation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Nutrition / Alimentation",
+        "en": "Nutrition / Alimentation"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_sciences_de_la_consommation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences de la consommation",
+        "en": "Sciences de la consommation"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_gestion_du_foyer_budget_familial",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Gestion du foyer / Budget familial",
+        "en": "Gestion du foyer / Budget familial"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_hygiene_et_sante",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hygiène et santé",
+        "en": "Hygiène et santé"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_histoire_de_lart",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Histoire de l'art",
+        "en": "Histoire de l'art"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_artistique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin artistique",
+        "en": "Dessin artistique"
+      },
+      "icon": "palette",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_de_la_ceramique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie de la céramique",
+        "en": "Technologie de la céramique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_de_ceramique_pratique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier de céramique (pratique)",
+        "en": "Atelier de céramique (pratique)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_de_peinture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques de peinture",
+        "en": "Techniques de peinture"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_de_peinture_pratique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier de peinture (pratique)",
+        "en": "Atelier de peinture (pratique)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_de_sculpture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques de sculpture",
+        "en": "Techniques de sculpture"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_de_sculpture_pratique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier de sculpture (pratique)",
+        "en": "Atelier de sculpture (pratique)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_physique_appliquee",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Physique appliquée",
+        "en": "Physique appliquée"
+      },
+      "icon": "atom",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_construction_mecanique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Construction mécanique",
+        "en": "Construction mécanique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mecanique_appliquee",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mécanique appliquée",
+        "en": "Mécanique appliquée"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_de_fabrication",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie de fabrication",
+        "en": "Technologie de fabrication"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_travaux_pratiques_dusinage",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier / Travaux pratiques d'usinage",
+        "en": "Atelier / Travaux pratiques d'usinage"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_electronique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Électronique",
+        "en": "Électronique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mesures_electroniques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mesures électroniques",
+        "en": "Mesures électroniques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_electronique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie électronique",
+        "en": "Technologie électronique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_technique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin technique",
+        "en": "Dessin technique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_travaux_pratiques_delectroniqu",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier / Travaux pratiques d'électronique",
+        "en": "Atelier / Travaux pratiques d'électronique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_electrotechnique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Électrotechnique",
+        "en": "Électrotechnique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_machines_electriques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Machines électriques",
+        "en": "Machines électriques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mesures_electriques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mesures électriques",
+        "en": "Mesures électriques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie",
+        "en": "Technologie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_travaux_pratiques_delectrotech",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier / Travaux pratiques d'électrotechnique",
+        "en": "Atelier / Travaux pratiques d'électrotechnique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_construction_technologie_du_batiment",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Construction / Technologie du bâtiment",
+        "en": "Construction / Technologie du bâtiment"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_beton_arme",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Béton armé",
+        "en": "Béton armé"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_resistance_des_materiaux",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Résistance des matériaux",
+        "en": "Résistance des matériaux"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_topographie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Topographie",
+        "en": "Topographie"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_de_batiment",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin de bâtiment",
+        "en": "Dessin de bâtiment"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_travaux_pratiques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier / Travaux pratiques",
+        "en": "Atelier / Travaux pratiques"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_etude_des_constructions",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Étude des constructions",
+        "en": "Étude des constructions"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_technique_dao",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin technique (DAO)",
+        "en": "Dessin technique (DAO)"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_des_travaux_publics",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie des travaux publics",
+        "en": "Technologie des travaux publics"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_thermodynamique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Thermodynamique",
+        "en": "Thermodynamique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_du_froid_et_de_la_climatisat",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie du froid et de la climatisation",
+        "en": "Technologie du froid et de la climatisation"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_electrotechnique_appliquee",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Électrotechnique appliquée",
+        "en": "Électrotechnique appliquée"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier_travaux_pratiques_froid_climat",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier / Travaux pratiques froid-climatisation",
+        "en": "Atelier / Travaux pratiques froid-climatisation"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_chimie_generale_et_industrielle",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chimie générale et industrielle",
+        "en": "Chimie générale et industrielle"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_bio_procedes",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Bio-procédés",
+        "en": "Bio-procédés"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_petrochimie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Pétrochimie",
+        "en": "Pétrochimie"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_chimique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie chimique",
+        "en": "Technologie chimique"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_de_chimie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques de chimie",
+        "en": "Travaux pratiques de chimie"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_chimie_cosmetique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chimie cosmétique",
+        "en": "Chimie cosmétique"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_chimie_pharmaceutique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Chimie pharmaceutique",
+        "en": "Chimie pharmaceutique"
+      },
+      "icon": "flask-conical",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_miniere",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie minière",
+        "en": "Technologie minière"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_petroliere",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie pétrolière",
+        "en": "Technologie pétrolière"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_geologie_appliquee",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Géologie appliquée",
+        "en": "Géologie appliquée"
+      },
+      "icon": "map",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_techniques_de_laboratoire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Techniques de laboratoire",
+        "en": "Techniques de laboratoire"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_de_laboratoire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques de laboratoire",
+        "en": "Travaux pratiques de laboratoire"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_biochimie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Biochimie",
+        "en": "Biochimie"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_biotechnologie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Biotechnologie",
+        "en": "Biotechnologie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_biologie_sciences_de_la_sante",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Biologie / Sciences de la santé",
+        "en": "Biologie / Sciences de la santé"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_sciences_medico_sanitaires",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences médico-sanitaires",
+        "en": "Sciences médico-sanitaires"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_sciences_sociales_action_sociale",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Sciences sociales / Action sociale",
+        "en": "Sciences sociales / Action sociale"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_hygiene_et_sante_publique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hygiène et santé publique",
+        "en": "Hygiène et santé publique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_zootechnie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Zootechnie",
+        "en": "Zootechnie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_production_des_monogastriques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Production des monogastriques",
+        "en": "Production des monogastriques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_sante_animale",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Santé animale",
+        "en": "Santé animale"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_production_des_polygastriques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Production des polygastriques",
+        "en": "Production des polygastriques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_aquaculture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Aquaculture",
+        "en": "Aquaculture"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_biologie_aquatique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Biologie aquatique",
+        "en": "Biologie aquatique"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_gestion_delevage_aquacole",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Gestion d'élevage aquacole",
+        "en": "Gestion d'élevage aquacole"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_agronomie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Agronomie",
+        "en": "Agronomie"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_productions_vegetales",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Productions végétales",
+        "en": "Productions végétales"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_phytotechnie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Phytotechnie",
+        "en": "Phytotechnie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mecanique_agricole",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mécanique agricole",
+        "en": "Mécanique agricole"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_des_equipements",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance des équipements",
+        "en": "Maintenance des équipements"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_atelier",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Atelier",
+        "en": "Atelier"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_agroalimentaire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie agroalimentaire",
+        "en": "Technologie agroalimentaire"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_transformation_conservation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Transformation / Conservation",
+        "en": "Transformation / Conservation"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_hygiene",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Hygiène",
+        "en": "Hygiène"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_gestion_financiere",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Gestion financière",
+        "en": "Gestion financière"
+      },
+      "icon": "briefcase",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_dart_applique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin d'art appliqué",
+        "en": "Dessin d'art appliqué"
+      },
+      "icon": "palette",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_de_la_bijouterie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie de la bijouterie",
+        "en": "Technologie de la bijouterie"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_cartographie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Cartographie",
+        "en": "Cartographie"
+      },
+      "icon": "palette",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_travaux_pratiques_de_terrain",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Travaux pratiques de terrain",
+        "en": "Travaux pratiques de terrain"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_du_bois",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie du bois",
+        "en": "Technologie du bois"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_transformation_mecanique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Transformation mécanique",
+        "en": "Transformation mécanique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_de_lhabillement",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie de l'habillement",
+        "en": "Technologie de l'habillement"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_coupe_et_couture",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Coupe et couture",
+        "en": "Coupe et couture"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_dessin_de_mode",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Dessin de mode",
+        "en": "Dessin de mode"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_technologie_sanitaire",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Technologie sanitaire",
+        "en": "Technologie sanitaire"
+      },
+      "icon": "wrench",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_plomberie_reseaux_hydrauliques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Plomberie / Réseaux hydrauliques",
+        "en": "Plomberie / Réseaux hydrauliques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mecanique_automobile",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mécanique automobile",
+        "en": "Mécanique automobile"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_vehicules_de_tourisme",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance véhicules de tourisme",
+        "en": "Maintenance véhicules de tourisme"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_poids_lourds",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance poids lourds",
+        "en": "Maintenance poids lourds"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_ebenisterie",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Ébénisterie",
+        "en": "Ébénisterie"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_menuiserie_agencement",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Menuiserie / Agencement",
+        "en": "Menuiserie / Agencement"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_mecanique",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Mécanique",
+        "en": "Mécanique"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_industrielle",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance industrielle",
+        "en": "Maintenance industrielle"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_electronique_biomedicale",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Électronique biomédicale",
+        "en": "Électronique biomédicale"
+      },
+      "icon": "leaf",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_des_equipements_hospitaliers",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance des équipements hospitaliers",
+        "en": "Maintenance des équipements hospitaliers"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_systemes_electroniques",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Systèmes électroniques",
+        "en": "Systèmes électroniques"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
+    },
+    {
+      "subjectId": "francophone_maintenance_et_installation",
+      "subSystem": "francophone",
+      "name": {
+        "fr": "Maintenance et installation",
+        "en": "Maintenance et installation"
+      },
+      "icon": "book-open",
+      "isActive": true,
+      "sortOrder": 1000
     }
   ],
   "exam_targets": [
@@ -4975,12 +6413,14 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
-        "francophone_philo",
-        "francophone_hg",
         "francophone_math",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_svt",
+        "francophone_physique_chimie_sciences_physiques",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [],
@@ -4995,15 +6435,16 @@
       "matchSerie": "francophone_seconde_c",
       "subjectIds": [
         "francophone_math",
-        "francophone_pct",
+        "francophone_physique",
+        "francophone_chimie",
         "francophone_svt",
         "francophone_fr",
         "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
-        "francophone_philo",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [],
@@ -5041,15 +6482,17 @@
       "matchSerie": "francophone_premiere_c",
       "subjectIds": [
         "francophone_math",
-        "francophone_pct",
+        "francophone_physique",
+        "francophone_chimie",
         "francophone_svt",
         "francophone_fr",
-        "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_philo",
-        "francophone_hg",
+        "francophone_en",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5066,15 +6509,18 @@
       "matchSerie": "francophone_premiere_d",
       "subjectIds": [
         "francophone_math",
-        "francophone_pct",
         "francophone_svt",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_education_a_lenvironnement_hygiene_et_bi",
         "francophone_fr",
-        "francophone_en",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
         "francophone_philo",
-        "francophone_hg",
+        "francophone_en",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5091,12 +6537,17 @@
       "matchSerie": "francophone_premiere_e",
       "subjectIds": [
         "francophone_math",
-        "francophone_si",
-        "francophone_pct",
+        "francophone_physique",
+        "francophone_chimie",
+        "francophone_techniques_technologie_sciences_de_l",
         "francophone_fr",
+        "francophone_philo",
         "francophone_en",
-        "francophone_hg",
-        "francophone_eps"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps",
+        "francophone_epreuve_pratique"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_e"
@@ -5139,11 +6590,14 @@
         "francophone_chimie",
         "francophone_svt",
         "francophone_fr",
-        "francophone_en",
         "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_info"
+        "francophone_en",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_c"
@@ -5159,16 +6613,19 @@
       "matchSerie": "francophone_terminale_d",
       "subjectIds": [
         "francophone_math",
+        "francophone_svt",
         "francophone_physique",
         "francophone_chimie",
-        "francophone_svt",
+        "francophone_education_a_lenvironnement_hygiene_et_bi",
         "francophone_fr",
-        "francophone_en",
         "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_environnement",
-        "francophone_info"
+        "francophone_en",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_d"
@@ -5184,14 +6641,17 @@
       "matchSerie": "francophone_terminale_e",
       "subjectIds": [
         "francophone_math",
-        "francophone_techno",
         "francophone_physique",
         "francophone_chimie",
+        "francophone_techniques_technologie_sciences_de_l",
         "francophone_fr",
+        "francophone_philo",
         "francophone_en",
-        "francophone_hg",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps",
-        "francophone_philo"
+        "francophone_epreuve_pratique"
       ],
       "examTargetIds": [
         "exam_bac_francophone_e"
@@ -5206,13 +6666,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_f1",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_construction_mecanique",
+        "francophone_mecanique_appliquee",
+        "francophone_technologie_de_fabrication",
+        "francophone_dessin_industriel",
+        "francophone_atelier_travaux_pratiques_dusinage",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5228,13 +6692,17 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_f1",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_construction_mecanique",
+        "francophone_mecanique_appliquee",
+        "francophone_technologie_de_fabrication",
+        "francophone_dessin_industriel",
+        "francophone_atelier_travaux_pratiques_dusinage",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5250,13 +6718,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_f2",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_electronique",
+        "francophone_mesures_electroniques",
+        "francophone_technologie_electronique",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_delectroniqu",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5272,13 +6744,17 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_f2",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_electronique",
+        "francophone_mesures_electroniques",
+        "francophone_technologie_electronique",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_delectroniqu",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5294,13 +6770,18 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_f3",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_electrotechnique",
+        "francophone_machines_electriques",
+        "francophone_mesures_electriques",
+        "francophone_technologie",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_delectrotech",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5316,13 +6797,18 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_f3",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_electrotechnique",
+        "francophone_machines_electriques",
+        "francophone_mesures_electriques",
+        "francophone_technologie",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_delectrotech",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5382,13 +6868,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_f5",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_thermodynamique",
+        "francophone_technologie_du_froid_et_de_la_climatisat",
+        "francophone_electrotechnique_appliquee",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_froid_climat",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5404,13 +6894,17 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_f5",
       "subjectIds": [
-        "francophone_math",
-        "francophone_sciences_phy",
-        "francophone_si",
-        "francophone_tech_atelier",
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
+        "francophone_math",
+        "francophone_physique_appliquee",
+        "francophone_chimie",
+        "francophone_thermodynamique",
+        "francophone_technologie_du_froid_et_de_la_climatisat",
+        "francophone_electrotechnique_appliquee",
+        "francophone_dessin_technique",
+        "francophone_atelier_travaux_pratiques_froid_climat",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5586,9 +7080,16 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_esf",
       "subjectIds": [
-        "francophone_tech_general_etendu",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_economie_sociale_et_familiale",
+        "francophone_nutrition_alimentation",
+        "francophone_sciences_de_la_consommation",
+        "francophone_gestion_du_foyer_budget_familial",
+        "francophone_hygiene_et_sante",
+        "francophone_travaux_pratiques",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5604,9 +7105,14 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_ih",
       "subjectIds": [
-        "francophone_tech_general_etendu",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_technologie_de_lhabillement",
+        "francophone_coupe_et_couture",
+        "francophone_dessin_de_mode",
+        "francophone_atelier",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5694,9 +7200,14 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_mem",
       "subjectIds": [
-        "francophone_tech_general_etendu",
         "francophone_fr",
         "francophone_en",
+        "francophone_math",
+        "francophone_electrotechnique",
+        "francophone_mecanique",
+        "francophone_maintenance_industrielle",
+        "francophone_atelier",
+        "francophone_ecv",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -5816,14 +7327,7 @@
       "subjectIds": [
         "anglophone_english_lang",
         "anglophone_french",
-        "anglophone_math",
-        "anglophone_physics",
-        "anglophone_chemistry",
-        "anglophone_biology",
-        "anglophone_history",
-        "anglophone_geo",
-        "anglophone_citizenship",
-        "anglophone_pe"
+        "anglophone_math"
       ],
       "examTargetIds": [
         "exam_gce_o_level_anglophone"
@@ -5861,11 +7365,7 @@
       "matchFiliere": "generale",
       "matchNiveau": "anglophone_lower_sixth",
       "matchSerie": "anglophone_lower_sixth_s1",
-      "subjectIds": [
-        "anglophone_chemistry",
-        "anglophone_physics",
-        "anglophone_pure_maths"
-      ],
+      "subjectIds": [],
       "examTargetIds": [],
       "canOptOut": true,
       "isActive": true,
@@ -5887,11 +7387,7 @@
       "matchFiliere": "generale",
       "matchNiveau": "anglophone_upper_sixth",
       "matchSerie": "anglophone_upper_sixth_s1",
-      "subjectIds": [
-        "anglophone_chemistry",
-        "anglophone_physics",
-        "anglophone_pure_maths"
-      ],
+      "subjectIds": [],
       "examTargetIds": [
         "exam_gce_a_level_anglophone_s1"
       ],
@@ -6581,16 +8077,17 @@
       "matchSerie": "francophone_premiere_a1",
       "subjectIds": [
         "francophone_fr",
-        "francophone_en",
-        "francophone_math",
         "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
         "francophone_latin",
         "francophone_grec",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_en",
+        "francophone_math",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a1"
@@ -6606,15 +8103,16 @@
       "matchSerie": "francophone_premiere_a2",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_latin",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_latin",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a2"
@@ -6630,15 +8128,16 @@
       "matchSerie": "francophone_premiere_a3",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_latin",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_latin",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a3"
@@ -6654,14 +8153,15 @@
       "matchSerie": "francophone_premiere_a4",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a4"
@@ -6677,14 +8177,14 @@
       "matchSerie": "francophone_premiere_a5",
       "subjectIds": [
         "francophone_fr",
-        "francophone_en",
         "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien",
-        "francophone_lv3"
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_a5"
@@ -6700,14 +8200,19 @@
       "matchSerie": "francophone_premiere_abi",
       "subjectIds": [
         "francophone_fr",
-        "francophone_en",
-        "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
+        "francophone_anglais_a_parite",
         "francophone_litterature",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_math",
         "francophone_intensive_english",
-        "francophone_oral_communication"
+        "francophone_oral_communication",
+        "francophone_manual_labour",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_abi"
@@ -6723,10 +8228,14 @@
       "matchSerie": "francophone_premiere_sh",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -6742,13 +8251,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_ac",
       "subjectIds": [
+        "francophone_arts_cinematographie",
         "francophone_fr",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_arts_cinema"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_ac"
@@ -6763,13 +8276,17 @@
       "matchNiveau": "francophone_premiere",
       "matchSerie": "francophone_premiere_ti",
       "subjectIds": [
-        "francophone_fr",
-        "francophone_en",
         "francophone_math",
-        "francophone_philo",
         "francophone_physique",
-        "francophone_info",
-        "francophone_eps"
+        "francophone_informatique_algorithmique_programmation",
+        "francophone_fr",
+        "francophone_philo",
+        "francophone_en",
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_eps",
+        "francophone_pratiques_ti",
+        "francophone_rapport_de_stage"
       ],
       "examTargetIds": [
         "exam_probatoire_francophone_ti"
@@ -6785,16 +8302,17 @@
       "matchSerie": "francophone_terminale_a1",
       "subjectIds": [
         "francophone_fr",
-        "francophone_en",
-        "francophone_math",
         "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
         "francophone_latin",
         "francophone_grec",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_en",
+        "francophone_math",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a1"
@@ -6810,15 +8328,16 @@
       "matchSerie": "francophone_terminale_a2",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_latin",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_latin",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a2"
@@ -6834,12 +8353,16 @@
       "matchSerie": "francophone_terminale_a3",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_latin",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_latin"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a3"
@@ -6855,14 +8378,15 @@
       "matchSerie": "francophone_terminale_a4",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
-        "francophone_eps",
-        "francophone_allemand",
-        "francophone_espagnol",
-        "francophone_italien"
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_a4"
@@ -6902,14 +8426,19 @@
       "matchSerie": "francophone_terminale_abi",
       "subjectIds": [
         "francophone_fr",
-        "francophone_en",
+        "francophone_anglais_a_parite",
         "francophone_litterature",
         "francophone_philo",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_math",
         "francophone_intensive_english",
         "francophone_oral_communication",
-        "francophone_manual_labour"
+        "francophone_manual_labour",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
+        "francophone_eps"
       ],
       "examTargetIds": [
         "exam_bac_francophone_abi"
@@ -6925,10 +8454,14 @@
       "matchSerie": "francophone_terminale_sh",
       "subjectIds": [
         "francophone_fr",
+        "francophone_philo",
+        "francophone_histoire",
+        "francophone_geographie",
         "francophone_en",
         "francophone_math",
-        "francophone_philo",
-        "francophone_hg",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -6944,11 +8477,16 @@
       "matchNiveau": "francophone_terminale",
       "matchSerie": "francophone_terminale_ac",
       "subjectIds": [
+        "francophone_arts_cinematographie",
         "francophone_fr",
-        "francophone_en",
-        "francophone_arts_cinema",
         "francophone_philo",
-        "francophone_hg",
+        "francophone_histoire",
+        "francophone_geographie",
+        "francophone_en",
+        "francophone_math",
+        "francophone_ecv",
+        "francophone_info_college",
+        "francophone_lcn",
         "francophone_eps"
       ],
       "examTargetIds": [
@@ -6966,11 +8504,15 @@
       "subjectIds": [
         "francophone_math",
         "francophone_physique",
-        "francophone_info",
+        "francophone_informatique_algorithmique_programmation",
         "francophone_fr",
         "francophone_philo",
         "francophone_en",
-        "francophone_eps"
+        "francophone_ecv",
+        "francophone_lcn",
+        "francophone_eps",
+        "francophone_pratiques_ti",
+        "francophone_rapport_de_stage"
       ],
       "examTargetIds": [
         "exam_bac_francophone_ti"
@@ -7455,14 +8997,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques",
-        "francophone_dessin_industriel"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_bio_procedes",
+        "francophone_petrochimie",
+        "francophone_technologie_chimique",
+        "francophone_travaux_pratiques_de_chimie",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7479,14 +9022,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques",
-        "francophone_dessin_industriel"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_bio_procedes",
+        "francophone_petrochimie",
+        "francophone_technologie_chimique",
+        "francophone_travaux_pratiques_de_chimie",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7503,13 +9047,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_chimie_cosmetique",
+        "francophone_chimie_pharmaceutique",
+        "francophone_technologie_chimique",
+        "francophone_travaux_pratiques_de_chimie",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7526,13 +9072,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_chimie_cosmetique",
+        "francophone_chimie_pharmaceutique",
+        "francophone_technologie_chimique",
+        "francophone_travaux_pratiques_de_chimie",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7549,13 +9097,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_technologie_miniere",
+        "francophone_technologie_petroliere",
+        "francophone_geologie_appliquee",
+        "francophone_travaux_pratiques",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7572,13 +9122,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
-        "francophone_chimie",
-        "francophone_genie_chimique",
-        "francophone_procedes_chimiques"
+        "francophone_physique_appliquee",
+        "francophone_chimie_generale_et_industrielle",
+        "francophone_technologie_miniere",
+        "francophone_technologie_petroliere",
+        "francophone_geologie_appliquee",
+        "francophone_travaux_pratiques",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7595,14 +9147,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
         "francophone_physique",
         "francophone_chimie",
-        "francophone_svt",
         "francophone_biologie_appliquee",
-        "francophone_microbiologie"
+        "francophone_microbiologie",
+        "francophone_techniques_de_laboratoire",
+        "francophone_travaux_pratiques_de_laboratoire",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7619,14 +9172,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
         "francophone_physique",
         "francophone_chimie",
-        "francophone_svt",
         "francophone_biologie_appliquee",
-        "francophone_microbiologie"
+        "francophone_microbiologie",
+        "francophone_techniques_de_laboratoire",
+        "francophone_travaux_pratiques_de_laboratoire",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7643,14 +9197,16 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
         "francophone_physique",
         "francophone_chimie",
-        "francophone_svt",
-        "francophone_biologie_appliquee",
-        "francophone_microbiologie"
+        "francophone_biochimie",
+        "francophone_biotechnologie",
+        "francophone_microbiologie",
+        "francophone_techniques_de_laboratoire",
+        "francophone_travaux_pratiques_de_laboratoire",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7667,14 +9223,16 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
         "francophone_physique",
         "francophone_chimie",
-        "francophone_svt",
-        "francophone_biologie_appliquee",
-        "francophone_microbiologie"
+        "francophone_biochimie",
+        "francophone_biotechnologie",
+        "francophone_microbiologie",
+        "francophone_techniques_de_laboratoire",
+        "francophone_travaux_pratiques_de_laboratoire",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7691,13 +9249,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
+        "francophone_biologie_sciences_de_la_sante",
         "francophone_chimie",
-        "francophone_svt",
-        "francophone_sciences_sanitaires"
+        "francophone_sciences_medico_sanitaires",
+        "francophone_sciences_sociales_action_sociale",
+        "francophone_hygiene_et_sante_publique",
+        "francophone_travaux_pratiques",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7714,13 +9274,15 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_ecv",
-        "francophone_eps",
         "francophone_math",
-        "francophone_physique",
+        "francophone_biologie_sciences_de_la_sante",
         "francophone_chimie",
-        "francophone_svt",
-        "francophone_sciences_sanitaires"
+        "francophone_sciences_medico_sanitaires",
+        "francophone_sciences_sociales_action_sociale",
+        "francophone_hygiene_et_sante_publique",
+        "francophone_travaux_pratiques",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7737,10 +9299,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_ceramique"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_technologie_de_la_ceramique",
+        "francophone_atelier_de_ceramique_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7757,10 +9322,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_ceramique"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_technologie_de_la_ceramique",
+        "francophone_atelier_de_ceramique_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7777,10 +9345,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_peinture"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_techniques_de_peinture",
+        "francophone_atelier_de_peinture_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7797,10 +9368,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_peinture"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_techniques_de_peinture",
+        "francophone_atelier_de_peinture_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7817,10 +9391,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_sculpture"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_techniques_de_sculpture",
+        "francophone_atelier_de_sculpture_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
@@ -7837,10 +9414,13 @@
       "subjectIds": [
         "francophone_fr",
         "francophone_en",
-        "francophone_hg",
-        "francophone_philo",
-        "francophone_arts_plastiques",
-        "francophone_sculpture"
+        "francophone_math",
+        "francophone_histoire_de_lart",
+        "francophone_dessin_artistique",
+        "francophone_techniques_de_sculpture",
+        "francophone_atelier_de_sculpture_pratique",
+        "francophone_ecv",
+        "francophone_eps"
       ],
       "examTargetIds": [],
       "canOptOut": false,
