@@ -201,10 +201,10 @@ class _StreamSubjectsPickerStepBodyState
     // Audit 2026-06-14 — Step 4 = resume des choix amont (section -> filiere
     // -> niveau -> serie quand applicable) AVANT les chips matieres. Donne le
     // contexte de ce que le user vient de configurer.
-    final recapParts = _recapPartsFor(snapshot, state, langKey);
+    final recapEntries = _recapEntriesFor(snapshot, state, langKey, l10n);
 
     return _DerivedPreview(
-      recapParts: recapParts,
+      recapEntries: recapEntries,
       ungroupedSubjects: ungrouped,
       groups: groups,
       picksByGroup: _picksByGroup,
@@ -243,43 +243,58 @@ class _StreamSubjectsPickerStepBodyState
     return result;
   }
 
-  /// Construit la liste des libelles a afficher dans le recap header du
+  /// Construit la liste des entrees a afficher dans le recap header du
   /// step 4 : Section -> Filiere -> Niveau -> Serie (quand applicable).
   /// Resout les IDs vers leur nom localise via le snapshot catalogue.
-  List<String> _recapPartsFor(
+  /// Chaque entree est un record (label, value) pour un affichage en
+  /// 2 colonnes (label gris + valeur primary).
+  List<({String label, String value})> _recapEntriesFor(
     CatalogueSnapshot snapshot,
     dynamic state,
     String langKey,
+    AppLocalizations l10n,
   ) {
-    final parts = <String>[];
+    final entries = <({String label, String value})>[];
     final subSystem = state.subSystem;
     if (subSystem != null) {
-      parts.add(subSystem == SubSystem.francophone
-          ? 'Francophone'
-          : 'Anglophone');
+      entries.add((
+        label: l10n.onboardingRecapLabelSection,
+        value: subSystem == SubSystem.francophone
+            ? 'Francophone'
+            : 'Anglophone',
+      ));
     }
     final trackId = state.trackId;
     if (trackId != null) {
       final f = snapshot.filieres.where((f) => f.filiereId == trackId);
       if (f.isNotEmpty) {
-        parts.add(f.first.name[langKey] ?? f.first.name.values.first);
+        entries.add((
+          label: l10n.onboardingRecapLabelTrack,
+          value: f.first.name[langKey] ?? f.first.name.values.first,
+        ));
       }
     }
     final levelId = state.levelId;
     if (levelId != null) {
       final n = snapshot.niveaux.where((n) => n.niveauId == levelId);
       if (n.isNotEmpty) {
-        parts.add(n.first.name[langKey] ?? n.first.name.values.first);
+        entries.add((
+          label: l10n.onboardingRecapLabelLevel,
+          value: n.first.name[langKey] ?? n.first.name.values.first,
+        ));
       }
     }
     final streamId = state.streamId;
     if (streamId != null) {
       final s = snapshot.series.where((s) => s.serieId == streamId);
       if (s.isNotEmpty) {
-        parts.add(s.first.name[langKey] ?? s.first.name.values.first);
+        entries.add((
+          label: l10n.onboardingRecapLabelStream,
+          value: s.first.name[langKey] ?? s.first.name.values.first,
+        ));
       }
     }
-    return parts;
+    return entries;
   }
 
   /// Aggrege toutes les matieres d'un profil derive, quel que soit le
@@ -323,7 +338,7 @@ class _StreamSubjectsPickerStepBodyState
 /// transmettent le message "voici les matieres" sans demander d'action.
 class _DerivedPreview extends StatelessWidget {
   const _DerivedPreview({
-    required this.recapParts,
+    required this.recapEntries,
     required this.ungroupedSubjects,
     required this.groups,
     required this.picksByGroup,
@@ -334,9 +349,9 @@ class _DerivedPreview extends StatelessWidget {
     required this.onValidate,
   });
 
-  /// Libelles du recap (Section / Filiere / Niveau / Serie) affiches au-
-  /// dessus des chips. Vide -> pas de recap rendu.
-  final List<String> recapParts;
+  /// Entrees du recap (Section / Filiere / Niveau / Serie) en records
+  /// (label, value) affiches au-dessus des chips. Vide -> pas de recap rendu.
+  final List<({String label, String value})> recapEntries;
 
   /// Matieres autonomes (sans `group`). Rendues comme chips simples.
   final List<Subject> ungroupedSubjects;
@@ -368,8 +383,8 @@ class _DerivedPreview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if (recapParts.isNotEmpty) ...[
-                  _RecapBanner(parts: recapParts),
+                if (recapEntries.isNotEmpty) ...[
+                  _RecapBanner(entries: recapEntries),
                   SizedBox(height: AppSpacing.s4.h),
                 ],
                 Wrap(
@@ -653,50 +668,77 @@ class _GroupVariantTile extends StatelessWidget {
 
 /// Chip compact resume d'une matiere : icone + nom court. Sert le mode
 /// Audit 2026-06-14 — Banner recap affichant le parcours du user
-/// (Section -> Filiere -> Niveau -> Serie) au-dessus des chips matieres.
-/// Rendu en card primary tinted, separateur ` . ` entre les segments.
+/// (Section / Filiere / Niveau / Serie) au-dessus des chips matieres.
+/// Layout 2 colonnes par ligne : label gris a gauche (fixed width), valeur
+/// bold a droite. Un row par entree. Refactor du layout precedent (parts
+/// joints en string avec ` · `) qui rendait mal des le wrap.
 class _RecapBanner extends StatelessWidget {
-  const _RecapBanner({required this.parts});
+  const _RecapBanner({required this.entries});
 
-  final List<String> parts;
+  final List<({String label, String value})> entries;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s3.w,
+        horizontal: AppSpacing.s4.w,
         vertical: AppSpacing.s3.h,
       ),
       decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
+        color: AppColors.primary.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.18),
+          color: AppColors.primary.withValues(alpha: 0.16),
           width: 1,
         ),
       ),
-      child: Row(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            LucideIcons.bookOpen,
-            size: 16.sp,
-            color: AppColors.primary,
-          ),
-          SizedBox(width: AppSpacing.s2.w),
-          Expanded(
-            child: Text(
-              parts.join('  ·  '),
-              style: AppTypography.body.copyWith(
-                fontSize: 13.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
-                height: 1.4,
-              ),
-            ),
-          ),
+          for (var i = 0; i < entries.length; i++) ...[
+            if (i > 0) SizedBox(height: AppSpacing.s2.h),
+            _RecapRow(entry: entries[i]),
+          ],
         ],
       ),
+    );
+  }
+}
+
+class _RecapRow extends StatelessWidget {
+  const _RecapRow({required this.entry});
+
+  final ({String label, String value}) entry;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 70.w,
+          child: Text(
+            entry.label,
+            style: AppTypography.body.copyWith(
+              fontSize: 12.sp,
+              color: AppColors.inkSoft,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.2,
+            ),
+          ),
+        ),
+        SizedBox(width: AppSpacing.s2.w),
+        Expanded(
+          child: Text(
+            entry.value,
+            style: AppTypography.bodyStrong.copyWith(
+              fontSize: 14.sp,
+              color: AppColors.ink,
+              height: 1.35,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

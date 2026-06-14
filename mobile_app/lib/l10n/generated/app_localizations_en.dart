@@ -476,11 +476,23 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select your current level to tailor content.';
 
   @override
-  String get onboardingStreamSubjectsTitle => 'Which subjects are you taking?';
+  String get onboardingStreamSubjectsTitle => 'Your class';
 
   @override
   String get onboardingStreamSubjectsSubtitle =>
-      'Select your stream and subjects to tailor lessons.';
+      'Here are the subjects you\'ll be studying.';
+
+  @override
+  String get onboardingRecapLabelSection => 'Section';
+
+  @override
+  String get onboardingRecapLabelTrack => 'Track';
+
+  @override
+  String get onboardingRecapLabelLevel => 'Level';
+
+  @override
+  String get onboardingRecapLabelStream => 'Stream';
 
   @override
   String get onboardingStreamPickerEmptyTitle => 'No stream available';

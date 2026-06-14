@@ -479,11 +479,23 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sélectionne ton niveau actuel pour adapter le contenu.';
 
   @override
-  String get onboardingStreamSubjectsTitle => 'Quelles matières étudies-tu ?';
+  String get onboardingStreamSubjectsTitle => 'Ta classe';
 
   @override
   String get onboardingStreamSubjectsSubtitle =>
-      'Sélectionne ta série et tes matières pour personnaliser tes cours.';
+      'Voici les matières que tu vas étudier.';
+
+  @override
+  String get onboardingRecapLabelSection => 'Section';
+
+  @override
+  String get onboardingRecapLabelTrack => 'Filière';
+
+  @override
+  String get onboardingRecapLabelLevel => 'Niveau';
+
+  @override
+  String get onboardingRecapLabelStream => 'Série';
 
   @override
   String get onboardingStreamPickerEmptyTitle => 'Aucune série disponible';

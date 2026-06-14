@@ -896,17 +896,41 @@ abstract class AppLocalizations {
   /// **'Sélectionne ton niveau actuel pour adapter le contenu.'**
   String get onboardingLevelSubtitle;
 
-  /// Story E1bis-3 — Titre H1 step 4 stream + subjects picker.
+  /// Audit 2026-06-14 — Titre H1 step 4 vue derived (recap). Avant : 'Quelles matieres etudies-tu ?' qui sous-entendait une selection ; maintenant le user ne choisit plus les matieres, c'est purement un resume de la classe + matieres derivees.
   ///
   /// In fr, this message translates to:
-  /// **'Quelles matières étudies-tu ?'**
+  /// **'Ta classe'**
   String get onboardingStreamSubjectsTitle;
 
-  /// Story E1bis-3 — Sous-titre step 4.
+  /// Audit 2026-06-14 — Sous-titre step 4 vue derived, factuel + bienveillant.
   ///
   /// In fr, this message translates to:
-  /// **'Sélectionne ta série et tes matières pour personnaliser tes cours.'**
+  /// **'Voici les matières que tu vas étudier.'**
   String get onboardingStreamSubjectsSubtitle;
+
+  /// Audit 2026-06-14 — Label pour la ligne sub-system dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Section'**
+  String get onboardingRecapLabelSection;
+
+  /// Audit 2026-06-14 — Label pour la ligne track dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filière'**
+  String get onboardingRecapLabelTrack;
+
+  /// Audit 2026-06-14 — Label pour la ligne level dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Niveau'**
+  String get onboardingRecapLabelLevel;
+
+  /// Audit 2026-06-14 — Label pour la ligne stream/serie dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Série'**
+  String get onboardingRecapLabelStream;
 
   /// Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed).
   ///

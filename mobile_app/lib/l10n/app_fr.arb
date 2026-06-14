@@ -452,11 +452,19 @@
   "onboardingLevelSubtitle": "Sélectionne ton niveau actuel pour adapter le contenu.",
   "@onboardingLevelSubtitle": { "description": "Story E1bis-3 — Sous-titre step 3 level choice." },
 
-  "onboardingStreamSubjectsTitle": "Quelles matières étudies-tu ?",
-  "@onboardingStreamSubjectsTitle": { "description": "Story E1bis-3 — Titre H1 step 4 stream + subjects picker." },
+  "onboardingStreamSubjectsTitle": "Ta classe",
+  "@onboardingStreamSubjectsTitle": { "description": "Audit 2026-06-14 — Titre H1 step 4 vue derived (recap). Avant : 'Quelles matieres etudies-tu ?' qui sous-entendait une selection ; maintenant le user ne choisit plus les matieres, c'est purement un resume de la classe + matieres derivees." },
 
-  "onboardingStreamSubjectsSubtitle": "Sélectionne ta série et tes matières pour personnaliser tes cours.",
-  "@onboardingStreamSubjectsSubtitle": { "description": "Story E1bis-3 — Sous-titre step 4." },
+  "onboardingStreamSubjectsSubtitle": "Voici les matières que tu vas étudier.",
+  "@onboardingStreamSubjectsSubtitle": { "description": "Audit 2026-06-14 — Sous-titre step 4 vue derived, factuel + bienveillant." },
+  "onboardingRecapLabelSection": "Section",
+  "@onboardingRecapLabelSection": { "description": "Audit 2026-06-14 — Label pour la ligne sub-system dans le recap banner step 4." },
+  "onboardingRecapLabelTrack": "Filière",
+  "@onboardingRecapLabelTrack": { "description": "Audit 2026-06-14 — Label pour la ligne track dans le recap banner step 4." },
+  "onboardingRecapLabelLevel": "Niveau",
+  "@onboardingRecapLabelLevel": { "description": "Audit 2026-06-14 — Label pour la ligne level dans le recap banner step 4." },
+  "onboardingRecapLabelStream": "Série",
+  "@onboardingRecapLabelStream": { "description": "Audit 2026-06-14 — Label pour la ligne stream/serie dans le recap banner step 4." },
 
   "onboardingPickerSeriesTitle": "Choisis ta série",
   "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },
