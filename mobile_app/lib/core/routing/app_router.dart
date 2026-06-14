@@ -180,23 +180,43 @@ String? evaluateRedirect({
     return '/';
   }
 
-  // 3. Anti-replay sur /onboarding/v2 : si profil complet, sortie naturelle.
+  // 3. Anti-replay sur /onboarding/v2 : si profil complet, sortie directe
+  //    vers /dashboard.
+  //
+  // Audit 2026-06-13 (bug visiteur dashboard) — Avant ce fix, on retournait
+  // `/` qui mappe vers `/splash` (cf. GoRoute path: '/'). Resultat sur le
+  // flow visiteur : router.go('/dashboard') voyait profileCompletion encore
+  // `data: incomplete` (stream Firestore pas encore emis post-flush) ->
+  // bounce vers /onboarding/v2 -> stream emet complete -> refresh router ->
+  // anti-replay -> '/' -> '/splash' -> animation 2.1s -> /dashboard. Le user
+  // voyait le splash avant le dashboard. En pointant direct sur /dashboard,
+  // on saute le transit splash.
   if (location == '/onboarding/v2') {
     final complete = profileCompletion.maybeWhen(
       data: (s) => s.isComplete,
       orElse: () => false,
     );
-    if (complete) return '/';
+    if (complete) return '/dashboard';
   }
 
   // 4. Garde profil-incomplet pour les routes metier.
+  //
+  // Audit 2026-06-13 (bug visiteur dashboard) — distinction explicite
+  // loading vs incomplete confirme :
+  //   - loading -> NE PAS rediriger (le stream watchProfile est encore en
+  //     route apres signInAnonymously + flush ; rediriger ici renvoie le
+  //     visiteur sur /onboarding/v2 alors qu'il vient de finir l'onboarding).
+  //   - error -> rediriger /onboarding/v2 (safe fallback).
+  //   - data incomplete -> rediriger.
+  //   - data complete -> rester.
   if (!location.startsWith('/onboarding/') &&
       location != '/catalogue-waiting') {
-    final complete = profileCompletion.maybeWhen(
-      data: (s) => s.isComplete,
-      orElse: () => false,
+    final shouldBlock = profileCompletion.when(
+      data: (s) => !s.isComplete,
+      loading: () => false,
+      error: (_, _) => true,
     );
-    if (!complete) return '/onboarding/v2';
+    if (shouldBlock) return '/onboarding/v2';
   }
 
   return null;

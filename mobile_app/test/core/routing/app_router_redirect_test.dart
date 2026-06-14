@@ -106,13 +106,19 @@ void main() {
       expect(result, isNull);
     });
 
-    test('(j) Anti-replay /onboarding/v2 si profil complet -> /', () {
+    test(
+        '(j) Anti-replay /onboarding/v2 si profil complet -> /dashboard '
+        '(audit 2026-06-13 : bypass /splash transit pour flow visiteur)',
+        () {
+      // Avant l'audit, retournait `/` qui mappe vers /splash. Resultat pour
+      // le flow visiteur : transit /splash visible (2.1s animation) au lieu
+      // d'aller direct sur /dashboard. Cf. evaluateRedirect rule 3.
       final result = evaluateRedirect(
         location: '/onboarding/v2',
         catalogueCheck: _catalogueOk(true),
         profileCompletion: _completionData(ProfileCompletionState.complete),
       );
-      expect(result, '/');
+      expect(result, '/dashboard');
     });
 
     test('(k) /onboarding/v2 si profil incomplet -> null (laisse passer)', () {
@@ -125,12 +131,32 @@ void main() {
       expect(result, isNull);
     });
 
-    test('(l) Profil loading + route metier -> /onboarding/v2 (fail-safe)',
+    test(
+        '(l) Profil loading + route metier -> null (audit 2026-06-13 : laisse '
+        'passer pour fixer la race condition visiteur flush -> dashboard)',
         () {
+      // Avant l'audit, le loading etait traite comme fail-safe -> redirect
+      // /onboarding/v2. Resultat : apres signInAnonymously + flush + go(
+      // /dashboard), le stream watchProfile n'a pas encore emis ; le redirect
+      // confond loading et incomplete -> bounce. Maintenant on differencie
+      // explicitement les 3 cas (data/loading/error) — voir _shouldBlock.
       final result = evaluateRedirect(
         location: '/dashboard',
         catalogueCheck: _catalogueOk(true),
         profileCompletion: _completionLoading(),
+      );
+      expect(result, isNull);
+    });
+
+    test('(m) Profil error + route metier -> /onboarding/v2 (safe fallback)',
+        () {
+      final result = evaluateRedirect(
+        location: '/dashboard',
+        catalogueCheck: _catalogueOk(true),
+        profileCompletion: AsyncValue.error(
+          Exception('stream-error'),
+          StackTrace.current,
+        ),
       );
       expect(result, '/onboarding/v2');
     });

@@ -75,6 +75,50 @@ void main() {
     });
   });
 
+  group('OnboardingNotifier — setTrackIdDraft (audit 2026-06-13)', () {
+    test('pose le trackId SANS transition (currentStep reste 2)', () async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      // On part de step 2 (apres hero intro).
+      notifier.next(); // 0 -> 1
+      notifier.next(); // 1 -> 2
+      expect(container.read(onboardingNotifierProvider).currentStep, 2);
+
+      notifier.setTrackIdDraft('general');
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.trackId, 'general',
+          reason: 'draft doit poser le trackId');
+      expect(state.currentStep, 2,
+          reason: 'draft NE TRANSITIONNE PAS (l\'utilisateur valide via CTA)');
+    });
+
+    test('reset downstream meme en draft (level/stream/picked)', () async {
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      // Simule un etat aval pollue (level + stream + matieres choisies).
+      notifier.setTrackId('general'); // step -> 3
+      notifier.setLevelId('francophone_terminale', requiresPicker: true);
+      notifier.setStreamAndSubjects(
+        streamId: 'francophone_terminale_d',
+        pickedSubjects: const ['math', 'physics'],
+      );
+
+      // L'utilisateur revient au step 2 et change d'avis pour technique.
+      notifier.setTrackIdDraft('technique');
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.trackId, 'technique');
+      expect(state.levelId, isNull, reason: 'level invalide par track switch');
+      expect(state.streamId, isNull);
+      expect(state.pickedSubjects, isEmpty);
+    });
+  });
+
   group('OnboardingNotifier — setLevelId', () {
     test('requiresPicker=true -> currentStep 4', () async {
       final container = await _buildContainer();

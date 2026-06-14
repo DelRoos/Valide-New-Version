@@ -1,12 +1,13 @@
 // Tests Story E1bis-2bis AC2 + AC6 — SubSystemStepBody (refactor PR #103).
 //
 // Couvre :
-//   - tap card Francophone -> state.subSystem == francophone + currentStep == 1
-//   - tap card Anglophone -> state.subSystem == anglophone + currentStep == 1
+//   - tap card Francophone -> state.subSystem == francophone + currentStep
+//     RESTE A 0 (audit 2026-06-13 : draft + CTA Continuer, no auto-advance)
+//   - tap card Anglophone -> idem anglophone
 //   - goldens phone 360x780 + tablet 800x1280 unselected
 //
 // Le widget body est teste en isolation dans un Scaffold de test (le footer
-// CTA est rendu par le shell parent, hors de ce test).
+// CTA Continuer est rendu par le shell parent, hors de ce test).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -90,8 +91,12 @@ void main() {
   });
 
   group('SubSystemStepBody — interactions', () {
-    testWidgets('tap card Francophone -> setSubSystem francophone + step 1',
+    testWidgets(
+        'tap card Francophone -> setSubSystemDraft + currentStep RESTE 0',
         (tester) async {
+      // Audit 2026-06-13 — Le tap pose le draft sans transitionner ;
+      // l'utilisateur valide via CTA Continuer du shell (test couvert
+      // par onboarding_shell_test).
       final container = await _container();
       addTearDown(container.dispose);
 
@@ -102,10 +107,12 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.francophone);
-      expect(state.currentStep, 1);
+      expect(state.currentStep, 0,
+          reason: 'draft ne transitionne pas (no auto-advance)');
     });
 
-    testWidgets('tap card Anglophone -> setSubSystem anglophone + step 1',
+    testWidgets(
+        'tap card Anglophone -> setSubSystemDraft + currentStep RESTE 0',
         (tester) async {
       final container = await _container();
       addTearDown(container.dispose);
@@ -117,7 +124,8 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.anglophone);
-      expect(state.currentStep, 1);
+      expect(state.currentStep, 0,
+          reason: 'draft ne transitionne pas (no auto-advance)');
     });
   });
 

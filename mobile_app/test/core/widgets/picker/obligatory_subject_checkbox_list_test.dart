@@ -1,11 +1,14 @@
 // Tests Story 1.18 — ObligatorySubjectCheckboxList (AC2).
 //
 // Couvre :
-//   - rendu N CheckboxListTile + cadenas (LucideIcons.lock)
+//   - rendu N CheckboxListTile + icone matiere (via iconResolver)
 //   - tap declenche onTapBlocked (matiere obligatoire = non decochable)
 //   - isSaving=true => onChanged null (CheckboxListTile inactif)
 //   - langKey "fr" vs "en" fallback fr puis subjectId
 //   - responsive tablet (900x1200) : pas de debordement layout
+//
+// Audit 2026-06-13 — remplacement du lock generique par l'icone Firestore
+// de chaque matiere (cf. subject_icon_resolver.dart).
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +17,8 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'package:valide_school/core/catalogue/domain/models.dart';
 import 'package:valide_school/core/widgets/picker/obligatory_subject_checkbox_list.dart';
+
+IconData _fakeIconResolver(String name) => LucideIcons.bookOpen;
 
 Subject _sub({
   required String id,
@@ -55,6 +60,7 @@ void main() {
           langKey: 'fr',
           isSaving: false,
           onTapBlocked: (_) {},
+          iconResolver: _fakeIconResolver,
         ),
       ));
       await tester.pumpAndSettle();
@@ -63,8 +69,10 @@ void main() {
       expect(find.text('Anglais'), findsOneWidget);
       expect(find.text('Francais'), findsOneWidget);
       expect(find.text('Maths'), findsOneWidget);
-      // 3 cadenas LucideIcons.lock comme secondary
-      expect(find.byIcon(LucideIcons.lock), findsNWidgets(3));
+      // Audit 2026-06-13 : la secondary affiche maintenant l'icone matiere
+      // (book-open pour les 3 dans ce test). Le cadenas a ete retire.
+      expect(find.byIcon(LucideIcons.bookOpen), findsNWidgets(3));
+      expect(find.byIcon(LucideIcons.lock), findsNothing);
     });
 
     testWidgets('tap declenche onTapBlocked avec subjectId', (tester) async {
@@ -82,6 +90,7 @@ void main() {
           langKey: 'fr',
           isSaving: false,
           onTapBlocked: tapped.add,
+          iconResolver: _fakeIconResolver,
         ),
       ));
       await tester.pumpAndSettle();
@@ -106,6 +115,7 @@ void main() {
           langKey: 'fr',
           isSaving: true,
           onTapBlocked: tapped.add,
+          iconResolver: _fakeIconResolver,
         ),
       ));
       await tester.pumpAndSettle();
@@ -133,6 +143,7 @@ void main() {
           langKey: 'en',
           isSaving: false,
           onTapBlocked: (_) {},
+          iconResolver: _fakeIconResolver,
         ),
       ));
       await tester.pumpAndSettle();
@@ -156,6 +167,7 @@ void main() {
           langKey: 'fr',
           isSaving: false,
           onTapBlocked: (_) {},
+          iconResolver: _fakeIconResolver,
         ),
       ));
       await tester.pumpAndSettle();

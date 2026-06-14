@@ -40,9 +40,14 @@ class PickerSectionScaffold extends StatelessWidget {
               maxWidth: isTablet ? tabletMaxWidth : double.infinity,
             ),
             child: Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: AppSpacing.s5.w,
-                vertical: AppSpacing.s6.h,
+              // Audit 2026-06-13 — vertical reduit de s6 (24dp) a s3 (12dp) en
+              // haut : le header du shell apporte deja sa propre marge (back +
+              // progress). Le bas reste s3 pour aerer avant le child.
+              padding: EdgeInsets.fromLTRB(
+                AppSpacing.s5.w,
+                AppSpacing.s3.h,
+                AppSpacing.s5.w,
+                AppSpacing.s3.h,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -57,7 +62,7 @@ class PickerSectionScaffold extends StatelessWidget {
                       ),
                     ),
                   ],
-                  SizedBox(height: AppSpacing.s5.h),
+                  SizedBox(height: AppSpacing.s4.h),
                   Expanded(child: child),
                 ],
               ),

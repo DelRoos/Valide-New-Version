@@ -102,6 +102,7 @@ Subject subjectFromFirestore(DocumentSnapshot<Map<String, dynamic>> snap) {
   if (data == null) {
     throw StateError('subject doc ${snap.id} has no data');
   }
+  final groupRaw = data['group'] as String?;
   return Subject(
     subjectId: snap.id,
     subSystem: data['subSystem'] as String,
@@ -111,6 +112,8 @@ Subject subjectFromFirestore(DocumentSnapshot<Map<String, dynamic>> snap) {
     sortOrder: (data['sortOrder'] as num?)?.toInt() ?? 0,
     abbreviation: _readBilingualOptional(data['abbreviation']),
     description: _readBilingualOptional(data['description']),
+    // NEW v4 — 2026-06-13 : groupe de variantes (LV2 alt). null si absent.
+    group: (groupRaw == null || groupRaw.isEmpty) ? null : groupRaw,
   );
 }
 

@@ -235,6 +235,8 @@ class Subject extends Equatable {
     // NEW v2 — 2026-06-13 : libelle court affichable a cote du nom long.
     this.abbreviation = const <String, String>{},
     this.description = const <String, String>{},
+    // NEW v4 — 2026-06-13 : groupe de variantes mutuellement exclusives.
+    this.group,
   });
 
   final String subjectId;
@@ -247,6 +249,16 @@ class Subject extends Equatable {
   // NEW v2 — 2026-06-13. Vide si pas defini en Firestore.
   final Map<String, String> abbreviation;
   final Map<String, String> description;
+
+  /// NEW v4 — 2026-06-13 : nom du groupe de variantes. Plusieurs matieres
+  /// avec le meme `group` sont des alternatives (ex. `lv2` =
+  /// francophone_allemand / francophone_espagnol / francophone_italien /
+  /// francophone_latin). L'utilisateur en choisit UNE via un mini-picker.
+  /// `null` (defaut) = matiere autonome, pas de variant.
+  ///
+  /// Le label du groupe (\"LV2\", \"LV3\") est traduit cote l10n via
+  /// `subjectGroupLabel(groupKey)`.
+  final String? group;
 
   String? abbreviationFor(String langKey) {
     final v = abbreviation[langKey] ?? abbreviation['fr'];
@@ -267,6 +279,7 @@ class Subject extends Equatable {
         'sortOrder': sortOrder,
         'abbreviation': abbreviation,
         'description': description,
+        if (group != null) 'group': group,
       };
 
   @override
@@ -279,6 +292,7 @@ class Subject extends Equatable {
         sortOrder,
         abbreviation,
         description,
+        group,
       ];
 }
 

@@ -127,21 +127,30 @@ void main() {
     });
 
     testWidgets(
-        'step 0 + subSystem null -> footer absent (audit 2026-06-13 : tap card auto-avance)',
+        'step 0 + subSystem null -> CTA Continuer present mais disabled '
+        '(audit 2026-06-13 rev2 : draft + CTA, no auto-advance)',
         (tester) async {
-      // Audit 2026-06-13 : le CTA Continuer du step 0 a ete retire (tap
-      // card auto-avance via setSubSystem). Le footer doit etre null.
+      // Audit 2026-06-13 rev2 — Le CTA Continuer a ete restaure : le tap
+      // card pose un draft sans avancer ; l'utilisateur confirme via le
+      // bouton du shell. Quand subSystem est encore null, le bouton est
+      // present mais avec onPressed null.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
       await _pump(tester, container: container);
 
-      expect(find.byType(AppButton), findsNothing);
+      expect(find.byType(AppButton), findsOneWidget,
+          reason: 'CTA Continuer present');
+      final button = tester.widget<AppButton>(find.byType(AppButton));
+      expect(button.onPressed, isNull,
+          reason: 'disabled tant que subSystem n\'est pas choisi');
     });
 
     testWidgets(
-        'step 0 + tap card Francophone -> setSubSystem + transition step 1',
+        'step 0 + tap card Francophone -> setSubSystemDraft + step RESTE 0',
         (tester) async {
+      // Audit 2026-06-13 rev2 — Tap card = draft uniquement (no transition).
+      // L'utilisateur confirme via CTA Continuer (test suivant).
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
@@ -152,10 +161,34 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.francophone);
-      expect(state.currentStep, 1);
+      expect(state.currentStep, 0,
+          reason: 'draft ne transitionne pas (no auto-advance)');
 
+      expect(find.byType(SubSystemStepBody), findsOneWidget);
+      expect(find.byType(HeroIntroStepBody), findsNothing);
+    });
+
+    testWidgets(
+        'step 0 + draft pose + tap CTA Continuer -> notifier.next() + step 1',
+        (tester) async {
+      // Audit 2026-06-13 rev2 — Confirme la chaine complete : draft + CTA.
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      await _pump(tester, container: container);
+
+      // Pose le draft via tap card.
+      await tester.tap(find.byType(SelectionCard).first);
+      await tester.pumpAndSettle();
+
+      // Tap CTA Continuer du shell.
+      await tester.tap(find.byType(AppButton));
+      await tester.pumpAndSettle();
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.subSystem, SubSystem.francophone);
+      expect(state.currentStep, 1, reason: 'CTA Continuer fait notifier.next()');
       expect(find.byType(HeroIntroStepBody), findsOneWidget);
-      expect(find.byType(SubSystemStepBody), findsNothing);
     });
 
     testWidgets(

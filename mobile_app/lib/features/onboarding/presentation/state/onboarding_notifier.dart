@@ -57,6 +57,19 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     await _persistDraft();
   }
 
+  /// Audit 2026-06-13 — Variante "draft" qui pose le sub-system + propage
+  /// AU LocaleNotifier (UI bascule FR/EN en live) SANS transitionner vers
+  /// le step 1. L'utilisateur confirme via le CTA Continuer du shell.
+  ///
+  /// Pourquoi propager au LocaleNotifier en draft : sinon le user tape
+  /// Anglophone, voit la page rester en FR, et perd confiance. Live preview
+  /// = retour sensoriel immediat (cf. patron des switchers de langue).
+  Future<void> setSubSystemDraft(SubSystem subSystem) async {
+    await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
+    state = state.copyWith(subSystem: subSystem);
+    await _persistDraft();
+  }
+
   /// Pose le track + reset downstream (level / stream / picked) car un
   /// changement de track invalide les niveaux disponibles. Transition
   /// step 2 -> 3.
@@ -72,6 +85,24 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     _persistDraftFireAndForget();
   }
 
+  /// Audit 2026-06-13 — Variante "draft" de [setTrackId] qui NE TRANSITIONNE
+  /// PAS. Utilisee par TrackChoiceStepBody pour permettre a l'utilisateur de
+  /// re-tapper une autre carte avant de confirmer via le CTA Continuer.
+  /// Avant ce PR, le tap auto-avancait au step 3 -> impossible de revenir
+  /// changer d'avis sans le bouton back. Le reset downstream (level/stream/
+  /// picked) reste applique parce qu'un changement de track invalide quand
+  /// meme les choix aval.
+  void setTrackIdDraft(String trackId) {
+    state = state.copyWith(
+      trackId: trackId,
+      levelId: null,
+      levelRequiresPicker: false,
+      streamId: null,
+      pickedSubjects: const <String>[],
+    );
+    _persistDraftFireAndForget();
+  }
+
   /// Pose le level + capture le mode picker + reset stream/subjects.
   /// Transition conditionnelle :
   /// - requiresPicker == true  -> step 4 (picker stream/subjects)
@@ -83,6 +114,20 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       streamId: null,
       pickedSubjects: const <String>[],
       currentStep: requiresPicker ? 4 : 5,
+    );
+    _persistDraftFireAndForget();
+  }
+
+  /// Audit 2026-06-13 — Variante "draft" de [setLevelId] qui NE TRANSITIONNE
+  /// PAS. Necessaire pour cohérence du pattern UX : selection -> CTA Continuer.
+  /// Le shell footer (step 3) declenche `next()` qui consulte
+  /// `levelRequiresPicker` pour dispatcher step 4 ou step 5.
+  void setLevelIdDraft(String levelId, {required bool requiresPicker}) {
+    state = state.copyWith(
+      levelId: levelId,
+      levelRequiresPicker: requiresPicker,
+      streamId: null,
+      pickedSubjects: const <String>[],
     );
     _persistDraftFireAndForget();
   }
