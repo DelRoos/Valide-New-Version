@@ -112,7 +112,14 @@ class _StreamSubjectsPickerStepBodyState
       return _StreamPickerEmpty(
         title: l10n.onboardingStreamPickerEmptyTitle,
         body: l10n.onboardingStreamPickerEmptyBody,
+        changeLevelLabel: l10n.onboardingStreamPickerEmptyChangeLevel,
         retryLabel: l10n.onboardingStreamPickerEmptyRetry,
+        // Audit 2026-06-14 — CTA primaire = revenir step 3 (level choice).
+        // Couvre le cas le plus frequent : draft persiste avec levelId qui
+        // ne matche plus le catalogue actuel (Phase 7 deactivation, seed
+        // change). `back()` ramene step 4 -> 3 sans toucher au draft amont,
+        // l'utilisateur re-selectionne un niveau valide.
+        onChangeLevel: () => notifier.back(),
         onRetry: () => ref.invalidate(catalogueProvider),
       );
     }
@@ -679,13 +686,17 @@ class _StreamPickerEmpty extends StatelessWidget {
   const _StreamPickerEmpty({
     required this.title,
     required this.body,
+    required this.changeLevelLabel,
     required this.retryLabel,
+    required this.onChangeLevel,
     required this.onRetry,
   });
 
   final String title;
   final String body;
+  final String changeLevelLabel;
   final String retryLabel;
+  final VoidCallback onChangeLevel;
   final VoidCallback onRetry;
 
   @override
@@ -717,6 +728,16 @@ class _StreamPickerEmpty extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s5.h),
+            // CTA primaire : revenir au level choice — couvre le cas le
+            // plus frequent (draft stale apres seed change).
+            FilledButton.icon(
+              onPressed: onChangeLevel,
+              icon: const Icon(LucideIcons.arrowLeft, size: 18),
+              label: Text(changeLevelLabel),
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            // CTA secondaire : retry catalogue (utile uniquement si seed gap
+            // vient juste d'etre comble cote backend).
             TextButton.icon(
               onPressed: onRetry,
               icon: const Icon(LucideIcons.refreshCw, size: 18),

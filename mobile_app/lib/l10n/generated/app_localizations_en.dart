@@ -487,10 +487,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingStreamPickerEmptyBody =>
-      'No stream is set up for this level yet. Try again in a few minutes or contact the Valide team.';
+      'No stream is set up for this level yet. Try picking another level, or retry in a few minutes.';
 
   @override
   String get onboardingStreamPickerEmptyRetry => 'Retry';
+
+  @override
+  String get onboardingStreamPickerEmptyChangeLevel => 'Change level';
 
   @override
   String get onboardingLoaderLabel => 'Loading…';
