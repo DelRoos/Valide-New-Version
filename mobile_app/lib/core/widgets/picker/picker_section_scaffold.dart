@@ -40,12 +40,13 @@ class PickerSectionScaffold extends StatelessWidget {
               maxWidth: isTablet ? tabletMaxWidth : double.infinity,
             ),
             child: Padding(
-              // Audit 2026-06-13 — vertical reduit de s6 (24dp) a s3 (12dp) en
-              // haut : le header du shell apporte deja sa propre marge (back +
-              // progress). Le bas reste s3 pour aerer avant le child.
+              // Audit 2026-06-14 — vertical top reduit de s3 (12dp) a s1
+              // (4dp) sur demande utilisateur : la zone entre la progress bar
+              // du shell et le titre H2 etait trop aeree (cerclee sur device).
+              // Le bas reste s3 pour aerer avant le child.
               padding: EdgeInsets.fromLTRB(
                 AppSpacing.s5.w,
-                AppSpacing.s3.h,
+                AppSpacing.s1.h,
                 AppSpacing.s5.w,
                 AppSpacing.s3.h,
               ),
@@ -62,7 +63,9 @@ class PickerSectionScaffold extends StatelessWidget {
                       ),
                     ),
                   ],
-                  SizedBox(height: AppSpacing.s4.h),
+                  // Audit 2026-06-14 — gap titre -> contenu reduit de s4 (16)
+                  // a s3 (12) pour resserrer le step 4.
+                  SizedBox(height: AppSpacing.s3.h),
                   Expanded(child: child),
                 ],
               ),

@@ -129,7 +129,11 @@ class _StreamSubjectsPickerStepBodyState
       return _StreamPicker(
         streams: streams,
         langKey: langKey,
-        onSelected: notifier.setStreamIdDraft,
+        continueLabel: l10n.onboardingContinue,
+        // Audit 2026-06-14 — Le commit (setStreamIdDraft) se fait au tap
+        // CTA Continuer du picker, plus au tap card. Permet a l'user de
+        // changer d'avis avant validation.
+        onConfirm: notifier.setStreamIdDraft,
       );
     }
 
@@ -143,10 +147,11 @@ class _StreamSubjectsPickerStepBodyState
     }
 
     // Cas 3 : streamId pose OU niveau sans serie -> derive + dispatch.
-    return _buildDerivedView(notifier, langKey, l10n);
+    return _buildDerivedView(snapshot, notifier, langKey, l10n);
   }
 
   Widget _buildDerivedView(
+    CatalogueSnapshot snapshot,
     OnboardingNotifier notifier,
     String langKey,
     AppLocalizations l10n,
@@ -158,7 +163,7 @@ class _StreamSubjectsPickerStepBodyState
           onRetry: () => ref.invalidate(catalogueProvider),
           kind: ErrorRetryKind.generic,
         ),
-        (profile) => _renderForMode(profile, notifier, langKey, l10n),
+        (profile) => _renderForMode(snapshot, profile, notifier, langKey, l10n),
       ),
       loading: () => OnboardingLoader(label: l10n.onboardingLoaderLabel),
       error: (_, _) => ErrorRetryView(
@@ -169,6 +174,7 @@ class _StreamSubjectsPickerStepBodyState
   }
 
   Widget _renderForMode(
+    CatalogueSnapshot snapshot,
     DerivedProfile profile,
     OnboardingNotifier notifier,
     String langKey,
@@ -192,7 +198,13 @@ class _StreamSubjectsPickerStepBodyState
     final allGroupsPicked =
         groups.keys.every(_picksByGroup.containsKey);
 
+    // Audit 2026-06-14 — Step 4 = resume des choix amont (section -> filiere
+    // -> niveau -> serie quand applicable) AVANT les chips matieres. Donne le
+    // contexte de ce que le user vient de configurer.
+    final recapParts = _recapPartsFor(snapshot, state, langKey);
+
     return _DerivedPreview(
+      recapParts: recapParts,
       ungroupedSubjects: ungrouped,
       groups: groups,
       picksByGroup: _picksByGroup,
@@ -229,6 +241,45 @@ class _StreamSubjectsPickerStepBodyState
     }
     result.removeWhere((_, variants) => variants.length < 2);
     return result;
+  }
+
+  /// Construit la liste des libelles a afficher dans le recap header du
+  /// step 4 : Section -> Filiere -> Niveau -> Serie (quand applicable).
+  /// Resout les IDs vers leur nom localise via le snapshot catalogue.
+  List<String> _recapPartsFor(
+    CatalogueSnapshot snapshot,
+    dynamic state,
+    String langKey,
+  ) {
+    final parts = <String>[];
+    final subSystem = state.subSystem;
+    if (subSystem != null) {
+      parts.add(subSystem == SubSystem.francophone
+          ? 'Francophone'
+          : 'Anglophone');
+    }
+    final trackId = state.trackId;
+    if (trackId != null) {
+      final f = snapshot.filieres.where((f) => f.filiereId == trackId);
+      if (f.isNotEmpty) {
+        parts.add(f.first.name[langKey] ?? f.first.name.values.first);
+      }
+    }
+    final levelId = state.levelId;
+    if (levelId != null) {
+      final n = snapshot.niveaux.where((n) => n.niveauId == levelId);
+      if (n.isNotEmpty) {
+        parts.add(n.first.name[langKey] ?? n.first.name.values.first);
+      }
+    }
+    final streamId = state.streamId;
+    if (streamId != null) {
+      final s = snapshot.series.where((s) => s.serieId == streamId);
+      if (s.isNotEmpty) {
+        parts.add(s.first.name[langKey] ?? s.first.name.values.first);
+      }
+    }
+    return parts;
   }
 
   /// Aggrege toutes les matieres d'un profil derive, quel que soit le
@@ -272,6 +323,7 @@ class _StreamSubjectsPickerStepBodyState
 /// transmettent le message "voici les matieres" sans demander d'action.
 class _DerivedPreview extends StatelessWidget {
   const _DerivedPreview({
+    required this.recapParts,
     required this.ungroupedSubjects,
     required this.groups,
     required this.picksByGroup,
@@ -281,6 +333,10 @@ class _DerivedPreview extends StatelessWidget {
     required this.onGroupPick,
     required this.onValidate,
   });
+
+  /// Libelles du recap (Section / Filiere / Niveau / Serie) affiches au-
+  /// dessus des chips. Vide -> pas de recap rendu.
+  final List<String> recapParts;
 
   /// Matieres autonomes (sans `group`). Rendues comme chips simples.
   final List<Subject> ungroupedSubjects;
@@ -312,6 +368,10 @@ class _DerivedPreview extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                if (recapParts.isNotEmpty) ...[
+                  _RecapBanner(parts: recapParts),
+                  SizedBox(height: AppSpacing.s4.h),
+                ],
                 Wrap(
                   spacing: AppSpacing.s2.w,
                   runSpacing: AppSpacing.s2.h,
@@ -592,6 +652,55 @@ class _GroupVariantTile extends StatelessWidget {
 }
 
 /// Chip compact resume d'une matiere : icone + nom court. Sert le mode
+/// Audit 2026-06-14 — Banner recap affichant le parcours du user
+/// (Section -> Filiere -> Niveau -> Serie) au-dessus des chips matieres.
+/// Rendu en card primary tinted, separateur ` . ` entre les segments.
+class _RecapBanner extends StatelessWidget {
+  const _RecapBanner({required this.parts});
+
+  final List<String> parts;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.s3.w,
+        vertical: AppSpacing.s3.h,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.primary.withValues(alpha: 0.08),
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(
+          color: AppColors.primary.withValues(alpha: 0.18),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(
+            LucideIcons.bookOpen,
+            size: 16.sp,
+            color: AppColors.primary,
+          ),
+          SizedBox(width: AppSpacing.s2.w),
+          Expanded(
+            child: Text(
+              parts.join('  ·  '),
+              style: AppTypography.body.copyWith(
+                fontSize: 13.sp,
+                color: AppColors.primary,
+                fontWeight: FontWeight.w600,
+                height: 1.4,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 /// derived ou aucune interaction n'est possible : juste une vue d'ensemble.
 ///
 /// Pas d'abbreviation ni de cadenas — le but est de minimiser le bruit
@@ -641,37 +750,91 @@ class _SubjectSummaryChip extends StatelessWidget {
 }
 
 /// Stream picker : liste verticale de SelectionCard pour choisir une serie.
-class _StreamPicker extends StatelessWidget {
+/// Audit 2026-06-14 — Picker serie avec selection visuelle + CTA Continuer.
+///
+/// Avant ce refactor : tap card -> `setStreamIdDraft` immediat -> re-render
+/// auto vers la derived view. Pas de moment "j'ai choisi mais je peux
+/// changer". Apres : tap card = highlight local uniquement ; le commit ne
+/// se fait qu'au tap CTA Continuer. Pattern coherent avec step 2 (track)
+/// et step 3 (level).
+class _StreamPicker extends StatefulWidget {
   const _StreamPicker({
     required this.streams,
     required this.langKey,
-    required this.onSelected,
+    required this.continueLabel,
+    required this.onConfirm,
   });
 
   final List<Serie> streams;
   final String langKey;
-  final void Function(String streamId) onSelected;
+  final String continueLabel;
+  final void Function(String streamId) onConfirm;
+
+  @override
+  State<_StreamPicker> createState() => _StreamPickerState();
+}
+
+class _StreamPickerState extends State<_StreamPicker> {
+  String? _selectedId;
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          for (final stream in streams) ...[
-            SelectionCard(
-              title: stream.name[langKey] ?? stream.name.values.first,
-              description: stream.descriptionFor(langKey),
-              selected: false,
-              variant: SelectionCardVariant.standard,
-              showRadio: false,
-              onTap: () => onSelected(stream.serieId),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final stream in widget.streams) ...[
+                  SelectionCard(
+                    title: stream.name[widget.langKey] ??
+                        stream.name.values.first,
+                    description: stream.descriptionFor(widget.langKey),
+                    selected: _selectedId == stream.serieId,
+                    variant: SelectionCardVariant.standard,
+                    showRadio: false,
+                    onTap: () => setState(() => _selectedId = stream.serieId),
+                  ),
+                  SizedBox(height: AppSpacing.s2.h),
+                ],
+                SizedBox(height: AppSpacing.s4.h),
+              ],
             ),
-            SizedBox(height: AppSpacing.s2.h),
-          ],
-          SizedBox(height: AppSpacing.s8.h),
-        ],
-      ),
+          ),
+        ),
+        SafeArea(
+          top: false,
+          child: Padding(
+            padding: EdgeInsets.all(AppSpacing.s4.w),
+            child: SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: _selectedId == null
+                    ? null
+                    : () => widget.onConfirm(_selectedId!),
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  disabledBackgroundColor:
+                      AppColors.primary.withValues(alpha: 0.4),
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                  ),
+                ),
+                child: Text(
+                  widget.continueLabel,
+                  style: AppTypography.bodyStrong.copyWith(
+                    fontSize: 16.sp,
+                    color: AppColors.card,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
