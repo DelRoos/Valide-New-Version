@@ -132,7 +132,7 @@ class OnboardingFlushService {
         'trackId=${payload['trackId']} '
         'levelId=${payload['levelId']} '
         'streamId=${payload['streamId'] ?? "<null>"} '
-        'pickedSubjects=${(payload['pickedSubjects'] as List).length} items '
+        'pickedSubjects=${(payload['pickedSubjects'] as List?)?.length ?? "<omis>"} items '
         'displayName=${maskName(payload['displayName'] as String?)} '
         'phoneNumber=${maskPhone(payload['phoneNumber'] as String?)} '
         'schoolId=${payload['schoolId'] ?? "<null>"} '

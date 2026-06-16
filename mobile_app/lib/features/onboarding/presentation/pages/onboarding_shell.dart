@@ -77,6 +77,17 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
       notifier.back();
     }
 
+    // Le footer est dans le Column du body (pas dans bottomNavigationBar) pour
+    // qu'il remonte avec le body quand le clavier apparait (resizeToAvoidBottomInset
+    // par defaut = true reduit la hauteur du body, donc le footer reste visible
+    // au-dessus du clavier sans reglage supplementaire).
+    final footer = _footerForStep(
+      step: state.currentStep,
+      state: state,
+      notifier: notifier,
+      l10n: l10n,
+    );
+
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
@@ -108,14 +119,9 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
                 ),
               ),
             ),
+            if (footer != null) footer,
           ],
         ),
-      ),
-      bottomNavigationBar: _footerForStep(
-        step: state.currentStep,
-        state: state,
-        notifier: notifier,
-        l10n: l10n,
       ),
     );
   }

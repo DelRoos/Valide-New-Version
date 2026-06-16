@@ -29,6 +29,15 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
   String _currentQuery = '';
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(schoolSearchNotifierProvider.notifier).preload();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(onboardingNotifierProvider);
@@ -75,20 +84,6 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
               placeholder: l10n.onboardingSchoolPlaceholder,
               emptyAddTemplate: l10n.onboardingSchoolAddTemplate('{name}'),
               warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
-            ),
-            SizedBox(height: AppSpacing.s5.h),
-            TextButton(
-              onPressed: () {
-                ref.read(onboardingNotifierProvider.notifier).skipSchool();
-                AppLogger.i('school.skip tapped');
-              },
-              child: Text(
-                l10n.onboardingSchoolSkipLabel,
-                style: AppTypography.body.copyWith(
-                  color: AppColors.inkSoft,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
             ),
             SizedBox(height: AppSpacing.s5.h),
           ],

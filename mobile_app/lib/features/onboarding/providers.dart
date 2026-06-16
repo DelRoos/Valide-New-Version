@@ -358,6 +358,20 @@ class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
     return const AsyncValue.data([]);
   }
 
+  /// Prefetch non-bloquant : charge les [limit] premieres ecoles sans filtre.
+  /// Appele dans initState de SchoolInputStepBody (cf. memoire prefetch-before-screen).
+  void preload({int limit = 20}) {
+    if (_lastQuery != null) return; // deja une recherche en cours
+    state = const AsyncValue.loading();
+    ref.read(schoolRepositoryProvider).listFirst(limit).then((result) {
+      if (_lastQuery != null) return; // une recherche utilisateur a commence
+      state = result.fold(
+        (failure) => const AsyncValue.data([]),
+        (schools) => AsyncValue.data(schools),
+      );
+    });
+  }
+
   void search(String query) {
     _debounceTimer?.cancel();
     _lastQuery = query;

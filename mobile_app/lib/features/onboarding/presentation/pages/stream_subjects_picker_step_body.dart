@@ -739,7 +739,11 @@ class _InteractiveSubjectPicker extends StatelessWidget {
                     runSpacing: AppSpacing.s2.h,
                     children: [
                       for (final s in obligatorySubjects)
-                        _SubjectSummaryChip(subject: s, langKey: langKey),
+                        _SubjectSummaryChip(
+                          subject: s,
+                          langKey: langKey,
+                          isObligatory: true,
+                        ),
                     ],
                   ),
                 ],
@@ -1030,17 +1034,19 @@ class _RecapCell extends StatelessWidget {
   }
 }
 
-/// derived ou aucune interaction n'est possible : juste une vue d'ensemble.
-///
-/// Pas d'abbreviation ni de cadenas — le but est de minimiser le bruit
-/// visuel pour qu'on voit les 11 matieres d'un coup. L'abbreviation reste
-/// utile dans les modes picker (CheckboxListTile) ou la liste est longue
-/// et identifiee par tap. Cf. audit 2026-06-13.
+/// Chip affichant une matiere dans les sections "lecture seule" (derived,
+/// obligatoire non-toggleable). [isObligatory] ajoute un * rouge pour
+/// distinguer les matieres qui ne peuvent pas etre deselectionnes.
 class _SubjectSummaryChip extends StatelessWidget {
-  const _SubjectSummaryChip({required this.subject, required this.langKey});
+  const _SubjectSummaryChip({
+    required this.subject,
+    required this.langKey,
+    this.isObligatory = false,
+  });
 
   final Subject subject;
   final String langKey;
+  final bool isObligatory;
 
   @override
   Widget build(BuildContext context) {
@@ -1065,13 +1071,27 @@ class _SubjectSummaryChip extends StatelessWidget {
             size: 16.sp,
           ),
           SizedBox(width: AppSpacing.s2.w),
-          Text(
-            name,
-            style: AppTypography.bodyStrong.copyWith(
-              fontSize: 13.sp,
-              color: AppColors.primary,
+          Flexible(
+            child: Text(
+              name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: AppTypography.bodyStrong.copyWith(
+                fontSize: 13.sp,
+                color: AppColors.primary,
+              ),
             ),
           ),
+          if (isObligatory) ...[
+            SizedBox(width: 2.w),
+            Text(
+              '*',
+              style: AppTypography.bodyStrong.copyWith(
+                fontSize: 13.sp,
+                color: AppColors.danger,
+              ),
+            ),
+          ],
         ],
       ),
     );
