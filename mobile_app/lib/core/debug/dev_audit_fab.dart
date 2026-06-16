@@ -15,7 +15,6 @@ import 'package:flutter/foundation.dart' show kReleaseMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../features/onboarding/presentation/state/onboarding_providers.dart';
@@ -86,7 +85,15 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
     final messenger = ScaffoldMessenger.of(context);
     final sheetNavigator = Navigator.of(context);
     final rootNavigator = Navigator.of(context, rootNavigator: true);
-    final router = GoRouter.of(context);
+
+    // Audit 2026-06-15 — Capturer le ProviderContainer ET le service AVANT
+    // tout await. Apres sheetNavigator.pop(), le widget (_DevAuditSheetState)
+    // s'anime vers la fermeture ; apres la fin de l'animation il est dispose.
+    // `ref` sur un ConsumerState dispose leve "Bad state: Using ref when
+    // widget is unmounted". En utilisant le ProviderContainer (pas lie au
+    // cycle de vie du widget), les invalidate() apres await sont surs.
+    final container = ProviderScope.containerOf(context);
+    final svc = _buildService();
 
     // Audit 2026-06-13 — Le dev FAB faisait `await op` PUIS pop + go. Mais
     // pendant `op`, `user.delete()` declenche un signOut Firebase qui propage
@@ -108,15 +115,26 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
       builder: (_) => const _DeletingDialog(),
     ));
 
+    // Audit 2026-06-15 — Invalider le notifier onboarding EN AMONT du await
+    // (pas apres). Justification : user.delete() dans op() declenche
+    // authStateChanges() -> router redirige vers /onboarding/v2 ->
+    // OnboardingShell monte PENDANT le await. Si le notifier a encore son
+    // ancien state (step 3-5), le shell affiche brievement ce step AVANT
+    // que l'invalidation post-await ne le remette a 0. En invalidant ici,
+    // le shell monte directement sur step 0 (selection de langue).
+    // Les prefs sont videes en premier par deleteAccountAndClear() avant
+    // user.delete(), donc loadFromPersistence() trouve des prefs vides. OK.
+    container.invalidate(onboardingNotifierProvider);
+
     try {
-      await op(_buildService());
+      await op(svc);
       // INVALIDATION CRITIQUE : prefs.clear() vide le storage mais les
       // Notifier Riverpod gardent leur state in-memory. Sans invalidate, le
       // router redirect voit l'ancien subSystem en memoire.
-      ref.invalidate(subSystemNotifierProvider);
-      ref.invalidate(profileCompletionProvider);
-      ref.invalidate(onboardingNotifierProvider);
-      ref.invalidate(currentUserProvider);
+      // Utiliser container (pas ref) car le widget est deja demonte.
+      container.invalidate(subSystemNotifierProvider);
+      container.invalidate(profileCompletionProvider);
+      container.invalidate(currentUserProvider);
 
       // Pop le dialog bloquant.
       if (rootNavigator.canPop()) rootNavigator.pop();
@@ -128,10 +146,6 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
           ),
         ),
       );
-
-      // Nav DIRECT a /onboarding/v2 (l'auto-redirect aurait deja amene la,
-      // mais on force pour garantir step 0 quel que soit l'etat du router).
-      router.go('/onboarding/v2');
     } catch (e) {
       if (rootNavigator.canPop()) rootNavigator.pop();
       messenger.showSnackBar(

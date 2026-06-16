@@ -91,7 +91,7 @@ class TrackChoiceStepBody extends ConsumerWidget {
                         description: _trackHint(l10n, t.filiereId),
                         icon: Icon(_trackIcon(t.filiereId)),
                         selected: state.trackId == t.filiereId,
-                        onTap: () => notifier.setTrackIdDraft(t.filiereId),
+                        onTap: () => notifier.setTrackId(t.filiereId),
                         showRadio: false,
                       ),
                       SizedBox(height: AppSpacing.s3.h),

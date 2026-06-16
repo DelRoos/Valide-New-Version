@@ -214,10 +214,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sélectionne les matières que tu présentes à ton examen.';
 
   @override
-  String get onboardingPickerObligatoryTitle => 'Matieres obligatoires';
+  String get onboardingPickerObligatoryTitle => 'Matières obligatoires';
 
   @override
-  String get onboardingPickerOptionalTitle => 'Matieres optionnelles';
+  String get onboardingPickerOptionalTitle => 'Matières optionnelles';
 
   @override
   String get onboardingPickerSeriesTitle => 'Choisis ta série';
@@ -230,7 +230,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Matières professionnelles (obligatoires)';
 
   @override
-  String get onboardingPickerRelatedTitle => 'Matieres connexes';
+  String get onboardingPickerRelatedTitle => 'Matières connexes';
 
   @override
   String get onboardingPickerOtherTitle => 'Autres matières';
@@ -528,12 +528,38 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingLoaderLabel => 'Chargement…';
 
   @override
+  String get onboardingGroupLv2 => 'Langue Vivante 2';
+
+  @override
+  String get onboardingGroupLv3 => 'Langue Vivante 3';
+
+  @override
+  String get onboardingGroupOlevelOptions => 'Matière O-Level';
+
+  @override
+  String get onboardingGroupAlevelOptions => 'Matière A-Level';
+
+  @override
+  String get onboardingGroupGeneric => 'matière';
+
+  @override
+  String get onboardingGroupPickHint => 'Choisis 1';
+
+  @override
+  String onboardingPickerChooseUpTo(int count) {
+    return 'Choisis jusqu\'à $count';
+  }
+
+  @override
   String onboardingPickerCounter(int count, int max) {
-    return '$count/$max selectionnees';
+    return '$count/$max sélectionnées';
   }
 
   @override
   String get onboardingPickerValidate => 'Valider mes matières';
+
+  @override
+  String get onboardingStartRevising => 'Commencer à réviser';
 
   @override
   String get errorCatalogueLoading =>

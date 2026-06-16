@@ -488,16 +488,28 @@
   "onboardingLoaderLabel": "Chargement…",
   "@onboardingLoaderLabel": { "description": "Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore." },
 
-  "onboardingPickerObligatoryTitle": "Matieres obligatoires",
+  "onboardingGroupLv2": "Langue Vivante 2",
+  "onboardingGroupLv3": "Langue Vivante 3",
+  "onboardingGroupOlevelOptions": "Matière O-Level",
+  "onboardingGroupAlevelOptions": "Matière A-Level",
+  "onboardingGroupGeneric": "matière",
+  "onboardingGroupPickHint": "Choisis 1",
+  "onboardingPickerChooseUpTo": "Choisis jusqu'à {count}",
+  "@onboardingPickerChooseUpTo": {
+    "description": "Story E1bis-3 — Hint section optionnelles (ex: Choisis jusqu'à 3).",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "onboardingPickerObligatoryTitle": "Matières obligatoires",
   "@onboardingPickerObligatoryTitle": { "description": "Story E1bis-3 — Titre section matieres obligatoires picker." },
 
-  "onboardingPickerOptionalTitle": "Matieres optionnelles",
+  "onboardingPickerOptionalTitle": "Matières optionnelles",
   "@onboardingPickerOptionalTitle": { "description": "Story E1bis-3 — Titre section matieres optionnelles picker." },
 
-  "onboardingPickerRelatedTitle": "Matieres connexes",
+  "onboardingPickerRelatedTitle": "Matières connexes",
   "@onboardingPickerRelatedTitle": { "description": "Story E1bis-3 — Titre section matieres connexes tvePicker." },
 
-  "onboardingPickerCounter": "{count}/{max} selectionnees",
+  "onboardingPickerCounter": "{count}/{max} sélectionnées",
   "@onboardingPickerCounter": {
     "description": "Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).",
     "placeholders": {
@@ -508,6 +520,9 @@
 
   "onboardingPickerValidate": "Valider mes matières",
   "@onboardingPickerValidate": { "description": "Story E1bis-3 — Label CTA validation picker." },
+
+  "onboardingStartRevising": "Commencer à réviser",
+  "@onboardingStartRevising": { "description": "Story E1bis-3 — CTA final step 4 : crée un compte anonyme et navigue vers le dashboard." },
 
   "errorCatalogueLoading": "Impossible de charger le catalogue. Vérifie ta connexion et réessaie.",
   "@errorCatalogueLoading": { "description": "Story E1bis-3 — Message erreur chargement catalogue Firestore." },

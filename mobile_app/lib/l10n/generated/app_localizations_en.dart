@@ -524,12 +524,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingLoaderLabel => 'Loading…';
 
   @override
+  String get onboardingGroupLv2 => 'second language';
+
+  @override
+  String get onboardingGroupLv3 => 'third language';
+
+  @override
+  String get onboardingGroupOlevelOptions => 'O-Level subject';
+
+  @override
+  String get onboardingGroupAlevelOptions => 'A-Level subject';
+
+  @override
+  String get onboardingGroupGeneric => 'subject';
+
+  @override
+  String get onboardingGroupPickHint => 'Pick 1';
+
+  @override
+  String onboardingPickerChooseUpTo(int count) {
+    return 'Pick up to $count';
+  }
+
+  @override
   String onboardingPickerCounter(int count, int max) {
     return '$count/$max selected';
   }
 
   @override
   String get onboardingPickerValidate => 'Confirm my subjects';
+
+  @override
+  String get onboardingStartRevising => 'Start revising';
 
   @override
   String get errorCatalogueLoading =>

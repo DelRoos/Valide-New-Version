@@ -22,7 +22,9 @@ import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../domain/account_linking_failure.dart';
 import '../../domain/account_linking_state.dart';
 import '../../domain/linked_account.dart';
 import '../../providers.dart';
@@ -107,7 +109,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
 
             _SocialButton(
               label: l10n.onboardingAuthGoogleLabel,
-              iconData: LucideIcons.globe,
+              iconWidget: const GoogleBrandIcon(),
               loading: linkState is AccountLinkingLoading &&
                   linkState.provider == AccountProvider.google,
               onPressed: isLoading ? null : linkingNotifier.linkGoogle,
@@ -120,7 +122,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
             if (isAppleAvailable) ...[
               _SocialButton(
                 label: l10n.onboardingAuthAppleLabel,
-                iconData: LucideIcons.apple,
+                iconWidget: const AppleBrandIcon(color: Colors.white),
                 loading: linkState is AccountLinkingLoading &&
                     linkState.provider == AccountProvider.apple,
                 onPressed: isLoading ? null : linkingNotifier.linkApple,
@@ -160,17 +162,19 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     );
   }
 
+  // Audit 2026-06-15 — Mapping via failure.kind (CLAUDE.md regle 13) :
+  // - cancelled : silencieux (l'utilisateur a ferme le picker OAuth).
+  // - unknown   : on n'expose pas le message technique brut.
+  // - autres    : failure.message est deja localise en francais.
   String? _errorMessage(AccountLinkingState state) {
-    if (state is AccountLinkingError) {
-      final l10n = AppLocalizations.of(context);
-      // failure.message est la traduction FR du _AccountLinkingXxx. On
-      // l'utilise tel quel (les sous-types sont prives donc on ne peut pas
-      // pattern-matcher publiquement).
-      return state.failure.message.isNotEmpty
-          ? state.failure.message
-          : l10n.errorGenericTitle;
-    }
-    return null;
+    if (state is! AccountLinkingError) return null;
+    final failure = state.failure;
+    return switch (failure.kind) {
+      AccountLinkingFailureKind.cancelled => null,
+      AccountLinkingFailureKind.unknown =>
+        AppLocalizations.of(context).errorGenericTitle,
+      _ => failure.message,
+    };
   }
 
   /// Flow visiteur (decision produit 2026-06-13 + audit PR2 2026-06-13) :
@@ -338,7 +342,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
 class _SocialButton extends StatelessWidget {
   const _SocialButton({
     required this.label,
-    required this.iconData,
+    required this.iconWidget,
     required this.loading,
     required this.onPressed,
     required this.backgroundColor,
@@ -347,7 +351,7 @@ class _SocialButton extends StatelessWidget {
   });
 
   final String label;
-  final IconData iconData;
+  final Widget iconWidget;
   final bool loading;
   final VoidCallback? onPressed;
   final Color backgroundColor;
@@ -382,7 +386,7 @@ class _SocialButton extends StatelessWidget {
                   ),
                 )
               else
-                Icon(iconData, color: foregroundColor, size: 22.sp),
+                SizedBox(width: 22.sp, height: 22.sp, child: iconWidget),
               SizedBox(width: AppSpacing.s3.w),
               Text(
                 label,

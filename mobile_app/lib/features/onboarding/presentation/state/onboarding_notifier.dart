@@ -104,16 +104,18 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   /// Pose le level + capture le mode picker + reset stream/subjects.
-  /// Transition conditionnelle :
-  /// - requiresPicker == true  -> step 4 (picker stream/subjects)
-  /// - requiresPicker == false -> step 5 (skip step 4, mode `derived`)
+  /// Transition : toujours -> step 4 (recap matieres), meme pour les niveaux
+  /// en mode `derived` (6e, 5e, 4e, 3e...). Le recap est l'ecran de
+  /// confirmation pedagogique avant l'auth. [requiresPicker] reste utile pour
+  /// StreamSubjectsPickerStepBody (dispatch du mode d'affichage), mais ne
+  /// pilote plus le skip de step 4.
   void setLevelId(String levelId, {required bool requiresPicker}) {
     state = state.copyWith(
       levelId: levelId,
       levelRequiresPicker: requiresPicker,
       streamId: null,
       pickedSubjects: const <String>[],
-      currentStep: requiresPicker ? 4 : 5,
+      currentStep: 4,
     );
     _persistDraftFireAndForget();
   }
@@ -142,6 +144,23 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       streamId: streamId,
       pickedSubjects: List<String>.unmodifiable(pickedSubjects),
       currentStep: 5,
+    );
+    _persistDraftFireAndForget();
+  }
+
+  /// Variante "commencer a reviser" : pose stream + matieres + auth guest
+  /// SANS transitionner (step reste 4). Utilise par le CTA "Commencer a
+  /// reviser" du step 4 qui fait le flush direct + nav /dashboard sans passer
+  /// par step 5 (auth choice). Evite le flash visuel vers l'ecran auth.
+  void commitSubjectsForGuest({
+    String? streamId,
+    required List<String> pickedSubjects,
+  }) {
+    state = state.copyWith(
+      streamId: streamId,
+      pickedSubjects: List<String>.unmodifiable(pickedSubjects),
+      authProvider: OnboardingAuthProvider.guest,
+      isVisitor: true,
     );
     _persistDraftFireAndForget();
   }
@@ -315,9 +334,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   /// Recule d'un cran symetrique a [next]. A step 0 -> no-op.
   ///
-  /// Ne reset PAS les valeurs amont : les choix utilisateur sont preserves
-  /// pour pre-remplissage UI au retour. C'est [setTrackId] / [setLevelId]
-  /// qui font le reset downstream explicite.
+  /// Ne reset PAS les valeurs amont sauf exception :
+  /// - 5 -> 4 : remet streamId = null + pickedSubjects = [] pour que le
+  ///   stream picker s'affiche a nouveau (sinon step 4 saute directement
+  ///   a la vue derivee et l'utilisateur ne peut plus changer sa serie).
   void back() {
     final s = state;
     final target = switch (s.currentStep) {
@@ -326,8 +346,7 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 1,
       3 => 2,
       4 => 3,
-      // Audit 2026-06-14 — back de step 5 va toujours a step 4 (recap), pas
-      // step 3, pour rester symetrique avec next() qui passe toujours par 4.
+      // Audit 2026-06-14 — back de step 5 va toujours a step 4 (recap).
       5 => 4,
       6 => 5,
       7 => 6,
@@ -336,7 +355,15 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       _ => s.currentStep,
     };
     if (target != s.currentStep) {
-      state = s.copyWith(currentStep: target);
+      // Retour a step 4 : reset stream + subjects pour re-afficher le picker.
+      final next = (target == 4)
+          ? s.copyWith(
+              currentStep: 4,
+              streamId: null,
+              pickedSubjects: const <String>[],
+            )
+          : s.copyWith(currentStep: target);
+      state = next;
       _persistDraftFireAndForget();
     }
   }

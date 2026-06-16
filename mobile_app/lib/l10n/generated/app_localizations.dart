@@ -443,13 +443,13 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre section matieres obligatoires picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres obligatoires'**
+  /// **'Matières obligatoires'**
   String get onboardingPickerObligatoryTitle;
 
   /// Story E1bis-3 — Titre section matieres optionnelles picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres optionnelles'**
+  /// **'Matières optionnelles'**
   String get onboardingPickerOptionalTitle;
 
   /// Story E1bis-3 — Titre section selection serie dans le picker.
@@ -473,7 +473,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre section matieres connexes tvePicker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres connexes'**
+  /// **'Matières connexes'**
   String get onboardingPickerRelatedTitle;
 
   /// Titre H3 section Other Subjects mode tve_picker TVEE (Story 1.17). Mix : EN+FR lockées + matières culturelles au choix (Hist/Geo/RS).
@@ -986,10 +986,52 @@ abstract class AppLocalizations {
   /// **'Chargement…'**
   String get onboardingLoaderLabel;
 
+  /// No description provided for @onboardingGroupLv2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue Vivante 2'**
+  String get onboardingGroupLv2;
+
+  /// No description provided for @onboardingGroupLv3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue Vivante 3'**
+  String get onboardingGroupLv3;
+
+  /// No description provided for @onboardingGroupOlevelOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matière O-Level'**
+  String get onboardingGroupOlevelOptions;
+
+  /// No description provided for @onboardingGroupAlevelOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matière A-Level'**
+  String get onboardingGroupAlevelOptions;
+
+  /// No description provided for @onboardingGroupGeneric.
+  ///
+  /// In fr, this message translates to:
+  /// **'matière'**
+  String get onboardingGroupGeneric;
+
+  /// No description provided for @onboardingGroupPickHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis 1'**
+  String get onboardingGroupPickHint;
+
+  /// Story E1bis-3 — Hint section optionnelles (ex: Choisis jusqu'à 3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis jusqu\'à {count}'**
+  String onboardingPickerChooseUpTo(int count);
+
   /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
   ///
   /// In fr, this message translates to:
-  /// **'{count}/{max} selectionnees'**
+  /// **'{count}/{max} sélectionnées'**
   String onboardingPickerCounter(int count, int max);
 
   /// Story E1bis-3 — Label CTA validation picker.
@@ -997,6 +1039,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Valider mes matières'**
   String get onboardingPickerValidate;
+
+  /// Story E1bis-3 — CTA final step 4 : crée un compte anonyme et navigue vers le dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer à réviser'**
+  String get onboardingStartRevising;
 
   /// Story E1bis-3 — Message erreur chargement catalogue Firestore.
   ///

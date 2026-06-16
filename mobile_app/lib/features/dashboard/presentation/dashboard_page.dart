@@ -44,9 +44,9 @@ class DashboardPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Column(
+        child: Stack(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 StreamBuilder<Map<String, dynamic>?>(
@@ -67,19 +67,24 @@ class DashboardPage extends ConsumerWidget {
                 const Expanded(
                   child: DashboardSubjectsArea(),
                 ),
-                if (isAnonymous)
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.s4.w,
-                      AppSpacing.s2.h,
-                      AppSpacing.s4.w,
-                      AppSpacing.s3.h,
-                    ),
-                    child: const DashboardGuestInviteCard(),
-                  ),
               ],
-            );
-          },
+            ),
+            if (isAnonymous)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.s4.w,
+                    AppSpacing.s2.h,
+                    AppSpacing.s4.w,
+                    AppSpacing.s3.h,
+                  ),
+                  child: const DashboardGuestInviteCard(),
+                ),
+              ),
+          ],
         ),
       ),
       bottomNavigationBar: const MainBottomNav(currentIndex: 0),

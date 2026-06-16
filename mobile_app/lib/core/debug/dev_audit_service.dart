@@ -79,16 +79,26 @@ class DevAuditService {
     );
   }
 
-  /// Delete doc users/{uid} puis delete le compte FirebaseAuth. Brutal — pas
-  /// de grâce 7j. Conserve les eventuels school_requests et autres
-  /// sous-collections (acceptable pour audit dev).
+  /// Supprime le doc Firestore users/{uid} puis le compte FirebaseAuth.
   ///
-  /// Apres l'appel, [currentUser] est null. Le caller doit naviguer hors
-  /// des ecrans qui assumaient un user authentifie.
+  /// Comportement selon le type de compte :
   ///
-  /// Throws [FirebaseAuthException] code `requires-recent-login` si le user
-  /// n'a pas reauth recemment (rare en anonyme — Firebase n'exige pas
-  /// reauth pour delete les comptes anonymes).
+  /// - **Anonyme** (`isAnonymous=true`) : `user.delete()` fonctionne toujours
+  ///   sans reauth. Firebase n'exige pas de session recente pour les comptes
+  ///   anonymes.
+  ///
+  /// - **Non-anonyme** (Google/Apple, `isAnonymous=false`) : `user.delete()`
+  ///   peut lever `requires-recent-login` si le dernier signIn est trop ancien.
+  ///   Dans ce cas on log + on retourne sans delete Auth (le caller
+  ///   `deleteAccountAndClear()` fait ensuite un `signOut()` + `signInAnonymously()`).
+  ///   Le doc Firestore est deja supprime (etape 1) — `profileCompletionProvider`
+  ///   retournera `filiereMissing` au prochain lancement -> router reste dans
+  ///   l'onboarding pour un re-test propre. Si l'utilisateur re-tente le meme
+  ///   Google auth au step 5, `_linkOrSignIn` (repo AccountLinking) recupere
+  ///   la session via `signInWithCredential` fallback.
+  ///
+  /// Conserve les eventuelles sous-collections (school_requests, etc.) —
+  /// acceptable pour audit dev, pas une suppression RGPD complete.
   Future<void> deleteAccount() async {
     final user = _auth.currentUser;
     if (user == null) {
@@ -96,26 +106,57 @@ class DevAuditService {
       return;
     }
     final uid = user.uid;
-    AppLogger.i('[DEV] deleteAccount start anonymous=${user.isAnonymous}');
+    final isAnonymous = user.isAnonymous;
+    final rawProviders = user.providerData.map((p) => p.providerId).join(',');
+    final providers = rawProviders.isEmpty ? 'none' : rawProviders;
+    AppLogger.i(
+      '[DEV] deleteAccount start anonymous=$isAnonymous providers=$providers',
+    );
 
-    // 1. Delete doc users/{uid} (best effort — si rules refusent ou doc
-    //    inexistant, on log et on continue : le delete Auth reste prioritaire).
+    // 1. Suppression doc Firestore users/{uid} — best effort.
+    //    C'est l'etape CRITIQUE pour le re-test : sans ce delete, le prochain
+    //    launch verrait un profil complet et irait directement au dashboard
+    //    meme si le compte Auth est ressorti de la suppression.
     try {
       await logPerf(
         'dev.users.delete',
         () => _firestore.collection('users').doc(uid).delete(),
       );
+      AppLogger.i('[DEV] users/{uid} deleted uid=${uid.substring(0, 6)}...');
     } catch (e) {
       AppLogger.w('[DEV] users/{uid} delete failed: $e');
     }
 
-    // 2. Delete le compte FirebaseAuth. Peut throw requires-recent-login pour
-    //    les comptes Google/Apple post-linkWithCredential. En anonyme, OK.
-    await logPerf(
-      'dev.auth.delete',
-      () => user.delete(),
-    );
-    AppLogger.i('[DEV] deleteAccount OK uid=${uid.substring(0, 6)}...');
+    // 2. Suppression du compte FirebaseAuth.
+    if (isAnonymous) {
+      // Anonyme : delete toujours possible sans reauth.
+      await logPerf('dev.auth.delete', () => user.delete());
+      AppLogger.i(
+        '[DEV] deleteAccount (anonymous) OK uid=${uid.substring(0, 6)}...',
+      );
+    } else {
+      // Non-anonyme (Google/Apple) : delete peut necessiter reauth recente.
+      try {
+        await logPerf('dev.auth.delete', () => user.delete());
+        AppLogger.i(
+          '[DEV] deleteAccount ($providers) OK uid=${uid.substring(0, 6)}...',
+        );
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'requires-recent-login') {
+          // Reauth interactif non disponible dans le contexte dev FAB.
+          // Retour sans delete Auth — le caller fait signOut() ensuite.
+          // Le doc Firestore est deja parti (etape 1), donc le prochain
+          // profileCompletionProvider verra filiereMissing -> onboarding.
+          AppLogger.w(
+            '[DEV] deleteAccount: requires-recent-login ($providers) '
+            '— Auth account NOT deleted, Firestore doc gone. '
+            'signOut handled by deleteAccountAndClear()',
+          );
+          return;
+        }
+        rethrow;
+      }
+    }
   }
 
   /// Action canonique du bouton dev : delete users/{uid} + delete Auth account

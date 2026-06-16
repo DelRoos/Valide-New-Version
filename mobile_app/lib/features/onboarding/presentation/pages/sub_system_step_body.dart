@@ -59,14 +59,11 @@ class SubSystemStepBody extends ConsumerWidget {
             textAlign: TextAlign.center,
           ),
           SizedBox(height: AppSpacing.s8.h),
-          // Audit 2026-06-13 — `setSubSystemDraft` (pas `setSubSystem`) :
-          // le tap propage au LocaleNotifier (UI live) mais NE TRANSITIONNE
-          // PAS au step 1. L'utilisateur valide via CTA Continuer du shell.
           SelectionCard(
             title: l10n.onboardingSubSystemFrancophone,
             description: l10n.onboardingSubSystemFrancophoneDesc,
             selected: state.subSystem == SubSystem.francophone,
-            onTap: () => notifier.setSubSystemDraft(SubSystem.francophone),
+            onTap: () => notifier.setSubSystem(SubSystem.francophone),
             variant: SelectionCardVariant.hero,
             showRadio: false,
           ),
@@ -75,7 +72,7 @@ class SubSystemStepBody extends ConsumerWidget {
             title: l10n.onboardingSubSystemAnglophone,
             description: l10n.onboardingSubSystemAnglophoneDesc,
             selected: state.subSystem == SubSystem.anglophone,
-            onTap: () => notifier.setSubSystemDraft(SubSystem.anglophone),
+            onTap: () => notifier.setSubSystem(SubSystem.anglophone),
             variant: SelectionCardVariant.hero,
             showRadio: false,
           ),

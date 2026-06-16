@@ -219,6 +219,11 @@
   "onboardingLevelEmptyForTrackBody": "No class is available yet for this track. Pick another track to continue.",
   "onboardingLevelEmptyForTrackChangeTrack": "Change track",
   "onboardingLoaderLabel": "Loading…",
+  "onboardingGroupPickHint": "Pick 1",
+  "onboardingPickerChooseUpTo": "Pick up to {count}",
+  "@onboardingPickerChooseUpTo": {
+    "placeholders": { "count": { "type": "int" } }
+  },
   "onboardingPickerObligatoryTitle": "Compulsory subjects",
   "onboardingPickerOptionalTitle": "Optional subjects",
   "onboardingPickerRelatedTitle": "Related subjects",
@@ -230,6 +235,7 @@
     }
   },
   "onboardingPickerValidate": "Confirm my subjects",
+  "onboardingStartRevising": "Start revising",
   "errorCatalogueLoading": "Cannot load catalogue. Check your connection and try again.",
   "errorCatalogueEmpty": "No data available. Try again later.",
   "errorOfflineTitle": "No connection",

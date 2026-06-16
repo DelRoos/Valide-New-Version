@@ -56,6 +56,19 @@ abstract interface class CatalogueRepository {
     String? serie,
   });
 
+  /// Variante de [derive] qui saute la query Firestore pour les règles : la
+  /// règle est déjà matchée en mémoire (depuis le snapshot `catalogueProvider`)
+  /// et passée directement. Seules les fetches subjects/examTargets/série sont
+  /// effectuées (7 futures parallèles identiques à [derive]).
+  ///
+  /// Avantage : évite le cache-query Firestore stale sur `derivation_rules`
+  /// (cf. bug LV2 post-seed 2026-06-15). Le snapshot `catalogueProvider` est
+  /// chargé fresh depuis le serveur au démarrage — ses règles sont fiables.
+  Future<Either<CatalogueFailure, DerivedProfile>> deriveFromRule({
+    required DerivationRule rule,
+    String? serie,
+  });
+
   /// Détecte le cas « catalogue indisponible » au boot : vrai si au moins une
   /// `derivation_rule` active existe (= catalogue prêt à servir), faux si
   /// Firestore est vide ET le cache offline est vide.

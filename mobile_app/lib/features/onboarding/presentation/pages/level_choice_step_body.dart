@@ -41,10 +41,10 @@ class LevelChoiceStepBody extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: AppSpacing.s5.h),
+          SizedBox(height: AppSpacing.s2.h),
           Icon(LucideIcons.graduationCap,
-              size: 40.sp, color: AppColors.primary),
-          SizedBox(height: AppSpacing.s4.h),
+              size: 36.sp, color: AppColors.primary),
+          SizedBox(height: AppSpacing.s2.h),
           Text(
             l10n.onboardingLevelTitle,
             style: AppTypography.h1.copyWith(fontSize: 22.sp),
@@ -118,7 +118,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: AppSpacing.s5.h),
+                    SizedBox(height: AppSpacing.s3.h),
                     for (final level in levels) ...[
                       SelectionCard(
                         title: _localizedName(level, anglo: isAnglo),
@@ -130,7 +130,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
                       ),
                       SizedBox(height: AppSpacing.s2.h),
                     ],
-                    SizedBox(height: AppSpacing.s5.h),
+                    SizedBox(height: AppSpacing.s3.h),
                   ],
                 ),
               );
@@ -163,11 +163,7 @@ class LevelChoiceStepBody extends ConsumerWidget {
     final requiresPicker =
         seriesForLevel.any((s) => s.pickerMode != PickerMode.derived) ||
             seriesForLevel.length > 1;
-    // Audit 2026-06-13 — `setLevelIdDraft` (no transition) : l'utilisateur
-    // valide via CTA Continuer du shell (cf. shell `case 3`). Permet de
-    // changer d'avis sans bouton back. Le draft capture `requiresPicker`
-    // pour que `next()` dispatche step 4 ou 5 correctement.
-    notifier.setLevelIdDraft(niveauId, requiresPicker: requiresPicker);
+    notifier.setLevelId(niveauId, requiresPicker: requiresPicker);
   }
 
   String _localizedName(Niveau n, {required bool anglo}) {
