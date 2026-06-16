@@ -165,7 +165,7 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
   @override
   Future<Either<SchoolFailure, void>> createSchoolRequest({
     required String name,
-    required String city,
+    String? city,
     String? region,
     String? subSystem,
   }) async {
@@ -185,10 +185,8 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
           'requestedAt': FieldValue.serverTimestamp(),
           'status': 'pending',
           'name': name,
-          'city': city,
-          // Story 1.5.c — conditional fields : seuls ajoutes si non-null pour
-          // eviter de stocker `null` (les rules verifient l'absence du champ,
-          // pas la valeur null). Syntaxe null-aware marker Dart 3.x.
+          // city/region/subSystem : optionnels, non envoyes si null/vide.
+          'city': ?(city?.isNotEmpty == true ? city : null),
           'region': ?region,
           'subSystem': ?subSystem,
         }),

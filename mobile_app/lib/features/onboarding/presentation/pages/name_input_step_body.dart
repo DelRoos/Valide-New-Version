@@ -32,6 +32,17 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
     final initial = ref.read(onboardingNotifierProvider).userDisplayName ?? '';
     _controller = TextEditingController(text: initial);
     _controller.addListener(_onChanged);
+    // Le listener ne se declenche pas pour la valeur initiale. Si OAuth a
+    // pre-rempli le nom (via setAuthProvider), le CTA doit etre actif
+    // immediatement sans que le user ne tape quoi que ce soit.
+    if (initial.trim().length >= 2) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ref
+            .read(onboardingNotifierProvider.notifier)
+            .setUserDisplayNameDraft(initial.trim());
+      });
+    }
   }
 
   @override

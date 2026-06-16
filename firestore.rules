@@ -193,9 +193,12 @@ service cloud.firestore {
         && request.resource.data.name is string
         && request.resource.data.name.size() >= 3
         && request.resource.data.name.size() <= 200
-        && request.resource.data.city is string
-        && request.resource.data.city.size() >= 2
-        && request.resource.data.city.size() <= 100
+        && (
+          !('city' in request.resource.data)
+          || (request.resource.data.city is string
+              && request.resource.data.city.size() >= 2
+              && request.resource.data.city.size() <= 100)
+        )
         && request.resource.data.status == 'pending'
         && (
           !('subSystem' in request.resource.data)

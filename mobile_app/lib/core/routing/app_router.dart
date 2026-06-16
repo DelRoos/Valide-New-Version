@@ -220,7 +220,17 @@ String? evaluateRedirect({
   //   - error -> rediriger /onboarding/v2 (safe fallback).
   //   - data incomplete -> rediriger.
   //   - data complete -> rester.
-  if (!location.startsWith('/onboarding/') &&
+  //
+  // Exception upgradeInProgress (fix 2026-06-16) : quand un visiteur lance
+  // l'upgrade Google/Apple depuis le dashboard, signInWithCredential change
+  // l'uid courant. Le stream watchProfile du nouvel uid est encore vide ->
+  // `data incomplete` -> ce guard redirigerait vers /onboarding/v2 AVANT que
+  // le sheet n'ait pu naviguer lui-meme, causant un double-push + crash
+  // assertion `element._lifecycleState == inactive`. Avec upgradeInProgress=true
+  // posé AVANT l'appel signInWithCredential, on bypasse ce guard pendant
+  // toute la duree du flow de completion identite (steps 6-9).
+  if (!upgradeInProgress &&
+      !location.startsWith('/onboarding/') &&
       location != '/catalogue-waiting') {
     final shouldBlock = profileCompletion.when(
       data: (s) => !s.isComplete,

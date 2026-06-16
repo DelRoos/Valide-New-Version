@@ -33,7 +33,7 @@ abstract interface class SchoolRepository {
   /// `where('requestedBy', '==', uid)`).
   Future<Either<SchoolFailure, void>> createSchoolRequest({
     required String name,
-    required String city,
+    String? city,
     String? region,
     String? subSystem,
   });

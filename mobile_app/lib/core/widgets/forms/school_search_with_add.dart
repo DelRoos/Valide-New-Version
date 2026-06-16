@@ -360,7 +360,7 @@ class _AddCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = template.replaceFirst('{name}', '"$query"');
+    final label = template.replaceFirst('{name}', query);
     final radius = BorderRadius.circular(AppRadius.xl2);
     return Pressable(
       onTap: isLoading ? null : onTap,

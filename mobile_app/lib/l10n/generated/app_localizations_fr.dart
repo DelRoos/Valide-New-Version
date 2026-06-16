@@ -465,7 +465,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingTrackHintGeneral =>
-      'Programme academique classique (maths, sciences, lettres)';
+      'Programme académique classique (maths, sciences, lettres)';
 
   @override
   String get onboardingTrackHintTechnique =>
@@ -625,7 +625,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get accountUpgradeSheetBody =>
-      'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.';
+      'En liant ton compte, tu retrouves ta progression sur n\'importe quel téléphone et tu évites de tout perdre si tu changes d\'appareil.';
 
   @override
   String get accountUpgradeSuccess => 'Compte sauvegarde ✨';
@@ -646,7 +646,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingNameTooLong => 'Maximum 50 caracteres.';
 
   @override
-  String get onboardingPhoneTitle => 'Ton numero de telephone';
+  String get onboardingPhoneTitle => 'Ton numéro de téléphone';
 
   @override
   String get onboardingPhoneSubtitle =>
@@ -656,11 +656,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPhoneSkipLabel => 'Passer pour l\'instant';
 
   @override
-  String get onboardingPhoneSkipConfirmTitle => 'Passer cette etape ?';
+  String get onboardingPhoneSkipConfirmTitle => 'Passer cette étape ?';
 
   @override
   String get onboardingPhoneSkipConfirmMessage =>
-      'Tu pourras ajouter ton numero plus tard depuis ton profil.';
+      'Tu pourras ajouter ton numéro plus tard depuis ton profil.';
 
   @override
   String get onboardingPhoneSkipConfirmYes => 'Oui, passer';

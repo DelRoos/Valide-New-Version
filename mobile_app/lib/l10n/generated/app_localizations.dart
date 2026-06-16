@@ -875,7 +875,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Description sous SelectionCard track generale.
   ///
   /// In fr, this message translates to:
-  /// **'Programme academique classique (maths, sciences, lettres)'**
+  /// **'Programme académique classique (maths, sciences, lettres)'**
   String get onboardingTrackHintGeneral;
 
   /// Story E1bis-3 — Description sous SelectionCard track technique.
@@ -1163,7 +1163,7 @@ abstract class AppLocalizations {
   /// Audit PR5 — Body bottomsheet upgrade.
   ///
   /// In fr, this message translates to:
-  /// **'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.'**
+  /// **'En liant ton compte, tu retrouves ta progression sur n\'importe quel téléphone et tu évites de tout perdre si tu changes d\'appareil.'**
   String get accountUpgradeSheetBody;
 
   /// Audit PR5 — Snackbar success upgrade.
@@ -1205,7 +1205,7 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Titre H1 step 7 phone input.
   ///
   /// In fr, this message translates to:
-  /// **'Ton numero de telephone'**
+  /// **'Ton numéro de téléphone'**
   String get onboardingPhoneTitle;
 
   /// Story E1bis-5 — Sous-titre step 7.
@@ -1223,13 +1223,13 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Titre dialog skip phone.
   ///
   /// In fr, this message translates to:
-  /// **'Passer cette etape ?'**
+  /// **'Passer cette étape ?'**
   String get onboardingPhoneSkipConfirmTitle;
 
   /// Story E1bis-5 — Message dialog skip phone.
   ///
   /// In fr, this message translates to:
-  /// **'Tu pourras ajouter ton numero plus tard depuis ton profil.'**
+  /// **'Tu pourras ajouter ton numéro plus tard depuis ton profil.'**
   String get onboardingPhoneSkipConfirmMessage;
 
   /// Story E1bis-5 — CTA confirm skip phone.

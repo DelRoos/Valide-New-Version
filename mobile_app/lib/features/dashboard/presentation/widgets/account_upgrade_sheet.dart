@@ -71,13 +71,9 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
           '-> starting identity completion (steps 6-9)',
         );
 
-        // Signaler l'upgrade avant de naviguer : le router autorisera
-        // /onboarding/v2 même si profileCompletion == complete (profil
-        // scolaire déjà rempli lors du flush guest).
-        ref
-            .read(profileUpgradeInProgressProvider.notifier)
-            .setInProgress(true);
-
+        // upgradeInProgress a déjà été posé true par le onPressed du bouton,
+        // AVANT l'appel linkGoogle/linkApple. Le router n'a donc pas pu
+        // auto-rediriger /dashboard -> /onboarding/v2 pendant l'auth.
         // Positionner le notifier au step 6 (saisie nom) avec le
         // displayName OAuth pré-rempli si disponible.
         ref.read(onboardingNotifierProvider.notifier).setAuthProvider(
@@ -92,6 +88,12 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
           Navigator.of(context).pop();
           GoRouter.of(context).go('/onboarding/v2');
         }
+      } else if (next is AccountLinkingError) {
+        // Annulation ou erreur : réinitialiser le flag pour que le router
+        // reprenne ses gardes normales.
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
       }
     });
 
@@ -161,7 +163,17 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
               iconWidget: const GoogleBrandIcon(),
               loading: linkState is AccountLinkingLoading &&
                   linkState.provider == AccountProvider.google,
-              onPressed: isLoading ? null : notifier.linkGoogle,
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // Poser le flag AVANT linkGoogle pour que le router
+                      // bypasse le guard profil-incomplet (Check 4) quand
+                      // signInWithCredential change l'uid courant.
+                      ref
+                          .read(profileUpgradeInProgressProvider.notifier)
+                          .setInProgress(true);
+                      notifier.linkGoogle();
+                    },
             ),
             if (!kIsWeb && Platform.isIOS) ...[
               SizedBox(height: AppSpacing.s2.h),
@@ -170,7 +182,14 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
                 iconWidget: const AppleBrandIcon(color: Colors.black),
                 loading: linkState is AccountLinkingLoading &&
                     linkState.provider == AccountProvider.apple,
-                onPressed: isLoading ? null : notifier.linkApple,
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        ref
+                            .read(profileUpgradeInProgressProvider.notifier)
+                            .setInProgress(true);
+                        notifier.linkApple();
+                      },
               ),
             ],
           ],
