@@ -69,10 +69,14 @@ class _DevAuditSheetState extends ConsumerState<_DevAuditSheet> {
   bool _busy = false;
 
   DevAuditService _buildService() {
+    final googleSignIn = ref.read(googleSignInProvider);
     return DevAuditService(
       auth: ref.read(firebaseAuthProvider),
       firestore: ref.read(firestoreProvider),
       prefs: ref.read(sharedPreferencesProvider),
+      googleSignIn: () => googleSignIn.authenticate(
+        scopeHint: const ['email', 'profile'],
+      ),
     );
   }
 

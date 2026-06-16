@@ -13,6 +13,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../logging/app_logger.dart';
@@ -23,13 +24,16 @@ class DevAuditService {
     required FirebaseAuth auth,
     required FirebaseFirestore firestore,
     required SharedPreferences prefs,
+    Future<GoogleSignInAccount> Function()? googleSignIn,
   })  : _auth = auth,
         _firestore = firestore,
-        _prefs = prefs;
+        _prefs = prefs,
+        _googleSignIn = googleSignIn;
 
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
   final SharedPreferences _prefs;
+  final Future<GoogleSignInAccount> Function()? _googleSignIn;
 
   /// Vide SharedPreferences + sign out FirebaseAuth, puis re-signInAnonymously
   /// immediatement pour que les rules Firestore (qui exigent
@@ -143,10 +147,45 @@ class DevAuditService {
         );
       } on FirebaseAuthException catch (e) {
         if (e.code == 'requires-recent-login') {
-          // Reauth interactif non disponible dans le contexte dev FAB.
-          // Retour sans delete Auth — le caller fait signOut() ensuite.
-          // Le doc Firestore est deja parti (etape 1), donc le prochain
-          // profileCompletionProvider verra filiereMissing -> onboarding.
+          // Firebase exige une reauth recente pour supprimer un compte non-anonyme
+          // (l'authTime vient de la session anonyme, pas du linkWithCredential).
+          // Si _googleSignIn est disponible, on reauth silencieusement puis on
+          // retente le delete. Sinon fallback : Auth non supprimee, le doc
+          // Firestore est deja parti -> profileCompletionProvider verra
+          // filiereMissing -> onboarding propre au prochain launch.
+          if (_googleSignIn != null && rawProviders.contains('google.com')) {
+            AppLogger.i(
+              '[DEV] deleteAccount: requires-recent-login — tentative reauth Google',
+            );
+            try {
+              final account = await _googleSignIn();
+              final idToken = account.authentication.idToken;
+              String? accessToken;
+              try {
+                final auth = await account.authorizationClient
+                    .authorizationForScopes(const ['email', 'profile']);
+                accessToken = auth?.accessToken;
+              } catch (_) {
+                // non-bloquant : idToken seul suffit pour GoogleAuthProvider
+              }
+              final credential = GoogleAuthProvider.credential(
+                idToken: idToken,
+                accessToken: accessToken,
+              );
+              await user.reauthenticateWithCredential(credential);
+              await logPerf('dev.auth.delete.retry', () => user.delete());
+              AppLogger.i(
+                '[DEV] deleteAccount ($providers) reauth+delete OK '
+                'uid=${uid.substring(0, 6)}...',
+              );
+              return;
+            } catch (reauthError) {
+              AppLogger.w(
+                '[DEV] deleteAccount: reauth Google failed: '
+                '${reauthError.runtimeType} — fallback signOut',
+              );
+            }
+          }
           AppLogger.w(
             '[DEV] deleteAccount: requires-recent-login ($providers) '
             '— Auth account NOT deleted, Firestore doc gone. '
