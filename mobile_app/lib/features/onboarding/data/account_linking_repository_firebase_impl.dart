@@ -38,21 +38,32 @@ typedef LinkCredentialFn = Future<UserCredential> Function(
   AuthCredential credential,
 );
 
+/// Action `signInWithCredential` sur FirebaseAuth (fallback quand
+/// `linkWithCredential` throw `credential-already-in-use`).
+/// Pattern standard Firebase : si le credential appartient deja a un autre
+/// utilisateur, on sign-in directement en tant que cet utilisateur.
+typedef SignInWithCredentialFn = Future<UserCredential> Function(
+  AuthCredential credential,
+);
+
 class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
   AccountLinkingRepositoryFirebaseImpl({
     required FirebaseFirestore firestore,
     required GoogleSignInFn googleSignIn,
     required AppleSignInFn appleSignIn,
     required LinkCredentialFn linkCredential,
+    required SignInWithCredentialFn signInWithCredential,
   })  : _firestore = firestore,
         _googleSignIn = googleSignIn,
         _appleSignIn = appleSignIn,
-        _linkCredential = linkCredential;
+        _linkCredential = linkCredential,
+        _signInWithCredential = signInWithCredential;
 
   final FirebaseFirestore _firestore;
   final GoogleSignInFn _googleSignIn;
   final AppleSignInFn _appleSignIn;
   final LinkCredentialFn _linkCredential;
+  final SignInWithCredentialFn _signInWithCredential;
 
   static const String _kCollection = 'users';
 
@@ -83,10 +94,7 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: idToken,
         accessToken: accessToken,
       );
-      final result = await logPerf(
-        'auth.google.linkCredential',
-        () => _linkCredential(credential),
-      );
+      final result = await _linkOrSignIn(credential, 'google');
 
       final uid = result.user!.uid;
       final displayName = result.user!.displayName ?? account.displayName;
@@ -138,10 +146,7 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: identityToken,
         accessToken: apple.authorizationCode,
       );
-      final result = await logPerf(
-        'auth.apple.linkCredential',
-        () => _linkCredential(credential),
-      );
+      final result = await _linkOrSignIn(credential, 'apple');
 
       final uid = result.user!.uid;
       // Apple ne fournit givenName/familyName qu'au PREMIER sign-in.
@@ -185,6 +190,58 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
     }
   }
 
+  /// Tente `linkWithCredential` sur l'utilisateur courant. Deux codes Firebase
+  /// declenchent un fallback vers `signInWithCredential` :
+  ///
+  /// - `credential-already-in-use` : le credential appartient a un AUTRE
+  ///   Firebase user (ex. precedente session Google non supprimee). On signe
+  ///   en tant que cet utilisateur existant. L'uid courant peut changer.
+  ///
+  /// - `provider-already-linked` : le credential appartient deja a L'UTILISATEUR
+  ///   COURANT (ex. repassage step 5 apres echec de flush au step 9, ou apres
+  ///   un dev-audit-reset qui a laisse le compte Firebase vivant). Le
+  ///   signInWithCredential recupere la session proprement sans erreur.
+  ///
+  /// Tous les autres codes FirebaseAuthException remontent au caller
+  /// (_mapFirebaseAuth les traduit en AccountLinkingFailure adequat).
+  Future<UserCredential> _linkOrSignIn(
+    AuthCredential credential,
+    String provider,
+  ) async {
+    try {
+      return await logPerf(
+        'auth.$provider.linkCredential',
+        () => _linkCredential(credential),
+      );
+    } on FirebaseAuthException catch (e) {
+      // Trois codes declenchent un fallback vers signInWithCredential :
+      //
+      // - credential-already-in-use : credential appartient a un AUTRE user
+      //   Firebase (ex. precedente session Google non supprimee).
+      //
+      // - provider-already-linked : credential deja lie a L'UTILISATEUR COURANT
+      //   (ex. repassage step 5 apres echec flush step 9).
+      //
+      // - user-not-found : l'utilisateur courant (generalement anonyme) a ete
+      //   invalide cote Firebase serveur (expiration, suppression manuelle depuis
+      //   la console, ou token corruption). Firebase emet un sign-out event ->
+      //   currentUser devient null. signInWithCredential cree un nouveau compte
+      //   Firebase lie au provider OAuth sans necessiter de currentUser.
+      if (e.code == 'credential-already-in-use' ||
+          e.code == 'provider-already-linked' ||
+          e.code == 'user-not-found') {
+        AppLogger.i(
+          'link$provider: ${e.code} -> signInWithCredential fallback',
+        );
+        return await logPerf(
+          'auth.$provider.signInWithCredential',
+          () => _signInWithCredential(credential),
+        );
+      }
+      rethrow;
+    }
+  }
+
   Future<void> _persistIdentity(
     String uid,
     String? displayName,
@@ -220,9 +277,19 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
           .doc(uid)
           .set(patch, SetOptions(merge: true));
     } on FirebaseException catch (e) {
-      // Non-bloquant : le compte est cree cote Auth, on log mais on ne fail
-      // pas l'operation. L'utilisateur peut re-tenter manuellement.
-      AppLogger.w('_persistIdentity: Firestore set failed code=${e.code}');
+      if (e.code == 'permission-denied') {
+        // Attendu sur le chemin signInWithCredential (credential-already-in-use
+        // fallback) : l'uid a change, le doc users/{uid} n'existe pas encore.
+        // Les rules CREATE exigent trackId/levelId/pickedSubjects absents ici.
+        // Le doc complet sera cree par OnboardingFlushService.flush() au step 9.
+        AppLogger.i(
+          '_persistIdentity: doc absent pour uid nouveau (signInWithCredential) '
+          '— cree au flush step 9',
+        );
+      } else {
+        // Non-bloquant pour les autres erreurs — le compte est cree cote Auth.
+        AppLogger.w('_persistIdentity: Firestore set failed code=${e.code}');
+      }
     }
   }
 
@@ -233,6 +300,16 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
       case GoogleSignInExceptionCode.uiUnavailable:
         AppLogger.d('linkGoogle cancelled by user reason=${e.code.name}');
         return const AccountLinkingFailure.cancelled();
+      case GoogleSignInExceptionCode.clientConfigurationError:
+        // google-services.json vide : Google Sign-In non active dans Firebase
+        // Console (oauth_client[]). L'UI affiche "pas de connexion" plutot
+        // qu'un message technique opaque.
+        AppLogger.w(
+          'linkGoogle clientConfigurationError: serverClientId manquant. '
+          'Activer Google Sign-In dans Firebase Console > Authentication > '
+          'Sign-in method > Google.',
+        );
+        return const AccountLinkingFailure.network();
       default:
         AppLogger.w('linkGoogle GoogleSignInException code=${e.code.name}');
         return AccountLinkingFailure.unknown('Google: ${e.code.name}');

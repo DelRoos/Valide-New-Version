@@ -16,7 +16,10 @@ import '../../../../core/logging/app_logger.dart';
 import '../../../../core/widgets/feedback/celebration_confetti_success.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../providers.dart';
+import '../../providers.dart'
+    show
+        onboardingFlushServiceProvider,
+        profileUpgradeInProgressProvider;
 import '../state/onboarding_providers.dart';
 
 class SuccessCelebrationStepBody extends ConsumerStatefulWidget {
@@ -108,6 +111,9 @@ class _SuccessCelebrationStepBodyState
   void _onComplete() {
     if (!mounted) return;
     AppLogger.i('success.onComplete -> /dashboard');
+    // Reset le flag d'upgrade : le router peut de nouveau bouncer
+    // /onboarding/v2 -> /dashboard si le profil est complet.
+    ref.read(profileUpgradeInProgressProvider.notifier).setInProgress(false);
     GoRouter.of(context).go('/dashboard');
   }
 

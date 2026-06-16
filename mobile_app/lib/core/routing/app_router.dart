@@ -29,6 +29,9 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(profileCompletionProvider, (_, _) {
     notifier.value++;
   });
+  ref.listen(profileUpgradeInProgressProvider, (_, _) {
+    notifier.value++;
+  });
   ref.onDispose(notifier.dispose);
 
   return GoRouter(
@@ -39,6 +42,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       location: state.matchedLocation,
       catalogueCheck: ref.read(appStartupCatalogueCheckProvider),
       profileCompletion: ref.read(profileCompletionProvider),
+      upgradeInProgress: ref.read(profileUpgradeInProgressProvider),
     ),
     routes: [
       GoRoute(
@@ -157,6 +161,7 @@ String? evaluateRedirect({
   required String location,
   required AsyncValue<bool> catalogueCheck,
   required AsyncValue<ProfileCompletionState> profileCompletion,
+  bool upgradeInProgress = false,
 }) {
   // 1. Bypass inconditionnel : routes systeme + debug.
   if (location == '/' ||
@@ -183,6 +188,12 @@ String? evaluateRedirect({
   // 3. Anti-replay sur /onboarding/v2 : si profil complet, sortie directe
   //    vers /dashboard.
   //
+  // Exception upgradeInProgress : un visiteur qui vient d'upgrader son compte
+  // (Google/Apple) depuis le dashboard a un profil scolaire complet (flush
+  // guest) mais doit encore compléter son identité (name + phone + school,
+  // steps 6-8). Le flag est posé par AccountUpgradeSheet avant la navigation
+  // et remis à false par SuccessCelebrationStepBody._onComplete() au step 9.
+  //
   // Audit 2026-06-13 (bug visiteur dashboard) — Avant ce fix, on retournait
   // `/` qui mappe vers `/splash` (cf. GoRoute path: '/'). Resultat sur le
   // flow visiteur : router.go('/dashboard') voyait profileCompletion encore
@@ -191,7 +202,7 @@ String? evaluateRedirect({
   // anti-replay -> '/' -> '/splash' -> animation 2.1s -> /dashboard. Le user
   // voyait le splash avant le dashboard. En pointant direct sur /dashboard,
   // on saute le transit splash.
-  if (location == '/onboarding/v2') {
+  if (location == '/onboarding/v2' && !upgradeInProgress) {
     final complete = profileCompletion.maybeWhen(
       data: (s) => s.isComplete,
       orElse: () => false,

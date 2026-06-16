@@ -17,11 +17,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/onboarding/onboarding_cta_footer.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../providers.dart' show profileUpgradeInProgressProvider;
 import '../state/onboarding_notifier.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
@@ -57,15 +59,34 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
   Widget build(BuildContext context) {
     final state = ref.watch(onboardingNotifierProvider);
     final notifier = ref.read(onboardingNotifierProvider.notifier);
+    final upgradeInProgress = ref.watch(profileUpgradeInProgressProvider);
     final l10n = AppLocalizations.of(context);
+
+    // En mode upgrade (visiteur -> compte depuis le dashboard), le retour
+    // au step 6 (nom) ne doit pas replonger dans le flow auth (step 5) —
+    // l'utilisateur est deja authentifie. On intercept pour revenir au
+    // dashboard et laisser le user completer son profil plus tard.
+    void onBack() {
+      if (upgradeInProgress && state.currentStep == 6) {
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
+        GoRouter.of(context).go('/dashboard');
+        return;
+      }
+      notifier.back();
+    }
 
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
+        // Step 1 hero intro : image full-bleed derriere status bar.
+        // HeroBanner compense le topInset via MediaQuery.of(context).padding.top.
+        top: state.currentStep != 1,
         bottom: false,
         child: Column(
           children: [
-            _OnboardingHeader(step: state.currentStep, onBack: notifier.back),
+            _OnboardingHeader(step: state.currentStep, onBack: onBack),
             Expanded(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
@@ -125,34 +146,20 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
 
     switch (step) {
       case 0:
-        // Audit 2026-06-13 (rev2) — Restauration du CTA : le tap card pose
-        // maintenant un draft (setSubSystemDraft) sans avancer. L'utilisateur
-        // peut re-tapper l'autre choix avant de confirmer. Coherent avec
-        // step 2 (track) et step 3 (level).
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.subSystem != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setSubSystem() qui transitione
+        // directement step 0 -> 1. Pas de CTA intermediaire.
+        return null;
       case 1:
         return OnboardingCtaFooter(
           label: l10n.heroIntroCta,
           onPressed: notifier.next,
         );
       case 2:
-        // Step 2 track : tap card pose le draft (setTrackIdDraft) sans
-        // avancer. L'utilisateur confirme via le CTA Continuer ci-dessous.
-        // Audit 2026-06-13 — avant ce PR, auto-avance -> impossible de
-        // changer d'avis sans back.
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.trackId != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setTrackId() -> step 3 direct.
+        return null;
       case 3:
-        // Step 3 level : CTA pour confirmer. setLevelId auto-avance.
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.levelId != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setLevelId() -> step 4 direct.
+        return null;
       case 4:
         // Step 4 picker : footer rendu par le step body (PickerValidateBar
         // gere son propre CTA avec compteur + validation).
@@ -218,7 +225,9 @@ class _OnboardingHeader extends StatelessWidget {
   final int step;
   final VoidCallback onBack;
 
-  bool get _showHeader => step >= 1 && step <= 8;
+  // Step 1 (hero intro) : header masque — HeroIntroStepBody gere son propre
+  // back button superpose sur l'image (full-bleed sans gap au-dessus).
+  bool get _showHeader => step >= 2 && step <= 8;
 
   bool get _showProgress =>
       (step >= 2 && step <= 4) || (step >= 6 && step <= 8);

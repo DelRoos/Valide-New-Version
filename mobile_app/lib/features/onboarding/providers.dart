@@ -110,6 +110,10 @@ final onboardingFlushServiceProvider = Provider<OnboardingFlushService>((ref) {
 ///   - [] si users/{uid} absent ou pickedSubjects vide
 ///   - liste de Subject matchant pickedSubjects (resolus via catalogue)
 final userSubjectsProvider = StreamProvider<List<Subject>>((ref) {
+  // Rebuild quand auth change pour eviter le stream stale sur l'ancien uid
+  // (typique apres dev-audit-reset ou sign-out -> re-auth anonyme).
+  ref.watch(currentUserProvider);
+
   final userRepo = ref.watch(userProfileRepositoryProvider);
   final catalogueAsync = ref.watch(catalogueProvider);
 
@@ -272,6 +276,8 @@ final accountLinkingRepositoryProvider =
     ),
     linkCredential: (credential) =>
         firebaseAuth.currentUser!.linkWithCredential(credential),
+    signInWithCredential: (credential) =>
+        firebaseAuth.signInWithCredential(credential),
   );
 });
 
@@ -310,6 +316,24 @@ final accountLinkingNotifierProvider =
     NotifierProvider<AccountLinkingNotifier, AccountLinkingState>(
   AccountLinkingNotifier.new,
 );
+
+/// Flag posé lors d'un upgrade visiteur -> compte permanent (Google/Apple)
+/// déclenché depuis la modale dashboard (AccountUpgradeSheet).
+///
+/// Tant que true, le router autorise /onboarding/v2 même si
+/// profileCompletionProvider == complete — le profil scolaire existe déjà
+/// (flush guest), mais l'identité (name + phone + school, steps 6-8) reste
+/// à compléter. Remis à false par SuccessCelebrationStepBody._onComplete()
+/// après le flush final au step 9.
+class ProfileUpgradeNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void setInProgress(bool value) => state = value;
+}
+
+final profileUpgradeInProgressProvider =
+    NotifierProvider<ProfileUpgradeNotifier, bool>(ProfileUpgradeNotifier.new);
 
 // =====================================================================
 // Story 1.7 — Liaison ecole optionnelle (FR-6)
