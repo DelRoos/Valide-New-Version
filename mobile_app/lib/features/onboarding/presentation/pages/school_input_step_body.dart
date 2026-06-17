@@ -33,7 +33,7 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
-      ref.read(schoolSearchNotifierProvider.notifier).preload();
+      ref.read(schoolSearchNotifierProvider.notifier).preload(limit: 50);
     });
   }
 
@@ -61,17 +61,9 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
             SizedBox(height: AppSpacing.s5.h),
             Icon(LucideIcons.school, size: 48.sp, color: AppColors.primary),
             SizedBox(height: AppSpacing.s4.h),
-            Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(text: l10n.onboardingSchoolTitle),
-                  TextSpan(
-                    text: ' *',
-                    style: TextStyle(color: AppColors.danger),
-                  ),
-                ],
-                style: AppTypography.h1.copyWith(fontSize: 22.sp),
-              ),
+            Text(
+              l10n.onboardingSchoolTitle,
+              style: AppTypography.h1.copyWith(fontSize: 22.sp),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s2.h),
@@ -93,11 +85,27 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
               emptyAddTemplate: l10n.onboardingSchoolAddTemplate('{name}'),
               warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
             ),
-            SizedBox(height: AppSpacing.s5.h),
+            SizedBox(height: AppSpacing.s4.h),
+            TextButton(
+              onPressed: _onSkipTap,
+              child: Text(
+                l10n.onboardingSchoolSkipLabel,
+                style: AppTypography.body.copyWith(
+                  color: AppColors.inkSoft,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
+            ),
+            SizedBox(height: AppSpacing.s4.h),
           ],
         ),
       ),
     );
+  }
+
+  void _onSkipTap() {
+    ref.read(onboardingNotifierProvider.notifier).skipSchool();
+    AppLogger.i('school.skip confirmed');
   }
 
   void _onSelect(SchoolEntry school) {
@@ -142,7 +150,17 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
   }
 
   SchoolSearchAsync _searchProvider(String query) {
-    if (query != _currentQuery) {
+    if (query.isEmpty) {
+      if (_currentQuery.isNotEmpty) {
+        // L'utilisateur a efface sa saisie — restaurer la liste precachee.
+        _currentQuery = '';
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          ref.read(schoolSearchNotifierProvider.notifier).clear();
+          ref.read(schoolSearchNotifierProvider.notifier).preload(limit: 50);
+        });
+      }
+    } else if (query != _currentQuery) {
       _currentQuery = query;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;

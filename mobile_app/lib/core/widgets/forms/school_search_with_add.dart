@@ -135,9 +135,7 @@ class _SchoolSearchWithAddState extends State<SchoolSearchWithAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncResult = _query.trim().isEmpty
-        ? const SchoolSearchIdle()
-        : widget.searchProvider(_query.trim());
+    final asyncResult = widget.searchProvider(_query.trim());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -279,12 +277,14 @@ class _Results extends StatelessWidget {
           child: const Center(child: CircularProgressIndicator()),
         ),
       SchoolSearchData(:final results) => results.isEmpty
-          ? _AddCard(
-              query: query,
-              template: emptyAddTemplate,
-              isLoading: addInProgress,
-              onTap: onAddTap,
-            )
+          ? (query.isEmpty
+              ? const SizedBox.shrink()
+              : _AddCard(
+                  query: query,
+                  template: emptyAddTemplate,
+                  isLoading: addInProgress,
+                  onTap: onAddTap,
+                ))
           : _ResultsList(
               results: results,
               selected: selected,
