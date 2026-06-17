@@ -158,7 +158,7 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
         return null;
       case 1:
         return OnboardingCtaFooter(
-          label: l10n.heroIntroCta,
+          label: l10n.onboardingNoAccount,
           onPressed: notifier.next,
           secondaryAction: SizedBox(
             width: double.infinity,
@@ -189,23 +189,23 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
               : null,
         );
       case 7:
-        // Step 7 phone : CTA actif si le numero est valide. Skip est dans
-        // le body via bouton tertiaire avec confirmation modale.
+        // Step 7 phone : toujours actif (optionnel). Si numero valide ->
+        // setPhoneNumber ; sinon -> skipPhone (avance sans numero).
         final hasPhone = state.phoneNumber != null;
         return OnboardingCtaFooter(
           label: l10n.onboardingContinue,
           onPressed: hasPhone
               ? () => notifier.setPhoneNumber(state.phoneNumber!)
-              : null,
+              : notifier.skipPhone,
         );
       case 8:
-        // Step 8 school : CTA actif si une ecole (catalogue OU pending) a
-        // ete posee. Skip est dans le body via bouton tertiaire.
+        // Step 8 school : toujours actif (optionnel). Si ecole posee ->
+        // next ; sinon -> skipSchool (avance sans ecole).
         final hasSchool = state.schoolId != null ||
             state.pendingSchoolRequestId != null;
         return OnboardingCtaFooter(
           label: l10n.onboardingContinue,
-          onPressed: hasSchool ? notifier.next : null,
+          onPressed: hasSchool ? notifier.next : notifier.skipSchool,
         );
       case 9:
         // Step 9 success : footer rendu par CelebrationConfettiSuccess

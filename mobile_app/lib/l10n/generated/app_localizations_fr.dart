@@ -393,10 +393,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardTabHome => 'Accueil';
 
   @override
-  String get dashboardTabSubjects => 'Matières';
+  String get dashboardTabSubjects => 'Cours';
 
   @override
-  String get dashboardTabActivities => 'Activités';
+  String get dashboardTabActivities => 'Examen';
 
   @override
   String get dashboardTabProfile => 'Profil';
@@ -729,5 +729,5 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingHaveAccount => 'J\'ai un compte';
 
   @override
-  String get onboardingNoAccount => 'Je n\'ai pas de compte';
+  String get onboardingNoAccount => 'Je n\'ai pas encore de compte';
 }

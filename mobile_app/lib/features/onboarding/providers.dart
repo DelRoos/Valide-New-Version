@@ -292,8 +292,15 @@ final accountLinkingRepositoryProvider =
         AppleIDAuthorizationScopes.fullName,
       ],
     ),
-    linkCredential: (credential) =>
-        firebaseAuth.currentUser!.linkWithCredential(credential),
+    linkCredential: (credential) {
+      // Si currentUser est null (premier lancement sans session anonyme
+      // préalable), linkWithCredential crasherait avec Null check error.
+      // On retombe sur signInWithCredential pour créer un compte Google direct.
+      final u = firebaseAuth.currentUser;
+      return u != null
+          ? u.linkWithCredential(credential)
+          : firebaseAuth.signInWithCredential(credential);
+    },
     signInWithCredential: (credential) =>
         firebaseAuth.signInWithCredential(credential),
   );

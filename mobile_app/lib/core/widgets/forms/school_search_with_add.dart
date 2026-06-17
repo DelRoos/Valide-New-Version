@@ -74,6 +74,7 @@ class SchoolSearchWithAdd extends StatefulWidget {
     required this.placeholder,
     required this.emptyAddTemplate,
     required this.warningOfflineMessage,
+    this.focusNode,
   });
 
   final SchoolEntry? selectedSchool;
@@ -85,6 +86,7 @@ class SchoolSearchWithAdd extends StatefulWidget {
   /// Template `« + Ajouter "{name}" »`. `{name}` est remplace par la saisie.
   final String emptyAddTemplate;
   final String warningOfflineMessage;
+  final FocusNode? focusNode;
 
   @override
   State<SchoolSearchWithAdd> createState() => _SchoolSearchWithAddState();
@@ -145,6 +147,7 @@ class _SchoolSearchWithAddState extends State<SchoolSearchWithAdd> {
           controller: _controller,
           placeholder: widget.placeholder,
           onChanged: _onInputChanged,
+          focusNode: widget.focusNode,
         ),
         SizedBox(height: AppSpacing.s4.h),
         _Results(
@@ -167,11 +170,13 @@ class _SearchField extends StatelessWidget {
     required this.controller,
     required this.placeholder,
     required this.onChanged,
+    this.focusNode,
   });
 
   final TextEditingController controller;
   final String placeholder;
   final ValueChanged<String> onChanged;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -191,6 +196,7 @@ class _SearchField extends StatelessWidget {
             child: TextField(
               controller: controller,
               onChanged: onChanged,
+              focusNode: focusNode,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               inputFormatters: [

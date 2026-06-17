@@ -24,11 +24,13 @@ class NameInputStepBody extends ConsumerStatefulWidget {
 
 class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
   late final TextEditingController _controller;
+  late final FocusNode _focusNode;
   String? _errorText;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     final initial = ref.read(onboardingNotifierProvider).userDisplayName ?? '';
     _controller = TextEditingController(text: initial);
     _controller.addListener(_onChanged);
@@ -43,11 +45,16 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
             .setUserDisplayNameDraft(initial.trim());
       });
     }
+    // Focus apres la transition AnimatedSwitcher (300 ms).
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _focusNode.requestFocus();
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -113,7 +120,7 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
             SizedBox(height: AppSpacing.s6.h),
             TextField(
               controller: _controller,
-              autofocus: true,
+              focusNode: _focusNode,
               maxLength: 50,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(

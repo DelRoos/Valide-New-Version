@@ -19,7 +19,6 @@ import '../../../core/debug/dev_audit_fab.dart';
 import '../../../core/firebase/providers.dart';
 import '../../../core/theme/tokens.dart';
 import '../../onboarding/providers.dart';
-import '_main_bottom_nav.dart';
 import 'widgets/dashboard_guest_invite_card.dart';
 import 'widgets/dashboard_hero.dart';
 import 'widgets/dashboard_subjects_area.dart';
@@ -87,7 +86,6 @@ class DashboardPage extends ConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: const MainBottomNav(currentIndex: 0),
       floatingActionButton: const DevAuditFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );

@@ -8,11 +8,10 @@
 // transitionne vers step 6 (saisie nom) ou step 7 (skip si OAuth a fourni
 // le displayName).
 
-import 'dart:io' show Platform;
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+
+import '../../../../core/platform/platform_capabilities.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -22,6 +21,7 @@ import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/auth/social_auth_widgets.dart';
 import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/account_linking_failure.dart';
@@ -61,7 +61,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     });
 
     final isLoading = linkState.isLoading || _guestLoading;
-    final isAppleAvailable = !kIsWeb && Platform.isIOS;
+    final isAppleAvailable = isAppleSignInAvailable;
 
     final socialErrorMessage = _errorMessage(linkState);
 
@@ -92,7 +92,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
 
             // Erreur flush visiteur (bug 8 fix) : banniere + bouton retry dedie.
             if (_guestError != null) ...[
-              _AuthErrorBanner(
+              AuthErrorBanner(
                 message: _guestError!,
                 onDismiss: () => setState(() => _guestError = null),
               ),
@@ -107,7 +107,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
 
             // Erreur social (Google / Apple).
             if (socialErrorMessage != null && _guestError == null) ...[
-              _AuthErrorBanner(
+              AuthErrorBanner(
                 message: socialErrorMessage,
                 onDismiss: () {
                   linkingNotifier.reset();
@@ -117,7 +117,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
               SizedBox(height: AppSpacing.s3.h),
             ],
 
-            _SocialButton(
+            SocialButton(
               label: l10n.onboardingAuthGoogleLabel,
               iconWidget: const GoogleBrandIcon(),
               loading: linkState is AccountLinkingLoading &&
@@ -130,7 +130,7 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
             SizedBox(height: AppSpacing.s3.h),
 
             if (isAppleAvailable) ...[
-              _SocialButton(
+              SocialButton(
                 label: l10n.onboardingAuthAppleLabel,
                 iconWidget: const AppleBrandIcon(color: Colors.white),
                 loading: linkState is AccountLinkingLoading &&
@@ -421,110 +421,5 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
         'auth.step5 guest user.delete() failed (non-blocking): $e',
       );
     }
-  }
-}
-
-class _SocialButton extends StatelessWidget {
-  const _SocialButton({
-    required this.label,
-    required this.iconWidget,
-    required this.loading,
-    required this.onPressed,
-    required this.backgroundColor,
-    required this.foregroundColor,
-    required this.border,
-  });
-
-  final String label;
-  final Widget iconWidget;
-  final bool loading;
-  final VoidCallback? onPressed;
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final BoxBorder? border;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        child: Container(
-          height: 56.h,
-          decoration: BoxDecoration(
-            border: border,
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (loading)
-                SizedBox(
-                  width: 20.w,
-                  height: 20.w,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation(foregroundColor),
-                  ),
-                )
-              else
-                SizedBox(width: 22.sp, height: 22.sp, child: iconWidget),
-              SizedBox(width: AppSpacing.s3.w),
-              Text(
-                label,
-                style: AppTypography.bodyStrong.copyWith(
-                  fontSize: 16.sp,
-                  color: foregroundColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AuthErrorBanner extends StatelessWidget {
-  const _AuthErrorBanner({required this.message, required this.onDismiss});
-
-  final String message;
-  final VoidCallback onDismiss;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.s3.w),
-      decoration: BoxDecoration(
-        color: AppColors.dangerSoft,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(LucideIcons.triangleAlert,
-              color: AppColors.danger, size: 20),
-          SizedBox(width: AppSpacing.s2.w),
-          Expanded(
-            child: Text(
-              message,
-              style: AppTypography.body.copyWith(
-                color: AppColors.danger,
-                fontSize: 13.sp,
-              ),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(LucideIcons.x, size: 18),
-            color: AppColors.danger,
-            onPressed: onDismiss,
-          ),
-        ],
-      ),
-    );
   }
 }

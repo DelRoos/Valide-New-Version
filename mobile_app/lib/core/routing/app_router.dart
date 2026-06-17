@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../logging/perf_logger.dart';
 
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
+import '../../features/dashboard/presentation/_main_shell.dart';
 import '../../features/dashboard/presentation/dashboard_page.dart';
 import '../../features/dashboard/presentation/placeholder_tab_page.dart';
 import '../../features/dashboard/presentation/subject_detail_placeholder_page.dart';
@@ -20,8 +21,6 @@ import '../catalogue/providers.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   // Story 1.1c — refreshListenable cable au check catalogue + completion profil.
-  // Story E1bis-9 : suppression des listens Epic 1 (subSystemNotifier et
-  // onboardingFlow legacy retires).
   final notifier = ValueNotifier<int>(0);
   ref.listen(appStartupCatalogueCheckProvider, (_, _) {
     notifier.value++;
@@ -57,34 +56,64 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/hello',
         builder: (context, state) => const HelloPage(),
       ),
-      GoRoute(
-        path: '/dashboard',
-        builder: (context, state) => const DashboardPage(),
+
+      // Shell persistant — 4 branches avec NavigationBar fixe.
+      // Chaque branche conserve son propre stack de navigation.
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) =>
+            MainShell(navigationShell: navigationShell),
+        branches: [
+          // Branche 0 — Accueil (/dashboard)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/dashboard',
+                builder: (context, state) => const DashboardPage(),
+              ),
+            ],
+          ),
+          // Branche 1 — Cours (/courses)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/courses',
+                builder: (context, state) =>
+                    const PlaceholderTabPage(title: 'Cours', tabIndex: 1),
+              ),
+            ],
+          ),
+          // Branche 2 — Examen (/exams)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/exams',
+                builder: (context, state) =>
+                    const PlaceholderTabPage(title: 'Examen', tabIndex: 2),
+              ),
+            ],
+          ),
+          // Branche 3 — Profil (/profile)
+          StatefulShellBranch(
+            routes: [
+              GoRoute(
+                path: '/profile',
+                builder: (context, state) =>
+                    const PlaceholderTabPage(title: 'Profil', tabIndex: 3),
+              ),
+            ],
+          ),
+        ],
       ),
+
+      // Détail matière — page plein écran hors shell (pas de bottom nav).
       GoRoute(
-        path: '/matieres',
-        builder: (context, state) =>
-            const PlaceholderTabPage(title: 'Matieres', tabIndex: 1),
-      ),
-      GoRoute(
-        path: '/matieres/:subjectId',
+        path: '/subject/:subjectId',
         builder: (context, state) => SubjectDetailPlaceholderPage(
           subjectId: state.pathParameters['subjectId']!,
         ),
       ),
-      GoRoute(
-        path: '/activites',
-        builder: (context, state) =>
-            const PlaceholderTabPage(title: 'Activites', tabIndex: 2),
-      ),
-      GoRoute(
-        path: '/profil',
-        builder: (context, state) =>
-            const PlaceholderTabPage(title: 'Profil', tabIndex: 3),
-      ),
+
       // Story E1bis-2bis — UNE seule route pour le flow onboarding refonte.
-      // Le `OnboardingShell` route en interne par `currentStep` du
-      // `OnboardingNotifier` via AnimatedSwitcher slide transition.
       GoRoute(
         path: '/onboarding/v2',
         builder: (context, state) => const OnboardingShell(),
@@ -146,16 +175,12 @@ class _PerfNavigatorObserver extends NavigatorObserver {
 
 /// Pure helper qui calcule la redirect target pour une location donnee.
 ///
-/// Story E1bis-9 — Routing simplifie : Epic 1 retire, seul le flow E1bis
-/// (`/onboarding/v2`) subsiste.
-///
 /// Ordre d'evaluation :
 ///   1. Bypass systeme : `/`, `/splash`, `/_*` -> null.
-///   2. Catalogue check (Story 1.1c) : si vide+offline -> /catalogue-waiting.
+///   2. Catalogue check : si vide+offline -> /catalogue-waiting.
 ///   3. Sortie /catalogue-waiting quand catalogue OK -> /.
-///   4. Anti-replay sur /onboarding/v2 quand profil complet -> /.
-///   5. Garde profil-incomplet : sur routes metier (hors /onboarding/* + hors
-///      /catalogue-waiting), si profil incomplet -> /onboarding/v2.
+///   4. Anti-replay sur /onboarding/v2 quand profil complet -> /dashboard.
+///   5. Garde profil-incomplet : sur routes metier, si profil incomplet -> /onboarding/v2.
 @visibleForTesting
 String? evaluateRedirect({
   required String location,
@@ -179,29 +204,12 @@ String? evaluateRedirect({
   if (!catalogueOk && location != '/catalogue-waiting') {
     return '/catalogue-waiting';
   }
-  // Story 1bis-2bis fix : sortir de /catalogue-waiting quand le catalogue
-  // redevient OK (post-retry ou post-auth ready).
   if (catalogueOk && location == '/catalogue-waiting') {
     return '/';
   }
 
   // 3. Anti-replay sur /onboarding/v2 : si profil complet, sortie directe
-  //    vers /dashboard.
-  //
-  // Exception upgradeInProgress : un visiteur qui vient d'upgrader son compte
-  // (Google/Apple) depuis le dashboard a un profil scolaire complet (flush
-  // guest) mais doit encore compléter son identité (name + phone + school,
-  // steps 6-8). Le flag est posé par AccountUpgradeSheet avant la navigation
-  // et remis à false par SuccessCelebrationStepBody._onComplete() au step 9.
-  //
-  // Audit 2026-06-13 (bug visiteur dashboard) — Avant ce fix, on retournait
-  // `/` qui mappe vers `/splash` (cf. GoRoute path: '/'). Resultat sur le
-  // flow visiteur : router.go('/dashboard') voyait profileCompletion encore
-  // `data: incomplete` (stream Firestore pas encore emis post-flush) ->
-  // bounce vers /onboarding/v2 -> stream emet complete -> refresh router ->
-  // anti-replay -> '/' -> '/splash' -> animation 2.1s -> /dashboard. Le user
-  // voyait le splash avant le dashboard. En pointant direct sur /dashboard,
-  // on saute le transit splash.
+  //    vers /dashboard. Exception upgradeInProgress (visiteur qui upgrade).
   if (location == '/onboarding/v2' && !upgradeInProgress) {
     final complete = profileCompletion.maybeWhen(
       data: (s) => s.isComplete,
@@ -211,24 +219,9 @@ String? evaluateRedirect({
   }
 
   // 4. Garde profil-incomplet pour les routes metier.
-  //
-  // Audit 2026-06-13 (bug visiteur dashboard) — distinction explicite
-  // loading vs incomplete confirme :
-  //   - loading -> NE PAS rediriger (le stream watchProfile est encore en
-  //     route apres signInAnonymously + flush ; rediriger ici renvoie le
-  //     visiteur sur /onboarding/v2 alors qu'il vient de finir l'onboarding).
-  //   - error -> rediriger /onboarding/v2 (safe fallback).
-  //   - data incomplete -> rediriger.
-  //   - data complete -> rester.
-  //
-  // Exception upgradeInProgress (fix 2026-06-16) : quand un visiteur lance
-  // l'upgrade Google/Apple depuis le dashboard, signInWithCredential change
-  // l'uid courant. Le stream watchProfile du nouvel uid est encore vide ->
-  // `data incomplete` -> ce guard redirigerait vers /onboarding/v2 AVANT que
-  // le sheet n'ait pu naviguer lui-meme, causant un double-push + crash
-  // assertion `element._lifecycleState == inactive`. Avec upgradeInProgress=true
-  // posé AVANT l'appel signInWithCredential, on bypasse ce guard pendant
-  // toute la duree du flow de completion identite (steps 6-9).
+  //    loading -> NE PAS rediriger (stream post-flush encore en route).
+  //    error -> rediriger /onboarding/v2 (safe fallback).
+  //    data incomplete -> rediriger.
   if (!upgradeInProgress &&
       !location.startsWith('/onboarding/') &&
       location != '/catalogue-waiting') {

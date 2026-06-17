@@ -28,13 +28,25 @@ class PhoneInputStepBody extends ConsumerStatefulWidget {
 class _PhoneInputStepBodyState extends ConsumerState<PhoneInputStepBody> {
   String _value = '';
   String? _errorText;
+  late final FocusNode _focusNode;
 
   static final _phoneRegex = RegExp(r'^\+237[26][0-9]{8}$');
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     _value = ref.read(onboardingNotifierProvider).phoneNumber ?? '';
+    // Focus apres la transition AnimatedSwitcher (300 ms).
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _focusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   void _onChanged(String e164) {
@@ -54,31 +66,6 @@ class _PhoneInputStepBodyState extends ConsumerState<PhoneInputStepBody> {
       AppLogger.i('phone.draft set masked=${maskPhone(e164)}');
     } else {
       ref.read(onboardingNotifierProvider.notifier).setPhoneNumberDraft(null);
-    }
-  }
-
-  Future<void> _onSkipTap() async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.onboardingPhoneSkipConfirmTitle),
-        content: Text(l10n.onboardingPhoneSkipConfirmMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.onboardingPhoneSkipConfirmNo),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.onboardingPhoneSkipConfirmYes),
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true && mounted) {
-      ref.read(onboardingNotifierProvider.notifier).skipPhone();
-      AppLogger.i('phone.skip confirmed');
     }
   }
 
@@ -113,18 +100,7 @@ class _PhoneInputStepBodyState extends ConsumerState<PhoneInputStepBody> {
               value: _value,
               onChanged: _onChanged,
               errorText: _errorText,
-              autofocus: true,
-            ),
-            SizedBox(height: AppSpacing.s5.h),
-            TextButton(
-              onPressed: _onSkipTap,
-              child: Text(
-                l10n.onboardingPhoneSkipLabel,
-                style: AppTypography.body.copyWith(
-                  color: AppColors.inkSoft,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
+              focusNode: _focusNode,
             ),
             SizedBox(height: AppSpacing.s5.h),
           ],

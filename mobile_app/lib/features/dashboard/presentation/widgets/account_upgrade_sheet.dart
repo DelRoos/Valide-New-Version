@@ -13,10 +13,9 @@
 // masquer DashboardGuestInviteCard (isAnonymous=false propage via
 // firebaseAuthProvider.currentUser).
 
-import 'dart:io' show Platform;
-
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+
+import '../../../../core/platform/platform_capabilities.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -175,7 +174,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
                       notifier.linkGoogle();
                     },
             ),
-            if (!kIsWeb && Platform.isIOS) ...[
+            if (isAppleSignInAvailable) ...[
               SizedBox(height: AppSpacing.s2.h),
               AppButton.secondary(
                 label: l10n.onboardingAuthAppleLabel,

@@ -8,7 +8,6 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../core/theme/tokens.dart';
 import '../../../l10n/generated/app_localizations.dart';
-import '_main_bottom_nav.dart';
 
 class PlaceholderTabPage extends StatelessWidget {
   const PlaceholderTabPage({
@@ -53,7 +52,6 @@ class PlaceholderTabPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: MainBottomNav(currentIndex: tabIndex),
     );
   }
 }

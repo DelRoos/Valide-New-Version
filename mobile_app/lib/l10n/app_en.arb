@@ -162,8 +162,8 @@
   "dashboardEmptyStateCta": "Continue onboarding",
   "dashboardComingSoon": "Coming soon",
   "dashboardTabHome": "Home",
-  "dashboardTabSubjects": "Subjects",
-  "dashboardTabActivities": "Activities",
+  "dashboardTabSubjects": "Courses",
+  "dashboardTabActivities": "Exams",
   "dashboardTabProfile": "Profile",
 
   "onboardingSubSystemTitle": "Choose Your System",
@@ -299,5 +299,5 @@
 
   "onboardingHaveAccount": "I have an account",
 
-  "onboardingNoAccount": "I don't have an account"
+  "onboardingNoAccount": "I don't have an account yet"
 }

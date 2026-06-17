@@ -109,7 +109,7 @@ class _SubjectCard extends StatelessWidget {
     final langKey = Localizations.localeOf(context).languageCode;
     return AppCard(
       onTap: () =>
-          GoRouter.of(context).go('/matieres/${subject.subjectId}'),
+          GoRouter.of(context).push('/subject/${subject.subjectId}'),
       padding: EdgeInsets.all(AppSpacing.s3.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

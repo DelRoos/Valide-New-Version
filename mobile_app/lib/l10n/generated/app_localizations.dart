@@ -746,16 +746,16 @@ abstract class AppLocalizations {
   /// **'Accueil'**
   String get dashboardTabHome;
 
-  /// Label onglet 1 du bottom tab bar (Story 1.9 AC6).
+  /// Label onglet 1 du bottom tab bar — contenu cours/matières.
   ///
   /// In fr, this message translates to:
-  /// **'Matières'**
+  /// **'Cours'**
   String get dashboardTabSubjects;
 
-  /// Label onglet 2 du bottom tab bar (Story 1.9 AC6).
+  /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
-  /// **'Activités'**
+  /// **'Examen'**
   String get dashboardTabActivities;
 
   /// Label onglet 3 du bottom tab bar (Story 1.9 AC6).
@@ -1346,10 +1346,10 @@ abstract class AppLocalizations {
   /// **'J\'ai un compte'**
   String get onboardingHaveAccount;
 
-  /// Step 0 — bouton secondaire pour demarrer l'onboarding classique.
+  /// Step 1 — CTA principal pour demarrer l'onboarding classique.
   ///
   /// In fr, this message translates to:
-  /// **'Je n\'ai pas de compte'**
+  /// **'Je n\'ai pas encore de compte'**
   String get onboardingNoAccount;
 }
 

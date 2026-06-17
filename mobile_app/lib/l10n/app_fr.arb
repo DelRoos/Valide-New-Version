@@ -377,11 +377,11 @@
   "dashboardTabHome": "Accueil",
   "@dashboardTabHome": { "description": "Label onglet 0 du bottom tab bar (Story 1.9 AC6)." },
 
-  "dashboardTabSubjects": "Matières",
-  "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar (Story 1.9 AC6)." },
+  "dashboardTabSubjects": "Cours",
+  "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar — contenu cours/matières." },
 
-  "dashboardTabActivities": "Activités",
-  "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar (Story 1.9 AC6)." },
+  "dashboardTabActivities": "Examen",
+  "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
   "dashboardTabProfile": "Profil",
   "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." },
@@ -645,6 +645,6 @@
   "onboardingHaveAccount": "J'ai un compte",
   "@onboardingHaveAccount": { "description": "Step 0 — bouton principal pour un utilisateur qui reinstalle sur un nouveau telephone." },
 
-  "onboardingNoAccount": "Je n'ai pas de compte",
-  "@onboardingNoAccount": { "description": "Step 0 — bouton secondaire pour demarrer l'onboarding classique." }
+  "onboardingNoAccount": "Je n'ai pas encore de compte",
+  "@onboardingNoAccount": { "description": "Step 1 — CTA principal pour demarrer l'onboarding classique." }
 }
