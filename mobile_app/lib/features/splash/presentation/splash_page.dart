@@ -36,6 +36,7 @@ import '../../../core/firebase/providers.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
 import '../../onboarding/domain/profile_completion_state.dart';
+import '../../onboarding/domain/sub_system.dart';
 import '../../onboarding/providers.dart';
 
 const Duration _kStrokeDuration = Duration(milliseconds: 1800);
@@ -97,13 +98,55 @@ class _SplashPageState extends ConsumerState<SplashPage>
       // perdant tout l'interet UX du precharge (PR #138).
       final firebaseReady = await container.read(firebaseReadyProvider.future);
       if (!firebaseReady) {
-        AppLogger.w('splash catalogue warm-up skipped: Firebase unavailable');
+        AppLogger.w('splash warm-up skipped: Firebase unavailable');
         return;
       }
-      await container.read(catalogueProvider.future);
-      AppLogger.i('splash catalogue warm-up OK');
+      // Catalogue + synchro subSystem en parallele pour rester dans la fenetre
+      // d'animation (~2.1s). Sur connexion correcte les deux terminent avant
+      // que _goNext() soit appele -> pas de flash.
+      await Future.wait([
+        container.read(catalogueProvider.future),
+        _syncSubSystemFromFirestore(container),
+      ]);
+      AppLogger.i('splash warm-up OK');
     } catch (e) {
-      AppLogger.w('splash catalogue warm-up failed (non-blocking): $e');
+      AppLogger.w('splash warm-up failed (non-blocking): $e');
+    }
+  }
+
+  /// Synchro boot du sous-système depuis Firestore.
+  ///
+  /// Firestore est la source de vérité pour les utilisateurs existants :
+  /// sur un nouveau téléphone ou si SharedPreferences est stale (backup
+  /// cloud Android/iOS), la valeur locale peut être incorrecte.
+  /// Cette méthode corrige le subSystem AVANT la navigation du splash
+  /// -> profileCompletionProvider émet le bon état -> router va direct
+  /// au dashboard sans passer par l'onboarding.
+  ///
+  /// Ne lance jamais d'exception (non-bloquant par design).
+  Future<void> _syncSubSystemFromFirestore(ProviderContainer container) async {
+    try {
+      final uid = container.read(firebaseAuthProvider).currentUser?.uid;
+      if (uid == null) return; // Pas de session active.
+      final result = await container
+          .read(userProfileRepositoryProvider)
+          .fetchProfileOnce();
+      result.fold(
+        (f) => AppLogger.w('bootSync subSystem: ${f.kind.name}'),
+        (data) async {
+          final sub = SubSystem.fromString(data?['subSystem'] as String?);
+          if (sub == null) return; // Champ absent (doc ancien ou profil vide).
+          final current = container.read(subSystemNotifierProvider);
+          if (current == sub) return; // Déjà correct, pas d'écriture inutile.
+          AppLogger.i(
+            'bootSync: subSystem Firestore=${sub.id} '
+            'override local=${current?.id ?? "<null>"}',
+          );
+          await container.read(subSystemNotifierProvider.notifier).set(sub);
+        },
+      );
+    } catch (e) {
+      AppLogger.w('bootSync subSystem error (non-blocking): $e');
     }
   }
 
