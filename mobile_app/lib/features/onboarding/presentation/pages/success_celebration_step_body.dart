@@ -2,18 +2,20 @@
 //
 // SUCCESS CELEBRATION. Au render, declenche le flush Firestore via
 // OnboardingFlushService avec retry exponentiel (audit PR3 2026-06-13).
-// Si succes, affiche CelebrationConfettiSuccess + auto-dispatch vers
-// /dashboard. Si echec apres N retries, affiche ErrorRetryView avec
-// compteur et le code Firestore (diagnostic).
+// Si succes, affiche un dialog expliquant les benefices du compte cree,
+// puis auto-dispatch vers /dashboard. Si echec apres N retries, affiche
+// ErrorRetryView avec le code Firestore (diagnostic).
 
 import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/logging/app_logger.dart';
-import '../../../../core/widgets/feedback/celebration_confetti_success.dart';
+import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../providers.dart'
@@ -32,9 +34,6 @@ class SuccessCelebrationStepBody extends ConsumerStatefulWidget {
 
 class _SuccessCelebrationStepBodyState
     extends ConsumerState<SuccessCelebrationStepBody> {
-  /// Audit PR3 — Retry exponentiel : 3 tentatives auto avec delays 0s, 1s,
-  /// 3s avant d'afficher ErrorRetryView. Au-dela, le tap "Reessayer" relance
-  /// un nouveau cycle de 3 retries.
   static const int _maxAutoRetries = 3;
   static const List<Duration> _backoffDelays = [
     Duration.zero,
@@ -53,8 +52,6 @@ class _SuccessCelebrationStepBodyState
     WidgetsBinding.instance.addPostFrameCallback((_) => _runFlushCycle());
   }
 
-  /// Audit PR3 — Cycle de retry exponentiel automatique. Tente jusqu'a
-  /// [_maxAutoRetries] fois avec backoff avant d'exposer l'erreur a l'user.
   Future<void> _runFlushCycle() async {
     if (_flushing || _flushed) return;
     setState(() {
@@ -96,11 +93,11 @@ class _SuccessCelebrationStepBodyState
           _flushing = false;
           _flushed = true;
         });
+        await _showWelcomeDialog();
         return;
       }
     }
 
-    // 3 tentatives consommees sans succes -> expose ErrorRetryView.
     if (!mounted) return;
     setState(() {
       _flushing = false;
@@ -108,11 +105,23 @@ class _SuccessCelebrationStepBodyState
     });
   }
 
+  Future<void> _showWelcomeDialog() async {
+    if (!mounted) return;
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (ctx) => _WelcomeBenefitsDialog(
+        onContinue: () {
+          Navigator.of(ctx).pop();
+          _onComplete();
+        },
+      ),
+    );
+  }
+
   void _onComplete() {
     if (!mounted) return;
     AppLogger.i('success.onComplete -> /dashboard');
-    // Reset le flag d'upgrade : le router peut de nouveau bouncer
-    // /onboarding/v2 -> /dashboard si le profil est complet.
     ref.read(profileUpgradeInProgressProvider.notifier).setInProgress(false);
     GoRouter.of(context).go('/dashboard');
   }
@@ -127,19 +136,9 @@ class _SuccessCelebrationStepBodyState
         message: _errorMessageFor(l10n, _flushError),
       );
     }
-    if (_flushing || !_flushed) {
-      return const Center(child: CircularProgressIndicator());
-    }
-    return CelebrationConfettiSuccess(
-      title: l10n.onboardingSuccessTitle,
-      subtitle: l10n.onboardingSuccessSubtitle,
-      ctaLabel: l10n.onboardingSuccessCta,
-      onComplete: _onComplete,
-    );
+    return const Center(child: CircularProgressIndicator());
   }
 
-  /// Audit PR3 — Mapping code Firestore -> message localise specifique
-  /// (CLAUDE.md regle 13). Distingue 3 categories : permission, reseau, autre.
   String _errorMessageFor(AppLocalizations l10n, String? code) {
     switch (code) {
       case 'permission-denied':
@@ -163,5 +162,128 @@ class _SuccessCelebrationStepBodyState
       default:
         return ErrorRetryKind.generic;
     }
+  }
+}
+
+class _WelcomeBenefitsDialog extends StatelessWidget {
+  const _WelcomeBenefitsDialog({required this.onContinue});
+
+  final VoidCallback onContinue;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.xl2),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(AppSpacing.s6.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 64.sp,
+              height: 64.sp,
+              decoration: BoxDecoration(
+                color: AppColors.successSoft,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                LucideIcons.circleCheck,
+                color: AppColors.success,
+                size: 36.sp,
+              ),
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            Text(
+              l10n.onboardingSuccessDialogTitle,
+              style: AppTypography.h2.copyWith(fontSize: 20.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            Text(
+              l10n.onboardingSuccessDialogSubtitle,
+              style: AppTypography.body.copyWith(
+                color: AppColors.inkSoft,
+                fontSize: 14.sp,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: AppSpacing.s4.h),
+            _BenefitRow(
+              icon: LucideIcons.trendingUp,
+              label: l10n.onboardingSuccessBenefit1,
+            ),
+            SizedBox(height: AppSpacing.s3.h),
+            _BenefitRow(
+              icon: LucideIcons.trophy,
+              label: l10n.onboardingSuccessBenefit2,
+            ),
+            SizedBox(height: AppSpacing.s3.h),
+            _BenefitRow(
+              icon: LucideIcons.bookOpen,
+              label: l10n.onboardingSuccessBenefit3,
+            ),
+            SizedBox(height: AppSpacing.s5.h),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: onContinue,
+                style: FilledButton.styleFrom(
+                  backgroundColor: AppColors.primary,
+                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                  ),
+                ),
+                child: Text(
+                  l10n.onboardingSuccessDialogCta,
+                  style: AppTypography.bodyStrong.copyWith(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _BenefitRow extends StatelessWidget {
+  const _BenefitRow({required this.icon, required this.label});
+
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 36.sp,
+          height: 36.sp,
+          decoration: BoxDecoration(
+            color: AppColors.primarySoft,
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+          ),
+          child: Icon(icon, color: AppColors.primary, size: 18.sp),
+        ),
+        SizedBox(width: AppSpacing.s3.w),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.only(top: 8.h),
+            child: Text(
+              label,
+              style: AppTypography.body.copyWith(fontSize: 14.sp),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }

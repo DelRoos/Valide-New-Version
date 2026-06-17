@@ -699,4 +699,25 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get onboardingFlushError =>
       'Impossible de sauvegarder ton profil. Reessaie.';
+
+  @override
+  String get onboardingSuccessDialogTitle => 'Ton compte est cree !';
+
+  @override
+  String get onboardingSuccessDialogSubtitle => 'Avec Valide, tu peux :';
+
+  @override
+  String get onboardingSuccessBenefit1 =>
+      'Suivre ta progression semaine apres semaine';
+
+  @override
+  String get onboardingSuccessBenefit2 =>
+      'Acceder aux classements de ta classe et ton ecole';
+
+  @override
+  String get onboardingSuccessBenefit3 =>
+      'Recevoir des exercices adaptes a ton niveau';
+
+  @override
+  String get onboardingSuccessDialogCta => 'Commencer';
 }

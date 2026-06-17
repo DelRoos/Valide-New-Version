@@ -1297,6 +1297,42 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Impossible de sauvegarder ton profil. Reessaie.'**
   String get onboardingFlushError;
+
+  /// Story E1bis-7 — Titre dialog benefices compte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte est cree !'**
+  String get onboardingSuccessDialogTitle;
+
+  /// Story E1bis-7 — Sous-titre dialog benefices.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec Valide, tu peux :'**
+  String get onboardingSuccessDialogSubtitle;
+
+  /// Story E1bis-7 — Benefice 1 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivre ta progression semaine apres semaine'**
+  String get onboardingSuccessBenefit1;
+
+  /// Story E1bis-7 — Benefice 2 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acceder aux classements de ta classe et ton ecole'**
+  String get onboardingSuccessBenefit2;
+
+  /// Story E1bis-7 — Benefice 3 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir des exercices adaptes a ton niveau'**
+  String get onboardingSuccessBenefit3;
+
+  /// Story E1bis-7 — CTA dialog benefices.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get onboardingSuccessDialogCta;
 }
 
 class _AppLocalizationsDelegate

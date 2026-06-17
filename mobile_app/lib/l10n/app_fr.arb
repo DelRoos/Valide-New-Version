@@ -624,5 +624,18 @@
   "onboardingSuccessCta": "Decouvrir mon dashboard",
   "@onboardingSuccessCta": { "description": "Story E1bis-7 — CTA fin celebration." },
   "onboardingFlushError": "Impossible de sauvegarder ton profil. Reessaie.",
-  "@onboardingFlushError": { "description": "Story E1bis-7 — Erreur ecriture Firestore." }
+  "@onboardingFlushError": { "description": "Story E1bis-7 — Erreur ecriture Firestore." },
+
+  "onboardingSuccessDialogTitle": "Ton compte est cree !",
+  "@onboardingSuccessDialogTitle": { "description": "Story E1bis-7 — Titre dialog benefices compte." },
+  "onboardingSuccessDialogSubtitle": "Avec Valide, tu peux :",
+  "@onboardingSuccessDialogSubtitle": { "description": "Story E1bis-7 — Sous-titre dialog benefices." },
+  "onboardingSuccessBenefit1": "Suivre ta progression semaine apres semaine",
+  "@onboardingSuccessBenefit1": { "description": "Story E1bis-7 — Benefice 1 dialog succes." },
+  "onboardingSuccessBenefit2": "Acceder aux classements de ta classe et ton ecole",
+  "@onboardingSuccessBenefit2": { "description": "Story E1bis-7 — Benefice 2 dialog succes." },
+  "onboardingSuccessBenefit3": "Recevoir des exercices adaptes a ton niveau",
+  "@onboardingSuccessBenefit3": { "description": "Story E1bis-7 — Benefice 3 dialog succes." },
+  "onboardingSuccessDialogCta": "Commencer",
+  "@onboardingSuccessDialogCta": { "description": "Story E1bis-7 — CTA dialog benefices." }
 }

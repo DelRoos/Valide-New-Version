@@ -694,4 +694,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingFlushError => 'Could not save your profile. Try again.';
+
+  @override
+  String get onboardingSuccessDialogTitle => 'Your account is created!';
+
+  @override
+  String get onboardingSuccessDialogSubtitle => 'With Valide, you can:';
+
+  @override
+  String get onboardingSuccessBenefit1 => 'Track your progress week after week';
+
+  @override
+  String get onboardingSuccessBenefit2 =>
+      'Access rankings in your class and school';
+
+  @override
+  String get onboardingSuccessBenefit3 =>
+      'Receive exercises tailored to your level';
+
+  @override
+  String get onboardingSuccessDialogCta => 'Get started';
 }

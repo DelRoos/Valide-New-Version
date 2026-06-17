@@ -347,10 +347,43 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
   );
 });
 
-/// State machine de la recherche autocomplete avec debounce 300ms interne.
+/// State machine de la recherche autocomplete — entierement en memoire.
+/// Charge toutes les ecoles une seule fois (preload), puis filtre cote client
+/// par prefixe sur le champ `keywords[]` pre-calcule par le seed.
+/// Avantage : 0 appel Firestore supplementaire apres preload, recherche
+/// instantanee meme en offline (cache natif).
 class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
   Timer? _debounceTimer;
-  String? _lastQuery;
+  List<School> _allSchools = const [];
+  bool _loaded = false;
+
+  // Table de translitteration accents -> ASCII pour la normalisation des tokens.
+  static const Map<String, String> _kAccentMap = {
+    'à': 'a', 'â': 'a', 'ä': 'a', 'á': 'a', 'ã': 'a',
+    'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e',
+    'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
+    'ò': 'o', 'ó': 'o', 'ô': 'o', 'ö': 'o',
+    'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
+    'ç': 'c', 'ñ': 'n',
+    'À': 'a', 'Â': 'a', 'Ä': 'a', 'Á': 'a', 'Ã': 'a',
+    'È': 'e', 'É': 'e', 'Ê': 'e', 'Ë': 'e',
+    'Ì': 'i', 'Í': 'i', 'Î': 'i', 'Ï': 'i',
+    'Ò': 'o', 'Ó': 'o', 'Ô': 'o', 'Ö': 'o',
+    'Ù': 'u', 'Ú': 'u', 'Û': 'u', 'Ü': 'u',
+    'Ç': 'c', 'Ñ': 'n',
+  };
+
+  /// Decompose la saisie utilisateur en tokens ASCII minuscules (≥2 chars).
+  static List<String> _queryTokens(String query) {
+    if (query.isEmpty) return const [];
+    final lower = query.toLowerCase();
+    final buf = StringBuffer();
+    for (final char in lower.split('')) {
+      buf.write(_kAccentMap[char] ?? char);
+    }
+    final cleaned = buf.toString().replaceAll(RegExp(r'[^a-z0-9 ]'), ' ');
+    return cleaned.split(RegExp(r'\s+')).where((t) => t.length >= 2).toList();
+  }
 
   @override
   AsyncValue<List<School>> build() {
@@ -358,44 +391,47 @@ class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
     return const AsyncValue.data([]);
   }
 
-  /// Prefetch non-bloquant : charge les [limit] premieres ecoles sans filtre.
-  /// Appele dans initState de SchoolInputStepBody (cf. memoire prefetch-before-screen).
-  void preload({int limit = 20}) {
-    if (_lastQuery != null) return; // deja une recherche en cours
+  /// Charge toutes les ecoles depuis Firestore (une seule fois).
+  /// Les appels suivants sont des no-op si deja charge.
+  void preload({int limit = 300}) {
+    if (_loaded) return;
     state = const AsyncValue.loading();
     ref.read(schoolRepositoryProvider).listFirst(limit).then((result) {
-      if (_lastQuery != null) return; // une recherche utilisateur a commence
       state = result.fold(
-        (failure) => const AsyncValue.data([]),
-        (schools) => AsyncValue.data(schools),
+        (failure) {
+          AppLogger.w('schools.preload failed: ${failure.message}');
+          return const AsyncValue.data([]);
+        },
+        (schools) {
+          _allSchools = schools;
+          _loaded = true;
+          AppLogger.i('schools.preload count=${schools.length}');
+          return AsyncValue.data(schools);
+        },
       );
     });
   }
 
+  /// Filtre en memoire par prefixe sur keywords[]. Debounce 150 ms.
   void search(String query) {
     _debounceTimer?.cancel();
-    _lastQuery = query;
-    if (query.length < 2) {
-      state = const AsyncValue.data([]);
+    final tokens = _queryTokens(query.trim());
+    if (tokens.isEmpty) {
+      state = AsyncValue.data(_allSchools);
       return;
     }
-    _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
-      if (_lastQuery != query) return;
-      state = const AsyncValue.loading();
-      final result =
-          await ref.read(schoolRepositoryProvider).searchByPrefix(query);
-      if (_lastQuery != query) return;
-      state = result.fold(
-        (failure) => AsyncValue.error(failure, StackTrace.current),
-        (schools) => AsyncValue.data(schools),
-      );
+    _debounceTimer = Timer(const Duration(milliseconds: 150), () {
+      final filtered = _allSchools.where((s) {
+        return tokens.every((qt) => s.keywords.any((k) => k.startsWith(qt)));
+      }).toList()
+        ..sort((a, b) => a.name.compareTo(b.name));
+      state = AsyncValue.data(filtered);
     });
   }
 
   void clear() {
     _debounceTimer?.cancel();
-    _lastQuery = null;
-    state = const AsyncValue.data([]);
+    state = AsyncValue.data(_allSchools);
   }
 }
 

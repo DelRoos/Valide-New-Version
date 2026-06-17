@@ -86,26 +86,10 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
               warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
             ),
             SizedBox(height: AppSpacing.s4.h),
-            TextButton(
-              onPressed: _onSkipTap,
-              child: Text(
-                l10n.onboardingSchoolSkipLabel,
-                style: AppTypography.body.copyWith(
-                  color: AppColors.inkSoft,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
-            SizedBox(height: AppSpacing.s4.h),
           ],
         ),
       ),
     );
-  }
-
-  void _onSkipTap() {
-    ref.read(onboardingNotifierProvider.notifier).skipSchool();
-    AppLogger.i('school.skip confirmed');
   }
 
   void _onSelect(SchoolEntry school) {
@@ -150,17 +134,7 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
   }
 
   SchoolSearchAsync _searchProvider(String query) {
-    if (query.isEmpty) {
-      if (_currentQuery.isNotEmpty) {
-        // L'utilisateur a efface sa saisie — restaurer la liste precachee.
-        _currentQuery = '';
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          ref.read(schoolSearchNotifierProvider.notifier).clear();
-          ref.read(schoolSearchNotifierProvider.notifier).preload(limit: 50);
-        });
-      }
-    } else if (query != _currentQuery) {
+    if (query != _currentQuery) {
       _currentQuery = query;
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
