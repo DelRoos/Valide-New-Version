@@ -346,6 +346,19 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
       case 'network-request-failed':
         AppLogger.w('Account linking failed: provider=$provider reason=network');
         return const AccountLinkingFailure.network();
+      // Bug 5 fix : utilisateur Apple qui essaie de se connecter via Google
+      // (ou vice-versa) sur un appareil ne supportant pas le provider d'origine.
+      // Ex : compte lie uniquement a Apple, tentative Google sur Android.
+      // Firebase emet operation-not-allowed ou sign_in_method_not_supported.
+      case 'operation-not-allowed':
+      case 'sign-in-method-not-supported':
+        AppLogger.w(
+          'Account linking failed: provider=$provider '
+          'code=${e.code} -> provider not supported for this account',
+        );
+        return AccountLinkingFailure.unknown(
+          'provider_not_supported:${e.code}',
+        );
       default:
         AppLogger.w(
           'Account linking failed: provider=$provider code=${e.code}',

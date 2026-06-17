@@ -21,6 +21,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/onboarding/onboarding_cta_footer.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../providers.dart' show profileUpgradeInProgressProvider;
@@ -159,6 +160,14 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
         return OnboardingCtaFooter(
           label: l10n.heroIntroCta,
           onPressed: notifier.next,
+          secondaryAction: SizedBox(
+            width: double.infinity,
+            child: AppButton.secondary(
+              label: l10n.onboardingHaveAccount,
+              icon: LucideIcons.logIn,
+              onPressed: notifier.jumpToAuth,
+            ),
+          ),
         );
       case 2:
         // Auto-avance : tap card appelle setTrackId() -> step 3 direct.

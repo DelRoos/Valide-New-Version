@@ -698,7 +698,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingFlushError =>
-      'Impossible de sauvegarder ton profil. Reessaie.';
+      'Sauvegarde impossible. Vérifie ta connexion et réessaie.';
+
+  @override
+  String get onboardingAuthProviderNotSupported =>
+      'Ce compte est lié à un autre service (Apple ou Google). Reconnecte-toi avec le même service que lors de ton inscription.';
 
   @override
   String get onboardingSuccessDialogTitle => 'Ton compte est cree !';
@@ -720,4 +724,10 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingSuccessDialogCta => 'Commencer';
+
+  @override
+  String get onboardingHaveAccount => 'J\'ai un compte';
+
+  @override
+  String get onboardingNoAccount => 'Je n\'ai pas de compte';
 }

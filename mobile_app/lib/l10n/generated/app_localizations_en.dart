@@ -693,7 +693,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingSuccessCta => 'Go to my dashboard';
 
   @override
-  String get onboardingFlushError => 'Could not save your profile. Try again.';
+  String get onboardingFlushError =>
+      'Could not save your profile. Check your connection and try again.';
+
+  @override
+  String get onboardingAuthProviderNotSupported =>
+      'This account is linked to a different service (Apple or Google). Sign in with the same service you used when you registered.';
 
   @override
   String get onboardingSuccessDialogTitle => 'Your account is created!';
@@ -714,4 +719,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingSuccessDialogCta => 'Get started';
+
+  @override
+  String get onboardingHaveAccount => 'I have an account';
+
+  @override
+  String get onboardingNoAccount => 'I don\'t have an account';
 }

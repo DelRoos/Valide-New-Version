@@ -208,6 +208,12 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 /// laissait `trackId+levelId` poses mais `pickedSubjects=[]` -> profil
 /// considere complet -> redirect dashboard vide. Confusion utilisateur.
 ///
+/// Bug 4 fix (2026-06-17) — Compte permanent (isAnonymous=false) avec
+/// displayName vide = upgrade visiteur interrompu avant completion identite
+/// (steps 6-8). profileUpgradeInProgressProvider est en memoire -> perdu au
+/// kill app. On derive l'etat depuis le doc Firestore pour que le router
+/// renvoie vers /onboarding/v2 meme apres un relaunch.
+///
 /// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
 /// que les docs users existants n'ont pas migre (Story 1.19 dette).
 ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
@@ -225,6 +231,18 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
     final picked = data['pickedSubjects'];
     if (picked is! List || picked.isEmpty) {
       return ProfileCompletionState.serieMissing;
+    }
+    // Bug 4 fix : compte permanent sans displayName = upgrade interrompu.
+    // isAnonymous=false (pose par _persistIdentity au moment du link OAuth)
+    // + displayName vide = le user a linke son compte mais n'a pas complete
+    // les steps identite (6-8). On le renvoie vers /onboarding/v2.
+    final isAnonymous = data['isAnonymous'] as bool? ?? true;
+    final displayName = data['displayName'] as String? ?? '';
+    if (!isAnonymous && displayName.isEmpty) {
+      AppLogger.w(
+        'profileCompletion: compte permanent sans displayName -> identite incomplete',
+      );
+      return ProfileCompletionState.filiereMissing;
     }
     return ProfileCompletionState.complete;
   }

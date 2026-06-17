@@ -103,4 +103,20 @@ abstract interface class UserProfileRepository {
   ///   - currentUser absent (notAuthenticated)
   ///   - FirebaseException remontée (firestoreError)
   Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school);
+
+  /// Lecture unique (`.get()`) du doc users/{uid}. Retourne null si le doc
+  /// n'existe pas ou si uid est absent (utilisateur non authentifie).
+  ///
+  /// Utilise pour le cas "nouveau telephone, compte existant" : apres un
+  /// sign-in Google/Apple, on verifie si un profil Firestore existe deja
+  /// pour reprendre au bon step ou aller directement au dashboard.
+  ///
+  /// Cost : 1 read Firestore par sign-in social. Acceptable car declenche
+  /// uniquement post-auth (pas a chaque frame). Utilise `.get()` et non
+  /// `snapshots()` (profil statique pendant l'hydratation).
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent : retourne `Right(null)` (pas d'erreur)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce();
 }

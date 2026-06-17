@@ -286,12 +286,18 @@
   "onboardingSuccessTitle": "Welcome to Valide!",
   "onboardingSuccessSubtitle": "Your profile is ready. Let's go!",
   "onboardingSuccessCta": "Go to my dashboard",
-  "onboardingFlushError": "Could not save your profile. Try again.",
+  "onboardingFlushError": "Could not save your profile. Check your connection and try again.",
+
+  "onboardingAuthProviderNotSupported": "This account is linked to a different service (Apple or Google). Sign in with the same service you used when you registered.",
 
   "onboardingSuccessDialogTitle": "Your account is created!",
   "onboardingSuccessDialogSubtitle": "With Valide, you can:",
   "onboardingSuccessBenefit1": "Track your progress week after week",
   "onboardingSuccessBenefit2": "Access rankings in your class and school",
   "onboardingSuccessBenefit3": "Receive exercises tailored to your level",
-  "onboardingSuccessDialogCta": "Get started"
+  "onboardingSuccessDialogCta": "Get started",
+
+  "onboardingHaveAccount": "I have an account",
+
+  "onboardingNoAccount": "I don't have an account"
 }

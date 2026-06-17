@@ -20,6 +20,7 @@ import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../../core/logging/app_logger.dart';
 import '../../domain/sub_system.dart';
 import '../../providers.dart'
     show
@@ -54,19 +55,6 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   Future<void> setSubSystem(SubSystem subSystem) async {
     await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
     state = state.copyWith(subSystem: subSystem, currentStep: 1);
-    await _persistDraft();
-  }
-
-  /// Audit 2026-06-13 — Variante "draft" qui pose le sub-system + propage
-  /// AU LocaleNotifier (UI bascule FR/EN en live) SANS transitionner vers
-  /// le step 1. L'utilisateur confirme via le CTA Continuer du shell.
-  ///
-  /// Pourquoi propager au LocaleNotifier en draft : sinon le user tape
-  /// Anglophone, voit la page rester en FR, et perd confiance. Live preview
-  /// = retour sensoriel immediat (cf. patron des switchers de langue).
-  Future<void> setSubSystemDraft(SubSystem subSystem) async {
-    await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
-    state = state.copyWith(subSystem: subSystem);
     await _persistDraft();
   }
 
@@ -334,10 +322,13 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   /// Recule d'un cran symetrique a [next]. A step 0 -> no-op.
   ///
-  /// Ne reset PAS les valeurs amont sauf exception :
-  /// - 5 -> 4 : remet streamId = null + pickedSubjects = [] pour que le
-  ///   stream picker s'affiche a nouveau (sinon step 4 saute directement
-  ///   a la vue derivee et l'utilisateur ne peut plus changer sa serie).
+  /// Cas speciaux :
+  /// - 5 -> 1 si trackId null : l'utilisateur vient via "J'ai un compte"
+  ///   (jumpToAuth step 1 -> 5). Step 4 serait vide. On retourne au hero.
+  /// - 5 -> 4 si trackId non-null : retour normal recap matieres.
+  ///   Reset stream + subjects UNIQUEMENT si pickedSubjects vides (flow
+  ///   normal). En mode upgrade (visiteur -> compte), les matieres existent
+  ///   deja en Firestore — on les preserve pour eviter un state incohérent.
   void back() {
     final s = state;
     final target = switch (s.currentStep) {
@@ -346,8 +337,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 1,
       3 => 2,
       4 => 3,
-      // Audit 2026-06-14 — back de step 5 va toujours a step 4 (recap).
-      5 => 4,
+      // Bug 1 fix : jumpToAuth() saute steps 2-4, donc trackId est null.
+      // Si on revient depuis step 5 avec trackId null, step 4 est vide
+      // -> retourner au hero (step 1). Sinon retour picker normal (step 4).
+      5 => (s.trackId == null) ? 1 : 4,
       6 => 5,
       7 => 6,
       8 => 7,
@@ -355,13 +348,11 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       _ => s.currentStep,
     };
     if (target != s.currentStep) {
-      // Retour a step 4 : reset stream + subjects pour re-afficher le picker.
-      final next = (target == 4)
-          ? s.copyWith(
-              currentStep: 4,
-              streamId: null,
-              pickedSubjects: const <String>[],
-            )
+      // Retour a step 4 : reset stream + subjects uniquement si le picker
+      // n'a pas encore ete valide (pickedSubjects vides). En mode upgrade
+      // (Bug 7 fix), les matieres existent deja -> on les preserve.
+      final next = (target == 4 && s.pickedSubjects.isEmpty)
+          ? s.copyWith(currentStep: 4, streamId: null)
           : s.copyWith(currentStep: target);
       state = next;
       _persistDraftFireAndForget();
@@ -447,5 +438,95 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   void _clearDraftFireAndForget() {
     unawaited(ref.read(onboardingDraftPrefsProvider).clear());
+  }
+
+  /// Hydrate depuis un doc Firestore — cas "nouveau telephone, compte existant".
+  /// Pose le subSystem -> profileCompletionProvider emet `complete` si profil
+  /// complet -> router redirige vers /dashboard. Si partiel, pose currentStep
+  /// au premier champ manquant.
+  Future<void> hydrateFromFirestore(
+    Map<String, dynamic> data, {
+    String? oauthDisplayName,
+  }) async {
+    SubSystem? sub;
+    final rawSub = data['subSystem'] as String?;
+    if (rawSub != null) {
+      try {
+        sub = SubSystem.values.firstWhere((s) => s.id == rawSub);
+      } catch (_) {}
+    }
+
+    // Bug 6 fix : lecture des champs en anglais + fallback legacy francais
+    // (filiere/niveau/serie) pour les docs crees par Epic 1 avant la migration.
+    final trackId =
+        (data['trackId'] ?? data['filiere']) as String?;
+    final levelId =
+        (data['levelId'] ?? data['niveau']) as String?;
+    // streamId : deja gere avec fallback 'serie' depuis l'origine.
+    final streamId = (data['streamId'] ?? data['serie']) as String?;
+
+    // Bug 11 fix : subSystem absent du doc (docs anciens) mais profil complet.
+    // On derive francophone par defaut pour debloquer le router. Le user
+    // pourra corriger depuis Profil si besoin.
+    if (sub == null && trackId != null) {
+      AppLogger.w(
+        'hydrateFromFirestore: subSystem absent du doc -> fallback francophone',
+      );
+      sub = SubSystem.francophone;
+    }
+    if (sub != null) {
+      await ref.read(subSystemNotifierProvider.notifier).set(sub);
+    }
+
+    final rawP = data['pickedSubjects'];
+    final picked = rawP is List
+        ? List<String>.unmodifiable(rawP.whereType<String>().toList())
+        : const <String>[];
+    final fsName = data['displayName'] as String?;
+    final name = (fsName?.isNotEmpty == true) ? fsName : oauthDisplayName;
+    final schoolId = data['schoolId'] as String?;
+    final step = trackId == null
+        ? 2
+        : levelId == null
+            ? 3
+            : picked.isEmpty
+                ? 4
+                : (name?.isEmpty ?? true)
+                    ? 6
+                    : (schoolId == null ? 8 : 9);
+
+    // Bug 3 fix : lire authProvider depuis Firestore plutot que hardcoder
+    // google. fromString() retourne null si absent/inconnu -> fallback google
+    // (provider du compte courant qui vient de se connecter).
+    final authProvider =
+        OnboardingAuthProvider.fromString(data['authProvider'] as String?) ??
+            OnboardingAuthProvider.google;
+
+    AppLogger.i(
+      'hydrateFromFirestore step=$step trackId=$trackId levelId=$levelId '
+      'subjects=${picked.length} schoolId=${schoolId ?? "<null>"} '
+      'authProvider=${authProvider.id}',
+    );
+    state = OnboardingState(
+      currentStep: step,
+      subSystem: sub,
+      trackId: trackId,
+      levelId: levelId,
+      levelRequiresPicker: streamId != null || picked.isNotEmpty,
+      streamId: streamId,
+      pickedSubjects: picked,
+      userDisplayName: name,
+      schoolId: schoolId,
+      schoolName: data['schoolName'] as String?,
+      authProvider: authProvider,
+    );
+    await _persistDraft();
+  }
+
+  /// Jump direct au step 5 (auth choice) depuis le step 0.
+  /// Utilise par le bouton "Deja un compte ?" du step 0.
+  void jumpToAuth() {
+    state = state.copyWith(currentStep: 5);
+    _persistDraftFireAndForget();
   }
 }

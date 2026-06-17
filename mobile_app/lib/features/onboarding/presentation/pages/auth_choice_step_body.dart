@@ -27,6 +27,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/account_linking_failure.dart';
 import '../../domain/account_linking_state.dart';
 import '../../domain/linked_account.dart';
+import '../../domain/profile_failure.dart';
 import '../../providers.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
@@ -47,8 +48,6 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     final l10n = AppLocalizations.of(context);
     final linkState = ref.watch(accountLinkingNotifierProvider);
     final linkingNotifier = ref.read(accountLinkingNotifierProvider.notifier);
-    final onboardingNotifier =
-        ref.read(onboardingNotifierProvider.notifier);
 
     ref.listen<AccountLinkingState>(accountLinkingNotifierProvider,
         (prev, next) {
@@ -57,19 +56,14 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
           'auth.step5 success provider=${next.account.provider.id} '
           'hasDisplayName=${next.account.displayName != null}',
         );
-        onboardingNotifier.setAuthProvider(
-          next.account.provider == AccountProvider.google
-              ? OnboardingAuthProvider.google
-              : OnboardingAuthProvider.apple,
-          displayName: next.account.displayName,
-        );
+        _onSocialSignInSuccess(next.account);
       }
     });
 
     final isLoading = linkState.isLoading || _guestLoading;
     final isAppleAvailable = !kIsWeb && Platform.isIOS;
 
-    final errorMessage = _errorMessage(linkState) ?? _guestError;
+    final socialErrorMessage = _errorMessage(linkState);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -96,9 +90,25 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
             ),
             SizedBox(height: AppSpacing.s6.h),
 
-            if (errorMessage != null) ...[
+            // Erreur flush visiteur (bug 8 fix) : banniere + bouton retry dedie.
+            if (_guestError != null) ...[
               _AuthErrorBanner(
-                message: errorMessage,
+                message: _guestError!,
+                onDismiss: () => setState(() => _guestError = null),
+              ),
+              SizedBox(height: AppSpacing.s2.h),
+              AppButton.secondary(
+                label: l10n.retryLabel,
+                icon: LucideIcons.refreshCw,
+                onPressed: isLoading ? null : _onGuestTap,
+              ),
+              SizedBox(height: AppSpacing.s3.h),
+            ],
+
+            // Erreur social (Google / Apple).
+            if (socialErrorMessage != null && _guestError == null) ...[
+              _AuthErrorBanner(
+                message: socialErrorMessage,
                 onDismiss: () {
                   linkingNotifier.reset();
                   setState(() => _guestError = null);
@@ -162,17 +172,92 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     );
   }
 
+  /// Post sign-in social : recupere le profil Firestore existant (si present)
+  /// et hydrate le state onboarding. Si le profil est complet, le router
+  /// redirige automatiquement vers /dashboard via profileCompletionProvider.
+  /// Si partiel ou absent, continue le flow onboarding au bon step.
+  ///
+  /// Bug 2 fix : si le reseau est coupe, fetchProfileOnce() retourne
+  /// networkUnavailable. On NE traite PAS silencieusement l'utilisateur comme
+  /// nouveau — son profil existant pourrait etre ecrase au flush. On bloque
+  /// avec un message retry. Sur toute autre erreur (permission, etc.), on
+  /// continue comme nouveau user (le profil n'existait probablement pas).
+  Future<void> _onSocialSignInSuccess(LinkedAccount account) async {
+    final onboardingNotifier = ref.read(onboardingNotifierProvider.notifier);
+    final repo = ref.read(userProfileRepositoryProvider);
+    final result = await repo.fetchProfileOnce();
+    if (!mounted) return;
+
+    final provider = account.provider == AccountProvider.google
+        ? OnboardingAuthProvider.google
+        : OnboardingAuthProvider.apple;
+
+    await result.fold(
+      (failure) async {
+        AppLogger.w(
+          'auth.step5 fetchProfileOnce failed kind=${failure.kind.name}',
+        );
+        if (failure.kind == ProfileFailureKind.networkUnavailable) {
+          // Reseau coupe : on ne sait pas si l'utilisateur a un profil existant.
+          // Afficher un message retry — l'utilisateur retappera Google/Apple
+          // quand la connexion sera retablie.
+          AppLogger.w(
+            'auth.step5 network unavailable -> block, show retry message',
+          );
+          if (mounted) {
+            setState(() => _guestError =
+                AppLocalizations.of(context).errorNetworkUnavailable);
+          }
+          // Reset le linking state pour que les boutons soient de nouveau actifs.
+          ref.read(accountLinkingNotifierProvider.notifier).reset();
+        } else {
+          // Erreur technique non-reseau : le profil n'existe probablement pas
+          // (permission-denied = doc absent, unknown = premiere connexion).
+          // On continue comme nouveau user — risque faible.
+          AppLogger.w(
+            'auth.step5 non-network error -> proceed as new user',
+          );
+          onboardingNotifier.setAuthProvider(
+            provider,
+            displayName: account.displayName,
+          );
+        }
+      },
+      (data) async {
+        if (data != null) {
+          AppLogger.i('auth.step5 existing profile found -> hydrate');
+          await onboardingNotifier.hydrateFromFirestore(
+            data,
+            oauthDisplayName: account.displayName,
+          );
+          // profileCompletionProvider + router gere le bounce /dashboard
+          // si le profil est complet. Sinon, hydrateFromFirestore pose le
+          // bon step de reprise.
+        } else {
+          AppLogger.i('auth.step5 no existing profile -> new user');
+          onboardingNotifier.setAuthProvider(
+            provider,
+            displayName: account.displayName,
+          );
+        }
+      },
+    );
+  }
+
   // Audit 2026-06-15 — Mapping via failure.kind (CLAUDE.md regle 13) :
-  // - cancelled : silencieux (l'utilisateur a ferme le picker OAuth).
-  // - unknown   : on n'expose pas le message technique brut.
-  // - autres    : failure.message est deja localise en francais.
+  // - cancelled             : silencieux (l'utilisateur a ferme le picker OAuth).
+  // - unknown provider_not_supported : le compte est lie a un autre provider.
+  // - unknown (autres)      : on n'expose pas le message technique brut.
+  // - autres                : failure.message est deja localise en francais.
   String? _errorMessage(AccountLinkingState state) {
     if (state is! AccountLinkingError) return null;
     final failure = state.failure;
     return switch (failure.kind) {
       AccountLinkingFailureKind.cancelled => null,
       AccountLinkingFailureKind.unknown =>
-        AppLocalizations.of(context).errorGenericTitle,
+        (failure.message.startsWith('provider_not_supported:'))
+            ? AppLocalizations.of(context).onboardingAuthProviderNotSupported
+            : AppLocalizations.of(context).errorGenericTitle,
       _ => failure.message,
     };
   }

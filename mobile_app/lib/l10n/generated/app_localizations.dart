@@ -1295,8 +1295,14 @@ abstract class AppLocalizations {
   /// Story E1bis-7 — Erreur ecriture Firestore.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible de sauvegarder ton profil. Reessaie.'**
+  /// **'Sauvegarde impossible. Vérifie ta connexion et réessaie.'**
   String get onboardingFlushError;
+
+  /// Bug 5 — Utilisateur Apple qui tente de se connecter Google sur Android, ou vice-versa.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte est lié à un autre service (Apple ou Google). Reconnecte-toi avec le même service que lors de ton inscription.'**
+  String get onboardingAuthProviderNotSupported;
 
   /// Story E1bis-7 — Titre dialog benefices compte.
   ///
@@ -1333,6 +1339,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Commencer'**
   String get onboardingSuccessDialogCta;
+
+  /// Step 0 — bouton principal pour un utilisateur qui reinstalle sur un nouveau telephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai un compte'**
+  String get onboardingHaveAccount;
+
+  /// Step 0 — bouton secondaire pour demarrer l'onboarding classique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Je n\'ai pas de compte'**
+  String get onboardingNoAccount;
 }
 
 class _AppLocalizationsDelegate
