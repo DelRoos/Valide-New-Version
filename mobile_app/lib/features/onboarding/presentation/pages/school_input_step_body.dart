@@ -61,9 +61,17 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
             SizedBox(height: AppSpacing.s5.h),
             Icon(LucideIcons.school, size: 48.sp, color: AppColors.primary),
             SizedBox(height: AppSpacing.s4.h),
-            Text(
-              l10n.onboardingSchoolTitle,
-              style: AppTypography.h1.copyWith(fontSize: 22.sp),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: l10n.onboardingSchoolTitle),
+                  TextSpan(
+                    text: ' *',
+                    style: TextStyle(color: AppColors.danger),
+                  ),
+                ],
+                style: AppTypography.h1.copyWith(fontSize: 22.sp),
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s2.h),
@@ -85,50 +93,11 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
               emptyAddTemplate: l10n.onboardingSchoolAddTemplate('{name}'),
               warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
             ),
-            SizedBox(height: AppSpacing.s3.h),
-            Center(
-              child: TextButton(
-                onPressed: _onSkipTap,
-                child: Text(
-                  l10n.onboardingSchoolSkipLabel,
-                  style: AppTypography.body.copyWith(
-                    color: AppColors.inkSoft,
-                    decoration: TextDecoration.underline,
-                    fontSize: 14.sp,
-                  ),
-                ),
-              ),
-            ),
             SizedBox(height: AppSpacing.s5.h),
           ],
         ),
       ),
     );
-  }
-
-  Future<void> _onSkipTap() async {
-    final l10n = AppLocalizations.of(context);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(l10n.onboardingPhoneSkipConfirmTitle),
-        content: Text(l10n.onboardingSchoolSkipToast),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(false),
-            child: Text(l10n.onboardingPhoneSkipConfirmNo),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.of(ctx).pop(true),
-            child: Text(l10n.onboardingPhoneSkipConfirmYes),
-          ),
-        ],
-      ),
-    );
-    if (confirmed == true && mounted) {
-      AppLogger.i('school.skip confirmed');
-      ref.read(onboardingNotifierProvider.notifier).skipSchool();
-    }
   }
 
   void _onSelect(SchoolEntry school) {

@@ -88,9 +88,17 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
             SizedBox(height: AppSpacing.s8.h),
             Icon(LucideIcons.user, size: 56.sp, color: AppColors.primary),
             SizedBox(height: AppSpacing.s5.h),
-            Text(
-              l10n.onboardingNameTitle,
-              style: AppTypography.h1.copyWith(fontSize: 24.sp),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: l10n.onboardingNameTitle),
+                  TextSpan(
+                    text: ' *',
+                    style: TextStyle(color: AppColors.danger),
+                  ),
+                ],
+                style: AppTypography.h1.copyWith(fontSize: 24.sp),
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s3.h),
