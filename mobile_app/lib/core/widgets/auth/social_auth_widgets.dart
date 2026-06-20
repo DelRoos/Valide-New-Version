@@ -93,8 +93,8 @@ class AuthErrorBanner extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const Icon(LucideIcons.triangleAlert,
-              color: AppColors.danger, size: 20),
+          Icon(LucideIcons.triangleAlert,
+              color: AppColors.danger, size: AppIconSize.xl),
           SizedBox(width: AppSpacing.s2.w),
           Expanded(
             child: Text(
@@ -106,7 +106,7 @@ class AuthErrorBanner extends StatelessWidget {
             ),
           ),
           IconButton(
-            icon: const Icon(LucideIcons.x, size: 18),
+            icon: Icon(LucideIcons.x, size: AppIconSize.lg),
             color: AppColors.danger,
             onPressed: onDismiss,
           ),

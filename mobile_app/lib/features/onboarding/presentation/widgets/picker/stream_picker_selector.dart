@@ -99,13 +99,13 @@ class StreamPickerEmpty extends StatelessWidget {
             SizedBox(height: AppSpacing.s5.h),
             FilledButton.icon(
               onPressed: onChangeLevel,
-              icon: const Icon(LucideIcons.arrowLeft, size: 18),
+              icon: Icon(LucideIcons.arrowLeft, size: AppIconSize.lg),
               label: Text(changeLevelLabel),
             ),
             SizedBox(height: AppSpacing.s2.h),
             TextButton.icon(
               onPressed: onRetry,
-              icon: const Icon(LucideIcons.refreshCw, size: 18),
+              icon: Icon(LucideIcons.refreshCw, size: AppIconSize.lg),
               label: Text(retryLabel),
             ),
           ],

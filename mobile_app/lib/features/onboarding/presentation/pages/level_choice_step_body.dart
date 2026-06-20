@@ -221,7 +221,7 @@ class _LevelEmptyForTrack extends StatelessWidget {
             SizedBox(height: AppSpacing.s5.h),
             FilledButton.icon(
               onPressed: onChangeTrack,
-              icon: const Icon(LucideIcons.arrowLeft, size: 18),
+              icon: Icon(LucideIcons.arrowLeft, size: AppIconSize.lg),
               label: Text(changeTrackLabel),
             ),
           ],

@@ -76,9 +76,8 @@ class _StyledNavBar extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
-        bottom: false,
         child: SizedBox(
-          height: 64,
+          height: AppNavBar.height,
           child: Row(
             children: List.generate(destinations.length, (i) {
               final dest = destinations[i];
@@ -106,15 +105,15 @@ class _StyledNavBar extends StatelessWidget {
                         ),
                         child: Icon(
                           dest.icon,
-                          size: 22,
+                          size: AppNavBar.iconSize,
                           color: selected ? AppColors.primary : AppColors.muted,
                         ),
                       ),
-                      const SizedBox(height: 2),
+                      const SizedBox(height: AppNavBar.iconLabelGap),
                       Text(
                         dest.label,
                         style: AppTypography.caption.copyWith(
-                          fontSize: 11,
+                          fontSize: AppNavBar.labelSize,
                           fontWeight: FontWeight.w700,
                           color: selected ? AppColors.primary : AppColors.muted,
                         ),
