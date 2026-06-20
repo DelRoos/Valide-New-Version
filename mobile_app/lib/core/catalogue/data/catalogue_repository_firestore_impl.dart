@@ -283,34 +283,147 @@ class CatalogueRepositoryFirestoreImpl implements CatalogueRepository {
     }
   }
 
+  /// Variante de [derive] sans query Firestore sur les règles.
+  ///
+  /// La règle est passée directement (matchée en mémoire par le provider
+  /// depuis le snapshot catalogueProvider). Seuls les 7 fetches parallèles
+  /// subjects/exams/série sont exécutés — -1 RTT, pas de cache query stale.
+  @override
+  Future<Either<CatalogueFailure, DerivedProfile>> deriveFromRule({
+    required DerivationRule rule,
+    String? serie,
+  }) async {
+    try {
+      final Serie? serieDoc = (serie != null)
+          ? await _firestore.collection(_kSeries).doc(serie).get().then(
+                (snap) => snap.exists ? serieFromFirestore(snap) : null,
+              )
+          : null;
+
+      final results = await logPerf(
+        'catalogue.derive.parallel7',
+        () => Future.wait<dynamic>([
+          _fetchSubjectsByIds(rule.subjectIds),
+          _fetchExamTargetsByIds(rule.examTargetIds),
+          _fetchSubjectsByIds(rule.obligatorySubjectIds),
+          _fetchSubjectsByIds(rule.optionalSubjectIds),
+          _fetchSubjectsByIds(serieDoc?.professionalSubjectIds ?? const []),
+          _fetchSubjectsByIds(
+              serieDoc?.relatedProfessionalSubjectIds ?? const []),
+          _fetchSubjectsByIds(serieDoc?.otherSubjectIds ?? const []),
+        ]),
+      );
+
+      final subjects = results[0] as List<Subject>;
+      final examTargets = results[1] as List<ExamTarget>;
+      final obligatorySubjects = results[2] as List<Subject>;
+      final optionalSubjects = results[3] as List<Subject>;
+      final professionalSubjects = results[4] as List<Subject>;
+      final relatedProfessionalSubjects = results[5] as List<Subject>;
+      final otherSubjects = results[6] as List<Subject>;
+
+      final canOptOut = serieDoc?.canOptOut ?? rule.canOptOut;
+      final pickerMode = serieDoc?.pickerMode ?? PickerMode.derived;
+
+      AppLogger.i(
+        'deriveFromRule() OK: rule=${rule.ruleId} '
+        'subjects=${subjects.length} examTargets=${examTargets.length} '
+        'obligatory=${obligatorySubjects.length} '
+        'optional=${optionalSubjects.length} '
+        'pro=${professionalSubjects.length} '
+        'related=${relatedProfessionalSubjects.length} '
+        'other=${otherSubjects.length} '
+        'pickerMode=${pickerMode.name} '
+        'min=${serieDoc?.minSubjects ?? "-"} max=${serieDoc?.maxSubjects ?? "-"}',
+      );
+
+      return Right(
+        DerivedProfile(
+          subjects: subjects,
+          examTargets: examTargets,
+          canOptOut: canOptOut,
+          pickerMode: pickerMode,
+          obligatorySubjects: obligatorySubjects,
+          optionalSubjects: optionalSubjects,
+          minSubjects: serieDoc?.minSubjects,
+          maxSubjects: serieDoc?.maxSubjects,
+          professionalSubjects: professionalSubjects,
+          relatedProfessionalSubjects: relatedProfessionalSubjects,
+          otherSubjects: otherSubjects,
+        ),
+      );
+    } on FirebaseException catch (e, st) {
+      AppLogger.w('deriveFromRule() Firebase error: ${e.code}', error: e);
+      AppLogger.w('deriveFromRule() stack: $st');
+      return Left(
+        CatalogueFailure.networkError(e.message ?? 'Firebase: ${e.code}'),
+      );
+    } catch (e, st) {
+      AppLogger.w('deriveFromRule() unexpected error: $e', error: e);
+      AppLogger.w('deriveFromRule() stack: $st');
+      return Left(CatalogueFailure.networkError(e.toString()));
+    }
+  }
+
   /// Helper privé v2 — résout une liste d'IDs subjects vers leurs models.
   ///
-  /// Factorisé 3× dans `derive()` : subjects (dérivés), obligatorySubjects,
-  /// optionalSubjects. Filtre `isActive == true` côté serveur.
-  /// Limite Firestore `whereIn` = 30 IDs (toutes rules v2 ≤ 17 — cf. Form 5
-  /// optionalSubjectIds 17 matières au choix O-Level).
+  /// Factorisé 3× dans `derive()`. Filtre `isActive == true` côté serveur.
+  /// Chunke automatiquement en lots de 30 (limite Firestore `whereIn`) — cf.
+  /// Form 5 OLevel (39 IDs) / Lower+Upper Sixth S1 (40 IDs).
   Future<List<Subject>> _fetchSubjectsByIds(List<String> ids) async {
     if (ids.isEmpty) return const [];
-    final qs = await _firestore
+    final chunks = _chunk(ids, 30);
+    if (chunks.length == 1) {
+      final qs = await _firestore
+          .collection(_kSubjects)
+          .where(FieldPath.documentId, whereIn: chunks.first)
+          .where('isActive', isEqualTo: true)
+          .get();
+      return qs.docs.map(subjectFromFirestore).toList(growable: false);
+    }
+    final futures = chunks.map((chunk) => _firestore
         .collection(_kSubjects)
-        .where(FieldPath.documentId, whereIn: ids)
+        .where(FieldPath.documentId, whereIn: chunk)
         .where('isActive', isEqualTo: true)
-        .get();
-    return qs.docs.map(subjectFromFirestore).toList(growable: false);
+        .get());
+    final results = await Future.wait(futures);
+    return results
+        .expand((qs) => qs.docs.map(subjectFromFirestore))
+        .toList(growable: false);
   }
 
   /// Helper privé v2 — résout une liste d'IDs exam_targets vers leurs models.
   ///
-  /// Symétrique de `_fetchSubjectsByIds` pour les examens visés. Filtre
-  /// `isActive == true` côté serveur.
+  /// Symétrique de `_fetchSubjectsByIds`. Chunke aussi à 30 par précaution.
   Future<List<ExamTarget>> _fetchExamTargetsByIds(List<String> ids) async {
     if (ids.isEmpty) return const [];
-    final qs = await _firestore
+    final chunks = _chunk(ids, 30);
+    if (chunks.length == 1) {
+      final qs = await _firestore
+          .collection(_kExamTargets)
+          .where(FieldPath.documentId, whereIn: chunks.first)
+          .where('isActive', isEqualTo: true)
+          .get();
+      return qs.docs.map(examTargetFromFirestore).toList(growable: false);
+    }
+    final futures = chunks.map((chunk) => _firestore
         .collection(_kExamTargets)
-        .where(FieldPath.documentId, whereIn: ids)
+        .where(FieldPath.documentId, whereIn: chunk)
         .where('isActive', isEqualTo: true)
-        .get();
-    return qs.docs.map(examTargetFromFirestore).toList(growable: false);
+        .get());
+    final results = await Future.wait(futures);
+    return results
+        .expand((qs) => qs.docs.map(examTargetFromFirestore))
+        .toList(growable: false);
+  }
+
+  /// Découpe [list] en sous-listes de taille max [size].
+  static List<List<T>> _chunk<T>(List<T> list, int size) {
+    final chunks = <List<T>>[];
+    for (var i = 0; i < list.length; i += size) {
+      chunks.add(list.sublist(i, (i + size).clamp(0, list.length)));
+    }
+    return chunks;
   }
 
   @override

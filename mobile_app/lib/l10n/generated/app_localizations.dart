@@ -443,13 +443,13 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre section matieres obligatoires picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres obligatoires'**
+  /// **'Matières obligatoires'**
   String get onboardingPickerObligatoryTitle;
 
   /// Story E1bis-3 — Titre section matieres optionnelles picker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres optionnelles'**
+  /// **'Matières optionnelles'**
   String get onboardingPickerOptionalTitle;
 
   /// Story E1bis-3 — Titre section selection serie dans le picker.
@@ -473,7 +473,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Titre section matieres connexes tvePicker.
   ///
   /// In fr, this message translates to:
-  /// **'Matieres connexes'**
+  /// **'Matières connexes'**
   String get onboardingPickerRelatedTitle;
 
   /// Titre H3 section Other Subjects mode tve_picker TVEE (Story 1.17). Mix : EN+FR lockées + matières culturelles au choix (Hist/Geo/RS).
@@ -746,16 +746,16 @@ abstract class AppLocalizations {
   /// **'Accueil'**
   String get dashboardTabHome;
 
-  /// Label onglet 1 du bottom tab bar (Story 1.9 AC6).
+  /// Label onglet 1 du bottom tab bar — contenu cours/matières.
   ///
   /// In fr, this message translates to:
-  /// **'Matières'**
+  /// **'Cours'**
   String get dashboardTabSubjects;
 
-  /// Label onglet 2 du bottom tab bar (Story 1.9 AC6).
+  /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
-  /// **'Activités'**
+  /// **'Examen'**
   String get dashboardTabActivities;
 
   /// Label onglet 3 du bottom tab bar (Story 1.9 AC6).
@@ -875,7 +875,7 @@ abstract class AppLocalizations {
   /// Story E1bis-3 — Description sous SelectionCard track generale.
   ///
   /// In fr, this message translates to:
-  /// **'Programme academique classique (maths, sciences, lettres)'**
+  /// **'Programme académique classique (maths, sciences, lettres)'**
   String get onboardingTrackHintGeneral;
 
   /// Story E1bis-3 — Description sous SelectionCard track technique.
@@ -896,17 +896,47 @@ abstract class AppLocalizations {
   /// **'Sélectionne ton niveau actuel pour adapter le contenu.'**
   String get onboardingLevelSubtitle;
 
-  /// Story E1bis-3 — Titre H1 step 4 stream + subjects picker.
+  /// Audit 2026-06-14 — Titre H1 step 4 vue derived (recap). Avant : 'Quelles matieres etudies-tu ?' qui sous-entendait une selection ; maintenant le user ne choisit plus les matieres, c'est purement un resume de la classe + matieres derivees.
   ///
   /// In fr, this message translates to:
-  /// **'Quelles matières étudies-tu ?'**
+  /// **'Ta classe'**
   String get onboardingStreamSubjectsTitle;
 
-  /// Story E1bis-3 — Sous-titre step 4.
+  /// Audit 2026-06-14 — Sous-titre step 4 vue derived, factuel + bienveillant.
   ///
   /// In fr, this message translates to:
-  /// **'Sélectionne ta série et tes matières pour personnaliser tes cours.'**
+  /// **'Voici les matières que tu vas étudier.'**
   String get onboardingStreamSubjectsSubtitle;
+
+  /// Audit 2026-06-14 — Label pour la ligne sub-system dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Section'**
+  String get onboardingRecapLabelSection;
+
+  /// Audit 2026-06-14 — Label pour la ligne track dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filière'**
+  String get onboardingRecapLabelTrack;
+
+  /// Audit 2026-06-14 — Label pour la ligne level dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Niveau'**
+  String get onboardingRecapLabelLevel;
+
+  /// Audit 2026-06-14 — Label pour la ligne stream/serie dans le recap banner step 4.
+  ///
+  /// In fr, this message translates to:
+  /// **'Série'**
+  String get onboardingRecapLabelStream;
+
+  /// Audit 2026-06-14 — Label pour la ligne examen(s) vise(s) dans le recap banner step 4 (BAC, BEPC, Probatoire, GCE...).
+  ///
+  /// In fr, this message translates to:
+  /// **'Examen'**
+  String get onboardingRecapLabelExam;
 
   /// Audit BUG-01 — Titre fallback affiche quand le catalogue Firestore ne contient aucune serie pour le niveau choisi (probable desync seed).
   ///
@@ -932,16 +962,76 @@ abstract class AppLocalizations {
   /// **'Changer de niveau'**
   String get onboardingStreamPickerEmptyChangeLevel;
 
+  /// Audit 2026-06-14 — Titre fallback step 3 quand trackId pose mais 0 niveaux actifs match. Cas : anglo + technique (TVE non seede en MVP).
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe pour cette filière'**
+  String get onboardingLevelEmptyForTrackTitle;
+
+  /// Audit 2026-06-14 — Body fallback step 3 trackId set + 0 niveaux. Guide vers back step 2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune classe n\'est encore disponible pour cette filière. Change de filière pour continuer.'**
+  String get onboardingLevelEmptyForTrackBody;
+
+  /// Audit 2026-06-14 — CTA primaire qui fait notifier.back() (step 3 -> 2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de filière'**
+  String get onboardingLevelEmptyForTrackChangeTrack;
+
   /// Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore.
   ///
   /// In fr, this message translates to:
   /// **'Chargement…'**
   String get onboardingLoaderLabel;
 
+  /// No description provided for @onboardingGroupLv2.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue Vivante 2'**
+  String get onboardingGroupLv2;
+
+  /// No description provided for @onboardingGroupLv3.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue Vivante 3'**
+  String get onboardingGroupLv3;
+
+  /// No description provided for @onboardingGroupOlevelOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matière O-Level'**
+  String get onboardingGroupOlevelOptions;
+
+  /// No description provided for @onboardingGroupAlevelOptions.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matière A-Level'**
+  String get onboardingGroupAlevelOptions;
+
+  /// No description provided for @onboardingGroupGeneric.
+  ///
+  /// In fr, this message translates to:
+  /// **'matière'**
+  String get onboardingGroupGeneric;
+
+  /// No description provided for @onboardingGroupPickHint.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis 1'**
+  String get onboardingGroupPickHint;
+
+  /// Story E1bis-3 — Hint section optionnelles (ex: Choisis jusqu'à 3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis jusqu\'à {count}'**
+  String onboardingPickerChooseUpTo(int count);
+
   /// Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).
   ///
   /// In fr, this message translates to:
-  /// **'{count}/{max} selectionnees'**
+  /// **'{count}/{max} sélectionnées'**
   String onboardingPickerCounter(int count, int max);
 
   /// Story E1bis-3 — Label CTA validation picker.
@@ -949,6 +1039,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Valider mes matières'**
   String get onboardingPickerValidate;
+
+  /// Story E1bis-3 — CTA final step 4 : crée un compte anonyme et navigue vers le dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer à réviser'**
+  String get onboardingStartRevising;
 
   /// Story E1bis-3 — Message erreur chargement catalogue Firestore.
   ///
@@ -1067,7 +1163,7 @@ abstract class AppLocalizations {
   /// Audit PR5 — Body bottomsheet upgrade.
   ///
   /// In fr, this message translates to:
-  /// **'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.'**
+  /// **'En liant ton compte, tu retrouves ta progression sur n\'importe quel téléphone et tu évites de tout perdre si tu changes d\'appareil.'**
   String get accountUpgradeSheetBody;
 
   /// Audit PR5 — Snackbar success upgrade.
@@ -1109,7 +1205,7 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Titre H1 step 7 phone input.
   ///
   /// In fr, this message translates to:
-  /// **'Ton numero de telephone'**
+  /// **'Ton numéro de téléphone'**
   String get onboardingPhoneTitle;
 
   /// Story E1bis-5 — Sous-titre step 7.
@@ -1127,13 +1223,13 @@ abstract class AppLocalizations {
   /// Story E1bis-5 — Titre dialog skip phone.
   ///
   /// In fr, this message translates to:
-  /// **'Passer cette etape ?'**
+  /// **'Passer cette étape ?'**
   String get onboardingPhoneSkipConfirmTitle;
 
   /// Story E1bis-5 — Message dialog skip phone.
   ///
   /// In fr, this message translates to:
-  /// **'Tu pourras ajouter ton numero plus tard depuis ton profil.'**
+  /// **'Tu pourras ajouter ton numéro plus tard depuis ton profil.'**
   String get onboardingPhoneSkipConfirmMessage;
 
   /// Story E1bis-5 — CTA confirm skip phone.
@@ -1199,8 +1295,62 @@ abstract class AppLocalizations {
   /// Story E1bis-7 — Erreur ecriture Firestore.
   ///
   /// In fr, this message translates to:
-  /// **'Impossible de sauvegarder ton profil. Reessaie.'**
+  /// **'Sauvegarde impossible. Vérifie ta connexion et réessaie.'**
   String get onboardingFlushError;
+
+  /// Bug 5 — Utilisateur Apple qui tente de se connecter Google sur Android, ou vice-versa.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce compte est lié à un autre service (Apple ou Google). Reconnecte-toi avec le même service que lors de ton inscription.'**
+  String get onboardingAuthProviderNotSupported;
+
+  /// Story E1bis-7 — Titre dialog benefices compte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte est cree !'**
+  String get onboardingSuccessDialogTitle;
+
+  /// Story E1bis-7 — Sous-titre dialog benefices.
+  ///
+  /// In fr, this message translates to:
+  /// **'Avec Valide, tu peux :'**
+  String get onboardingSuccessDialogSubtitle;
+
+  /// Story E1bis-7 — Benefice 1 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suivre ta progression semaine apres semaine'**
+  String get onboardingSuccessBenefit1;
+
+  /// Story E1bis-7 — Benefice 2 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Acceder aux classements de ta classe et ton ecole'**
+  String get onboardingSuccessBenefit2;
+
+  /// Story E1bis-7 — Benefice 3 dialog succes.
+  ///
+  /// In fr, this message translates to:
+  /// **'Recevoir des exercices adaptes a ton niveau'**
+  String get onboardingSuccessBenefit3;
+
+  /// Story E1bis-7 — CTA dialog benefices.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get onboardingSuccessDialogCta;
+
+  /// Step 0 — bouton principal pour un utilisateur qui reinstalle sur un nouveau telephone.
+  ///
+  /// In fr, this message translates to:
+  /// **'J\'ai un compte'**
+  String get onboardingHaveAccount;
+
+  /// Step 1 — CTA principal pour demarrer l'onboarding classique.
+  ///
+  /// In fr, this message translates to:
+  /// **'Je n\'ai pas encore de compte'**
+  String get onboardingNoAccount;
 }
 
 class _AppLocalizationsDelegate

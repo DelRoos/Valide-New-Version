@@ -58,6 +58,10 @@ class _FakeRepo implements UserProfileRepository {
   @override
   Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school) async =>
       const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async =>
+      Right(null);
 }
 
 class _FakeAuth implements FirebaseAuth {

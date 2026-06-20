@@ -63,6 +63,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '410229733764',
     projectId: 'valide-edu',
     storageBucket: 'valide-edu.firebasestorage.app',
+    iosClientId: '410229733764-k57oemhkr7e8r22scenhg92f7cgk1a0k.apps.googleusercontent.com',
     iosBundleId: 'com.valideStartup.valideSchool',
   );
+
 }

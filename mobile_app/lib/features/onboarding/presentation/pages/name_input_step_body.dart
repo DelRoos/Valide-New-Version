@@ -24,19 +24,37 @@ class NameInputStepBody extends ConsumerStatefulWidget {
 
 class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
   late final TextEditingController _controller;
+  late final FocusNode _focusNode;
   String? _errorText;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     final initial = ref.read(onboardingNotifierProvider).userDisplayName ?? '';
     _controller = TextEditingController(text: initial);
     _controller.addListener(_onChanged);
+    // Le listener ne se declenche pas pour la valeur initiale. Si OAuth a
+    // pre-rempli le nom (via setAuthProvider), le CTA doit etre actif
+    // immediatement sans que le user ne tape quoi que ce soit.
+    if (initial.trim().length >= 2) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        ref
+            .read(onboardingNotifierProvider.notifier)
+            .setUserDisplayNameDraft(initial.trim());
+      });
+    }
+    // Focus apres la transition AnimatedSwitcher (300 ms).
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _focusNode.requestFocus();
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -77,9 +95,17 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
             SizedBox(height: AppSpacing.s8.h),
             Icon(LucideIcons.user, size: 56.sp, color: AppColors.primary),
             SizedBox(height: AppSpacing.s5.h),
-            Text(
-              l10n.onboardingNameTitle,
-              style: AppTypography.h1.copyWith(fontSize: 24.sp),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(text: l10n.onboardingNameTitle),
+                  TextSpan(
+                    text: ' *',
+                    style: TextStyle(color: AppColors.danger),
+                  ),
+                ],
+                style: AppTypography.h1.copyWith(fontSize: 24.sp),
+              ),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s3.h),
@@ -94,7 +120,7 @@ class _NameInputStepBodyState extends ConsumerState<NameInputStepBody> {
             SizedBox(height: AppSpacing.s6.h),
             TextField(
               controller: _controller,
-              autofocus: true,
+              focusNode: _focusNode,
               maxLength: 50,
               textCapitalization: TextCapitalization.words,
               decoration: InputDecoration(

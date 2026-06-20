@@ -17,11 +17,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/onboarding/onboarding_cta_footer.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../providers.dart' show profileUpgradeInProgressProvider;
 import '../state/onboarding_notifier.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
@@ -57,15 +60,45 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
   Widget build(BuildContext context) {
     final state = ref.watch(onboardingNotifierProvider);
     final notifier = ref.read(onboardingNotifierProvider.notifier);
+    final upgradeInProgress = ref.watch(profileUpgradeInProgressProvider);
     final l10n = AppLocalizations.of(context);
+
+    // En mode upgrade (visiteur -> compte depuis le dashboard), le retour
+    // au step 6 (nom) ne doit pas replonger dans le flow auth (step 5) —
+    // l'utilisateur est deja authentifie. On intercept pour revenir au
+    // dashboard et laisser le user completer son profil plus tard.
+    void onBack() {
+      if (upgradeInProgress && state.currentStep == 6) {
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
+        GoRouter.of(context).go('/dashboard');
+        return;
+      }
+      notifier.back();
+    }
+
+    // Le footer est dans le Column du body (pas dans bottomNavigationBar) pour
+    // qu'il remonte avec le body quand le clavier apparait (resizeToAvoidBottomInset
+    // par defaut = true reduit la hauteur du body, donc le footer reste visible
+    // au-dessus du clavier sans reglage supplementaire).
+    final footer = _footerForStep(
+      step: state.currentStep,
+      state: state,
+      notifier: notifier,
+      l10n: l10n,
+    );
 
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
+        // Step 1 hero intro : image full-bleed derriere status bar.
+        // HeroBanner compense le topInset via MediaQuery.of(context).padding.top.
+        top: state.currentStep != 1,
         bottom: false,
         child: Column(
           children: [
-            _OnboardingHeader(step: state.currentStep, onBack: notifier.back),
+            _OnboardingHeader(step: state.currentStep, onBack: onBack),
             Expanded(
               child: AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
@@ -87,14 +120,9 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
                 ),
               ),
             ),
+            if (footer != null) footer,
           ],
         ),
-      ),
-      bottomNavigationBar: _footerForStep(
-        step: state.currentStep,
-        state: state,
-        notifier: notifier,
-        l10n: l10n,
       ),
     );
   }
@@ -125,34 +153,28 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
 
     switch (step) {
       case 0:
-        // Audit 2026-06-13 (rev2) — Restauration du CTA : le tap card pose
-        // maintenant un draft (setSubSystemDraft) sans avancer. L'utilisateur
-        // peut re-tapper l'autre choix avant de confirmer. Coherent avec
-        // step 2 (track) et step 3 (level).
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.subSystem != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setSubSystem() qui transitione
+        // directement step 0 -> 1. Pas de CTA intermediaire.
+        return null;
       case 1:
         return OnboardingCtaFooter(
-          label: l10n.heroIntroCta,
+          label: l10n.onboardingNoAccount,
           onPressed: notifier.next,
+          secondaryAction: SizedBox(
+            width: double.infinity,
+            child: AppButton.secondary(
+              label: l10n.onboardingHaveAccount,
+              icon: LucideIcons.logIn,
+              onPressed: notifier.jumpToAuth,
+            ),
+          ),
         );
       case 2:
-        // Step 2 track : tap card pose le draft (setTrackIdDraft) sans
-        // avancer. L'utilisateur confirme via le CTA Continuer ci-dessous.
-        // Audit 2026-06-13 — avant ce PR, auto-avance -> impossible de
-        // changer d'avis sans back.
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.trackId != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setTrackId() -> step 3 direct.
+        return null;
       case 3:
-        // Step 3 level : CTA pour confirmer. setLevelId auto-avance.
-        return OnboardingCtaFooter(
-          label: l10n.onboardingContinue,
-          onPressed: state.levelId != null ? notifier.next : null,
-        );
+        // Auto-avance : tap card appelle setLevelId() -> step 4 direct.
+        return null;
       case 4:
         // Step 4 picker : footer rendu par le step body (PickerValidateBar
         // gere son propre CTA avec compteur + validation).
@@ -167,23 +189,23 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
               : null,
         );
       case 7:
-        // Step 7 phone : CTA actif si le numero est valide. Skip est dans
-        // le body via bouton tertiaire avec confirmation modale.
+        // Step 7 phone : toujours actif (optionnel). Si numero valide ->
+        // setPhoneNumber ; sinon -> skipPhone (avance sans numero).
         final hasPhone = state.phoneNumber != null;
         return OnboardingCtaFooter(
           label: l10n.onboardingContinue,
           onPressed: hasPhone
               ? () => notifier.setPhoneNumber(state.phoneNumber!)
-              : null,
+              : notifier.skipPhone,
         );
       case 8:
-        // Step 8 school : CTA actif si une ecole (catalogue OU pending) a
-        // ete posee. Skip est dans le body via bouton tertiaire.
+        // Step 8 school : toujours actif (optionnel). Si ecole posee ->
+        // next ; sinon -> skipSchool (avance sans ecole).
         final hasSchool = state.schoolId != null ||
             state.pendingSchoolRequestId != null;
         return OnboardingCtaFooter(
           label: l10n.onboardingContinue,
-          onPressed: hasSchool ? notifier.next : null,
+          onPressed: hasSchool ? notifier.next : notifier.skipSchool,
         );
       case 9:
         // Step 9 success : footer rendu par CelebrationConfettiSuccess
@@ -218,7 +240,9 @@ class _OnboardingHeader extends StatelessWidget {
   final int step;
   final VoidCallback onBack;
 
-  bool get _showHeader => step >= 1 && step <= 8;
+  // Step 1 (hero intro) : header masque — HeroIntroStepBody gere son propre
+  // back button superpose sur l'image (full-bleed sans gap au-dessus).
+  bool get _showHeader => step >= 2 && step <= 8;
 
   bool get _showProgress =>
       (step >= 2 && step <= 4) || (step >= 6 && step <= 8);
@@ -238,7 +262,10 @@ class _OnboardingHeader extends StatelessWidget {
             icon: const Icon(LucideIcons.arrowLeft),
             color: AppColors.ink,
             onPressed: onBack,
-            tooltip: 'Retour',
+            // Audit 2026-06-14 — Tooltip retire : sur MIUI/Xiaomi le tooltip
+            // reste affiche ~1.5s apres tap-and-release et donne l'impression
+            // d'un bouton parasit (chip "Retour" grise flottante). L'icone
+            // chevron-left etant universelle, le tooltip n'ajoutait rien.
           ),
           if (_showProgress) ...[
             SizedBox(width: AppSpacing.s2.w),

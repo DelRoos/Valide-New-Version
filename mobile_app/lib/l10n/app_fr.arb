@@ -377,11 +377,11 @@
   "dashboardTabHome": "Accueil",
   "@dashboardTabHome": { "description": "Label onglet 0 du bottom tab bar (Story 1.9 AC6)." },
 
-  "dashboardTabSubjects": "Matières",
-  "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar (Story 1.9 AC6)." },
+  "dashboardTabSubjects": "Cours",
+  "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar — contenu cours/matières." },
 
-  "dashboardTabActivities": "Activités",
-  "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar (Story 1.9 AC6)." },
+  "dashboardTabActivities": "Examen",
+  "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
   "dashboardTabProfile": "Profil",
   "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." },
@@ -440,7 +440,7 @@
   "onboardingTrackSubtitle": "Choisis le type d'enseignement que tu veux suivre.",
   "@onboardingTrackSubtitle": { "description": "Story E1bis-3 — Sous-titre step 2 track choice." },
 
-  "onboardingTrackHintGeneral": "Programme academique classique (maths, sciences, lettres)",
+  "onboardingTrackHintGeneral": "Programme académique classique (maths, sciences, lettres)",
   "@onboardingTrackHintGeneral": { "description": "Story E1bis-3 — Description sous SelectionCard track generale." },
 
   "onboardingTrackHintTechnique": "Programme professionnel (industriel, commercial, tertiaire)",
@@ -452,11 +452,21 @@
   "onboardingLevelSubtitle": "Sélectionne ton niveau actuel pour adapter le contenu.",
   "@onboardingLevelSubtitle": { "description": "Story E1bis-3 — Sous-titre step 3 level choice." },
 
-  "onboardingStreamSubjectsTitle": "Quelles matières étudies-tu ?",
-  "@onboardingStreamSubjectsTitle": { "description": "Story E1bis-3 — Titre H1 step 4 stream + subjects picker." },
+  "onboardingStreamSubjectsTitle": "Ta classe",
+  "@onboardingStreamSubjectsTitle": { "description": "Audit 2026-06-14 — Titre H1 step 4 vue derived (recap). Avant : 'Quelles matieres etudies-tu ?' qui sous-entendait une selection ; maintenant le user ne choisit plus les matieres, c'est purement un resume de la classe + matieres derivees." },
 
-  "onboardingStreamSubjectsSubtitle": "Sélectionne ta série et tes matières pour personnaliser tes cours.",
-  "@onboardingStreamSubjectsSubtitle": { "description": "Story E1bis-3 — Sous-titre step 4." },
+  "onboardingStreamSubjectsSubtitle": "Voici les matières que tu vas étudier.",
+  "@onboardingStreamSubjectsSubtitle": { "description": "Audit 2026-06-14 — Sous-titre step 4 vue derived, factuel + bienveillant." },
+  "onboardingRecapLabelSection": "Section",
+  "@onboardingRecapLabelSection": { "description": "Audit 2026-06-14 — Label pour la ligne sub-system dans le recap banner step 4." },
+  "onboardingRecapLabelTrack": "Filière",
+  "@onboardingRecapLabelTrack": { "description": "Audit 2026-06-14 — Label pour la ligne track dans le recap banner step 4." },
+  "onboardingRecapLabelLevel": "Niveau",
+  "@onboardingRecapLabelLevel": { "description": "Audit 2026-06-14 — Label pour la ligne level dans le recap banner step 4." },
+  "onboardingRecapLabelStream": "Série",
+  "@onboardingRecapLabelStream": { "description": "Audit 2026-06-14 — Label pour la ligne stream/serie dans le recap banner step 4." },
+  "onboardingRecapLabelExam": "Examen",
+  "@onboardingRecapLabelExam": { "description": "Audit 2026-06-14 — Label pour la ligne examen(s) vise(s) dans le recap banner step 4 (BAC, BEPC, Probatoire, GCE...)." },
 
   "onboardingPickerSeriesTitle": "Choisis ta série",
   "@onboardingPickerSeriesTitle": { "description": "Story E1bis-3 — Titre section selection serie dans le picker." },
@@ -469,19 +479,37 @@
   "@onboardingStreamPickerEmptyRetry": { "description": "Audit BUG-01 — CTA retry fallback streams empty." },
   "onboardingStreamPickerEmptyChangeLevel": "Changer de niveau",
   "@onboardingStreamPickerEmptyChangeLevel": { "description": "Audit 2026-06-14 — CTA primaire empty state : revient au step 3 (level choice). Couvre le cas du draft stale (levelId persiste qui n'existe plus dans le catalogue actuel) ou le cas seed gap legitime." },
+  "onboardingLevelEmptyForTrackTitle": "Aucune classe pour cette filière",
+  "@onboardingLevelEmptyForTrackTitle": { "description": "Audit 2026-06-14 — Titre fallback step 3 quand trackId pose mais 0 niveaux actifs match. Cas : anglo + technique (TVE non seede en MVP)." },
+  "onboardingLevelEmptyForTrackBody": "Aucune classe n'est encore disponible pour cette filière. Change de filière pour continuer.",
+  "@onboardingLevelEmptyForTrackBody": { "description": "Audit 2026-06-14 — Body fallback step 3 trackId set + 0 niveaux. Guide vers back step 2." },
+  "onboardingLevelEmptyForTrackChangeTrack": "Changer de filière",
+  "@onboardingLevelEmptyForTrackChangeTrack": { "description": "Audit 2026-06-14 — CTA primaire qui fait notifier.back() (step 3 -> 2)." },
   "onboardingLoaderLabel": "Chargement…",
   "@onboardingLoaderLabel": { "description": "Audit BUG-03 — Texte affiche sous le spinner pendant le fetch du catalogue Firestore." },
 
-  "onboardingPickerObligatoryTitle": "Matieres obligatoires",
+  "onboardingGroupLv2": "Langue Vivante 2",
+  "onboardingGroupLv3": "Langue Vivante 3",
+  "onboardingGroupOlevelOptions": "Matière O-Level",
+  "onboardingGroupAlevelOptions": "Matière A-Level",
+  "onboardingGroupGeneric": "matière",
+  "onboardingGroupPickHint": "Choisis 1",
+  "onboardingPickerChooseUpTo": "Choisis jusqu'à {count}",
+  "@onboardingPickerChooseUpTo": {
+    "description": "Story E1bis-3 — Hint section optionnelles (ex: Choisis jusqu'à 3).",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "onboardingPickerObligatoryTitle": "Matières obligatoires",
   "@onboardingPickerObligatoryTitle": { "description": "Story E1bis-3 — Titre section matieres obligatoires picker." },
 
-  "onboardingPickerOptionalTitle": "Matieres optionnelles",
+  "onboardingPickerOptionalTitle": "Matières optionnelles",
   "@onboardingPickerOptionalTitle": { "description": "Story E1bis-3 — Titre section matieres optionnelles picker." },
 
-  "onboardingPickerRelatedTitle": "Matieres connexes",
+  "onboardingPickerRelatedTitle": "Matières connexes",
   "@onboardingPickerRelatedTitle": { "description": "Story E1bis-3 — Titre section matieres connexes tvePicker." },
 
-  "onboardingPickerCounter": "{count}/{max} selectionnees",
+  "onboardingPickerCounter": "{count}/{max} sélectionnées",
   "@onboardingPickerCounter": {
     "description": "Story E1bis-3 — Badge compteur picker (ex. 6/11 selectionnees).",
     "placeholders": {
@@ -492,6 +520,9 @@
 
   "onboardingPickerValidate": "Valider mes matières",
   "@onboardingPickerValidate": { "description": "Story E1bis-3 — Label CTA validation picker." },
+
+  "onboardingStartRevising": "Commencer à réviser",
+  "@onboardingStartRevising": { "description": "Story E1bis-3 — CTA final step 4 : crée un compte anonyme et navigue vers le dashboard." },
 
   "errorCatalogueLoading": "Impossible de charger le catalogue. Vérifie ta connexion et réessaie.",
   "@errorCatalogueLoading": { "description": "Story E1bis-3 — Message erreur chargement catalogue Firestore." },
@@ -537,7 +568,7 @@
   "@onboardingGuestSwitchCancel": { "description": "Audit PR2 — CTA annulation modale switch visiteur." },
   "accountUpgradeSheetTitle": "Sauvegarder ton compte",
   "@accountUpgradeSheetTitle": { "description": "Audit PR5 — Titre bottomsheet upgrade visiteur -> compte permanent." },
-  "accountUpgradeSheetBody": "En liant ton compte, tu retrouves ta progression sur n'importe quel telephone et tu evites de tout perdre si tu changes d'appareil.",
+  "accountUpgradeSheetBody": "En liant ton compte, tu retrouves ta progression sur n'importe quel téléphone et tu évites de tout perdre si tu changes d'appareil.",
   "@accountUpgradeSheetBody": { "description": "Audit PR5 — Body bottomsheet upgrade." },
   "accountUpgradeSuccess": "Compte sauvegarde ✨",
   "@accountUpgradeSuccess": { "description": "Audit PR5 — Snackbar success upgrade." },
@@ -553,15 +584,15 @@
   "onboardingNameTooLong": "Maximum 50 caracteres.",
   "@onboardingNameTooLong": { "description": "Story E1bis-5 — Erreur validation > 50 chars." },
 
-  "onboardingPhoneTitle": "Ton numero de telephone",
+  "onboardingPhoneTitle": "Ton numéro de téléphone",
   "@onboardingPhoneTitle": { "description": "Story E1bis-5 — Titre H1 step 7 phone input." },
   "onboardingPhoneSubtitle": "Pour te contacter en cas de besoin. Optionnel.",
   "@onboardingPhoneSubtitle": { "description": "Story E1bis-5 — Sous-titre step 7." },
   "onboardingPhoneSkipLabel": "Passer pour l'instant",
   "@onboardingPhoneSkipLabel": { "description": "Story E1bis-5 — Bouton skip step 7." },
-  "onboardingPhoneSkipConfirmTitle": "Passer cette etape ?",
+  "onboardingPhoneSkipConfirmTitle": "Passer cette étape ?",
   "@onboardingPhoneSkipConfirmTitle": { "description": "Story E1bis-5 — Titre dialog skip phone." },
-  "onboardingPhoneSkipConfirmMessage": "Tu pourras ajouter ton numero plus tard depuis ton profil.",
+  "onboardingPhoneSkipConfirmMessage": "Tu pourras ajouter ton numéro plus tard depuis ton profil.",
   "@onboardingPhoneSkipConfirmMessage": { "description": "Story E1bis-5 — Message dialog skip phone." },
   "onboardingPhoneSkipConfirmYes": "Oui, passer",
   "@onboardingPhoneSkipConfirmYes": { "description": "Story E1bis-5 — CTA confirm skip phone." },
@@ -592,6 +623,28 @@
   "@onboardingSuccessSubtitle": { "description": "Story E1bis-7 — Sous-titre celebration." },
   "onboardingSuccessCta": "Decouvrir mon dashboard",
   "@onboardingSuccessCta": { "description": "Story E1bis-7 — CTA fin celebration." },
-  "onboardingFlushError": "Impossible de sauvegarder ton profil. Reessaie.",
-  "@onboardingFlushError": { "description": "Story E1bis-7 — Erreur ecriture Firestore." }
+  "onboardingFlushError": "Sauvegarde impossible. Vérifie ta connexion et réessaie.",
+  "@onboardingFlushError": { "description": "Story E1bis-7 — Erreur ecriture Firestore." },
+
+  "onboardingAuthProviderNotSupported": "Ce compte est lié à un autre service (Apple ou Google). Reconnecte-toi avec le même service que lors de ton inscription.",
+  "@onboardingAuthProviderNotSupported": { "description": "Bug 5 — Utilisateur Apple qui tente de se connecter Google sur Android, ou vice-versa." },
+
+  "onboardingSuccessDialogTitle": "Ton compte est cree !",
+  "@onboardingSuccessDialogTitle": { "description": "Story E1bis-7 — Titre dialog benefices compte." },
+  "onboardingSuccessDialogSubtitle": "Avec Valide, tu peux :",
+  "@onboardingSuccessDialogSubtitle": { "description": "Story E1bis-7 — Sous-titre dialog benefices." },
+  "onboardingSuccessBenefit1": "Suivre ta progression semaine apres semaine",
+  "@onboardingSuccessBenefit1": { "description": "Story E1bis-7 — Benefice 1 dialog succes." },
+  "onboardingSuccessBenefit2": "Acceder aux classements de ta classe et ton ecole",
+  "@onboardingSuccessBenefit2": { "description": "Story E1bis-7 — Benefice 2 dialog succes." },
+  "onboardingSuccessBenefit3": "Recevoir des exercices adaptes a ton niveau",
+  "@onboardingSuccessBenefit3": { "description": "Story E1bis-7 — Benefice 3 dialog succes." },
+  "onboardingSuccessDialogCta": "Commencer",
+  "@onboardingSuccessDialogCta": { "description": "Story E1bis-7 — CTA dialog benefices." },
+
+  "onboardingHaveAccount": "J'ai un compte",
+  "@onboardingHaveAccount": { "description": "Step 0 — bouton principal pour un utilisateur qui reinstalle sur un nouveau telephone." },
+
+  "onboardingNoAccount": "Je n'ai pas encore de compte",
+  "@onboardingNoAccount": { "description": "Step 1 — CTA principal pour demarrer l'onboarding classique." }
 }

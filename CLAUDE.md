@@ -155,7 +155,14 @@ Et pour les modes (`Fast` / `Coaching`) :
 4. **Ne jamais logger** : mots de passe, jetons, codes PIN, numéros de téléphone complets, données personnelles sensibles.
 5. **Cache** : on utilise **uniquement** le cache offline natif de Firestore. Pas de cache custom. Mutable = stream `snapshots()` ; statique = `.get()`.
 6. **flutter_smooth_markdown** : n'est importé que dans `core/widgets/pedagogical_content.dart`.
-7. **flutter_screenutil** : pas de pixels en dur dans les widgets, utiliser `.w` / `.h` / `.sp` / `.r`.
+7. **flutter_screenutil + tokens de taille** : pas de valeurs numériques brutes dans les widgets. Règle à trois niveaux :
+   - **Espacements** → `AppSpacing.sX.w` / `.h` (ex. `AppSpacing.s4.h`)
+   - **Tailles de police** → `AppFontSize.xxx` dans `copyWith(fontSize: AppFontSize.bodySmall)` — jamais de `14.sp` littéral
+   - **Tailles d'icônes** → `AppIconSize.xxx` dans `Icon(icon, size: AppIconSize.lg)` — jamais de `18.sp` littéral
+   - **Rayons** → `AppRadius.xxx` dans `BorderRadius.circular(AppRadius.lg)` — jamais de valeur numérique directe
+   - **Épaisseurs de bordure** → `AppBorderWidth.xxx` — jamais de `1`, `1.5`, `2` directs
+   - **Exception explicite** : `AppNavBar.*` utilise des `const double` fixes (pas de `.sp`) — la barre de navigation est une zone de touch à hauteur physique stable, volontairement non-responsive en texte.
+   - Toutes ces classes sont dans `lib/core/theme/tokens.dart`.
 8. **Models** : ne sortent jamais de `data/` — `toEntity()` à la frontière.
 9. **Firestore indexes — source de vérité = `firestore.indexes.json`**. Toute PR qui ajoute ou modifie une requête Firestore avec **multi-`where`** ou **`where` + `orderBy`** sur champs différents DOIT déclarer le composite index correspondant dans `firestore.indexes.json` (racine du repo) **et** le déployer via `firebase deploy --only firestore:indexes --project valide-edu`. Critères qui imposent un index composite : (a) plus d'un `.where(...)` sur champs différents (incl. `arrayContains`), (b) `.where(...)` + `.orderBy(...)` sur des champs distincts, (c) requête `collectionGroup`. Les requêtes par ID de document (`.doc(id).get()`, `.snapshots()`) et les requêtes single-field sont auto-indexées par Firestore — pas besoin de déclaration. **Ne jamais créer un index uniquement via la console Firebase** : la déclaration locale est l'autorité (sinon staging/CI/nouveau projet repartent à zéro). Pour aligner après création console manuelle : `firebase firestore:indexes --project valide-edu > tmp.json` puis merger dans `firestore.indexes.json`.
 

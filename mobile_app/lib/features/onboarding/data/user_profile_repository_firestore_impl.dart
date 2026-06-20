@@ -265,4 +265,39 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }
+
+  // ===================================================================
+  // E1bis resume flow — fetchProfileOnce() : lecture unique post-sign-in
+  // pour le cas "nouveau telephone, compte existant".
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('fetchProfileOnce() aborted: no current user uid');
+      return const Right(null);
+    }
+    try {
+      final doc = await logPerf(
+        'users.fetchOnce',
+        () => _firestore.collection(_kCollection).doc(uid).get(),
+      );
+      AppLogger.i('fetchProfileOnce: exists=${doc.exists}');
+      return Right(doc.exists ? doc.data() : null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'fetchProfileOnce() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('fetchProfileOnce() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}', code: e.code),
+      );
+    } catch (e, st) {
+      AppLogger.w('fetchProfileOnce() unexpected error: $e', error: e);
+      AppLogger.w('fetchProfileOnce() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
 }

@@ -188,30 +188,47 @@ class OnboardingState extends Equatable {
 
   /// Payload pour ecriture Firestore via `set(merge: true)`.
   ///
-  /// **CHAMPS REQUIS** par les firestore.rules (create) — toujours presents
-  /// avec defaults safe meme si l'utilisateur a saute l'etape ou est visiteur :
-  ///   - `subSystem` / `language` / `trackId` / `levelId` : obligatoires
-  ///     (validation amont au step 0-3, jamais null a l'arrivee step 9).
-  ///   - `pickedSubjects` : `[]` si vide (la regle exige `is list`, pas
-  ///     `size > 0`).
-  ///   - `displayName` : `''` si null (visiteur ou skip OAuth) — la regle
-  ///     exige `is string`, pas `size > 0`.
-  ///   - `authProvider` / `isAnonymous` : poses au step 5 par
-  ///     setAuthProvider().
+  /// [isCreate] distingue la creation initiale d'un update partiel :
   ///
-  /// **CHAMPS OPTIONNELS** (pas dans les rules create) — ecrits seulement
-  /// s'ils ont une valeur, pour ne pas polluer le doc :
+  /// **CREATE** (`isCreate: true`) — champs requis par firestore.rules inclus
+  /// avec defaults safe meme si null/vide :
+  ///   - `pickedSubjects` : `[]` si vide (la regle exige `is list`).
+  ///   - `displayName` : `''` si null (la regle exige `is string`).
+  ///
+  /// **UPDATE** (`isCreate: false`, defaut) — champs requis omis si vides/null
+  /// pour preserver les valeurs existantes dans Firestore. Cas d'usage :
+  /// flush identite post-upgrade (steps 6-8 apres un upgrade visiteur ->
+  /// compte permanent depuis le dashboard). Le profil scolaire (trackId/
+  /// levelId/pickedSubjects) existe deja — on ne l'ecrase pas.
+  ///
+  /// **CHAMPS OPTIONNELS** (pas dans les rules create) — inclus seulement
+  /// s'ils ont une valeur :
   ///   - `streamId` / `phoneNumber` / `schoolId` / `schoolName` /
   ///     `pendingSchoolRequestId`.
-  Map<String, dynamic> toFirestorePayload() {
+  Map<String, dynamic> toFirestorePayload({bool isCreate = false}) {
     final payload = <String, dynamic>{};
     if (subSystem != null) payload['subSystem'] = subSystem!.id;
     if (trackId != null) payload['trackId'] = trackId;
     if (levelId != null) payload['levelId'] = levelId;
     if (streamId != null) payload['streamId'] = streamId;
-    // Champs requis create — defaults safe ('' / []) si pas remplis.
-    payload['pickedSubjects'] = List<String>.unmodifiable(pickedSubjects);
-    payload['displayName'] = userDisplayName ?? '';
+
+    // pickedSubjects : requis pour CREATE (liste vide acceptee par les rules).
+    // Pour UPDATE : inclus seulement si non vide — evite d'ecraser le doc
+    // existant (ex. upgrade post-restart ou le notifier n'a pas recharge les
+    // matieres depuis Firestore).
+    if (isCreate || pickedSubjects.isNotEmpty) {
+      payload['pickedSubjects'] = List<String>.unmodifiable(pickedSubjects);
+    }
+
+    // displayName : requis pour CREATE (rules exigent `is string`).
+    // Pour UPDATE : inclus seulement si rempli — evite d'ecraser le nom
+    // Google pose par _persistIdentity() lors du link OAuth.
+    if (isCreate) {
+      payload['displayName'] = userDisplayName ?? '';
+    } else if (userDisplayName != null && userDisplayName!.isNotEmpty) {
+      payload['displayName'] = userDisplayName!;
+    }
+
     if (phoneNumber != null) payload['phoneNumber'] = phoneNumber;
     if (schoolId != null) payload['schoolId'] = schoolId;
     if (schoolName != null) payload['schoolName'] = schoolName;

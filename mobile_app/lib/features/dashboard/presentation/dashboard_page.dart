@@ -19,7 +19,6 @@ import '../../../core/debug/dev_audit_fab.dart';
 import '../../../core/firebase/providers.dart';
 import '../../../core/theme/tokens.dart';
 import '../../onboarding/providers.dart';
-import '_main_bottom_nav.dart';
 import 'widgets/dashboard_guest_invite_card.dart';
 import 'widgets/dashboard_hero.dart';
 import 'widgets/dashboard_subjects_area.dart';
@@ -44,9 +43,9 @@ class DashboardPage extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.bg,
       body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return Column(
+        child: Stack(
+          children: [
+            Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 StreamBuilder<Map<String, dynamic>?>(
@@ -67,22 +66,26 @@ class DashboardPage extends ConsumerWidget {
                 const Expanded(
                   child: DashboardSubjectsArea(),
                 ),
-                if (isAnonymous)
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      AppSpacing.s4.w,
-                      AppSpacing.s2.h,
-                      AppSpacing.s4.w,
-                      AppSpacing.s3.h,
-                    ),
-                    child: const DashboardGuestInviteCard(),
-                  ),
               ],
-            );
-          },
+            ),
+            if (isAnonymous)
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.s4.w,
+                    AppSpacing.s2.h,
+                    AppSpacing.s4.w,
+                    AppSpacing.s3.h,
+                  ),
+                  child: const DashboardGuestInviteCard(),
+                ),
+              ),
+          ],
         ),
       ),
-      bottomNavigationBar: const MainBottomNav(currentIndex: 0),
       floatingActionButton: const DevAuditFab(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );

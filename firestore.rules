@@ -112,7 +112,12 @@ service cloud.firestore {
     // -----------------------------------------------------------------
     // Catalogue scolaire — 6 collections (Story 1.1c, ADR-015)
     //
-    // Lecture autorisee a tout utilisateur authentifie (anonyme inclus).
+    // Lecture publique (sans auth) : le catalogue est de la donnee statique
+    // de reference, pas de donnee personnelle. Cela permet au CatalogueRepository
+    // de pre-charger au boot avant que signInAnonymously() soit complete,
+    // et evite les permission-denied en cascade si le token Firebase expire
+    // ou si le user n'est pas encore authentifie (boot cold).
+    //
     // Ecriture interdite cote client : seul le script Python externe
     // `scripts/firebase_seed/seed_catalogue.py` (Story 1.1b, avec
     // service-account.json) ou la Firebase Console admin peut ecrire.
@@ -121,34 +126,35 @@ service cloud.firestore {
     // § « Catalogue scolaire (6 collections — Story 1.1a) »
     // -----------------------------------------------------------------
     match /filieres/{filiereId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
     match /niveaux/{niveauId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
     match /series/{serieId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
     match /subjects/{subjectId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
     match /exam_targets/{examTargetId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
     match /derivation_rules/{ruleId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
 
     // -----------------------------------------------------------------
     // schools/{schoolId} — catalogue d'ecoles (Story 1.7, FR-6)
     //
-    // Lecture par tout user authentifie (le catalogue est public).
+    // Lecture publique (sans auth) : meme logique que le catalogue scolaire
+    // ci-dessus. La liste des ecoles est de la donnee de reference.
     // Ecriture interdite cote client : seul l'admin (via Console) peut
     // valider une ecole (poser isValidated = true) ou ajouter un doc.
     //
@@ -157,7 +163,7 @@ service cloud.firestore {
     // (cf. match /school_requests/{requestId} plus bas).
     // -----------------------------------------------------------------
     match /schools/{schoolId} {
-      allow read: if request.auth != null;
+      allow read: if true;
       allow write: if false;
     }
 
@@ -187,9 +193,12 @@ service cloud.firestore {
         && request.resource.data.name is string
         && request.resource.data.name.size() >= 3
         && request.resource.data.name.size() <= 200
-        && request.resource.data.city is string
-        && request.resource.data.city.size() >= 2
-        && request.resource.data.city.size() <= 100
+        && (
+          !('city' in request.resource.data)
+          || (request.resource.data.city is string
+              && request.resource.data.city.size() >= 2
+              && request.resource.data.city.size() <= 100)
+        )
         && request.resource.data.status == 'pending'
         && (
           !('subSystem' in request.resource.data)

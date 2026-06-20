@@ -8,11 +8,10 @@
 // transitionne vers step 6 (saisie nom) ou step 7 (skip si OAuth a fourni
 // le displayName).
 
-import 'dart:io' show Platform;
-
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
+
+import '../../../../core/platform/platform_capabilities.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -22,9 +21,13 @@ import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/auth/social_auth_widgets.dart';
+import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../domain/account_linking_failure.dart';
 import '../../domain/account_linking_state.dart';
 import '../../domain/linked_account.dart';
+import '../../domain/profile_failure.dart';
 import '../../providers.dart';
 import '../state/onboarding_providers.dart';
 import '../state/onboarding_state.dart';
@@ -45,8 +48,6 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     final l10n = AppLocalizations.of(context);
     final linkState = ref.watch(accountLinkingNotifierProvider);
     final linkingNotifier = ref.read(accountLinkingNotifierProvider.notifier);
-    final onboardingNotifier =
-        ref.read(onboardingNotifierProvider.notifier);
 
     ref.listen<AccountLinkingState>(accountLinkingNotifierProvider,
         (prev, next) {
@@ -55,19 +56,14 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
           'auth.step5 success provider=${next.account.provider.id} '
           'hasDisplayName=${next.account.displayName != null}',
         );
-        onboardingNotifier.setAuthProvider(
-          next.account.provider == AccountProvider.google
-              ? OnboardingAuthProvider.google
-              : OnboardingAuthProvider.apple,
-          displayName: next.account.displayName,
-        );
+        _onSocialSignInSuccess(next.account);
       }
     });
 
     final isLoading = linkState.isLoading || _guestLoading;
-    final isAppleAvailable = !kIsWeb && Platform.isIOS;
+    final isAppleAvailable = isAppleSignInAvailable;
 
-    final errorMessage = _errorMessage(linkState) ?? _guestError;
+    final socialErrorMessage = _errorMessage(linkState);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -94,9 +90,25 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
             ),
             SizedBox(height: AppSpacing.s6.h),
 
-            if (errorMessage != null) ...[
-              _AuthErrorBanner(
-                message: errorMessage,
+            // Erreur flush visiteur (bug 8 fix) : banniere + bouton retry dedie.
+            if (_guestError != null) ...[
+              AuthErrorBanner(
+                message: _guestError!,
+                onDismiss: () => setState(() => _guestError = null),
+              ),
+              SizedBox(height: AppSpacing.s2.h),
+              AppButton.secondary(
+                label: l10n.retryLabel,
+                icon: LucideIcons.refreshCw,
+                onPressed: isLoading ? null : _onGuestTap,
+              ),
+              SizedBox(height: AppSpacing.s3.h),
+            ],
+
+            // Erreur social (Google / Apple).
+            if (socialErrorMessage != null && _guestError == null) ...[
+              AuthErrorBanner(
+                message: socialErrorMessage,
                 onDismiss: () {
                   linkingNotifier.reset();
                   setState(() => _guestError = null);
@@ -105,9 +117,9 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
               SizedBox(height: AppSpacing.s3.h),
             ],
 
-            _SocialButton(
+            SocialButton(
               label: l10n.onboardingAuthGoogleLabel,
-              iconData: LucideIcons.globe,
+              iconWidget: const GoogleBrandIcon(),
               loading: linkState is AccountLinkingLoading &&
                   linkState.provider == AccountProvider.google,
               onPressed: isLoading ? null : linkingNotifier.linkGoogle,
@@ -118,9 +130,9 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
             SizedBox(height: AppSpacing.s3.h),
 
             if (isAppleAvailable) ...[
-              _SocialButton(
+              SocialButton(
                 label: l10n.onboardingAuthAppleLabel,
-                iconData: LucideIcons.apple,
+                iconWidget: const AppleBrandIcon(color: Colors.white),
                 loading: linkState is AccountLinkingLoading &&
                     linkState.provider == AccountProvider.apple,
                 onPressed: isLoading ? null : linkingNotifier.linkApple,
@@ -160,17 +172,94 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
     );
   }
 
+  /// Post sign-in social : recupere le profil Firestore existant (si present)
+  /// et hydrate le state onboarding. Si le profil est complet, le router
+  /// redirige automatiquement vers /dashboard via profileCompletionProvider.
+  /// Si partiel ou absent, continue le flow onboarding au bon step.
+  ///
+  /// Bug 2 fix : si le reseau est coupe, fetchProfileOnce() retourne
+  /// networkUnavailable. On NE traite PAS silencieusement l'utilisateur comme
+  /// nouveau — son profil existant pourrait etre ecrase au flush. On bloque
+  /// avec un message retry. Sur toute autre erreur (permission, etc.), on
+  /// continue comme nouveau user (le profil n'existait probablement pas).
+  Future<void> _onSocialSignInSuccess(LinkedAccount account) async {
+    final onboardingNotifier = ref.read(onboardingNotifierProvider.notifier);
+    final repo = ref.read(userProfileRepositoryProvider);
+    final result = await repo.fetchProfileOnce();
+    if (!mounted) return;
+
+    final provider = account.provider == AccountProvider.google
+        ? OnboardingAuthProvider.google
+        : OnboardingAuthProvider.apple;
+
+    await result.fold(
+      (failure) async {
+        AppLogger.w(
+          'auth.step5 fetchProfileOnce failed kind=${failure.kind.name}',
+        );
+        if (failure.kind == ProfileFailureKind.networkUnavailable) {
+          // Reseau coupe : on ne sait pas si l'utilisateur a un profil existant.
+          // Afficher un message retry — l'utilisateur retappera Google/Apple
+          // quand la connexion sera retablie.
+          AppLogger.w(
+            'auth.step5 network unavailable -> block, show retry message',
+          );
+          if (mounted) {
+            setState(() => _guestError =
+                AppLocalizations.of(context).errorNetworkUnavailable);
+          }
+          // Reset le linking state pour que les boutons soient de nouveau actifs.
+          ref.read(accountLinkingNotifierProvider.notifier).reset();
+        } else {
+          // Erreur technique non-reseau : le profil n'existe probablement pas
+          // (permission-denied = doc absent, unknown = premiere connexion).
+          // On continue comme nouveau user — risque faible.
+          AppLogger.w(
+            'auth.step5 non-network error -> proceed as new user',
+          );
+          onboardingNotifier.setAuthProvider(
+            provider,
+            displayName: account.displayName,
+          );
+        }
+      },
+      (data) async {
+        if (data != null) {
+          AppLogger.i('auth.step5 existing profile found -> hydrate');
+          await onboardingNotifier.hydrateFromFirestore(
+            data,
+            oauthDisplayName: account.displayName,
+          );
+          // profileCompletionProvider + router gere le bounce /dashboard
+          // si le profil est complet. Sinon, hydrateFromFirestore pose le
+          // bon step de reprise.
+        } else {
+          AppLogger.i('auth.step5 no existing profile -> new user');
+          onboardingNotifier.setAuthProvider(
+            provider,
+            displayName: account.displayName,
+          );
+        }
+      },
+    );
+  }
+
+  // Audit 2026-06-15 — Mapping via failure.kind (CLAUDE.md regle 13) :
+  // - cancelled             : silencieux (l'utilisateur a ferme le picker OAuth).
+  // - unknown provider_not_supported : le compte est lie a un autre provider.
+  // - unknown (autres)      : on n'expose pas le message technique brut.
+  // - autres                : failure.message est deja localise en francais.
   String? _errorMessage(AccountLinkingState state) {
-    if (state is AccountLinkingError) {
-      final l10n = AppLocalizations.of(context);
-      // failure.message est la traduction FR du _AccountLinkingXxx. On
-      // l'utilise tel quel (les sous-types sont prives donc on ne peut pas
-      // pattern-matcher publiquement).
-      return state.failure.message.isNotEmpty
-          ? state.failure.message
-          : l10n.errorGenericTitle;
-    }
-    return null;
+    if (state is! AccountLinkingError) return null;
+    final failure = state.failure;
+    return switch (failure.kind) {
+      AccountLinkingFailureKind.cancelled => null,
+      AccountLinkingFailureKind.unknown =>
+        (failure.message.startsWith('provider_not_supported:'))
+            ? AppLocalizations.of(context).onboardingAuthProviderNotSupported
+            : AppLocalizations.of(context).errorGenericTitle,
+      _ => failure.message,
+    };
   }
 
   /// Flow visiteur (decision produit 2026-06-13 + audit PR2 2026-06-13) :
@@ -332,110 +421,5 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
         'auth.step5 guest user.delete() failed (non-blocking): $e',
       );
     }
-  }
-}
-
-class _SocialButton extends StatelessWidget {
-  const _SocialButton({
-    required this.label,
-    required this.iconData,
-    required this.loading,
-    required this.onPressed,
-    required this.backgroundColor,
-    required this.foregroundColor,
-    required this.border,
-  });
-
-  final String label;
-  final IconData iconData;
-  final bool loading;
-  final VoidCallback? onPressed;
-  final Color backgroundColor;
-  final Color foregroundColor;
-  final BoxBorder? border;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: backgroundColor,
-      borderRadius: BorderRadius.circular(AppRadius.pill),
-      child: InkWell(
-        onTap: onPressed,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        child: Container(
-          height: 56.h,
-          decoration: BoxDecoration(
-            border: border,
-            borderRadius: BorderRadius.circular(AppRadius.pill),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              if (loading)
-                SizedBox(
-                  width: 20.w,
-                  height: 20.w,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2.5,
-                    valueColor: AlwaysStoppedAnimation(foregroundColor),
-                  ),
-                )
-              else
-                Icon(iconData, color: foregroundColor, size: 22.sp),
-              SizedBox(width: AppSpacing.s3.w),
-              Text(
-                label,
-                style: AppTypography.bodyStrong.copyWith(
-                  fontSize: 16.sp,
-                  color: foregroundColor,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _AuthErrorBanner extends StatelessWidget {
-  const _AuthErrorBanner({required this.message, required this.onDismiss});
-
-  final String message;
-  final VoidCallback onDismiss;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(AppSpacing.s3.w),
-      decoration: BoxDecoration(
-        color: AppColors.dangerSoft,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(color: AppColors.danger.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const Icon(LucideIcons.triangleAlert,
-              color: AppColors.danger, size: 20),
-          SizedBox(width: AppSpacing.s2.w),
-          Expanded(
-            child: Text(
-              message,
-              style: AppTypography.body.copyWith(
-                color: AppColors.danger,
-                fontSize: 13.sp,
-              ),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(LucideIcons.x, size: 18),
-            color: AppColors.danger,
-            onPressed: onDismiss,
-          ),
-        ],
-      ),
-    );
   }
 }

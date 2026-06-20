@@ -2,11 +2,35 @@
 //
 // Etend la hierarchie `Failure` (pattern Story 1.3/1.4 ProfileFailure).
 // Either<Failure, LinkedAccount> aux frontieres du repository (NFR-7).
+//
+// Audit 2026-06-15 — Ajout de `kind` (CLAUDE.md regle 13) pour que la
+// couche presentation mappe le type d'erreur sans inspecter le message brut.
 
 import '../../../core/error/failures.dart';
 
+/// Catégories de failure pour mapping UI (CLAUDE.md règle 13).
+enum AccountLinkingFailureKind {
+  /// Annulation explicite par l'utilisateur (silencieux en UI).
+  cancelled,
+
+  /// Pas de réseau ou service Google/Apple indisponible.
+  network,
+
+  /// Credential déjà lié à un autre compte Valide.
+  credentialAlreadyInUse,
+
+  /// Provider déjà lié à ce compte.
+  alreadyLinked,
+
+  /// Erreur technique inattendue (ne pas exposer le message brut à l'UI).
+  unknown,
+}
+
 abstract class AccountLinkingFailure extends Failure {
   const AccountLinkingFailure(super.message);
+
+  /// Type de failure pour dispatch UI. (CLAUDE.md règle 13)
+  AccountLinkingFailureKind get kind;
 
   /// L'utilisateur a annule explicitement le picker OAuth (back, cancel).
   /// Doit etre traite comme silencieux dans le notifier (pas de toast).
@@ -27,7 +51,7 @@ abstract class AccountLinkingFailure extends Failure {
       _AccountLinkingAlreadyLinked;
 
   /// Toute autre erreur inattendue. Le message est conserve pour debug
-  /// (jamais affiche brut a l'UI — la widget mappe sur `errorGeneric`).
+  /// (jamais affiche brut a l'UI — la widget mappe sur `errorGenericTitle`).
   const factory AccountLinkingFailure.unknown(String message) =
       _AccountLinkingUnknown;
 }
@@ -35,6 +59,9 @@ abstract class AccountLinkingFailure extends Failure {
 class _AccountLinkingCancelled extends AccountLinkingFailure {
   const _AccountLinkingCancelled()
       : super('Connexion annulee par l\'utilisateur.');
+
+  @override
+  AccountLinkingFailureKind get kind => AccountLinkingFailureKind.cancelled;
 
   @override
   List<Object?> get props => const ['AccountLinkingFailure.cancelled'];
@@ -45,14 +72,19 @@ class _AccountLinkingNetwork extends AccountLinkingFailure {
       : super('Pas de connexion. Verifie ta connexion et reessaie.');
 
   @override
+  AccountLinkingFailureKind get kind => AccountLinkingFailureKind.network;
+
+  @override
   List<Object?> get props => const ['AccountLinkingFailure.network'];
 }
 
 class _AccountLinkingCredentialAlreadyInUse extends AccountLinkingFailure {
   const _AccountLinkingCredentialAlreadyInUse()
-      : super(
-          'Ce compte est deja lie a un autre profil Valide.',
-        );
+      : super('Ce compte est deja lie a un autre profil Valide.');
+
+  @override
+  AccountLinkingFailureKind get kind =>
+      AccountLinkingFailureKind.credentialAlreadyInUse;
 
   @override
   List<Object?> get props =>
@@ -60,8 +92,10 @@ class _AccountLinkingCredentialAlreadyInUse extends AccountLinkingFailure {
 }
 
 class _AccountLinkingAlreadyLinked extends AccountLinkingFailure {
-  const _AccountLinkingAlreadyLinked()
-      : super('Tu as deja un compte.');
+  const _AccountLinkingAlreadyLinked() : super('Tu as deja un compte.');
+
+  @override
+  AccountLinkingFailureKind get kind => AccountLinkingFailureKind.alreadyLinked;
 
   @override
   List<Object?> get props => const ['AccountLinkingFailure.alreadyLinked'];
@@ -69,6 +103,9 @@ class _AccountLinkingAlreadyLinked extends AccountLinkingFailure {
 
 class _AccountLinkingUnknown extends AccountLinkingFailure {
   const _AccountLinkingUnknown(super.message);
+
+  @override
+  AccountLinkingFailureKind get kind => AccountLinkingFailureKind.unknown;
 
   @override
   List<Object?> get props => ['AccountLinkingFailure.unknown', message];

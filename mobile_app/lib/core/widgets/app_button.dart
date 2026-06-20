@@ -13,6 +13,7 @@ class AppButton extends StatelessWidget {
     required _ButtonVariant variant,
     this.loading = false,
     this.icon,
+    this.iconWidget,
     super.key,
   }) : _variant = variant;
 
@@ -22,6 +23,7 @@ class AppButton extends StatelessWidget {
     required VoidCallback? onPressed,
     bool loading = false,
     IconData? icon,
+    Widget? iconWidget,
   }) =>
       AppButton._(
         key: key,
@@ -30,6 +32,7 @@ class AppButton extends StatelessWidget {
         variant: _ButtonVariant.primary,
         loading: loading,
         icon: icon,
+        iconWidget: iconWidget,
       );
 
   factory AppButton.secondary({
@@ -38,6 +41,7 @@ class AppButton extends StatelessWidget {
     required VoidCallback? onPressed,
     bool loading = false,
     IconData? icon,
+    Widget? iconWidget,
   }) =>
       AppButton._(
         key: key,
@@ -46,6 +50,7 @@ class AppButton extends StatelessWidget {
         variant: _ButtonVariant.secondary,
         loading: loading,
         icon: icon,
+        iconWidget: iconWidget,
       );
 
   final String label;
@@ -53,6 +58,7 @@ class AppButton extends StatelessWidget {
   final _ButtonVariant _variant;
   final bool loading;
   final IconData? icon;
+  final Widget? iconWidget;
 
   bool get _isPrimary => _variant == _ButtonVariant.primary;
   bool get _enabled => onPressed != null && !loading;
@@ -91,6 +97,9 @@ class AppButton extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation<Color>(fg),
                   ),
                 ),
+                SizedBox(width: AppSpacing.s2.w),
+              ] else if (iconWidget != null) ...[
+                SizedBox(width: 20.sp, height: 20.sp, child: iconWidget),
                 SizedBox(width: AppSpacing.s2.w),
               ] else if (icon != null) ...[
                 Icon(icon, size: 20.sp, color: fg),

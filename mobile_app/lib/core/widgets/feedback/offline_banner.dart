@@ -59,8 +59,8 @@ class _Banner extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(LucideIcons.wifiOff,
-                  size: 18, color: Colors.white),
+              Icon(LucideIcons.wifiOff,
+                  size: AppIconSize.lg, color: Colors.white),
               SizedBox(width: AppSpacing.s2.w),
               Expanded(
                 child: Text(

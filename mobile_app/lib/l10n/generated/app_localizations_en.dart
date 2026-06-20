@@ -393,10 +393,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardTabHome => 'Home';
 
   @override
-  String get dashboardTabSubjects => 'Subjects';
+  String get dashboardTabSubjects => 'Courses';
 
   @override
-  String get dashboardTabActivities => 'Activities';
+  String get dashboardTabActivities => 'Exams';
 
   @override
   String get dashboardTabProfile => 'Profile';
@@ -476,11 +476,26 @@ class AppLocalizationsEn extends AppLocalizations {
       'Select your current level to tailor content.';
 
   @override
-  String get onboardingStreamSubjectsTitle => 'Which subjects are you taking?';
+  String get onboardingStreamSubjectsTitle => 'Your class';
 
   @override
   String get onboardingStreamSubjectsSubtitle =>
-      'Select your stream and subjects to tailor lessons.';
+      'Here are the subjects you\'ll be studying.';
+
+  @override
+  String get onboardingRecapLabelSection => 'Section';
+
+  @override
+  String get onboardingRecapLabelTrack => 'Track';
+
+  @override
+  String get onboardingRecapLabelLevel => 'Level';
+
+  @override
+  String get onboardingRecapLabelStream => 'Stream';
+
+  @override
+  String get onboardingRecapLabelExam => 'Exam';
 
   @override
   String get onboardingStreamPickerEmptyTitle => 'No stream available';
@@ -496,7 +511,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingStreamPickerEmptyChangeLevel => 'Change level';
 
   @override
+  String get onboardingLevelEmptyForTrackTitle => 'No class for this track';
+
+  @override
+  String get onboardingLevelEmptyForTrackBody =>
+      'No class is available yet for this track. Pick another track to continue.';
+
+  @override
+  String get onboardingLevelEmptyForTrackChangeTrack => 'Change track';
+
+  @override
   String get onboardingLoaderLabel => 'Loading…';
+
+  @override
+  String get onboardingGroupLv2 => 'second language';
+
+  @override
+  String get onboardingGroupLv3 => 'third language';
+
+  @override
+  String get onboardingGroupOlevelOptions => 'O-Level subject';
+
+  @override
+  String get onboardingGroupAlevelOptions => 'A-Level subject';
+
+  @override
+  String get onboardingGroupGeneric => 'subject';
+
+  @override
+  String get onboardingGroupPickHint => 'Pick 1';
+
+  @override
+  String onboardingPickerChooseUpTo(int count) {
+    return 'Pick up to $count';
+  }
 
   @override
   String onboardingPickerCounter(int count, int max) {
@@ -505,6 +553,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingPickerValidate => 'Confirm my subjects';
+
+  @override
+  String get onboardingStartRevising => 'Start revising';
 
   @override
   String get errorCatalogueLoading =>
@@ -642,5 +693,36 @@ class AppLocalizationsEn extends AppLocalizations {
   String get onboardingSuccessCta => 'Go to my dashboard';
 
   @override
-  String get onboardingFlushError => 'Could not save your profile. Try again.';
+  String get onboardingFlushError =>
+      'Could not save your profile. Check your connection and try again.';
+
+  @override
+  String get onboardingAuthProviderNotSupported =>
+      'This account is linked to a different service (Apple or Google). Sign in with the same service you used when you registered.';
+
+  @override
+  String get onboardingSuccessDialogTitle => 'Your account is created!';
+
+  @override
+  String get onboardingSuccessDialogSubtitle => 'With Valide, you can:';
+
+  @override
+  String get onboardingSuccessBenefit1 => 'Track your progress week after week';
+
+  @override
+  String get onboardingSuccessBenefit2 =>
+      'Access rankings in your class and school';
+
+  @override
+  String get onboardingSuccessBenefit3 =>
+      'Receive exercises tailored to your level';
+
+  @override
+  String get onboardingSuccessDialogCta => 'Get started';
+
+  @override
+  String get onboardingHaveAccount => 'I have an account';
+
+  @override
+  String get onboardingNoAccount => 'I don\'t have an account yet';
 }

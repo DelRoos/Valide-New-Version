@@ -214,10 +214,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sélectionne les matières que tu présentes à ton examen.';
 
   @override
-  String get onboardingPickerObligatoryTitle => 'Matieres obligatoires';
+  String get onboardingPickerObligatoryTitle => 'Matières obligatoires';
 
   @override
-  String get onboardingPickerOptionalTitle => 'Matieres optionnelles';
+  String get onboardingPickerOptionalTitle => 'Matières optionnelles';
 
   @override
   String get onboardingPickerSeriesTitle => 'Choisis ta série';
@@ -230,7 +230,7 @@ class AppLocalizationsFr extends AppLocalizations {
       'Matières professionnelles (obligatoires)';
 
   @override
-  String get onboardingPickerRelatedTitle => 'Matieres connexes';
+  String get onboardingPickerRelatedTitle => 'Matières connexes';
 
   @override
   String get onboardingPickerOtherTitle => 'Autres matières';
@@ -393,10 +393,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get dashboardTabHome => 'Accueil';
 
   @override
-  String get dashboardTabSubjects => 'Matières';
+  String get dashboardTabSubjects => 'Cours';
 
   @override
-  String get dashboardTabActivities => 'Activités';
+  String get dashboardTabActivities => 'Examen';
 
   @override
   String get dashboardTabProfile => 'Profil';
@@ -465,7 +465,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingTrackHintGeneral =>
-      'Programme academique classique (maths, sciences, lettres)';
+      'Programme académique classique (maths, sciences, lettres)';
 
   @override
   String get onboardingTrackHintTechnique =>
@@ -479,11 +479,26 @@ class AppLocalizationsFr extends AppLocalizations {
       'Sélectionne ton niveau actuel pour adapter le contenu.';
 
   @override
-  String get onboardingStreamSubjectsTitle => 'Quelles matières étudies-tu ?';
+  String get onboardingStreamSubjectsTitle => 'Ta classe';
 
   @override
   String get onboardingStreamSubjectsSubtitle =>
-      'Sélectionne ta série et tes matières pour personnaliser tes cours.';
+      'Voici les matières que tu vas étudier.';
+
+  @override
+  String get onboardingRecapLabelSection => 'Section';
+
+  @override
+  String get onboardingRecapLabelTrack => 'Filière';
+
+  @override
+  String get onboardingRecapLabelLevel => 'Niveau';
+
+  @override
+  String get onboardingRecapLabelStream => 'Série';
+
+  @override
+  String get onboardingRecapLabelExam => 'Examen';
 
   @override
   String get onboardingStreamPickerEmptyTitle => 'Aucune série disponible';
@@ -499,15 +514,52 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingStreamPickerEmptyChangeLevel => 'Changer de niveau';
 
   @override
+  String get onboardingLevelEmptyForTrackTitle =>
+      'Aucune classe pour cette filière';
+
+  @override
+  String get onboardingLevelEmptyForTrackBody =>
+      'Aucune classe n\'est encore disponible pour cette filière. Change de filière pour continuer.';
+
+  @override
+  String get onboardingLevelEmptyForTrackChangeTrack => 'Changer de filière';
+
+  @override
   String get onboardingLoaderLabel => 'Chargement…';
 
   @override
+  String get onboardingGroupLv2 => 'Langue Vivante 2';
+
+  @override
+  String get onboardingGroupLv3 => 'Langue Vivante 3';
+
+  @override
+  String get onboardingGroupOlevelOptions => 'Matière O-Level';
+
+  @override
+  String get onboardingGroupAlevelOptions => 'Matière A-Level';
+
+  @override
+  String get onboardingGroupGeneric => 'matière';
+
+  @override
+  String get onboardingGroupPickHint => 'Choisis 1';
+
+  @override
+  String onboardingPickerChooseUpTo(int count) {
+    return 'Choisis jusqu\'à $count';
+  }
+
+  @override
   String onboardingPickerCounter(int count, int max) {
-    return '$count/$max selectionnees';
+    return '$count/$max sélectionnées';
   }
 
   @override
   String get onboardingPickerValidate => 'Valider mes matières';
+
+  @override
+  String get onboardingStartRevising => 'Commencer à réviser';
 
   @override
   String get errorCatalogueLoading =>
@@ -573,7 +625,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get accountUpgradeSheetBody =>
-      'En liant ton compte, tu retrouves ta progression sur n\'importe quel telephone et tu evites de tout perdre si tu changes d\'appareil.';
+      'En liant ton compte, tu retrouves ta progression sur n\'importe quel téléphone et tu évites de tout perdre si tu changes d\'appareil.';
 
   @override
   String get accountUpgradeSuccess => 'Compte sauvegarde ✨';
@@ -594,7 +646,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingNameTooLong => 'Maximum 50 caracteres.';
 
   @override
-  String get onboardingPhoneTitle => 'Ton numero de telephone';
+  String get onboardingPhoneTitle => 'Ton numéro de téléphone';
 
   @override
   String get onboardingPhoneSubtitle =>
@@ -604,11 +656,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get onboardingPhoneSkipLabel => 'Passer pour l\'instant';
 
   @override
-  String get onboardingPhoneSkipConfirmTitle => 'Passer cette etape ?';
+  String get onboardingPhoneSkipConfirmTitle => 'Passer cette étape ?';
 
   @override
   String get onboardingPhoneSkipConfirmMessage =>
-      'Tu pourras ajouter ton numero plus tard depuis ton profil.';
+      'Tu pourras ajouter ton numéro plus tard depuis ton profil.';
 
   @override
   String get onboardingPhoneSkipConfirmYes => 'Oui, passer';
@@ -646,5 +698,36 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get onboardingFlushError =>
-      'Impossible de sauvegarder ton profil. Reessaie.';
+      'Sauvegarde impossible. Vérifie ta connexion et réessaie.';
+
+  @override
+  String get onboardingAuthProviderNotSupported =>
+      'Ce compte est lié à un autre service (Apple ou Google). Reconnecte-toi avec le même service que lors de ton inscription.';
+
+  @override
+  String get onboardingSuccessDialogTitle => 'Ton compte est cree !';
+
+  @override
+  String get onboardingSuccessDialogSubtitle => 'Avec Valide, tu peux :';
+
+  @override
+  String get onboardingSuccessBenefit1 =>
+      'Suivre ta progression semaine apres semaine';
+
+  @override
+  String get onboardingSuccessBenefit2 =>
+      'Acceder aux classements de ta classe et ton ecole';
+
+  @override
+  String get onboardingSuccessBenefit3 =>
+      'Recevoir des exercices adaptes a ton niveau';
+
+  @override
+  String get onboardingSuccessDialogCta => 'Commencer';
+
+  @override
+  String get onboardingHaveAccount => 'J\'ai un compte';
+
+  @override
+  String get onboardingNoAccount => 'Je n\'ai pas encore de compte';
 }

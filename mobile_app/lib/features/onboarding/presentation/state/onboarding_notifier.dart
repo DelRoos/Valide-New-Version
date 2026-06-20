@@ -21,6 +21,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../domain/sub_system.dart';
+import 'onboarding_hydration.dart';
 import '../../providers.dart'
     show
         onboardingDraftPrefsProvider,
@@ -54,19 +55,6 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   Future<void> setSubSystem(SubSystem subSystem) async {
     await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
     state = state.copyWith(subSystem: subSystem, currentStep: 1);
-    await _persistDraft();
-  }
-
-  /// Audit 2026-06-13 — Variante "draft" qui pose le sub-system + propage
-  /// AU LocaleNotifier (UI bascule FR/EN en live) SANS transitionner vers
-  /// le step 1. L'utilisateur confirme via le CTA Continuer du shell.
-  ///
-  /// Pourquoi propager au LocaleNotifier en draft : sinon le user tape
-  /// Anglophone, voit la page rester en FR, et perd confiance. Live preview
-  /// = retour sensoriel immediat (cf. patron des switchers de langue).
-  Future<void> setSubSystemDraft(SubSystem subSystem) async {
-    await ref.read(subSystemNotifierProvider.notifier).set(subSystem);
-    state = state.copyWith(subSystem: subSystem);
     await _persistDraft();
   }
 
@@ -104,16 +92,18 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
   }
 
   /// Pose le level + capture le mode picker + reset stream/subjects.
-  /// Transition conditionnelle :
-  /// - requiresPicker == true  -> step 4 (picker stream/subjects)
-  /// - requiresPicker == false -> step 5 (skip step 4, mode `derived`)
+  /// Transition : toujours -> step 4 (recap matieres), meme pour les niveaux
+  /// en mode `derived` (6e, 5e, 4e, 3e...). Le recap est l'ecran de
+  /// confirmation pedagogique avant l'auth. [requiresPicker] reste utile pour
+  /// StreamSubjectsPickerStepBody (dispatch du mode d'affichage), mais ne
+  /// pilote plus le skip de step 4.
   void setLevelId(String levelId, {required bool requiresPicker}) {
     state = state.copyWith(
       levelId: levelId,
       levelRequiresPicker: requiresPicker,
       streamId: null,
       pickedSubjects: const <String>[],
-      currentStep: requiresPicker ? 4 : 5,
+      currentStep: 4,
     );
     _persistDraftFireAndForget();
   }
@@ -138,10 +128,31 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     String? streamId,
     required List<String> pickedSubjects,
   }) {
+    // Si l'utilisateur est deja authentifie (jumpToAuth -> step 2-4 apres auth),
+    // on saute step 5 et on va directement au step 6 (saisie nom).
+    final alreadyAuthenticated = state.authProvider != null &&
+        state.authProvider != OnboardingAuthProvider.guest;
     state = state.copyWith(
       streamId: streamId,
       pickedSubjects: List<String>.unmodifiable(pickedSubjects),
-      currentStep: 5,
+      currentStep: alreadyAuthenticated ? 6 : 5,
+    );
+    _persistDraftFireAndForget();
+  }
+
+  /// Variante "commencer a reviser" : pose stream + matieres + auth guest
+  /// SANS transitionner (step reste 4). Utilise par le CTA "Commencer a
+  /// reviser" du step 4 qui fait le flush direct + nav /dashboard sans passer
+  /// par step 5 (auth choice). Evite le flash visuel vers l'ecran auth.
+  void commitSubjectsForGuest({
+    String? streamId,
+    required List<String> pickedSubjects,
+  }) {
+    state = state.copyWith(
+      streamId: streamId,
+      pickedSubjects: List<String>.unmodifiable(pickedSubjects),
+      authProvider: OnboardingAuthProvider.guest,
+      isVisitor: true,
     );
     _persistDraftFireAndForget();
   }
@@ -173,13 +184,21 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     String? displayName,
   }) {
     final isVisitor = provider == OnboardingAuthProvider.guest;
+    // Si l'utilisateur est arrive via jumpToAuth() (step 1 -> 5), trackId
+    // est null : il n'a pas encore rempli son profil scolaire. On le renvoie
+    // au step 2 (track choice) apres auth. Une fois steps 2-4 remplis,
+    // setStreamAndSubjects() detecre authProvider != null et saute step 5.
+    final hasProfile = state.trackId != null;
+    final nextStep = isVisitor
+        ? state.currentStep
+        : hasProfile
+            ? 6
+            : 2;
     state = state.copyWith(
       authProvider: provider,
       userDisplayName: displayName,
       isVisitor: isVisitor,
-      // Visiteur reste a step 5 — AuthChoiceStepBody fait le flush + nav.
-      // Compte permanent : toujours step 6 (pre-rempli OAuth ou vide).
-      currentStep: isVisitor ? state.currentStep : 6,
+      currentStep: nextStep,
     );
     _persistDraftFireAndForget();
   }
@@ -293,7 +312,12 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       0 => 1,
       1 => 2,
       2 => 3,
-      3 => s.levelRequiresPicker ? 4 : 5,
+      // Audit 2026-06-14 — Toutes les classes passent par step 4 (recap),
+      // meme celles sans picker de serie. Justification : le recap (Section/
+      // Filiere/Niveau/Serie + matieres derivees + examen vise) est l'ecran
+      // de confirmation pedagogique. Avant ce fix, les niveaux derived (6e,
+      // 5e, etc.) sautaient direct a step 5 (auth) sans confirmation.
+      3 => 4,
       4 => 5,
       5 => 6,
       6 => 7,
@@ -310,9 +334,13 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   /// Recule d'un cran symetrique a [next]. A step 0 -> no-op.
   ///
-  /// Ne reset PAS les valeurs amont : les choix utilisateur sont preserves
-  /// pour pre-remplissage UI au retour. C'est [setTrackId] / [setLevelId]
-  /// qui font le reset downstream explicite.
+  /// Cas speciaux :
+  /// - 5 -> 1 si trackId null : l'utilisateur vient via "J'ai un compte"
+  ///   (jumpToAuth step 1 -> 5). Step 4 serait vide. On retourne au hero.
+  /// - 5 -> 4 si trackId non-null : retour normal recap matieres.
+  ///   Reset stream + subjects UNIQUEMENT si pickedSubjects vides (flow
+  ///   normal). En mode upgrade (visiteur -> compte), les matieres existent
+  ///   deja en Firestore — on les preserve pour eviter un state incohérent.
   void back() {
     final s = state;
     final target = switch (s.currentStep) {
@@ -321,7 +349,10 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       2 => 1,
       3 => 2,
       4 => 3,
-      5 => s.levelRequiresPicker ? 4 : 3,
+      // Bug 1 fix : jumpToAuth() saute steps 2-4, donc trackId est null.
+      // Si on revient depuis step 5 avec trackId null, step 4 est vide
+      // -> retourner au hero (step 1). Sinon retour picker normal (step 4).
+      5 => (s.trackId == null) ? 1 : 4,
       6 => 5,
       7 => 6,
       8 => 7,
@@ -329,7 +360,13 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
       _ => s.currentStep,
     };
     if (target != s.currentStep) {
-      state = s.copyWith(currentStep: target);
+      // Retour a step 4 : reset stream + subjects uniquement si le picker
+      // n'a pas encore ete valide (pickedSubjects vides). En mode upgrade
+      // (Bug 7 fix), les matieres existent deja -> on les preserve.
+      final next = (target == 4 && s.pickedSubjects.isEmpty)
+          ? s.copyWith(currentStep: 4, streamId: null)
+          : s.copyWith(currentStep: target);
+      state = next;
       _persistDraftFireAndForget();
     }
   }
@@ -413,5 +450,28 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
 
   void _clearDraftFireAndForget() {
     unawaited(ref.read(onboardingDraftPrefsProvider).clear());
+  }
+
+  /// Hydrate depuis un doc Firestore — cas "nouveau telephone, compte existant".
+  /// Pose le subSystem -> profileCompletionProvider emet `complete` si profil
+  /// complet -> router redirige vers /dashboard. Si partiel, pose currentStep
+  /// au premier champ manquant.
+  Future<void> hydrateFromFirestore(
+    Map<String, dynamic> data, {
+    String? oauthDisplayName,
+  }) async {
+    final result = parseOnboardingDoc(data, oauthDisplayName: oauthDisplayName);
+    if (result.subSystem != null) {
+      await ref.read(subSystemNotifierProvider.notifier).set(result.subSystem!);
+    }
+    state = result.state;
+    await _persistDraft();
+  }
+
+  /// Jump direct au step 5 (auth choice) depuis le step 0.
+  /// Utilise par le bouton "Deja un compte ?" du step 0.
+  void jumpToAuth() {
+    state = state.copyWith(currentStep: 5);
+    _persistDraftFireAndForget();
   }
 }

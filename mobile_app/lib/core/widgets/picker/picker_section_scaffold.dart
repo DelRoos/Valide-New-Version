@@ -39,36 +39,39 @@ class PickerSectionScaffold extends StatelessWidget {
             constraints: BoxConstraints(
               maxWidth: isTablet ? tabletMaxWidth : double.infinity,
             ),
-            child: Padding(
-              // Audit 2026-06-14 — vertical top reduit de s3 (12dp) a s1
-              // (4dp) sur demande utilisateur : la zone entre la progress bar
-              // du shell et le titre H2 etait trop aeree (cerclee sur device).
-              // Le bas reste s3 pour aerer avant le child.
-              padding: EdgeInsets.fromLTRB(
-                AppSpacing.s5.w,
-                AppSpacing.s1.h,
-                AppSpacing.s5.w,
-                AppSpacing.s3.h,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(title, style: AppTypography.h2),
-                  if (subtitle != null) ...[
-                    SizedBox(height: AppSpacing.s2.h),
-                    Text(
-                      subtitle!,
-                      style: AppTypography.body.copyWith(
-                        color: AppColors.inkSoft,
-                      ),
-                    ),
-                  ],
-                  // Audit 2026-06-14 — gap titre -> contenu reduit de s4 (16)
-                  // a s3 (12) pour resserrer le step 4.
-                  SizedBox(height: AppSpacing.s3.h),
-                  Expanded(child: child),
-                ],
-              ),
+            // Audit 2026-06-15 — padding horizontal s5.w deplace vers la
+            // section titre uniquement. Le child (scroll list, picker, etc.)
+            // est pleine largeur : il gere sa propre marge interne pour
+            // laisser respirer les ombres/animations sans doubler le padding
+            // du titre (was 20dp + 8dp = 28dp, now titre=20dp, cards=8dp).
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.s5.w,
+                    AppSpacing.s1.h,
+                    AppSpacing.s5.w,
+                    AppSpacing.s3.h,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(title, style: AppTypography.h2),
+                      if (subtitle != null) ...[
+                        SizedBox(height: AppSpacing.s2.h),
+                        Text(
+                          subtitle!,
+                          style: AppTypography.body.copyWith(
+                            color: AppColors.inkSoft,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                Expanded(child: child),
+              ],
             ),
           ),
         );

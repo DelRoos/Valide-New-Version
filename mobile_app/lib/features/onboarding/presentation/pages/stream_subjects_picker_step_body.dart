@@ -14,21 +14,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lucide_icons_flutter/lucide_icons.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/catalogue/providers.dart';
-import '../../../../core/theme/tokens.dart';
-import '../../../../core/widgets/cards/selection_card.dart';
+import '../../../../core/firebase/providers.dart';
+import '../../../../core/logging/app_logger.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../core/widgets/feedback/onboarding_loader.dart';
 import '../../../../core/widgets/picker/picker_section_scaffold.dart';
-import '../../../../core/widgets/picker/subject_icon_resolver.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/sub_system.dart';
+import '../../providers.dart';
 import '../state/onboarding_notifier.dart';
 import '../state/onboarding_providers.dart';
+import '../state/onboarding_state.dart';
+import '../widgets/picker/stream_picker_derived_view.dart';
+import '../widgets/picker/stream_picker_interactive.dart';
+import '../widgets/picker/stream_picker_recap_helper.dart';
+import '../widgets/picker/stream_picker_selector.dart';
 
 class StreamSubjectsPickerStepBody extends ConsumerStatefulWidget {
   const StreamSubjectsPickerStepBody({super.key});
@@ -40,11 +44,22 @@ class StreamSubjectsPickerStepBody extends ConsumerStatefulWidget {
 
 class _StreamSubjectsPickerStepBodyState
     extends ConsumerState<StreamSubjectsPickerStepBody> {
-  /// Audit 2026-06-13 — Pick utilisateur par groupe de variantes (LV2 etc.).
-  /// Cle = `Subject.group`, valeur = subjectId du variant choisi. Reset au
-  /// changement de streamId (en pratique, le PageView ne ressuscite pas
-  /// l'etat donc OK).
+  /// Pick utilisateur par groupe de variantes (LV2 etc.).
+  /// Cle = `Subject.group`, valeur = subjectId du variant choisi.
   final Map<String, String> _picksByGroup = <String, String>{};
+
+  /// IDs des matières optionnelles sélectionnées (modes opt_out /
+  /// free_with_obligatory / series_plus_optional). Reset quand le streamId
+  /// change.
+  final Set<String> _selectedOptionalIds = <String>{};
+
+  /// Dernier streamId vu — permet de détecter un changement de série pour
+  /// vider `_selectedOptionalIds` sans appeler setState pendant build.
+  String? _lastStreamId;
+
+  /// Vrai pendant le flux auth anonyme + flush Firestore déclenché par le
+  /// CTA "Commencer à réviser". Désactive le bouton pour éviter les double-taps.
+  bool _isStartingRevision = false;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +102,7 @@ class _StreamSubjectsPickerStepBodyState
 
   Widget _buildContent({
     required CatalogueSnapshot snapshot,
-    required dynamic state,
+    required OnboardingState state,
     required OnboardingNotifier notifier,
     required String langKey,
     required AppLocalizations l10n,
@@ -106,33 +121,41 @@ class _StreamSubjectsPickerStepBodyState
     // (suggere un probleme reseau alors que c'est un probleme de seed
     // catalogue). On affiche maintenant un message explicite avec retry sur
     // le catalogue.
-    if (state.streamId == null &&
-        streams.isEmpty &&
-        state.levelRequiresPicker == true) {
-      return _StreamPickerEmpty(
-        title: l10n.onboardingStreamPickerEmptyTitle,
-        body: l10n.onboardingStreamPickerEmptyBody,
-        changeLevelLabel: l10n.onboardingStreamPickerEmptyChangeLevel,
-        retryLabel: l10n.onboardingStreamPickerEmptyRetry,
-        // Audit 2026-06-14 — CTA primaire = revenir step 3 (level choice).
-        // Couvre le cas le plus frequent : draft persiste avec levelId qui
-        // ne matche plus le catalogue actuel (Phase 7 deactivation, seed
-        // change). `back()` ramene step 4 -> 3 sans toucher au draft amont,
-        // l'utilisateur re-selectionne un niveau valide.
-        onChangeLevel: () => notifier.back(),
-        onRetry: () => ref.invalidate(catalogueProvider),
-      );
+    //
+    // Audit 2026-06-15 — Guard affine : `streams.isEmpty` seul est trop large.
+    // Les niveaux sans serie (6e-3e) ont des regles avec `matchSerie=null` qui
+    // font reussir derive() via Cas 3. Ne montrer StreamPickerEmpty que si
+    // aucune regle `matchSerie=null` n'existe pour ce profil ; sinon Cas 3 OK.
+    if (state.streamId == null && streams.isEmpty) {
+      final subSystemId = state.subSystem?.id ?? '';
+      final trackId = state.trackId ?? '';
+      final levelId = state.levelId ?? '';
+      final hasNullSerieRule = snapshot.derivationRules.any((r) =>
+          r.isActive &&
+          r.matchSubSystem == subSystemId &&
+          (r.matchFiliere == '*' || r.matchFiliere == trackId) &&
+          r.matchNiveau == levelId &&
+          r.matchSerie == null);
+      if (!hasNullSerieRule) {
+        // Aucune regle ne peut matcher sans serie -> etat vide explicite.
+        return StreamPickerEmpty(
+          title: l10n.onboardingStreamPickerEmptyTitle,
+          body: l10n.onboardingStreamPickerEmptyBody,
+          changeLevelLabel: l10n.onboardingStreamPickerEmptyChangeLevel,
+          retryLabel: l10n.onboardingStreamPickerEmptyRetry,
+          // Audit 2026-06-14 — CTA primaire = revenir step 3 (level choice).
+          onChangeLevel: () => notifier.back(),
+          onRetry: () => ref.invalidate(catalogueProvider),
+        );
+      }
+      // hasNullSerieRule = true : Cas 3 gerera derive(serie=null) (ex. 6e-3e).
     }
 
     // Cas 1 : streamId null + plusieurs streams -> picker de serie.
     if (state.streamId == null && streams.length > 1) {
-      return _StreamPicker(
+      return StreamPicker(
         streams: streams,
         langKey: langKey,
-        continueLabel: l10n.onboardingContinue,
-        // Audit 2026-06-14 — Le commit (setStreamIdDraft) se fait au tap
-        // CTA Continuer du picker, plus au tap card. Permet a l'user de
-        // changer d'avis avant validation.
         onConfirm: notifier.setStreamIdDraft,
       );
     }
@@ -181,48 +204,113 @@ class _StreamSubjectsPickerStepBodyState
     AppLocalizations l10n,
   ) {
     final state = ref.read(onboardingNotifierProvider);
-    final allSubjects = _allSubjectsFor(profile);
+    final recapEntries =
+        buildRecapEntries(snapshot, state, profile, langKey, l10n);
 
-    // Audit 2026-06-13 — Unification de TOUS les pickerModes en preview chips
-    // read-only (decision produit : "on ne choisit pas les matieres, on
-    // affiche tout de la specialite") + exception variantes (LV2 = choix
-    // d'une langue parmi allemand/espagnol/italien/latin).
-    //
-    // `_groupsIn` extrait les groupes (>= 2 variantes meme `subject.group`).
-    // `ungrouped` = matieres autonomes (chip simple). `groups` = mini-pickers.
+    // Utilisateur deja authentifie (chemin "J'ai un compte" -> step 5 -> step 2)
+    // : on utilise setStreamAndSubjects qui transitionne vers step 6 sans flush
+    // guest. L'ecriture Firestore se fera au step 9 (SuccessCelebrationStepBody).
+    // Chemin visiteur : _startRevising flush en direct + /dashboard.
+    final isAuthenticated = state.authProvider != null &&
+        state.authProvider != OnboardingAuthProvider.guest;
+    final ctaLabel =
+        isAuthenticated ? l10n.onboardingContinue : l10n.onboardingStartRevising;
+
+    // Modes interactifs : l'eleve choisit ses matieres optionnelles.
+    if (profile.pickerMode == PickerMode.optOut ||
+        profile.pickerMode == PickerMode.freeWithObligatory ||
+        profile.pickerMode == PickerMode.seriesPlusOptional) {
+      // Reset de la selection quand la serie change (sans setState : mutation
+      // directe avant construction de l'arbre, safe dans build()).
+      if (state.streamId != _lastStreamId) {
+        _lastStreamId = state.streamId;
+        _selectedOptionalIds.clear();
+        _picksByGroup.clear();
+      }
+
+      final minS = profile.minSubjects ?? profile.obligatorySubjects.length;
+      final maxS = profile.maxSubjects ??
+          (profile.obligatorySubjects.length + profile.optionalSubjects.length);
+      final totalSelected =
+          profile.obligatorySubjects.length + _selectedOptionalIds.length;
+      final isValid = totalSelected >= minS && totalSelected <= maxS;
+
+      return InteractiveSubjectPicker(
+        recapEntries: recapEntries,
+        obligatorySubjects: profile.obligatorySubjects,
+        optionalSubjects: profile.optionalSubjects,
+        selectedOptionalIds: _selectedOptionalIds,
+        totalSelected: totalSelected,
+        min: minS,
+        max: maxS,
+        langKey: langKey,
+        isValid: isValid && !_isStartingRevision,
+        isLoading: _isStartingRevision,
+        validateLabel: ctaLabel,
+        onToggleOptional: (subjectId) {
+          setState(() {
+            if (_selectedOptionalIds.contains(subjectId)) {
+              _selectedOptionalIds.remove(subjectId);
+            } else if (totalSelected < maxS) {
+              _selectedOptionalIds.add(subjectId);
+            }
+          });
+        },
+        onValidate: () {
+          final picked = <String>[
+            ...profile.obligatorySubjects.map((s) => s.subjectId),
+            ..._selectedOptionalIds,
+          ];
+          if (isAuthenticated) {
+            notifier.setStreamAndSubjects(
+              streamId: state.streamId,
+              pickedSubjects: picked,
+            );
+          } else {
+            _startRevising(streamId: state.streamId, pickedSubjects: picked);
+          }
+        },
+      );
+    }
+
+    // Modes read-only (derived / tvePicker) : chips recap sans choix.
+    final allSubjects = _allSubjectsFor(profile);
     final groups = _groupsIn(allSubjects);
     final ungrouped =
         allSubjects.where((s) => s.group == null).toList(growable: false);
+    final allGroupsPicked = groups.keys.every(_picksByGroup.containsKey);
 
-    // CTA actif uniquement si chaque groupe a un pick.
-    final allGroupsPicked =
-        groups.keys.every(_picksByGroup.containsKey);
-
-    // Audit 2026-06-14 — Step 4 = resume des choix amont (section -> filiere
-    // -> niveau -> serie quand applicable) AVANT les chips matieres. Donne le
-    // contexte de ce que le user vient de configurer.
-    final recapParts = _recapPartsFor(snapshot, state, langKey);
-
-    return _DerivedPreview(
-      recapParts: recapParts,
+    return DerivedPreview(
+      recapEntries: recapEntries,
       ungroupedSubjects: ungrouped,
       groups: groups,
       picksByGroup: _picksByGroup,
       langKey: langKey,
-      validateLabel: l10n.onboardingPickerValidate,
-      isValid: allGroupsPicked,
+      validateLabel: ctaLabel,
+      isValid: allGroupsPicked && !_isStartingRevision,
+      isLoading: _isStartingRevision,
       onGroupPick: (groupKey, subjectId) {
-        setState(() => _picksByGroup[groupKey] = subjectId);
+        setState(() {
+          if (subjectId == null) {
+            _picksByGroup.remove(groupKey);
+          } else {
+            _picksByGroup[groupKey] = subjectId;
+          }
+        });
       },
       onValidate: () {
         final picked = <String>[
           ...ungrouped.map((s) => s.subjectId),
           ..._picksByGroup.values,
         ];
-        notifier.setStreamAndSubjects(
-          streamId: state.streamId,
-          pickedSubjects: picked,
-        );
+        if (isAuthenticated) {
+          notifier.setStreamAndSubjects(
+            streamId: state.streamId,
+            pickedSubjects: picked,
+          );
+        } else {
+          _startRevising(streamId: state.streamId, pickedSubjects: picked);
+        }
       },
     );
   }
@@ -309,606 +397,81 @@ class _StreamSubjectsPickerStepBodyState
     };
   }
 
-}
+  /// CTA "Commencer à réviser" — crée un compte anonyme + flush Firestore
+  /// + navigue vers /dashboard sans passer par le step 5 (auth choice).
+  ///
+  /// Flux : signInAnonymously() si besoin -> flush (state local) ->
+  /// router.go('/dashboard'). On NE touche PAS au notifier Riverpod ici car
+  /// derivedProfileV2Provider watch onboardingNotifierProvider — tout changement
+  /// relance le FutureProvider -> OnboardingLoader plein écran au lieu du
+  /// spinner sur le bouton.
+  Future<void> _startRevising({
+    String? streamId,
+    required List<String> pickedSubjects,
+  }) async {
+    if (_isStartingRevision || !mounted) return;
+    setState(() => _isStartingRevision = true);
 
-/// Preview read-only des matieres pour le mode `derived` (Terminale D,
-/// Premiere C, ...). L'utilisateur ne peut pas modifier ; il confirme avec
-/// le CTA "Continuer" pour avancer au step 5.
-///
-/// Audit 2026-06-13 — Layout RESUME (chips) au lieu de la liste verticale
-/// de tiles. Justification : Terminale D = 11 matieres, l'ancienne liste
-/// occupait ~600 dp + scroll obligatoire en phone. Le user demande "une
-/// forme de resume" : voir TOUT en un coup d'oeil. Les chips wrap
-/// naturellement sur 3-4 lignes en phone, 2 lignes en tablet, et
-/// transmettent le message "voici les matieres" sans demander d'action.
-class _DerivedPreview extends StatelessWidget {
-  const _DerivedPreview({
-    required this.recapParts,
-    required this.ungroupedSubjects,
-    required this.groups,
-    required this.picksByGroup,
-    required this.langKey,
-    required this.validateLabel,
-    required this.isValid,
-    required this.onGroupPick,
-    required this.onValidate,
-  });
+    final auth = ref.read(firebaseAuthProvider);
+    final flushService = ref.read(onboardingFlushServiceProvider);
+    final router = GoRouter.of(context);
+    final l10n = AppLocalizations.of(context);
 
-  /// Libelles du recap (Section / Filiere / Niveau / Serie) affiches au-
-  /// dessus des chips. Vide -> pas de recap rendu.
-  final List<String> recapParts;
+    try {
+      final current = auth.currentUser;
+      if (current == null) {
+        await auth.signInAnonymously();
+        AppLogger.i('stream.step4 guest signInAnonymously OK');
+      } else {
+        AppLogger.i(
+          'stream.step4 guest reuse session uid=${current.uid.substring(0, 6)}...',
+        );
+      }
+      if (!mounted) return;
 
-  /// Matieres autonomes (sans `group`). Rendues comme chips simples.
-  final List<Subject> ungroupedSubjects;
+      // Construire le state de flush localement sans modifier onboardingNotifierProvider
+      // (evite de relancer derivedProfileV2Provider -> loader plein ecran).
+      final baseState = ref.read(onboardingNotifierProvider);
+      final state = baseState.copyWith(
+        streamId: streamId,
+        pickedSubjects: pickedSubjects,
+        authProvider: OnboardingAuthProvider.guest,
+        isVisitor: true,
+      );
+      final result = await flushService.flush(state);
+      if (!mounted) return;
 
-  /// Groupes de variantes (`{groupKey: [variants]}`). Chaque groupe affiche
-  /// UN chip (placeholder si pas pick, variant pick sinon) + bottomsheet
-  /// d'edition au tap.
-  final Map<String, List<Subject>> groups;
-
-  /// Pick utilisateur par groupe (cle = groupKey, valeur = subjectId pick).
-  final Map<String, String> picksByGroup;
-
-  final String langKey;
-  final String validateLabel;
-
-  /// Active le CTA Valider. False tant que tous les groupes ne sont pas pick.
-  final bool isValid;
-
-  final void Function(String groupKey, String subjectId) onGroupPick;
-  final VoidCallback onValidate;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (recapParts.isNotEmpty) ...[
-                  _RecapBanner(parts: recapParts),
-                  SizedBox(height: AppSpacing.s4.h),
-                ],
-                Wrap(
-                  spacing: AppSpacing.s2.w,
-                  runSpacing: AppSpacing.s2.h,
-                  children: [
-                    for (final subject in ungroupedSubjects)
-                      _SubjectSummaryChip(
-                        subject: subject,
-                        langKey: langKey,
-                      ),
-                    for (final entry in groups.entries)
-                      _GroupChip(
-                        groupKey: entry.key,
-                        variants: entry.value,
-                        pickedId: picksByGroup[entry.key],
-                        langKey: langKey,
-                        onPick: (subjectId) =>
-                            onGroupPick(entry.key, subjectId),
-                      ),
-                  ],
-                ),
-                SizedBox(height: AppSpacing.s8.h),
-              ],
-            ),
-          ),
-        ),
-        // Audit 2026-06-13 — SafeArea(top: false) : sur Android Q+ et iPhone
-        // avec gesture nav, le CTA collait a la barre systeme. Le top reste
-        // false parce que le scaffold parent gere deja le top via le shell.
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.s4.w),
-            child: SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: isValid ? onValidate : null,
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  disabledBackgroundColor:
-                      AppColors.primary.withValues(alpha: 0.4),
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                  ),
-                ),
-                child: Text(
-                  validateLabel,
-                  style: AppTypography.bodyStrong.copyWith(
-                    fontSize: 16.sp,
-                    color: AppColors.card,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Chip representant un groupe de variantes (LV2 / LV3...).
-///
-/// Etats :
-///   - non pick : bordure pointillee, label "Choisir LV2", chevron-down.
-///     Tap -> bottomsheet de selection.
-///   - pick : chip plein style normal avec le nom du variant pick. Tap ->
-///     bottomsheet pour re-choisir.
-class _GroupChip extends StatelessWidget {
-  const _GroupChip({
-    required this.groupKey,
-    required this.variants,
-    required this.pickedId,
-    required this.langKey,
-    required this.onPick,
-  });
-
-  final String groupKey;
-  final List<Subject> variants;
-  final String? pickedId;
-  final String langKey;
-  final void Function(String subjectId) onPick;
-
-  @override
-  Widget build(BuildContext context) {
-    final pickedVariant = pickedId == null
-        ? null
-        : variants.firstWhere(
-            (s) => s.subjectId == pickedId,
-            orElse: () => variants.first,
+      result.fold(
+        (failure) {
+          AppLogger.w(
+            'stream.step4 guest flush failed code=${failure.code} '
+            'message="${failure.message}"',
           );
-    final hasPick = pickedVariant != null;
-    final label = hasPick
-        ? (pickedVariant.name[langKey] ??
-            pickedVariant.name['fr'] ??
-            pickedVariant.subjectId)
-        : 'Choisir ${groupKey.toUpperCase()}';
-    final icon = hasPick
-        ? subjectIconFor(pickedVariant.icon)
-        : LucideIcons.plusCircle;
-
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppRadius.pill),
-      onTap: () => _openSheet(context),
-      child: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.s3.w,
-          vertical: AppSpacing.s2.h,
-        ),
-        decoration: BoxDecoration(
-          color: hasPick ? AppColors.primarySoft : AppColors.card,
-          borderRadius: BorderRadius.circular(AppRadius.pill),
-          border: Border.all(
-            color: hasPick
-                ? AppColors.primary.withValues(alpha: 0.25)
-                : AppColors.primary.withValues(alpha: 0.5),
-            width: hasPick ? 1 : 1.5,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, color: AppColors.primary, size: 16.sp),
-            SizedBox(width: AppSpacing.s2.w),
-            Text(
-              label,
-              style: AppTypography.bodyStrong.copyWith(
-                fontSize: 13.sp,
-                color: AppColors.primary,
-              ),
-            ),
-            SizedBox(width: AppSpacing.s1.w),
-            Icon(
-              LucideIcons.chevronDown,
-              color: AppColors.primary,
-              size: 14.sp,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Future<void> _openSheet(BuildContext context) async {
-    final result = await showModalBottomSheet<String>(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: AppColors.card,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(AppRadius.xl2),
-        ),
-      ),
-      builder: (sheetCtx) => _GroupPickerSheet(
-        groupKey: groupKey,
-        variants: variants,
-        pickedId: pickedId,
-        langKey: langKey,
-      ),
-    );
-    if (result != null) onPick(result);
-  }
-}
-
-/// Bottomsheet de selection d'une variante d'un groupe (LV2 / LV3...).
-class _GroupPickerSheet extends StatelessWidget {
-  const _GroupPickerSheet({
-    required this.groupKey,
-    required this.variants,
-    required this.pickedId,
-    required this.langKey,
-  });
-
-  final String groupKey;
-  final List<Subject> variants;
-  final String? pickedId;
-  final String langKey;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: EdgeInsets.all(AppSpacing.s5.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Center(
-              child: Container(
-                width: 36.w,
-                height: 4.h,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(AppRadius.pill),
-                ),
-              ),
-            ),
-            SizedBox(height: AppSpacing.s4.h),
-            Text(
-              'Choisis ta ${groupKey.toUpperCase()}',
-              style: AppTypography.h3.copyWith(fontSize: 18.sp),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: AppSpacing.s4.h),
-            for (final variant in variants) ...[
-              _GroupVariantTile(
-                variant: variant,
-                langKey: langKey,
-                selected: variant.subjectId == pickedId,
-                onTap: () => Navigator.of(context).pop(variant.subjectId),
-              ),
-              SizedBox(height: AppSpacing.s2.h),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GroupVariantTile extends StatelessWidget {
-  const _GroupVariantTile({
-    required this.variant,
-    required this.langKey,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final Subject variant;
-  final String langKey;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final name = variant.name[langKey] ??
-        variant.name['fr'] ??
-        variant.subjectId;
-    return InkWell(
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      onTap: onTap,
-      child: Container(
-        padding: EdgeInsets.all(AppSpacing.s3.w),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primarySoft : AppColors.bg,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.border,
-            width: selected ? 2 : 1,
-          ),
-        ),
-        child: Row(
-          children: [
-            Icon(
-              subjectIconFor(variant.icon),
-              color: AppColors.primary,
-              size: 20.sp,
-            ),
-            SizedBox(width: AppSpacing.s3.w),
-            Expanded(
-              child: Text(
-                name,
-                style: AppTypography.bodyStrong.copyWith(
-                  fontSize: 15.sp,
-                  color: selected ? AppColors.primary : AppColors.ink,
-                ),
-              ),
-            ),
-            if (selected)
-              Icon(LucideIcons.check,
-                  color: AppColors.primary, size: 18.sp),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Chip compact resume d'une matiere : icone + nom court. Sert le mode
-/// Audit 2026-06-14 — Banner recap affichant le parcours du user
-/// (Section -> Filiere -> Niveau -> Serie) au-dessus des chips matieres.
-/// Rendu en card primary tinted, separateur ` . ` entre les segments.
-class _RecapBanner extends StatelessWidget {
-  const _RecapBanner({required this.parts});
-
-  final List<String> parts;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s3.w,
-        vertical: AppSpacing.s3.h,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        border: Border.all(
-          color: AppColors.primary.withValues(alpha: 0.18),
-          width: 1,
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(
-            LucideIcons.bookOpen,
-            size: 16.sp,
-            color: AppColors.primary,
-          ),
-          SizedBox(width: AppSpacing.s2.w),
-          Expanded(
-            child: Text(
-              parts.join('  ·  '),
-              style: AppTypography.body.copyWith(
-                fontSize: 13.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
-                height: 1.4,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// derived ou aucune interaction n'est possible : juste une vue d'ensemble.
-///
-/// Pas d'abbreviation ni de cadenas — le but est de minimiser le bruit
-/// visuel pour qu'on voit les 11 matieres d'un coup. L'abbreviation reste
-/// utile dans les modes picker (CheckboxListTile) ou la liste est longue
-/// et identifiee par tap. Cf. audit 2026-06-13.
-class _SubjectSummaryChip extends StatelessWidget {
-  const _SubjectSummaryChip({required this.subject, required this.langKey});
-
-  final Subject subject;
-  final String langKey;
-
-  @override
-  Widget build(BuildContext context) {
-    final name =
-        subject.name[langKey] ?? subject.name['fr'] ?? subject.subjectId;
-    return Container(
-      padding: EdgeInsets.symmetric(
-        horizontal: AppSpacing.s3.w,
-        vertical: AppSpacing.s2.h,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.primarySoft,
-        borderRadius: BorderRadius.circular(AppRadius.pill),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            subjectIconFor(subject.icon),
-            color: AppColors.primary,
-            size: 16.sp,
-          ),
-          SizedBox(width: AppSpacing.s2.w),
-          Text(
-            name,
-            style: AppTypography.bodyStrong.copyWith(
-              fontSize: 13.sp,
-              color: AppColors.primary,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Stream picker : liste verticale de SelectionCard pour choisir une serie.
-/// Audit 2026-06-14 — Picker serie avec selection visuelle + CTA Continuer.
-///
-/// Avant ce refactor : tap card -> `setStreamIdDraft` immediat -> re-render
-/// auto vers la derived view. Pas de moment "j'ai choisi mais je peux
-/// changer". Apres : tap card = highlight local uniquement ; le commit ne
-/// se fait qu'au tap CTA Continuer. Pattern coherent avec step 2 (track)
-/// et step 3 (level).
-class _StreamPicker extends StatefulWidget {
-  const _StreamPicker({
-    required this.streams,
-    required this.langKey,
-    required this.continueLabel,
-    required this.onConfirm,
-  });
-
-  final List<Serie> streams;
-  final String langKey;
-  final String continueLabel;
-  final void Function(String streamId) onConfirm;
-
-  @override
-  State<_StreamPicker> createState() => _StreamPickerState();
-}
-
-class _StreamPickerState extends State<_StreamPicker> {
-  String? _selectedId;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                for (final stream in widget.streams) ...[
-                  SelectionCard(
-                    title: stream.name[widget.langKey] ??
-                        stream.name.values.first,
-                    description: stream.descriptionFor(widget.langKey),
-                    selected: _selectedId == stream.serieId,
-                    variant: SelectionCardVariant.standard,
-                    showRadio: false,
-                    onTap: () => setState(() => _selectedId = stream.serieId),
-                  ),
-                  SizedBox(height: AppSpacing.s2.h),
-                ],
-                SizedBox(height: AppSpacing.s4.h),
-              ],
-            ),
-          ),
-        ),
-        SafeArea(
-          top: false,
-          child: Padding(
-            padding: EdgeInsets.all(AppSpacing.s4.w),
-            child: SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: _selectedId == null
-                    ? null
-                    : () => widget.onConfirm(_selectedId!),
-                style: FilledButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  disabledBackgroundColor:
-                      AppColors.primary.withValues(alpha: 0.4),
-                  padding: EdgeInsets.symmetric(vertical: AppSpacing.s4.h),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppRadius.pill),
-                  ),
-                ),
-                child: Text(
-                  widget.continueLabel,
-                  style: AppTypography.bodyStrong.copyWith(
-                    fontSize: 16.sp,
-                    color: AppColors.card,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-/// Audit BUG-01 2026-06-13 — Fallback affiche quand `streams.isEmpty` pour
-/// un niveau qui requiert pourtant un picker (`levelRequiresPicker == true`).
-/// Cas typique : seed catalogue Firestore desync (les series Terminale FR
-/// n'ont pas ete poussees au projet live). Avant ce widget, le code tombait
-/// dans `_buildDerivedView` -> `derive()` -> noMatchingRule -> ErrorRetryView
-/// "Chargement impossible" (message qui suggere a tort un probleme reseau).
-class _StreamPickerEmpty extends StatelessWidget {
-  const _StreamPickerEmpty({
-    required this.title,
-    required this.body,
-    required this.changeLevelLabel,
-    required this.retryLabel,
-    required this.onChangeLevel,
-    required this.onRetry,
-  });
-
-  final String title;
-  final String body;
-  final String changeLevelLabel;
-  final String retryLabel;
-  final VoidCallback onChangeLevel;
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              LucideIcons.searchX,
-              size: 48.sp,
-              color: AppColors.inkSoft,
-            ),
-            SizedBox(height: AppSpacing.s4.h),
-            Text(
-              title,
-              style: AppTypography.h3.copyWith(fontSize: 18.sp),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: AppSpacing.s3.h),
-            Text(
-              body,
-              style: AppTypography.body.copyWith(
-                color: AppColors.inkSoft,
-                fontSize: 14.sp,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: AppSpacing.s5.h),
-            // CTA primaire : revenir au level choice — couvre le cas le
-            // plus frequent (draft stale apres seed change).
-            FilledButton.icon(
-              onPressed: onChangeLevel,
-              icon: const Icon(LucideIcons.arrowLeft, size: 18),
-              label: Text(changeLevelLabel),
-            ),
-            SizedBox(height: AppSpacing.s2.h),
-            // CTA secondaire : retry catalogue (utile uniquement si seed gap
-            // vient juste d'etre comble cote backend).
-            TextButton.icon(
-              onPressed: onRetry,
-              icon: const Icon(LucideIcons.refreshCw, size: 18),
-              label: Text(retryLabel),
-            ),
-          ],
-        ),
-      ),
-    );
+          setState(() => _isStartingRevision = false);
+        },
+        (_) {
+          AppLogger.i('stream.step4 guest flush OK -> /dashboard');
+          // Sync le state notifier avec les sujets confirmes. Sans ca,
+          // pickedSubjects reste [] dans le notifier et le path upgrade
+          // dashboard -> "Creer mon compte" -> step 9 flush ecraserait
+          // Firestore avec une liste vide.
+          ref.read(onboardingNotifierProvider.notifier).commitSubjectsForGuest(
+                streamId: streamId,
+                pickedSubjects: pickedSubjects,
+              );
+          router.go('/dashboard');
+        },
+      );
+    } catch (e, st) {
+      AppLogger.w('stream.step4 guest failed: $e', error: e);
+      AppLogger.w('stream.step4 guest stack: $st');
+      if (mounted) {
+        setState(() => _isStartingRevision = false);
+        // Affiche un message d'erreur minimal — l'ecran reste visible.
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.errorGenericTitle)),
+        );
+      }
+    }
   }
 }

@@ -137,9 +137,35 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
   }
 
   @override
+  Future<Either<SchoolFailure, List<School>>> listFirst(int limit) async {
+    try {
+      final snap = await logPerf(
+        'schools.listFirst',
+        () => _firestore
+            .collection(_kCollection)
+            .where('isValidated', isEqualTo: true)
+            .limit(limit)
+            .get(),
+      );
+      final schools = snap.docs.map(_schoolFromDoc).toList()
+        ..sort((a, b) => a.name.compareTo(b.name));
+      AppLogger.i('schools.listFirst count=${schools.length}');
+      return Right(schools);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w('listFirst() FirebaseException: ${e.code}', error: e);
+      AppLogger.w('listFirst() stack: $st');
+      return Left(SchoolFailure.firestoreError(e.message ?? e.code));
+    } catch (e, st) {
+      AppLogger.w('listFirst() unexpected: $e', error: e);
+      AppLogger.w('listFirst() stack: $st');
+      return Left(SchoolFailure.firestoreError(e.toString()));
+    }
+  }
+
+  @override
   Future<Either<SchoolFailure, void>> createSchoolRequest({
     required String name,
-    required String city,
+    String? city,
     String? region,
     String? subSystem,
   }) async {
@@ -159,10 +185,8 @@ class SchoolRepositoryFirestoreImpl implements SchoolRepository {
           'requestedAt': FieldValue.serverTimestamp(),
           'status': 'pending',
           'name': name,
-          'city': city,
-          // Story 1.5.c — conditional fields : seuls ajoutes si non-null pour
-          // eviter de stocker `null` (les rules verifient l'absence du champ,
-          // pas la valeur null). Syntaxe null-aware marker Dart 3.x.
+          // city/region/subSystem : optionnels, non envoyes si null/vide.
+          'city': ?(city?.isNotEmpty == true ? city : null),
           'region': ?region,
           'subSystem': ?subSystem,
         }),

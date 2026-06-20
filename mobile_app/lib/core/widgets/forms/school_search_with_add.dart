@@ -74,6 +74,7 @@ class SchoolSearchWithAdd extends StatefulWidget {
     required this.placeholder,
     required this.emptyAddTemplate,
     required this.warningOfflineMessage,
+    this.focusNode,
   });
 
   final SchoolEntry? selectedSchool;
@@ -85,6 +86,7 @@ class SchoolSearchWithAdd extends StatefulWidget {
   /// Template `« + Ajouter "{name}" »`. `{name}` est remplace par la saisie.
   final String emptyAddTemplate;
   final String warningOfflineMessage;
+  final FocusNode? focusNode;
 
   @override
   State<SchoolSearchWithAdd> createState() => _SchoolSearchWithAddState();
@@ -135,9 +137,7 @@ class _SchoolSearchWithAddState extends State<SchoolSearchWithAdd> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncResult = _query.trim().isEmpty
-        ? const SchoolSearchIdle()
-        : widget.searchProvider(_query.trim());
+    final asyncResult = widget.searchProvider(_query.trim());
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -147,6 +147,7 @@ class _SchoolSearchWithAddState extends State<SchoolSearchWithAdd> {
           controller: _controller,
           placeholder: widget.placeholder,
           onChanged: _onInputChanged,
+          focusNode: widget.focusNode,
         ),
         SizedBox(height: AppSpacing.s4.h),
         _Results(
@@ -169,11 +170,13 @@ class _SearchField extends StatelessWidget {
     required this.controller,
     required this.placeholder,
     required this.onChanged,
+    this.focusNode,
   });
 
   final TextEditingController controller;
   final String placeholder;
   final ValueChanged<String> onChanged;
+  final FocusNode? focusNode;
 
   @override
   Widget build(BuildContext context) {
@@ -193,6 +196,7 @@ class _SearchField extends StatelessWidget {
             child: TextField(
               controller: controller,
               onChanged: onChanged,
+              focusNode: focusNode,
               keyboardType: TextInputType.text,
               textInputAction: TextInputAction.search,
               inputFormatters: [
@@ -279,12 +283,14 @@ class _Results extends StatelessWidget {
           child: const Center(child: CircularProgressIndicator()),
         ),
       SchoolSearchData(:final results) => results.isEmpty
-          ? _AddCard(
-              query: query,
-              template: emptyAddTemplate,
-              isLoading: addInProgress,
-              onTap: onAddTap,
-            )
+          ? (query.isEmpty
+              ? const SizedBox.shrink()
+              : _AddCard(
+                  query: query,
+                  template: emptyAddTemplate,
+                  isLoading: addInProgress,
+                  onTap: onAddTap,
+                ))
           : _ResultsList(
               results: results,
               selected: selected,
@@ -360,7 +366,7 @@ class _AddCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = template.replaceFirst('{name}', '"$query"');
+    final label = template.replaceFirst('{name}', query);
     final radius = BorderRadius.circular(AppRadius.xl2);
     return Pressable(
       onTap: isLoading ? null : onTap,

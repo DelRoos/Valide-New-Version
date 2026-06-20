@@ -14,16 +14,23 @@
 // firebaseAuthProvider.currentUser).
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/platform/platform_capabilities.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../onboarding/domain/account_linking_failure.dart';
 import '../../../onboarding/domain/account_linking_state.dart';
 import '../../../onboarding/domain/linked_account.dart';
+import '../../../onboarding/presentation/state/onboarding_providers.dart';
+import '../../../onboarding/presentation/state/onboarding_state.dart';
 import '../../../onboarding/providers.dart';
 
 /// Ouvre le bottomsheet d'upgrade. Retourne `true` si l'utilisateur a
@@ -59,9 +66,33 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
         (prev, next) {
       if (next is AccountLinkingSuccess) {
         AppLogger.i(
-          'account.upgrade success provider=${next.account.provider.id}',
+          'account.upgrade success provider=${next.account.provider.id} '
+          '-> starting identity completion (steps 6-9)',
         );
-        Navigator.of(context).pop(true);
+
+        // upgradeInProgress a déjà été posé true par le onPressed du bouton,
+        // AVANT l'appel linkGoogle/linkApple. Le router n'a donc pas pu
+        // auto-rediriger /dashboard -> /onboarding/v2 pendant l'auth.
+        // Positionner le notifier au step 6 (saisie nom) avec le
+        // displayName OAuth pré-rempli si disponible.
+        ref.read(onboardingNotifierProvider.notifier).setAuthProvider(
+              next.account.provider == AccountProvider.google
+                  ? OnboardingAuthProvider.google
+                  : OnboardingAuthProvider.apple,
+              displayName: next.account.displayName,
+            );
+
+        // Pop le sheet puis naviguer vers le flow de completion d'identité.
+        if (context.mounted) {
+          Navigator.of(context).pop();
+          GoRouter.of(context).go('/onboarding/v2');
+        }
+      } else if (next is AccountLinkingError) {
+        // Annulation ou erreur : réinitialiser le flag pour que le router
+        // reprenne ses gardes normales.
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
       }
     });
 
@@ -128,19 +159,38 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
             ],
             AppButton.primary(
               label: l10n.onboardingAuthGoogleLabel,
-              icon: LucideIcons.globe,
+              iconWidget: const GoogleBrandIcon(),
               loading: linkState is AccountLinkingLoading &&
                   linkState.provider == AccountProvider.google,
-              onPressed: isLoading ? null : notifier.linkGoogle,
+              onPressed: isLoading
+                  ? null
+                  : () {
+                      // Poser le flag AVANT linkGoogle pour que le router
+                      // bypasse le guard profil-incomplet (Check 4) quand
+                      // signInWithCredential change l'uid courant.
+                      ref
+                          .read(profileUpgradeInProgressProvider.notifier)
+                          .setInProgress(true);
+                      notifier.linkGoogle();
+                    },
             ),
-            SizedBox(height: AppSpacing.s2.h),
-            AppButton.secondary(
-              label: l10n.onboardingAuthAppleLabel,
-              icon: LucideIcons.apple,
-              loading: linkState is AccountLinkingLoading &&
-                  linkState.provider == AccountProvider.apple,
-              onPressed: isLoading ? null : notifier.linkApple,
-            ),
+            if (isAppleSignInAvailable) ...[
+              SizedBox(height: AppSpacing.s2.h),
+              AppButton.secondary(
+                label: l10n.onboardingAuthAppleLabel,
+                iconWidget: const AppleBrandIcon(color: Colors.black),
+                loading: linkState is AccountLinkingLoading &&
+                    linkState.provider == AccountProvider.apple,
+                onPressed: isLoading
+                    ? null
+                    : () {
+                        ref
+                            .read(profileUpgradeInProgressProvider.notifier)
+                            .setInProgress(true);
+                        notifier.linkApple();
+                      },
+              ),
+            ],
           ],
         ),
       ),
@@ -148,11 +198,12 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
   }
 
   String? _errorMessage(AccountLinkingState state, AppLocalizations l10n) {
-    if (state is AccountLinkingError) {
-      return state.failure.message.isNotEmpty
-          ? state.failure.message
-          : l10n.errorGenericTitle;
-    }
-    return null;
+    if (state is! AccountLinkingError) return null;
+    final failure = state.failure;
+    return switch (failure.kind) {
+      AccountLinkingFailureKind.cancelled => null,
+      AccountLinkingFailureKind.unknown => l10n.errorGenericTitle,
+      _ => failure.message,
+    };
   }
 }

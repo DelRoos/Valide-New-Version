@@ -8,6 +8,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app.dart';
@@ -21,6 +22,12 @@ import 'firebase_options.dart';
 /// A migrer vers `package_info_plus` quand on aura un cas d'usage runtime
 /// (telemetrie, crash reports). En attendant, constante manuelle.
 const String kBuildVersion = '1.0.0+1';
+
+// Web OAuth 2.0 client ID requis par google_sign_in v7 sur Android.
+// Issu de google-services.json > oauth_client[client_type=3].
+// Pas un secret : valeur publique distribuée avec l'APK.
+const _kGoogleServerClientId =
+    '410229733764-sdiv74q0ttjom4cndeicgrohai0onrhb.apps.googleusercontent.com';
 
 Future<void> main() async {
   logPerfEvent('boot.main.start');
@@ -97,6 +104,18 @@ Future<void> _bootstrap() async {
     AppLogger.bindCrashlytics(FirebaseCrashlytics.instance);
     AppLogger.i('Firebase bootstrap OK');
     logPerfEvent('boot.firebase.ready');
+
+    // google_sign_in v7 Android exige initialize() avec serverClientId avant
+    // tout appel authenticate(). Non bloquant si ca echoue (iOS n'en a pas
+    // besoin, et on continue sans Google Sign-In).
+    try {
+      await GoogleSignIn.instance.initialize(
+        serverClientId: _kGoogleServerClientId,
+      );
+      AppLogger.i('GoogleSignIn.initialize OK');
+    } catch (e) {
+      AppLogger.w('GoogleSignIn.initialize failed (non-blocking): $e');
+    }
   } catch (e, st) {
     AppLogger.w(
       'Firebase bootstrap skipped — voir Story 0.6 Phase B. Erreur: $e',

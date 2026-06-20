@@ -33,6 +33,7 @@ class PhoneInputWithCountryFlag extends StatefulWidget {
     this.errorText,
     this.enabled = true,
     this.autofocus = false,
+    this.focusNode,
   });
 
   final String value;
@@ -40,6 +41,7 @@ class PhoneInputWithCountryFlag extends StatefulWidget {
   final String? errorText;
   final bool enabled;
   final bool autofocus;
+  final FocusNode? focusNode;
 
   /// Helper statique pour formater un numero E.164 pour les logs.
   /// Delegue a [maskPhone] (helper canonical) — pas de duplication.
@@ -128,6 +130,7 @@ class _PhoneInputWithCountryFlagState extends State<PhoneInputWithCountryFlag> {
                     controller: _controller,
                     enabled: widget.enabled,
                     autofocus: widget.autofocus,
+                    focusNode: widget.focusNode,
                     keyboardType: TextInputType.phone,
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,

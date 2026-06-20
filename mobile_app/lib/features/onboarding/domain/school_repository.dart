@@ -16,6 +16,11 @@ abstract interface class SchoolRepository {
   /// (retourne liste vide). Limite a 10 resultats max (AC2 Story 1.7 + 1.5.b).
   Future<Either<SchoolFailure, List<School>>> searchByPrefix(String query);
 
+  /// Retourne les [limit] premieres ecoles validees (order non garanti).
+  /// Utilise pour precharger la liste au step 8 avant que le user tape.
+  /// Requete single-field `isValidated==true` — auto-indexee Firestore.
+  Future<Either<SchoolFailure, List<School>>> listFirst(int limit);
+
   /// Story 1.5.c — Soumet une demande d'ajout d'ecole dans
   /// `school_requests/<auto>` (collection racine, autoId Firestore).
   ///
@@ -28,7 +33,7 @@ abstract interface class SchoolRepository {
   /// `where('requestedBy', '==', uid)`).
   Future<Either<SchoolFailure, void>> createSchoolRequest({
     required String name,
-    required String city,
+    String? city,
     String? region,
     String? subSystem,
   });

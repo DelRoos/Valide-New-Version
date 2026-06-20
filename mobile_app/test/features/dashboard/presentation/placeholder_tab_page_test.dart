@@ -40,17 +40,14 @@ void main() {
       expect(find.text('Bientôt disponible'), findsOneWidget);
     });
 
-    testWidgets('(b) Bottom nav avec 4 destinations visibles',
+    testWidgets('(b) Page seule sans bottom nav : seul le titre et le body sont rendus',
         (tester) async {
       await _pumpPlaceholder(tester, title: 'Activités', tabIndex: 2);
-      // Les labels FR des 4 onglets doivent etre visibles dans la NavigationBar.
-      expect(find.text('Accueil'), findsOneWidget);
-      // Le titre AppBar "Activités" peut entrer en collision avec le label
-      // d'onglet "Activités" — on cherche au moins 1 occurrence dans la nav.
+      // PlaceholderTabPage ne porte plus sa propre NavigationBar depuis E1bis-7
+      // (migration vers StatefulShellRoute + MainShell). La nav bar est dans
+      // MainShell, testée via widget_test.dart et splash_page_test.dart.
       expect(find.text('Activités'), findsWidgets);
-      expect(find.text('Profil'), findsOneWidget);
-      // L'onglet 1 "Matières" en label de nav.
-      expect(find.text('Matières'), findsOneWidget);
+      expect(find.text('Bientôt disponible'), findsOneWidget);
     });
   });
 }

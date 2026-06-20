@@ -107,10 +107,15 @@ class OnboardingFlushService {
 
       final payload = <String, dynamic>{
         'uid': uid,
-        ...effectiveState.toFirestorePayload(),
-        'language': effectiveState.subSystem?.languageCode ?? 'fr',
+        ...effectiveState.toFirestorePayload(isCreate: isCreate),
         'updatedAt': FieldValue.serverTimestamp(),
       };
+      // language derive du subSystem — inclus seulement si subSystem connu.
+      // Si null (upgrade depuis dashboard apres restart), on ne l'ecrase pas
+      // (le doc Firestore a deja la bonne valeur depuis le flush guest).
+      if (effectiveState.subSystem != null) {
+        payload['language'] = effectiveState.subSystem!.languageCode;
+      }
       if (isCreate) {
         payload['createdAt'] = FieldValue.serverTimestamp();
       }
@@ -127,7 +132,7 @@ class OnboardingFlushService {
         'trackId=${payload['trackId']} '
         'levelId=${payload['levelId']} '
         'streamId=${payload['streamId'] ?? "<null>"} '
-        'pickedSubjects=${(payload['pickedSubjects'] as List).length} items '
+        'pickedSubjects=${(payload['pickedSubjects'] as List?)?.length ?? "<omis>"} items '
         'displayName=${maskName(payload['displayName'] as String?)} '
         'phoneNumber=${maskPhone(payload['phoneNumber'] as String?)} '
         'schoolId=${payload['schoolId'] ?? "<null>"} '

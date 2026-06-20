@@ -27,6 +27,27 @@ class SchoolInputStepBody extends ConsumerStatefulWidget {
 
 class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
   String _currentQuery = '';
+  late final FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      ref.read(schoolSearchNotifierProvider.notifier).preload(limit: 50);
+    });
+    // Focus apres la transition AnimatedSwitcher (300 ms).
+    Future.delayed(const Duration(milliseconds: 300), () {
+      if (mounted) _focusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,22 +96,9 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
               placeholder: l10n.onboardingSchoolPlaceholder,
               emptyAddTemplate: l10n.onboardingSchoolAddTemplate('{name}'),
               warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
+              focusNode: _focusNode,
             ),
-            SizedBox(height: AppSpacing.s5.h),
-            TextButton(
-              onPressed: () {
-                ref.read(onboardingNotifierProvider.notifier).skipSchool();
-                AppLogger.i('school.skip tapped');
-              },
-              child: Text(
-                l10n.onboardingSchoolSkipLabel,
-                style: AppTypography.body.copyWith(
-                  color: AppColors.inkSoft,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-            ),
-            SizedBox(height: AppSpacing.s5.h),
+            SizedBox(height: AppSpacing.s4.h),
           ],
         ),
       ),
@@ -119,7 +127,6 @@ class _SchoolInputStepBodyState extends ConsumerState<SchoolInputStepBody> {
     final state = ref.read(onboardingNotifierProvider);
     final result = await repo.createSchoolRequest(
       name: name,
-      city: '',
       subSystem: state.subSystem?.id,
     );
     return result.fold(

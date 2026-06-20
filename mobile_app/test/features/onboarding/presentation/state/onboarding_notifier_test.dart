@@ -465,13 +465,16 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 4);
     });
 
-    test('step 3 -> 5 si levelRequiresPicker=false (mode derived)', () async {
+    test(
+        'step 3 -> 4 toujours (audit 2026-06-14 : tous les niveaux passent '
+        'par le recap step 4, plus de skip mode derived)',
+        () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
       notifier.state = const OnboardingState(currentStep: 3);
       notifier.next();
-      expect(container.read(onboardingNotifierProvider).currentStep, 5);
+      expect(container.read(onboardingNotifierProvider).currentStep, 4);
     });
 
     test(
@@ -542,14 +545,15 @@ void main() {
     });
 
     test(
-        'step 5 -> 3 si levelRequiresPicker=false (symetrie skip step 4 derived)',
+        'step 5 -> 4 toujours (audit 2026-06-14 : symetrie avec next, recap '
+        'visible meme en mode derived)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
       notifier.state = const OnboardingState(currentStep: 5);
       notifier.back();
-      expect(container.read(onboardingNotifierProvider).currentStep, 3);
+      expect(container.read(onboardingNotifierProvider).currentStep, 4);
     });
 
     test('step 7 -> 6 toujours (audit PR3 : pas de skip step 6 OAuth)',

@@ -110,6 +110,10 @@ final onboardingFlushServiceProvider = Provider<OnboardingFlushService>((ref) {
 ///   - [] si users/{uid} absent ou pickedSubjects vide
 ///   - liste de Subject matchant pickedSubjects (resolus via catalogue)
 final userSubjectsProvider = StreamProvider<List<Subject>>((ref) {
+  // Rebuild quand auth change pour eviter le stream stale sur l'ancien uid
+  // (typique apres dev-audit-reset ou sign-out -> re-auth anonyme).
+  ref.watch(currentUserProvider);
+
   final userRepo = ref.watch(userProfileRepositoryProvider);
   final catalogueAsync = ref.watch(catalogueProvider);
 
@@ -204,6 +208,12 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 /// laissait `trackId+levelId` poses mais `pickedSubjects=[]` -> profil
 /// considere complet -> redirect dashboard vide. Confusion utilisateur.
 ///
+/// Bug 4 fix (2026-06-17) — Compte permanent (isAnonymous=false) avec
+/// displayName vide = upgrade visiteur interrompu avant completion identite
+/// (steps 6-8). profileUpgradeInProgressProvider est en memoire -> perdu au
+/// kill app. On derive l'etat depuis le doc Firestore pour que le router
+/// renvoie vers /onboarding/v2 meme apres un relaunch.
+///
 /// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
 /// que les docs users existants n'ont pas migre (Story 1.19 dette).
 ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
@@ -221,6 +231,18 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
     final picked = data['pickedSubjects'];
     if (picked is! List || picked.isEmpty) {
       return ProfileCompletionState.serieMissing;
+    }
+    // Bug 4 fix : compte permanent sans displayName = upgrade interrompu.
+    // isAnonymous=false (pose par _persistIdentity au moment du link OAuth)
+    // + displayName vide = le user a linke son compte mais n'a pas complete
+    // les steps identite (6-8). On le renvoie vers /onboarding/v2.
+    final isAnonymous = data['isAnonymous'] as bool? ?? true;
+    final displayName = data['displayName'] as String? ?? '';
+    if (!isAnonymous && displayName.isEmpty) {
+      AppLogger.w(
+        'profileCompletion: compte permanent sans displayName -> identite incomplete',
+      );
+      return ProfileCompletionState.filiereMissing;
     }
     return ProfileCompletionState.complete;
   }
@@ -270,8 +292,17 @@ final accountLinkingRepositoryProvider =
         AppleIDAuthorizationScopes.fullName,
       ],
     ),
-    linkCredential: (credential) =>
-        firebaseAuth.currentUser!.linkWithCredential(credential),
+    linkCredential: (credential) {
+      // Si currentUser est null (premier lancement sans session anonyme
+      // préalable), linkWithCredential crasherait avec Null check error.
+      // On retombe sur signInWithCredential pour créer un compte Google direct.
+      final u = firebaseAuth.currentUser;
+      return u != null
+          ? u.linkWithCredential(credential)
+          : firebaseAuth.signInWithCredential(credential);
+    },
+    signInWithCredential: (credential) =>
+        firebaseAuth.signInWithCredential(credential),
   );
 });
 
@@ -311,6 +342,24 @@ final accountLinkingNotifierProvider =
   AccountLinkingNotifier.new,
 );
 
+/// Flag posé lors d'un upgrade visiteur -> compte permanent (Google/Apple)
+/// déclenché depuis la modale dashboard (AccountUpgradeSheet).
+///
+/// Tant que true, le router autorise /onboarding/v2 même si
+/// profileCompletionProvider == complete — le profil scolaire existe déjà
+/// (flush guest), mais l'identité (name + phone + school, steps 6-8) reste
+/// à compléter. Remis à false par SuccessCelebrationStepBody._onComplete()
+/// après le flush final au step 9.
+class ProfileUpgradeNotifier extends Notifier<bool> {
+  @override
+  bool build() => false;
+
+  void setInProgress(bool value) => state = value;
+}
+
+final profileUpgradeInProgressProvider =
+    NotifierProvider<ProfileUpgradeNotifier, bool>(ProfileUpgradeNotifier.new);
+
 // =====================================================================
 // Story 1.7 — Liaison ecole optionnelle (FR-6)
 // =====================================================================
@@ -323,10 +372,43 @@ final schoolRepositoryProvider = Provider<SchoolRepository>((ref) {
   );
 });
 
-/// State machine de la recherche autocomplete avec debounce 300ms interne.
+/// State machine de la recherche autocomplete — entierement en memoire.
+/// Charge toutes les ecoles une seule fois (preload), puis filtre cote client
+/// par prefixe sur le champ `keywords[]` pre-calcule par le seed.
+/// Avantage : 0 appel Firestore supplementaire apres preload, recherche
+/// instantanee meme en offline (cache natif).
 class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
   Timer? _debounceTimer;
-  String? _lastQuery;
+  List<School> _allSchools = const [];
+  bool _loaded = false;
+
+  // Table de translitteration accents -> ASCII pour la normalisation des tokens.
+  static const Map<String, String> _kAccentMap = {
+    'à': 'a', 'â': 'a', 'ä': 'a', 'á': 'a', 'ã': 'a',
+    'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e',
+    'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
+    'ò': 'o', 'ó': 'o', 'ô': 'o', 'ö': 'o',
+    'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u',
+    'ç': 'c', 'ñ': 'n',
+    'À': 'a', 'Â': 'a', 'Ä': 'a', 'Á': 'a', 'Ã': 'a',
+    'È': 'e', 'É': 'e', 'Ê': 'e', 'Ë': 'e',
+    'Ì': 'i', 'Í': 'i', 'Î': 'i', 'Ï': 'i',
+    'Ò': 'o', 'Ó': 'o', 'Ô': 'o', 'Ö': 'o',
+    'Ù': 'u', 'Ú': 'u', 'Û': 'u', 'Ü': 'u',
+    'Ç': 'c', 'Ñ': 'n',
+  };
+
+  /// Decompose la saisie utilisateur en tokens ASCII minuscules (≥2 chars).
+  static List<String> _queryTokens(String query) {
+    if (query.isEmpty) return const [];
+    final lower = query.toLowerCase();
+    final buf = StringBuffer();
+    for (final char in lower.split('')) {
+      buf.write(_kAccentMap[char] ?? char);
+    }
+    final cleaned = buf.toString().replaceAll(RegExp(r'[^a-z0-9 ]'), ' ');
+    return cleaned.split(RegExp(r'\s+')).where((t) => t.length >= 2).toList();
+  }
 
   @override
   AsyncValue<List<School>> build() {
@@ -334,30 +416,47 @@ class SchoolSearchNotifier extends Notifier<AsyncValue<List<School>>> {
     return const AsyncValue.data([]);
   }
 
+  /// Charge toutes les ecoles depuis Firestore (une seule fois).
+  /// Les appels suivants sont des no-op si deja charge.
+  void preload({int limit = 300}) {
+    if (_loaded) return;
+    state = const AsyncValue.loading();
+    ref.read(schoolRepositoryProvider).listFirst(limit).then((result) {
+      state = result.fold(
+        (failure) {
+          AppLogger.w('schools.preload failed: ${failure.message}');
+          return const AsyncValue.data([]);
+        },
+        (schools) {
+          _allSchools = schools;
+          _loaded = true;
+          AppLogger.i('schools.preload count=${schools.length}');
+          return AsyncValue.data(schools);
+        },
+      );
+    });
+  }
+
+  /// Filtre en memoire par prefixe sur keywords[]. Debounce 150 ms.
   void search(String query) {
     _debounceTimer?.cancel();
-    _lastQuery = query;
-    if (query.length < 2) {
-      state = const AsyncValue.data([]);
+    final tokens = _queryTokens(query.trim());
+    if (tokens.isEmpty) {
+      state = AsyncValue.data(_allSchools);
       return;
     }
-    _debounceTimer = Timer(const Duration(milliseconds: 300), () async {
-      if (_lastQuery != query) return;
-      state = const AsyncValue.loading();
-      final result =
-          await ref.read(schoolRepositoryProvider).searchByPrefix(query);
-      if (_lastQuery != query) return;
-      state = result.fold(
-        (failure) => AsyncValue.error(failure, StackTrace.current),
-        (schools) => AsyncValue.data(schools),
-      );
+    _debounceTimer = Timer(const Duration(milliseconds: 150), () {
+      final filtered = _allSchools.where((s) {
+        return tokens.every((qt) => s.keywords.any((k) => k.startsWith(qt)));
+      }).toList()
+        ..sort((a, b) => a.name.compareTo(b.name));
+      state = AsyncValue.data(filtered);
     });
   }
 
   void clear() {
     _debounceTimer?.cancel();
-    _lastQuery = null;
-    state = const AsyncValue.data([]);
+    state = AsyncValue.data(_allSchools);
   }
 }
 

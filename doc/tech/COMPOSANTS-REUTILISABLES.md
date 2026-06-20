@@ -561,71 +561,6 @@ PickerValidateBar(
 
 ---
 
-### PhoneInputWithCountryFlag *(à créer)*
-
-**Path cible** : `lib/core/widgets/forms/phone_input_with_country_flag.dart`
-**Story d'origine** : E1bis — step 7 phone input
-**Catégorie** : `form`
-**Responsive** : `phone + tablet` (largeur max 600 dp ≥ 840 dp, centrée)
-
-**Quand l'utiliser** :
-- Step 7 onboarding : capture numéro Cameroun.
-- Tout futur écran qui demande un numéro CM (recovery profil, paramètres).
-
-**Props attendues** :
-- `value: String` — Valeur courante au format E.164 (`+2376XXXXXXXX`) ou vide.
-- `onChanged: void Function(String e164Value)` — Callback à chaque changement, valeur en E.164.
-- `errorText: String?` — Message d'erreur sous le champ.
-- `enabled: bool = true`
-- `autofocus: bool = false`
-
-**Comportement non négociable (CLAUDE.md règle 4 sécurité)** :
-- Le composant **expose** un getter statique `static String maskedForLogs(String e164)` qui retourne `'+237 XX XX XX 78 90'` (4 derniers digits visibles).
-- Tout code appelant qui logue le numéro **DOIT** passer par `maskedForLogs`. Le composant lui-même ne logue jamais via AppLogger.
-- Hint validation : regex `^\\+237[26][0-9]{8}$`.
-
-**Tests requis** :
-- Golden tests : phone 360x780 + tablet 900x1200 (vide / rempli / erreur).
-- Test : tap pavé → keyboard numérique uniquement.
-- Test : saisie « 671234567 » → onChanged reçoit « +237671234567 ».
-- Test : saisie incomplète → errorText affiché.
-- Test : `maskedForLogs('+237671234567')` retourne `'+237 XX XX XX 67'` (ou format défini).
-
----
-
-### SchoolSearchWithAdd *(à créer)*
-
-**Path cible** : `lib/core/widgets/forms/school_search_with_add.dart`
-**Story d'origine** : E1bis — step 8 school search
-**Catégorie** : `form`
-**Responsive** : `phone + tablet`
-
-**Quand l'utiliser** :
-- Step 8 onboarding : recherche école + fallback ajout custom.
-- Profil édition école future (re-utilisable).
-
-**Props attendues** :
-- `selectedSchool: SchoolEntry?` — État courant (`SchoolEntry(id, name)`).
-- `onSelect: void Function(SchoolEntry school)` — Callback sélection résultat.
-- `onAddRequest: Future<String> Function(String name)` — Callback création request (retourne `pendingRequestId`).
-- `searchProvider: AsyncValue<List<SchoolEntry>> Function(String query)` — Source des suggestions (typiquement un Riverpod provider Firestore).
-- `placeholder: String` — ARB key contextuelle (FR/EN).
-
-**Comportement** :
-- Debounce 250 ms sur la saisie avant déclenchement `searchProvider`.
-- Suggestions rendues comme `SelectionCard` (cf. ci-dessus, variant `standard`).
-- Si zéro résultat ET saisie non-vide → carte « + Ajouter "<saisie>" » (style border-dashed primary).
-- Tap sur « + Ajouter » → spinner local + `onAddRequest()` → toast succès + propagation `selected` avec `id: pendingRequestId` + flag `isPending: true`.
-- Gestion offline : si `searchProvider` retourne `AsyncError(networkUnavailable)` → encadré warning + bouton « + Ajouter » toujours disponible.
-
-**Tests requis** :
-- Golden tests : 4 états × 2 form factors = 8 goldens (vide / saisie / résultats / zéro résultat).
-- Test : sélection résultat propage `onSelect`.
-- Test : zéro résultat + tap ajouter → `onAddRequest` appelé + spinner.
-- Test : erreur réseau → encadré warning visible + add button toujours actif.
-
----
-
 ### CelebrationConfettiSuccess *(à créer)*
 
 **Path cible** : `lib/core/widgets/feedback/celebration_confetti_success.dart`
@@ -752,6 +687,148 @@ Scaffold(
 
 ---
 
+### MainShell
+
+**Path** : `lib/features/dashboard/presentation/_main_shell.dart`
+**Story d'origine** : E1bis-7 — shell de navigation persistent (StatefulShellRoute)
+**Catégorie** : `navigation`
+**Responsive** : `phone + tablet` — hauteur nav bar 64 dp fixe en raw dp (pas de ScreenUtil)
+
+**Quand l'utiliser** :
+- Shell unique de toute l'app post-onboarding. Wrappé par `StatefulShellRoute.indexedStack` dans `app_router.dart`.
+- Ne pas instancier directement — go_router passe `navigationShell` automatiquement.
+
+**Props** :
+- `navigationShell: StatefulNavigationShell` — fourni par go_router, expose `currentIndex` et `goBranch()`.
+
+**Comportement** :
+- Un seul `Scaffold` pour les 4 branches (Accueil / Cours / Examen / Profil). Seul le `body` change entre onglets — pas d'animation de page (`goBranch` remplace `context.go`).
+- Re-tap onglet actif → `goBranch(i, initialLocation: true)` remonte à la racine de la branche.
+- `_StyledNavBar` privé : `Row` de 4 `Expanded(InkWell)` + `AnimatedContainer` pill état sélectionné + `Text` label 11 dp.
+- **Zéro ScreenUtil** — toutes les dimensions sont en dp bruts (`SizedBox(height: 64)`, `Icon(size: 22)`, `fontSize: 11`, `EdgeInsets` constants) pour éviter le scaling dans les tests et sur tablette.
+- `SafeArea(top: false, bottom: false)` interne — `Scaffold.bottomNavigationBar` gère déjà l'inset bas.
+
+**Tests** :
+- Couvert par `test/widget_test.dart` (nav bar rendue avec 4 destinations) et `test/features/splash/splash_page_test.dart` (navigation post-splash).
+
+---
+
+### PlaceholderTabPage
+
+**Path** : `lib/features/dashboard/presentation/placeholder_tab_page.dart`
+**Story d'origine** : Story 1.9 — onglets dashboard non encore implémentés
+**Catégorie** : `navigation`
+**Responsive** : `phone + tablet` (contenu centré, pas de contrainte de largeur spécifique)
+
+**Quand l'utiliser** :
+- Placeholder pour un onglet du dashboard non encore livré (Matières, Activités).
+- Vit à l'intérieur de `MainShell` via `StatefulShellRoute` — n'a pas de `NavigationBar` propre.
+
+**Props** :
+- `title: String` — Titre de l'`AppBar` (déjà localisé par l'appelant via `l10n`).
+- `tabIndex: int` — Index dans la nav bar (non utilisé visuellement ; réservé pour analytics futures).
+
+**Comportement** :
+- `Scaffold` avec `AppBar` (titre) + body centré `Text(l10n.comingSoon)` ("Bientôt disponible" / "Coming soon").
+- Pas de Riverpod, pas de state.
+
+**Tests** :
+- `test/features/dashboard/presentation/placeholder_tab_page_test.dart` — (a) titre AppBar + texte "Bientôt disponible", (b) page seule sans nav bar propre (nav bar dans `MainShell`).
+
+---
+
+### SocialButton
+
+**Path** : `lib/core/widgets/auth/social_auth_widgets.dart`
+**Story d'origine** : E1bis-4 (extrait de `auth_choice_step_body.dart` — chore R4 2026-06-17)
+**Catégorie** : `auth`
+**Responsive** : `phone + tablet` (hauteur fixe 56.h screenutil, pleine largeur)
+
+**Quand l'utiliser** :
+
+- Bouton social branded (Google, Apple) dans les flows d'authentification.
+- Auth choice step body (step 5 onboarding) et tout futur écran de connexion.
+
+**Props (API publique)** :
+
+- `label: String` — Texte affiché.
+- `iconWidget: Widget` — Logo brand (ex. `GoogleBrandIcon()`, `AppleBrandIcon()`).
+- `loading: bool` — Si true, remplace l'icône par un `CircularProgressIndicator`.
+- `onPressed: VoidCallback?` — null = bouton désactivé.
+- `backgroundColor: Color` — Fond du bouton.
+- `foregroundColor: Color` — Couleur texte + spinner.
+- `border: BoxBorder?` — Bordure optionnelle (null = pas de bordure).
+
+**Exemple** :
+
+```dart
+SocialButton(
+  label: l10n.onboardingAuthGoogleLabel,
+  iconWidget: const GoogleBrandIcon(),
+  loading: linkState is AccountLinkingLoading,
+  onPressed: linkingNotifier.linkGoogle,
+  backgroundColor: AppColors.card,
+  foregroundColor: AppColors.ink,
+  border: Border.all(color: AppColors.border, width: 1),
+)
+```
+
+**Tests associés** : aucun dédié (couvert par `auth_choice_step_body_test.dart`).
+
+---
+
+### AuthErrorBanner
+
+**Path** : `lib/core/widgets/auth/social_auth_widgets.dart`
+**Story d'origine** : E1bis-4 (extrait de `auth_choice_step_body.dart` — chore R4 2026-06-17)
+**Catégorie** : `feedback`
+**Responsive** : `phone + tablet` (pleine largeur, texte multi-ligne)
+
+**Quand l'utiliser** :
+
+- Bannière d'erreur inline dismissible dans les flows d'authentification.
+- Distingue erreurs réseau, erreurs provider, erreurs flush visiteur.
+
+**Props (API publique)** :
+
+- `message: String` — Message d'erreur localisé.
+- `onDismiss: VoidCallback` — Fermeture de la bannière (remonte l'action au parent).
+
+**Exemple** :
+
+```dart
+AuthErrorBanner(
+  message: l10n.errorNetworkUnavailable,
+  onDismiss: () => setState(() => _guestError = null),
+)
+```
+
+**Tests associés** : aucun dédié (couvert par `auth_choice_step_body_test.dart`).
+
+---
+
+### Famille StreamSubjectsPicker (picker étape 4)
+
+> Widgets extraits de `stream_subjects_picker_step_body.dart` (1 245 → 438 L, -65%) lors du chore R4 2026-06-17. **Feature-specific** au step 4 onboarding — pas conçus pour réutilisation hors de ce contexte. Documentés ici pour visibilité catalogue (CLAUDE.md règle 11).
+
+**Path** : `lib/features/onboarding/presentation/widgets/picker/`
+**Story d'origine** : E1bis-3 (extrait — chore R4 2026-06-17)
+**Catégorie** : `picker`
+**Responsive** : `phone + tablet` (Wrap chips, full-width CTA)
+
+| Fichier | Composants publics | Rôle |
+|---|---|---|
+| `stream_picker_chips.dart` | `SubjectCounterBadge`, `SectionLabel`, `ToggleChip`, `SubjectSummaryChip` | Chips atomiques du picker matières |
+| `stream_picker_recap.dart` | `RecapBanner`, `RecapCell` | Banner recap parcours (Section/Filière/Niveau/Série) |
+| `stream_picker_selector.dart` | `StreamPicker`, `StreamPickerEmpty` | Liste cards séries + fallback vide catalogue |
+| `stream_picker_derived_view.dart` | `DerivedPreview` | Vue read-only modes derived + tvePicker |
+| `stream_picker_interactive.dart` | `InteractiveSubjectPicker` | Vue interactive modes optOut + freeWithObligatory + seriesPlusOptional |
+| `stream_picker_recap_helper.dart` | `buildRecapEntries()` | Fonction pure : construit les entrées recap depuis `OnboardingState` + `DerivedProfile` |
+
+**Tests associés** : aucun dédié (couvert par intégration `stream_subjects_picker_step_body.dart`).
+
+---
+
 ## Historique des composants extraits (post-création)
 
 > **✅ Résorbée Story 1.18 (2026-06-10)** — voir [Catalogue actuel](#catalogue-actuel) ci-dessus. Les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` ont été supprimés de `subjects_picker_page.dart` (1309 → 621 lignes, -52%) et remplacés par compositions de 4 composants extraits (`PickerSectionScaffold` + `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerValidateBar`) + un wrapper privé `_PickerStreamGate` qui factorise le StreamBuilder + init state. La 5e candidate `PickerToastFeedback` a été **skippée** (`AppToast` existant Stories 0.14 suffit, pattern déjà unifié dans le source d'origine).
@@ -766,7 +843,9 @@ Scaffold(
 | 2026-06-10 | Révision 2 section « À extraire — dette Epic 1 v2 » post-discovery code source : renommage `Chip*` → `Checkbox*` (réel = `CheckboxListTile`, pas `Chip`), `PickerSectionCard` → `PickerSectionScaffold` (réel = LayoutBuilder+ConstrainedBox+Padding+Column, pas Card visuel), suppression `PickerToastFeedback` (`AppToast` existant suffit). 5 composants → 4 composants. AC8 audit responsive sur `subjects_picker_page` réduit (LayoutBuilder déjà présent lignes 376/559). | PR docs/1.18-correction-scope | Amelia |
 | 2026-06-10 | Story 1.18 livrée — 4 composants extraits ajoutés au [Catalogue actuel](#catalogue-actuel) : `PickerSectionScaffold`, `ObligatorySubjectCheckboxList`, `OptionalSubjectCheckboxList`, `PickerValidateBar`. `subjects_picker_page.dart` réduit 1309 → 621 lignes (-52%) ; 4 ex-`_XxxBody` supprimés. Audit responsive A7 : 2 golden tests tablet 900x1200 ajoutés (`subjects_picker_page` mode opt-out + `school_picker_page`). Placeholders Story 1.9 skippés (transients Epic 2). | PR feat/1-18-refacto | Amelia |
 | 2026-06-11 | Ajout section « À créer — Refonte Onboarding 10 étapes (Epic E1bis) » : spécifications de 6 composants à créer pour le flow refonte templates `doc/templates/` (`SubSystemHeroCard`, `SelectionCard` générique, `PhoneInputWithCountryFlag`, `SchoolSearchWithAdd`, `CelebrationConfettiSuccess`, `PickerCounterBadge`). Source : DESIGN.md § Composants Onboarding + EXPERIENCE.md § Flow 1 v3 + decision log D-UX-Update-20. Pas encore de code livré ; les composants seront créés en story E1bis-0 (foundation widgets) avant les pages. | bmad-ux Update 3 (pré-stories E1bis) | Sally |
+| 2026-06-17 | Ajout `MainShell` + `PlaceholderTabPage` au catalogue actuel (navigation shell dashboard). Suppression doublons "à créer" `PhoneInputWithCountryFlag` et `SchoolSearchWithAdd` (composants livrés en Story 1bis-0, entrées planning devenues obsolètes). Aucune modification code. | fix/onboarding-tests | Amelia |
 | 2026-06-11 | Story 1bis-0 livrée — 5 nouveaux composants au [Catalogue actuel](#catalogue-actuel) : `SelectionCard` (variant `hero` absorbe `SubSystemHeroCard` cf. décision AC2), `PickerCounterBadge`, `PhoneInputWithCountryFlag` (+ helper `maskPhone()` dans `lib/core/logging/log_safe.dart` + méthode statique passthrough `maskedForLogs`), `SchoolSearchWithAdd` (+ record `SchoolEntry`), `CelebrationConfettiSuccess` (package `confetti: ^0.8.0`). Tests : 38 goldens phone+tablet + 10 tests `maskPhone` + interactions par composant (7 + 3 + 6 + 4 + 5). `flutter analyze` 0 issue. Package `golden_toolkit: ^0.15.0` ajouté en dev_dependency (discontinued mais fonctionnel ; alternative future possible). Test setup pattern : `tester.view.physicalSize + devicePixelRatio = 1.0` AVANT `pumpWidget` pour que MediaQuery + ScreenUtilInit voient la viewportSize correcte (sinon ScreenUtil scale ×2.22 sur surface 800×600 default). | feat/1bis-0-foundation-widgets | Amelia |
 | 2026-06-11 | Story 1bis-2 livrée — 1 nouveau composant au [Catalogue actuel](#catalogue-actuel) : `OnboardingCtaFooter` (footer CTA sticky bas avec safe area + secondary action optionnelle + shadow doux top). Réutilisé par les pages onboarding refonte E1bis-2 à E1bis-7. Tests : 3 goldens phone (enabled / disabled / avec secondaryAction) + 3 interactions. `_FeatureCard` reste widget privé dans `hero_intro_page.dart` (décision : pas réutilisé hors de cette page tant que `HeroIntroPage` reste seule à le consommer ; extraction au catalogue si besoin futur). | feat/1bis-2-pages-sub-system-hero | Amelia |
 | 2026-06-11 | Story 1bis-2bis livrée — refactor structure PR #103 incorrecte (3 `Scaffold` autonomes + 2 routes parallèles) en vrai shell partagé : `OnboardingShell` devient UN SEUL `Scaffold` + `AnimatedSwitcher` slide+fade 300 ms + header partagé (`_OnboardingHeader` visible si `configStepsActive`) + footer partagé (`OnboardingCtaFooter` en `bottomNavigationBar` dispatched par `currentStep`). `SubSystemChoicePageV2` → `SubSystemStepBody`, `HeroIntroPage` → `HeroIntroStepBody` (widgets bodies purs sans Scaffold). 1 route unique `/onboarding/v2`. Le composant `OnboardingCtaFooter` lui-même est inchangé, sa composition migre des pages individuelles vers le shell. Pattern foundational pour E1bis-3 à E1bis-7 qui réutiliseront le shell sans dupliquer le footer. | feat/1bis-2bis-refactor-shell-slides | Amelia |
 | 2026-06-12 | Story 1bis-3 livrée — 3 step bodies (`TrackChoiceStepBody`, `LevelChoiceStepBody`, `StreamSubjectsPickerStepBody` 5 modes) consument les composants Story 1.18 (`PickerSectionScaffold`, `Obligatory/OptionalSubjectCheckboxList`, `PickerValidateBar`) et `SelectionCard` (E1bis-0). Aucun nouveau composant catalogue ajouté — pur consume + extension `OnboardingShell.\_bodyForStep` cases 2/3/4. Nouveau provider `derivedProfileV2Provider` dans `state/onboarding_providers.dart` qui dérive depuis le state `OnboardingNotifier` (vs `derivedProfileProvider` legacy qui lit `onboardingFlowProvider` Epic 1). Dettes documentées : goldens 3 step bodies + tests interactions par body + sélecteur série multi pour optOut/seriesPlusOptional → story dédiée E1bis-3b. | feat/1bis-3-pages-track-level-stream-subjects | Amelia |
+| 2026-06-17 | Chore R4 — Correction violations taille fichiers (CLAUDE.md règle 12) : `stream_subjects_picker_step_body.dart` 1 245 → 438 L (-65%), `auth_choice_step_body.dart` 530 → 426 L (-20%), `onboarding_notifier.dart` 544 → 477 L (-12%). 8 nouveaux fichiers créés : `stream_picker_chips.dart`, `stream_picker_recap.dart`, `stream_picker_selector.dart`, `stream_picker_derived_view.dart`, `stream_picker_interactive.dart`, `stream_picker_recap_helper.dart`, `social_auth_widgets.dart`, `onboarding_hydration.dart`. Fix bonus : `_buildContent(state: dynamic)` → `OnboardingState` (type safety). | feat/onboarding-step4-recap-cta-margin | Amelia |

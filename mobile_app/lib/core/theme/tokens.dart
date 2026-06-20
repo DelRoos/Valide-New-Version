@@ -3,6 +3,7 @@
 // Toute extension passe par mise à jour de DESIGN.md d'abord.
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppColors {
   AppColors._();
@@ -145,6 +146,7 @@ class AppSpacing {
 class AppRadius {
   AppRadius._();
 
+  static const double hairline = 2;
   static const double xs = 6;
   static const double sm = 9;
   static const double md = 11;
@@ -203,4 +205,71 @@ class AppMotion {
   static const Curve standardOut = Curves.easeOut;
   static const Curve standardIn = Curves.easeIn;
   static const Curve emphasized = Curves.easeOutCubic;
+}
+
+/// Tailles de police responsives (en `.sp` via flutter_screenutil).
+/// À utiliser dans `copyWith(fontSize: AppFontSize.xxx)` à la place de valeurs
+/// numériques directes. Garantit un seul endroit de modification si la
+/// typographie évolue.
+class AppFontSize {
+  AppFontSize._();
+
+  static double get display    => 46.sp;
+  static double get h1        => 30.sp;
+  static double get h1Compact => 24.sp; // override h1 pour écrans compacts
+  static double get h2        => 22.sp;
+  static double get h2Compact => 20.sp; // override h2 pour sheets / modales
+  static double get h3        => 18.sp;
+  static double get h3Compact => 17.sp;
+  static double get body      => 16.sp;
+  static double get bodySmall => 14.sp; // sous-titres, corps secondaire
+  static double get meta      => 13.sp; // métadonnées, labels compacts
+  static double get caption   => 12.sp;
+  static double get eyebrow   => 11.sp;
+  static double get tiny      => 10.sp;
+}
+
+/// Tailles d'icônes responsives (en `.sp` via flutter_screenutil).
+/// À utiliser dans `Icon(icon, size: AppIconSize.xxx)` à la place de valeurs
+/// numériques directes.
+class AppIconSize {
+  AppIconSize._();
+
+  static double get xs   => 11.sp; // recap / badge mini
+  static double get sm   => 12.sp; // badge icons
+  static double get md   => 14.sp; // icons inline dans du texte
+  static double get lg   => 18.sp; // compact nav, icon buttons
+  static double get xl   => 20.sp; // bouton / formulaire
+  static double get xl2  => 22.sp; // déco icons, nav bar (responsive)
+  static double get xl3  => 28.sp; // navigation large
+  static double get xl4  => 32.sp; // loader / dashboard
+  static double get xl5  => 36.sp; // large decoratif
+  static double get xl6  => 40.sp; // account icons
+  static double get xl7  => 44.sp; // error retry
+  static double get xl8  => 48.sp; // heading icons
+  static double get xl9  => 56.sp; // hero icons principaux
+  static double get xl10 => 64.sp; // success overlay
+  static double get xl11 => 72.sp; // level-up celebration
+}
+
+/// Constantes de la barre de navigation principale.
+/// Intentionnellement en dp fixes (pas de ScreenUtil) : la nav bar est une
+/// zone de touch à hauteur physique stable, indépendante de la densité texte.
+class AppNavBar {
+  AppNavBar._();
+
+  static const double height       = 64;
+  static const double iconSize     = 22;
+  static const double labelSize    = 11;
+  static const double iconLabelGap = 2;
+}
+
+/// Épaisseurs de bordure standardisées.
+class AppBorderWidth {
+  AppBorderWidth._();
+
+  static const double hairline = 1;   // séparateur léger, input au repos
+  static const double normal   = 1.5; // toast, cards légères
+  static const double bold     = 2;   // input focus, sélection active
+  static const double accent   = 4;   // left accent (inline alert)
 }

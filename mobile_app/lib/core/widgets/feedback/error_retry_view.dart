@@ -97,7 +97,7 @@ class ErrorRetryView extends StatelessWidget {
               width: double.infinity,
               child: FilledButton.icon(
                 onPressed: onRetry,
-                icon: const Icon(LucideIcons.rotateCcw, size: 20),
+                icon: Icon(LucideIcons.rotateCcw, size: AppIconSize.xl),
                 label: Text(
                   resolvedRetryLabel,
                   style: AppTypography.bodyStrong.copyWith(

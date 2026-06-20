@@ -59,6 +59,40 @@ class _ToastJob {
   final ToastTone tone;
 }
 
+/// Palette de couleurs résolue selon le tone du toast.
+({Color bg, Color border, Color icon, Color text}) _palette(ToastTone tone) {
+  switch (tone) {
+    case ToastTone.success:
+      return (
+        bg: AppColors.successSoft,
+        border: AppColors.success,
+        icon: AppColors.success,
+        text: AppColors.successInk,
+      );
+    case ToastTone.info:
+      return (
+        bg: AppColors.skySoft,
+        border: AppColors.sky,
+        icon: AppColors.sky,
+        text: AppColors.skyInk,
+      );
+    case ToastTone.warning:
+      return (
+        bg: AppColors.warningSoft,
+        border: AppColors.warning,
+        icon: AppColors.warning,
+        text: AppColors.warningInk,
+      );
+    case ToastTone.error:
+      return (
+        bg: AppColors.dangerSoft,
+        border: AppColors.danger,
+        icon: AppColors.danger,
+        text: AppColors.dangerInk,
+      );
+  }
+}
+
 class _ToastView extends StatefulWidget {
   const _ToastView({required this.message, required this.tone});
   final String message;
@@ -106,6 +140,7 @@ class _ToastViewState extends State<_ToastView>
   @override
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
+    final colors = _palette(widget.tone);
     return Positioned(
       top: media.padding.top + AppSpacing.s4.h,
       left: AppSpacing.s4.w,
@@ -123,18 +158,19 @@ class _ToastViewState extends State<_ToastView>
               vertical: AppSpacing.s3.h,
             ),
             decoration: BoxDecoration(
-              color: AppColors.ink,
+              color: colors.bg,
+              border: Border.all(color: colors.border, width: 1.5),
               borderRadius: BorderRadius.circular(AppRadius.lg),
-              boxShadow: AppElevation.mid,
+              boxShadow: AppElevation.soft,
             ),
             child: Row(
               children: [
-                Icon(_icon, size: 20.sp, color: AppColors.card),
+                Icon(_icon, size: 20.sp, color: colors.icon),
                 SizedBox(width: AppSpacing.s3.w),
                 Expanded(
                   child: Text(
                     widget.message,
-                    style: AppTypography.body.copyWith(color: AppColors.card),
+                    style: AppTypography.body.copyWith(color: colors.text),
                   ),
                 ),
               ],
