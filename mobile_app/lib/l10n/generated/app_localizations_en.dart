@@ -725,4 +725,76 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingNoAccount => 'I don\'t have an account yet';
+
+  @override
+  String get dashboardTabSettingsCta => 'Settings';
+
+  @override
+  String get profileSettingsTitle => 'Settings';
+
+  @override
+  String get profileSettingsAccountSection => 'My account';
+
+  @override
+  String get profileSettingsDangerSection => 'Danger zone';
+
+  @override
+  String get profileSettingsDeleteCta => 'Delete my account';
+
+  @override
+  String get profileSettingsDeleteSubtitle =>
+      'This action is irreversible after 7 days.';
+
+  @override
+  String get profileSettingsVisitorMessage =>
+      'Create a permanent account first to delete it';
+
+  @override
+  String get profileSettingsCreateAccountCta => 'Create my account';
+
+  @override
+  String get profileSettingsLinkedAccount => 'Linked account';
+
+  @override
+  String get accountDeletionConfirmTitle => 'Are you sure?';
+
+  @override
+  String get accountDeletionConfirmBody =>
+      'Your account will be deleted in 7 days. You can cancel at any time by signing back in during this period.';
+
+  @override
+  String get accountDeletionConfirmCta => 'Confirm deletion';
+
+  @override
+  String accountDeletionRequestedToast(String date) {
+    return 'Request saved. Sign back in before $date to cancel.';
+  }
+
+  @override
+  String accountDeletionScheduledBanner(String date) {
+    return 'Your account will be deleted on $date. Tap to cancel.';
+  }
+
+  @override
+  String get accountDeletionCancelConfirmTitle => 'Cancel deletion?';
+
+  @override
+  String get accountDeletionCancelConfirmBody =>
+      'Your account will not be deleted. You can still request deletion later.';
+
+  @override
+  String get accountDeletionCancelConfirmCta => 'Yes, cancel deletion';
+
+  @override
+  String get accountDeletionKeepDeletionCta => 'No, keep deletion';
+
+  @override
+  String get accountDeletionCancelledToast => 'Deletion cancelled.';
+
+  @override
+  String get accountDeletionAutoCancelledToast =>
+      'Your account is active again.';
+
+  @override
+  String get accountDeletionNotAvailableToast => 'Feature coming soon.';
 }

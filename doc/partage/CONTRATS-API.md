@@ -529,6 +529,37 @@ interface RequestAccountDeletionResponse {
 
 ---
 
+### `cancelAccountDeletion` 🟡 (Story 1.10, accord backend requis)
+
+**Type** : `onCall`
+**Auth requise** : oui
+
+**Entrée** : `{}`
+
+**Sortie** :
+
+```typescript
+interface CancelAccountDeletionResponse {
+  cancelled: boolean;  // true si deletionRequestedAt etait pose, false si deja annule ou jamais demande
+}
+```
+
+**Effet** : `users/{uid}.deletionRequestedAt = FieldValue.delete()`. Idempotent (pas d'erreur si deja null). Annule la programmation du cron de purge.
+
+**Implications mobile** (Story 1.10 FR-7) :
+
+- Appelee depuis `ProfileSettingsPage` modale "Annuler la suppression" (banner DashboardPage)
+- Appelee automatiquement au boot via `autoAccountDeletionCancellerProvider` si l'utilisateur revient apres avoir kill l'app + `deletionRequestedAt` < sessionStart (heuristique anti-boucle)
+- Si la function n'est pas encore deployee cote backend, mobile gere gracefully : log warn + toast "Fonctionnalite bientot disponible" + app reste utilisable. La banner deletion reste affichee, l'utilisateur re-essaie plus tard.
+
+**Codes d'erreur** :
+
+- `unauthenticated` — pas d'utilisateur loggue
+- `not-found` — non standard cote backend, mappee cote mobile si la function n'est pas encore deployee
+- `unavailable` — Firestore / network down
+
+---
+
 ## Codes d'erreur communs
 
 Tableau de correspondance `HttpsError` → `Failure` mobile (cf. archi mobile § 10) :

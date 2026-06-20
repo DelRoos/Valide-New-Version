@@ -34,12 +34,15 @@ void main() {
       required GoogleSignInFn googleSignIn,
       required AppleSignInFn appleSignIn,
       required LinkCredentialFn linkCredential,
+      SignInWithCredentialFn? signInWithCredential,
     }) {
       return AccountLinkingRepositoryFirebaseImpl(
         firestore: firestore,
         googleSignIn: googleSignIn,
         appleSignIn: appleSignIn,
         linkCredential: linkCredential,
+        signInWithCredential:
+            signInWithCredential ?? (_) async => throw UnimplementedError(),
       );
     }
 
@@ -130,6 +133,12 @@ void main() {
           code: 'provider-already-linked',
           message: 'fake provider already linked',
         ),
+        // signInWithCredential fallback : re-throw same code pour que le
+        // mapping remain alreadyLinked.
+        signInWithCredential: (_) async => throw FirebaseAuthException(
+          code: 'provider-already-linked',
+          message: 'fake provider already linked (signIn fallback)',
+        ),
       );
 
       final result = await repo.linkApple();
@@ -193,6 +202,12 @@ void main() {
         linkCredential: (_) async => throw FirebaseAuthException(
           code: 'credential-already-in-use',
           message: 'fake conflict',
+        ),
+        // signInWithCredential fallback : re-throw same code pour que le
+        // mapping reste credentialAlreadyInUse.
+        signInWithCredential: (_) async => throw FirebaseAuthException(
+          code: 'credential-already-in-use',
+          message: 'fake conflict (signIn fallback)',
         ),
       );
 

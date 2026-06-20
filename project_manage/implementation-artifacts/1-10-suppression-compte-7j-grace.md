@@ -3,10 +3,10 @@ story_id: 1.10
 title: Suppression compte avec delai grace 7 jours (FR-7)
 epic: 1
 phase: P1
-status: ready-for-dev
+status: review
 created: 2026-06-09
 branch: feat/1.10-suppression-compte-7j-grace
-baseline_commit: 2511cd5  # merge PR #57 (Story 1.8 done)
+baseline_commit: 46a2bb3  # merge PR #58 (cloture 1.8 + contexte 1.10)
 estimation: M (~5h)
 dependencies:
   - 1.5   # profileCompletionProvider + evaluateRedirect (garde + auto-cancel au boot)
@@ -25,7 +25,7 @@ sourceArtifacts:
 
 # Story 1.10 — Suppression compte avec delai grace 7 jours (FR-7)
 
-Status: **ready-for-dev**
+Status: **review**
 
 ## Objectif
 
@@ -245,108 +245,108 @@ interface CancelAccountDeletionResponse {
 
 ## Tasks / Subtasks
 
-- [ ] **T1 — Variant AppButton.danger (Story 0.13 extension)** (AC1)
-  - [ ] T1.1 — Etendre `mobile_app/lib/core/widgets/app_button.dart` enum `_ButtonVariant` avec `danger`
-  - [ ] T1.2 — Ajouter factory `AppButton.danger(...)` + branches dans `build()` (couleur fond `AppColors.danger`, fg `AppColors.card`)
-  - [ ] T1.3 — Mettre haptic preset `HapticPreset.heavy` ou `.medium` pour action destructive
-  - [ ] T1.4 — 2 tests : variant danger render + couleur danger applique
+- [x] **T1 — Variant AppButton.danger (Story 0.13 extension)** (AC1)
+  - [x] T1.1 — Etendre `mobile_app/lib/core/widgets/app_button.dart` enum `_ButtonVariant` avec `danger`
+  - [x] T1.2 — Ajouter factory `AppButton.danger(...)` + branches dans `build()` (couleur fond `AppColors.danger`, fg `AppColors.card`)
+  - [x] T1.3 — Mettre haptic preset `HapticPreset.heavy` ou `.medium` pour action destructive
+  - [x] T1.4 — 2 tests : variant danger render + couleur danger applique
 
-- [ ] **T2 — Domain AccountDeletion (NEW feature folder)** (AC4, AC7)
-  - [ ] T2.1 — Creer `mobile_app/lib/features/account/domain/account_deletion_repository.dart` (abstract + sealed `AccountDeletionFailure` : networkFailure, functionNotFound, unknown)
-  - [ ] T2.2 — Pas de model specifique : on retourne `Either<AccountDeletionFailure, void>` pour request + cancel
+- [x] **T2 — Domain AccountDeletion (NEW feature folder)** (AC4, AC7)
+  - [x] T2.1 — Creer `mobile_app/lib/features/account/domain/account_deletion_repository.dart` (abstract + sealed `AccountDeletionFailure` : networkFailure, functionNotFound, unknown)
+  - [x] T2.2 — Pas de model specifique : on retourne `Either<AccountDeletionFailure, void>` pour request + cancel
 
-- [ ] **T3 — Data AccountDeletionRepositoryImpl (NEW)** (AC4, AC7)
-  - [ ] T3.1 — Creer `mobile_app/lib/features/account/data/account_deletion_repository_impl.dart`
-  - [ ] T3.2 — Injecter `FirebaseFunctions` (via `cloudFunctionsProvider` Story 0.6, region europe-west1)
-  - [ ] T3.3 — `requestAccountDeletion()` : `httpsCallable('requestAccountDeletion').call({})` + map FirebaseFunctionsException -> Left
+- [x] **T3 — Data AccountDeletionRepositoryImpl (NEW)** (AC4, AC7)
+  - [x] T3.1 — Creer `mobile_app/lib/features/account/data/account_deletion_repository_impl.dart`
+  - [x] T3.2 — Injecter `FirebaseFunctions` (via `cloudFunctionsProvider` Story 0.6, region europe-west1)
+  - [x] T3.3 — `requestAccountDeletion()` : `httpsCallable('requestAccountDeletion').call({})` + map FirebaseFunctionsException -> Left
     - `not-found` (function pas deployee) -> `AccountDeletionFailure.functionNotFound`
     - `unavailable` / `deadline-exceeded` -> `networkFailure`
     - autres -> `unknown`
-  - [ ] T3.4 — `cancelAccountDeletion()` : meme pattern
-  - [ ] T3.5 — `AppLogger.i('Account deletion requested')` SANS uid en clair (CLAUDE.md securite 4)
+  - [x] T3.4 — `cancelAccountDeletion()` : meme pattern
+  - [x] T3.5 — `AppLogger.i('Account deletion requested')` SANS uid en clair (CLAUDE.md securite 4)
 
-- [ ] **T4 — Providers AccountDeletion (NEW)** (AC4, AC5, AC6, AC7)
-  - [ ] T4.1 — Creer `mobile_app/lib/features/account/providers.dart` avec :
+- [x] **T4 — Providers AccountDeletion (NEW)** (AC4, AC5, AC6, AC7)
+  - [x] T4.1 — Creer `mobile_app/lib/features/account/providers.dart` avec :
     - `accountDeletionRepositoryProvider` (Provider, lazy)
     - `AccountDeletionStatusNotifier` (Notifier idle/requesting/requested/cancelling/cancelled/error) + provider
     - `autoAccountDeletionCancellerProvider` (Provider qui watch profile stream + declenche cancel auto au boot UNE FOIS)
-  - [ ] T4.2 — `autoAccountDeletionCancellerProvider` : flag `bool _alreadyCancelled` interne, ref.listen sur `userProfileRepository.watchProfile()`, condition `deletionRequestedAt != null && timestamp < sessionStart`
+  - [x] T4.2 — `autoAccountDeletionCancellerProvider` : flag `bool _alreadyCancelled` interne, ref.listen sur `userProfileRepository.watchProfile()`, condition `deletionRequestedAt != null && timestamp < sessionStart`
 
-- [ ] **T5 — Presentation ProfileSettingsPage (NEW)** (AC2)
-  - [ ] T5.1 — Creer `mobile_app/lib/features/account/presentation/profile_settings_page.dart` (ConsumerWidget)
-  - [ ] T5.2 — Read `firebaseAuthProvider.currentUser` -> `isAnonymous` + `email` + `providerData[0].providerId` (google.com / apple.com)
-  - [ ] T5.3 — Section "Mon compte" : email + icone provider (LucideIcons.globe pour google, LucideIcons.apple pour apple)
-  - [ ] T5.4 — Section "Zone de danger" si `!isAnonymous` :
+- [x] **T5 — Presentation ProfileSettingsPage (NEW)** (AC2)
+  - [x] T5.1 — Creer `mobile_app/lib/features/account/presentation/profile_settings_page.dart` (ConsumerWidget)
+  - [x] T5.2 — Read `firebaseAuthProvider.currentUser` -> `isAnonymous` + `email` + `providerData[0].providerId` (google.com / apple.com)
+  - [x] T5.3 — Section "Mon compte" : email + icone provider (LucideIcons.globe pour google, LucideIcons.apple pour apple)
+  - [x] T5.4 — Section "Zone de danger" si `!isAnonymous` :
     - AppCard background `AppColors.dangerSoft` border `AppColors.danger`
     - Texte explicatif
     - `AppButton.danger` "Supprimer mon compte" -> tap = open modale (T6)
-  - [ ] T5.5 — Section "Pas de compte permanent" si `isAnonymous` :
+  - [x] T5.5 — Section "Pas de compte permanent" si `isAnonymous` :
     - AppCard info `AppColors.skySoft`
     - Texte "Cree d'abord un compte permanent"
     - `AppButton.secondary` "Creer mon compte" -> `/onboarding/account`
 
-- [ ] **T6 — Modale confirmation suppression (NEW)** (AC4)
-  - [ ] T6.1 — Helper `_showDeleteConfirmDialog(BuildContext context, WidgetRef ref)` dans `profile_settings_page.dart`
-  - [ ] T6.2 — `showDialog<bool>` avec AlertDialog : titre, body, 2 boutons (cancel / danger)
-  - [ ] T6.3 — Si confirmation = true : appel `ref.read(accountDeletionStatusNotifierProvider.notifier).requestDeletion()`
-  - [ ] T6.4 — Bouton "Confirmer la suppression" passe en `loading: true` via le notifier
-  - [ ] T6.5 — Pattern `ref.listen` sur le notifier pour fermer la modale + afficher toast au resultat
+- [x] **T6 — Modale confirmation suppression (NEW)** (AC4)
+  - [x] T6.1 — Helper `_showDeleteConfirmDialog(BuildContext context, WidgetRef ref)` dans `profile_settings_page.dart`
+  - [x] T6.2 — `showDialog<bool>` avec AlertDialog : titre, body, 2 boutons (cancel / danger)
+  - [x] T6.3 — Si confirmation = true : appel `ref.read(accountDeletionStatusNotifierProvider.notifier).requestDeletion()`
+  - [x] T6.4 — Bouton "Confirmer la suppression" passe en `loading: true` via le notifier
+  - [x] T6.5 — Pattern `ref.listen` sur le notifier pour fermer la modale + afficher toast au resultat
 
-- [ ] **T7 — Banner deletion sur DashboardPage (UPDATE Story 1.9)** (AC5)
-  - [ ] T7.1 — Modifier `mobile_app/lib/features/dashboard/presentation/dashboard_page.dart`
-  - [ ] T7.2 — Dans le `StreamBuilder<Map<String, dynamic>?>`, lire aussi `data['deletionRequestedAt']` (Timestamp Firestore)
-  - [ ] T7.3 — Si non null, calculer `scheduledDate = deletionRequestedAt + 7 jours` (formate DD/MM/YYYY via `intl.DateFormat`)
-  - [ ] T7.4 — Render `_DeletionBanner` widget au-dessus du Hero : Container `AppColors.warningSoft` + icone triangleAlert + texte + tap = open `_showCancelDeletionDialog`
-  - [ ] T7.5 — Modale "Annuler la suppression ?" + 2 boutons + appel `cancelDeletion()`
+- [x] **T7 — Banner deletion sur DashboardPage (UPDATE Story 1.9)** (AC5)
+  - [x] T7.1 — Modifier `mobile_app/lib/features/dashboard/presentation/dashboard_page.dart`
+  - [x] T7.2 — Dans le `StreamBuilder<Map<String, dynamic>?>`, lire aussi `data['deletionRequestedAt']` (Timestamp Firestore)
+  - [x] T7.3 — Si non null, calculer `scheduledDate = deletionRequestedAt + 7 jours` (formate DD/MM/YYYY via `intl.DateFormat`)
+  - [x] T7.4 — Render `_DeletionBanner` widget au-dessus du Hero : Container `AppColors.warningSoft` + icone triangleAlert + texte + tap = open `_showCancelDeletionDialog`
+  - [x] T7.5 — Modale "Annuler la suppression ?" + 2 boutons + appel `cancelDeletion()`
 
-- [ ] **T8 — Cta "Parametres" sur onglet Profil placeholder (UPDATE Story 1.9)** (AC3)
-  - [ ] T8.1 — Modifier `mobile_app/lib/features/dashboard/presentation/placeholder_tab_page.dart`
-  - [ ] T8.2 — Si `tabIndex == 3` (Profil), ajouter sous le texte "Bientot disponible" un `AppButton.secondary("Parametres", onPressed: () => context.go('/profil/settings'))`
-  - [ ] T8.3 — Conserve le comportement Story 1.9 pour les autres onglets (Matieres, Activites)
+- [x] **T8 — Cta "Parametres" sur onglet Profil placeholder (UPDATE Story 1.9)** (AC3)
+  - [x] T8.1 — Modifier `mobile_app/lib/features/dashboard/presentation/placeholder_tab_page.dart`
+  - [x] T8.2 — Si `tabIndex == 3` (Profil), ajouter sous le texte "Bientot disponible" un `AppButton.secondary("Parametres", onPressed: () => context.go('/profil/settings'))`
+  - [x] T8.3 — Conserve le comportement Story 1.9 pour les autres onglets (Matieres, Activites)
 
-- [ ] **T9 — Route /profil/settings (UPDATE app_router)** (AC2, AC3)
-  - [ ] T9.1 — Ajouter `GoRoute(path: '/profil/settings', builder: ... => const ProfileSettingsPage())` dans `app_router.dart`
-  - [ ] T9.2 — Verifier que la route passe le redirect Story 1.5 (profile complete) + Story 1.8 smart resume — `/profil/settings` est une route metier, garde Story 1.5 s'applique
+- [x] **T9 — Route /profil/settings (UPDATE app_router)** (AC2, AC3)
+  - [x] T9.1 — Ajouter `GoRoute(path: '/profil/settings', builder: ... => const ProfileSettingsPage())` dans `app_router.dart`
+  - [x] T9.2 — Verifier que la route passe le redirect Story 1.5 (profile complete) + Story 1.8 smart resume — `/profil/settings` est une route metier, garde Story 1.5 s'applique
 
-- [ ] **T10 — Auto-cancel au boot (UPDATE main.dart ou app.dart)** (AC6)
-  - [ ] T10.1 — Au startup app, ref.read le `autoAccountDeletionCancellerProvider` pour qu'il se mette en route
-  - [ ] T10.2 — Heuristique session : capturer `sessionStartTime = DateTime.now()` au boot ; auto-cancel uniquement si `deletionRequestedAt.toDate() < sessionStartTime` (timestamp anterieur)
-  - [ ] T10.3 — `AppToast.info` "Ton compte est de nouveau actif" via `BuildContext` (besoin du `navigatorKey` ou observer router) — alternative simple : show toast au prochain build de `/dashboard` apres detection auto-cancel reussi
+- [x] **T10 — Auto-cancel au boot (UPDATE main.dart ou app.dart)** (AC6)
+  - [x] T10.1 — Au startup app, ref.read le `autoAccountDeletionCancellerProvider` pour qu'il se mette en route
+  - [x] T10.2 — Heuristique session : capturer `sessionStartTime = DateTime.now()` au boot ; auto-cancel uniquement si `deletionRequestedAt.toDate() < sessionStartTime` (timestamp anterieur)
+  - [x] T10.3 — `AppToast.info` "Ton compte est de nouveau actif" via `BuildContext` (besoin du `navigatorKey` ou observer router) — alternative simple : show toast au prochain build de `/dashboard` apres detection auto-cancel reussi
 
-- [ ] **T11 — doc/partage/CONTRATS-API.md (UPDATE accord backend)** (AC8)
-  - [ ] T11.1 — Ajouter `cancelAccountDeletion` apres `requestAccountDeletion` (lignes ~530)
-  - [ ] T11.2 — Format identique au pattern existant (Type onCall, Auth requise, Entree {}, Sortie typed, Effet)
-  - [ ] T11.3 — Ajouter @backend-team approval requested dans le PR description
+- [x] **T11 — doc/partage/CONTRATS-API.md (UPDATE accord backend)** (AC8)
+  - [x] T11.1 — Ajouter `cancelAccountDeletion` apres `requestAccountDeletion` (lignes ~530)
+  - [x] T11.2 — Format identique au pattern existant (Type onCall, Auth requise, Entree {}, Sortie typed, Effet)
+  - [x] T11.3 — Ajouter @backend-team approval requested dans le PR description
 
-- [ ] **T12 — i18n** (AC9)
-  - [ ] T12.1 — Ajouter ~17 cles dans `mobile_app/lib/l10n/app_fr.arb` (descriptions + ICU pour les dates)
-  - [ ] T12.2 — Versions EN equivalentes
-  - [ ] T12.3 — `flutter gen-l10n` regenere AppLocalizations
-  - [ ] T12.4 — Format dates : utiliser `DateFormat('dd/MM/yyyy', l10n.localeName)` cote presentation pour eviter d'integrer la date dans le template ARB (plus simple)
+- [x] **T12 — i18n** (AC9)
+  - [x] T12.1 — Ajouter ~17 cles dans `mobile_app/lib/l10n/app_fr.arb` (descriptions + ICU pour les dates)
+  - [x] T12.2 — Versions EN equivalentes
+  - [x] T12.3 — `flutter gen-l10n` regenere AppLocalizations
+  - [x] T12.4 — Format dates : utiliser `DateFormat('dd/MM/yyyy', l10n.localeName)` cote presentation pour eviter d'integrer la date dans le template ARB (plus simple)
 
-- [ ] **T13 — Tests Flutter** (AC9)
-  - [ ] T13.1 — `test/features/account/data/account_deletion_repository_test.dart` NEW (~3 cas) :
+- [x] **T13 — Tests Flutter** (AC9)
+  - [x] T13.1 — `test/features/account/data/account_deletion_repository_test.dart` NEW (~3 cas) :
     - (a) requestAccountDeletion succes -> Right(null) + log appele
     - (b) cancelAccountDeletion succes -> Right(null)
     - (c) FirebaseFunctionsException not-found -> Left(functionNotFound) + log warn
-  - [ ] T13.2 — `test/features/account/presentation/profile_settings_page_test.dart` NEW (~3 cas) :
+  - [x] T13.2 — `test/features/account/presentation/profile_settings_page_test.dart` NEW (~3 cas) :
     - (a) compte permanent rendered : section "Zone de danger" + bouton danger visible
     - (b) visiteur Anonymous rendered : message info + bouton "Creer mon compte"
     - (c) tap "Supprimer mon compte" -> modale ouverte avec 2 boutons (assertion AlertDialog visible)
-  - [ ] T13.3 — `test/core/widgets/app_button_danger_test.dart` NEW (~2 cas) :
+  - [x] T13.3 — `test/core/widgets/app_button_danger_test.dart` NEW (~2 cas) :
     - (a) AppButton.danger rendered : couleur background == AppColors.danger
     - (b) AppButton.danger.onPressed null -> bouton disabled (parite avec primary/secondary)
-  - [ ] T13.4 — `test/features/dashboard/presentation/dashboard_page_test.dart` UPDATE (+1 cas) :
+  - [x] T13.4 — `test/features/dashboard/presentation/dashboard_page_test.dart` UPDATE (+1 cas) :
     - (f) deletionRequestedAt set sur watchProfile data -> banner warning visible avec texte "Ton compte sera supprime"
 
-- [ ] **T14 — Validation finale**
-  - [ ] T14.1 — `flutter analyze` -> 0 issue
-  - [ ] T14.2 — `flutter test` -> ~205 verts (196 baseline + ~9 nouveaux)
-  - [ ] T14.3 — Aucun test rules a ajouter (`deletionRequestedAt` ecrit uniquement par Cloud Function)
-  - [ ] T14.4 — Aucun deploiement Firestore indexes (CLAUDE.md regle 9 verifie)
-  - [ ] T14.5 — Diff PR ≤ 350 lignes
-  - [ ] T14.6 — Update story frontmatter `status: review` + sprint-status `review` + commit + push
-  - [ ] T14.7 — PR description : mentionner @backend-team approval requested pour `cancelAccountDeletion`
+- [x] **T14 — Validation finale**
+  - [x] T14.1 — `flutter analyze` -> 0 issue
+  - [x] T14.2 — `flutter test` -> ~205 verts (196 baseline + ~9 nouveaux)
+  - [x] T14.3 — Aucun test rules a ajouter (`deletionRequestedAt` ecrit uniquement par Cloud Function)
+  - [x] T14.4 — Aucun deploiement Firestore indexes (CLAUDE.md regle 9 verifie)
+  - [x] T14.5 — Diff PR ≤ 350 lignes
+  - [x] T14.6 — Update story frontmatter `status: review` + sprint-status `review` + commit + push
+  - [x] T14.7 — PR description : mentionner @backend-team approval requested pour `cancelAccountDeletion`
 
 ## Dev Notes
 
