@@ -3,9 +3,10 @@
 Ce dossier contient les matrices JSON versionnées seedées dans Firestore par les scripts Python du dossier parent.
 
 | Fichier | Collection Firestore | Script | Story |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | `matrice.json` | `filieres`, `niveaux`, `series`, `subjects`, `exam_targets`, `derivation_rules` | `seed_catalogue.py` | 1.1b |
 | `schools.json` | `schools` | `seed_schools.py` | 1.5.a |
+| `content_demo.json` | `chapters`, `lessons`, `notions` | `seed_content.py` | 2.1 |
 
 ---
 
@@ -423,3 +424,89 @@ Action manuelle admin pour ces users : ouvrir Firebase Console > `users/<uid>` e
 ```
 
 > **Important** : ne **PAS** lancer ce script avant le merge de Story 1.5.d. Les users actifs entre-temps écrivent déjà les 4 champs cohérents via l'app (`updateLinkedSchool` depuis `school_picker_page`) ; le script ne migre que les users legacy antérieurs au refactor.
+
+---
+
+## content_demo.json — Données démo contenu pédagogique (Story 2.1)
+
+Fichier JSON versionné qui contient les données démo du contenu pédagogique Valide School (3 collections Firestore). Lu par `seed_content.py` (Story 2.1) au seed initial et après chaque évolution du contenu démo.
+
+**Schéma Firestore** : [`doc/partage/BASE-DE-DONNEES.md § chapters/lessons/notions`](../../../doc/partage/BASE-DE-DONNEES.md)
+**Story d'origine** : [2-1-schema-seed-content.md](../../../project_manage/implementation-artifacts/2-1-schema-seed-content.md)
+
+### Structure JSON — content_demo.json
+
+```jsonc
+{
+  "version": "1.0.0",
+  "generatedAt": "YYYY-MM-DD",
+  "comment": "Note humaine sur le contenu",
+  "subjects": [
+    {
+      "subjectId": "francophone_math",   // ref → subjects/{id} (collection catalogue)
+      "chapters": [ /* N ChapterEntry */ ]
+    }
+  ]
+}
+```
+
+### Conventions IDs — content_demo.json
+
+| Niveau | Pattern | Exemple |
+| --- | --- | --- |
+| Chapter | `{subSystem_short}_{subject_short}_ch{nn}` | `franco_math_ch01` |
+| Lesson | `{chapter_id}_l{nn}` | `franco_math_ch01_l01` |
+| Notion | `{lesson_id}_n{nn}` | `franco_math_ch01_l01_n01` |
+
+### Schéma des entrées JSON
+
+#### `subjects[i].chapters[j]` — ChapterEntry
+
+```jsonc
+{
+  "chapterId": "franco_math_ch01",          // = doc ID Firestore
+  "order": 1,                               // int >= 1, strictement croissant dans la matière
+  "title": { "fr": "...", "en": "..." },    // bilingue obligatoire
+  "description": { "fr": "...", "en": "..." } | null,
+  "lessons": [ /* LessonEntry[] */ ]
+}
+```
+
+#### `subjects[i].chapters[j].lessons[k]` — LessonEntry
+
+```jsonc
+{
+  "lessonId": "franco_math_ch01_l01",
+  "order": 1,
+  "title": { "fr": "...", "en": "..." },
+  "content": { "fr": "Markdown FR...", "en": "Markdown EN..." },  // bilingue, LaTeX ($...$) OK
+  "notions": [ /* NotionEntry[] */ ]
+}
+```
+
+#### `subjects[i].chapters[j].lessons[k].notions[l]` — NotionEntry
+
+```jsonc
+{
+  "notionId": "franco_math_ch01_l01_n01",
+  "order": 1,
+  "title": { "fr": "...", "en": "..." }
+}
+```
+
+### Volumétrie V1 (données démo Story 2.1)
+
+| subjectId | Matière | Chapitres | Leçons | Notions |
+| --- | --- | --- | --- | --- |
+| `francophone_math` | Mathématiques Tle D (francophone) | 4 | 8 | 16 |
+| `anglophone_physics` | Physics Upper Sixth (anglophone) | 4 | 8 | 16 |
+| **Total** | | **8** | **16** | **32** |
+
+### Évolution du contenu démo
+
+1. Éditer `data/content_demo.json` (ajouter chapter/lesson/notion, corriger contenu)
+2. `python ../seed_content.py --project valide-edu --dry-run` pour validation + comptage
+3. Si OK : `python ../seed_content.py --project valide-edu`
+4. Commit `data/content_demo.json` (Conventional Commits scope `content`)
+
+> **Note** : le script valide automatiquement que tous les `subjectId` référencés existent dans la collection Firestore `subjects`. Si vous ajoutez un nouveau `subjectId`, exécuter `seed_catalogue.py` en premier.

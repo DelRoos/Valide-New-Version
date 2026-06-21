@@ -133,17 +133,104 @@ pytest tests/ -v
 
 ```text
 scripts/firebase_seed/
-├── seed_catalogue.py          # script principal
+├── seed_catalogue.py          # script principal catalogue scolaire (Story 1.1b)
+├── seed_schools.py            # script seed écoles MINESEC (Story 1.5.a)
+├── seed_content.py            # script seed contenu pédagogique (Story 2.1)
+├── migrate_user_school_denorm.py  # migration ponctuelle users legacy (Story 1.5.d)
 ├── data/
-│   ├── matrice.json           # source de vérité versionnée (230 docs)
+│   ├── matrice.json           # source de vérité versionnée (230 docs catalogue)
+│   ├── schools.json           # source de vérité écoles MINESEC (~198 docs)
+│   ├── content_demo.json      # données démo pédagogiques (8ch/16le/32no, Story 2.1)
 │   └── README.md              # documentation de la structure JSON
 ├── tests/
 │   ├── __init__.py
-│   └── test_seed.py           # 6 tests pytest (sans Firestore live)
+│   ├── test_seed.py           # 6 tests pytest catalogue (sans Firestore live)
+│   ├── test_seed_schools.py   # 9 tests pytest écoles (sans Firestore live)
+│   └── test_seed_content.py   # 10 tests pytest contenu (sans Firestore live)
 ├── requirements.txt           # firebase-admin>=7.2.0, pytest>=8.0
 ├── README.md                  # ce fichier
 └── .gitignore                 # service-account*.json, .venv/, __pycache__/...
 ```
+
+---
+
+## Seed contenu pédagogique (Story 2.1)
+
+Script `seed_content.py` qui seed les 3 collections Firestore de contenu pédagogique (`chapters`, `lessons`, `notions`) à partir de `data/content_demo.json`.
+
+**Livré par** : Story 2.1 (Epic 2 — Contenu pédagogique).
+**Schéma Firestore autoritatif** : [doc/partage/BASE-DE-DONNEES.md § chapters/lessons/notions](../../doc/partage/BASE-DE-DONNEES.md#chapterschapitreid--lessonslessionid--notionsnotionid-).
+
+### Objectif
+
+- Initialiser les 3 collections de contenu (`chapters`, `lessons`, `notions`) sur un projet Firebase vide.
+- Idempotent : un re-run avec le même JSON produit le même état Firestore (`set(merge=True)` partout, jamais `add()`). Le `createdAt` est préservé via `SERVER_TIMESTAMP` au premier write.
+- Validation référentielle : vérifie que tous les `subjectId` référencés existent dans la collection `subjects` Firestore avant d'écrire (exige que `seed_catalogue.py` ait été exécuté en amont).
+
+### Prérequis
+
+Mêmes que `seed_catalogue.py` (Python ≥ 3.10, `gcloud` CLI OU service-account, rôle `Cloud Datastore User`).
+
+> **Important** : exécuter `python seed_catalogue.py --project valide-edu` en premier pour que les `subjects` existent. La validation référentielle de `seed_content.py` échouera sinon.
+
+### Exécution
+
+```bash
+# Dry-run (recommandé avant tout seed sur un projet partagé)
+python seed_content.py --project valide-edu --dry-run
+
+# Seed réel (auth ADC)
+python seed_content.py --project valide-edu
+
+# Seed réel (auth service-account)
+python seed_content.py --project valide-edu --credentials ./service-account.json
+
+# Fichier de données alternatif
+python seed_content.py --project valide-edu --data ./data/mon_contenu.json
+```
+
+Sortie attendue (données démo V1) :
+
+```text
+[OK] JSON chargé : version=1.0.0, 2 matière(s)
+[OK] Auth: Application Default Credentials, projectId=valide-edu
+[OK] Référence cross-collection : 2 subjectId(s) validés dans Firestore.
+[OK] chapters          :   8 docs
+[OK] lessons           :  16 docs
+[OK] notions           :  32 docs
+
+[OK] Total: 56 documents en ~11 s.
+```
+
+### Données démo V1 (`data/content_demo.json`)
+
+Deux matières de démonstration couvrant les 2 sous-systèmes :
+
+| subjectId | Matière | Chapitres | Leçons | Notions |
+| --- | --- | --- | --- | --- |
+| `francophone_math` | Mathématiques Tle D (fr) | 4 | 8 | 16 |
+| `anglophone_physics` | Physics Upper Sixth (en) | 4 | 8 | 16 |
+| **Total** | | **8** | **16** | **32** |
+
+Contenu bilingue FR+EN sur tous les documents. Formules LaTeX et diagrammes Mermaid inclus dans les premières leçons comme données de test Flutter.
+
+### Tests
+
+```bash
+pytest tests/test_seed_content.py -v
+```
+
+10 tests valident le JSON statique et le comportement du script (structure, champs requis, cross-ref, ordres croissants, dry-run, idempotence set-merge, validation bilingue). Aucun test ne requiert de connexion Firestore live.
+
+### Modifier / étendre le contenu
+
+1. Éditer [`data/content_demo.json`](./data/content_demo.json) (suivre la structure documentée dans [data/README.md § content_demo.json](./data/README.md#content_demojson--données-démo-contenu-pédagogique-story-21))
+2. Re-run `python seed_content.py --project valide-edu --dry-run` pour valider
+3. Re-run sans `--dry-run` pour propager dans Firestore
+
+**Pour supprimer un document** : utiliser Firebase Console directement. Le script n'efface jamais.
+
+---
 
 ## Pourquoi `scripts/` dans un dépôt mobile ?
 

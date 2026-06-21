@@ -168,6 +168,36 @@ service cloud.firestore {
     }
 
     // -----------------------------------------------------------------
+    // chapters/{chapterId}, lessons/{lessonId}, notions/{notionId}
+    // Contenu pedagogique (Story 2.1, Epic 2)
+    //
+    // Lecture : tout user authentifie (y compris visiteur anonyme signInAnonymously).
+    // Le guard "profil complet" est gere cote Flutter (router guard Story 1.5) —
+    // pas dans les rules pour simplifier MVP et eviter les permission-denied
+    // lors du prefetch au boot.
+    //
+    // Ecriture : interdite cote client. Seul le script Python `seed_content.py`
+    // (avec service-account) ou la Firebase Console admin peut ecrire.
+    //
+    // Indexes : (subjectId, order), (chapterId, order), (lessonId, order)
+    // declares dans firestore.indexes.json (Story 2.1).
+    //
+    // Schema autoritatif : doc/partage/BASE-DE-DONNEES.md § chapters/lessons/notions
+    // -----------------------------------------------------------------
+    match /chapters/{chapterId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /lessons/{lessonId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /notions/{notionId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // -----------------------------------------------------------------
     // school_requests/{requestId} — demandes d'ajout d'ecole (Story 1.5.c)
     //
     // Collection racine (vs sous-collection schools/{id}/requests Story 1.7
