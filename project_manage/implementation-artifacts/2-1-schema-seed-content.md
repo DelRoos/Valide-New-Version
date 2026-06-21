@@ -4,7 +4,7 @@ baseline_commit: da44d90
 
 # Story 2.1 : Schéma Firestore contenu pédagogique + seed Python démo
 
-Status: review
+Status: done
 
 ## Story
 

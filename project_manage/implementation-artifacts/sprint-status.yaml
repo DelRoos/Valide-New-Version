@@ -121,7 +121,7 @@ development_status:
   # FR-9 (navigation), FR-11 (rendu enrichi), FR-12 (filtres), FR-13 (énoncés), FR-14 (offline), FR-15 (perf)
   # Workflow UI-first : story *-ui = données hardcodées + validation porteur → puis story *-integration = suppression fake + Firestore
   epic-2: in-progress  # 2026-06-21 Sprint planning réalisé. 5 stories définies. Démarrage Story 2.1.
-  2-1-schema-seed-content: review  # Schéma Firestore chapters/lessons/notions + seed Python 2 matières démo (Maths Tle D + Physics Upper Sixth). Docs + data, pas de code Flutter. 10/10 pytest, 6/6 rules tests, seed 56 docs sur valide-edu + idempotence confirmée. 2026-06-21
+  2-1-schema-seed-content: done  # PR #147 merged 2026-06-21. Schéma 🟢, 3 indexes, rules, seed_content.py, 56 docs valide-edu, 10/10 pytest, 6/6 rules tests.
   2-2-subject-navigation-ui: backlog  # SubjectDetailPage → ChapterPage → LessonPage → NotionPage en navigation push. Données hardcodées. Validation porteur avant intégration. [FR-9]
   2-3-content-reader-ui: backlog  # NotionPage complète : PedagogicalContent Markdown+LaTeX+Mermaid + 4 états loading/empty/error/offline. Contenu hardcodé. Validation porteur avant intégration. [FR-11, FR-15]
   2-4-content-integration: backlog  # Intégration Firestore : suppression données hardcodées, ContentRepository + providers + cache offline natif. [FR-9, FR-11, FR-14, FR-15]
