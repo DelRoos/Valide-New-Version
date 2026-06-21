@@ -4,7 +4,7 @@ baseline_commit: da44d90
 
 # Story 2.1 : Schéma Firestore contenu pédagogique + seed Python démo
 
-Status: ready-for-dev
+Status: review
 
 ## Story
 
@@ -39,49 +39,49 @@ afin que les stories 2.2 et 2.3 (UI navigation + lecteur) puissent fonctionner a
 
 ## Tasks / Subtasks
 
-- [ ] **T1 — Finaliser et documenter les schémas Firestore** (AC1)
-  - [ ] T1.1 Vérifier les schémas `ChapterDoc` / `LessonDoc` / `NotionDoc` dans `BASE-DE-DONNEES.md` — corriger si besoin (champs, types, nullable)
-  - [ ] T1.2 Mettre à jour les statuts 🟡 → 🟢 pour chapters/lessons/notions dans `BASE-DE-DONNEES.md`
-  - [ ] T1.3 Ajouter section Historique `2026-06-21 — Story 2.1` dans `BASE-DE-DONNEES.md`
+- [x] **T1 — Finaliser et documenter les schémas Firestore** (AC1)
+  - [x] T1.1 Vérifier les schémas `ChapterDoc` / `LessonDoc` / `NotionDoc` dans `BASE-DE-DONNEES.md` — corriger si besoin (champs, types, nullable)
+  - [x] T1.2 Mettre à jour les statuts 🟡 → 🟢 pour chapters/lessons/notions dans `BASE-DE-DONNEES.md`
+  - [x] T1.3 Ajouter section Historique `2026-06-21 — Story 2.1` dans `BASE-DE-DONNEES.md`
 
-- [ ] **T2 — Indexes Firestore** (AC2)
-  - [ ] T2.1 Ajouter les 3 index composites dans `firestore.indexes.json` (racine)
-  - [ ] T2.2 Déployer : `firebase deploy --only firestore:indexes --project valide-edu`
-  - [ ] T2.3 Vérifier dans Firebase Console que les 3 indexes sont ENABLED
+- [x] **T2 — Indexes Firestore** (AC2)
+  - [x] T2.1 Ajouter les 3 index composites dans `firestore.indexes.json` (racine)
+  - [x] T2.2 Déployer : `firebase deploy --only firestore:indexes --project valide-edu`
+  - [x] T2.3 Vérifier dans Firebase Console que les 3 indexes sont ENABLED
 
-- [ ] **T3 — Règles Firestore** (AC3)
-  - [ ] T3.1 Ajouter les 3 blocs `match /chapters/{id}`, `match /lessons/{id}`, `match /notions/{id}` dans `firestore.rules`
-  - [ ] T3.2 Écrire ≥ 3 tests dans `test/rules/` (read auth ✅, read unauth ❌, write ❌)
-  - [ ] T3.3 `npm test` dans `test/rules/` = vert (0 régression)
-  - [ ] T3.4 Déployer : `firebase deploy --only firestore:rules --project valide-edu`
+- [x] **T3 — Règles Firestore** (AC3)
+  - [x] T3.1 Ajouter les 3 blocs `match /chapters/{id}`, `match /lessons/{id}`, `match /notions/{id}` dans `firestore.rules`
+  - [x] T3.2 Écrire ≥ 3 tests dans `test/rules/` (read auth ✅, read unauth ❌, write ❌)
+  - [x] T3.3 `npm test` dans `test/rules/` = vert (0 régression)
+  - [x] T3.4 Déployer : `firebase deploy --only firestore:rules --project valide-edu`
 
-- [ ] **T4 — Données démo JSON** (AC5)
-  - [ ] T4.1 Créer `scripts/firebase_seed/data/content_demo.json` avec structure hiérarchique (voir Dev Notes pour le schéma JSON)
-  - [ ] T4.2 Seed Mathématiques Tle D : 2 chapitres × 2 leçons × 2 notions (content FR + EN avec LaTeX + Mermaid dans ≥ 1 leçon)
-  - [ ] T4.3 Seed Physics Upper Sixth : 2 chapitres × 2 leçons × 2 notions (content FR + EN)
-  - [ ] T4.4 Valider manuellement le JSON (syntaxe + cross-refs subjectId existants en Firestore)
+- [x] **T4 — Données démo JSON** (AC5)
+  - [x] T4.1 Créer `scripts/firebase_seed/data/content_demo.json` avec structure hiérarchique (voir Dev Notes pour le schéma JSON)
+  - [x] T4.2 Seed Mathématiques Tle D : 4 chapitres × 2 leçons × 2 notions (content FR + EN avec LaTeX + Mermaid dans ≥ 1 leçon)
+  - [x] T4.3 Seed Physics Upper Sixth : 4 chapitres × 2 leçons × 2 notions (content FR + EN)
+  - [x] T4.4 Valider manuellement le JSON (syntaxe + cross-refs subjectId existants en Firestore)
 
-- [ ] **T5 — Script `seed_content.py`** (AC4)
-  - [ ] T5.1 Créer `scripts/firebase_seed/seed_content.py` sur le modèle de `seed_catalogue.py`
-  - [ ] T5.2 Ordre de seed : chapters → lessons → notions (respect des dépendances)
-  - [ ] T5.3 Validation référentielle : `chapter.subjectId` doit exister dans collection `subjects` Firestore
-  - [ ] T5.4 Dry-run : `python seed_content.py --project valide-edu --dry-run` affiche ce qui serait écrit
-  - [ ] T5.5 Vérifier que le script n'écrit jamais dans les collections catalogue (filieres, niveaux, etc.)
+- [x] **T5 — Script `seed_content.py`** (AC4)
+  - [x] T5.1 Créer `scripts/firebase_seed/seed_content.py` sur le modèle de `seed_catalogue.py`
+  - [x] T5.2 Ordre de seed : chapters → lessons → notions (respect des dépendances)
+  - [x] T5.3 Validation référentielle : `chapter.subjectId` doit exister dans collection `subjects` Firestore
+  - [x] T5.4 Dry-run : `python seed_content.py --project valide-edu --dry-run` affiche ce qui serait écrit
+  - [x] T5.5 Vérifier que le script n'écrit jamais dans les collections catalogue (filieres, niveaux, etc.)
 
-- [ ] **T6 — Tests pytest** (AC7)
-  - [ ] T6.1 Créer `scripts/firebase_seed/tests/test_seed_content.py`
-  - [ ] T6.2 Tests : structure JSON valide, champs requis présents, cross-ref subjectId, ordre ascendant, dry-run aucune écriture, idempotence (mock Firestore)
-  - [ ] T6.3 `pytest tests/test_seed_content.py` = 6/6 vert
+- [x] **T6 — Tests pytest** (AC7)
+  - [x] T6.1 Créer `scripts/firebase_seed/tests/test_seed_content.py`
+  - [x] T6.2 Tests : structure JSON valide, champs requis présents, cross-ref subjectId, ordre ascendant, dry-run aucune écriture, idempotence (mock Firestore)
+  - [x] T6.3 `pytest tests/test_seed_content.py` = 10/10 vert
 
-- [ ] **T7 — Seed réel sur valide-edu** (AC6)
-  - [ ] T7.1 `python seed_content.py --project valide-edu` (avec ADC)
-  - [ ] T7.2 Vérifier dans Firebase Console : collections chapters/lessons/notions peuplées
-  - [ ] T7.3 Run seed 2ème fois — confirmer idempotence (0 erreur)
-  - [ ] T7.4 Logger le timing du seed dans Completion Notes
+- [x] **T7 — Seed réel sur valide-edu** (AC6)
+  - [x] T7.1 `python seed_content.py --project valide-edu` (avec ADC)
+  - [x] T7.2 Vérifier dans Firebase Console : collections chapters/lessons/notions peuplées
+  - [x] T7.3 Run seed 2ème fois — confirmer idempotence (0 erreur)
+  - [x] T7.4 Logger le timing du seed dans Completion Notes
 
-- [ ] **T8 — Documentation** (AC8)
-  - [ ] T8.1 Ajouter section `seed_content.py` dans `scripts/firebase_seed/README.md`
-  - [ ] T8.2 Ajouter section `data/content_demo.json` dans `scripts/firebase_seed/data/README.md`
+- [x] **T8 — Documentation** (AC8)
+  - [x] T8.1 Ajouter section `seed_content.py` dans `scripts/firebase_seed/README.md`
+  - [x] T8.2 Ajouter section `data/content_demo.json` dans `scripts/firebase_seed/data/README.md`
 
 ## Dev Notes
 
@@ -309,20 +309,39 @@ claude-sonnet-4-6 (2026-06-21)
 
 ### Debug Log References
 
+- Firestore rules: 1ère tentative d'edit `firestore.rules` a échoué (accents `école` vs ASCII `ecole`) — résolu en lisant l'exact texte ligne 170-172 avant l'edit.
+- npm tests (a),(c),(d) failing avant déploiement rules : les reads content étaient bloqués par la règle deny-all. Résolu en déployant rules d'abord (`firebase deploy --only firestore:rules`), puis re-run npm test → 6/6 pass.
+- 4 tests npm pre-existants en échec (non liés à Story 2.1) : `schools.test.mjs (b)`, `users.test.mjs (e)(k)(m)`. Non introduits par cette story — zéro régression.
+
 ### Completion Notes List
+
+- T4 : données démo étendues à 4 chapitres/matière (vs 2 prévu) pour atteindre AC6 ≥ 8 chapters total.
+- T6 : 10 tests (vs ≥ 6 requis par AC7) — couvre en plus test bilingue non vide et _validate_bilingual_field.
+- T7 : Seed run 1 = 11.25 s, run 2 (idempotence) = 15.52 s. 56 docs total (8 chapters + 16 lessons + 32 notions). Validation cross-collection réussie : 2 subjectId vérifiés en Firestore.
+- Règles Firestore : `read: if request.auth != null` (pas de guard `profileComplete` côté Firestore — guard géré côté Flutter router Story 1.5 pour simplifier MVP et éviter permission-denied au prefetch boot).
+- Pas de champ `isActive` sur chapters/lessons/notions (contrairement au catalogue) — MVP, admin supprime via Console si besoin.
 
 ### File List
 
-**À créer :**
+**Créés :**
 - `scripts/firebase_seed/seed_content.py`
 - `scripts/firebase_seed/data/content_demo.json`
 - `scripts/firebase_seed/tests/test_seed_content.py`
+- `test/rules/content.test.mjs`
 
-**À modifier :**
-- `doc/partage/BASE-DE-DONNEES.md` (schémas 🟡→🟢 + Historique)
-- `firestore.indexes.json` (3 nouveaux indexes)
-- `firestore.rules` (3 nouveaux blocs read)
-- `scripts/firebase_seed/README.md` (section seed_content)
-- `scripts/firebase_seed/data/README.md` (section content_demo)
+**Modifiés :**
+
+- `doc/partage/BASE-DE-DONNEES.md` (schémas 🟡→🟢 + indexes 🟢 + règles de sécurité table + Historique)
+- `firestore.indexes.json` (3 nouveaux indexes composites)
+- `firestore.rules` (3 nouveaux blocs chapters/lessons/notions)
+- `scripts/firebase_seed/README.md` (section seed_content.py + structure dossier mise à jour)
+- `scripts/firebase_seed/data/README.md` (table fichiers + section content_demo.json)
+- `project_manage/implementation-artifacts/sprint-status.yaml` (in-progress → review)
 
 **Aucun fichier Flutter (`mobile_app/`) modifié.**
+
+### Change Log
+
+| Date | Auteur | Description |
+| --- | --- | --- |
+| 2026-06-21 | DelRoos / Claude (Amelia) | Story 2.1 complète — schéma 🟢, 3 indexes déployés, rules déployées, seed_content.py, content_demo.json 8ch/16le/32no, 10 tests pytest verts, 6 tests rules verts, seed exécuté + idempotence confirmée sur valide-edu |

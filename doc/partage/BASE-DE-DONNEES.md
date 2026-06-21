@@ -31,9 +31,9 @@ Pour chaque collection :
 | `subjects` | Catalogue matières bilingue (référentiel) + flag `isActive` | 🟢 | **Stream** (admin peut désactiver à chaud) |
 | `exam_targets` | Catalogue examens visés (BEPC, Probatoire/BAC × séries, O Level, A Level × séries) | 🟢 | **Stream** |
 | `derivation_rules` | Règles dérivation (subSystem, filiere, niveau, serie) → (subjectIds, examTargetIds, canOptOut) | 🟢 | **Stream** |
-| `chapters` | Chapitres par matière | 🟡 | Statique |
-| `lessons` | Leçons par chapitre | 🟡 | Statique |
-| `notions` | Notions par leçon (unité atomique d'évaluation) | 🟡 | Statique |
+| `chapters` | Chapitres par matière | 🟢 | Statique |
+| `lessons` | Leçons par chapitre | 🟢 | Statique |
+| `notions` | Notions par leçon (unité atomique d'évaluation) | 🟢 | Statique |
 | `exercises` | Exercices rattachés à une leçon | 🟡 | Statique |
 | `quizzes` | Quiz générés par IA (peuvent être cachés pour réutilisation) | 🔴 | Statique / Mutable selon stratégie |
 | `exam_subjects` | Sujets d'examen complets (Mode examen) | 🟡 | Statique |
@@ -343,7 +343,7 @@ interface SubjectDoc {
 
 > **Indispensable** : ce catalogue alimente la **dérivation automatique** des matières à partir du profil élève (cf. ALGORITHMES.md § « Dérivation profil → matières »).
 
-### `chapters/{chapterId}` 🟡
+### `chapters/{chapterId}` 🟢
 
 ```typescript
 interface ChapterDoc {
@@ -357,7 +357,7 @@ interface ChapterDoc {
 
 Index : `subjectId` + `order`.
 
-### `lessons/{lessonId}` 🟡
+### `lessons/{lessonId}` 🟢
 
 ```typescript
 interface LessonDoc {
@@ -372,7 +372,7 @@ interface LessonDoc {
 
 Index : `chapterId` + `order`.
 
-### `notions/{notionId}` 🟡
+### `notions/{notionId}` 🟢
 
 Plus petite unité d'évaluation.
 
@@ -723,13 +723,16 @@ interface WebhookEventDoc {
 - `schools` : `(isValidated ASC, name ASC)` — Story 1.7 query prefix range (conservé pour audit + retro-compat)
 - `schools` : `(isValidated ASC, keywords ARRAY-CONTAINS)` — **Story 1.5.b** recherche `arrayContains` case-insensitive sans accents (search principal V2)
 
+🟢 **Validés Story 2.1** (contenu pédagogique) :
+
+- `chapters` : `(subjectId ASC, order ASC)` — liste chapitres par matière triés
+- `lessons` : `(chapterId ASC, order ASC)` — liste leçons par chapitre triés
+- `notions` : `(lessonId ASC, order ASC)` — liste notions par leçon triées
+
 🔴 **À compléter pendant la mise en place** :
 
 - `users` : `(subSystem, niveau, serie)` — pour les stats par profil
 - `users` : `(schoolId, niveau, serie)` — pour les rankings classe
-- `chapters` : `(subjectId, order)` — affichage trié
-- `lessons` : `(chapterId, order)`
-- `notions` : `(lessonId, order)`
 - `exercises` : `(lessonId, difficulty)` — pour filtrage
 - `rankings/{board}/entries` : `(score desc)` — top X
 
@@ -747,7 +750,8 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | `credits/{uid}/transactions/*` | `uid` | **Cloud Function uniquement** |
 | `filieres`, `niveaux`, `series`, `exam_targets`, `derivation_rules` (catalogue Story 1.1a) | Authentifié (`request.auth != null`) | **Script Python `seed_catalogue.py` / Console admin uniquement** (`write: if false` côté mobile) |
 | `subjects` (Story 1.1a, schema migré) | Authentifié | **Script Python / Console admin uniquement** |
-| `chapters`, `lessons`, `notions`, `exercises`, `quizzes`, `exam_subjects` | Authentifié, profil complet (filtré par règle) | Admin (via backoffice) |
+| `chapters`, `lessons`, `notions` | Authentifié (`request.auth != null`) — Story 2.1 | Script Python `seed_content.py` / Console admin (`write: false` côté mobile) |
+| `exercises`, `quizzes`, `exam_subjects` | Authentifié, profil complet (filtré par règle — futur Epic 3+) | Admin (via backoffice) |
 | `users/{uid}/completions/*` | `uid` | **Cloud Function uniquement** (dans transaction) |
 | `users/{uid}/health/*` | `uid` | **Cloud Function uniquement** |
 | `users/{uid}/stats` | `uid` | **Cloud Function uniquement** |
@@ -920,5 +924,6 @@ await _firestore.collection('users').doc(uid).update({
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.a — seed initial collection `schools` sur `valide-edu`. Statut `schools/{schoolId}` 🟡 → 🟢 (Vue d'ensemble + section dédiée). Ajout précisions sur seed : ~198 établissements MINESEC + GCE Board V1 couvrant 10 régions officielles (Centre 40, Littoral 38, Ouest 34, Sud-Ouest 20, Nord-Ouest 16, Nord 13, Sud 11, Extrême-Nord 10, Adamaoua 8, Est 8). Convention `schoolId` formalisée (slug `school_<slug_nom>_<slug_ville>` pattern `^school_[a-z0-9_]+$`). Mix subSystem : 136 francophone / 35 both / 27 anglophone. Script Python autonome [`scripts/firebase_seed/seed_schools.py`](../../scripts/firebase_seed/seed_schools.py) calqué sur pattern Story 1.1b (`set(merge=True)`, ADC ou service-account, dry-run, idempotent). Matrice versionnée [`scripts/firebase_seed/data/schools.json`](../../scripts/firebase_seed/data/schools.json). 9 tests pytest sans Firestore live valident la matrice statique. **Aucun nouvel index Firestore** (l'index composite `(isValidated ASC, name ASC)` déjà déployé Story 1.7 suffit pour `school_repository_firestore_impl.searchByPrefix`). Sous-collection `schools/{schoolId}/requests` 🔴 reste à formaliser Story 1.5.c. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.b — refactor recherche écoles vers `keywords[] arrayContains` case-insensitive sans accents. Schema `SchoolDoc` étendu avec champ `keywords: string[]` (lower-case ASCII tokens, dépendance `unidecode>=1.3.0` côté seed Python + map accents manuel côté Dart). Script `seed_schools.py` étendu avec flag `--regen-keywords` qui régénère la matrice (pipeline déterministe : name + city + region tokenisés + 7 abréviations communes ghs/gbhs/pss/lb/chs/gths/gtbhs). 198 écoles regénérées avec keywords[] (min 3 / max 10 / avg 5.6 tokens par école, GHS 14, LB 25, GBHS 6, PSS 2). **Nouvel index Firestore composite** `(isValidated ASC, keywords ARRAY-CONTAINS)` déclaré dans `firestore.indexes.json` + déployé sur `valide-edu`. Ancien index `(isValidated, name)` conservé pour audit. Tests : pytest 24/24 verts (Story 1.1b 6 + 1.5.a 9 + 1.5.b 9 = +9 nets) + Dart `school_repository_test.dart` 11/11 verts (Story 1.7 5 adapté avec keywords + Story 1.5.b 6 nouveaux : case-insensitive, accents, GHS abréviation, court-circuit, tri client). Read patterns table mise à jour. Reseed `valide-edu` OK : 198 docs en 43.35 s via ADC. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.d — dénormalisation 4 champs école dans `users/{uid}` au moment de la liaison (clôture micro-epic Epic 1.5 Schools completion, 4/4). Schema `UserDoc` étendu non-breaking avec **3 nouveaux champs nullable** : `schoolCity` + `schoolRegion` + `schoolName` (dénormalisés depuis `schools/{schoolId}` au moment du tap card via `updateLinkedSchool(School?)`). Refactor interface domain : `UserProfileRepository.updateSchoolId(String?)` → `updateLinkedSchool(School?)` (entité School complète passée par le caller — 0 read supplémentaire `schools/{id}` au write, CLAUDE.md règle 10.k). Impl Firestore écrit les 4 champs en 1 update partiel (CLAUDE.md règle 10.l). Si `school == null` : les 4 champs deviennent null cohérents (unlink, pas de mismatch). Pas de validation stricte rules de cohérence `schoolCity ↔ schools/{id}.city` V1 (trade-off accepté : un client malveillant ne falsifie que SON propre profil — pas d'escalade, pas d'impact ranking équipe). Commentaire Story 1.5.d ajouté dans `firestore.rules` § users update. Table Dénormalisations recommandées mise à jour : ligne `schoolName` Dashboard 🟡→🟢 + nouvelle ligne `schoolCity` + `schoolRegion` (préparation Epic 5 rankings régionaux + Epic 6 IA contextualisée). Table Update patterns mise à jour : ligne `schoolId` étendue aux 4 champs cohérents. Tests : flutter analyze 0 + flutter test 270 verts (baseline 269 + 3 nouveaux Story 1.5.d (d)(e)(f) - 2 anciens Story 1.7 obsolètes = +1 net) + npm test rules 33/33 (baseline 30 + 3 nouveaux (o)(p)(q) : update 4 champs OK, unlink OK, subSystem immuable même avec school* KO) + pytest 26/26 (baseline 24 + 2 nouveaux `test_migration_idempotent` + `test_migration_skip_user_with_missing_school`). Script Python admin one-shot `migrate_user_school_denorm.py` créé (lookup par ID auto-indexé + cache local schools + idempotent via détection `schoolCity` déjà renseigné + dry-run + warning skip user dont schoolId pointe vers school absente). Workflow migration documenté dans `scripts/firebase_seed/data/README.md`. Cost-benefit : -1 read `schools/{id}` par chargement dashboard downstream Epic 2+ × 10k DAU × 5 ouvertures/jour = -50k reads/jour économisés. Storage supplémentaire ~1.5 MB total négligeable. Aucun nouvel index Firestore V1. Action porteur post-merge : (1) smoke test mobile 4 champs écrits sur `users/<uid>` Firebase Console, (2) run script migration sur valide-edu pour migrer users legacy. Clôture micro-epic Epic 1.5 (1.5.a + 1.5.b + 1.5.c + 1.5.d) → débloque retro Epic 1 globale. |
+| 2026-06-21 | DelRoos / Claude (Amelia agent) | Story 2.1 — schéma contenu pédagogique finalisé + seed Python démo. Statuts `chapters/{chapterId}`, `lessons/{lessonId}`, `notions/{notionId}` 🟡 → 🟢 (Vue d'ensemble + sections dédiées). **3 nouveaux index Firestore composites** déclarés dans `firestore.indexes.json` + déployés sur `valide-edu` : `chapters(subjectId ASC, order ASC)`, `lessons(chapterId ASC, order ASC)`, `notions(lessonId ASC, order ASC)`. **Règles Firestore** étendues : 3 blocs `match /chapters`, `match /lessons`, `match /notions` avec `read: if request.auth != null` + `write: if false` — tout user authentifié peut lire (profil complet géré côté Flutter router Story 1.5). Table Indexes — section 🟢 Story 2.1 ajoutée, entrées chapters/lessons/notions retirées de 🔴. Table Règles de sécurité résumé mise à jour : ligne chapters/lessons/notions séparée de exercises/quizzes. Script Python [`scripts/firebase_seed/seed_content.py`](../../scripts/firebase_seed/seed_content.py) créé (pattern `seed_catalogue.py` : argparse, `set(merge=True)`, validation cross-collection subjectId, dry-run, idempotent). Données démo versionnées [`scripts/firebase_seed/data/content_demo.json`](../../scripts/firebase_seed/data/content_demo.json) : 2 matières (Maths `francophone_math` Tle D + Physics `anglophone_physics` Upper Sixth) × 4 chapitres × 2 leçons × 2 notions = 8 chapters, 16 lessons, 32 notions. Contenu FR+EN avec LaTeX + Mermaid dans au moins 1 leçon par matière. Seed exécuté sur `valide-edu` + idempotence confirmée. 6 tests pytest verts. |
 | 2026-06-17 | DelRoos / Claude | Boot-sync `subSystem` depuis Firestore — nouveau pattern de lecture au lancement : `splash_page.dart` lit `users/{uid}` via `fetchProfileOnce()` (1 `.get()` non-bloquant) pour corriger `subSystem` stale sur nouveau téléphone. Firestore reste source de vérité. Aucune modification schéma ni index. Notes ajoutées : section `users/{uid}` (note boot-sync), table Read patterns (colonne `users/{uid}` étendue), table Update patterns (annotation `subSystem` Immutable écriture). |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.c — flow demande ajout école production-ready. **Nouvelle collection racine `school_requests/{requestId}`** 🟢 avec schema `SchoolRequestDoc` complet (requestedBy + requestedAt + status + name + city + region? + subSystem? + decidedBy? + decidedAt? + schoolIdCreated? + rejectionReason?). Sous-collection POC `schools/{schoolId}/requests` Story 1.7 **supprimée** (refactor non-breaking : `requestSchool` → `createSchoolRequest({name, city, region?, subSystem?})` dans le repository Dart). Rules Firestore étendues : create par owner (uid match + champs valides + status forcé `'pending'` anti-escalade) + read self (`requestedBy == auth.uid` → futur écran « Mes demandes ») + update/delete refusés côté client (modération admin via Console). Aucun nouvel index Firestore V1 (single-field `requestedBy` auto-indexé). Tests : npm test rules 30/30 verts (baseline 23 + 7 Story 1.5.c : create owner valide, uid d'autrui refusé, name trop court refusé, status != pending refusé, subSystem invalide refusé, subSystem valide accepté, read self OK, read other refusé, update/delete refusés) + Dart `school_repository_test.dart` 15/15 verts (Story 1.7 4 adaptés + Story 1.5.b 6 + Story 1.5.c 4 nouveaux : subSystem renseigné/null, region renseigné/null) + widget `school_picker_page_test.dart` 7/7 verts (Story 1.7 5 + Story 1.5.c 2 : modale rendue avec 4 RadioListTile, submit avec subSystem). UI modale `_AddSchoolDialog` étendue avec `RadioGroup<_SubSystemChoice>` 4 options (Francophone, Anglophone, Bilingue, Je ne sais pas par défaut) + 5 clés ARB FR/EN ajoutées. Cost-benefit V1 : ~42 demandes/mois @10k users = négligeable. Workflow admin modération documenté dans `scripts/firebase_seed/data/README.md`. |
