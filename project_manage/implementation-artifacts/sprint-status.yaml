@@ -1,5 +1,5 @@
 ﻿# generated: 2026-06-03
-# last_updated: 2026-06-24  # sprint-change-proposal-2026-06-24 approuvé. Recentrage MVP sur 3 piliers (Compte / Contenu intégré / Exercice). 2-2 corrigé in-progress→done. 2-4 réouverte review→in-progress (revert fake data). 4 nouvelles stories backlog (A-1, 2-5, 2-6, 3-1-mini). E4/E5/E6 déférés. E3 deferred-partial. | PRÉCÉDENT : Story 2.4 dev complete. T1-T12 done. Status in-progress -> review. 15 tests unit + 13 tests widget/golden.
+# last_updated: 2026-06-24  # PR #148 mergée (dd2de5d). Stories 2.3 + A.1 → done. Pilier A : A-1 done, A-2 ready-for-dev. Pilier B : 2-4 in-progress. | PRÉCÉDENT : sprint-change-proposal-2026-06-24 approuvé. A-1 review→done, 2-3 review→done.
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -124,9 +124,9 @@ development_status:
   2-1-schema-seed-content: done  # PR #147 merged 2026-06-21. Schéma 🟢, 3 indexes, rules, seed_content.py, 56 docs valide-edu, 10/10 pytest, 6/6 rules tests.
   2-2-subject-navigation-ui: done  # Mergée commit 3769b6a. Pivot NotionPage supprimée, chapter_page extrait, 8/8 tests verts. Statut corrigé 2026-06-24 (sprint-change-proposal-2026-06-24). [FR-9]
   2-3-content-reader-ui: cancelled  # Pivot D1 Story 2.2 (2026-06-22) — NotionPage éliminée. Remplacée par 2-3-dashboard-home-ui.
-  2-3-dashboard-home-ui: review  # Dashboard home enrichi : 6 sections UI hardcodées. T1-T12 done. HALT T13 — en attente validation UI porteur. 2026-06-23.
+  2-3-dashboard-home-ui: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). Dashboard home enrichi + split tab pages. HALT T13 levé au merge.
   2-4-content-integration: in-progress  # RÉOUVERTE 2026-06-24 (sprint-change-proposal-2026-06-24). Revert session : pages contenu revenues à fake data (bug SubjectDetailPage). À re-implémenter proprement. [FR-9, FR-11, FR-14, FR-15]
-  A-1-edit-profile: review  # 2026-06-24 dev complet via /bmad-dev-story. T1-T11 done. ProfileEditSheet + SchoolEditSheet créés. updateDisplayName + updatePhoneNumber impl Firestore. 5 unit tests + 3 widget tests + 2 goldens (phone+tablet). flutter analyze 0 issues. PR à soumettre.
+  A-1-edit-profile: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). ProfileEditSheet + SchoolEditSheet + updateDisplayName/updatePhoneNumber Firestore + stubs toast. [Pilier A — Story 1/2]
   A-2-public-profile: ready-for-dev  # Story créée 2026-06-24. Page /user/:uid, modèle PublicProfile, fetchPublicProfile() repo, règle Firestore read:auth!=null, navigation depuis _ClassmateRow. Voir A-2-public-profile.md.
   2-5-fiches-de-lecture: backlog  # Nouveau type contenu 'fiche' (champ type sur lessons Firestore). Rendu PedagogicalContent. Seed Python étendu. Décision réunion 2026-06-24.
   2-6-quiz-content-integration: backlog  # Quiz liés chapitres/leçons (collection quizzes). QCM + score local. Sans IA. Décision réunion 2026-06-24.
