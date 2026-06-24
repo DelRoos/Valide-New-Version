@@ -334,16 +334,16 @@
   "onboardingSchoolGenericErrorToast": "Erreur, vérifie ta connexion et réessaie.",
   "@onboardingSchoolGenericErrorToast": { "description": "Toast warning si update schoolId echoue (reseau/rule)." },
 
-  "dashboardWelcomeWithName": "Bienvenue {name} !",
+  "dashboardWelcomeWithName": "Salut, {name} 👋",
   "@dashboardWelcomeWithName": {
-    "description": "Titre du Hero DashboardPage avec prenom (Story 1.9 AC1). Prenom = displayName.split(' ').first.",
+    "description": "Titre du Hero DashboardPage avec prenom (Story 2.3 AC1 — remplace 'Bienvenue' Story 1.9). Prenom = displayName.split(' ').first.",
     "placeholders": {
       "name": { "type": "String", "example": "Fatou" }
     }
   },
 
-  "dashboardWelcomeGuest": "Bienvenue !",
-  "@dashboardWelcomeGuest": { "description": "Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 1.9 AC1." },
+  "dashboardWelcomeGuest": "Salut 👋",
+  "@dashboardWelcomeGuest": { "description": "Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 2.3 AC1." },
 
   "dashboardSubtitleWithExam": "Voici tes matières — tu prépares le {exam}",
   "@dashboardSubtitleWithExam": {
@@ -380,11 +380,61 @@
   "dashboardTabSubjects": "Cours",
   "@dashboardTabSubjects": { "description": "Label onglet 1 du bottom tab bar — contenu cours/matières." },
 
+  "coursesPageTitle": "Mes cours",
+  "@coursesPageTitle": { "description": "Titre AppBar de la page Cours (/courses) — liste les matières de l'élève en grille." },
+
+  "coursesStartLesson": "Commencer",
+  "@coursesStartLesson": { "description": "CTA du banner recommandation sur la page Cours." },
+
   "dashboardTabActivities": "Examen",
   "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
   "dashboardTabProfile": "Profil",
   "@dashboardTabProfile": { "description": "Label onglet 3 du bottom tab bar (Story 1.9 AC6)." },
+
+  "examsPageTitle": "Examens",
+  "@examsPageTitle": { "description": "Titre AppBar onglet Examens." },
+  "examsCountdownChip": "🎯  BAC 2026",
+  "@examsCountdownChip": { "description": "Chip exam cible dans le banner countdown." },
+  "examsCountdownHeadline": "4 mois restants",
+  "@examsCountdownHeadline": { "description": "Headline du banner countdown (fake, sera dynamique)." },
+  "examsCountdownSubtitle": "Continue à réviser chaque jour",
+  "@examsCountdownSubtitle": { "description": "Sous-titre du banner countdown." },
+  "examsCountdownPrepared": "{pct}% préparé",
+  "@examsCountdownPrepared": { "description": "Progression globale de préparation.", "placeholders": { "pct": { "type": "int" } } },
+  "examsCountdownMonths": "mois",
+  "@examsCountdownMonths": { "description": "Label 'mois' sous le chiffre de countdown." },
+  "examsSectionTitle": "Fiches de révision",
+  "@examsSectionTitle": { "description": "Titre de la section sujets à réviser." },
+  "examsExercisesOf": "{done}/{total} exercices",
+  "@examsExercisesOf": { "description": "Compteur exercices faits/total.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+
+  "profilePageTitle": "Mon profil",
+  "@profilePageTitle": { "description": "Titre du tab profil." },
+  "profileStreak": "Série",
+  "@profileStreak": { "description": "Label colonne streak (jours consécutifs) dans les stats profil." },
+  "profileLessons": "Leçons",
+  "@profileLessons": { "description": "Label colonne leçons complétées dans les stats profil." },
+  "profileAvgScore": "Score moy.",
+  "@profileAvgScore": { "description": "Label colonne score moyen dans les stats profil." },
+  "profileDays": "jours",
+  "@profileDays": { "description": "Unité jours sous le compteur streak." },
+  "profileMenuSubscription": "Mon abonnement",
+  "@profileMenuSubscription": { "description": "Item menu Mon abonnement." },
+  "profileMenuResults": "Mes résultats",
+  "@profileMenuResults": { "description": "Item menu Mes résultats." },
+  "profileMenuLanguage": "Langue",
+  "@profileMenuLanguage": { "description": "Item menu sélection langue." },
+  "profileMenuNotifications": "Notifications",
+  "@profileMenuNotifications": { "description": "Item menu notifications." },
+  "profileMenuAccount": "Paramètres du compte",
+  "@profileMenuAccount": { "description": "Item menu vers /profil/settings." },
+  "profileMenuSignOut": "Se déconnecter",
+  "@profileMenuSignOut": { "description": "Item menu déconnexion." },
+  "profileGuestTitle": "Continue avec un compte",
+  "@profileGuestTitle": { "description": "Titre bannière guest sur le profil." },
+  "profileGuestSubtitle": "Sauvegarde ta progression et rejoins le classement.",
+  "@profileGuestSubtitle": { "description": "Sous-titre bannière guest sur le profil." },
 
   "onboardingSubSystemTitle": "Quelle section suis-tu ?",
   "@onboardingSubSystemTitle": { "description": "Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle)." },
@@ -719,5 +769,122 @@
   "@accountDeletionAutoCancelledToast": { "description": "Toast info apres auto-cancel au boot (Story 1.10 AC6)." },
 
   "accountDeletionNotAvailableToast": "Fonctionnalité bientôt disponible.",
-  "@accountDeletionNotAvailableToast": { "description": "Toast warning si Cloud Function non deployée côté backend (Story 1.10 fallback graceful)." }
+  "@accountDeletionNotAvailableToast": { "description": "Toast warning si Cloud Function non deployée côté backend (Story 1.10 fallback graceful)." },
+
+  "dashboardDailyGoalTitle": "Objectif du jour",
+  "@dashboardDailyGoalTitle": { "description": "Titre de la section Objectif du jour du dashboard (Story 2.3 AC2)." },
+
+  "dashboardDailyGoalTask": "Faire 1 quiz + lire 1 leçon",
+  "@dashboardDailyGoalTask": { "description": "Description de la tâche quotidienne hardcodée (Story 2.3 AC2 — remplacée par Firestore en Story 2.4)." },
+
+  "dashboardDailyGoalCta": "Reprendre",
+  "@dashboardDailyGoalCta": { "description": "Bouton CTA de l'objectif du jour (Story 2.3 AC2)." },
+
+  "dashboardHistoryTitle": "Historique récent",
+  "@dashboardHistoryTitle": { "description": "Titre de la section Historique récent du dashboard (Story 2.3 AC3)." },
+
+  "dashboardRecommendedTitle": "Recommandé pour toi",
+  "@dashboardRecommendedTitle": { "description": "Titre de la section Recommandé IA du dashboard (Story 2.3 AC4)." },
+
+  "dashboardRecommendedAiTag": "IA personnalisé",
+  "@dashboardRecommendedAiTag": { "description": "Badge tag IA sur la carte Recommandé (Story 2.3 AC4)." },
+
+  "dashboardRecommendedLessonCta": "Leçon · {min} min",
+  "@dashboardRecommendedLessonCta": {
+    "description": "CTA secondaire Leçon sur la carte Recommandé (Story 2.3 AC4).",
+    "placeholders": {
+      "min": { "type": "int", "example": "8" }
+    }
+  },
+
+  "dashboardRecommendedQuizCta": "Quiz · {count} q",
+  "@dashboardRecommendedQuizCta": {
+    "description": "CTA secondaire Quiz sur la carte Recommandé (Story 2.3 AC4).",
+    "placeholders": {
+      "count": { "type": "int", "example": "10" }
+    }
+  },
+
+  "dashboardMySubjectsTitle": "Mes matières",
+  "@dashboardMySubjectsTitle": { "description": "Titre de la section Mes matières du dashboard enrichi (Story 2.3 AC5 — remplace onboardingRecapSubjectsCount)." },
+
+  "dashboardHeroRankLabel": "Classement",
+  "@dashboardHeroRankLabel": { "description": "Label de la stat classement dans le hero dashboard." },
+
+  "dashboardHeroProgressLabel": "Progression",
+  "@dashboardHeroProgressLabel": { "description": "Label de la stat progression globale dans le hero dashboard." },
+
+  "dashboardObjectivesTitle": "Objectifs du jour",
+  "@dashboardObjectivesTitle": { "description": "Titre de la section objectifs quotidiens sur le dashboard." },
+
+  "dashboardSubjectLevelPoor": "Faible",
+  "@dashboardSubjectLevelPoor": { "description": "Niveau de maîtrise faible affiché sur la tuile matière." },
+  "dashboardSubjectLevelAverage": "Moyen",
+  "@dashboardSubjectLevelAverage": { "description": "Niveau de maîtrise moyen affiché sur la tuile matière." },
+  "dashboardSubjectLevelGood": "Bon",
+  "@dashboardSubjectLevelGood": { "description": "Niveau de maîtrise bon affiché sur la tuile matière." },
+
+  "dashboardSeeAll": "Voir tout",
+  "@dashboardSeeAll": { "description": "Lien 'Voir tout' à droite du titre d'une section du dashboard." },
+
+  "dashboardHeroSubjectChip": "{n, plural, =1{1 matière} other{{n} matières}}",
+  "@dashboardHeroSubjectChip": {
+    "description": "Chip nombre de matières dans le hero du dashboard.",
+    "placeholders": {
+      "n": { "type": "int", "example": "5" }
+    }
+  },
+
+  "dashboardLevelWeak": "Faible",
+  "@dashboardLevelWeak": { "description": "Badge niveau faible (0-33%) sur les cartes matières du dashboard (Story 2.3 AC5)." },
+
+  "dashboardLevelMedium": "Moyen",
+  "@dashboardLevelMedium": { "description": "Badge niveau moyen (34-66%) sur les cartes matières du dashboard (Story 2.3 AC5)." },
+
+  "dashboardLevelStrong": "Fort",
+  "@dashboardLevelStrong": { "description": "Badge niveau fort (67-100%) sur les cartes matières du dashboard (Story 2.3 AC5)." },
+
+  "dashboardRankingTitle": "Classement",
+  "@dashboardRankingTitle": { "description": "Titre de la section Classement du dashboard (Story 2.3 AC6)." },
+
+  "dashboardRankingWeeklyGain": "+{n} places cette semaine",
+  "@dashboardRankingWeeklyGain": {
+    "description": "Texte gain hebdomadaire dans la section Classement (Story 2.3 AC6).",
+    "placeholders": {
+      "n": { "type": "int", "example": "12" }
+    }
+  },
+
+  "dashboardRankingPositionMessage": "Tu es {rank}e en {subject}. Continue !",
+  "@dashboardRankingPositionMessage": {
+    "description": "Message de rang dans la section Classement du dashboard (Story 2.3 AC6).",
+    "placeholders": {
+      "rank": { "type": "int", "example": "18" },
+      "subject": { "type": "String", "example": "Maths" }
+    }
+  },
+
+  "profileEditButton": "Modifier",
+  "@profileEditButton": { "description": "Bouton 'Modifier' sur le ProfileHeader pour ouvrir le sheet d'édition du profil (Story A.1 AC1)." },
+
+  "profileEditSheetTitle": "Modifier mon profil",
+  "@profileEditSheetTitle": { "description": "Titre du bottom sheet d'édition displayName + téléphone (Story A.1 AC1)." },
+
+  "profileEditSuccess": "Profil mis à jour.",
+  "@profileEditSuccess": { "description": "Toast succès après sauvegarde du nom et/ou téléphone (Story A.1 AC5)." },
+
+  "profileMenuSchool": "Mon école",
+  "@profileMenuSchool": { "description": "Item menu 'Mon école' dans la section Compte du profil — ouvre le sheet de changement d'école (Story A.1 AC6)." },
+
+  "profileSchoolSheetTitle": "Changer d'école",
+  "@profileSchoolSheetTitle": { "description": "Titre du bottom sheet de recherche/changement d'école (Story A.1 AC6)." },
+
+  "profileSchoolUpdateSuccess": "École mise à jour.",
+  "@profileSchoolUpdateSuccess": { "description": "Toast succès après changement d'école (Story A.1 AC6)." },
+
+  "profileSchoolRemove": "Retirer mon école",
+  "@profileSchoolRemove": { "description": "Bouton secondaire dans le sheet d'école pour retirer l'école liée (Story A.1 AC6)." },
+
+  "featureComingSoon": "Bientôt disponible",
+  "@featureComingSoon": { "description": "Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs)." }
 }

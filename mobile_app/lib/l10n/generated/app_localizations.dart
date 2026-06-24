@@ -680,16 +680,16 @@ abstract class AppLocalizations {
   /// **'Erreur, vérifie ta connexion et réessaie.'**
   String get onboardingSchoolGenericErrorToast;
 
-  /// Titre du Hero DashboardPage avec prenom (Story 1.9 AC1). Prenom = displayName.split(' ').first.
+  /// Titre du Hero DashboardPage avec prenom (Story 2.3 AC1 — remplace 'Bienvenue' Story 1.9). Prenom = displayName.split(' ').first.
   ///
   /// In fr, this message translates to:
-  /// **'Bienvenue {name} !'**
+  /// **'Salut, {name} 👋'**
   String dashboardWelcomeWithName(String name);
 
-  /// Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 1.9 AC1.
+  /// Titre du Hero DashboardPage sans prenom (visiteur ou displayName vide) — Story 2.3 AC1.
   ///
   /// In fr, this message translates to:
-  /// **'Bienvenue !'**
+  /// **'Salut 👋'**
   String get dashboardWelcomeGuest;
 
   /// Sous-titre du Hero avec libelle d'examen (Story 1.9 AC1). examLabel = examTargets[0].name[lang].
@@ -752,6 +752,18 @@ abstract class AppLocalizations {
   /// **'Cours'**
   String get dashboardTabSubjects;
 
+  /// Titre AppBar de la page Cours (/courses) — liste les matières de l'élève en grille.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes cours'**
+  String get coursesPageTitle;
+
+  /// CTA du banner recommandation sur la page Cours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer'**
+  String get coursesStartLesson;
+
   /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
@@ -763,6 +775,132 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Profil'**
   String get dashboardTabProfile;
+
+  /// Titre AppBar onglet Examens.
+  ///
+  /// In fr, this message translates to:
+  /// **'Examens'**
+  String get examsPageTitle;
+
+  /// Chip exam cible dans le banner countdown.
+  ///
+  /// In fr, this message translates to:
+  /// **'🎯  BAC 2026'**
+  String get examsCountdownChip;
+
+  /// Headline du banner countdown (fake, sera dynamique).
+  ///
+  /// In fr, this message translates to:
+  /// **'4 mois restants'**
+  String get examsCountdownHeadline;
+
+  /// Sous-titre du banner countdown.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continue à réviser chaque jour'**
+  String get examsCountdownSubtitle;
+
+  /// Progression globale de préparation.
+  ///
+  /// In fr, this message translates to:
+  /// **'{pct}% préparé'**
+  String examsCountdownPrepared(int pct);
+
+  /// Label 'mois' sous le chiffre de countdown.
+  ///
+  /// In fr, this message translates to:
+  /// **'mois'**
+  String get examsCountdownMonths;
+
+  /// Titre de la section sujets à réviser.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiches de révision'**
+  String get examsSectionTitle;
+
+  /// Compteur exercices faits/total.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done}/{total} exercices'**
+  String examsExercisesOf(int done, int total);
+
+  /// Titre du tab profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon profil'**
+  String get profilePageTitle;
+
+  /// Label colonne streak (jours consécutifs) dans les stats profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Série'**
+  String get profileStreak;
+
+  /// Label colonne leçons complétées dans les stats profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Leçons'**
+  String get profileLessons;
+
+  /// Label colonne score moyen dans les stats profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Score moy.'**
+  String get profileAvgScore;
+
+  /// Unité jours sous le compteur streak.
+  ///
+  /// In fr, this message translates to:
+  /// **'jours'**
+  String get profileDays;
+
+  /// Item menu Mon abonnement.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon abonnement'**
+  String get profileMenuSubscription;
+
+  /// Item menu Mes résultats.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes résultats'**
+  String get profileMenuResults;
+
+  /// Item menu sélection langue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Langue'**
+  String get profileMenuLanguage;
+
+  /// Item menu notifications.
+  ///
+  /// In fr, this message translates to:
+  /// **'Notifications'**
+  String get profileMenuNotifications;
+
+  /// Item menu vers /profil/settings.
+  ///
+  /// In fr, this message translates to:
+  /// **'Paramètres du compte'**
+  String get profileMenuAccount;
+
+  /// Item menu déconnexion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter'**
+  String get profileMenuSignOut;
+
+  /// Titre bannière guest sur le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continue avec un compte'**
+  String get profileGuestTitle;
+
+  /// Sous-titre bannière guest sur le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Sauvegarde ta progression et rejoins le classement.'**
+  String get profileGuestSubtitle;
 
   /// Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle).
   ///
@@ -1477,6 +1615,192 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Fonctionnalité bientôt disponible.'**
   String get accountDeletionNotAvailableToast;
+
+  /// Titre de la section Objectif du jour du dashboard (Story 2.3 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectif du jour'**
+  String get dashboardDailyGoalTitle;
+
+  /// Description de la tâche quotidienne hardcodée (Story 2.3 AC2 — remplacée par Firestore en Story 2.4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Faire 1 quiz + lire 1 leçon'**
+  String get dashboardDailyGoalTask;
+
+  /// Bouton CTA de l'objectif du jour (Story 2.3 AC2).
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre'**
+  String get dashboardDailyGoalCta;
+
+  /// Titre de la section Historique récent du dashboard (Story 2.3 AC3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Historique récent'**
+  String get dashboardHistoryTitle;
+
+  /// Titre de la section Recommandé IA du dashboard (Story 2.3 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Recommandé pour toi'**
+  String get dashboardRecommendedTitle;
+
+  /// Badge tag IA sur la carte Recommandé (Story 2.3 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'IA personnalisé'**
+  String get dashboardRecommendedAiTag;
+
+  /// CTA secondaire Leçon sur la carte Recommandé (Story 2.3 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Leçon · {min} min'**
+  String dashboardRecommendedLessonCta(int min);
+
+  /// CTA secondaire Quiz sur la carte Recommandé (Story 2.3 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz · {count} q'**
+  String dashboardRecommendedQuizCta(int count);
+
+  /// Titre de la section Mes matières du dashboard enrichi (Story 2.3 AC5 — remplace onboardingRecapSubjectsCount).
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes matières'**
+  String get dashboardMySubjectsTitle;
+
+  /// Label de la stat classement dans le hero dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement'**
+  String get dashboardHeroRankLabel;
+
+  /// Label de la stat progression globale dans le hero dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Progression'**
+  String get dashboardHeroProgressLabel;
+
+  /// Titre de la section objectifs quotidiens sur le dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Objectifs du jour'**
+  String get dashboardObjectivesTitle;
+
+  /// Niveau de maîtrise faible affiché sur la tuile matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'Faible'**
+  String get dashboardSubjectLevelPoor;
+
+  /// Niveau de maîtrise moyen affiché sur la tuile matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'Moyen'**
+  String get dashboardSubjectLevelAverage;
+
+  /// Niveau de maîtrise bon affiché sur la tuile matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bon'**
+  String get dashboardSubjectLevelGood;
+
+  /// Lien 'Voir tout' à droite du titre d'une section du dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir tout'**
+  String get dashboardSeeAll;
+
+  /// Chip nombre de matières dans le hero du dashboard.
+  ///
+  /// In fr, this message translates to:
+  /// **'{n, plural, =1{1 matière} other{{n} matières}}'**
+  String dashboardHeroSubjectChip(int n);
+
+  /// Badge niveau faible (0-33%) sur les cartes matières du dashboard (Story 2.3 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Faible'**
+  String get dashboardLevelWeak;
+
+  /// Badge niveau moyen (34-66%) sur les cartes matières du dashboard (Story 2.3 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Moyen'**
+  String get dashboardLevelMedium;
+
+  /// Badge niveau fort (67-100%) sur les cartes matières du dashboard (Story 2.3 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Fort'**
+  String get dashboardLevelStrong;
+
+  /// Titre de la section Classement du dashboard (Story 2.3 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Classement'**
+  String get dashboardRankingTitle;
+
+  /// Texte gain hebdomadaire dans la section Classement (Story 2.3 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'+{n} places cette semaine'**
+  String dashboardRankingWeeklyGain(int n);
+
+  /// Message de rang dans la section Classement du dashboard (Story 2.3 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu es {rank}e en {subject}. Continue !'**
+  String dashboardRankingPositionMessage(int rank, String subject);
+
+  /// Bouton 'Modifier' sur le ProfileHeader pour ouvrir le sheet d'édition du profil (Story A.1 AC1).
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier'**
+  String get profileEditButton;
+
+  /// Titre du bottom sheet d'édition displayName + téléphone (Story A.1 AC1).
+  ///
+  /// In fr, this message translates to:
+  /// **'Modifier mon profil'**
+  String get profileEditSheetTitle;
+
+  /// Toast succès après sauvegarde du nom et/ou téléphone (Story A.1 AC5).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil mis à jour.'**
+  String get profileEditSuccess;
+
+  /// Item menu 'Mon école' dans la section Compte du profil — ouvre le sheet de changement d'école (Story A.1 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon école'**
+  String get profileMenuSchool;
+
+  /// Titre du bottom sheet de recherche/changement d'école (Story A.1 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer d\'école'**
+  String get profileSchoolSheetTitle;
+
+  /// Toast succès après changement d'école (Story A.1 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'École mise à jour.'**
+  String get profileSchoolUpdateSuccess;
+
+  /// Bouton secondaire dans le sheet d'école pour retirer l'école liée (Story A.1 AC6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Retirer mon école'**
+  String get profileSchoolRemove;
+
+  /// Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs).
+  ///
+  /// In fr, this message translates to:
+  /// **'Bientôt disponible'**
+  String get featureComingSoon;
 }
 
 class _AppLocalizationsDelegate

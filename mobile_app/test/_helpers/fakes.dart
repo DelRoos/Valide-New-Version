@@ -121,6 +121,14 @@ class FakeUserProfileRepository implements UserProfileRepository {
       const Right(null);
 
   @override
+  Future<Either<ProfileFailure, void>> updateDisplayName(String displayName) async =>
+      const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, void>> updatePhoneNumber(String? phoneNumber) async =>
+      const Right(null);
+
+  @override
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async =>
       Right(profileData);
 }

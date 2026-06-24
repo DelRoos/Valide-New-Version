@@ -829,6 +829,124 @@ AuthErrorBanner(
 
 ---
 
+### ContentErrorView
+
+**Path** : `lib/core/widgets/errors/content_error_view.dart`
+**Story d'origine** : 2.4 (Intégration Firestore contenu pédagogique)
+**Catégorie** : `feedback`
+**Responsive** : `phone + tablet` (centré verticalement, padding horizontal `AppSpacing.s6.w`)
+
+**Quand l'utiliser** :
+
+- Toute page de contenu pédagogique (SubjectDetailPage, ChapterPage, LessonPage) qui consomme un `FutureProvider` Firestore et doit afficher un état erreur.
+- Remplace l'affichage générique `AsyncValue.when(error:...)` par un message localisé + bouton retry.
+- Ne pas utiliser hors des pages de contenu (`lib/features/content/`) : pour les erreurs onboarding, utiliser `AuthErrorBanner` ou `AppToast`.
+
+**Props (API publique)** :
+
+- `error: Object` — erreur provenant de `AsyncValue.when(error: (e, _) => ...)`. Si `ContentFailure`, le message est adapté au `ContentFailureKind`.
+- `onRetry: VoidCallback` — callback appelé par le bouton « Réessayer » (typiquement `ref.invalidate(provider)`).
+
+**Mapping erreur → message ARB** :
+
+| `ContentFailureKind` | Clé ARB | Message FR |
+|---|---|---|
+| `networkUnavailable` | `errorNetworkUnavailable` | « Pas de connexion. Vérifie ton réseau et réessaie. » |
+| `permissionDenied` | `errorPermissionDenied` | « Session expirée. Re-lance l'app pour rafraîchir. » |
+| `notFound` / `unknown` / autre | `errorFirestoreUnknown` | « Erreur technique. Réessaie dans un instant. » |
+
+**Exemple** :
+
+```dart
+chaptersAsync.when(
+  loading: () => _SkeletonChapterList(),
+  error: (error, _) => ContentErrorView(
+    error: error,
+    onRetry: () => ref.invalidate(chaptersForSubjectProvider(subjectId)),
+  ),
+  data: (chapters) => _ChapterList(chapters: chapters),
+)
+```
+
+**Tests associés** :
+
+- `test/features/content/presentation/content_pages_test.dart` — test T10.1 « error networkUnavailable : message réseau + bouton Réessayer » (couverture intégration dans SubjectDetailPage).
+
+---
+
+### Famille Dashboard cards (sections du dashboard home)
+
+> Widgets créés en Story 2.3 (Dashboard home enrichi — données hardcodées). **Feature-specific** au dashboard — pas conçus pour réutilisation hors de ce contexte. Documentés ici pour visibilité catalogue (CLAUDE.md règle 11).
+>
+> **Note Phase 2** : les props `Fake*` sont temporaires (Story 2.3 = UI hardcodée). Stories 2.x suivantes remplaceront par des providers Riverpod réels. Lors de ce remplacement, l'API des widgets sera mise à jour ici.
+
+**Path** : `lib/features/dashboard/presentation/widgets/`
+**Story d'origine** : 2.3 (Dashboard home enrichi — données hardcodées)
+**Catégorie** : `card`
+**Responsive** : `phone + tablet` (pleine largeur dans `SingleChildScrollView` + `ConstrainedBox(maxWidth: 700)` sur tablet ≥ 840 dp — géré par `DashboardPage`, pas les widgets eux-mêmes)
+
+| Fichier | Composant public | Rôle |
+|---|---|---|
+| `dashboard_daily_goal_card.dart` | `DashboardDailyGoalCard` | Objectif du jour : barre progression + tâche courante + CTA primary |
+| `dashboard_recent_history_card.dart` | `DashboardRecentHistoryCard` | Dernière activité : icône matière + nom leçon + badge score coloré |
+| `dashboard_recommended_card.dart` | `DashboardRecommendedCard` | Recommandation IA : titre + tag IA + 2 CTA (leçon / quiz) |
+| `dashboard_leaderboard_card.dart` | `DashboardLeaderboardCard` | Classement : rang matière + gain hebdomadaire |
+
+**Props clés** :
+
+- `DashboardDailyGoalCard(goal: FakeDailyGoal, languageCode: String, onTap: VoidCallback)`
+- `DashboardRecentHistoryCard(entry: FakeHistoryEntry, languageCode: String)`
+- `DashboardRecommendedCard(rec: FakeRecommendation, languageCode: String, onLesson: VoidCallback, onQuiz: VoidCallback)`
+- `DashboardLeaderboardCard(entry: FakeLeaderboardEntry, languageCode: String)`
+
+**Tests associés** : goldens `test/features/dashboard/presentation/goldens/dashboard_home_phone.png` et `dashboard_home_tablet.png` (couverts par `dashboard_home_goldens_test.dart` — T11 Story 2.3).
+
+### Famille Profile sheets (édition profil depuis l'onglet Profil)
+
+> Widgets créés en Story A.1 (Édition profil utilisateur — nom, téléphone, école). **Feature-specific** au dashboard — pas conçus pour réutilisation hors de ce contexte en V1. Si réutilisés dans une autre feature, extraire vers `core/widgets/` + documenter en paramètres génériques.
+
+**Path** : `lib/features/dashboard/presentation/widgets/`
+**Story d'origine** : A.1 (Édition du profil utilisateur — nom, téléphone et école)
+**Catégorie** : `form`
+**Responsive** : `phone + tablet` (`ConstrainedBox(maxWidth: 560.w)` + `Center` sur tablet ≥ 840 dp — géré en interne par chaque sheet)
+
+| Fichier | Composant public | Rôle |
+|---|---|---|
+| `profile_edit_sheet.dart` | `ProfileEditSheet` | Bottom sheet édition `displayName` + `phoneNumber` — validation inline + appel repo séquentiel |
+| `school_edit_sheet.dart` | `SchoolEditSheet` | Bottom sheet changement d'école — `SchoolSearchWithAdd` + bouton "Retirer" conditionnel |
+
+**API statique (factory show)** :
+
+```dart
+// Ouvre le sheet depuis n'importe quel BuildContext
+ProfileEditSheet.show(context, displayName: 'Fatou', phoneNumber: '+237671234567');
+SchoolEditSheet.show(context, schoolId: 'sch_001', schoolName: 'LYCÉE GÉNÉRAL LECLERC');
+```
+
+**Props `ProfileEditSheet`** :
+
+- `initialDisplayName: String` — valeur pré-remplie dans le champ nom.
+- `initialPhoneNumber: String?` — valeur pré-remplie dans le champ téléphone (vide si null).
+
+**Props `SchoolEditSheet`** :
+
+- `initialSchoolId: String?` — null si pas d'école liée (masque le bouton "Retirer").
+- `initialSchoolName: String?` — nom affiché dans les résultats préchargés.
+
+**Contraintes non négociables** :
+
+- Consomment `userProfileRepositoryProvider` (Riverpod) directement — ne pas passer le repo en paramètre.
+- `SchoolEditSheet` appelle `schoolSearchNotifierProvider.notifier.preload(limit: 300)` dans `initState`.
+- Log du `phoneNumber` **obligatoirement** via `maskPhone()` (`core/logging/log_safe.dart`) — jamais le numéro brut.
+- Padding keyboard : `EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom)`.
+
+**Tests associés** :
+
+- `test/features/dashboard/presentation/widgets/profile_edit_sheet_test.dart` — 3 widget tests (pré-remplissage, validation courte, succès + drain AppToast timer).
+- `test/features/dashboard/presentation/profile_tab_goldens_test.dart` — 2 goldens : `profile_tab_phone.png` (375×812) + `profile_tab_tablet.png` (820×1180).
+
+---
+
 ## Historique des composants extraits (post-création)
 
 > **✅ Résorbée Story 1.18 (2026-06-10)** — voir [Catalogue actuel](#catalogue-actuel) ci-dessus. Les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` ont été supprimés de `subjects_picker_page.dart` (1309 → 621 lignes, -52%) et remplacés par compositions de 4 composants extraits (`PickerSectionScaffold` + `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerValidateBar`) + un wrapper privé `_PickerStreamGate` qui factorise le StreamBuilder + init state. La 5e candidate `PickerToastFeedback` a été **skippée** (`AppToast` existant Stories 0.14 suffit, pattern déjà unifié dans le source d'origine).
@@ -849,3 +967,6 @@ AuthErrorBanner(
 | 2026-06-11 | Story 1bis-2bis livrée — refactor structure PR #103 incorrecte (3 `Scaffold` autonomes + 2 routes parallèles) en vrai shell partagé : `OnboardingShell` devient UN SEUL `Scaffold` + `AnimatedSwitcher` slide+fade 300 ms + header partagé (`_OnboardingHeader` visible si `configStepsActive`) + footer partagé (`OnboardingCtaFooter` en `bottomNavigationBar` dispatched par `currentStep`). `SubSystemChoicePageV2` → `SubSystemStepBody`, `HeroIntroPage` → `HeroIntroStepBody` (widgets bodies purs sans Scaffold). 1 route unique `/onboarding/v2`. Le composant `OnboardingCtaFooter` lui-même est inchangé, sa composition migre des pages individuelles vers le shell. Pattern foundational pour E1bis-3 à E1bis-7 qui réutiliseront le shell sans dupliquer le footer. | feat/1bis-2bis-refactor-shell-slides | Amelia |
 | 2026-06-12 | Story 1bis-3 livrée — 3 step bodies (`TrackChoiceStepBody`, `LevelChoiceStepBody`, `StreamSubjectsPickerStepBody` 5 modes) consument les composants Story 1.18 (`PickerSectionScaffold`, `Obligatory/OptionalSubjectCheckboxList`, `PickerValidateBar`) et `SelectionCard` (E1bis-0). Aucun nouveau composant catalogue ajouté — pur consume + extension `OnboardingShell.\_bodyForStep` cases 2/3/4. Nouveau provider `derivedProfileV2Provider` dans `state/onboarding_providers.dart` qui dérive depuis le state `OnboardingNotifier` (vs `derivedProfileProvider` legacy qui lit `onboardingFlowProvider` Epic 1). Dettes documentées : goldens 3 step bodies + tests interactions par body + sélecteur série multi pour optOut/seriesPlusOptional → story dédiée E1bis-3b. | feat/1bis-3-pages-track-level-stream-subjects | Amelia |
 | 2026-06-17 | Chore R4 — Correction violations taille fichiers (CLAUDE.md règle 12) : `stream_subjects_picker_step_body.dart` 1 245 → 438 L (-65%), `auth_choice_step_body.dart` 530 → 426 L (-20%), `onboarding_notifier.dart` 544 → 477 L (-12%). 8 nouveaux fichiers créés : `stream_picker_chips.dart`, `stream_picker_recap.dart`, `stream_picker_selector.dart`, `stream_picker_derived_view.dart`, `stream_picker_interactive.dart`, `stream_picker_recap_helper.dart`, `social_auth_widgets.dart`, `onboarding_hydration.dart`. Fix bonus : `_buildContent(state: dynamic)` → `OnboardingState` (type safety). | feat/onboarding-step4-recap-cta-margin | Amelia |
+| 2026-06-23 | Story 2.3 livrée — section « Famille Dashboard cards » ajoutée au Catalogue actuel : 4 composants feature-specific (`DashboardDailyGoalCard`, `DashboardRecentHistoryCard`, `DashboardRecommendedCard`, `DashboardLeaderboardCard`). Données temporaires `Fake*` — seront remplacées par providers Riverpod réels en Stories 2.x suivantes. Goldens T11 générés : phone 375×812 + tablet 768×1024. | feat/2-2-subject-navigation-ui | Amelia |
+| 2026-06-23 | Story 2.4 livrée — ajout `ContentErrorView` au Catalogue actuel. Widget d'erreur centré pour les pages contenu Firestore : message localisé selon `ContentFailureKind` + bouton retry. Couvert par test intégration T10.1 dans `content_pages_test.dart`. | feat/2-2-subject-navigation-ui | Amelia |
+| 2026-06-24 | Story A.1 livrée — section « Famille Profile sheets » ajoutée au Catalogue actuel : 2 composants feature-specific (`ProfileEditSheet`, `SchoolEditSheet`) dans `features/dashboard/presentation/widgets/`. Consomment `userProfileRepositoryProvider` + `schoolSearchNotifierProvider`. Factory `.show()` statique. Responsive tablette via `ConstrainedBox(maxWidth: 560.w)`. 3 widget tests + 2 goldens profil phone+tablet. | feat/2-2-subject-navigation-ui | Amelia |
