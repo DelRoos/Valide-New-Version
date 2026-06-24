@@ -141,13 +141,13 @@
   "onboardingSchoolValidatedBadge": "Verified",
   "onboardingSchoolGenericErrorToast": "Something went wrong, check your connection and try again.",
 
-  "dashboardWelcomeWithName": "Welcome {name}!",
+  "dashboardWelcomeWithName": "Hi, {name} 👋",
   "@dashboardWelcomeWithName": {
     "placeholders": {
       "name": { "type": "String" }
     }
   },
-  "dashboardWelcomeGuest": "Welcome!",
+  "dashboardWelcomeGuest": "Hi 👋",
   "dashboardSubtitleWithExam": "Here are your subjects — you're preparing for {exam}",
   "@dashboardSubtitleWithExam": {
     "placeholders": {
@@ -163,8 +163,33 @@
   "dashboardComingSoon": "Coming soon",
   "dashboardTabHome": "Home",
   "dashboardTabSubjects": "Courses",
+  "coursesPageTitle": "My Courses",
+  "coursesStartLesson": "Start",
   "dashboardTabActivities": "Exams",
   "dashboardTabProfile": "Profile",
+
+  "examsPageTitle": "Exams",
+  "examsCountdownChip": "🎯  GCE 2026",
+  "examsCountdownHeadline": "4 months left",
+  "examsCountdownSubtitle": "Keep studying every day",
+  "examsCountdownPrepared": "{pct}% prepared",
+  "examsCountdownMonths": "months",
+  "examsSectionTitle": "Study by subject",
+  "examsExercisesOf": "{done}/{total} exercises",
+
+  "profilePageTitle": "My Profile",
+  "profileStreak": "Streak",
+  "profileLessons": "Lessons",
+  "profileAvgScore": "Avg. Score",
+  "profileDays": "days",
+  "profileMenuSubscription": "My Subscription",
+  "profileMenuResults": "My Results",
+  "profileMenuLanguage": "Language",
+  "profileMenuNotifications": "Notifications",
+  "profileMenuAccount": "Account settings",
+  "profileMenuSignOut": "Sign out",
+  "profileGuestTitle": "Continue with an account",
+  "profileGuestSubtitle": "Save your progress and join the leaderboard.",
 
   "onboardingSubSystemTitle": "Choose Your System",
   "onboardingSubSystemSubtitle": "Pick the school system you follow to get started.",
@@ -331,5 +356,65 @@
   "accountDeletionKeepDeletionCta": "No, keep deletion",
   "accountDeletionCancelledToast": "Deletion cancelled.",
   "accountDeletionAutoCancelledToast": "Your account is active again.",
-  "accountDeletionNotAvailableToast": "Feature coming soon."
+  "accountDeletionNotAvailableToast": "Feature coming soon.",
+
+  "dashboardDailyGoalTitle": "Daily goal",
+  "dashboardDailyGoalTask": "Complete 1 quiz + read 1 lesson",
+  "dashboardDailyGoalCta": "Continue",
+  "dashboardHistoryTitle": "Recent activity",
+  "dashboardRecommendedTitle": "Recommended for you",
+  "dashboardRecommendedAiTag": "AI personalized",
+  "dashboardRecommendedLessonCta": "Lesson · {min} min",
+  "@dashboardRecommendedLessonCta": {
+    "placeholders": {
+      "min": { "type": "int" }
+    }
+  },
+  "dashboardRecommendedQuizCta": "Quiz · {count} q",
+  "@dashboardRecommendedQuizCta": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+  "dashboardHeroRankLabel": "Ranking",
+  "dashboardHeroProgressLabel": "Progress",
+
+  "dashboardObjectivesTitle": "Daily Objectives",
+  "dashboardSubjectLevelPoor": "Weak",
+  "dashboardSubjectLevelAverage": "Average",
+  "dashboardSubjectLevelGood": "Good",
+  "dashboardMySubjectsTitle": "My subjects",
+  "dashboardSeeAll": "See all",
+  "dashboardHeroSubjectChip": "{n, plural, =1{1 subject} other{{n} subjects}}",
+  "@dashboardHeroSubjectChip": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "dashboardLevelWeak": "Weak",
+  "dashboardLevelMedium": "Average",
+  "dashboardLevelStrong": "Strong",
+  "dashboardRankingTitle": "Ranking",
+  "dashboardRankingWeeklyGain": "+{n} spots this week",
+  "@dashboardRankingWeeklyGain": {
+    "placeholders": {
+      "n": { "type": "int" }
+    }
+  },
+  "dashboardRankingPositionMessage": "You're {rank}th in {subject}. Keep going!",
+  "@dashboardRankingPositionMessage": {
+    "placeholders": {
+      "rank": { "type": "int" },
+      "subject": { "type": "String" }
+    }
+  },
+
+  "profileEditButton": "Edit",
+  "profileEditSheetTitle": "Edit my profile",
+  "profileEditSuccess": "Profile updated.",
+  "profileMenuSchool": "My school",
+  "profileSchoolSheetTitle": "Change school",
+  "profileSchoolUpdateSuccess": "School updated.",
+  "profileSchoolRemove": "Remove my school",
+  "featureComingSoon": "Coming soon"
 }

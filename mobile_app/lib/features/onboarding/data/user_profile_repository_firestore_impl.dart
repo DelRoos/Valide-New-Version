@@ -9,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fpdart/fpdart.dart';
 
 import '../../../core/logging/app_logger.dart';
+import '../../../core/logging/log_safe.dart';
 import '../../../core/logging/perf_logger.dart';
 import '../domain/profile_failure.dart';
 import '../domain/school.dart';
@@ -262,6 +263,83 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     } catch (e, st) {
       AppLogger.w('updateLinkedSchool() unexpected error: $e', error: e);
       AppLogger.w('updateLinkedSchool() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
+
+  // ===================================================================
+  // Story A.1 — updateDisplayName() : mise à jour nom affiché
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updateDisplayName(String displayName) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updateDisplayName() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+
+    try {
+      await logPerf(
+        'users.update.displayName',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'displayName': displayName,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
+      AppLogger.i('displayName updated: name=${maskName(displayName)}');
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updateDisplayName() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updateDisplayName() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}', code: e.code),
+      );
+    } catch (e, st) {
+      AppLogger.w('updateDisplayName() unexpected error: $e', error: e);
+      AppLogger.w('updateDisplayName() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
+
+  // ===================================================================
+  // Story A.1 — updatePhoneNumber() : mise à jour numéro de téléphone
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updatePhoneNumber(String? phoneNumber) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updatePhoneNumber() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+
+    try {
+      await logPerf(
+        'users.update.phoneNumber',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'phoneNumber': phoneNumber,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
+      // CLAUDE.md sécurité : JAMAIS le numéro brut — maskPhone() obligatoire.
+      AppLogger.i('phoneNumber updated: phone=${maskPhone(phoneNumber)}');
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updatePhoneNumber() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updatePhoneNumber() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(e.message ?? 'Firebase: ${e.code}', code: e.code),
+      );
+    } catch (e, st) {
+      AppLogger.w('updatePhoneNumber() unexpected error: $e', error: e);
+      AppLogger.w('updatePhoneNumber() stack: $st');
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }

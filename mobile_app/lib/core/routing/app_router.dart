@@ -7,10 +7,15 @@ import '../logging/perf_logger.dart';
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
 import '../../features/account/presentation/profile_settings_page.dart';
 import '../../features/dashboard/presentation/_main_shell.dart';
-import '../../features/dashboard/presentation/dashboard_page.dart';
-import '../../features/dashboard/presentation/placeholder_tab_page.dart';
-import '../../features/dashboard/presentation/subject_detail_placeholder_page.dart';
+import '../../features/dashboard/presentation/home_tab_page.dart';
+import '../../features/dashboard/presentation/exams_tab_page.dart';
+import '../../features/dashboard/presentation/profile_tab_page.dart';
+import '../../features/content/presentation/pages/courses_page.dart';
+import '../../features/content/presentation/pages/subject_detail_page.dart';
+import '../../features/content/presentation/pages/chapter_page.dart';
+import '../../features/content/presentation/pages/lesson_page.dart';
 import '../../features/debug/presentation/ai_smoke_page.dart';
+import '../../features/debug/presentation/content_showcase_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
 import '../../features/hello/presentation/hello_page.dart';
@@ -69,7 +74,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/dashboard',
-                builder: (context, state) => const DashboardPage(),
+                builder: (context, state) => const HomeTabPage(),
               ),
             ],
           ),
@@ -78,8 +83,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/courses',
-                builder: (context, state) =>
-                    const PlaceholderTabPage(title: 'Cours', tabIndex: 1),
+                builder: (context, state) => const CoursesPage(),
               ),
             ],
           ),
@@ -88,8 +92,7 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/exams',
-                builder: (context, state) =>
-                    const PlaceholderTabPage(title: 'Examen', tabIndex: 2),
+                builder: (context, state) => const ExamsTabPage(),
               ),
             ],
           ),
@@ -98,20 +101,38 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/profile',
-                builder: (context, state) =>
-                    const PlaceholderTabPage(title: 'Profil', tabIndex: 3),
+                builder: (context, state) => const ProfileTabPage(),
               ),
             ],
           ),
         ],
       ),
 
-      // Détail matière — page plein écran hors shell (pas de bottom nav).
+      // Navigation contenu — pile hors shell (Story 2.2).
       GoRoute(
         path: '/subject/:subjectId',
-        builder: (context, state) => SubjectDetailPlaceholderPage(
+        builder: (context, state) => SubjectDetailPage(
           subjectId: state.pathParameters['subjectId']!,
         ),
+        routes: [
+          GoRoute(
+            path: 'chapter/:chapterId',
+            builder: (context, state) => ChapterPage(
+              subjectId: state.pathParameters['subjectId']!,
+              chapterId: state.pathParameters['chapterId']!,
+            ),
+            routes: [
+              GoRoute(
+                path: 'lesson/:lessonId',
+                builder: (context, state) => LessonPage(
+                  subjectId: state.pathParameters['subjectId']!,
+                  chapterId: state.pathParameters['chapterId']!,
+                  lessonId: state.pathParameters['lessonId']!,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
 
       // Story E1bis-2bis — UNE seule route pour le flow onboarding refonte.
@@ -131,6 +152,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/_crash',
         builder: (context, state) => const CrashSmokePage(),
+      ),
+      GoRoute(
+        path: '/_showcase',
+        builder: (context, state) => const ContentShowcasePage(),
       ),
       GoRoute(
         path: '/_ai_smoke',

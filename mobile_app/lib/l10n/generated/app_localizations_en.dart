@@ -355,11 +355,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String dashboardWelcomeWithName(String name) {
-    return 'Welcome $name!';
+    return 'Hi, $name 👋';
   }
 
   @override
-  String get dashboardWelcomeGuest => 'Welcome!';
+  String get dashboardWelcomeGuest => 'Hi 👋';
 
   @override
   String dashboardSubtitleWithExam(String exam) {
@@ -396,10 +396,84 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboardTabSubjects => 'Courses';
 
   @override
+  String get coursesPageTitle => 'My Courses';
+
+  @override
+  String get coursesStartLesson => 'Start';
+
+  @override
   String get dashboardTabActivities => 'Exams';
 
   @override
   String get dashboardTabProfile => 'Profile';
+
+  @override
+  String get examsPageTitle => 'Exams';
+
+  @override
+  String get examsCountdownChip => '🎯  GCE 2026';
+
+  @override
+  String get examsCountdownHeadline => '4 months left';
+
+  @override
+  String get examsCountdownSubtitle => 'Keep studying every day';
+
+  @override
+  String examsCountdownPrepared(int pct) {
+    return '$pct% prepared';
+  }
+
+  @override
+  String get examsCountdownMonths => 'months';
+
+  @override
+  String get examsSectionTitle => 'Study by subject';
+
+  @override
+  String examsExercisesOf(int done, int total) {
+    return '$done/$total exercises';
+  }
+
+  @override
+  String get profilePageTitle => 'My Profile';
+
+  @override
+  String get profileStreak => 'Streak';
+
+  @override
+  String get profileLessons => 'Lessons';
+
+  @override
+  String get profileAvgScore => 'Avg. Score';
+
+  @override
+  String get profileDays => 'days';
+
+  @override
+  String get profileMenuSubscription => 'My Subscription';
+
+  @override
+  String get profileMenuResults => 'My Results';
+
+  @override
+  String get profileMenuLanguage => 'Language';
+
+  @override
+  String get profileMenuNotifications => 'Notifications';
+
+  @override
+  String get profileMenuAccount => 'Account settings';
+
+  @override
+  String get profileMenuSignOut => 'Sign out';
+
+  @override
+  String get profileGuestTitle => 'Continue with an account';
+
+  @override
+  String get profileGuestSubtitle =>
+      'Save your progress and join the leaderboard.';
 
   @override
   String get onboardingSubSystemTitle => 'Choose Your System';
@@ -797,4 +871,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeletionNotAvailableToast => 'Feature coming soon.';
+
+  @override
+  String get dashboardDailyGoalTitle => 'Daily goal';
+
+  @override
+  String get dashboardDailyGoalTask => 'Complete 1 quiz + read 1 lesson';
+
+  @override
+  String get dashboardDailyGoalCta => 'Continue';
+
+  @override
+  String get dashboardHistoryTitle => 'Recent activity';
+
+  @override
+  String get dashboardRecommendedTitle => 'Recommended for you';
+
+  @override
+  String get dashboardRecommendedAiTag => 'AI personalized';
+
+  @override
+  String dashboardRecommendedLessonCta(int min) {
+    return 'Lesson · $min min';
+  }
+
+  @override
+  String dashboardRecommendedQuizCta(int count) {
+    return 'Quiz · $count q';
+  }
+
+  @override
+  String get dashboardMySubjectsTitle => 'My subjects';
+
+  @override
+  String get dashboardHeroRankLabel => 'Ranking';
+
+  @override
+  String get dashboardHeroProgressLabel => 'Progress';
+
+  @override
+  String get dashboardObjectivesTitle => 'Daily Objectives';
+
+  @override
+  String get dashboardSubjectLevelPoor => 'Weak';
+
+  @override
+  String get dashboardSubjectLevelAverage => 'Average';
+
+  @override
+  String get dashboardSubjectLevelGood => 'Good';
+
+  @override
+  String get dashboardSeeAll => 'See all';
+
+  @override
+  String dashboardHeroSubjectChip(int n) {
+    String _temp0 = intl.Intl.pluralLogic(
+      n,
+      locale: localeName,
+      other: '$n subjects',
+      one: '1 subject',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get dashboardLevelWeak => 'Weak';
+
+  @override
+  String get dashboardLevelMedium => 'Average';
+
+  @override
+  String get dashboardLevelStrong => 'Strong';
+
+  @override
+  String get dashboardRankingTitle => 'Ranking';
+
+  @override
+  String dashboardRankingWeeklyGain(int n) {
+    return '+$n spots this week';
+  }
+
+  @override
+  String dashboardRankingPositionMessage(int rank, String subject) {
+    return 'You\'re ${rank}th in $subject. Keep going!';
+  }
+
+  @override
+  String get profileEditButton => 'Edit';
+
+  @override
+  String get profileEditSheetTitle => 'Edit my profile';
+
+  @override
+  String get profileEditSuccess => 'Profile updated.';
+
+  @override
+  String get profileMenuSchool => 'My school';
+
+  @override
+  String get profileSchoolSheetTitle => 'Change school';
+
+  @override
+  String get profileSchoolUpdateSuccess => 'School updated.';
+
+  @override
+  String get profileSchoolRemove => 'Remove my school';
+
+  @override
+  String get featureComingSoon => 'Coming soon';
 }

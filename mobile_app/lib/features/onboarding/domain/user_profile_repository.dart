@@ -104,6 +104,30 @@ abstract interface class UserProfileRepository {
   ///   - FirebaseException remontée (firestoreError)
   Future<Either<ProfileFailure, void>> updateLinkedSchool(School? school);
 
+  /// Story A.1 — Met à jour le `displayName` de l'utilisateur.
+  ///
+  /// Écrit `displayName` + `updatedAt` serverTimestamp sur le doc users/{uid}
+  /// via `update()` partiel (CLAUDE.md règle 10.l). Ne touche pas aux autres
+  /// champs.
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, void>> updateDisplayName(String displayName);
+
+  /// Story A.1 — Met à jour le numéro de téléphone de l'utilisateur.
+  ///
+  /// Passe `null` pour effacer le champ. Écrit `phoneNumber` + `updatedAt`
+  /// serverTimestamp via `update()` partiel (CLAUDE.md règle 10.l).
+  ///
+  /// ⚠ Ne jamais logger le numéro brut — utiliser `maskPhone()` de
+  /// `core/logging/log_safe.dart`.
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, void>> updatePhoneNumber(String? phoneNumber);
+
   /// Lecture unique (`.get()`) du doc users/{uid}. Retourne null si le doc
   /// n'existe pas ou si uid est absent (utilisateur non authentifie).
   ///
