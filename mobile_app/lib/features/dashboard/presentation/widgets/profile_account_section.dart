@@ -212,7 +212,7 @@ class _AccountInfoCard extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.s4.w),
       child: Row(
         children: [
-          Icon(_providerIcon(user), size: 28.sp, color: AppColors.primary),
+          Icon(_providerIcon(user), size: AppIconSize.xl3, color: AppColors.primary),
           SizedBox(width: AppSpacing.s3.w),
           Expanded(
             child: Column(

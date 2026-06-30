@@ -35,7 +35,7 @@ class CoursesEmpty extends StatelessWidget {
             SizedBox(height: AppSpacing.s5.h),
             AppButton.primary(
               label: l10n.dashboardEmptyStateCta,
-              onPressed: () => GoRouter.of(context).go(AppRoutes.onboarding),
+              onPressed: () => context.go(AppRoutes.onboarding),
             ),
           ],
         ),

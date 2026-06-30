@@ -5,6 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/tokens.dart';
 import 'subject_grid_card.dart';
 
+const double _kBannerHeight = 160;
+const double _kCardLabelH = 14;
+const double _kCardLabelW = 72;
+const double _kCardTinyH = 11;
+const double _kCardTinyW = 30;
+
 class CoursesLoadingSkeleton extends StatelessWidget {
   const CoursesLoadingSkeleton({super.key});
 
@@ -21,7 +27,7 @@ class CoursesLoadingSkeleton extends StatelessWidget {
               AppSpacing.s5.h,
             ),
             child: Container(
-              height: 160.h,
+              height: _kBannerHeight.h,
               decoration: BoxDecoration(
                 color: AppColors.border,
                 borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -106,8 +112,8 @@ class _SkeletonCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      height: 14.h,
-                      width: 72.w,
+                      height: _kCardLabelH.h,
+                      width: _kCardLabelW.w,
                       decoration: BoxDecoration(
                         color: AppColors.border,
                         borderRadius: BorderRadius.circular(AppRadius.sm),
@@ -119,16 +125,16 @@ class _SkeletonCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          height: 11.h,
-                          width: 30.w,
+                          height: _kCardTinyH.h,
+                          width: _kCardTinyW.w,
                           decoration: BoxDecoration(
                             color: AppColors.border,
                             borderRadius: BorderRadius.circular(AppRadius.sm),
                           ),
                         ),
-                        SizedBox(height: 4.h),
+                        SizedBox(height: AppSpacing.s1.h),
                         Container(
-                          height: 5.h,
+                          height: AppDimension.progressBarMed.h,
                           decoration: BoxDecoration(
                             color: AppColors.border,
                             borderRadius:

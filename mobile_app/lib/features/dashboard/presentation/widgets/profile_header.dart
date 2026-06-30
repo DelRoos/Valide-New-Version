@@ -53,7 +53,7 @@ class ProfileHeader extends ConsumerWidget {
     final streamLabel = catalogueAsync.maybeWhen(
       data: (cat) {
         String? levelName;
-        String? serieName;
+        String? streamName;
         if (levelId != null) {
           final match = cat.niveaux.where((n) => n.niveauId == levelId);
           if (match.isNotEmpty) {
@@ -64,14 +64,14 @@ class ProfileHeader extends ConsumerWidget {
         if (streamId != null) {
           final match = cat.series.where((s) => s.serieId == streamId);
           if (match.isNotEmpty) {
-            serieName =
+            streamName =
                 match.first.name[languageCode] ?? match.first.name['fr'];
           }
         }
-        if (levelName != null && serieName != null) {
-          return '$levelName — $serieName';
+        if (levelName != null && streamName != null) {
+          return '$levelName — $streamName';
         }
-        return levelName ?? serieName;
+        return levelName ?? streamName;
       },
       orElse: () => null,
     );
@@ -99,13 +99,12 @@ class ProfileHeader extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              // Avatar avec indicateur de chargement superposé.
               Stack(
                 alignment: Alignment.center,
                 children: [
                   Container(
-                    width: 72.w,
-                    height: 72.w,
+                    width: AppAvatarSize.profileMd,
+                    height: AppAvatarSize.profileMd,
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white.withValues(alpha: 0.2),
@@ -126,17 +125,16 @@ class ProfileHeader extends ConsumerWidget {
                   ),
                   if (isLoading)
                     SizedBox(
-                      width: 80.w,
-                      height: 80.w,
+                      width: AppAvatarSize.profileLg,
+                      height: AppAvatarSize.profileLg,
                       child: CircularProgressIndicator(
-                        strokeWidth: 2,
+                        strokeWidth: AppBorderWidth.bold,
                         color: Colors.white.withValues(alpha: 0.5),
                       ),
                     ),
                 ],
               ),
               SizedBox(width: AppSpacing.s4.w),
-              // Infos textuelles + bouton Modifier.
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

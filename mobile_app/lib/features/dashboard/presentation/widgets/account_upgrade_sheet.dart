@@ -85,7 +85,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
         // Pop le sheet puis naviguer vers le flow de completion d'identité.
         if (context.mounted) {
           Navigator.of(context).pop();
-          GoRouter.of(context).go(AppRoutes.onboarding);
+          context.go(AppRoutes.onboarding);
         }
       } else if (next is AccountLinkingError) {
         // Annulation ou erreur : réinitialiser le flag pour que le router
@@ -113,21 +113,21 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
           children: [
             Center(
               child: Container(
-                width: 40.w,
-                height: 4.h,
+                width: AppSpacing.s10.w,
+                height: AppSpacing.s1.h,
                 decoration: BoxDecoration(
                   color: AppColors.border,
-                  borderRadius: BorderRadius.circular(2),
+                  borderRadius: BorderRadius.circular(AppRadius.hairline),
                 ),
               ),
             ),
             SizedBox(height: AppSpacing.s4.h),
             Icon(LucideIcons.shieldCheck,
-                size: 40.sp, color: AppColors.primary),
+                size: AppIconSize.xl6, color: AppColors.primary),
             SizedBox(height: AppSpacing.s3.h),
             Text(
               l10n.accountUpgradeSheetTitle,
-              style: AppTypography.h2.copyWith(fontSize: 20.sp),
+              style: AppTypography.h2.copyWith(fontSize: AppFontSize.h2Compact),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: AppSpacing.s2.h),
@@ -135,7 +135,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
               l10n.accountUpgradeSheetBody,
               style: AppTypography.body.copyWith(
                 color: AppColors.inkSoft,
-                fontSize: 14.sp,
+                fontSize: AppFontSize.bodySmall,
               ),
               textAlign: TextAlign.center,
             ),
@@ -151,7 +151,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
                   errorMessage,
                   style: AppTypography.body.copyWith(
                     color: AppColors.danger,
-                    fontSize: 13.sp,
+                    fontSize: AppFontSize.meta,
                   ),
                 ),
               ),
@@ -202,7 +202,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
     final failure = state.failure;
     return switch (failure.kind) {
       AccountLinkingFailureKind.cancelled => null,
-      AccountLinkingFailureKind.unknown => l10n.errorGenericTitle,
+      AccountLinkingFailureKind.unknown => l10n.errorFirestoreUnknown,
       _ => failure.message,
     };
   }

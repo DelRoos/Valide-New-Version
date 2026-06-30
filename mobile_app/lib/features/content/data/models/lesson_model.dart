@@ -9,8 +9,6 @@ class LessonModel {
     required this.order,
     required this.titleFr,
     required this.titleEn,
-    required this.contentFr,
-    required this.contentEn,
     this.subtitleFr,
     this.subtitleEn,
     this.durationMinutes = 0,
@@ -21,18 +19,16 @@ class LessonModel {
   final int order;
   final String titleFr;
   final String titleEn;
-  final String contentFr;
-  final String contentEn;
   final String? subtitleFr;
   final String? subtitleEn;
   final int durationMinutes;
 
+  // Content blobs live in lessons/{id}/content/main — not read here.
   factory LessonModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> doc,
   ) {
     final data = doc.data() ?? {};
     final title = (data['title'] as Map<String, dynamic>?) ?? {};
-    final content = (data['content'] as Map<String, dynamic>?) ?? {};
     final subtitle = data['subtitle'] as Map<String, dynamic>?;
 
     return LessonModel(
@@ -41,8 +37,6 @@ class LessonModel {
       order: (data['order'] as num?)?.toInt() ?? 0,
       titleFr: (title['fr'] as String?) ?? '',
       titleEn: (title['en'] as String?) ?? '',
-      contentFr: (content['fr'] as String?) ?? '',
-      contentEn: (content['en'] as String?) ?? '',
       subtitleFr: subtitle?['fr'] as String?,
       subtitleEn: subtitle?['en'] as String?,
       durationMinutes: (data['durationMinutes'] as num?)?.toInt() ?? 0,
@@ -55,8 +49,6 @@ class LessonModel {
         order: order,
         titleFr: titleFr,
         titleEn: titleEn,
-        contentFr: contentFr,
-        contentEn: contentEn,
         subtitleFr: subtitleFr,
         subtitleEn: subtitleEn,
         durationMinutes: durationMinutes,

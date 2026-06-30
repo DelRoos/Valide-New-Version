@@ -20,6 +20,11 @@ import '../../onboarding/providers.dart';
 import 'widgets/public_profile_header.dart';
 import 'widgets/public_profile_stats_section.dart';
 
+const double _kSkeletonHeaderHeight = 220;
+const double _kSkeletonLabelWidth = 120;
+const double _kSkeletonLabelHeight = 14;
+const double _kSkeletonStatHeight = 80;
+
 class PublicProfilePage extends ConsumerWidget {
   const PublicProfilePage({super.key, required this.uid});
 
@@ -36,7 +41,10 @@ class PublicProfilePage extends ConsumerWidget {
       backgroundColor: AppColors.bg,
       body: profileAsync.when(
         loading: () => _LoadingBody(l10n: l10n),
-        error: (_, _) => _errorBody(context, ref, l10n, failure: null),
+        error: (error, _) {
+          AppLogger.e('PublicProfilePage: publicProfileProvider error', error: error);
+          return _errorBody(context, ref, l10n, failure: null);
+        },
         data: (either) => either.fold(
           (failure) {
             AppLogger.w(
@@ -52,7 +60,7 @@ class PublicProfilePage extends ConsumerWidget {
             final classLabel = catalogueAsync.maybeWhen(
               data: (cat) {
                 String? levelName;
-                String? serieName;
+                String? streamName;
                 final levelMatch =
                     cat.niveaux.where((n) => n.niveauId == profile.levelId);
                 if (levelMatch.isNotEmpty) {
@@ -62,13 +70,13 @@ class PublicProfilePage extends ConsumerWidget {
                 final streamMatch =
                     cat.series.where((s) => s.serieId == profile.streamId);
                 if (streamMatch.isNotEmpty) {
-                  serieName = streamMatch.first.name[languageCode] ??
+                  streamName = streamMatch.first.name[languageCode] ??
                       streamMatch.first.name['fr'];
                 }
-                if (levelName != null && serieName != null) {
-                  return '$levelName — $serieName';
+                if (levelName != null && streamName != null) {
+                  return '$levelName — $streamName';
                 }
-                return levelName ?? serieName;
+                return levelName ?? streamName;
               },
               orElse: () => null,
             );
@@ -105,7 +113,6 @@ class PublicProfilePage extends ConsumerWidget {
                     );
                   },
                 ),
-                // AC1 — bouton retour flottant sur le header gradient.
                 Positioned(
                   top: 0,
                   left: 0,
@@ -157,8 +164,6 @@ class PublicProfilePage extends ConsumerWidget {
   }
 }
 
-// ── Loading skeleton ──────────────────────────────────────────────────────────
-
 class _LoadingBody extends StatelessWidget {
   const _LoadingBody({required this.l10n});
   final AppLocalizations l10n;
@@ -170,7 +175,7 @@ class _LoadingBody extends StatelessWidget {
       children: [
         AppSkeleton(
           width: double.infinity,
-          height: 220.h,
+          height: _kSkeletonHeaderHeight.h,
           borderRadius: BorderRadius.zero,
         ),
         Padding(
@@ -178,13 +183,13 @@ class _LoadingBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              AppSkeleton(width: 120.w, height: 14.h),
+              AppSkeleton(width: _kSkeletonLabelWidth.w, height: _kSkeletonLabelHeight.h),
               SizedBox(height: AppSpacing.s3.h),
               Row(
                 children: [
-                  Expanded(child: AppSkeleton(width: double.infinity, height: 80.h)),
+                  Expanded(child: AppSkeleton(width: double.infinity, height: _kSkeletonStatHeight.h)),
                   SizedBox(width: AppSpacing.s3.w),
-                  Expanded(child: AppSkeleton(width: double.infinity, height: 80.h)),
+                  Expanded(child: AppSkeleton(width: double.infinity, height: _kSkeletonStatHeight.h)),
                 ],
               ),
             ],
@@ -194,8 +199,6 @@ class _LoadingBody extends StatelessWidget {
     );
   }
 }
-
-// ── Not found ─────────────────────────────────────────────────────────────────
 
 class _NotFoundBody extends StatelessWidget {
   const _NotFoundBody({required this.l10n});
@@ -217,8 +220,6 @@ class _NotFoundBody extends StatelessWidget {
     );
   }
 }
-
-// ── Barre retour minimale ─────────────────────────────────────────────────────
 
 class _BackBar extends StatelessWidget {
   @override

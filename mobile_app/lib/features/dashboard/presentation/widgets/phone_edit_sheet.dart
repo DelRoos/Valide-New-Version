@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -68,6 +69,7 @@ class _PhoneEditSheetState extends ConsumerState<PhoneEditSheet> {
 
     result.fold(
       (f) {
+        AppLogger.w('PhoneEditSheet.updatePhoneNumber: kind=${f.kind.name} message=${f.message}');
         final message = switch (f.kind) {
           ProfileFailureKind.permissionDenied ||
           ProfileFailureKind.notAuthenticated =>

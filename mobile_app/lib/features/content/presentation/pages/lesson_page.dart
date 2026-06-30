@@ -60,12 +60,12 @@ class _LessonPageState extends ConsumerState<LessonPage> {
     final isFr = langCode == 'fr';
 
     final lessonAsync = ref.watch(lessonByIdProvider(widget.lessonId));
+    final lessonContentAsync = ref.watch(lessonContentProvider(widget.lessonId));
     final chaptersAsync = ref.watch(chaptersProvider(widget.subjectId));
     final subjectsAsync = ref.watch(userSubjectsProvider);
 
     final lesson = lessonAsync.maybeWhen(data: (l) => l, orElse: () => null);
     final lessonTitle = lesson?.titleFor(langCode) ?? widget.lessonId;
-    final content = lesson?.contentFor(langCode) ?? '';
     final duration = lesson?.durationMinutes ?? 0;
 
     final chapter = chaptersAsync.maybeWhen(
@@ -139,7 +139,7 @@ class _LessonPageState extends ConsumerState<LessonPage> {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         scrolledUnderElevation: 1,
-        toolbarHeight: 68,
+        toolbarHeight: AppDimension.lessonToolbarHeight,
         centerTitle: false,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(3),
@@ -147,7 +147,7 @@ class _LessonPageState extends ConsumerState<LessonPage> {
             value: _readingProgress,
             backgroundColor: AppColors.border,
             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
-            minHeight: 3,
+            minHeight: AppDimension.progressBarThin,
           ),
         ),
       ),
@@ -158,54 +158,62 @@ class _LessonPageState extends ConsumerState<LessonPage> {
           error: error,
           onRetry: () => ref.invalidate(lessonByIdProvider(widget.lessonId)),
         ),
-        data: (_) => InteractiveViewer(
-          panEnabled: false,
-          scaleEnabled: true,
-          minScale: 0.7,
-          maxScale: 3.5,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              final width = constraints.maxWidth;
-              final bottomInset = MediaQuery.paddingOf(context).bottom;
-              final scrollContent = SingleChildScrollView(
-                controller: _scrollController,
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.s4,
-                  AppSpacing.s4,
-                  AppSpacing.s4,
-                  AppSpacing.s6 + bottomInset,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (duration > 0) ...[
-                      LessonReadingTimePill(duration: duration, isFr: isFr),
-                      SizedBox(height: AppSpacing.s4),
+        data: (_) => lessonContentAsync.when(
+          loading: () => const LessonPageSkeleton(),
+          error: (error, _) => ContentErrorView(
+            error: error,
+            onRetry: () => ref.invalidate(lessonContentProvider(widget.lessonId)),
+          ),
+          data: (lessonContent) => InteractiveViewer(
+            panEnabled: false,
+            scaleEnabled: true,
+            minScale: 0.7,
+            maxScale: 3.5,
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final width = constraints.maxWidth;
+                final bottomInset = MediaQuery.paddingOf(context).bottom;
+                final content = lessonContent.contentFor(langCode);
+                final scrollContent = SingleChildScrollView(
+                  controller: _scrollController,
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.s4,
+                    AppSpacing.s4,
+                    AppSpacing.s4,
+                    AppSpacing.s6 + bottomInset,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      if (duration > 0) ...[
+                        LessonReadingTimePill(duration: duration, isFr: isFr),
+                        SizedBox(height: AppSpacing.s4),
+                      ],
+                      PedagogicalContent(data: content),
+                      SizedBox(height: AppSpacing.s6),
+                      LessonCtaRow(isFr: isFr),
                     ],
-                    PedagogicalContent(data: content),
-                    SizedBox(height: AppSpacing.s6),
-                    LessonCtaRow(isFr: isFr),
-                  ],
-                ),
-              );
+                  ),
+                );
 
-              if (width >= 840) {
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 720),
-                    child: scrollContent,
-                  ),
-                );
-              } else if (width >= 600) {
-                return Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 600),
-                    child: scrollContent,
-                  ),
-                );
-              }
-              return scrollContent;
-            },
+                if (width >= 840) {
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 720),
+                      child: scrollContent,
+                    ),
+                  );
+                } else if (width >= 600) {
+                  return Center(
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 600),
+                      child: scrollContent,
+                    ),
+                  );
+                }
+                return scrollContent;
+              },
+            ),
           ),
         ),
       ),

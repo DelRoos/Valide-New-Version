@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../app.dart';
 import '../../../../core/firebase/providers.dart';
+import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_bottom_sheet.dart';
 import '../../../../core/widgets/app_button.dart';
@@ -57,6 +58,7 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
       profileDataProvider,
       (prev, next) {
         if (next.hasError && !(prev?.hasError ?? false)) {
+          AppLogger.w('ProfileAuthenticatedBody: profileDataProvider error=${next.error}');
           AppToast.show(
             context,
             message: _errorMessage(l10n, next.error),

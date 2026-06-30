@@ -41,7 +41,7 @@ class ProfileMenuSection extends StatelessWidget {
             color: AppColors.muted,
             fontWeight: FontWeight.w700,
             fontSize: AppFontSize.eyebrow,
-            letterSpacing: 0.8,
+            letterSpacing: AppLetterSpacing.wide,
           ),
         ),
         SizedBox(height: AppSpacing.s2.h),
@@ -59,7 +59,7 @@ class ProfileMenuSection extends StatelessWidget {
                     height: 1,
                     thickness: AppBorderWidth.hairline,
                     color: AppColors.border,
-                    indent: AppSpacing.s4.w + AppSpacing.s10,
+                    indent: AppSpacing.s4.w + AppSpacing.s10.w,
                   ),
                 _MenuItem(item: items[i]),
               ],
@@ -89,8 +89,8 @@ class _MenuItem extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: AppSpacing.s10,
-              height: AppSpacing.s10,
+              width: AppSpacing.s10.w,
+              height: AppSpacing.s10.w,
               decoration: BoxDecoration(
                 color: item.color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(AppRadius.md),

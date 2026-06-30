@@ -7,8 +7,8 @@ class LessonEntity extends Equatable {
     required this.order,
     required this.titleFr,
     required this.titleEn,
-    required this.contentFr,
-    required this.contentEn,
+    this.contentFr,
+    this.contentEn,
     this.subtitleFr,
     this.subtitleEn,
     this.durationMinutes = 0,
@@ -19,8 +19,8 @@ class LessonEntity extends Equatable {
   final int order;
   final String titleFr;
   final String titleEn;
-  final String contentFr;
-  final String contentEn;
+  final String? contentFr;
+  final String? contentEn;
   final String? subtitleFr;
   final String? subtitleEn;
   final int durationMinutes;
@@ -28,8 +28,9 @@ class LessonEntity extends Equatable {
   String titleFor(String languageCode) =>
       languageCode == 'fr' ? titleFr : titleEn;
 
+  // Content lives in subcollection lessons/{id}/content/main — may be null on list reads.
   String contentFor(String languageCode) =>
-      languageCode == 'fr' ? contentFr : contentEn;
+      (languageCode == 'fr' ? contentFr : contentEn) ?? '';
 
   String? subtitleFor(String languageCode) =>
       languageCode == 'fr' ? subtitleFr : subtitleEn;

@@ -49,10 +49,9 @@ class PublicProfileHeader extends StatelessWidget {
           ),
           child: Column(
             children: [
-              // Avatar
               Container(
-                width: 80.w,
-                height: 80.w,
+                width: AppAvatarSize.profileLg,
+                height: AppAvatarSize.profileLg,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: Colors.white.withValues(alpha: 0.2),
@@ -72,7 +71,6 @@ class PublicProfileHeader extends StatelessWidget {
                 ),
               ),
               SizedBox(height: AppSpacing.s3.h),
-              // Nom
               Text(
                 profile.displayName.isNotEmpty ? profile.displayName : '—',
                 style: AppTypography.h3.copyWith(

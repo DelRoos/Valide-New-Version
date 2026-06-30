@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/firebase/providers.dart';
+import '../../../../core/logging/app_logger.dart';
 import '../../../../core/platform/platform_capabilities.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_modal.dart';
@@ -106,7 +107,9 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
           // pile est vide — on absorbe silencieusement cette race condition.
           try {
             Navigator.of(context).pop();
-          } catch (_) {}
+          } catch (_) {
+            AppLogger.d('CompleteProfileDialog: pop absorbed — GoRouter race condition');
+          }
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) widget.onLinked?.call();
           });
@@ -120,7 +123,7 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
           AccountLinkingFailureKind.unknown =>
             failure.message.startsWith('provider_not_supported:')
                 ? l10n.onboardingAuthProviderNotSupported
-                : l10n.errorGenericTitle,
+                : l10n.errorFirestoreUnknown,
           _ => failure.message,
         };
         if (msg != null && mounted) setState(() => _errorMessage = msg);

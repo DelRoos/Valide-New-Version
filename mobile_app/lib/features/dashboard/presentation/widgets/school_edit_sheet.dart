@@ -195,7 +195,7 @@ class _SchoolEditSheetState extends ConsumerState<SchoolEditSheet> {
               TextButton.icon(
                 onPressed: _loading ? null : _onRemove,
                 icon: Icon(
-                  LucideIcons.trash2,
+                  LucideIcons.x,
                   size: AppIconSize.sm,
                   color: AppColors.danger,
                 ),

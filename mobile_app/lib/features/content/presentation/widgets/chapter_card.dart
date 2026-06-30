@@ -116,7 +116,7 @@ class ChapterCard extends StatelessWidget {
                             valueColor: AlwaysStoppedAnimation<Color>(
                               isDone ? AppColors.success : AppColors.primary,
                             ),
-                            minHeight: 5,
+                            minHeight: AppDimension.progressBarMed,
                           ),
                         ),
                       ),
@@ -198,7 +198,7 @@ class _ChapterBadge extends StatelessWidget {
     return Container(
       width: AppSpacing.s10,
       height: AppSpacing.s10,
-      padding: const EdgeInsets.all(3),
+      padding: EdgeInsets.all(AppSpacing.s075),
       decoration: BoxDecoration(
         color: bgColor,
         borderRadius: BorderRadius.circular(AppRadius.md),

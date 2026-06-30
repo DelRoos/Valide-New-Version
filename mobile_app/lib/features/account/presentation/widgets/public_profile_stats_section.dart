@@ -32,7 +32,7 @@ class PublicProfileStatsSection extends StatelessWidget {
               color: AppColors.muted,
               fontWeight: FontWeight.w700,
               fontSize: AppFontSize.eyebrow,
-              letterSpacing: 0.8,
+              letterSpacing: AppLetterSpacing.wide,
             ),
           ),
           SizedBox(height: AppSpacing.s3.h),
