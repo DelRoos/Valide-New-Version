@@ -362,6 +362,20 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
           'provider_not_supported:${e.code}',
         );
       default:
+        // firebase_auth/unknown avec message SSL/I/O = erreur réseau non
+        // catégorisée par Firebase (ex. Connection reset by peer, Broken pipe).
+        // On la reclasse en network pour un toast utilisateur cohérent.
+        final msg = e.message ?? '';
+        if (e.code == 'unknown' &&
+            (msg.contains('I/O error') ||
+                msg.contains('Connection reset') ||
+                msg.contains('Broken pipe') ||
+                msg.contains('timeout'))) {
+          AppLogger.w(
+            'Account linking failed: provider=$provider reason=network(ssl) code=${e.code}',
+          );
+          return const AccountLinkingFailure.network();
+        }
         AppLogger.w(
           'Account linking failed: provider=$provider code=${e.code}',
           error: e,

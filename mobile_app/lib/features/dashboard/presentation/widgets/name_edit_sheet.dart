@@ -35,7 +35,6 @@ class _NameEditSheetState extends ConsumerState<NameEditSheet> {
   late final TextEditingController _ctrl;
   String? _error;
   bool _loading = false;
-  bool _submitted = false;
 
   @override
   void initState() {
@@ -60,7 +59,6 @@ class _NameEditSheetState extends ConsumerState<NameEditSheet> {
     final l10n = AppLocalizations.of(context);
     final error = _validate(_ctrl.text);
     setState(() {
-      _submitted = true;
       _error = error;
       _loading = error == null;
     });
@@ -112,11 +110,7 @@ class _NameEditSheetState extends ConsumerState<NameEditSheet> {
               controller: _ctrl,
               errorText: _error,
               autofocus: true,
-              onChanged: (v) {
-                if (_submitted || _error != null) {
-                  setState(() => _error = _validate(v));
-                }
-              },
+              onChanged: (v) => setState(() => _error = _validate(v)),
             ),
             SizedBox(height: AppSpacing.s5.h),
             AppButton.primary(

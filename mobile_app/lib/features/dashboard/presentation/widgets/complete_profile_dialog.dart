@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/firebase/providers.dart';
-import '../../../../core/logging/app_logger.dart';
 import '../../../../core/platform/platform_capabilities.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_modal.dart';
@@ -15,26 +14,16 @@ import '../../../onboarding/domain/account_linking_failure.dart';
 import '../../../onboarding/domain/account_linking_state.dart';
 import '../../../onboarding/domain/linked_account.dart';
 import '../../../onboarding/providers.dart';
+import 'profile_setup_sheet.dart';
 
-/// Dialogue affiché automatiquement sur la tab Profil pour les visiteurs
-/// anonymes. Propose de lier un compte Google ou Apple directement.
-///
-/// Dismissible par tap hors dialogue ou changement de tab — le visiteur
-/// peut continuer à naviguer dans l'app. Ré-apparaît à chaque visite
-/// de la tab Profil (piloté par ProfileTabPage._dialogShown reset en deactivate).
+/// Dialogue de liaison Google/Apple pour visiteurs anonymes — déclenché via [guardAnonymous].
 class CompleteProfileDialog extends ConsumerStatefulWidget {
   const CompleteProfileDialog._({this.onLinked});
 
-  /// Callback exécuté (via postFrameCallback) après succès du linking.
-  /// Permet à l'appelant de chaîner une action (compléter le profil,
-  /// reprendre l'action bloquée, etc.).
+  /// Callback post-linking (via postFrameCallback).
   final VoidCallback? onLinked;
 
-  /// Affiche le dialogue.
-  ///
-  /// [onLinked] est appelé juste après la fermeture du dialogue si le compte
-  /// a bien été lié (AccountLinkingSuccess). Utiliser ce paramètre pour
-  /// enchaîner une action (ex. ouvrir le bottom sheet d'édition de profil).
+  /// Affiche le dialogue ; [onLinked] est appelé après linking réussi.
   static Future<void> show(BuildContext context, {VoidCallback? onLinked}) {
     return showDialog<void>(
       context: context,
@@ -58,15 +47,7 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
     return show(context, onLinked: onLinked);
   }
 
-  /// Garde générique : si l'utilisateur est anonyme → dialogue ;
-  /// sinon → exécute [action] immédiatement.
-  ///
-  /// Si le dialogue aboutit à un linking, [action] est exécutée une fois
-  /// le dialogue fermé (postFrameCallback), assurant la continuité UX.
-  ///
-  /// orElse: () => false : pendant le chargement du stream auth, on laisse
-  /// passer l'action plutôt que de bloquer — un utilisateur qui voit ses
-  /// données de profil chargées est forcément authentifié.
+  /// Garde : anonyme → dialogue linking ; sinon → [action]. orElse=false laisse passer pendant chargement auth.
   static Future<void> guardAnonymous(
     BuildContext context,
     WidgetRef ref, {
@@ -77,10 +58,32 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
           orElse: () => false,
         );
     if (isAnonymous) {
-      return show(context, onLinked: action);
+      return show(
+        context,
+        onLinked: () => _setupThenAct(context, ref, action),
+      );
     }
     action();
     return Future.value();
+  }
+
+  /// Post-linking : si displayName vide → ProfileSetupSheet, puis [action].
+  static void _setupThenAct(
+    BuildContext context,
+    WidgetRef ref,
+    VoidCallback action,
+  ) {
+    // Firebase Auth est mis à jour synchronement après linking — plus fiable que le stream Firestore.
+    final displayName =
+        ref.read(firebaseAuthProvider).currentUser?.displayName?.trim() ?? '';
+    if (displayName.isEmpty) {
+      if (!context.mounted) return;
+      ProfileSetupSheet.show(context, displayName: '').then((_) {
+        if (context.mounted) action();
+      });
+    } else {
+      action();
+    }
   }
 
   @override
@@ -101,15 +104,8 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
         (prev, next) {
       if (next is AccountLinkingSuccess) {
         if (mounted) {
-          // credential-already-in-use -> signInWithCredential peut changer
-          // l'uid Firebase, ce qui déclenche un go('/onboarding') du routeur
-          // avant que ce pop() s'exécute. GoRouter lève une assertion si sa
-          // pile est vide — on absorbe silencieusement cette race condition.
-          try {
-            Navigator.of(context).pop();
-          } catch (_) {
-            AppLogger.d('CompleteProfileDialog: pop absorbed — GoRouter race condition');
-          }
+          // showDialog useRootNavigator:true → rootNavigator requis ; maybePop absorbe la race condition GoRouter si uid change avant le pop.
+          Navigator.of(context, rootNavigator: true).maybePop();
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) widget.onLinked?.call();
           });
@@ -134,7 +130,7 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
 
     return AppDialogCard(
       title: l10n.completeProfileDialogTitle,
-      onClose: () => Navigator.of(context).pop(),
+      onClose: () => Navigator.of(context, rootNavigator: true).maybePop(),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,

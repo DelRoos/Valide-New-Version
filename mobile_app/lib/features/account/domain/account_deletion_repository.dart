@@ -27,7 +27,12 @@ abstract class AccountDeletionRepository {
   ///   2. Le user Firebase Auth (`currentUser.delete()`).
   ///
   /// Erreur `requiresRecentLogin` : Firebase exige une re-authentification
-  /// recente. L'UI doit inviter l'utilisateur a se reconnecter et reessayer.
-  /// Dans ce cas, le doc Firestore est supprime mais l'Auth reste intact.
+  /// recente. Appeler `reauthenticateWithGoogle()` puis retenter.
   Future<Either<AccountDeletionFailure, void>> deleteAccountNow();
+
+  /// Re-authentifie le user courant via Google Sign-In +
+  /// `reauthenticateWithCredential`. A appeler quand `deleteAccountNow()`
+  /// retourne `requiresRecentLogin`, puis retenter `deleteAccountNow()`.
+  /// Retourne `requiresRecentLogin` si l'utilisateur annule le flux Google.
+  Future<Either<AccountDeletionFailure, void>> reauthenticateWithGoogle();
 }

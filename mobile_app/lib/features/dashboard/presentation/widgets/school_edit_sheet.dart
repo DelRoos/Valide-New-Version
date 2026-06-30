@@ -167,9 +167,9 @@ class _SchoolEditSheetState extends ConsumerState<SchoolEditSheet> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(l10n.profileSchoolSheetTitle, style: AppTypography.h3),
-            SizedBox(height: AppSpacing.s4.h),
+            SizedBox(height: AppSpacing.s3.h),
             SizedBox(
-              height: 300.h,
+              height: 260.h,
               child: SchoolSearchWithAdd(
                 selectedSchool: _selectedSchool != null
                     ? SchoolEntry(
@@ -185,7 +185,7 @@ class _SchoolEditSheetState extends ConsumerState<SchoolEditSheet> {
                 warningOfflineMessage: l10n.onboardingSchoolOfflineWarning,
               ),
             ),
-            SizedBox(height: AppSpacing.s4.h),
+            SizedBox(height: AppSpacing.s3.h),
             AppButton.primary(
               label: _loading ? l10n.sendingLabel : 'Enregistrer',
               onPressed: (_loading || _selectedSchool == null) ? null : _onConfirm,

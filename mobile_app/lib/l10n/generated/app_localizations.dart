@@ -1700,6 +1700,24 @@ abstract class AppLocalizations {
   /// **'Session expirée. Reconnecte-toi et réessaie.'**
   String get accountDeletionRecentLoginToast;
 
+  /// Toast warning quand l'utilisateur se reconnecte avec un mauvais compte Google lors du reauth (user-mismatch).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce n\'est pas le bon compte Google. Reconnecte-toi avec le compte lié à cette application.'**
+  String get accountDeletionWrongAccountToast;
+
+  /// Titre de la modale de re-authentification avant suppression de compte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérification requise'**
+  String get accountDeletionReauthTitle;
+
+  /// Corps de la modale de re-authentification avant suppression (requiresRecentLogin).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta session a expiré. Reconnecte-toi avec Google pour confirmer la suppression de ton compte.'**
+  String get accountDeletionReauthBody;
+
   /// Titre de la section Objectif du jour du dashboard (Story 2.3 AC2).
   ///
   /// In fr, this message translates to:
@@ -1867,6 +1885,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Enregistrer'**
   String get saveLabel;
+
+  /// Titre du sheet de complétion de profil affiché après linkage Google/Apple (nom + téléphone).
+  ///
+  /// In fr, this message translates to:
+  /// **'Finalise ton compte'**
+  String get profileSetupSheetTitle;
+
+  /// Label de la section téléphone dans le ProfileSetupSheet post-linking.
+  ///
+  /// In fr, this message translates to:
+  /// **'Numéro de téléphone (optionnel)'**
+  String get profileSetupPhoneLabel;
 
   /// Titre de la bannière d'alerte quand deletionRequestedAt est posé sur le compte.
   ///

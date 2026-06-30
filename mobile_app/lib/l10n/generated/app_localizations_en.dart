@@ -918,6 +918,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'Session expired. Sign in again and retry.';
 
   @override
+  String get accountDeletionWrongAccountToast =>
+      'That\'s not the right Google account. Sign in with the account linked to this app.';
+
+  @override
+  String get accountDeletionReauthTitle => 'Verification required';
+
+  @override
+  String get accountDeletionReauthBody =>
+      'Your session has expired. Sign in with Google to confirm your account deletion.';
+
+  @override
   String get dashboardDailyGoalTitle => 'Daily goal';
 
   @override
@@ -1016,6 +1027,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveLabel => 'Save';
+
+  @override
+  String get profileSetupSheetTitle => 'Complete your account';
+
+  @override
+  String get profileSetupPhoneLabel => 'Phone number (optional)';
 
   @override
   String get profileDeletionPendingTitle => 'Deletion scheduled';

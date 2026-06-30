@@ -803,6 +803,15 @@
   "accountDeletionRecentLoginToast": "Session expirée. Reconnecte-toi et réessaie.",
   "@accountDeletionRecentLoginToast": { "description": "Toast warning quand Firebase Auth exige une re-authentification récente avant deleteAccountNow." },
 
+  "accountDeletionWrongAccountToast": "Ce n'est pas le bon compte Google. Reconnecte-toi avec le compte lié à cette application.",
+  "@accountDeletionWrongAccountToast": { "description": "Toast warning quand l'utilisateur se reconnecte avec un mauvais compte Google lors du reauth (user-mismatch)." },
+
+  "accountDeletionReauthTitle": "Vérification requise",
+  "@accountDeletionReauthTitle": { "description": "Titre de la modale de re-authentification avant suppression de compte." },
+
+  "accountDeletionReauthBody": "Ta session a expiré. Reconnecte-toi avec Google pour confirmer la suppression de ton compte.",
+  "@accountDeletionReauthBody": { "description": "Corps de la modale de re-authentification avant suppression (requiresRecentLogin)." },
+
   "dashboardDailyGoalTitle": "Objectif du jour",
   "@dashboardDailyGoalTitle": { "description": "Titre de la section Objectif du jour du dashboard (Story 2.3 AC2)." },
 
@@ -910,6 +919,12 @@
 
   "saveLabel": "Enregistrer",
   "@saveLabel": { "description": "Label générique du bouton de sauvegarde dans les formulaires d'édition." },
+
+  "profileSetupSheetTitle": "Finalise ton compte",
+  "@profileSetupSheetTitle": { "description": "Titre du sheet de complétion de profil affiché après linkage Google/Apple (nom + téléphone)." },
+
+  "profileSetupPhoneLabel": "Numéro de téléphone (optionnel)",
+  "@profileSetupPhoneLabel": { "description": "Label de la section téléphone dans le ProfileSetupSheet post-linking." },
 
   "profileDeletionPendingTitle": "Suppression programmée",
   "@profileDeletionPendingTitle": { "description": "Titre de la bannière d'alerte quand deletionRequestedAt est posé sur le compte." },

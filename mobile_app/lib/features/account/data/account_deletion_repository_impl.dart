@@ -3,6 +3,8 @@
 // 3 methodes :
 //   - requestAccountDeletion / cancelAccountDeletion : via Cloud Functions callable
 //   - deleteAccountNow : suppression immediate Firestore + Firebase Auth (sans CF)
+//   - reauthenticateWithGoogle : re-auth via GoogleSignIn avant un deleteAccountNow
+//     qui a echoue avec requires-recent-login
 //
 // Ordre deleteAccountNow :
 //   0. Snapshot du doc Firestore (backup pour rollback).
@@ -19,21 +21,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../../core/logging/app_logger.dart';
 import '../domain/account_deletion_failure.dart';
 import '../domain/account_deletion_repository.dart';
 
+/// Obtient un `GoogleSignInAccount` via le flux UI Google.
+/// Throw `GoogleSignInException` si l'utilisateur annule ou si une erreur reseau
+/// survient (code canceled / networkError / etc.).
+typedef GoogleSignInForDeletionFn = Future<GoogleSignInAccount> Function();
+
 class AccountDeletionRepositoryImpl implements AccountDeletionRepository {
   AccountDeletionRepositoryImpl(
     this._functions,
     this._auth,
-    this._firestore,
-  );
+    this._firestore, {
+    required GoogleSignInForDeletionFn googleSignIn,
+  }) : _googleSignIn = googleSignIn;
 
   final FirebaseFunctions _functions;
   final FirebaseAuth _auth;
   final FirebaseFirestore _firestore;
+  final GoogleSignInForDeletionFn _googleSignIn;
 
   static const String _kRequestFnName = 'requestAccountDeletion';
   static const String _kCancelFnName = 'cancelAccountDeletion';
@@ -75,10 +85,6 @@ class AccountDeletionRepositoryImpl implements AccountDeletionRepository {
         if (e.code == 'requires-recent-login') {
           AppLogger.w('Account delete requires recent login');
           // Rollback etape 1 : restaure le doc pour maintenir la coherence.
-          // Le stream profileCompletionProvider peut emettre filiereMissing entre
-          // la suppression (etape 1) et la reception du callback Firestore du rollback.
-          // L'etat AccountDeletionStatusError dans le router fait office de bouclier
-          // pendant cette fenetre (evaluateRedirect.isDeletionActive).
           if (backup != null) {
             try {
               await _firestore.collection('users').doc(uid).set(backup);
@@ -97,8 +103,6 @@ class AccountDeletionRepositoryImpl implements AccountDeletionRepository {
 
       // Vide le cache Firestore offline pour ne pas exposer les donnees
       // de l'ancien compte aux futurs utilisateurs sur le meme appareil.
-      // terminate() ferme les connexions actives ; clearPersistence() purge
-      // le cache. Le SDK reinitialise automatiquement au prochain acces.
       try {
         await _firestore.terminate();
         await _firestore.clearPersistence();
@@ -117,6 +121,60 @@ class AccountDeletionRepositoryImpl implements AccountDeletionRepository {
       return Left(AccountDeletionFailure.unknown('firestore: ${e.code}'));
     } catch (e) {
       AppLogger.w('Account delete failed: ${e.runtimeType}');
+      return Left(AccountDeletionFailure.unknown(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AccountDeletionFailure, void>> reauthenticateWithGoogle() async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        AppLogger.w('Reauth Google: no current user');
+        return Left(AccountDeletionFailure.unknown('no current user'));
+      }
+
+      final account = await _googleSignIn();
+      final idToken = account.authentication.idToken;
+      if (idToken == null) {
+        AppLogger.w('Reauth Google: idToken null after authenticate()');
+        return Left(AccountDeletionFailure.unknown('Google idToken absent'));
+      }
+
+      // accessToken optionnel (identique au pattern linkGoogle).
+      String? accessToken;
+      try {
+        final auth = await account.authorizationClient.authorizationForScopes(
+          const ['email', 'profile'],
+        );
+        accessToken = auth?.accessToken;
+      } catch (_) {
+        // Non-bloquant : on continue avec idToken seul.
+      }
+
+      final credential = GoogleAuthProvider.credential(
+        idToken: idToken,
+        accessToken: accessToken,
+      );
+      await user.reauthenticateWithCredential(credential);
+      AppLogger.i('Reauth Google succeeded');
+      return const Right(null);
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) {
+        AppLogger.w('Reauth Google: user cancelled');
+        return const Left(AccountDeletionFailure.requiresRecentLogin());
+      }
+      AppLogger.w('Reauth Google failed: ${e.code}');
+      return Left(AccountDeletionFailure.unknown('google: ${e.code}'));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-mismatch') {
+        AppLogger.w('Reauth Google: user-mismatch — mauvais compte Google sélectionné');
+        return const Left(AccountDeletionFailure.wrongAccount());
+      }
+      AppLogger.w('Reauth Firebase failed: code=${e.code}');
+      return Left(AccountDeletionFailure.unknown('auth: ${e.code}'));
+    } catch (e) {
+      AppLogger.w('Reauth failed: ${e.runtimeType}');
       return Left(AccountDeletionFailure.unknown(e.toString()));
     }
   }
