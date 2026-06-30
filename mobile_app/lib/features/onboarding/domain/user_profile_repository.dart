@@ -9,6 +9,7 @@
 
 import 'package:fpdart/fpdart.dart';
 
+import '../../../features/account/domain/public_profile.dart';
 import 'profile_failure.dart';
 import 'school.dart';
 import 'sub_system.dart';
@@ -143,4 +144,22 @@ abstract interface class UserProfileRepository {
   ///   - currentUser absent : retourne `Right(null)` (pas d'erreur)
   ///   - FirebaseException remontée (firestoreError)
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce();
+
+  /// Story A.2 — Lecture unique du profil public d'un autre utilisateur.
+  ///
+  /// Lit users/{uid} via `.get()` (1 read, pas de stream — donnée statique
+  /// pendant la visite). Retourne un sous-ensemble non sensible du doc :
+  /// displayName, levelId, streamId, schoolName, subSystem.
+  ///
+  /// Champs JAMAIS exposés : deletionRequestedAt, examTargets, pickedSubjects,
+  /// phoneNumber, authProvider, optedOutSubjects.
+  ///
+  /// Requiert que le caller soit authentifié (règle Firestore A.2-DR-01 :
+  /// `allow read: if request.auth != null`).
+  ///
+  /// Retourne `Right(null)` si le doc n'existe pas (profil introuvable).
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, PublicProfile?>> fetchPublicProfile(String uid);
 }

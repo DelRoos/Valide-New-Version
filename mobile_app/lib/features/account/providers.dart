@@ -1,8 +1,8 @@
 // Story 1.10 — Providers Riverpod feature account (suppression / annulation
 // compte FR-7).
 //
-// 4 providers exposes :
-//   1. accountDeletionRepositoryProvider — impl Cloud Functions (lazy)
+// 5 providers exposes :
+//   1. accountDeletionRepositoryProvider — impl Cloud Functions + Firebase (lazy)
 //   2. accountDeletionStatusNotifierProvider — state machine UI
 //   3. _sessionStartProvider — timestamp du boot pour l'auto-canceller
 //   4. autoAccountDeletionCancellerProvider — annule auto au boot si
@@ -15,6 +15,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
@@ -23,13 +24,17 @@ import 'data/account_deletion_repository_impl.dart';
 import 'domain/account_deletion_repository.dart';
 import 'domain/account_deletion_status.dart';
 
-/// Repository Cloud Functions de la suppression compte. Lazy.
+/// Repository de la suppression compte. Lazy.
 final accountDeletionRepositoryProvider =
     Provider<AccountDeletionRepository>((ref) {
-  return AccountDeletionRepositoryImpl(ref.watch(cloudFunctionsProvider));
+  return AccountDeletionRepositoryImpl(
+    ref.watch(cloudFunctionsProvider),
+    ref.watch(firebaseAuthProvider),
+    ref.watch(firestoreProvider),
+  );
 });
 
-/// State machine UI : idle -> requesting/cancelling -> requested/cancelled/error.
+/// State machine UI : idle -> requesting/cancelling/deleting -> états finaux.
 class AccountDeletionStatusNotifier extends Notifier<AccountDeletionStatus> {
   @override
   AccountDeletionStatus build() => const AccountDeletionStatus.idle();
@@ -53,6 +58,27 @@ class AccountDeletionStatusNotifier extends Notifier<AccountDeletionStatus> {
     state = result.fold(
       (failure) => AccountDeletionStatus.error(failure),
       (_) => const AccountDeletionStatus.cancelled(),
+    );
+  }
+
+  /// Suppression immediate : nettoie le draft local, supprime Firestore + Auth.
+  /// En cas de succes, transite vers `deleted` — l'UI doit naviguer vers '/'.
+  Future<void> deleteNow() async {
+    if (state.isLoading) return;
+    state = const AccountDeletionStatus.deleting();
+    // Nettoyer le draft onboarding local avant la suppression remote.
+    // Best-effort : si clear() echoue (rarissime), on continue quand meme.
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.clear();
+    } catch (e) {
+      AppLogger.w('SharedPreferences clear failed on account delete: $e');
+    }
+    final result =
+        await ref.read(accountDeletionRepositoryProvider).deleteAccountNow();
+    state = result.fold(
+      (failure) => AccountDeletionStatus.error(failure),
+      (_) => const AccountDeletionStatus.deleted(),
     );
   }
 

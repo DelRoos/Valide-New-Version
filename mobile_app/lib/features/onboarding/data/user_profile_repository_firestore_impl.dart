@@ -11,6 +11,7 @@ import 'package:fpdart/fpdart.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/logging/log_safe.dart';
 import '../../../core/logging/perf_logger.dart';
+import '../../account/domain/public_profile.dart';
 import '../domain/profile_failure.dart';
 import '../domain/school.dart';
 import '../domain/sub_system.dart';
@@ -375,6 +376,74 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
     } catch (e, st) {
       AppLogger.w('fetchProfileOnce() unexpected error: $e', error: e);
       AppLogger.w('fetchProfileOnce() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
+
+  // ===================================================================
+  // Story A.2 — fetchPublicProfile() : lecture profil public d'un pair
+  //
+  // Règle Firestore A.2-DR-01 : allow read: if request.auth != null.
+  // Cost : 1 read par ouverture de profil. Acceptable car déclenché
+  // uniquement sur tap volontaire depuis la section "Activité récente".
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, PublicProfile?>> fetchPublicProfile(
+    String uid,
+  ) async {
+    final callerUid = _getUid();
+    if (callerUid == null) {
+      AppLogger.w('fetchPublicProfile() aborted: caller not authenticated');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+    try {
+      final doc = await logPerf(
+        'users.fetchPublicProfile',
+        () => _firestore.collection(_kCollection).doc(uid).get(),
+      );
+      if (!doc.exists) {
+        // CLAUDE.md sécurité : pas d'uid dans les logs.
+        AppLogger.i('fetchPublicProfile: doc not found');
+        return const Right(null);
+      }
+      final data = doc.data()!;
+      // Schema E1bis prioritaire (levelId/streamId). Rétrocompat legacy (niveau/serie).
+      final levelId = (data['levelId'] as String?)?.isNotEmpty == true
+          ? data['levelId'] as String
+          : (data['niveau'] as String?) ?? '';
+      final streamId = (data['streamId'] as String?)?.isNotEmpty == true
+          ? data['streamId'] as String
+          : (data['serie'] as String?) ?? '';
+      final profile = PublicProfile(
+        uid: uid,
+        displayName: (data['displayName'] as String?) ?? '',
+        levelId: levelId,
+        streamId: streamId,
+        schoolName: data['schoolName'] as String?,
+        subSystem: (data['subSystem'] as String?) ?? '',
+      );
+      AppLogger.i(
+        'fetchPublicProfile: found '
+        'hasName=${profile.displayName.isNotEmpty} '
+        'subSystem=${maskName(profile.subSystem)}',
+      );
+      return Right(profile);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'fetchPublicProfile() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('fetchPublicProfile() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(
+          e.message ?? 'Firebase: ${e.code}',
+          code: e.code,
+        ),
+      );
+    } catch (e, st) {
+      AppLogger.w('fetchPublicProfile() unexpected error: $e', error: e);
+      AppLogger.w('fetchPublicProfile() stack: $st');
       return Left(ProfileFailure.firestoreError(e.toString()));
     }
   }

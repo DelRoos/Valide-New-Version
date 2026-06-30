@@ -419,6 +419,16 @@
   "@profileAvgScore": { "description": "Label colonne score moyen dans les stats profil." },
   "profileDays": "jours",
   "@profileDays": { "description": "Unité jours sous le compteur streak." },
+  "profileSubjects": "Matières",
+  "@profileSubjects": { "description": "Label colonne nombre de matières dans les stats profil." },
+  "profileExams": "Examens",
+  "@profileExams": { "description": "Label colonne examens ciblés dans les stats profil." },
+  "profileSectionCourses": "Mon parcours",
+  "@profileSectionCourses": { "description": "Titre de la section Mon parcours dans le profil." },
+  "profileSectionSettings": "Réglages",
+  "@profileSectionSettings": { "description": "Titre de la section Réglages dans le profil." },
+  "profileSectionAccount": "Compte",
+  "@profileSectionAccount": { "description": "Titre de la section Compte dans le profil." },
   "profileMenuSubscription": "Mon abonnement",
   "@profileMenuSubscription": { "description": "Item menu Mon abonnement." },
   "profileMenuResults": "Mes résultats",
@@ -435,6 +445,18 @@
   "@profileGuestTitle": { "description": "Titre bannière guest sur le profil." },
   "profileGuestSubtitle": "Sauvegarde ta progression et rejoins le classement.",
   "@profileGuestSubtitle": { "description": "Sous-titre bannière guest sur le profil." },
+
+  "completeProfileDialogTitle": "Compléter mon profil",
+  "@completeProfileDialogTitle": { "description": "Titre du dialogue non-dismissible affiché aux visiteurs anonymes sur la tab Profil." },
+  "completeProfileDialogBody": "Complète ton profil pour sauvegarder ta progression et accéder à toutes les fonctionnalités.",
+  "@completeProfileDialogBody": { "description": "Corps du dialogue Compléter mon profil." },
+
+  "languagePickerTitle": "Choisir la langue",
+  "@languagePickerTitle": { "description": "Titre du sélecteur de langue dans le profil." },
+  "languageOptionFrench": "Français",
+  "@languageOptionFrench": { "description": "Option langue française dans le sélecteur." },
+  "languageOptionEnglish": "Anglais",
+  "@languageOptionEnglish": { "description": "Option langue anglaise dans le sélecteur." },
 
   "onboardingSubSystemTitle": "Quelle section suis-tu ?",
   "@onboardingSubSystemTitle": { "description": "Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle)." },
@@ -725,11 +747,18 @@
   "profileSettingsLinkedAccount": "Compte lié",
   "@profileSettingsLinkedAccount": { "description": "Fallback affiché dans la section Mon compte quand l'email n'est pas disponible (Apple Sign-In email masqué)." },
 
+  "signOutConfirmTitle": "Se déconnecter ?",
+  "@signOutConfirmTitle": { "description": "Titre du dialog de confirmation de déconnexion." },
+  "signOutConfirmBody": "Tu pourras te reconnecter à tout moment avec ton compte Google ou Apple.",
+  "@signOutConfirmBody": { "description": "Corps du dialog de confirmation de déconnexion." },
+  "signOutConfirmCta": "Confirmer la déconnexion",
+  "@signOutConfirmCta": { "description": "Bouton danger dans le dialog de confirmation déconnexion." },
+
   "accountDeletionConfirmTitle": "Es-tu sûr ?",
   "@accountDeletionConfirmTitle": { "description": "Titre AlertDialog de confirmation suppression (Story 1.10 AC4)." },
 
-  "accountDeletionConfirmBody": "Ton compte sera supprimé dans 7 jours. Tu peux annuler à tout moment en te reconnectant pendant cette période.",
-  "@accountDeletionConfirmBody": { "description": "Corps AlertDialog confirmation (Story 1.10 AC4)." },
+  "accountDeletionConfirmBody": "Ton compte et toutes tes données seront définitivement supprimés. Cette action est irréversible.",
+  "@accountDeletionConfirmBody": { "description": "Corps AlertDialog confirmation suppression immédiate (irréversible)." },
 
   "accountDeletionConfirmCta": "Confirmer la suppression",
   "@accountDeletionConfirmCta": { "description": "Bouton danger dans la modale confirmation (Story 1.10 AC4)." },
@@ -770,6 +799,9 @@
 
   "accountDeletionNotAvailableToast": "Fonctionnalité bientôt disponible.",
   "@accountDeletionNotAvailableToast": { "description": "Toast warning si Cloud Function non deployée côté backend (Story 1.10 fallback graceful)." },
+
+  "accountDeletionRecentLoginToast": "Session expirée. Reconnecte-toi et réessaie.",
+  "@accountDeletionRecentLoginToast": { "description": "Toast warning quand Firebase Auth exige une re-authentification récente avant deleteAccountNow." },
 
   "dashboardDailyGoalTitle": "Objectif du jour",
   "@dashboardDailyGoalTitle": { "description": "Titre de la section Objectif du jour du dashboard (Story 2.3 AC2)." },
@@ -873,8 +905,37 @@
   "profileEditSuccess": "Profil mis à jour.",
   "@profileEditSuccess": { "description": "Toast succès après sauvegarde du nom et/ou téléphone (Story A.1 AC5)." },
 
+  "profileEditNameLabel": "Prénom ou surnom",
+  "@profileEditNameLabel": { "description": "Label du champ nom dans le bottom sheet d'édition du profil." },
+
+  "saveLabel": "Enregistrer",
+  "@saveLabel": { "description": "Label générique du bouton de sauvegarde dans les formulaires d'édition." },
+
+  "profileDeletionPendingTitle": "Suppression programmée",
+  "@profileDeletionPendingTitle": { "description": "Titre de la bannière d'alerte quand deletionRequestedAt est posé sur le compte." },
+
+  "profileDeletionPendingSubtitle": "Ton compte sera définitivement supprimé le {date}. Reconnecte-toi avant cette date pour annuler.",
+  "@profileDeletionPendingSubtitle": {
+    "description": "Corps de la bannière suppression en attente. {date} = J+7 format DD/MM/YYYY.",
+    "placeholders": {
+      "date": { "type": "String", "example": "16/06/2026" }
+    }
+  },
+
   "profileMenuSchool": "Mon école",
   "@profileMenuSchool": { "description": "Item menu 'Mon école' dans la section Compte du profil — ouvre le sheet de changement d'école (Story A.1 AC6)." },
+
+  "profileMenuName": "Mon nom",
+  "@profileMenuName": { "description": "Label item menu nom dans la section Compte — affiché en permanence, valeur en sous-titre." },
+
+  "profileMenuAddName": "Ajouter mon nom",
+  "@profileMenuAddName": { "description": "Sous-titre item menu nom quand displayName est absent." },
+
+  "profileMenuPhone": "Mon numéro",
+  "@profileMenuPhone": { "description": "Label item menu numéro dans la section Compte — affiché en permanence, valeur en sous-titre." },
+
+  "profileMenuAddPhone": "Ajouter mon numéro",
+  "@profileMenuAddPhone": { "description": "Sous-titre item menu numéro quand phoneNumber est absent." },
 
   "profileSchoolSheetTitle": "Changer d'école",
   "@profileSchoolSheetTitle": { "description": "Titre du bottom sheet de recherche/changement d'école (Story A.1 AC6)." },
@@ -886,5 +947,20 @@
   "@profileSchoolRemove": { "description": "Bouton secondaire dans le sheet d'école pour retirer l'école liée (Story A.1 AC6)." },
 
   "featureComingSoon": "Bientôt disponible",
-  "@featureComingSoon": { "description": "Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs)." }
+  "@featureComingSoon": { "description": "Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs)." },
+
+  "publicProfileStatsTitle": "Statistiques",
+  "@publicProfileStatsTitle": { "description": "Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4)." },
+
+  "publicProfileLessonsRead": "leçons lues",
+  "@publicProfileLessonsRead": { "description": "Unité du badge leçons lues sur le profil public (Story A.2 AC4)." },
+
+  "publicProfileQuizPassed": "quiz réussis",
+  "@publicProfileQuizPassed": { "description": "Unité du badge quiz réussis sur le profil public (Story A.2 AC4)." },
+
+  "publicProfileNotFound": "Profil introuvable",
+  "@publicProfileNotFound": { "description": "Titre état vide quand le doc Firestore users/{uid} n'existe pas (Story A.2 AC7)." },
+
+  "publicProfileNotFoundSubtitle": "Ce profil n'existe pas ou a été supprimé.",
+  "@publicProfileNotFoundSubtitle": { "description": "Sous-titre état vide profil introuvable (Story A.2 AC7)." }
 }

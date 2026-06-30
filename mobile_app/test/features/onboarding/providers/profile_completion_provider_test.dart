@@ -18,6 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
 import 'package:valide_school/core/firebase/providers.dart';
+import 'package:valide_school/features/account/domain/public_profile.dart';
 import 'package:valide_school/features/onboarding/domain/profile_completion_state.dart';
 import 'package:valide_school/features/onboarding/domain/profile_failure.dart';
 import 'package:valide_school/features/onboarding/domain/school.dart';
@@ -69,7 +70,13 @@ class _FakeRepo implements UserProfileRepository {
 
   @override
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async =>
-      Right(null);
+      const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, PublicProfile?>> fetchPublicProfile(
+    String uid,
+  ) async =>
+      const Right(null);
 }
 
 class _FakeAuth implements FirebaseAuth {

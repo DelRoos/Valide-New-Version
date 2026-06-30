@@ -127,30 +127,23 @@ void main() {
     });
 
     testWidgets(
-        'step 0 + subSystem null -> CTA Continuer present mais disabled '
-        '(audit 2026-06-13 rev2 : draft + CTA, no auto-advance)',
+        'step 0 + subSystem null -> pas de CTA Continuer (auto-avance)',
         (tester) async {
-      // Audit 2026-06-13 rev2 — Le CTA Continuer a ete restaure : le tap
-      // card pose un draft sans avancer ; l'utilisateur confirme via le
-      // bouton du shell. Quand subSystem est encore null, le bouton est
-      // present mais avec onPressed null.
+      // fix(f2833d5) — Step 0 est en mode auto-advance : tap card appelle
+      // setSubSystem() qui avance directement a step 1. Pas de CTA intermediaire.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
       await _pump(tester, container: container);
 
-      expect(find.byType(AppButton), findsOneWidget,
-          reason: 'CTA Continuer present');
-      final button = tester.widget<AppButton>(find.byType(AppButton));
-      expect(button.onPressed, isNull,
-          reason: 'disabled tant que subSystem n\'est pas choisi');
+      expect(find.byType(AppButton), findsNothing,
+          reason: 'pas de CTA au step 0 (auto-advance)');
     });
 
     testWidgets(
-        'step 0 + tap card Francophone -> setSubSystemDraft + step RESTE 0',
+        'step 0 + tap card Francophone -> auto-advance step 1',
         (tester) async {
-      // Audit 2026-06-13 rev2 — Tap card = draft uniquement (no transition).
-      // L'utilisateur confirme via CTA Continuer (test suivant).
+      // fix(f2833d5) — Tap card = setSubSystem() + transition directe step 1.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
@@ -161,34 +154,27 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.francophone);
-      expect(state.currentStep, 0,
-          reason: 'draft ne transitionne pas (no auto-advance)');
+      expect(state.currentStep, 1, reason: 'auto-advance vers step 1');
 
-      expect(find.byType(SubSystemStepBody), findsOneWidget);
-      expect(find.byType(HeroIntroStepBody), findsNothing);
-    });
-
-    testWidgets(
-        'step 0 + draft pose + tap CTA Continuer -> notifier.next() + step 1',
-        (tester) async {
-      // Audit 2026-06-13 rev2 — Confirme la chaine complete : draft + CTA.
-      final container = await _buildContainer();
-      addTearDown(container.dispose);
-
-      await _pump(tester, container: container);
-
-      // Pose le draft via tap card.
-      await tester.tap(find.byType(SelectionCard).first);
-      await tester.pumpAndSettle();
-
-      // Tap CTA Continuer du shell.
-      await tester.tap(find.byType(AppButton));
-      await tester.pumpAndSettle();
-
-      final state = container.read(onboardingNotifierProvider);
-      expect(state.subSystem, SubSystem.francophone);
-      expect(state.currentStep, 1, reason: 'CTA Continuer fait notifier.next()');
       expect(find.byType(HeroIntroStepBody), findsOneWidget);
+      expect(find.byType(SubSystemStepBody), findsNothing);
+    });
+
+    testWidgets(
+        'step 0 + tap card Francophone -> step 1 (CTA shell present au step 1)',
+        (tester) async {
+      // Suite logique : apres auto-advance step 1, le shell affiche un CTA.
+      final container = await _buildContainer();
+      addTearDown(container.dispose);
+
+      await _pump(tester, container: container);
+      await tester.tap(find.byType(SelectionCard).first);
+      await tester.pumpAndSettle();
+
+      final state = container.read(onboardingNotifierProvider);
+      expect(state.currentStep, 1);
+      expect(find.byType(AppButton), findsWidgets,
+          reason: 'CTA Continuer + secondaryAction au step 1');
     });
 
     testWidgets(
@@ -205,7 +191,7 @@ void main() {
       await _pump(tester, container: container);
 
       expect(find.byType(HeroIntroStepBody), findsOneWidget);
-      await tester.tap(find.byType(AppButton), warnIfMissed: false);
+      await tester.tap(find.byType(AppButton).last, warnIfMissed: false);
       await tester.pump(); // E1bis-3 : pas de pumpAndSettle car le picker
                           // tente de fetch derivedProfileV2 -> CatalogueRepo
                           // qui leve sans firebase configure en test.

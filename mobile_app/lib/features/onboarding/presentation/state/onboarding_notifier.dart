@@ -189,8 +189,12 @@ class OnboardingNotifier extends Notifier<OnboardingState> {
     // au step 2 (track choice) apres auth. Une fois steps 2-4 remplis,
     // setStreamAndSubjects() detecre authProvider != null et saute step 5.
     final hasProfile = state.trackId != null;
+    // Visiteur sans profil (arrivé via jumpToAuth, step 1→5 avant steps 2-4) :
+    // renvoyer au step 2 pour collecter track/level. Même logique que OAuth.
+    // Visiteur avec profil complet : pas de transition — _onGuestTap() gère
+    // la navigation vers /dashboard après le flush.
     final nextStep = isVisitor
-        ? state.currentStep
+        ? (hasProfile ? state.currentStep : 2)
         : hasProfile
             ? 6
             : 2;

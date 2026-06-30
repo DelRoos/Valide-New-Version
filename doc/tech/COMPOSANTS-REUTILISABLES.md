@@ -947,6 +947,43 @@ SchoolEditSheet.show(context, schoolId: 'sch_001', schoolName: 'LYCÉE GÉNÉRAL
 
 ---
 
+### Famille Public Profile (profil public d'un pair — Story A.2)
+
+> Widgets créés en Story A.2 (Profil public). **Feature-specific** à la feature `account` — consomment `PublicProfile` (domain entity) et `catalogueProvider`. Pas conçus pour réutilisation hors de ce contexte en V1.
+
+**Path** : `lib/features/account/presentation/widgets/`
+**Story d'origine** : A.2 (Page profil public utilisateur)
+**Catégorie** : `display`
+**Responsive** : `phone + tablet` (LayoutBuilder dans `PublicProfilePage` : hPad = `(width - 560) / 2` sur tablet ≥ 600 dp)
+
+| Fichier | Composant public | Rôle |
+|---|---|---|
+| `public_profile_header.dart` | `PublicProfileHeader` | En-tête gradient primary→primaryDark — avatar initiales 80×80 + displayName + classLabel + schoolName optionnel |
+| `public_profile_stats_section.dart` | `PublicProfileStatsSection` | Section stats hardcodées MVP — 2 badges leçons lues + quiz réussis |
+
+**Props `PublicProfileHeader`** :
+
+- `profile: PublicProfile` — entité domaine avec uid, displayName, levelId, streamId, schoolName, subSystem.
+- `classLabel: String?` — label résolu par le parent depuis le catalogue (ex. « Terminale D »). Null → section omise.
+
+**Props `PublicProfileStatsSection`** :
+
+- `l10n: AppLocalizations` — labels traduits (Stats, leçons lues, quiz réussis).
+
+**Contraintes** :
+
+- `PublicProfileHeader` ne lit jamais le repo directement — données passées par le parent (`PublicProfilePage`).
+- Champs sensibles (`phoneNumber`, `examTargets`, `pickedSubjects`) jamais transmis ni affichés.
+- Stats hardcodées MVP (`30` leçons, `3` quiz) — remplacer par un provider réel en Story Epic 3+.
+
+**Tests associés** :
+
+- `test/features/account/data/user_profile_repository_public_profile_test.dart` — 4 tests unitaires `fetchPublicProfile`.
+- `test/features/account/presentation/public_profile_page_test.dart` — 3 tests widget.
+- `test/features/account/presentation/__goldens__/public_profile_page_phone.png` + `public_profile_page_tablet.png`.
+
+---
+
 ## Historique des composants extraits (post-création)
 
 > **✅ Résorbée Story 1.18 (2026-06-10)** — voir [Catalogue actuel](#catalogue-actuel) ci-dessus. Les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` ont été supprimés de `subjects_picker_page.dart` (1309 → 621 lignes, -52%) et remplacés par compositions de 4 composants extraits (`PickerSectionScaffold` + `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerValidateBar`) + un wrapper privé `_PickerStreamGate` qui factorise le StreamBuilder + init state. La 5e candidate `PickerToastFeedback` a été **skippée** (`AppToast` existant Stories 0.14 suffit, pattern déjà unifié dans le source d'origine).
@@ -970,3 +1007,4 @@ SchoolEditSheet.show(context, schoolId: 'sch_001', schoolName: 'LYCÉE GÉNÉRAL
 | 2026-06-23 | Story 2.3 livrée — section « Famille Dashboard cards » ajoutée au Catalogue actuel : 4 composants feature-specific (`DashboardDailyGoalCard`, `DashboardRecentHistoryCard`, `DashboardRecommendedCard`, `DashboardLeaderboardCard`). Données temporaires `Fake*` — seront remplacées par providers Riverpod réels en Stories 2.x suivantes. Goldens T11 générés : phone 375×812 + tablet 768×1024. | feat/2-2-subject-navigation-ui | Amelia |
 | 2026-06-23 | Story 2.4 livrée — ajout `ContentErrorView` au Catalogue actuel. Widget d'erreur centré pour les pages contenu Firestore : message localisé selon `ContentFailureKind` + bouton retry. Couvert par test intégration T10.1 dans `content_pages_test.dart`. | feat/2-2-subject-navigation-ui | Amelia |
 | 2026-06-24 | Story A.1 livrée — section « Famille Profile sheets » ajoutée au Catalogue actuel : 2 composants feature-specific (`ProfileEditSheet`, `SchoolEditSheet`) dans `features/dashboard/presentation/widgets/`. Consomment `userProfileRepositoryProvider` + `schoolSearchNotifierProvider`. Factory `.show()` statique. Responsive tablette via `ConstrainedBox(maxWidth: 560.w)`. 3 widget tests + 2 goldens profil phone+tablet. | feat/2-2-subject-navigation-ui | Amelia |
+| 2026-06-24 | Story A.2 livrée — section « Famille Public Profile » ajoutée au Catalogue actuel : 2 composants feature-specific (`PublicProfileHeader`, `PublicProfileStatsSection`) dans `features/account/presentation/widgets/`. Firestore rule `users/{uid}` élargie à `request.auth != null` (A.2-DR-01). Route `/user/:uid` hors shell. `_ClassmateRow` rendu tappable dans `home_tab_page.dart`. 4 tests unitaires + 3 tests widget + 2 goldens phone+tablet. | feat/A-2-public-profile | Amelia |

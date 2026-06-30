@@ -18,6 +18,7 @@ class AppBottomSheet {
     return showModalBottomSheet<T>(
       context: context,
       isScrollControlled: true,
+      useRootNavigator: true,
       backgroundColor: Colors.transparent,
       barrierColor: AppColors.ink.withValues(alpha: 0.4),
       builder: (ctx) => SafeArea(

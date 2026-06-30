@@ -46,6 +46,11 @@ typedef SignInWithCredentialFn = Future<UserCredential> Function(
   AuthCredential credential,
 );
 
+/// Retourne `FirebaseAuth.currentUser` (peut être null). Injecté pour
+/// eviter de coupler l'impl a FirebaseAuth directement et conserver la
+/// testabilite par injection de fakes.
+typedef GetCurrentUserFn = User? Function();
+
 class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
   AccountLinkingRepositoryFirebaseImpl({
     required FirebaseFirestore firestore,
@@ -53,17 +58,20 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
     required AppleSignInFn appleSignIn,
     required LinkCredentialFn linkCredential,
     required SignInWithCredentialFn signInWithCredential,
+    required GetCurrentUserFn getCurrentUser,
   })  : _firestore = firestore,
         _googleSignIn = googleSignIn,
         _appleSignIn = appleSignIn,
         _linkCredential = linkCredential,
-        _signInWithCredential = signInWithCredential;
+        _signInWithCredential = signInWithCredential,
+        _getCurrentUser = getCurrentUser;
 
   final FirebaseFirestore _firestore;
   final GoogleSignInFn _googleSignIn;
   final AppleSignInFn _appleSignIn;
   final LinkCredentialFn _linkCredential;
   final SignInWithCredentialFn _signInWithCredential;
+  final GetCurrentUserFn _getCurrentUser;
 
   static const String _kCollection = 'users';
 
@@ -94,11 +102,11 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: idToken,
         accessToken: accessToken,
       );
-      final result = await _linkOrSignIn(credential, 'google');
+      final user = await _linkOrSignIn(credential, 'google');
 
-      final uid = result.user!.uid;
-      final displayName = result.user!.displayName ?? account.displayName;
-      final photoUrl = result.user!.photoURL ?? account.photoUrl;
+      final uid = user!.uid;
+      final displayName = user.displayName ?? account.displayName;
+      final photoUrl = user.photoURL ?? account.photoUrl;
 
       await _persistIdentity(
         uid,
@@ -146,9 +154,9 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
         idToken: identityToken,
         accessToken: apple.authorizationCode,
       );
-      final result = await _linkOrSignIn(credential, 'apple');
+      final user = await _linkOrSignIn(credential, 'apple');
 
-      final uid = result.user!.uid;
+      final uid = user!.uid;
       // Apple ne fournit givenName/familyName qu'au PREMIER sign-in.
       // Au 2e, ils sont null -> fallback sur le displayName Firebase si pose.
       final composedName = [apple.givenName, apple.familyName]
@@ -156,7 +164,7 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
           .join(' ');
       final displayName = composedName.isNotEmpty
           ? composedName
-          : result.user!.displayName;
+          : user.displayName;
       // Apple ne fournit pas de photoUrl.
       const photoUrl = null;
 
@@ -190,53 +198,47 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
     }
   }
 
-  /// Tente `linkWithCredential` sur l'utilisateur courant. Deux codes Firebase
-  /// declenchent un fallback vers `signInWithCredential` :
+  /// Tente `linkWithCredential` sur l'utilisateur courant. Retourne `User?`
+  /// (le Firebase user résultant). Trois codes Firebase sont traités :
   ///
-  /// - `credential-already-in-use` : le credential appartient a un AUTRE
-  ///   Firebase user (ex. precedente session Google non supprimee). On signe
-  ///   en tant que cet utilisateur existant. L'uid courant peut changer.
+  /// - `credential-already-in-use` / `user-not-found` : fallback
+  ///   `signInWithCredential` — le credential appartient à un AUTRE user ou
+  ///   le currentUser a expiré. L'uid peut changer.
   ///
-  /// - `provider-already-linked` : le credential appartient deja a L'UTILISATEUR
-  ///   COURANT (ex. repassage step 5 apres echec de flush au step 9, ou apres
-  ///   un dev-audit-reset qui a laisse le compte Firebase vivant). Le
-  ///   signInWithCredential recupere la session proprement sans erreur.
+  /// - `provider-already-linked` : le credential appartient DÉJÀ à
+  ///   l'utilisateur courant. Pas de réseau nécessaire — on retourne
+  ///   `currentUser` directement (évite un `signInWithCredential` réseau
+  ///   inutile qui peut échouer sur coupure réseau).
   ///
-  /// Tous les autres codes FirebaseAuthException remontent au caller
-  /// (_mapFirebaseAuth les traduit en AccountLinkingFailure adequat).
-  Future<UserCredential> _linkOrSignIn(
+  /// Tous les autres codes FirebaseAuthException remontent au caller.
+  Future<User?> _linkOrSignIn(
     AuthCredential credential,
     String provider,
   ) async {
     try {
-      return await logPerf(
+      final result = await logPerf(
         'auth.$provider.linkCredential',
         () => _linkCredential(credential),
       );
+      return result.user;
     } on FirebaseAuthException catch (e) {
-      // Trois codes declenchent un fallback vers signInWithCredential :
-      //
-      // - credential-already-in-use : credential appartient a un AUTRE user
-      //   Firebase (ex. precedente session Google non supprimee).
-      //
-      // - provider-already-linked : credential deja lie a L'UTILISATEUR COURANT
-      //   (ex. repassage step 5 apres echec flush step 9).
-      //
-      // - user-not-found : l'utilisateur courant (generalement anonyme) a ete
-      //   invalide cote Firebase serveur (expiration, suppression manuelle depuis
-      //   la console, ou token corruption). Firebase emet un sign-out event ->
-      //   currentUser devient null. signInWithCredential cree un nouveau compte
-      //   Firebase lie au provider OAuth sans necessiter de currentUser.
       if (e.code == 'credential-already-in-use' ||
-          e.code == 'provider-already-linked' ||
           e.code == 'user-not-found') {
         AppLogger.i(
           'link$provider: ${e.code} -> signInWithCredential fallback',
         );
-        return await logPerf(
+        final result = await logPerf(
           'auth.$provider.signInWithCredential',
           () => _signInWithCredential(credential),
         );
+        return result.user;
+      }
+      if (e.code == 'provider-already-linked') {
+        // L'utilisateur courant EST déjà ce provider — pas besoin de réseau.
+        AppLogger.i(
+          'link$provider: provider-already-linked -> currentUser (no network call)',
+        );
+        return _getCurrentUser();
       }
       rethrow;
     }

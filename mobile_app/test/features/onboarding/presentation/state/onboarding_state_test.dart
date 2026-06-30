@@ -118,9 +118,11 @@ void main() {
       // safe ('' / []), meme sur etat vide.
       const state = OnboardingState();
 
-      final payload = state.toFirestorePayload();
+      // isCreate: true pour simuler la creation initiale du profil
+      // (les champs requis par les rules sont inclus meme si vides).
+      final payload = state.toFirestorePayload(isCreate: true);
 
-      // Champs requis create rules — toujours presents.
+      // Champs requis create rules — toujours presents avec isCreate.
       expect(payload['isAnonymous'], isFalse);
       expect(payload['pickedSubjects'], <String>[]);
       expect(payload['displayName'], '');

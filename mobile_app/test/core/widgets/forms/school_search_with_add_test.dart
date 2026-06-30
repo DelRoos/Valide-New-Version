@@ -102,17 +102,17 @@ void main() {
         viewportSize: _phoneSize,
       );
 
-      // Etat idle (saisie vide) -> 0 appel.
-      expect(callCount, 0);
+      // Etat idle (saisie vide) -> 1 appel initial (liste tout par defaut).
+      expect(callCount, 1);
 
       // Frappe "Lyc" rapidement.
       await tester.enterText(find.byType(TextField), 'Lyc');
-      // Avant 250 ms : pas encore d'appel.
+      // Avant 250 ms : debounce pas encore eclate -> toujours 1 appel.
       await tester.pump(const Duration(milliseconds: 100));
-      expect(callCount, 0);
-      // Apres 250 ms : 1 appel avec la valeur finale.
-      await tester.pump(const Duration(milliseconds: 200));
       expect(callCount, 1);
+      // Apres 250 ms : debounce eclate -> 1 appel supplementaire avec 'Lyc'.
+      await tester.pump(const Duration(milliseconds: 200));
+      expect(callCount, 2);
       expect(lastQuery, 'Lyc');
     });
 

@@ -7,6 +7,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fpdart/fpdart.dart';
 
+import 'package:valide_school/features/account/domain/public_profile.dart';
 import 'package:valide_school/features/onboarding/domain/profile_failure.dart';
 import 'package:valide_school/features/onboarding/domain/school.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
@@ -131,4 +132,10 @@ class FakeUserProfileRepository implements UserProfileRepository {
   @override
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async =>
       Right(profileData);
+
+  @override
+  Future<Either<ProfileFailure, PublicProfile?>> fetchPublicProfile(
+    String uid,
+  ) async =>
+      const Right(null);
 }

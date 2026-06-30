@@ -202,7 +202,9 @@ def _seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                     "chapterId": chapter_id,
                     "order": lesson["order"],
                     "title": lesson["title"],
+                    "subtitle": lesson.get("subtitle"),
                     "content": lesson["content"],
+                    "durationMinutes": lesson.get("durationMinutes", 0),
                     "createdAt": SERVER_TIMESTAMP,
                 }
                 if not dry_run:

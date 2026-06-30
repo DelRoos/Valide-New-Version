@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'core/firebase/providers.dart';
 import 'core/routing/app_router.dart';
 import 'core/theme/app_theme.dart';
 import 'core/widgets/feedback/offline_banner.dart';
@@ -13,15 +14,32 @@ import 'l10n/generated/app_localizations.dart';
 /// `.w` / `.h` / `.sp` dans les widgets sont scalés relativement à ce gabarit.
 const Size kDesignSize = Size(375, 812);
 
-/// Notifier qui pilote la locale active. Story 1.2 : la locale est désormais
-/// **dérivée** du sous-système choisi (cf. ADR-006 — sous-système figé à
-/// l'inscription, la langue en dérive). Tant que le sous-système n'est pas
-/// posé (1er lancement), on défaut FR (majorité des élèves cibles, PRD § 2.3).
+/// Notifier qui pilote la locale active.
+///
+/// Priorité :
+///   1. Override manuel sauvegardé en SharedPreferences (clé `locale_override`).
+///   2. Locale dérivée du sous-système (ADR-006).
+///   3. FR par défaut (PRD § 2.3).
+///
+/// L'override persiste entre les sessions et peut être changé via [setLocale].
 class LocaleNotifier extends Notifier<Locale> {
+  static const _kKey = 'locale_override';
+
   @override
   Locale build() {
+    final override =
+        ref.read(sharedPreferencesProvider).getString(_kKey);
+    if (override != null) return Locale(override);
+
     final subSystem = ref.watch(subSystemNotifierProvider);
     return subSystem?.locale ?? const Locale('fr');
+  }
+
+  Future<void> setLocale(Locale locale) async {
+    await ref
+        .read(sharedPreferencesProvider)
+        .setString(_kKey, locale.languageCode);
+    state = locale;
   }
 }
 
@@ -34,11 +52,15 @@ class ValideApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final locale = ref.watch(localeProvider);
-    // Story 1.10 — amorce l'auto-canceller de suppression au boot. Le provider
-    // ecoute le stream `userProfileRepository.watchProfile()` et appelle
-    // `cancelAccountDeletion` automatiquement si `deletionRequestedAt` est
-    // anterieur au sessionStart (cad. demande d'une session passee).
-    ref.watch(autoAccountDeletionCancellerProvider);
+    // Story 1.10 — amorce l'auto-canceller de suppression au boot.
+    // Gardé derrière firebaseReadyProvider : au hot restart Firebase prend
+    // ~1s à s'initialiser ; accéder à firestoreProvider avant ce délai
+    // lance un ProviderException [core/no-app]. Une fois Firebase prêt, le
+    // rebuild de ValideApp démarre le canceller normalement.
+    final firebaseReady = ref.watch(firebaseReadyProvider);
+    if (firebaseReady.value == true) {
+      ref.watch(autoAccountDeletionCancellerProvider);
+    }
     return ScreenUtilInit(
       designSize: kDesignSize,
       minTextAdapt: true,

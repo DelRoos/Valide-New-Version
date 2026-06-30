@@ -1,10 +1,11 @@
 // Story 1.10 — Interface domain de la suppression de compte (FR-7).
 //
-// 2 methodes appellent les Cloud Functions backend :
+// 3 methodes :
 //   - requestAccountDeletion : pose users/{uid}.deletionRequestedAt = now cote serveur
 //   - cancelAccountDeletion : pose users/{uid}.deletionRequestedAt = null (idempotent)
+//   - deleteAccountNow : supprime immediatement le doc Firestore + le user Firebase Auth
 //
-// Implementation : `data/account_deletion_repository_impl.dart` (Cloud Functions callable).
+// Implementation : `data/account_deletion_repository_impl.dart`.
 
 import 'package:fpdart/fpdart.dart';
 
@@ -20,4 +21,13 @@ abstract class AccountDeletionRepository {
   /// Annule la demande de suppression. Idempotent : pas d'erreur si la
   /// demande n'existe pas ou a deja ete annulee.
   Future<Either<AccountDeletionFailure, void>> cancelAccountDeletion();
+
+  /// Supprime immediatement :
+  ///   1. Le doc Firestore `users/{uid}` (pendant que l'auth est encore valide).
+  ///   2. Le user Firebase Auth (`currentUser.delete()`).
+  ///
+  /// Erreur `requiresRecentLogin` : Firebase exige une re-authentification
+  /// recente. L'UI doit inviter l'utilisateur a se reconnecter et reessayer.
+  /// Dans ce cas, le doc Firestore est supprime mais l'Auth reste intact.
+  Future<Either<AccountDeletionFailure, void>> deleteAccountNow();
 }

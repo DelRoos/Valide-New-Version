@@ -854,6 +854,36 @@ abstract class AppLocalizations {
   /// **'jours'**
   String get profileDays;
 
+  /// Label colonne nombre de matières dans les stats profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Matières'**
+  String get profileSubjects;
+
+  /// Label colonne examens ciblés dans les stats profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Examens'**
+  String get profileExams;
+
+  /// Titre de la section Mon parcours dans le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon parcours'**
+  String get profileSectionCourses;
+
+  /// Titre de la section Réglages dans le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Réglages'**
+  String get profileSectionSettings;
+
+  /// Titre de la section Compte dans le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compte'**
+  String get profileSectionAccount;
+
   /// Item menu Mon abonnement.
   ///
   /// In fr, this message translates to:
@@ -901,6 +931,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Sauvegarde ta progression et rejoins le classement.'**
   String get profileGuestSubtitle;
+
+  /// Titre du dialogue non-dismissible affiché aux visiteurs anonymes sur la tab Profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Compléter mon profil'**
+  String get completeProfileDialogTitle;
+
+  /// Corps du dialogue Compléter mon profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Complète ton profil pour sauvegarder ta progression et accéder à toutes les fonctionnalités.'**
+  String get completeProfileDialogBody;
+
+  /// Titre du sélecteur de langue dans le profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisir la langue'**
+  String get languagePickerTitle;
+
+  /// Option langue française dans le sélecteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Français'**
+  String get languageOptionFrench;
+
+  /// Option langue anglaise dans le sélecteur.
+  ///
+  /// In fr, this message translates to:
+  /// **'Anglais'**
+  String get languageOptionEnglish;
 
   /// Story E1bis-2bis — Titre H1 step 0 sub-system choice (microcopie alignee template t.sysTitle).
   ///
@@ -1544,16 +1604,34 @@ abstract class AppLocalizations {
   /// **'Compte lié'**
   String get profileSettingsLinkedAccount;
 
+  /// Titre du dialog de confirmation de déconnexion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Se déconnecter ?'**
+  String get signOutConfirmTitle;
+
+  /// Corps du dialog de confirmation de déconnexion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Tu pourras te reconnecter à tout moment avec ton compte Google ou Apple.'**
+  String get signOutConfirmBody;
+
+  /// Bouton danger dans le dialog de confirmation déconnexion.
+  ///
+  /// In fr, this message translates to:
+  /// **'Confirmer la déconnexion'**
+  String get signOutConfirmCta;
+
   /// Titre AlertDialog de confirmation suppression (Story 1.10 AC4).
   ///
   /// In fr, this message translates to:
   /// **'Es-tu sûr ?'**
   String get accountDeletionConfirmTitle;
 
-  /// Corps AlertDialog confirmation (Story 1.10 AC4).
+  /// Corps AlertDialog confirmation suppression immédiate (irréversible).
   ///
   /// In fr, this message translates to:
-  /// **'Ton compte sera supprimé dans 7 jours. Tu peux annuler à tout moment en te reconnectant pendant cette période.'**
+  /// **'Ton compte et toutes tes données seront définitivement supprimés. Cette action est irréversible.'**
   String get accountDeletionConfirmBody;
 
   /// Bouton danger dans la modale confirmation (Story 1.10 AC4).
@@ -1615,6 +1693,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Fonctionnalité bientôt disponible.'**
   String get accountDeletionNotAvailableToast;
+
+  /// Toast warning quand Firebase Auth exige une re-authentification récente avant deleteAccountNow.
+  ///
+  /// In fr, this message translates to:
+  /// **'Session expirée. Reconnecte-toi et réessaie.'**
+  String get accountDeletionRecentLoginToast;
 
   /// Titre de la section Objectif du jour du dashboard (Story 2.3 AC2).
   ///
@@ -1772,11 +1856,59 @@ abstract class AppLocalizations {
   /// **'Profil mis à jour.'**
   String get profileEditSuccess;
 
+  /// Label du champ nom dans le bottom sheet d'édition du profil.
+  ///
+  /// In fr, this message translates to:
+  /// **'Prénom ou surnom'**
+  String get profileEditNameLabel;
+
+  /// Label générique du bouton de sauvegarde dans les formulaires d'édition.
+  ///
+  /// In fr, this message translates to:
+  /// **'Enregistrer'**
+  String get saveLabel;
+
+  /// Titre de la bannière d'alerte quand deletionRequestedAt est posé sur le compte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Suppression programmée'**
+  String get profileDeletionPendingTitle;
+
+  /// Corps de la bannière suppression en attente. {date} = J+7 format DD/MM/YYYY.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ton compte sera définitivement supprimé le {date}. Reconnecte-toi avant cette date pour annuler.'**
+  String profileDeletionPendingSubtitle(String date);
+
   /// Item menu 'Mon école' dans la section Compte du profil — ouvre le sheet de changement d'école (Story A.1 AC6).
   ///
   /// In fr, this message translates to:
   /// **'Mon école'**
   String get profileMenuSchool;
+
+  /// Label item menu nom dans la section Compte — affiché en permanence, valeur en sous-titre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon nom'**
+  String get profileMenuName;
+
+  /// Sous-titre item menu nom quand displayName est absent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter mon nom'**
+  String get profileMenuAddName;
+
+  /// Label item menu numéro dans la section Compte — affiché en permanence, valeur en sous-titre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mon numéro'**
+  String get profileMenuPhone;
+
+  /// Sous-titre item menu numéro quand phoneNumber est absent.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ajouter mon numéro'**
+  String get profileMenuAddPhone;
 
   /// Titre du bottom sheet de recherche/changement d'école (Story A.1 AC6).
   ///
@@ -1801,6 +1933,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Bientôt disponible'**
   String get featureComingSoon;
+
+  /// Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'Statistiques'**
+  String get publicProfileStatsTitle;
+
+  /// Unité du badge leçons lues sur le profil public (Story A.2 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'leçons lues'**
+  String get publicProfileLessonsRead;
+
+  /// Unité du badge quiz réussis sur le profil public (Story A.2 AC4).
+  ///
+  /// In fr, this message translates to:
+  /// **'quiz réussis'**
+  String get publicProfileQuizPassed;
+
+  /// Titre état vide quand le doc Firestore users/{uid} n'existe pas (Story A.2 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil introuvable'**
+  String get publicProfileNotFound;
+
+  /// Sous-titre état vide profil introuvable (Story A.2 AC7).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ce profil n\'existe pas ou a été supprimé.'**
+  String get publicProfileNotFoundSubtitle;
 }
 
 class _AppLocalizationsDelegate

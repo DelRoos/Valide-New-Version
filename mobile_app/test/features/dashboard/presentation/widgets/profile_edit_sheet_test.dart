@@ -1,4 +1,4 @@
-// Story A.1 — Tests widget ProfileEditSheet.
+// Story A.1 — Tests widget NameEditSheet (remplace ProfileEditSheet supprimé).
 //
 // Cas couverts :
 // (a) Champ displayName pré-rempli avec valeur initiale
@@ -11,12 +11,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fpdart/fpdart.dart';
 
+import 'package:valide_school/features/account/domain/public_profile.dart';
 import 'package:valide_school/features/onboarding/domain/profile_failure.dart';
 import 'package:valide_school/features/onboarding/domain/school.dart';
 import 'package:valide_school/features/onboarding/domain/sub_system.dart';
 import 'package:valide_school/features/onboarding/domain/user_profile_repository.dart';
 import 'package:valide_school/features/onboarding/providers.dart';
-import 'package:valide_school/features/dashboard/presentation/widgets/profile_edit_sheet.dart';
+import 'package:valide_school/features/dashboard/presentation/widgets/name_edit_sheet.dart';
 import 'package:valide_school/l10n/generated/app_localizations.dart';
 
 class _TrackingRepo implements UserProfileRepository {
@@ -60,13 +61,18 @@ class _TrackingRepo implements UserProfileRepository {
 
   @override
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async => const Right(null);
+
+  @override
+  Future<Either<ProfileFailure, PublicProfile?>> fetchPublicProfile(
+    String uid,
+  ) async =>
+      const Right(null);
 }
 
 Future<void> _pumpSheet(
   WidgetTester tester, {
   required _TrackingRepo repo,
   String displayName = 'Fatou',
-  String? phoneNumber,
 }) async {
   await tester.pumpWidget(
     ProviderScope(
@@ -80,10 +86,7 @@ Future<void> _pumpSheet(
           supportedLocales: AppLocalizations.supportedLocales,
           locale: const Locale('fr'),
           home: Scaffold(
-            body: ProfileEditSheet(
-              initialDisplayName: displayName,
-              initialPhoneNumber: phoneNumber,
-            ),
+            body: NameEditSheet(initialDisplayName: displayName),
           ),
         ),
       ),
@@ -93,7 +96,7 @@ Future<void> _pumpSheet(
 }
 
 void main() {
-  group('ProfileEditSheet — Story A.1', () {
+  group('NameEditSheet — Story A.1', () {
     testWidgets(
       '(a) Champ displayName pré-rempli avec la valeur initiale',
       (tester) async {

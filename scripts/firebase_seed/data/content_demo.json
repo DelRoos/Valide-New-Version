@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-06-21",
-  "comment": "Jeu de donnees demo Story 2.1 — 2 matieres x 4 chapitres x 2 lecons x 2 notions = 8ch/16le/32no. Francophone : Maths Tle D (francophone_math). Anglophone : Physics Upper Sixth (anglophone_physics). Contenu FR+EN avec LaTeX + Mermaid dans au moins 1 lecon par matiere.",
+  "version": "1.1.0",
+  "generatedAt": "2026-06-24",
+  "comment": "Jeu de donnees demo Story 2.1/2.4 — 2 matieres x 4 chapitres x 2 lecons x 2 notions. Contenu enrichi avec blocs :::definition, :::theoreme, :::demonstration, :::attention + durationMinutes sur chaque lecon.",
   "subjects": [
     {
       "subjectId": "francophone_math",
@@ -18,10 +18,12 @@
             {
               "lessonId": "franco_math_ch01_l01",
               "order": 1,
+              "durationMinutes": 8,
               "title": { "fr": "Définition d'une limite", "en": "Definition of a Limit" },
+              "subtitle": { "fr": "Comportement asymptotique des fonctions", "en": "Asymptotic behaviour of functions" },
               "content": {
-                "fr": "## Définition\n\nOn dit que la fonction $f$ admet pour **limite** $L$ en $a$ (fini ou infini) si :\n\n$$\\lim_{x \\to a} f(x) = L$$\n\nIntuitivement, quand $x$ se rapproche de $a$, $f(x)$ se rapproche de $L$.\n\n### Exemple fondamental\n\nPour $f(x) = x^2$, calculons $\\lim_{x \\to 2} f(x)$ :\n\n$$\\lim_{x \\to 2} x^2 = 4$$\n\nOn peut vérifier : $f(1{,}9) = 3{,}61$, $f(1{,}99) = 3{,}9601$, $f(2{,}01) = 4{,}0401$.\n\n### Représentation du processus\n\n```mermaid\ngraph LR\n  A[\"x se rapproche de a\"] --> B{\"f(x) se rapproche de L ?\"}\n  B -->|Oui| C[\"Limite L existe\"]\n  B -->|Non| D[\"Limite n'existe pas\"]\n  C --> E[\"on écrit lim f(x) = L\"]\n```\n\n### Limite infinie\n\nSi $f(x)$ devient arbitrairement grand quand $x \\to a$, on note :\n\n$$\\lim_{x \\to a} f(x) = +\\infty$$",
-                "en": "## Definition\n\nWe say function $f$ has **limit** $L$ at $a$ (finite or infinite) if:\n\n$$\\lim_{x \\to a} f(x) = L$$\n\nIntuitively, as $x$ approaches $a$, $f(x)$ approaches $L$.\n\n### Fundamental example\n\nFor $f(x) = x^2$, compute $\\lim_{x \\to 2} f(x)$:\n\n$$\\lim_{x \\to 2} x^2 = 4$$\n\nVerification: $f(1.9) = 3.61$, $f(1.99) = 3.9601$, $f(2.01) = 4.0401$.\n\n### Process diagram\n\n```mermaid\ngraph LR\n  A[\"x approaches a\"] --> B{\"f(x) approaches L?\"}\n  B -->|Yes| C[\"Limit L exists\"]\n  B -->|No| D[\"Limit does not exist\"]\n  C --> E[\"write lim f(x) = L\"]\n```\n\n### Infinite limit\n\nIf $f(x)$ grows arbitrarily large as $x \\to a$:\n\n$$\\lim_{x \\to a} f(x) = +\\infty$$"
+                "fr": "# Définition d'une limite\n\n:::definition\nOn dit que la fonction $f$ admet pour **limite** $L$ en $a$ (fini ou infini) si, pour tout $\\varepsilon > 0$, il existe $\\eta > 0$ tel que :\n\n$$|x - a| < \\eta \\Rightarrow |f(x) - L| < \\varepsilon$$\n\nOn note alors $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n:::\n\nIntuitivement, quand $x$ se rapproche de $a$, $f(x)$ se rapproche de $L$.\n\n### Exemple fondamental\n\nPour $f(x) = x^2$, calculons $\\displaystyle\\lim_{x \\to 2} f(x)$ :\n\n$$\\lim_{x \\to 2} x^2 = 4$$\n\nOn peut vérifier : $f(1{,}9) = 3{,}61$, $f(1{,}99) = 3{,}9601$, $f(2{,}01) = 4{,}0401$.\n\n:::theoreme\n**Unicité de la limite** : Si $\\displaystyle\\lim_{x \\to a} f(x) = L$ et $\\displaystyle\\lim_{x \\to a} f(x) = L'$, alors $L = L'$.\n\nLa limite, quand elle existe, est **unique**.\n:::\n\n### Processus de calcul\n\n```mermaid\ngraph LR\n  A[\"x se rapproche de a\"] --> B{\"f(x) se rapproche de L ?\"}\n  B -->|Oui| C[\"Limite L existe\"]\n  B -->|Non| D[\"Limite n'existe pas\"]\n  C --> E[\"on écrit lim f(x) = L\"]\n```\n\n:::attention\nLa limite en $a$ décrit le comportement de $f$ **au voisinage** de $a$, pas en $a$ lui-même. La valeur $f(a)$ peut ne pas exister ou être différente de $L$.\n:::\n\n### Limite infinie\n\nSi $f(x)$ devient arbitrairement grand quand $x \\to a$, on note :\n\n$$\\lim_{x \\to a} f(x) = +\\infty$$",
+                "en": "# Definition of a Limit\n\n:::definition\nWe say function $f$ has **limit** $L$ at $a$ (finite or infinite) if, for every $\\varepsilon > 0$, there exists $\\eta > 0$ such that:\n\n$$|x - a| < \\eta \\Rightarrow |f(x) - L| < \\varepsilon$$\n\nWe write $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n:::\n\nIntuitively, as $x$ approaches $a$, $f(x)$ approaches $L$.\n\n### Fundamental example\n\nFor $f(x) = x^2$, compute $\\displaystyle\\lim_{x \\to 2} f(x)$:\n\n$$\\lim_{x \\to 2} x^2 = 4$$\n\nVerification: $f(1.9) = 3.61$, $f(1.99) = 3.9601$, $f(2.01) = 4.0401$.\n\n:::theoreme\n**Uniqueness of the limit**: If $\\displaystyle\\lim_{x \\to a} f(x) = L$ and $\\displaystyle\\lim_{x \\to a} f(x) = L'$, then $L = L'$.\n\nThe limit, when it exists, is **unique**.\n:::\n\n### Process diagram\n\n```mermaid\ngraph LR\n  A[\"x approaches a\"] --> B{\"f(x) approaches L?\"}\n  B -->|Yes| C[\"Limit L exists\"]\n  B -->|No| D[\"Limit does not exist\"]\n  C --> E[\"write lim f(x) = L\"]\n```\n\n:::attention\nThe limit at $a$ describes the behaviour of $f$ **near** $a$, not at $a$ itself. The value $f(a)$ may not exist or may differ from $L$.\n:::\n\n### Infinite limit\n\nIf $f(x)$ grows arbitrarily large as $x \\to a$:\n\n$$\\lim_{x \\to a} f(x) = +\\infty$$"
               },
               "notions": [
                 {
@@ -39,10 +41,12 @@
             {
               "lessonId": "franco_math_ch01_l02",
               "order": 2,
+              "durationMinutes": 10,
               "title": { "fr": "Théorèmes sur les limites", "en": "Limit Theorems" },
+              "subtitle": { "fr": "Opérations et théorème des gendarmes", "en": "Operations and the squeeze theorem" },
               "content": {
-                "fr": "## Opérations sur les limites\n\nSi $\\lim_{x \\to a} f(x) = L$ et $\\lim_{x \\to a} g(x) = M$, alors :\n\n$$\\lim_{x \\to a} [f(x) + g(x)] = L + M$$\n\n$$\\lim_{x \\to a} [f(x) \\cdot g(x)] = L \\cdot M$$\n\nSi $M \\neq 0$ : $\\displaystyle\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{L}{M}$\n\n## Théorème des gendarmes\n\nSi $g(x) \\leq f(x) \\leq h(x)$ au voisinage de $a$ et si :\n\n$$\\lim_{x \\to a} g(x) = \\lim_{x \\to a} h(x) = L$$\n\nalors $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n\n**Application** : $\\forall x \\neq 0$, $-|x| \\leq x \\sin\\left(\\frac{1}{x}\\right) \\leq |x|$, donc $\\displaystyle\\lim_{x \\to 0} x \\sin\\left(\\frac{1}{x}\\right) = 0$.",
-                "en": "## Operations on limits\n\nIf $\\lim_{x \\to a} f(x) = L$ and $\\lim_{x \\to a} g(x) = M$, then:\n\n$$\\lim_{x \\to a} [f(x) + g(x)] = L + M$$\n\n$$\\lim_{x \\to a} [f(x) \\cdot g(x)] = L \\cdot M$$\n\nIf $M \\neq 0$: $\\displaystyle\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{L}{M}$\n\n## Squeeze Theorem\n\nIf $g(x) \\leq f(x) \\leq h(x)$ near $a$ and:\n\n$$\\lim_{x \\to a} g(x) = \\lim_{x \\to a} h(x) = L$$\n\nthen $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n\n**Application**: for $x \\neq 0$, $-|x| \\leq x \\sin\\left(\\frac{1}{x}\\right) \\leq |x|$, so $\\displaystyle\\lim_{x \\to 0} x \\sin\\left(\\frac{1}{x}\\right) = 0$."
+                "fr": "# Théorèmes sur les limites\n\n## Opérations sur les limites\n\nSi $\\lim_{x \\to a} f(x) = L$ et $\\lim_{x \\to a} g(x) = M$, alors :\n\n$$\\lim_{x \\to a} [f(x) + g(x)] = L + M$$\n\n$$\\lim_{x \\to a} [f(x) \\cdot g(x)] = L \\cdot M$$\n\nSi $M \\neq 0$ : $\\displaystyle\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{L}{M}$\n\n:::theoreme\n**Théorème des gendarmes** : Si $g(x) \\leq f(x) \\leq h(x)$ au voisinage de $a$ et si :\n\n$$\\lim_{x \\to a} g(x) = \\lim_{x \\to a} h(x) = L$$\n\nalors $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n:::\n\n:::exemple\n$\\forall x \\neq 0$, on a $-|x| \\leq x \\sin\\left(\\dfrac{1}{x}\\right) \\leq |x|$.\n\nComme $\\lim_{x \\to 0} (-|x|) = \\lim_{x \\to 0} |x| = 0$, le théorème des gendarmes donne :\n\n$$\\lim_{x \\to 0} x \\sin\\left(\\frac{1}{x}\\right) = 0$$\n:::\n\n:::retenir\n**Formes indéterminées** : $\\dfrac{0}{0}$, $\\dfrac{\\infty}{\\infty}$, $\\infty - \\infty$, $0 \\times \\infty$ ne peuvent pas être levées par les règles de calcul. Il faut utiliser des techniques algébriques (factorisation, conjugué, développements limités).\n:::",
+                "en": "# Limit Theorems\n\n## Operations on limits\n\nIf $\\lim_{x \\to a} f(x) = L$ and $\\lim_{x \\to a} g(x) = M$, then:\n\n$$\\lim_{x \\to a} [f(x) + g(x)] = L + M$$\n\n$$\\lim_{x \\to a} [f(x) \\cdot g(x)] = L \\cdot M$$\n\nIf $M \\neq 0$: $\\displaystyle\\lim_{x \\to a} \\frac{f(x)}{g(x)} = \\frac{L}{M}$\n\n:::theoreme\n**Squeeze Theorem**: If $g(x) \\leq f(x) \\leq h(x)$ near $a$ and:\n\n$$\\lim_{x \\to a} g(x) = \\lim_{x \\to a} h(x) = L$$\n\nthen $\\displaystyle\\lim_{x \\to a} f(x) = L$.\n:::\n\n:::exemple\nFor $x \\neq 0$: $-|x| \\leq x \\sin\\left(\\dfrac{1}{x}\\right) \\leq |x|$.\n\nSince $\\lim_{x \\to 0} (-|x|) = \\lim_{x \\to 0} |x| = 0$, the squeeze theorem gives:\n\n$$\\lim_{x \\to 0} x \\sin\\left(\\frac{1}{x}\\right) = 0$$\n:::\n\n:::retenir\n**Indeterminate forms**: $\\dfrac{0}{0}$, $\\dfrac{\\infty}{\\infty}$, $\\infty - \\infty$, $0 \\times \\infty$ cannot be resolved by standard rules. Use algebraic techniques (factoring, conjugate, Taylor series).\n:::"
               },
               "notions": [
                 {
@@ -71,10 +75,12 @@
             {
               "lessonId": "franco_math_ch02_l01",
               "order": 1,
+              "durationMinutes": 8,
               "title": { "fr": "Nombre dérivé", "en": "Derivative at a Point" },
+              "subtitle": { "fr": "Taux de variation et tangente à la courbe", "en": "Rate of change and tangent line" },
               "content": {
-                "fr": "## Définition\n\nLe **nombre dérivé** de $f$ en $a$ est la limite (si elle existe) :\n\n$$f'(a) = \\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$$\n\n## Interprétation géométrique\n\n$f'(a)$ est le **coefficient directeur** de la tangente à la courbe en $x = a$.\n\nÉquation de la tangente en $A(a, f(a))$ :\n\n$$y = f'(a)(x - a) + f(a)$$\n\n## Exemple\n\nPour $f(x) = x^2$ en $a = 3$ :\n\n$$f'(3) = \\lim_{h \\to 0} \\frac{(3+h)^2 - 9}{h} = \\lim_{h \\to 0} \\frac{6h + h^2}{h} = 6$$",
-                "en": "## Definition\n\nThe **derivative** of $f$ at $a$ is the limit (if it exists):\n\n$$f'(a) = \\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$$\n\n## Geometric interpretation\n\n$f'(a)$ is the **slope** of the tangent to the curve at $x = a$.\n\nEquation of the tangent at $A(a, f(a))$:\n\n$$y = f'(a)(x - a) + f(a)$$\n\n## Example\n\nFor $f(x) = x^2$ at $a = 3$:\n\n$$f'(3) = \\lim_{h \\to 0} \\frac{(3+h)^2 - 9}{h} = \\lim_{h \\to 0} \\frac{6h + h^2}{h} = 6$$"
+                "fr": "# Nombre dérivé et fonction dérivée\n\n:::definition\nLe **nombre dérivé** de $f$ en $a$ est la limite (si elle existe) :\n\n$$f'(a) = \\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$$\n\nQuand cette limite existe, on dit que $f$ est **dérivable** en $a$.\n:::\n\n## Interprétation géométrique\n\n$f'(a)$ est le **coefficient directeur** de la tangente à la courbe en $x = a$.\n\nÉquation de la tangente en $A(a, f(a))$ :\n\n$$y = f'(a)(x - a) + f(a)$$\n\n:::theoreme\nSi $f$ est dérivable en $a$, alors $f$ est **continue** en $a$.\n\nLa réciproque est **fausse** : $f(x) = |x|$ est continue en $0$ mais non dérivable en $0$.\n:::\n\n:::exemple\nPour $f(x) = x^2$ en $a = 3$ :\n\n$$f'(3) = \\lim_{h \\to 0} \\frac{(3+h)^2 - 9}{h} = \\lim_{h \\to 0} \\frac{6h + h^2}{h} = 6$$\n\nLa tangente en $(3, 9)$ a pour équation $y = 6x - 9$.\n:::",
+                "en": "# Derivative at a Point\n\n:::definition\nThe **derivative** of $f$ at $a$ is the limit (if it exists):\n\n$$f'(a) = \\lim_{h \\to 0} \\frac{f(a+h) - f(a)}{h}$$\n\nWhen this limit exists, we say $f$ is **differentiable** at $a$.\n:::\n\n## Geometric interpretation\n\n$f'(a)$ is the **slope** of the tangent to the curve at $x = a$.\n\nEquation of the tangent at $A(a, f(a))$:\n\n$$y = f'(a)(x - a) + f(a)$$\n\n:::theoreme\nIf $f$ is differentiable at $a$, then $f$ is **continuous** at $a$.\n\nThe converse is **false**: $f(x) = |x|$ is continuous at $0$ but not differentiable at $0$.\n:::\n\n:::exemple\nFor $f(x) = x^2$ at $a = 3$:\n\n$$f'(3) = \\lim_{h \\to 0} \\frac{(3+h)^2 - 9}{h} = \\lim_{h \\to 0} \\frac{6h + h^2}{h} = 6$$\n\nThe tangent at $(3, 9)$ has equation $y = 6x - 9$.\n:::"
               },
               "notions": [
                 {
@@ -92,10 +98,12 @@
             {
               "lessonId": "franco_math_ch02_l02",
               "order": 2,
+              "durationMinutes": 12,
               "title": { "fr": "Dérivées usuelles", "en": "Standard Derivatives" },
+              "subtitle": { "fr": "Tableau et règles de dérivation", "en": "Table and differentiation rules" },
               "content": {
-                "fr": "## Tableau des dérivées usuelles\n\n| Fonction $f(x)$ | Dérivée $f'(x)$ |\n|---|---|\n| $c$ (constante) | $0$ |\n| $x^n$ ($n \\in \\mathbb{Z}$) | $nx^{n-1}$ |\n| $\\sqrt{x}$ | $\\dfrac{1}{2\\sqrt{x}}$ |\n| $e^x$ | $e^x$ |\n| $\\ln x$ | $\\dfrac{1}{x}$ |\n| $\\sin x$ | $\\cos x$ |\n| $\\cos x$ | $-\\sin x$ |\n\n## Règles de dérivation\n\nSi $u$ et $v$ sont dérivables :\n\n$$[u + v]' = u' + v'$$\n\n$$[u \\cdot v]' = u'v + uv'$$\n\n$$\\left[\\frac{u}{v}\\right]' = \\frac{u'v - uv'}{v^2} \\quad (v \\neq 0)$$",
-                "en": "## Table of standard derivatives\n\n| Function $f(x)$ | Derivative $f'(x)$ |\n|---|---|\n| $c$ (constant) | $0$ |\n| $x^n$ ($n \\in \\mathbb{Z}$) | $nx^{n-1}$ |\n| $\\sqrt{x}$ | $\\dfrac{1}{2\\sqrt{x}}$ |\n| $e^x$ | $e^x$ |\n| $\\ln x$ | $\\dfrac{1}{x}$ |\n| $\\sin x$ | $\\cos x$ |\n| $\\cos x$ | $-\\sin x$ |\n\n## Differentiation rules\n\nIf $u$ and $v$ are differentiable:\n\n$$[u + v]' = u' + v'$$\n\n$$[u \\cdot v]' = u'v + uv'$$\n\n$$\\left[\\frac{u}{v}\\right]' = \\frac{u'v - uv'}{v^2} \\quad (v \\neq 0)$$"
+                "fr": "# Dérivées usuelles\n\n## Tableau des dérivées\n\n| Fonction $f(x)$ | Dérivée $f'(x)$ |\n|---|---|\n| $c$ (constante) | $0$ |\n| $x^n$ ($n \\in \\mathbb{Z}$) | $nx^{n-1}$ |\n| $\\sqrt{x}$ | $\\dfrac{1}{2\\sqrt{x}}$ |\n| $e^x$ | $e^x$ |\n| $\\ln x$ | $\\dfrac{1}{x}$ |\n| $\\sin x$ | $\\cos x$ |\n| $\\cos x$ | $-\\sin x$ |\n\n:::propriete\nSi $u$ et $v$ sont dérivables :\n\n$$[u + v]' = u' + v'$$\n\n$$[u \\cdot v]' = u'v + uv'$$\n\n$$\\left[\\frac{u}{v}\\right]' = \\frac{u'v - uv'}{v^2} \\quad (v \\neq 0)$$\n\n$$[u \\circ v]' = v' \\cdot (u' \\circ v) \\quad \\text{(dérivée en chaîne)}$$\n:::\n\n:::methode\nPour dériver $h(x) = (3x^2 + 1)^5$ :\n\n1. Poser $u(x) = 3x^2 + 1$ et $f(u) = u^5$\n2. $u'(x) = 6x$ et $f'(u) = 5u^4$\n3. $h'(x) = u' \\cdot f'(u) = 6x \\cdot 5(3x^2+1)^4 = 30x(3x^2+1)^4$\n:::",
+                "en": "# Standard Derivatives\n\n## Table of derivatives\n\n| Function $f(x)$ | Derivative $f'(x)$ |\n|---|---|\n| $c$ (constant) | $0$ |\n| $x^n$ ($n \\in \\mathbb{Z}$) | $nx^{n-1}$ |\n| $\\sqrt{x}$ | $\\dfrac{1}{2\\sqrt{x}}$ |\n| $e^x$ | $e^x$ |\n| $\\ln x$ | $\\dfrac{1}{x}$ |\n| $\\sin x$ | $\\cos x$ |\n| $\\cos x$ | $-\\sin x$ |\n\n:::propriete\nIf $u$ and $v$ are differentiable:\n\n$$[u + v]' = u' + v'$$\n\n$$[u \\cdot v]' = u'v + uv'$$\n\n$$\\left[\\frac{u}{v}\\right]' = \\frac{u'v - uv'}{v^2} \\quad (v \\neq 0)$$\n\n$$[u \\circ v]' = v' \\cdot (u' \\circ v) \\quad \\text{(chain rule)}$$\n:::\n\n:::methode\nTo differentiate $h(x) = (3x^2 + 1)^5$:\n\n1. Set $u(x) = 3x^2 + 1$ and $f(u) = u^5$\n2. $u'(x) = 6x$ and $f'(u) = 5u^4$\n3. $h'(x) = u' \\cdot f'(u) = 6x \\cdot 5(3x^2+1)^4 = 30x(3x^2+1)^4$\n:::"
               },
               "notions": [
                 {
@@ -124,10 +132,12 @@
             {
               "lessonId": "franco_math_ch03_l01",
               "order": 1,
+              "durationMinutes": 7,
               "title": { "fr": "Primitives", "en": "Antiderivatives" },
+              "subtitle": { "fr": "Fonctions primitives et tableaux usuels", "en": "Antiderivative functions and standard tables" },
               "content": {
-                "fr": "## Définition\n\n$F$ est une **primitive** de $f$ sur $I$ si $F' = f$ sur $I$.\n\nSi $F$ est une primitive de $f$, toutes les primitives sont de la forme $F(x) + C$, $C \\in \\mathbb{R}$.\n\n## Primitives usuelles\n\n| $f(x)$ | $F(x)$ |\n|---|---|\n| $x^n$ ($n \\neq -1$) | $\\dfrac{x^{n+1}}{n+1} + C$ |\n| $\\dfrac{1}{x}$ | $\\ln|x| + C$ |\n| $e^x$ | $e^x + C$ |\n| $\\cos x$ | $\\sin x + C$ |\n| $\\sin x$ | $-\\cos x + C$ |",
-                "en": "## Definition\n\n$F$ is an **antiderivative** of $f$ on $I$ if $F' = f$ on $I$.\n\nIf $F$ is one antiderivative, all antiderivatives have the form $F(x) + C$, $C \\in \\mathbb{R}$.\n\n## Standard antiderivatives\n\n| $f(x)$ | $F(x)$ |\n|---|---|\n| $x^n$ ($n \\neq -1$) | $\\dfrac{x^{n+1}}{n+1} + C$ |\n| $\\dfrac{1}{x}$ | $\\ln|x| + C$ |\n| $e^x$ | $e^x + C$ |\n| $\\cos x$ | $\\sin x + C$ |\n| $\\sin x$ | $-\\cos x + C$ |"
+                "fr": "# Primitives\n\n:::definition\n$F$ est une **primitive** de $f$ sur $I$ si $F' = f$ sur $I$.\n\nSi $F$ est une primitive de $f$, toutes les primitives sont de la forme $F(x) + C$, $C \\in \\mathbb{R}$.\n:::\n\n## Primitives usuelles\n\n| $f(x)$ | $F(x)$ |\n|---|---|\n| $x^n$ ($n \\neq -1$) | $\\dfrac{x^{n+1}}{n+1} + C$ |\n| $\\dfrac{1}{x}$ | $\\ln|x| + C$ |\n| $e^x$ | $e^x + C$ |\n| $\\cos x$ | $\\sin x + C$ |\n| $\\sin x$ | $-\\cos x + C$ |",
+                "en": "# Antiderivatives\n\n:::definition\n$F$ is an **antiderivative** of $f$ on $I$ if $F' = f$ on $I$.\n\nIf $F$ is one antiderivative, all antiderivatives have the form $F(x) + C$, $C \\in \\mathbb{R}$.\n:::\n\n## Standard antiderivatives\n\n| $f(x)$ | $F(x)$ |\n|---|---|\n| $x^n$ ($n \\neq -1$) | $\\dfrac{x^{n+1}}{n+1} + C$ |\n| $\\dfrac{1}{x}$ | $\\ln|x| + C$ |\n| $e^x$ | $e^x + C$ |\n| $\\cos x$ | $\\sin x + C$ |\n| $\\sin x$ | $-\\cos x + C$ |"
               },
               "notions": [
                 {
@@ -145,10 +155,12 @@
             {
               "lessonId": "franco_math_ch03_l02",
               "order": 2,
+              "durationMinutes": 9,
               "title": { "fr": "Intégrale définie", "en": "Definite Integral" },
+              "subtitle": { "fr": "Aire algébrique et théorème fondamental", "en": "Signed area and fundamental theorem" },
               "content": {
-                "fr": "## Définition\n\nSi $F$ est une primitive de $f$ sur $[a, b]$ :\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a) = [F(x)]_a^b$$\n\n## Interprétation géométrique\n\n$\\displaystyle\\int_a^b f(x)\\,dx$ représente l'**aire algébrique** entre la courbe $y = f(x)$ et l'axe des abscisses sur $[a, b]$.\n\n## Exemple\n\n$$\\int_0^2 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3} - 0 = \\frac{8}{3}$$",
-                "en": "## Definition\n\nIf $F$ is an antiderivative of $f$ on $[a, b]$:\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a) = [F(x)]_a^b$$\n\n## Geometric interpretation\n\n$\\displaystyle\\int_a^b f(x)\\,dx$ represents the **signed area** between the curve $y = f(x)$ and the $x$-axis on $[a, b]$.\n\n## Example\n\n$$\\int_0^2 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3} - 0 = \\frac{8}{3}$$"
+                "fr": "# Intégrale définie\n\n:::definition\nSi $F$ est une primitive de $f$ sur $[a, b]$ :\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a) = [F(x)]_a^b$$\n:::\n\n## Interprétation géométrique\n\n$\\displaystyle\\int_a^b f(x)\\,dx$ représente l'**aire algébrique** entre la courbe $y = f(x)$ et l'axe des abscisses sur $[a, b]$.\n\n:::exemple\n$$\\int_0^2 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3} - 0 = \\frac{8}{3}$$\n:::​",
+                "en": "# Definite Integral\n\n:::definition\nIf $F$ is an antiderivative of $f$ on $[a, b]$:\n\n$$\\int_a^b f(x)\\,dx = F(b) - F(a) = [F(x)]_a^b$$\n:::\n\n## Geometric interpretation\n\n$\\displaystyle\\int_a^b f(x)\\,dx$ represents the **signed area** between the curve $y = f(x)$ and the $x$-axis on $[a, b]$.\n\n:::exemple\n$$\\int_0^2 x^2\\,dx = \\left[\\frac{x^3}{3}\\right]_0^2 = \\frac{8}{3} - 0 = \\frac{8}{3}$$\n:::"
               },
               "notions": [
                 {
@@ -177,10 +189,12 @@
             {
               "lessonId": "franco_math_ch04_l01",
               "order": 1,
+              "durationMinutes": 10,
               "title": { "fr": "Variables aléatoires", "en": "Random Variables" },
+              "subtitle": { "fr": "Espérance, variance et écart-type", "en": "Expected value, variance and standard deviation" },
               "content": {
-                "fr": "## Définition\n\nUne **variable aléatoire** $X$ est une fonction qui associe à chaque issue d'une expérience aléatoire un nombre réel.\n\n## Loi de probabilité\n\nLa **loi de probabilité** de $X$ donne $P(X = x_i)$ pour chaque valeur $x_i$.\n\nPropriété fondamentale :\n\n$$\\sum_i P(X = x_i) = 1$$\n\n## Espérance\n\n$$E(X) = \\sum_i x_i \\cdot P(X = x_i)$$\n\n## Variance et écart-type\n\n$$V(X) = E(X^2) - [E(X)]^2, \\quad \\sigma(X) = \\sqrt{V(X)}$$",
-                "en": "## Definition\n\nA **random variable** $X$ is a function assigning a real number to each outcome of a random experiment.\n\n## Probability distribution\n\nThe **probability distribution** of $X$ gives $P(X = x_i)$ for each value $x_i$.\n\nFundamental property:\n\n$$\\sum_i P(X = x_i) = 1$$\n\n## Expected value\n\n$$E(X) = \\sum_i x_i \\cdot P(X = x_i)$$\n\n## Variance and standard deviation\n\n$$V(X) = E(X^2) - [E(X)]^2, \\quad \\sigma(X) = \\sqrt{V(X)}$$"
+                "fr": "# Variables aléatoires\n\n:::definition\nUne **variable aléatoire** $X$ est une fonction qui associe à chaque issue d'une expérience aléatoire un nombre réel.\n\nLa **loi de probabilité** de $X$ donne $P(X = x_i)$ pour chaque valeur $x_i$.\n\nPropriété fondamentale :\n\n$$\\sum_i P(X = x_i) = 1$$\n:::\n\n:::propriete\n**Espérance** :\n\n$$E(X) = \\sum_i x_i \\cdot P(X = x_i)$$\n\n**Variance et écart-type** :\n\n$$V(X) = E(X^2) - [E(X)]^2, \\quad \\sigma(X) = \\sqrt{V(X)}$$\n:::​",
+                "en": "# Random Variables\n\n:::definition\nA **random variable** $X$ is a function assigning a real number to each outcome of a random experiment.\n\nThe **probability distribution** of $X$ gives $P(X = x_i)$ for each value $x_i$.\n\nFundamental property:\n\n$$\\sum_i P(X = x_i) = 1$$\n:::\n\n:::propriete\n**Expected value**:\n\n$$E(X) = \\sum_i x_i \\cdot P(X = x_i)$$\n\n**Variance and standard deviation**:\n\n$$V(X) = E(X^2) - [E(X)]^2, \\quad \\sigma(X) = \\sqrt{V(X)}$$\n:::"
               },
               "notions": [
                 {
@@ -198,10 +212,12 @@
             {
               "lessonId": "franco_math_ch04_l02",
               "order": 2,
+              "durationMinutes": 11,
               "title": { "fr": "Loi binomiale", "en": "Binomial Distribution" },
+              "subtitle": { "fr": "Épreuves de Bernoulli répétées", "en": "Repeated Bernoulli trials" },
               "content": {
-                "fr": "## Schéma de Bernoulli\n\nUne **épreuve de Bernoulli** est une expérience à deux issues : succès (prob. $p$) ou échec (prob. $q = 1 - p$).\n\n## Loi binomiale $B(n, p)$\n\nOn répète $n$ épreuves de Bernoulli **indépendantes**. $X$ = nombre de succès.\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\quad k \\in \\{0, 1, \\ldots, n\\}$$\n\nPropriétés :\n- $E(X) = np$\n- $V(X) = np(1-p)$\n\n## Exemple\n\nOn lance un dé 10 fois. $X$ = nombre de 6 obtenus. $X \\sim B(10, \\frac{1}{6})$.\n\n$$P(X = 2) = \\binom{10}{2} \\left(\\frac{1}{6}\\right)^2 \\left(\\frac{5}{6}\\right)^8 \\approx 0{,}29$$",
-                "en": "## Bernoulli trial\n\nA **Bernoulli trial** is an experiment with two outcomes: success (prob. $p$) or failure (prob. $q = 1 - p$).\n\n## Binomial distribution $B(n, p)$\n\nRepeat $n$ **independent** Bernoulli trials. $X$ = number of successes.\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\quad k \\in \\{0, 1, \\ldots, n\\}$$\n\nProperties:\n- $E(X) = np$\n- $V(X) = np(1-p)$\n\n## Example\n\nRoll a die 10 times. $X$ = number of 6s obtained. $X \\sim B(10, \\frac{1}{6})$.\n\n$$P(X = 2) = \\binom{10}{2} \\left(\\frac{1}{6}\\right)^2 \\left(\\frac{5}{6}\\right)^8 \\approx 0.29$$"
+                "fr": "# Loi binomiale\n\n:::definition\nUne **épreuve de Bernoulli** est une expérience à deux issues : succès (prob. $p$) ou échec (prob. $q = 1 - p$).\n\nOn répète $n$ épreuves de Bernoulli **indépendantes**. $X$ = nombre de succès suit la **loi binomiale** $B(n, p)$ :\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\quad k \\in \\{0, 1, \\ldots, n\\}$$\n:::\n\n:::propriete\nPour $X \\sim B(n, p)$ :\n\n- $E(X) = np$\n- $V(X) = np(1-p)$\n:::\n\n:::exemple\nOn lance un dé 10 fois. $X$ = nombre de 6 obtenus. $X \\sim B\\left(10, \\dfrac{1}{6}\\right)$.\n\n$$P(X = 2) = \\binom{10}{2} \\left(\\frac{1}{6}\\right)^2 \\left(\\frac{5}{6}\\right)^8 \\approx 0{,}29$$\n:::​",
+                "en": "# Binomial Distribution\n\n:::definition\nA **Bernoulli trial** is an experiment with two outcomes: success (prob. $p$) or failure (prob. $q = 1 - p$).\n\nRepeat $n$ **independent** Bernoulli trials. $X$ = number of successes follows the **binomial distribution** $B(n, p)$:\n\n$$P(X = k) = \\binom{n}{k} p^k (1-p)^{n-k}, \\quad k \\in \\{0, 1, \\ldots, n\\}$$\n:::\n\n:::propriete\nFor $X \\sim B(n, p)$:\n\n- $E(X) = np$\n- $V(X) = np(1-p)$\n:::\n\n:::exemple\nRoll a die 10 times. $X$ = number of 6s. $X \\sim B\\left(10, \\dfrac{1}{6}\\right)$.\n\n$$P(X = 2) = \\binom{10}{2} \\left(\\frac{1}{6}\\right)^2 \\left(\\frac{5}{6}\\right)^8 \\approx 0.29$$\n:::"
               },
               "notions": [
                 {
@@ -235,10 +251,12 @@
             {
               "lessonId": "anglo_physics_ch01_l01",
               "order": 1,
+              "durationMinutes": 9,
               "title": { "fr": "Lois de Newton", "en": "Newton's Laws of Motion" },
+              "subtitle": { "fr": "Les trois lois fondamentales de la mécanique", "en": "The three fundamental laws of mechanics" },
               "content": {
-                "fr": "## Première loi (inertie)\n\nTout corps reste en **repos** ou en **mouvement rectiligne uniforme** si la résultante des forces appliquées est nulle :\n\n$$\\sum \\vec{F} = \\vec{0} \\Rightarrow \\vec{a} = \\vec{0}$$\n\n## Deuxième loi (relation fondamentale)\n\n$$\\sum \\vec{F} = m \\vec{a}$$\n\nOù $m$ est la masse (kg), $\\vec{a}$ l'accélération ($\\text{m/s}^2$) et $\\vec{F}$ la force (N).\n\n## Troisième loi (action-réaction)\n\nSi le corps A exerce une force $\\vec{F}_{A \\to B}$ sur B, alors B exerce sur A une force $\\vec{F}_{B \\to A} = -\\vec{F}_{A \\to B}$.\n\n```mermaid\ngraph LR\n  A[\"Corps A\"] -->|\"F(A→B)\"| B[\"Corps B\"]\n  B -->|\"F(B→A) = -F(A→B)\"| A\n```",
-                "en": "## First Law (Inertia)\n\nAn object remains at **rest** or in **uniform rectilinear motion** unless acted on by a net force:\n\n$$\\sum \\vec{F} = \\vec{0} \\Rightarrow \\vec{a} = \\vec{0}$$\n\n## Second Law\n\n$$\\sum \\vec{F} = m \\vec{a}$$\n\nWhere $m$ is mass (kg), $\\vec{a}$ is acceleration ($\\text{m/s}^2$), $\\vec{F}$ is force (N).\n\n## Third Law (Action-Reaction)\n\nIf body A exerts force $\\vec{F}_{A \\to B}$ on B, then B exerts $\\vec{F}_{B \\to A} = -\\vec{F}_{A \\to B}$ on A.\n\n```mermaid\ngraph LR\n  A[\"Body A\"] -->|\"F(A→B)\"| B[\"Body B\"]\n  B -->|\"F(B→A) = -F(A→B)\"| A\n```"
+                "fr": "# Lois de Newton\n\n:::definition\n**Première loi (inertie)** : Tout corps reste en **repos** ou en **mouvement rectiligne uniforme** si la résultante des forces appliquées est nulle :\n\n$$\\sum \\vec{F} = \\vec{0} \\Rightarrow \\vec{a} = \\vec{0}$$\n:::\n\n:::theoreme\n**Deuxième loi (relation fondamentale)** :\n\n$$\\sum \\vec{F} = m \\vec{a}$$\n\nOù $m$ est la masse (kg), $\\vec{a}$ l'accélération ($\\text{m/s}^2$) et $\\vec{F}$ la force (N).\n:::\n\n:::propriete\n**Troisième loi (action-réaction)** : Si le corps A exerce une force $\\vec{F}_{A \\to B}$ sur B, alors B exerce sur A une force $\\vec{F}_{B \\to A} = -\\vec{F}_{A \\to B}$.\n:::\n\n```mermaid\ngraph LR\n  A[\"Corps A\"] -->|\"F(A→B)\"| B[\"Corps B\"]\n  B -->|\"F(B→A) = -F(A→B)\"| A\n```",
+                "en": "# Newton's Laws of Motion\n\n:::definition\n**First Law (Inertia)**: An object remains at **rest** or in **uniform rectilinear motion** unless acted on by a net force:\n\n$$\\sum \\vec{F} = \\vec{0} \\Rightarrow \\vec{a} = \\vec{0}$$\n:::\n\n:::theoreme\n**Second Law**:\n\n$$\\sum \\vec{F} = m \\vec{a}$$\n\nWhere $m$ is mass (kg), $\\vec{a}$ is acceleration ($\\text{m/s}^2$), $\\vec{F}$ is force (N).\n:::\n\n:::propriete\n**Third Law (Action-Reaction)**: If body A exerts force $\\vec{F}_{A \\to B}$ on B, then B exerts $\\vec{F}_{B \\to A} = -\\vec{F}_{A \\to B}$ on A.\n:::\n\n```mermaid\ngraph LR\n  A[\"Body A\"] -->|\"F(A→B)\"| B[\"Body B\"]\n  B -->|\"F(B→A) = -F(A→B)\"| A\n```"
               },
               "notions": [
                 {
@@ -256,10 +274,12 @@
             {
               "lessonId": "anglo_physics_ch01_l02",
               "order": 2,
+              "durationMinutes": 8,
               "title": { "fr": "Énergie et travail", "en": "Energy and Work" },
+              "subtitle": { "fr": "Travail, énergie cinétique et conservation", "en": "Work, kinetic energy and conservation" },
               "content": {
-                "fr": "## Travail d'une force\n\nLe **travail** de la force $\\vec{F}$ lors d'un déplacement $\\vec{d}$ est :\n\n$$W = \\vec{F} \\cdot \\vec{d} = F d \\cos\\theta$$\n\nUnité : joule (J = N·m).\n\n## Énergie cinétique\n\n$$E_c = \\frac{1}{2} m v^2$$\n\n## Théorème énergie-travail\n\n$$W_{\\text{total}} = \\Delta E_c = E_{c,f} - E_{c,i}$$\n\n## Conservation de l'énergie mécanique\n\nEn l'absence de frottement :\n\n$$E_m = E_c + E_p = \\text{constante}$$\n\nOù $E_p = mgh$ est l'énergie potentielle gravitationnelle.",
-                "en": "## Work done by a force\n\nThe **work** done by force $\\vec{F}$ over displacement $\\vec{d}$:\n\n$$W = \\vec{F} \\cdot \\vec{d} = F d \\cos\\theta$$\n\nUnit: joule (J = N·m).\n\n## Kinetic energy\n\n$$E_k = \\frac{1}{2} m v^2$$\n\n## Work-energy theorem\n\n$$W_{\\text{net}} = \\Delta E_k = E_{k,f} - E_{k,i}$$\n\n## Conservation of mechanical energy\n\nIn the absence of friction:\n\n$$E_m = E_k + E_p = \\text{constant}$$\n\nWhere $E_p = mgh$ is gravitational potential energy."
+                "fr": "# Énergie et travail\n\n:::definition\nLe **travail** de la force $\\vec{F}$ lors d'un déplacement $\\vec{d}$ est :\n\n$$W = \\vec{F} \\cdot \\vec{d} = F d \\cos\\theta$$\n\nUnité : joule (J = N·m).\n:::\n\n:::propriete\n**Énergie cinétique** : $E_c = \\dfrac{1}{2} m v^2$\n\n**Théorème énergie-travail** : $W_{\\text{total}} = \\Delta E_c = E_{c,f} - E_{c,i}$\n:::\n\n:::theoreme\n**Conservation de l'énergie mécanique** : En l'absence de frottement :\n\n$$E_m = E_c + E_p = \\text{constante}$$\n\nOù $E_p = mgh$ est l'énergie potentielle gravitationnelle.\n:::​",
+                "en": "# Energy and Work\n\n:::definition\nThe **work** done by force $\\vec{F}$ over displacement $\\vec{d}$:\n\n$$W = \\vec{F} \\cdot \\vec{d} = F d \\cos\\theta$$\n\nUnit: joule (J = N·m).\n:::\n\n:::propriete\n**Kinetic energy**: $E_k = \\dfrac{1}{2} m v^2$\n\n**Work-energy theorem**: $W_{\\text{net}} = \\Delta E_k = E_{k,f} - E_{k,i}$\n:::\n\n:::theoreme\n**Conservation of mechanical energy**: In the absence of friction:\n\n$$E_m = E_k + E_p = \\text{constant}$$\n\nWhere $E_p = mgh$ is gravitational potential energy.\n:::"
               },
               "notions": [
                 {
@@ -288,10 +308,12 @@
             {
               "lessonId": "anglo_physics_ch02_l01",
               "order": 1,
+              "durationMinutes": 7,
               "title": { "fr": "Propriétés des ondes", "en": "Wave Properties" },
+              "subtitle": { "fr": "Fréquence, période et longueur d'onde", "en": "Frequency, period and wavelength" },
               "content": {
-                "fr": "## Définition\n\nUne **onde** est une perturbation qui se propage dans un milieu sans transport de matière.\n\n## Grandeurs caractéristiques\n\n- **Fréquence** $f$ : nombre de cycles par seconde (Hz)\n- **Période** $T = 1/f$ : durée d'un cycle (s)\n- **Longueur d'onde** $\\lambda$ : distance entre deux points en phase (m)\n- **Vitesse de propagation** $v$ (m/s)\n\n## Relation fondamentale\n\n$$v = f \\lambda$$\n\n**Exemple** : une onde sonore de fréquence $440$ Hz (note La) dans l'air ($v = 340$ m/s) :\n\n$$\\lambda = \\frac{v}{f} = \\frac{340}{440} \\approx 0{,}77 \\text{ m}$$",
-                "en": "## Definition\n\nA **wave** is a disturbance that propagates through a medium without transporting matter.\n\n## Characteristic quantities\n\n- **Frequency** $f$: number of cycles per second (Hz)\n- **Period** $T = 1/f$: duration of one cycle (s)\n- **Wavelength** $\\lambda$: distance between two points in phase (m)\n- **Wave speed** $v$ (m/s)\n\n## Fundamental relation\n\n$$v = f \\lambda$$\n\n**Example**: a sound wave at $440$ Hz (note A) in air ($v = 340$ m/s):\n\n$$\\lambda = \\frac{v}{f} = \\frac{340}{440} \\approx 0.77 \\text{ m}$$"
+                "fr": "# Propriétés des ondes\n\n:::definition\nUne **onde** est une perturbation qui se propage dans un milieu sans transport de matière.\n\n**Grandeurs caractéristiques** :\n- **Fréquence** $f$ : nombre de cycles par seconde (Hz)\n- **Période** $T = 1/f$ : durée d'un cycle (s)\n- **Longueur d'onde** $\\lambda$ : distance entre deux points en phase (m)\n- **Vitesse de propagation** $v$ (m/s)\n:::\n\n:::theoreme\n**Relation fondamentale des ondes** :\n\n$$v = f \\lambda$$\n:::\n\n:::exemple\nUne onde sonore de fréquence $440$ Hz (note La) dans l'air ($v = 340$ m/s) :\n\n$$\\lambda = \\frac{v}{f} = \\frac{340}{440} \\approx 0{,}77 \\text{ m}$$\n:::​",
+                "en": "# Wave Properties\n\n:::definition\nA **wave** is a disturbance that propagates through a medium without transporting matter.\n\n**Characteristic quantities**:\n- **Frequency** $f$: number of cycles per second (Hz)\n- **Period** $T = 1/f$: duration of one cycle (s)\n- **Wavelength** $\\lambda$: distance between two points in phase (m)\n- **Wave speed** $v$ (m/s)\n:::\n\n:::theoreme\n**Fundamental wave equation**:\n\n$$v = f \\lambda$$\n:::\n\n:::exemple\nA sound wave at $440$ Hz (note A) in air ($v = 340$ m/s):\n\n$$\\lambda = \\frac{v}{f} = \\frac{340}{440} \\approx 0.77 \\text{ m}$$\n:::"
               },
               "notions": [
                 {
@@ -309,10 +331,12 @@
             {
               "lessonId": "anglo_physics_ch02_l02",
               "order": 2,
+              "durationMinutes": 8,
               "title": { "fr": "Interférences", "en": "Interference" },
+              "subtitle": { "fr": "Superposition constructive et destructive", "en": "Constructive and destructive superposition" },
               "content": {
-                "fr": "## Principe de superposition\n\nQuand deux ondes se rencontrent, le déplacement résultant est la **somme algébrique** des déplacements individuels.\n\n## Interférences constructives\n\nDeux ondes **en phase** (différence de marche $\\delta = k\\lambda$, $k \\in \\mathbb{Z}$) se renforcent :\n\n$$A_{\\text{résultante}} = A_1 + A_2$$\n\n## Interférences destructives\n\nDeux ondes en **opposition de phase** ($\\delta = (2k+1)\\frac{\\lambda}{2}$) s'annulent :\n\n$$A_{\\text{résultante}} = |A_1 - A_2|$$\n\n**Application** : les casques antibruit exploitent les interférences destructives ($A_1 = A_2 \\Rightarrow A_{\\text{résultante}} = 0$).",
-                "en": "## Superposition principle\n\nWhen two waves meet, the resultant displacement is the **algebraic sum** of individual displacements.\n\n## Constructive interference\n\nTwo waves **in phase** (path difference $\\delta = k\\lambda$, $k \\in \\mathbb{Z}$) reinforce each other:\n\n$$A_{\\text{resultant}} = A_1 + A_2$$\n\n## Destructive interference\n\nTwo waves **in anti-phase** ($\\delta = (2k+1)\\frac{\\lambda}{2}$) cancel:\n\n$$A_{\\text{resultant}} = |A_1 - A_2|$$\n\n**Application**: noise-cancelling headphones exploit destructive interference ($A_1 = A_2 \\Rightarrow A_{\\text{resultant}} = 0$)."
+                "fr": "# Interférences\n\n:::definition\n**Principe de superposition** : Quand deux ondes se rencontrent, le déplacement résultant est la **somme algébrique** des déplacements individuels.\n:::\n\n:::propriete\n**Interférences constructives** : Deux ondes en phase ($\\delta = k\\lambda$, $k \\in \\mathbb{Z}$) se renforcent :\n\n$$A_{\\text{résultante}} = A_1 + A_2$$\n\n**Interférences destructives** : Deux ondes en opposition ($\\delta = (2k+1)\\frac{\\lambda}{2}$) s'annulent :\n\n$$A_{\\text{résultante}} = |A_1 - A_2|$$\n:::\n\n:::exemple\nLes casques antibruit exploitent les interférences destructives : le casque émet un signal de même amplitude mais en opposition de phase ($A_1 = A_2 \\Rightarrow A_{\\text{résultante}} = 0$).\n:::​",
+                "en": "# Interference\n\n:::definition\n**Superposition principle**: When two waves meet, the resultant displacement is the **algebraic sum** of individual displacements.\n:::\n\n:::propriete\n**Constructive interference**: Two waves in phase ($\\delta = k\\lambda$, $k \\in \\mathbb{Z}$) reinforce each other:\n\n$$A_{\\text{resultant}} = A_1 + A_2$$\n\n**Destructive interference**: Two anti-phase waves ($\\delta = (2k+1)\\frac{\\lambda}{2}$) cancel:\n\n$$A_{\\text{resultant}} = |A_1 - A_2|$$\n:::\n\n:::exemple\nNoise-cancelling headphones exploit destructive interference: the headphone emits a signal of equal amplitude but opposite phase ($A_1 = A_2 \\Rightarrow A_{\\text{resultant}} = 0$).\n:::"
               },
               "notions": [
                 {
@@ -341,10 +365,12 @@
             {
               "lessonId": "anglo_physics_ch03_l01",
               "order": 1,
+              "durationMinutes": 8,
               "title": { "fr": "Loi d'Ohm", "en": "Ohm's Law" },
+              "subtitle": { "fr": "Tension, courant et résistance", "en": "Voltage, current and resistance" },
               "content": {
-                "fr": "## Définitions\n\n- **Tension** $U$ (volt, V) : différence de potentiel entre deux points\n- **Courant** $I$ (ampère, A) : charge par unité de temps $I = \\frac{dQ}{dt}$\n- **Résistance** $R$ (ohm, Ω) : opposition au passage du courant\n\n## Loi d'Ohm\n\n$$U = R \\cdot I$$\n\n## Puissance électrique\n\n$$P = U \\cdot I = R I^2 = \\frac{U^2}{R}$$\n\nUnité : watt (W).\n\n## Association de résistances\n\n- **Série** : $R_{\\text{tot}} = R_1 + R_2 + \\cdots$\n- **Parallèle** : $\\dfrac{1}{R_{\\text{tot}}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots$",
-                "en": "## Definitions\n\n- **Voltage** $U$ (volt, V): potential difference between two points\n- **Current** $I$ (ampere, A): charge per unit time $I = \\frac{dQ}{dt}$\n- **Resistance** $R$ (ohm, Ω): opposition to current flow\n\n## Ohm's Law\n\n$$U = R \\cdot I$$\n\n## Electric power\n\n$$P = U \\cdot I = R I^2 = \\frac{U^2}{R}$$\n\nUnit: watt (W).\n\n## Resistor combinations\n\n- **Series**: $R_{\\text{total}} = R_1 + R_2 + \\cdots$\n- **Parallel**: $\\dfrac{1}{R_{\\text{total}}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots$"
+                "fr": "# Loi d'Ohm\n\n:::definition\n- **Tension** $U$ (volt, V) : différence de potentiel entre deux points\n- **Courant** $I$ (ampère, A) : charge par unité de temps $I = \\dfrac{dQ}{dt}$\n- **Résistance** $R$ (ohm, Ω) : opposition au passage du courant\n\n$$U = R \\cdot I$$\n:::\n\n:::propriete\n**Puissance électrique** :\n\n$$P = U \\cdot I = R I^2 = \\frac{U^2}{R}$$\n\nUnité : watt (W).\n\n**Association de résistances** :\n- Série : $R_{\\text{tot}} = R_1 + R_2 + \\cdots$\n- Parallèle : $\\dfrac{1}{R_{\\text{tot}}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots$\n:::​",
+                "en": "# Ohm's Law\n\n:::definition\n- **Voltage** $U$ (volt, V): potential difference between two points\n- **Current** $I$ (ampere, A): charge per unit time $I = \\dfrac{dQ}{dt}$\n- **Resistance** $R$ (ohm, Ω): opposition to current flow\n\n$$U = R \\cdot I$$\n:::\n\n:::propriete\n**Electric power**:\n\n$$P = U \\cdot I = R I^2 = \\frac{U^2}{R}$$\n\nUnit: watt (W).\n\n**Resistor combinations**:\n- Series: $R_{\\text{total}} = R_1 + R_2 + \\cdots$\n- Parallel: $\\dfrac{1}{R_{\\text{total}}} = \\dfrac{1}{R_1} + \\dfrac{1}{R_2} + \\cdots$\n:::"
               },
               "notions": [
                 {
@@ -362,10 +388,12 @@
             {
               "lessonId": "anglo_physics_ch03_l02",
               "order": 2,
+              "durationMinutes": 9,
               "title": { "fr": "Champ électrique", "en": "Electric Field" },
+              "subtitle": { "fr": "Loi de Coulomb et champ électrostatique", "en": "Coulomb's law and electrostatic field" },
               "content": {
-                "fr": "## Loi de Coulomb\n\nForce entre deux charges ponctuelles $q_1$ et $q_2$ séparées d'une distance $r$ :\n\n$$F = k \\frac{|q_1 q_2|}{r^2}, \\quad k = 9 \\times 10^9 \\text{ N·m}^2/\\text{C}^2$$\n\n## Champ électrique\n\nLe **champ électrique** $\\vec{E}$ créé par une charge $Q$ en un point distant de $r$ :\n\n$$E = k \\frac{|Q|}{r^2}$$\n\nUnité : V/m ou N/C.\n\nLa force subie par une charge test $q$ est $\\vec{F} = q \\vec{E}$.",
-                "en": "## Coulomb's Law\n\nForce between two point charges $q_1$ and $q_2$ separated by distance $r$:\n\n$$F = k \\frac{|q_1 q_2|}{r^2}, \\quad k = 9 \\times 10^9 \\text{ N·m}^2/\\text{C}^2$$\n\n## Electric field\n\nThe **electric field** $\\vec{E}$ created by charge $Q$ at distance $r$:\n\n$$E = k \\frac{|Q|}{r^2}$$\n\nUnit: V/m or N/C.\n\nForce on test charge $q$: $\\vec{F} = q \\vec{E}$."
+                "fr": "# Champ électrique\n\n:::theoreme\n**Loi de Coulomb** : Force entre deux charges ponctuelles $q_1$ et $q_2$ séparées d'une distance $r$ :\n\n$$F = k \\frac{|q_1 q_2|}{r^2}, \\quad k = 9 \\times 10^9 \\text{ N·m}^2/\\text{C}^2$$\n:::\n\n:::definition\nLe **champ électrique** $\\vec{E}$ créé par une charge $Q$ en un point distant de $r$ :\n\n$$E = k \\frac{|Q|}{r^2}$$\n\nUnité : V/m ou N/C.\n\nLa force subie par une charge test $q$ est $\\vec{F} = q \\vec{E}$.\n:::​",
+                "en": "# Electric Field\n\n:::theoreme\n**Coulomb's Law**: Force between two point charges $q_1$ and $q_2$ separated by distance $r$:\n\n$$F = k \\frac{|q_1 q_2|}{r^2}, \\quad k = 9 \\times 10^9 \\text{ N·m}^2/\\text{C}^2$$\n:::\n\n:::definition\nThe **electric field** $\\vec{E}$ created by charge $Q$ at distance $r$:\n\n$$E = k \\frac{|Q|}{r^2}$$\n\nUnit: V/m or N/C.\n\nForce on test charge $q$: $\\vec{F} = q \\vec{E}$.\n:::"
               },
               "notions": [
                 {
@@ -394,10 +422,12 @@
             {
               "lessonId": "anglo_physics_ch04_l01",
               "order": 1,
+              "durationMinutes": 10,
               "title": { "fr": "Radioactivité", "en": "Radioactivity" },
+              "subtitle": { "fr": "Désintégration nucléaire et loi de décroissance", "en": "Nuclear disintegration and decay law" },
               "content": {
-                "fr": "## Définition\n\nLa **radioactivité** est la désintégration spontanée de noyaux instables avec émission de rayonnements.\n\n## Types de rayonnements\n\n| Type | Symbole | Nature | Pouvoir de pénétration |\n|---|---|---|---|\n| Alpha | $\\alpha$ | Noyau He ($^4_2\\text{He}$) | Faible (arrêté par papier) |\n| Bêta | $\\beta^-$ | Électron | Moyen (arrêté par alu 1 cm) |\n| Gamma | $\\gamma$ | Photon | Élevé (plomb nécessaire) |\n\n## Loi de décroissance\n\n$$N(t) = N_0 e^{-\\lambda t}, \\quad t_{1/2} = \\frac{\\ln 2}{\\lambda}$$\n\nOù $t_{1/2}$ est la **demi-vie** : durée après laquelle la moitié des noyaux s'est désintégrée.",
-                "en": "## Definition\n\n**Radioactivity** is the spontaneous disintegration of unstable nuclei with emission of radiation.\n\n## Types of radiation\n\n| Type | Symbol | Nature | Penetrating power |\n|---|---|---|---|\n| Alpha | $\\alpha$ | He nucleus ($^4_2\\text{He}$) | Low (stopped by paper) |\n| Beta | $\\beta^-$ | Electron | Medium (stopped by 1 cm Al) |\n| Gamma | $\\gamma$ | Photon | High (lead required) |\n\n## Decay law\n\n$$N(t) = N_0 e^{-\\lambda t}, \\quad t_{1/2} = \\frac{\\ln 2}{\\lambda}$$\n\nWhere $t_{1/2}$ is the **half-life**: time for half the nuclei to decay."
+                "fr": "# Radioactivité\n\n:::definition\nLa **radioactivité** est la désintégration spontanée de noyaux instables avec émission de rayonnements.\n:::\n\n## Types de rayonnements\n\n| Type | Symbole | Nature | Pouvoir de pénétration |\n|---|---|---|---|\n| Alpha | $\\alpha$ | Noyau He ($^4_2\\text{He}$) | Faible (arrêté par papier) |\n| Bêta | $\\beta^-$ | Électron | Moyen (arrêté par alu 1 cm) |\n| Gamma | $\\gamma$ | Photon | Élevé (plomb nécessaire) |\n\n:::theoreme\n**Loi de décroissance radioactive** :\n\n$$N(t) = N_0 e^{-\\lambda t}, \\quad t_{1/2} = \\frac{\\ln 2}{\\lambda}$$\n\nOù $t_{1/2}$ est la **demi-vie** : durée après laquelle la moitié des noyaux s'est désintégrée.\n:::​",
+                "en": "# Radioactivity\n\n:::definition\n**Radioactivity** is the spontaneous disintegration of unstable nuclei with emission of radiation.\n:::\n\n## Types of radiation\n\n| Type | Symbol | Nature | Penetrating power |\n|---|---|---|---|\n| Alpha | $\\alpha$ | He nucleus ($^4_2\\text{He}$) | Low (stopped by paper) |\n| Beta | $\\beta^-$ | Electron | Medium (stopped by 1 cm Al) |\n| Gamma | $\\gamma$ | Photon | High (lead required) |\n\n:::theoreme\n**Radioactive decay law**:\n\n$$N(t) = N_0 e^{-\\lambda t}, \\quad t_{1/2} = \\frac{\\ln 2}{\\lambda}$$\n\nWhere $t_{1/2}$ is the **half-life**: time for half the nuclei to decay.\n:::"
               },
               "notions": [
                 {
@@ -415,10 +445,12 @@
             {
               "lessonId": "anglo_physics_ch04_l02",
               "order": 2,
+              "durationMinutes": 9,
               "title": { "fr": "Effet photoélectrique", "en": "Photoelectric Effect" },
+              "subtitle": { "fr": "Quantification de l'énergie lumineuse", "en": "Quantisation of light energy" },
               "content": {
-                "fr": "## Observation\n\nQuand une lumière de fréquence suffisante frappe un métal, des **électrons** sont éjectés. Ce phénomène ne peut s'expliquer que par la **quantification** de l'énergie lumineuse (Einstein, 1905).\n\n## Énergie d'un photon\n\n$$E = hf = \\frac{hc}{\\lambda}$$\n\nOù $h = 6{,}63 \\times 10^{-34}$ J·s est la **constante de Planck**.\n\n## Équation de l'effet photoélectrique\n\n$$E_{c,\\max} = hf - W_s$$\n\nOù $W_s$ est le **travail d'extraction** (énergie minimale pour arracher un électron).\n\n**Condition d'éjection** : $f > f_0 = W_s / h$ (fréquence seuil).",
-                "en": "## Observation\n\nWhen light of sufficient frequency hits a metal, **electrons** are ejected. This phenomenon can only be explained by the **quantisation** of light energy (Einstein, 1905).\n\n## Energy of a photon\n\n$$E = hf = \\frac{hc}{\\lambda}$$\n\nWhere $h = 6.63 \\times 10^{-34}$ J·s is **Planck's constant**.\n\n## Photoelectric equation\n\n$$E_{k,\\max} = hf - \\phi$$\n\nWhere $\\phi$ is the **work function** (minimum energy to eject an electron).\n\n**Ejection condition**: $f > f_0 = \\phi / h$ (threshold frequency)."
+                "fr": "# Effet photoélectrique\n\n:::definition\nQuand une lumière de fréquence suffisante frappe un métal, des **électrons** sont éjectés. Ce phénomène ne peut s'expliquer que par la **quantification** de l'énergie lumineuse (Einstein, 1905).\n\n**Énergie d'un photon** :\n\n$$E = hf = \\frac{hc}{\\lambda}$$\n\nOù $h = 6{,}63 \\times 10^{-34}$ J·s est la **constante de Planck**.\n:::\n\n:::theoreme\n**Équation de l'effet photoélectrique** :\n\n$$E_{c,\\max} = hf - W_s$$\n\nOù $W_s$ est le **travail d'extraction** (énergie minimale pour arracher un électron).\n\n**Condition d'éjection** : $f > f_0 = W_s / h$ (fréquence seuil).\n:::​",
+                "en": "# Photoelectric Effect\n\n:::definition\nWhen light of sufficient frequency hits a metal, **electrons** are ejected. This phenomenon can only be explained by the **quantisation** of light energy (Einstein, 1905).\n\n**Energy of a photon**:\n\n$$E = hf = \\frac{hc}{\\lambda}$$\n\nWhere $h = 6.63 \\times 10^{-34}$ J·s is **Planck's constant**.\n:::\n\n:::theoreme\n**Photoelectric equation**:\n\n$$E_{k,\\max} = hf - \\phi$$\n\nWhere $\\phi$ is the **work function** (minimum energy to eject an electron).\n\n**Ejection condition**: $f > f_0 = \\phi / h$ (threshold frequency).\n:::"
               },
               "notions": [
                 {

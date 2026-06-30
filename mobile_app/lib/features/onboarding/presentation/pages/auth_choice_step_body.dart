@@ -18,9 +18,11 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/firebase/providers.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_modal.dart';
 import '../../../../core/widgets/auth/social_auth_widgets.dart';
 import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -318,8 +320,19 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
           setState(() => _guestError = l10n.onboardingFlushError);
         },
         (_) {
-          AppLogger.i('auth.step5 guest flush OK -> /dashboard');
-          router.go('/dashboard');
+          final currentState = ref.read(onboardingNotifierProvider);
+          if (currentState.trackId != null && currentState.levelId != null) {
+            AppLogger.i('auth.step5 guest flush OK -> /dashboard');
+            router.go(AppRoutes.dashboard);
+          } else {
+            // Profil incomplet (arrivé via jumpToAuth avant steps 2-4).
+            // setAuthProvider() a déjà redirigé vers step 2 — le shell
+            // affichera le track picker sans navigation explicite ici.
+            AppLogger.i(
+              'auth.step5 guest profile incomplete '
+              '-> onboarding continues at step ${currentState.currentStep}',
+            );
+          }
         },
       );
     } catch (e, st) {
@@ -334,28 +347,24 @@ class _AuthChoiceStepBodyState extends ConsumerState<AuthChoiceStepBody> {
 
   /// Audit PR2 — Modale de confirmation destructive avant de switcher d'un
   /// compte OAuth vers visiteur. Retourne `true` si l'utilisateur confirme.
-  Future<bool?> _showGuestSwitchConfirm() async {
+  Future<bool?> _showGuestSwitchConfirm() {
     final l10n = AppLocalizations.of(context);
-    return showDialog<bool>(
-      context: context,
+    return AppModal.show<bool>(
+      context,
       barrierDismissible: true,
-      builder: (ctx) {
-        return AlertDialog(
-          title: Text(l10n.onboardingGuestSwitchTitle),
-          content: Text(l10n.onboardingGuestSwitchBody),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(ctx).pop(false),
-              child: Text(l10n.onboardingGuestSwitchCancel),
-            ),
-            TextButton(
-              style: TextButton.styleFrom(foregroundColor: AppColors.danger),
-              onPressed: () => Navigator.of(ctx).pop(true),
-              child: Text(l10n.onboardingGuestSwitchConfirm),
-            ),
-          ],
-        );
-      },
+      title: l10n.onboardingGuestSwitchTitle,
+      child: Text(
+        l10n.onboardingGuestSwitchBody,
+        style: AppTypography.body.copyWith(color: AppColors.inkSoft),
+      ),
+      secondary: (
+        label: l10n.onboardingGuestSwitchCancel,
+        onTap: (ctx) => Navigator.of(ctx).pop(false),
+      ),
+      primary: (
+        label: l10n.onboardingGuestSwitchConfirm,
+        onTap: (ctx) => Navigator.of(ctx).pop(true),
+      ),
     );
   }
 

@@ -139,28 +139,52 @@ class _SchoolSearchWithAddState extends State<SchoolSearchWithAdd> {
   Widget build(BuildContext context) {
     final asyncResult = widget.searchProvider(_query.trim());
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        _SearchField(
-          controller: _controller,
-          placeholder: widget.placeholder,
-          onChanged: _onInputChanged,
-          focusNode: widget.focusNode,
-        ),
-        SizedBox(height: AppSpacing.s4.h),
-        _Results(
-          query: _query.trim(),
-          asyncResult: asyncResult,
-          selected: widget.selectedSchool,
-          onSelect: widget.onSelect,
-          emptyAddTemplate: widget.emptyAddTemplate,
-          warningOfflineMessage: widget.warningOfflineMessage,
-          addInProgress: _addInProgress,
-          onAddTap: _onAddTap,
-        ),
-      ],
+    final searchField = _SearchField(
+      controller: _controller,
+      placeholder: widget.placeholder,
+      onChanged: _onInputChanged,
+      focusNode: widget.focusNode,
+    );
+    final results = _Results(
+      query: _query.trim(),
+      asyncResult: asyncResult,
+      selected: widget.selectedSchool,
+      onSelect: widget.onSelect,
+      emptyAddTemplate: widget.emptyAddTemplate,
+      warningOfflineMessage: widget.warningOfflineMessage,
+      addInProgress: _addInProgress,
+      onAddTap: _onAddTap,
+    );
+
+    // Quand le parent fournit une hauteur bornée (ex: SizedBox dans un bottom
+    // sheet), on passe en Column max + Expanded + SingleChildScrollView pour
+    // que les résultats scrollent dans l'espace restant sans déborder.
+    // Quand le parent est non-borné (ex: SingleChildScrollView onboarding),
+    // on reste en Column min : la liste se déploie librement.
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.hasBoundedHeight) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              searchField,
+              SizedBox(height: AppSpacing.s4.h),
+              Expanded(
+                child: SingleChildScrollView(child: results),
+              ),
+            ],
+          );
+        }
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            searchField,
+            SizedBox(height: AppSpacing.s4.h),
+            results,
+          ],
+        );
+      },
     );
   }
 }

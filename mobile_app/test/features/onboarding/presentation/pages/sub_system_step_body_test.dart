@@ -92,11 +92,11 @@ void main() {
 
   group('SubSystemStepBody — interactions', () {
     testWidgets(
-        'tap card Francophone -> setSubSystemDraft + currentStep RESTE 0',
+        'tap card Francophone -> setSubSystem + auto-advance step 1',
         (tester) async {
-      // Audit 2026-06-13 — Le tap pose le draft sans transitionner ;
-      // l'utilisateur valide via CTA Continuer du shell (test couvert
-      // par onboarding_shell_test).
+      // fix(f2833d5) — Le tap pose le subSystem ET auto-avance au step 1
+      // (HeroIntroStepBody). L'ancien comportement "no auto-advance" a ete
+      // remplace lors de la refonte E1bis complète.
       final container = await _container();
       addTearDown(container.dispose);
 
@@ -107,12 +107,12 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.francophone);
-      expect(state.currentStep, 0,
-          reason: 'draft ne transitionne pas (no auto-advance)');
+      expect(state.currentStep, 1,
+          reason: 'tap sub-system auto-advance vers step 1');
     });
 
     testWidgets(
-        'tap card Anglophone -> setSubSystemDraft + currentStep RESTE 0',
+        'tap card Anglophone -> setSubSystem + auto-advance step 1',
         (tester) async {
       final container = await _container();
       addTearDown(container.dispose);
@@ -124,8 +124,8 @@ void main() {
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.subSystem, SubSystem.anglophone);
-      expect(state.currentStep, 0,
-          reason: 'draft ne transitionne pas (no auto-advance)');
+      expect(state.currentStep, 1,
+          reason: 'tap sub-system auto-advance vers step 1');
     });
   });
 

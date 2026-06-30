@@ -17,6 +17,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/catalogue/domain/models.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/catalogue/providers.dart';
 import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
@@ -331,45 +332,6 @@ class _StreamSubjectsPickerStepBodyState
     return result;
   }
 
-  /// Construit la liste des libelles a afficher dans le recap header du
-  /// step 4 : Section -> Filiere -> Niveau -> Serie (quand applicable).
-  /// Resout les IDs vers leur nom localise via le snapshot catalogue.
-  List<String> _recapPartsFor(
-    CatalogueSnapshot snapshot,
-    dynamic state,
-    String langKey,
-  ) {
-    final parts = <String>[];
-    final subSystem = state.subSystem;
-    if (subSystem != null) {
-      parts.add(subSystem == SubSystem.francophone
-          ? 'Francophone'
-          : 'Anglophone');
-    }
-    final trackId = state.trackId;
-    if (trackId != null) {
-      final f = snapshot.filieres.where((f) => f.filiereId == trackId);
-      if (f.isNotEmpty) {
-        parts.add(f.first.name[langKey] ?? f.first.name.values.first);
-      }
-    }
-    final levelId = state.levelId;
-    if (levelId != null) {
-      final n = snapshot.niveaux.where((n) => n.niveauId == levelId);
-      if (n.isNotEmpty) {
-        parts.add(n.first.name[langKey] ?? n.first.name.values.first);
-      }
-    }
-    final streamId = state.streamId;
-    if (streamId != null) {
-      final s = snapshot.series.where((s) => s.serieId == streamId);
-      if (s.isNotEmpty) {
-        parts.add(s.first.name[langKey] ?? s.first.name.values.first);
-      }
-    }
-    return parts;
-  }
-
   /// Aggrege toutes les matieres d'un profil derive, quel que soit le
   /// pickerMode. Resultat = matieres a afficher dans le resume chips.
   ///
@@ -459,7 +421,7 @@ class _StreamSubjectsPickerStepBodyState
                 streamId: streamId,
                 pickedSubjects: pickedSubjects,
               );
-          router.go('/dashboard');
+          router.go(AppRoutes.dashboard);
         },
       );
     } catch (e, st) {

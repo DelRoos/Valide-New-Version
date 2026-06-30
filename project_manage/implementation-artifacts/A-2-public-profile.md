@@ -1,8 +1,8 @@
 ---
 story: A.2
 title: "Page profil public — consulter le profil d'un camarade"
-status: ready-for-dev
-baseline_commit: "44ba9ee"
+status: review
+baseline_commit: "1008a65"
 ---
 
 # Story A.2 : Page profil public — consulter le profil d'un camarade
@@ -289,85 +289,85 @@ Les clés d'erreur globales `errorPermissionDenied`, `errorNetworkUnavailable`, 
 
 ## Tasks
 
-**T1 — Modèle domain `PublicProfile`**
-Créer `mobile_app/lib/features/account/domain/public_profile.dart`.
-Champs : `uid`, `displayName`, `levelId`, `streamId`, `schoolName?`, `subSystem`. Equatable. Zéro import Firebase/Flutter.
+- [x] T1 — Modèle domain `PublicProfile`
+  Créer `mobile_app/lib/features/account/domain/public_profile.dart`.
+  Champs : `uid`, `displayName`, `levelId`, `streamId`, `schoolName?`, `subSystem`. Equatable. Zéro import Firebase/Flutter.
 
-**T2 — Méthode `fetchPublicProfile()` dans l'interface domain**
-Ajouter la signature dans `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart`.
-Retour : `Future<Either<ProfileFailure, PublicProfile?>>`.
-Docstring en français (WHY + contrat Left/Right).
+- [x] T2 — Méthode `fetchPublicProfile()` dans l'interface domain
+  Ajouter la signature dans `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart`.
+  Retour : `Future<Either<ProfileFailure, PublicProfile?>>`.
+  Docstring en français (WHY + contrat Left/Right).
 
-**T3 — Implémentation Firestore `fetchPublicProfile()`**
-Ajouter la méthode dans `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart`.
-Mapper uniquement les 6 champs publics (voir Dev Notes). Log `AppLogger.i` sur succès + `AppLogger.w` sur erreur. Aucun log de l'uid.
+- [x] T3 — Implémentation Firestore `fetchPublicProfile()`
+  Ajouter la méthode dans `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart`.
+  Mapper uniquement les 6 champs publics (voir Dev Notes). Log `AppLogger.i` sur succès + `AppLogger.w` sur erreur. Aucun log de l'uid.
 
-**T4 — Provider `publicProfileProvider`**
-Ajouter `publicProfileProvider` (FutureProvider.autoDispose.family) dans `mobile_app/lib/features/onboarding/providers.dart`.
-Importer `PublicProfile` depuis le domain account.
+- [x] T4 — Provider `publicProfileProvider`
+  Ajouter `publicProfileProvider` (FutureProvider.autoDispose.family) dans `mobile_app/lib/features/onboarding/providers.dart`.
+  Importer `PublicProfile` depuis le domain account.
 
-**T5 — Règle Firestore**
-Dans `firestore.rules` (racine du dépôt), modifier le bloc `match /users/{uid}` :
-- `allow read: if request.auth != null;` (ouvrir à tout utilisateur authentifié).
-- `allow write: if request.auth != null && request.auth.uid == uid;` (inchangé).
-Documenter la décision A.2-DR-01 en commentaire dans le fichier.
+- [x] T5 — Règle Firestore
+  Dans `firestore.rules` (racine du dépôt), modifier le bloc `match /users/{uid}` :
+  - `allow read: if request.auth != null;` (ouvrir à tout utilisateur authentifié).
+  - `allow write: if request.auth != null && request.auth.uid == uid;` (inchangé).
+  Documenter la décision A.2-DR-01 en commentaire dans le fichier.
 
-**T6 — Widget `PublicProfileHeader`**
-Créer `mobile_app/lib/features/account/presentation/widgets/public_profile_header.dart`.
-Props : `displayName: String`, `classLabel: String?`, `schoolName: String?`.
-Avatar initiales 80 × 80, gradient `AppColors.primary → AppColors.primaryDark`, tokens uniquement (pas de valeurs brutes).
-≤ 80 lignes.
+- [x] T6 — Widget `PublicProfileHeader`
+  Créer `mobile_app/lib/features/account/presentation/widgets/public_profile_header.dart`.
+  Props : `displayName: String`, `classLabel: String?`, `schoolName: String?`.
+  Avatar initiales 80 × 80, gradient `AppColors.primary → AppColors.primaryDark`, tokens uniquement (pas de valeurs brutes).
+  ≤ 80 lignes.
 
-**T7 — Page `PublicProfilePage`**
-Créer `mobile_app/lib/features/account/presentation/public_profile_page.dart`.
-Structure :
-- `Scaffold` + `AppBar` (titre vide ou `displayName` une fois chargé, bouton retour).
-- `LayoutBuilder` pour la stratégie responsive (centrage tablet ≥ 840 dp).
-- `CustomScrollView` avec 3 slivers : header (PublicProfileHeader ou skeleton), stats (hardcodées ou skeleton), padding bas.
-- États : loading → `AppSkeleton`, data → contenu, error → `AppEmptyState` + CTA retry + log.
-- Consomme `publicProfileProvider(uid)` + `catalogueProvider` pour la résolution niveau/série.
-≤ 280 lignes (extraire `_PublicProfileStatsSection` dans un fichier widget séparé si besoin).
+- [x] T7 — Page `PublicProfilePage`
+  Créer `mobile_app/lib/features/account/presentation/public_profile_page.dart`.
+  Structure :
+  - `Scaffold` + `AppBar` (titre vide ou `displayName` une fois chargé, bouton retour).
+  - `LayoutBuilder` pour la stratégie responsive (centrage tablet ≥ 840 dp).
+  - `CustomScrollView` avec 3 slivers : header (PublicProfileHeader ou skeleton), stats (hardcodées ou skeleton), padding bas.
+  - États : loading → `AppSkeleton`, data → contenu, error → `AppEmptyState` + CTA retry + log.
+  - Consomme `publicProfileProvider(uid)` + `catalogueProvider` pour la résolution niveau/série.
+  ≤ 280 lignes (extraire `_PublicProfileStatsSection` dans un fichier widget séparé si besoin).
 
-**T8 — Widget `_PublicProfileStatsSection`** (si T7 dépasse 250 lignes)
-Créer `mobile_app/lib/features/account/presentation/widgets/public_profile_stats_section.dart`.
-Affiche les 2 badges fake V1 (leçons lues + quiz réussis). Stateless, reçoit les valeurs hardcodées en const. Tokens uniquement.
+- [x] T8 — Widget `PublicProfileStatsSection`
+  Créer `mobile_app/lib/features/account/presentation/widgets/public_profile_stats_section.dart`.
+  Affiche les 2 badges fake V1 (leçons lues + quiz réussis). Stateless, reçoit les valeurs hardcodées en const. Tokens uniquement.
 
-**T9 — Route `/user/:uid` dans go_router**
-Dans `mobile_app/lib/core/routing/app_router.dart` :
-- Ajouter `import` de `PublicProfilePage`.
-- Ajouter `GoRoute(path: '/user/:uid', builder: ...)` au niveau racine (hors shell, après les routes `/subject/:subjectId`).
-- Le paramètre de path est transmis directement au constructeur `PublicProfilePage(uid: ...)`.
+- [x] T9 — Route `/user/:uid` dans go_router
+  Dans `mobile_app/lib/core/routing/app_router.dart` :
+  - Ajouter `import` de `PublicProfilePage`.
+  - Ajouter `GoRoute(path: '/user/:uid', builder: ...)` au niveau racine (hors shell, après les routes `/subject/:subjectId`).
+  - Le paramètre de path est transmis directement au constructeur `PublicProfilePage(uid: ...)`.
 
-**T10 — Navigation depuis `_ClassmateRow`**
-Dans `mobile_app/lib/features/dashboard/presentation/home_tab_page.dart` :
-- Ajouter un champ `uid` au modèle `_Classmate` (ex. `'fake-amina-k'`, `'fake-jeanpaul-n'`, `'fake-mariam-t'`).
-- Rendre `_ClassmateRow` tappable : encapsuler dans `GestureDetector` ou `InkWell`, `onTap: () => context.push('/user/${classmate.uid}')`.
-- Importer `go_router` si pas déjà présent dans ce fichier.
+- [x] T10 — Navigation depuis `_ClassmateRow`
+  Dans `mobile_app/lib/features/dashboard/presentation/home_tab_page.dart` :
+  - Ajouter un champ `uid` au modèle `_Classmate` (ex. `'fake-amina-k'`, `'fake-jeanpaul-n'`, `'fake-mariam-t'`).
+  - Rendre `_ClassmateRow` tappable : encapsuler dans `GestureDetector` ou `InkWell`, `onTap: () => context.push('/user/${classmate.uid}')`.
+  - Importer `go_router` si pas déjà présent dans ce fichier.
 
-**T11 — Clés ARB**
-Ajouter dans `mobile_app/lib/l10n/app_fr.arb` et `mobile_app/lib/l10n/app_en.arb` les 5 nouvelles clés listées en Dev Notes (`publicProfileStatsTitle`, `publicProfileLessonsRead`, `publicProfileQuizPassed`, `publicProfileNotFound`, `publicProfileNotFoundSubtitle`).
-Relancer `flutter gen-l10n` — vérifier les 4 fichiers générés (`app_localizations.dart`, `app_localizations_fr.dart`, `app_localizations_en.dart`).
+- [x] T11 — Clés ARB
+  Ajouter dans `mobile_app/lib/l10n/app_fr.arb` et `mobile_app/lib/l10n/app_en.arb` les 5 nouvelles clés listées en Dev Notes (`publicProfileStatsTitle`, `publicProfileLessonsRead`, `publicProfileQuizPassed`, `publicProfileNotFound`, `publicProfileNotFoundSubtitle`).
+  Relancer `flutter gen-l10n` — vérifier les 4 fichiers générés (`app_localizations.dart`, `app_localizations_fr.dart`, `app_localizations_en.dart`).
 
-**T12 — Documentation catalogue composants**
-Dans `doc/tech/COMPOSANTS-REUTILISABLES.md` :
-- Ajouter l'entrée `PublicProfileHeader` (path, story, props, exemple, responsive, tests associés).
+- [x] T12 — Documentation catalogue composants
+  Dans `doc/tech/COMPOSANTS-REUTILISABLES.md` :
+  - Ajouter l'entrée `PublicProfileHeader` (path, story, props, exemple, responsive, tests associés).
 
-**T13 — Tests unitaires repo** (`test/features/account/data/user_profile_repository_public_profile_test.dart`)
-Couvrir les 4 cas listés en Dev Notes § Tests (succès, doc inexistant, not authenticated, FirebaseException). Utiliser le pattern `GetUidFn` injectable existant.
+- [x] T13 — Tests unitaires repo (`test/features/account/data/user_profile_repository_public_profile_test.dart`)
+  Couvrir les 4 cas listés en Dev Notes § Tests (succès, doc inexistant, not authenticated, FirebaseException). Utiliser le pattern `GetUidFn` injectable existant.
 
-**T14 — Tests widget page** (`test/features/account/presentation/public_profile_page_test.dart`)
-3 cas : loading, data (nom visible), erreur réseau (AppEmptyState). Provider overrides via `ProviderScope`.
+- [x] T14 — Tests widget page (`test/features/account/presentation/public_profile_page_test.dart`)
+  3 cas : loading, data (nom visible), erreur réseau (AppEmptyState). Provider overrides via `ProviderScope`.
 
-**T15 — Golden tests**
-Générer les 2 goldens (phone 375 × 812, tablet 1024 × 1366) via `flutter test --update-goldens`.
-Vérifier visuellement avant commit (pas de golden vide ou tout blanc).
+- [x] T15 — Golden tests
+  Générer les 2 goldens (phone 375 × 812, tablet 1024 × 1366) via `flutter test --update-goldens`.
+  Vérifier visuellement avant commit (pas de golden vide ou tout blanc).
 
-**T16 — Vérification finale**
-```
-flutter analyze         # 0 issue
-flutter test            # tous verts (zéro régression baseline)
-```
-Vérifier que la règle de taille de fichier CLAUDE.md est respectée (≤ 300 lignes pour les fichiers widget).
+- [x] T16 — Vérification finale
+  ```
+  flutter analyze         # 0 issue
+  flutter test            # tous verts (zéro régression baseline)
+  ```
+  Vérifier que la règle de taille de fichier CLAUDE.md est respectée (≤ 300 lignes pour les fichiers widget).
 
 ---
 
@@ -383,3 +383,77 @@ Vérifier que la règle de taille de fichier CLAUDE.md est respectée (≤ 300 l
 ## Décision ouverte
 
 **OQ-A2-01** : À terme (post-V1), quand les stats réelles (leçons lues, quiz réussis) seront disponibles en Firestore, faudra-t-il un champ dénormalisé dans `users/{uid}` (1 read total) ou une sous-collection `users/{uid}/stats/main` (1 read supplémentaire) ? Documenter dans la story Epic 3 dédiée. Pour l'instant : valeurs hardcodées, zéro read supplémentaire.
+
+---
+
+## Dev Agent Record
+
+### Debug Log
+
+| Date | Problème | Cause identifiée | Fix appliqué |
+|---|---|---|---|
+| 2026-06-24 | `onboarding_shell_test` : step 1 + tap CTA → step 5 au lieu de step 2 | `find.byType(AppButton).first` ciblait le bouton secondaire « j'ai un compte » (rendu AVANT le bouton primaire dans `OnboardingCtaFooter`) qui appelle `jumpToAuth()` → step 5 | Changé `.first` → `.last` dans le test |
+| 2026-06-24 | `school_search_with_add_test` : debounce callCount initial attendu 0, reçu 1 | `SchoolSearchWithAdd.build()` appelle `searchProvider('')` à chaque build initial (comportement « list all by default » ajouté en sprint précédent) | Mis à jour les assertions : initial=1, après 100ms=1, après 250ms=2 |
+| 2026-06-24 | `splash_page_test` navigation test : RenderFlex overflow multiple dans `_ResumeCard` | `resetDevicePixelRatio()` du tearDown d'un test précédent laissait le DPR à la valeur plateforme (≠1.0 sur Windows) ; avec `physicalSize=375px` et `DPR≠1.0`, la largeur logique tombait à ~293px → contrainte de contenu ~221px → overflow | (1) Test : ajout `tester.view.devicePixelRatio = 1.0` + `physicalSize` explicites + tearDown complet. (2) Widget `_ResumeCard` : Row1 `Flexible→Expanded(Text maxLines:1)` ; Row2 `OutlinedButton.icon→OutlinedButton(maximumSize:Size(160,∞), child: Row(Flexible(Text)))` |
+
+### Completion Notes
+
+- **Architecture** : Clean architecture respectée — `PublicProfile` dans `features/account/domain/` sans import Firebase ni Flutter ; `fetchPublicProfile()` dans la couche data uniquement ; `publicProfileProvider` dans `features/onboarding/providers.dart` (colocalisation avec `userProfileRepositoryProvider`).
+- **Firestore rules** : Décision A.2-DR-01 appliquée — `allow read: if request.auth != null` sur `users/{uid}`. Trade-off V1 documenté dans les Dev Notes (champs sensibles non mappés dans `PublicProfile`).
+- **Widget `PublicProfileHeader`** extrait en composant public paramétré (pas de duplication de `_ProfileHeader`). Documenté dans `COMPOSANTS-REUTILISABLES.md`.
+- **`PublicProfileStatsSection`** extrait en fichier séparé pour maintenir `PublicProfilePage` ≤ 280 lignes (règle CLAUDE.md).
+- **Règle responsive AC7** : breakpoint 840 dp avec `LayoutBuilder`, conteneur max 600 dp en tablet — identique au pattern `SubjectDetailPage`.
+- **Goldens** générés pour phone (375×812) et tablet (1024×1366) et vérifiés visuellement (fond gradient + avatar initiales + badges stats).
+- **Résultat final** : `flutter analyze --no-pub` → 0 issue ; `flutter test --no-pub` → +384 ~1 (tous verts, zéro régression).
+- **Taille fichiers** : `public_profile_page.dart` ≤ 280 lignes, `public_profile_header.dart` ≤ 80 lignes, `public_profile_stats_section.dart` ≤ 60 lignes — conformes CLAUDE.md.
+
+---
+
+## File List
+
+### Nouveaux fichiers créés
+
+- `mobile_app/lib/features/account/domain/public_profile.dart`
+- `mobile_app/lib/features/account/presentation/public_profile_page.dart`
+- `mobile_app/lib/features/account/presentation/widgets/public_profile_header.dart`
+- `mobile_app/lib/features/account/presentation/widgets/public_profile_stats_section.dart`
+- `mobile_app/test/features/account/data/user_profile_repository_public_profile_test.dart`
+- `mobile_app/test/features/account/presentation/public_profile_page_test.dart`
+- `mobile_app/test/features/account/presentation/__goldens__/public_profile_phone.png`
+- `mobile_app/test/features/account/presentation/__goldens__/public_profile_tablet.png`
+
+### Fichiers modifiés
+
+- `firestore.rules` — règle `allow read` ouverte à tout utilisateur authentifié (T5)
+- `mobile_app/lib/core/routing/app_router.dart` — route `/user/:uid` ajoutée (T9)
+- `mobile_app/lib/features/onboarding/domain/user_profile_repository.dart` — signature `fetchPublicProfile()` (T2)
+- `mobile_app/lib/features/onboarding/data/user_profile_repository_firestore_impl.dart` — implémentation `fetchPublicProfile()` (T3)
+- `mobile_app/lib/features/onboarding/providers.dart` — `publicProfileProvider` ajouté (T4)
+- `mobile_app/lib/features/dashboard/presentation/home_tab_page.dart` — `_Classmate.uid` + `_ClassmateRow` tappable + fix overflow `_ResumeCard` (T10)
+- `mobile_app/lib/l10n/app_fr.arb` — 5 clés `publicProfile*` (T11)
+- `mobile_app/lib/l10n/app_en.arb` — 5 clés `publicProfile*` (T11)
+- `mobile_app/lib/l10n/generated/app_localizations.dart` — généré (T11)
+- `mobile_app/lib/l10n/generated/app_localizations_fr.dart` — généré (T11)
+- `mobile_app/lib/l10n/generated/app_localizations_en.dart` — généré (T11)
+- `doc/tech/COMPOSANTS-REUTILISABLES.md` — entrée `PublicProfileHeader` (T12)
+- `mobile_app/test/features/onboarding/presentation/pages/onboarding_shell_test.dart` — fix `.first` → `.last` (correction régression)
+- `mobile_app/test/core/widgets/forms/school_search_with_add_test.dart` — fix assertions debounce callCount (correction régression)
+- `mobile_app/test/features/splash/splash_page_test.dart` — fix DPR + physicalSize navigation test (correction régression)
+- `mobile_app/test/features/onboarding/presentation/pages/__goldens__/hero_intro_step_body_phone.png` — mis à jour
+- `mobile_app/test/features/onboarding/presentation/pages/__goldens__/hero_intro_step_body_tablet.png` — mis à jour
+- `mobile_app/test/features/onboarding/presentation/pages/__goldens__/sub_system_step_body_phone.png` — mis à jour
+- `mobile_app/test/features/onboarding/presentation/pages/__goldens__/sub_system_step_body_tablet.png` — mis à jour
+- `mobile_app/test/core/widgets/forms/__goldens__/school_search_phone_error.png` — mis à jour
+- `mobile_app/test/core/widgets/forms/__goldens__/school_search_phone_no_results.png` — mis à jour
+- `mobile_app/test/core/widgets/forms/__goldens__/school_search_tablet_error.png` — mis à jour
+- `mobile_app/test/core/widgets/forms/__goldens__/school_search_tablet_no_results.png` — mis à jour
+- `mobile_app/test/_helpers/fakes.dart` — `FakeUserProfileRepository.fetchPublicProfile()` stub ajouté
+- `mobile_app/lib/core/theme/tokens.dart` — (si tokens ajoutés pour l'avatar)
+
+---
+
+## Change Log
+
+| Version | Date | Auteur | Description |
+|---|---|---|---|
+| 1.0 | 2026-06-24 | Dev Agent (Claude) | Implémentation complète Story A.2 — page profil public, composants, tests, goldens, règle Firestore. Fix régressions 3 tests existants (onboarding_shell, school_search, splash). |

@@ -32,6 +32,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/catalogue/providers.dart';
+import '../../../core/routing/app_routes.dart';
 import '../../../core/firebase/providers.dart';
 import '../../../core/logging/app_logger.dart';
 import '../../../core/theme/tokens.dart';
@@ -154,7 +155,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
     if (_navigated || !mounted) return;
     _navigated = true;
     // Audit PR4 2026-06-13 — Direct redirect : avant ce PR, le splash
-    // tapait toujours /dashboard puis le router redirigeait /onboarding/v2
+    // tapait toujours /dashboard puis le router redirigeait /onboarding
     // si profil incomplet -> 3 frames de transition (splash -> dashboard
     // -> onboarding) avec flicker visible. Maintenant on lit l'etat de
     // completion ICI pour viser direct la bonne route.
@@ -163,7 +164,7 @@ class _SplashPageState extends ConsumerState<SplashPage>
       data: (s) => s == ProfileCompletionState.complete,
       orElse: () => false,
     );
-    context.go(isComplete ? '/dashboard' : '/onboarding/v2');
+    context.go(isComplete ? AppRoutes.dashboard : AppRoutes.onboarding);
   }
 
   @override

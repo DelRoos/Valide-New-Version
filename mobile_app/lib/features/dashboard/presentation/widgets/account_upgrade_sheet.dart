@@ -9,9 +9,8 @@
 // `linkWithCredential` cote repo. Pas de signOut + signIn (qui aurait
 // donne un nouvel uid et perdu le profil).
 //
-// Apres succes : snackbar + close. Le DashboardPage va automatiquement
-// masquer DashboardGuestInviteCard (isAnonymous=false propage via
-// firebaseAuthProvider.currentUser).
+// Apres succes : snackbar + close. Le dashboard masque automatiquement
+// le contenu visiteur (isAnonymous=false propage via currentUserProvider).
 
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/logging/app_logger.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/auth/social_brand_icons.dart';
@@ -72,7 +72,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
 
         // upgradeInProgress a déjà été posé true par le onPressed du bouton,
         // AVANT l'appel linkGoogle/linkApple. Le router n'a donc pas pu
-        // auto-rediriger /dashboard -> /onboarding/v2 pendant l'auth.
+        // auto-rediriger /dashboard -> /onboarding pendant l'auth.
         // Positionner le notifier au step 6 (saisie nom) avec le
         // displayName OAuth pré-rempli si disponible.
         ref.read(onboardingNotifierProvider.notifier).setAuthProvider(
@@ -85,7 +85,7 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
         // Pop le sheet puis naviguer vers le flow de completion d'identité.
         if (context.mounted) {
           Navigator.of(context).pop();
-          GoRouter.of(context).go('/onboarding/v2');
+          GoRouter.of(context).go(AppRoutes.onboarding);
         }
       } else if (next is AccountLinkingError) {
         // Annulation ou erreur : réinitialiser le flag pour que le router

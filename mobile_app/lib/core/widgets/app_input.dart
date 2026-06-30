@@ -14,6 +14,8 @@ class AppInput extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.enabled = true,
+    this.autofocus = false,
+    this.focusNode,
   });
 
   final String label;
@@ -24,6 +26,8 @@ class AppInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
   final bool enabled;
+  final bool autofocus;
+  final FocusNode? focusNode;
 
   bool get _hasError => errorText != null && errorText!.isNotEmpty;
 
@@ -49,6 +53,8 @@ class AppInput extends StatelessWidget {
             obscureText: obscureText,
             keyboardType: keyboardType,
             enabled: enabled,
+            autofocus: autofocus,
+            focusNode: focusNode,
             style: AppTypography.body.copyWith(
               fontSize: AppTypography.body.fontSize!.sp,
             ),
