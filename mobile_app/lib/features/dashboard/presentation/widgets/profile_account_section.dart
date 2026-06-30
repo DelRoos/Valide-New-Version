@@ -27,6 +27,7 @@ import '../../../../l10n/generated/app_localizations.dart';
 import '../../../account/domain/account_deletion_failure.dart';
 import '../../../account/domain/account_deletion_status.dart';
 import '../../../account/providers.dart';
+import '../../../onboarding/presentation/state/onboarding_providers.dart';
 import '../../../onboarding/providers.dart';
 
 class ProfileAccountSection extends ConsumerStatefulWidget {
@@ -63,9 +64,22 @@ class _ProfileAccountSectionState
             ref
                 .read(profileUpgradeInProgressProvider.notifier)
                 .setInProgress(false);
+            ref.read(onboardingNotifierProvider.notifier).reset();
             if (context.mounted) context.go('/');
 
           case AccountDeletionStatusError(:final failure):
+            if (failure.kind == AccountDeletionFailureKind.wrongAccount) {
+              // Mauvais compte Google : garder le dialogue ouvert pour retry.
+              AppToast.show(
+                context,
+                message: l10n.accountDeletionWrongAccountToast,
+                tone: ToastTone.warning,
+              );
+              ref
+                  .read(accountDeletionStatusNotifierProvider.notifier)
+                  .resetToReauth();
+              return;
+            }
             _closeDialogIfOpen();
             final message = switch (failure.kind) {
               AccountDeletionFailureKind.requiresRecentLogin =>
@@ -73,7 +87,9 @@ class _ProfileAccountSectionState
               AccountDeletionFailureKind.functionNotFound =>
                 l10n.accountDeletionNotAvailableToast,
               AccountDeletionFailureKind.network => l10n.errorNoConnection,
-              AccountDeletionFailureKind.unknown => l10n.errorGeneric,
+              AccountDeletionFailureKind.wrongAccount ||
+              AccountDeletionFailureKind.unknown =>
+                l10n.errorGeneric,
             };
             AppToast.show(context, message: message, tone: ToastTone.warning);
             ref.read(accountDeletionStatusNotifierProvider.notifier).reset();

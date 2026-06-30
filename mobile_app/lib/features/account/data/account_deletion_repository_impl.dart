@@ -167,6 +167,10 @@ class AccountDeletionRepositoryImpl implements AccountDeletionRepository {
       AppLogger.w('Reauth Google failed: ${e.code}');
       return Left(AccountDeletionFailure.unknown('google: ${e.code}'));
     } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-mismatch') {
+        AppLogger.w('Reauth Google: user-mismatch — mauvais compte Google sélectionné');
+        return const Left(AccountDeletionFailure.wrongAccount());
+      }
       AppLogger.w('Reauth Firebase failed: code=${e.code}');
       return Left(AccountDeletionFailure.unknown('auth: ${e.code}'));
     } catch (e) {

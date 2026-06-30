@@ -369,7 +369,7 @@ class _ResultsList extends StatelessWidget {
             variant: SelectionCardVariant.compact,
             maxLines: 1,
           ),
-          SizedBox(height: AppSpacing.s2.h),
+          SizedBox(height: AppSpacing.s1.h),
         ],
       ],
     );

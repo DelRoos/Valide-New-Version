@@ -924,6 +924,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Session expirée. Reconnecte-toi et réessaie.';
 
   @override
+  String get accountDeletionWrongAccountToast =>
+      'Ce n\'est pas le bon compte Google. Reconnecte-toi avec le compte lié à cette application.';
+
+  @override
   String get accountDeletionReauthTitle => 'Vérification requise';
 
   @override
@@ -1029,6 +1033,12 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get saveLabel => 'Enregistrer';
+
+  @override
+  String get profileSetupSheetTitle => 'Finalise ton compte';
+
+  @override
+  String get profileSetupPhoneLabel => 'Numéro de téléphone (optionnel)';
 
   @override
   String get profileDeletionPendingTitle => 'Suppression programmée';

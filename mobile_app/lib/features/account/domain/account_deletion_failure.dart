@@ -12,6 +12,8 @@ enum AccountDeletionFailureKind {
   functionNotFound,
   network,
   requiresRecentLogin,
+  /// Firebase `user-mismatch` : compte Google ≠ compte à supprimer.
+  wrongAccount,
   unknown,
 }
 
@@ -20,21 +22,20 @@ abstract class AccountDeletionFailure extends Failure {
 
   AccountDeletionFailureKind get kind;
 
-  /// Cloud Function non deployee cote backend (`HttpsError.not-found`). Le
-  /// mobile gere gracefully : toast "Fonctionnalite bientot disponible" +
-  /// log warn. L'app reste utilisable.
+  /// Cloud Function non déployée côté backend — toast info, app reste fonctionnelle.
   const factory AccountDeletionFailure.functionNotFound() =
       _AccountDeletionFunctionNotFound;
 
-  /// Reseau coupe / timeout (`HttpsError.unavailable` ou `deadline-exceeded`).
-  /// Le user peut re-essayer.
+  /// Réseau coupé ou timeout — l'utilisateur peut réessayer.
   const factory AccountDeletionFailure.network() = _AccountDeletionNetwork;
 
-  /// Firebase Auth exige une re-authentification recente avant de supprimer
-  /// le compte (`FirebaseAuthException.code == 'requires-recent-login'`).
-  /// L'UI doit inviter l'utilisateur a se reconnecter et reessayer.
+  /// Firebase `requires-recent-login` — l'UI propose de se reconnecter.
   const factory AccountDeletionFailure.requiresRecentLogin() =
       _AccountDeletionRequiresRecentLogin;
+
+  /// Firebase `user-mismatch` — l'UI garde le dialogue ouvert pour retry.
+  const factory AccountDeletionFailure.wrongAccount() =
+      _AccountDeletionWrongAccount;
 
   /// Toute autre erreur. Message conserve pour debug, jamais affiche brut.
   const factory AccountDeletionFailure.unknown(String message) =
@@ -75,6 +76,18 @@ class _AccountDeletionRequiresRecentLogin extends AccountDeletionFailure {
   @override
   List<Object?> get props =>
       const ['AccountDeletionFailure.requiresRecentLogin'];
+}
+
+class _AccountDeletionWrongAccount extends AccountDeletionFailure {
+  const _AccountDeletionWrongAccount()
+      : super('Mauvais compte Google. Reconnecte-toi avec le bon compte.');
+
+  @override
+  AccountDeletionFailureKind get kind =>
+      AccountDeletionFailureKind.wrongAccount;
+
+  @override
+  List<Object?> get props => const ['AccountDeletionFailure.wrongAccount'];
 }
 
 class _AccountDeletionUnknown extends AccountDeletionFailure {

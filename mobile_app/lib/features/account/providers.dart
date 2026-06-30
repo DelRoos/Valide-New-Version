@@ -122,10 +122,14 @@ class AccountDeletionStatusNotifier extends Notifier<AccountDeletionStatus> {
     );
   }
 
-  /// Reset vers idle (utile apres avoir consomme un toast d'erreur ou un
-  /// succes pour permettre une nouvelle tentative).
+  /// Retour à idle après consommation d'une erreur ou d'un succès.
   void reset() {
     state = const AccountDeletionStatus.idle();
+  }
+
+  /// Cas mauvais compte Google : repasse en requiresReauth sans fermer le dialogue.
+  void resetToReauth() {
+    state = const AccountDeletionStatus.requiresReauth();
   }
 }
 

@@ -499,6 +499,30 @@ PickerValidateBar(
 
 ---
 
+### ProfileSetupSheet
+
+**Path** : `lib/features/dashboard/presentation/widgets/profile_setup_sheet.dart`
+**Story d'origine** : Dashboard — complétion profil post-linking Google/Apple
+**Catégorie** : `form`
+**Responsive** : `phone + tablet` (ConstrainedBox maxWidth 560.w centré via Center)
+
+**Quand l'utiliser** :
+- Après linking Google/Apple (via CompleteProfileDialog) si displayName est absent.
+- Collecte nom pré-rempli + téléphone optionnel en une seule étape.
+
+**Props (API publique)** :
+- `initialDisplayName: String` — Nom initial (vide si absent, pré-rempli si fourni par Google/Apple).
+
+**Exemple** :
+```dart
+ProfileSetupSheet.show(context, displayName: authDisplayName);
+```
+
+**Tests associés** :
+- Aucun test widget — à ajouter dans une story dédiée.
+
+---
+
 ## À créer — Refonte Onboarding 10 étapes (Epic E1bis, 2026-06-11)
 
 > **Statut Story E1bis-0 (2026-06-11)** : ✅ Livrée. Les 6 composants prévus ont été créés et déplacés dans [§ Catalogue actuel](#catalogue-actuel) ci-dessus. **Décision AC2** : `SubSystemHeroCard` a été **fusionné dans `SelectionCard` via `variant: SelectionCardVariant.hero`** (specs DESIGN.md des deux composants ne différaient que sur padding +4 dp et taille d'icône +8 dp — paramètres déjà portés par la variant). 5 composants effectifs au catalogue + helper `maskPhone()` + `SchoolEntry` record.

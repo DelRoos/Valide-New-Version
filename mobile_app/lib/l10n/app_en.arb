@@ -373,6 +373,7 @@
   "accountDeletionAutoCancelledToast": "Your account is active again.",
   "accountDeletionNotAvailableToast": "Feature coming soon.",
   "accountDeletionRecentLoginToast": "Session expired. Sign in again and retry.",
+  "accountDeletionWrongAccountToast": "That's not the right Google account. Sign in with the account linked to this app.",
   "accountDeletionReauthTitle": "Verification required",
   "accountDeletionReauthBody": "Your session has expired. Sign in with Google to confirm your account deletion.",
 
@@ -432,6 +433,8 @@
   "profileEditSuccess": "Profile updated.",
   "profileEditNameLabel": "First name or nickname",
   "saveLabel": "Save",
+  "profileSetupSheetTitle": "Complete your account",
+  "profileSetupPhoneLabel": "Phone number (optional)",
   "profileDeletionPendingTitle": "Deletion scheduled",
   "profileDeletionPendingSubtitle": "Your account will be permanently deleted on {date}. Log back in before that date to cancel.",
   "@profileDeletionPendingSubtitle": {

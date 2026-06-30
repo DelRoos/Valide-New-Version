@@ -30,11 +30,13 @@ class MainShell extends StatelessWidget {
       body: navigationShell,
       bottomNavigationBar: _StyledNavBar(
         selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: (i) => navigationShell.goBranch(
-          i,
-          // Re-tap sur l'onglet actif = remonter à la racine de la branche.
-          initialLocation: i == navigationShell.currentIndex,
-        ),
+        onDestinationSelected: (i) {
+          navigationShell.goBranch(
+            i,
+            // Re-tap sur l'onglet actif = remonter à la racine de la branche.
+            initialLocation: i == navigationShell.currentIndex,
+          );
+        },
         destinations: [
           _NavDest(icon: LucideIcons.house, label: l10n.dashboardTabHome),
           _NavDest(
