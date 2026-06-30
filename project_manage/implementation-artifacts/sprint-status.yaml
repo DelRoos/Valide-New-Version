@@ -1,5 +1,5 @@
 ﻿# generated: 2026-06-03
-# last_updated: 2026-06-24  # PR #148 mergée (dd2de5d). Stories 2.3 + A.1 → done. Pilier A : A-1 done, A-2 ready-for-dev. Pilier B : 2-4 in-progress. | PRÉCÉDENT : sprint-change-proposal-2026-06-24 approuvé. A-1 review→done, 2-3 review→done.
+# last_updated: 2026-06-30  # fix/code-review-pr149 — corrections post-review PR #149 (a5a3b1c). A-2 review→done. Pilier A complet. Pilier B : 2-4 in-progress. | PRÉCÉDENT : PR #148 mergée (dd2de5d). Stories 2.3 + A.1 → done.
 # project: Valide School MVP
 # project_key: VALIDE
 # tracking_system: file-system
@@ -127,7 +127,7 @@ development_status:
   2-3-dashboard-home-ui: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). Dashboard home enrichi + split tab pages. HALT T13 levé au merge.
   2-4-content-integration: in-progress  # RÉOUVERTE 2026-06-24 (sprint-change-proposal-2026-06-24). Revert session : pages contenu revenues à fake data (bug SubjectDetailPage). À re-implémenter proprement. [FR-9, FR-11, FR-14, FR-15]
   A-1-edit-profile: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). ProfileEditSheet + SchoolEditSheet + updateDisplayName/updatePhoneNumber Firestore + stubs toast. [Pilier A — Story 1/2]
-  A-2-public-profile: review  # 2026-06-24 implémentation complète. baseline_commit 1008a65. Page /user/:uid + PublicProfile + fetchPublicProfile + règle Firestore + navigation classmates. 384 tests verts, 0 analyse issue.
+  A-2-public-profile: done  # 2026-06-30 corrections post-review mergées (fix/code-review-pr149, a5a3b1c) : rootNavigator, tablet layout ProfileSetupSheet, wrongAccount reauth, SSL→network, onboarding reset post-deletion, commentaires CLAUDE.md règle 1. Pilier A complet.
   2-5-fiches-de-lecture: backlog  # Nouveau type contenu 'fiche' (champ type sur lessons Firestore). Rendu PedagogicalContent. Seed Python étendu. Décision réunion 2026-06-24.
   2-6-quiz-content-integration: backlog  # Quiz liés chapitres/leçons (collection quizzes). QCM + score local. Sans IA. Décision réunion 2026-06-24.
   3-1-mini-exercise-module: backlog  # Pull-forward E3 partiel. Énoncé classé (séquence/officiel/blanc/zéro), parcourir, marquer fait. Sans IA. Décision réunion 2026-06-24.
