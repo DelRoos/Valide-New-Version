@@ -131,6 +131,7 @@ class AppTypography {
 class AppSpacing {
   AppSpacing._();
 
+  static const double s075 = 3; // 3 dp — micro-padding (badge interne)
   static const double s1 = 4;
   static const double s2 = 8;
   static const double s3 = 12;
@@ -273,4 +274,39 @@ class AppBorderWidth {
   static const double normal   = 1.5; // toast, cards légères
   static const double bold     = 2;   // input focus, sélection active
   static const double accent   = 4;   // left accent (inline alert)
+}
+
+/// Tailles d'avatar (photos de profil) en dp responsive via ScreenUtil.
+class AppAvatarSize {
+  AppAvatarSize._();
+
+  /// Avatar profil standard (header dashboard).
+  static double get profileMd => 72.0.w;
+
+  /// Avatar profil large (profil public, sheet d'édition).
+  static double get profileLg => 80.0.w;
+}
+
+/// Espacement lettre standardisés (en points, pas responsive).
+class AppLetterSpacing {
+  AppLetterSpacing._();
+
+  /// Sections eyebrow ALL-CAPS avec tracking ouvert (0.8 pt).
+  static const double wide = 0.8;
+}
+
+/// Dimensions UI spécifiques non couvertes par AppSpacing / AppIconSize.
+class AppDimension {
+  AppDimension._();
+
+  // Barres de progression
+  static const double progressBarThin = 3;  // barre lecture leçon
+  static const double progressBarMed  = 5;  // barre progression chapitre
+
+  // Layouts
+  static const double lessonToolbarHeight = 68; // AppBar leçon avec breadcrumb
+  static const double dialogMaxWidth      = 420; // largeur max modale
+
+  // Champ de saisie
+  static const double inputFieldHeight = 52; // height standard AppInput
 }

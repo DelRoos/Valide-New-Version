@@ -42,8 +42,8 @@ class AppBottomSheet {
             children: [
               Center(
                 child: Container(
-                  width: 36.w,
-                  height: 4.h,
+                  width: AppSpacing.s9.w,
+                  height: AppSpacing.s1.h,
                   decoration: BoxDecoration(
                     color: AppColors.mute2,
                     borderRadius: BorderRadius.circular(AppRadius.pill),

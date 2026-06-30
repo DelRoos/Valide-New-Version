@@ -9,6 +9,11 @@ import '../../../../l10n/generated/app_localizations.dart';
 import 'exams_countdown_banner.dart';
 import 'exams_subject_card.dart';
 
+const double _kBannerH = 180;
+const double _kTitleSkeletonW = 140;
+const double _kTitleSkeletonH = 22;
+const double _kItemSkeletonH = 72;
+
 // ── Body ─────────────────────────────────────────────────────────────────────
 
 class ExamsBody extends StatelessWidget {
@@ -68,7 +73,7 @@ class ExamsSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            height: 180.h,
+            height: _kBannerH.h,
             decoration: BoxDecoration(
               color: AppColors.border,
               borderRadius: BorderRadius.circular(AppRadius.xl),
@@ -77,7 +82,7 @@ class ExamsSkeleton extends StatelessWidget {
               .shimmer(duration: 1400.ms, color: AppColors.bg),
           SizedBox(height: AppSpacing.s6.h),
           Container(
-            width: 140.w, height: 22.h,
+            width: _kTitleSkeletonW.w, height: _kTitleSkeletonH.h,
             decoration: BoxDecoration(
               color: AppColors.border,
               borderRadius: BorderRadius.circular(AppRadius.sm),
@@ -88,7 +93,7 @@ class ExamsSkeleton extends StatelessWidget {
           ...List.generate(4, (i) => Padding(
             padding: EdgeInsets.only(bottom: AppSpacing.s3.h),
             child: Container(
-              height: 72.h,
+              height: _kItemSkeletonH.h,
               decoration: BoxDecoration(
                 color: AppColors.card,
                 borderRadius: BorderRadius.circular(AppRadius.lg),

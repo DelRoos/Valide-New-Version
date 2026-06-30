@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/logging/app_logger.dart';
 import '../../domain/entities/chapter_entity.dart';
+import '../../domain/entities/lesson_content_entity.dart';
 import '../../domain/entities/lesson_entity.dart';
 import '../../domain/failures/content_failure.dart';
 import '../../domain/repositories/content_repository.dart';
@@ -17,7 +18,8 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
 
   static const _kChapters = 'chapters';
   static const _kLessons = 'lessons';
-  static const _kMaxChapters = 100;
+  static const _kContent = 'content';
+  static const _kMaxChapters = 30;
   static const _kMaxLessons = 50;
 
   @override
@@ -37,7 +39,7 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
       return Right(entities);
     } on FirebaseException catch (e) {
       final failure = _mapFirebaseException(e, context: 'getChapters($subjectId)');
-      AppLogger.e('content.getChapters failed', error: failure.message);
+      AppLogger.e('content.getChapters: kind=${failure.kind.name} message=${failure.message}');
       return Left(failure);
     } catch (e) {
       final failure = ContentFailure.unknown(e.toString());
@@ -63,7 +65,7 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
       return Right(entities);
     } on FirebaseException catch (e) {
       final failure = _mapFirebaseException(e, context: 'getLessons($chapterId)');
-      AppLogger.e('content.getLessons failed', error: failure.message);
+      AppLogger.e('content.getLessons: kind=${failure.kind.name} message=${failure.message}');
       return Left(failure);
     } catch (e) {
       final failure = ContentFailure.unknown(e.toString());
@@ -86,11 +88,44 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
       return Right(LessonModel.fromFirestore(doc).toEntity());
     } on FirebaseException catch (e) {
       final failure = _mapFirebaseException(e, context: 'getLessonById($lessonId)');
-      AppLogger.e('content.getLessonById failed', error: failure.message);
+      AppLogger.e('content.getLessonById: kind=${failure.kind.name} message=${failure.message}');
       return Left(failure);
     } catch (e) {
       final failure = ContentFailure.unknown(e.toString());
       AppLogger.e('content.getLessonById unexpected error', error: e);
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<ContentFailure, LessonContentEntity>> getLessonContent(
+    String lessonId,
+  ) async {
+    try {
+      final doc = await _firestore
+          .collection(_kLessons)
+          .doc(lessonId)
+          .collection(_kContent)
+          .doc('main')
+          .get();
+      if (!doc.exists) {
+        final failure = ContentFailure.notFound('$lessonId/content/main');
+        AppLogger.w('content.getLessonContent not found: $lessonId/content/main');
+        return Left(failure);
+      }
+      final data = doc.data() ?? {};
+      return Right(LessonContentEntity(
+        lessonId: lessonId,
+        contentFr: (data['fr'] as String?) ?? '',
+        contentEn: (data['en'] as String?) ?? '',
+      ));
+    } on FirebaseException catch (e) {
+      final failure = _mapFirebaseException(e, context: 'getLessonContent($lessonId)');
+      AppLogger.e('content.getLessonContent: kind=${failure.kind.name} message=${failure.message}');
+      return Left(failure);
+    } catch (e) {
+      final failure = ContentFailure.unknown(e.toString());
+      AppLogger.e('content.getLessonContent unexpected error', error: e);
       return Left(failure);
     }
   }

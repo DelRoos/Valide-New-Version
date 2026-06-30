@@ -100,7 +100,7 @@ class _StatCell extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 2.h),
+          SizedBox(height: AppSpacing.s1.h / 2),
           Text(
             label,
             style: AppTypography.eyebrow.copyWith(
@@ -119,7 +119,7 @@ class _Divider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: AppBorderWidth.hairline,
-      height: 48.h,
+      height: AppSpacing.s12.h,
       color: AppColors.border,
     );
   }

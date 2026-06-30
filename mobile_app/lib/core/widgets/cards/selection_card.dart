@@ -50,6 +50,7 @@ class SelectionCard extends StatelessWidget {
     this.description,
     this.variant = SelectionCardVariant.standard,
     this.showRadio = true,
+    this.maxLines,
   });
 
   final String title;
@@ -63,6 +64,9 @@ class SelectionCard extends StatelessWidget {
   /// Passer `false` quand l'etat selectionne est deja signale par le border
   /// + bg + scale (cas onboarding refonte E1bis 2026-06-12).
   final bool showRadio;
+
+  /// Limite le titre a N lignes avec overflow ellipsis. `null` = pas de limite.
+  final int? maxLines;
 
   /// Padding interieur de la carte selon la variant (DESIGN.md).
   EdgeInsets get _padding {
@@ -174,6 +178,8 @@ class SelectionCard extends StatelessWidget {
               children: [
                 Text(
                   title,
+                  maxLines: maxLines,
+                  overflow: maxLines != null ? TextOverflow.ellipsis : null,
                   style: AppTypography.bodyStrong.copyWith(
                     fontSize: _titleSize,
                     color: selected ? AppColors.primary : AppColors.ink,

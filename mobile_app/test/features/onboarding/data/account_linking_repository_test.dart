@@ -35,6 +35,7 @@ void main() {
       required AppleSignInFn appleSignIn,
       required LinkCredentialFn linkCredential,
       SignInWithCredentialFn? signInWithCredential,
+      GetCurrentUserFn? getCurrentUser,
     }) {
       return AccountLinkingRepositoryFirebaseImpl(
         firestore: firestore,
@@ -43,6 +44,7 @@ void main() {
         linkCredential: linkCredential,
         signInWithCredential:
             signInWithCredential ?? (_) async => throw UnimplementedError(),
+        getCurrentUser: getCurrentUser ?? () => null,
       );
     }
 

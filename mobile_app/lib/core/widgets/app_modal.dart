@@ -31,7 +31,7 @@ class AppDialogCard extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: AppSpacing.s5.w),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxWidth: 420.w,
+            maxWidth: AppDimension.dialogMaxWidth.w,
             maxHeight: MediaQuery.sizeOf(context).height * 0.85,
           ),
           child: Material(

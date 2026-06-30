@@ -46,7 +46,7 @@ class AppInput extends StatelessWidget {
         ),
         SizedBox(height: AppSpacing.s2.h),
         SizedBox(
-          height: 52.h,
+          height: AppDimension.inputFieldHeight.h,
           child: TextField(
             controller: controller,
             onChanged: onChanged,
@@ -84,7 +84,7 @@ class AppInput extends StatelessWidget {
                 borderRadius: BorderRadius.circular(AppRadius.lg),
                 borderSide: BorderSide(
                   color: _hasError ? AppColors.danger : AppColors.primary,
-                  width: 2,
+                  width: AppBorderWidth.bold,
                 ),
               ),
               errorBorder: OutlineInputBorder(
