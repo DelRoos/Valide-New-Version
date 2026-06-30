@@ -134,8 +134,10 @@ void main() {
       expect(state.currentStep, 4);
     });
 
-    test('requiresPicker=false (mode derived) -> currentStep 5 (skip step 4)',
+    test('requiresPicker=false (mode derived) -> currentStep 4 (recap toujours)',
         () async {
+      // audit 2026-06-14 — toutes les classes passent par step 4 (recap);
+      // le skip step 4 pour les niveaux derived a ete supprime.
       final container = await _buildContainer();
       addTearDown(container.dispose);
 
@@ -146,7 +148,7 @@ void main() {
       final state = container.read(onboardingNotifierProvider);
       expect(state.levelId, 'francophone_6e');
       expect(state.levelRequiresPicker, isFalse);
-      expect(state.currentStep, 5);
+      expect(state.currentStep, 4);
     });
   });
 
@@ -183,18 +185,26 @@ void main() {
 
   group('OnboardingNotifier — setAuthProvider', () {
     test(
-        'OAuth Google avec displayName -> step 6 (pre-fill, edition autorisee)',
+        'OAuth Google avec displayName + profil rempli -> step 6 (pre-fill)',
         () async {
-      // Audit 2026-06-13 (PR3) : avant ce PR, OAuth avec displayName sautait
-      // step 6 (-> step 7) = pas d'edition possible. Maintenant on rentre
-      // toujours step 6 avec le nom OAuth pre-rempli pour permettre l'edit.
+      // Audit 2026-06-13 (PR3) + fix: setAuthProvider va au step 6 seulement
+      // si trackId est pose (profil scolaire deja rempli, ex. jumpToAuth
+      // depuis step 1 APRES steps 2-4). Sans trackId (jumpToAuth avant steps
+      // 2-4) -> step 2 pour reprendre le flow normal.
       final container = await _buildContainer();
       addTearDown(container.dispose);
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      notifier.state = const OnboardingState(
+        currentStep: 5,
+        trackId: 'general',
+        levelId: 'francophone_terminale',
+        streamId: 'francophone_terminale_d',
+      );
 
-      container.read(onboardingNotifierProvider.notifier).setAuthProvider(
-            OnboardingAuthProvider.google,
-            displayName: 'Fatou Mballa',
-          );
+      notifier.setAuthProvider(
+        OnboardingAuthProvider.google,
+        displayName: 'Fatou Mballa',
+      );
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.authProvider, OnboardingAuthProvider.google);
@@ -203,13 +213,19 @@ void main() {
       expect(state.currentStep, 6);
     });
 
-    test('OAuth Apple sans displayName -> step 6 (saisie requise)', () async {
+    test('OAuth Apple sans displayName + profil rempli -> step 6 (saisie)',
+        () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      notifier.state = const OnboardingState(
+        currentStep: 5,
+        trackId: 'general',
+        levelId: 'francophone_terminale',
+        streamId: 'francophone_terminale_d',
+      );
 
-      container
-          .read(onboardingNotifierProvider.notifier)
-          .setAuthProvider(OnboardingAuthProvider.apple);
+      notifier.setAuthProvider(OnboardingAuthProvider.apple);
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.authProvider, OnboardingAuthProvider.apple);
@@ -237,14 +253,19 @@ void main() {
       expect(state.currentStep, 5);
     });
 
-    test('OAuth avec displayName vide string -> step 6 (saisie requise)',
+    test('OAuth avec displayName vide + profil rempli -> step 6 (saisie)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
+      final notifier = container.read(onboardingNotifierProvider.notifier);
+      notifier.state = const OnboardingState(
+        currentStep: 5,
+        trackId: 'general',
+        levelId: 'francophone_terminale',
+        streamId: 'francophone_terminale_d',
+      );
 
-      container
-          .read(onboardingNotifierProvider.notifier)
-          .setAuthProvider(OnboardingAuthProvider.google, displayName: '');
+      notifier.setAuthProvider(OnboardingAuthProvider.google, displayName: '');
 
       final state = container.read(onboardingNotifierProvider);
       expect(state.currentStep, 6);
@@ -532,12 +553,16 @@ void main() {
       expect(container.read(onboardingNotifierProvider).currentStep, 0);
     });
 
-    test('step 5 -> 4 si levelRequiresPicker=true', () async {
+    test('step 5 -> 4 si trackId pose (retour recap picker)', () async {
+      // fix: back() depuis step 5 va a step 4 seulement si trackId est pose.
+      // Sans trackId (jumpToAuth) -> step 1. On set trackId pour tester
+      // le cas "retour recap matieres" du flow normal.
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
       notifier.state = const OnboardingState(
         currentStep: 5,
+        trackId: 'general',
         levelRequiresPicker: true,
       );
       notifier.back();
@@ -545,13 +570,15 @@ void main() {
     });
 
     test(
-        'step 5 -> 4 toujours (audit 2026-06-14 : symetrie avec next, recap '
-        'visible meme en mode derived)',
+        'step 5 -> 4 si trackId pose, meme mode derived (audit 2026-06-14)',
         () async {
       final container = await _buildContainer();
       addTearDown(container.dispose);
       final notifier = container.read(onboardingNotifierProvider.notifier);
-      notifier.state = const OnboardingState(currentStep: 5);
+      notifier.state = const OnboardingState(
+        currentStep: 5,
+        trackId: 'general',
+      );
       notifier.back();
       expect(container.read(onboardingNotifierProvider).currentStep, 4);
     });

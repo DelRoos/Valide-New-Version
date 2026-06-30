@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/routing/app_routes.dart';
 import '../../../core/theme/tokens.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/pedagogical_content.dart';
@@ -25,7 +26,7 @@ class TestCoursesPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final course = testCourses[index];
           return AppCard(
-            onTap: () => context.push('/_test_courses/${course.slug}'),
+            onTap: () => context.push(AppRoutes.testCourseDetail(course.slug)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

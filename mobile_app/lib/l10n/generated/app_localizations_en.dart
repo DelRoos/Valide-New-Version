@@ -451,6 +451,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileDays => 'days';
 
   @override
+  String get profileSubjects => 'Subjects';
+
+  @override
+  String get profileExams => 'Exams';
+
+  @override
+  String get profileSectionCourses => 'My progress';
+
+  @override
+  String get profileSectionSettings => 'Settings';
+
+  @override
+  String get profileSectionAccount => 'Account';
+
+  @override
   String get profileMenuSubscription => 'My Subscription';
 
   @override
@@ -474,6 +489,22 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get profileGuestSubtitle =>
       'Save your progress and join the leaderboard.';
+
+  @override
+  String get completeProfileDialogTitle => 'Complete your profile';
+
+  @override
+  String get completeProfileDialogBody =>
+      'Complete your profile to save your progress and access all features.';
+
+  @override
+  String get languagePickerTitle => 'Choose language';
+
+  @override
+  String get languageOptionFrench => 'French';
+
+  @override
+  String get languageOptionEnglish => 'English';
 
   @override
   String get onboardingSubSystemTitle => 'Choose Your System';
@@ -830,11 +861,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSettingsLinkedAccount => 'Linked account';
 
   @override
+  String get signOutConfirmTitle => 'Sign out?';
+
+  @override
+  String get signOutConfirmBody =>
+      'You can sign back in at any time with your Google or Apple account.';
+
+  @override
+  String get signOutConfirmCta => 'Confirm sign out';
+
+  @override
   String get accountDeletionConfirmTitle => 'Are you sure?';
 
   @override
   String get accountDeletionConfirmBody =>
-      'Your account will be deleted in 7 days. You can cancel at any time by signing back in during this period.';
+      'Your account and all your data will be permanently deleted. This action is irreversible.';
 
   @override
   String get accountDeletionConfirmCta => 'Confirm deletion';
@@ -871,6 +912,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountDeletionNotAvailableToast => 'Feature coming soon.';
+
+  @override
+  String get accountDeletionRecentLoginToast =>
+      'Session expired. Sign in again and retry.';
 
   @override
   String get dashboardDailyGoalTitle => 'Daily goal';
@@ -967,7 +1012,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEditSuccess => 'Profile updated.';
 
   @override
+  String get profileEditNameLabel => 'First name or nickname';
+
+  @override
+  String get saveLabel => 'Save';
+
+  @override
+  String get profileDeletionPendingTitle => 'Deletion scheduled';
+
+  @override
+  String profileDeletionPendingSubtitle(String date) {
+    return 'Your account will be permanently deleted on $date. Log back in before that date to cancel.';
+  }
+
+  @override
   String get profileMenuSchool => 'My school';
+
+  @override
+  String get profileMenuName => 'My name';
+
+  @override
+  String get profileMenuAddName => 'Add my name';
+
+  @override
+  String get profileMenuPhone => 'My phone';
+
+  @override
+  String get profileMenuAddPhone => 'Add my phone number';
 
   @override
   String get profileSchoolSheetTitle => 'Change school';
@@ -980,4 +1051,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get featureComingSoon => 'Coming soon';
+
+  @override
+  String get publicProfileStatsTitle => 'Stats';
+
+  @override
+  String get publicProfileLessonsRead => 'lessons read';
+
+  @override
+  String get publicProfileQuizPassed => 'quizzes passed';
+
+  @override
+  String get publicProfileNotFound => 'Profile not found';
+
+  @override
+  String get publicProfileNotFoundSubtitle =>
+      'This profile doesn\'t exist or has been deleted.';
 }

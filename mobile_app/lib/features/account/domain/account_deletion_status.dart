@@ -4,6 +4,7 @@
 // state qui couvre les transitions :
 //   idle -> requesting -> requested|error
 //   idle (suite a banner dashboard) -> cancelling -> cancelled|error
+//   idle -> deleting -> deleted|error   (suppression immediate)
 
 import 'package:equatable/equatable.dart';
 
@@ -26,12 +27,19 @@ sealed class AccountDeletionStatus extends Equatable {
   const factory AccountDeletionStatus.cancelled() =
       AccountDeletionStatusCancelled;
 
+  /// Suppression immediate en cours (deleteAccountNow).
+  const factory AccountDeletionStatus.deleting() = AccountDeletionStatusDeleting;
+
+  /// Suppression immediate reussie — l'UI doit naviguer vers '/'.
+  const factory AccountDeletionStatus.deleted() = AccountDeletionStatusDeleted;
+
   const factory AccountDeletionStatus.error(AccountDeletionFailure failure) =
       AccountDeletionStatusError;
 
   bool get isLoading => switch (this) {
         AccountDeletionStatusRequesting() => true,
         AccountDeletionStatusCancelling() => true,
+        AccountDeletionStatusDeleting() => true,
         _ => false,
       };
 }
@@ -64,6 +72,18 @@ class AccountDeletionStatusCancelled extends AccountDeletionStatus {
   const AccountDeletionStatusCancelled();
   @override
   List<Object?> get props => const ['cancelled'];
+}
+
+class AccountDeletionStatusDeleting extends AccountDeletionStatus {
+  const AccountDeletionStatusDeleting();
+  @override
+  List<Object?> get props => const ['deleting'];
+}
+
+class AccountDeletionStatusDeleted extends AccountDeletionStatus {
+  const AccountDeletionStatusDeleted();
+  @override
+  List<Object?> get props => const ['deleted'];
 }
 
 class AccountDeletionStatusError extends AccountDeletionStatus {

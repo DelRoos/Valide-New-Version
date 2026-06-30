@@ -19,10 +19,16 @@
 //  10. `schoolRepositoryProvider` + `schoolSearchNotifierProvider` :
 //      recherche autocomplete ecoles.
 //  11. `googleSignInProvider`.
+//  12. `profileDataProvider` : StreamProvider.autoDispose partagé sur
+//      users/{uid}. Remplace les appels directs à watchProfile() dans build()
+//      qui créaient un nouveau stream Firestore à chaque rebuild.
+//  13. `deletionScheduledForProvider` : DateTime? dérivée de
+//      profileDataProvider.deletionRequestedAt + 7 jours.
 
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -31,6 +37,7 @@ import '../../core/catalogue/domain/models.dart';
 import '../../core/catalogue/providers.dart';
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
+import '../account/domain/public_profile.dart';
 import 'data/account_linking_repository_firebase_impl.dart';
 import 'data/onboarding_draft_prefs.dart';
 import 'data/onboarding_flush_service.dart';
@@ -41,6 +48,7 @@ import 'domain/account_linking_repository.dart';
 import 'domain/account_linking_state.dart';
 import 'domain/linked_account.dart';
 import 'domain/profile_completion_state.dart';
+import 'domain/profile_failure.dart';
 import 'domain/school.dart';
 import 'domain/school_repository.dart';
 import 'domain/sub_system.dart';
@@ -148,7 +156,7 @@ final userSubjectsProvider = StreamProvider<List<Subject>>((ref) {
 /// `firebaseAuthProvider.currentUser` directement. Le `firebaseAuthProvider`
 /// est un `Provider` STATIQUE, donc Riverpod ne reagissait pas aux
 /// `signInAnonymously()` declenches au step 5 -> le router restait bloque
-/// sur `/onboarding/v2` avec uid=null. Maintenant on watch `currentUserProvider`
+/// sur `/onboarding` avec uid=null. Maintenant on watch `currentUserProvider`
 /// (StreamProvider sur `authStateChanges()`) qui propage proprement.
 final profileCompletionProvider =
     StreamProvider<ProfileCompletionState>((ref) {
@@ -159,10 +167,17 @@ final profileCompletionProvider =
 
   // Watch le StreamProvider auth pour rebuild a chaque transition.
   final userAsync = ref.watch(currentUserProvider);
-  final uid = userAsync.maybeWhen(
+  String? uid = userAsync.maybeWhen(
     data: (user) => user?.uid,
     orElse: () => null,
   );
+  // Fallback synchrone : si AsyncLoading (etat transitoire ex. rebuild apres
+  // dismiss CompleteProfileDialog), lire currentUser depuis FirebaseAuth pour
+  // eviter un redirect spurieux vers /onboarding (Bug A 2026-06-29).
+  // Ne s'applique pas aux erreurs (hasError=true -> fail-safe normal ci-dessous).
+  if (uid == null && !userAsync.hasError) {
+    uid = ref.read(firebaseAuthProvider).currentUser?.uid;
+  }
   if (uid == null) {
     AppLogger.w(
       'profileCompletion: fail-safe (filiereMissing) reason=auth-missing '
@@ -212,7 +227,7 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 /// displayName vide = upgrade visiteur interrompu avant completion identite
 /// (steps 6-8). profileUpgradeInProgressProvider est en memoire -> perdu au
 /// kill app. On derive l'etat depuis le doc Firestore pour que le router
-/// renvoie vers /onboarding/v2 meme apres un relaunch.
+/// renvoie vers /onboarding meme apres un relaunch.
 ///
 /// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
 /// que les docs users existants n'ont pas migre (Story 1.19 dette).
@@ -235,7 +250,7 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
     // Bug 4 fix : compte permanent sans displayName = upgrade interrompu.
     // isAnonymous=false (pose par _persistIdentity au moment du link OAuth)
     // + displayName vide = le user a linke son compte mais n'a pas complete
-    // les steps identite (6-8). On le renvoie vers /onboarding/v2.
+    // les steps identite (6-8). On le renvoie vers /onboarding.
     final isAnonymous = data['isAnonymous'] as bool? ?? true;
     final displayName = data['displayName'] as String? ?? '';
     if (!isAnonymous && displayName.isEmpty) {
@@ -303,6 +318,7 @@ final accountLinkingRepositoryProvider =
     },
     signInWithCredential: (credential) =>
         firebaseAuth.signInWithCredential(credential),
+    getCurrentUser: () => firebaseAuth.currentUser,
   );
 });
 
@@ -345,7 +361,7 @@ final accountLinkingNotifierProvider =
 /// Flag posé lors d'un upgrade visiteur -> compte permanent (Google/Apple)
 /// déclenché depuis la modale dashboard (AccountUpgradeSheet).
 ///
-/// Tant que true, le router autorise /onboarding/v2 même si
+/// Tant que true, le router autorise /onboarding même si
 /// profileCompletionProvider == complete — le profil scolaire existe déjà
 /// (flush guest), mais l'identité (name + phone + school, steps 6-8) reste
 /// à compléter. Remis à false par SuccessCelebrationStepBody._onComplete()
@@ -464,3 +480,58 @@ final schoolSearchNotifierProvider =
     NotifierProvider<SchoolSearchNotifier, AsyncValue<List<School>>>(
   SchoolSearchNotifier.new,
 );
+
+// =====================================================================
+// Dashboard profil — stream partagé users/{uid}
+// =====================================================================
+
+/// Stream partagé du doc users/{uid}, consommé par tous les widgets du profil.
+///
+/// Évite le bug "watchProfile() dans build()" : chaque appel direct crée un
+/// nouveau listener Firestore à chaque rebuild. Ici, Riverpod gère le cycle
+/// de vie du listener — un seul abonnement tant que la tab profil est active.
+///
+/// Rebuidle sur changement d'auth (currentUserProvider) pour éviter le stream
+/// stale après sign-out/re-auth anonyme.
+final profileDataProvider =
+    StreamProvider.autoDispose<Map<String, dynamic>?>((ref) {
+  ref.watch(currentUserProvider);
+  return ref.watch(userProfileRepositoryProvider).watchProfile();
+});
+
+/// DateTime à laquelle la suppression de compte sera effective, dérivée de
+/// `deletionRequestedAt` Firestore + 7 jours. Retourne `null` si aucune
+/// demande en cours ou si les données du profil ne sont pas encore chargées.
+///
+/// Provider.autoDispose (pas StreamProvider) car la valeur est entièrement
+/// dérivée de `profileDataProvider.valueOrNull` — Riverpod recalcule
+/// automatiquement à chaque emission du stream parent.
+final deletionScheduledForProvider = Provider.autoDispose<DateTime?>((ref) {
+  final data = ref.watch(profileDataProvider).maybeWhen(
+    data: (d) => d,
+    orElse: () => null,
+  );
+  if (data == null) return null;
+  final ts = data['deletionRequestedAt'];
+  if (ts == null) return null;
+  try {
+    final requestedAt = (ts as dynamic).toDate() as DateTime;
+    return requestedAt.add(const Duration(days: 7));
+  } catch (_) {
+    return null;
+  }
+});
+
+// =====================================================================
+// Story A.2 — Profil public d'un pair (lecture users/{uid} par uid tiers)
+// =====================================================================
+
+/// Lit le profil public de l'utilisateur identifié par [uid].
+///
+/// FutureProvider.autoDispose.family : chaque uid est mis en cache séparément,
+/// libéré automatiquement dès que la page PublicProfilePage est dépilée.
+/// Cost : 1 read Firestore par visite (règle A.2-DR-01).
+final publicProfileProvider = FutureProvider.autoDispose
+    .family<Either<ProfileFailure, PublicProfile?>, String>((ref, uid) {
+  return ref.watch(userProfileRepositoryProvider).fetchPublicProfile(uid);
+});

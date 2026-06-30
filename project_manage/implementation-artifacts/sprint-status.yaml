@@ -127,7 +127,7 @@ development_status:
   2-3-dashboard-home-ui: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). Dashboard home enrichi + split tab pages. HALT T13 levé au merge.
   2-4-content-integration: in-progress  # RÉOUVERTE 2026-06-24 (sprint-change-proposal-2026-06-24). Revert session : pages contenu revenues à fake data (bug SubjectDetailPage). À re-implémenter proprement. [FR-9, FR-11, FR-14, FR-15]
   A-1-edit-profile: done  # Mergée commit dd2de5d (PR #148, 2026-06-24). ProfileEditSheet + SchoolEditSheet + updateDisplayName/updatePhoneNumber Firestore + stubs toast. [Pilier A — Story 1/2]
-  A-2-public-profile: ready-for-dev  # Story créée 2026-06-24. Page /user/:uid, modèle PublicProfile, fetchPublicProfile() repo, règle Firestore read:auth!=null, navigation depuis _ClassmateRow. Voir A-2-public-profile.md.
+  A-2-public-profile: review  # 2026-06-24 implémentation complète. baseline_commit 1008a65. Page /user/:uid + PublicProfile + fetchPublicProfile + règle Firestore + navigation classmates. 384 tests verts, 0 analyse issue.
   2-5-fiches-de-lecture: backlog  # Nouveau type contenu 'fiche' (champ type sur lessons Firestore). Rendu PedagogicalContent. Seed Python étendu. Décision réunion 2026-06-24.
   2-6-quiz-content-integration: backlog  # Quiz liés chapitres/leçons (collection quizzes). QCM + score local. Sans IA. Décision réunion 2026-06-24.
   3-1-mini-exercise-module: backlog  # Pull-forward E3 partiel. Énoncé classé (séquence/officiel/blanc/zéro), parcourir, marquer fait. Sans IA. Décision réunion 2026-06-24.

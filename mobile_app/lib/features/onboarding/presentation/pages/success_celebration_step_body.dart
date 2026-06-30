@@ -15,6 +15,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/logging/app_logger.dart';
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/feedback/error_retry_view.dart';
 import '../../../../l10n/generated/app_localizations.dart';
@@ -76,12 +77,14 @@ class _SuccessCelebrationStepBodyState
       final result = await service.flush(state);
       if (!mounted) return;
 
+      bool notAuthenticated = false;
       final success = result.fold(
         (failure) {
           AppLogger.w(
             'flush attempt=${attempt + 1} failed code=${failure.code}',
           );
           _lastFailureCode = failure.code;
+          notAuthenticated = failure.message == 'not-authenticated';
           return false;
         },
         (_) => true,
@@ -94,6 +97,17 @@ class _SuccessCelebrationStepBodyState
           _flushed = true;
         });
         await _showWelcomeDialog();
+        return;
+      }
+      // L'utilisateur a été supprimé ou déconnecté pendant le flush.
+      // Pas besoin de retenter — on reset l'état onboarding pour que le
+      // routeur redirige vers un onboarding propre (step 0).
+      if (notAuthenticated) {
+        AppLogger.i(
+          'flush: not-authenticated -> reset onboarding (account deleted or signed out)',
+        );
+        if (!mounted) return;
+        ref.read(onboardingNotifierProvider.notifier).reset();
         return;
       }
     }
@@ -123,7 +137,7 @@ class _SuccessCelebrationStepBodyState
     if (!mounted) return;
     AppLogger.i('success.onComplete -> /dashboard');
     ref.read(profileUpgradeInProgressProvider.notifier).setInProgress(false);
-    GoRouter.of(context).go('/dashboard');
+    GoRouter.of(context).go(AppRoutes.dashboard);
   }
 
   @override

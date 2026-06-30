@@ -96,8 +96,14 @@ void main() {
 
     testWidgets('Navigation auto vers /dashboard apres ~2100 ms',
         (tester) async {
+      tester.view.devicePixelRatio = 1.0;
+      tester.view.physicalSize = const Size(375, 812);
       await tester.binding.setSurfaceSize(const Size(375, 812));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+      addTearDown(() {
+        tester.binding.setSurfaceSize(null);
+        tester.view.resetPhysicalSize();
+        tester.view.resetDevicePixelRatio();
+      });
       final prefs = await _prefsWithFrancophoneSubsystem();
       await tester.pumpWidget(
         ProviderScope(
@@ -118,11 +124,12 @@ void main() {
         ),
       );
       await tester.pump();
-      expect(find.text('Bienvenue !'), findsNothing);
+      expect(find.textContaining('Fatou'), findsNothing);
 
       await tester.pump(const Duration(milliseconds: 2200));
       await tester.pump(const Duration(milliseconds: 200));
-      expect(find.text('Bienvenue !'), findsOneWidget);
+      // Story 2.3 : salutation temporelle hardcodee — le nom 'Fatou' est stable.
+      expect(find.textContaining('Fatou'), findsAtLeastNWidgets(1));
     });
   });
 }

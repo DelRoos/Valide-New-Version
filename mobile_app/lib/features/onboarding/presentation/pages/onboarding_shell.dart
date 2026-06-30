@@ -20,6 +20,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/onboarding/onboarding_cta_footer.dart';
@@ -50,9 +51,17 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (!mounted) return;
-      ref.read(onboardingNotifierProvider.notifier).loadFromPersistence();
+      await ref.read(onboardingNotifierProvider.notifier).loadFromPersistence();
+      if (!mounted) return;
+      // Mode upgrade (visiteur → compte depuis ProfileGuestBody) : l'utilisateur
+      // a déjà un profil académique complet. loadFromPersistence() peut avoir
+      // restauré n'importe quel step (draft stale, step 9 après succès, etc.).
+      // On force le step 5 (AuthChoiceStepBody) pour qu'il lie son compte.
+      if (ref.read(profileUpgradeInProgressProvider)) {
+        ref.read(onboardingNotifierProvider.notifier).jumpToAuth();
+      }
     });
   }
 
@@ -72,7 +81,7 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
         ref
             .read(profileUpgradeInProgressProvider.notifier)
             .setInProgress(false);
-        GoRouter.of(context).go('/dashboard');
+        GoRouter.of(context).go(AppRoutes.dashboard);
         return;
       }
       notifier.back();
@@ -120,7 +129,7 @@ class _OnboardingShellState extends ConsumerState<OnboardingShell> {
                 ),
               ),
             ),
-            if (footer != null) footer,
+            ?footer,
           ],
         ),
       ),

@@ -252,6 +252,63 @@ Et pour les modes (`Fast` / `Coaching`) :
     - ❌ `AppLogger.w('xxx failed: ${failure.message}')` sans `kind` (perd l'info diagnostique).
     - ❌ Catch silencieux (`catch (_) {}` ou logger sans rethrow + nav comme si succès).
 
+14. **GoRouter — navigateur exclusif.** GoRouter est le **seul** système de navigation autorisé dans l'app. Toute navigation qui contourne GoRouter (`Navigator.push()`, `Navigator.pushNamed()`, `showModalBottomSheet` pour des destinations routées) est **interdite** hors exceptions explicites ci-dessous.
+
+    **Table de décision `go` vs `push` vs `pop`** :
+
+    | Cas | API | Raison |
+    | --- | --- | --- |
+    | Changer d'onglet shell (Accueil → Profil) | `goBranch(i)` via `navigationShell` | Remplace la pile, préserve le state de chaque branche |
+    | Ouvrir une page détail (cours, profil public) | `context.push('/route')` | Empile sur la branche courante, back = pop |
+    | Redirection garde (profil incomplet → onboarding) | `context.go('/route')` | Remplace toute la pile |
+    | Bouton retour d'une page poussée par `push` | `Navigator.of(context).maybePop()` | Seul cas où Navigator est autorisé en couche présentation |
+    | Bottom sheet / dialog (pas une destination routée) | `showModalBottomSheet` / `showDialog` | Overlay, pas une route — usage normal |
+
+    **Règles structurelles** :
+    - Toutes les routes sont déclarées **exclusivement** dans `lib/core/routing/app_router.dart`. Aucune route inline dans un widget.
+    - Les chemins de route sont en **anglais kebab-case** : `/subject/:subjectId`, `/onboarding/v2`, `/profil/settings`.
+    - Les **gardes de navigation** (redirects) vivent uniquement dans `evaluateRedirect()` — jamais dans `initState`, `build`, ou `ref.listen` d'un widget.
+    - Les **paramètres de navigation** se passent via `state.pathParameters['key']` ou `state.extra` — jamais via un `StateProvider` global qui stocke l'ID courant.
+    - Après un `push`, le retour standard est `maybePop()` (ne crashe pas si la pile est vide). Ne jamais faire `go('/route-parente')` comme substitut du back — ça détruit le stack.
+
+    **Anti-patterns interdits** :
+    - ❌ `Navigator.push(context, MaterialPageRoute(...))` pour naviguer entre pages feature.
+    - ❌ `Navigator.pushNamed(context, '/route')` — remplacé par `context.go()` / `context.push()`.
+    - ❌ `GoRouter.of(context).go('/route')` pointant vers une route non déclarée dans `app_router.dart`.
+    - ❌ Passer un objet entier via `state.extra` quand un `id` + un `FutureProvider.family` suffisent (coût : sérialisation + perte deep link).
+    - ❌ Guard de navigation dans `initState` / `didChangeDependencies` — le router gère les redirects.
+
+15. **Riverpod — patterns obligatoires.** Riverpod est le **seul** système de state management autorisé. Pas de `setState` en dehors du state local UI (animations, focus, formulaire non-métier).
+
+    **Table de décision `watch` / `read` / `listen`** :
+
+    | Contexte | API | Raison |
+    | --- | --- | --- |
+    | Lire un provider dans `build()` et rebuilder sur changement | `ref.watch(p)` | Réactif — abonne le widget |
+    | Lire un provider dans un event handler (`onPressed`) | `ref.read(p)` | One-shot — pas d'abonnement |
+    | Déclencher un side effect (toast, dialog, navigation) sur changement de state | `ref.listen(p, (prev, next) {...})` | Écoute sans rebuild |
+    | Lire depuis un `Notifier.build()` ou une méthode Notifier | `ref.watch(p)` / `ref.read(p)` | Identique aux widgets |
+
+    **Règles structurelles** :
+    - `ref.read()` **jamais** dans `build()` — freeze silencieux (le widget ne se rebuild pas quand le provider change).
+    - `ref.watch()` **jamais** dans un event handler — crée un abonnement fantôme qui survit au widget.
+    - Widgets nécessitant `ref` : hériter de `ConsumerWidget` ou `ConsumerStatefulWidget`. **Jamais passer `ref` en paramètre** d'un widget enfant — le widget enfant doit être `Consumer` ou `ConsumerWidget` s'il en a besoin.
+    - Providers déclarés au **niveau top-level du fichier** (ou dans une classe `Notifier`) — jamais à l'intérieur d'une fonction ou d'un widget.
+    - **`autoDispose`** : obligatoire sur tout provider dont la durée de vie doit correspondre à celle d'un écran (pattern `FutureProvider.autoDispose.family` pour les données paginées par ID — cf. `publicProfileProvider`).
+    - **`family`** : utiliser pour les providers paramétrés par un ID. Ne jamais créer un `StateProvider<String>` qui stocke l'ID de la ressource courante comme substitut.
+    - **State machine complexe** : utiliser `Notifier<T>` (sync) ou `AsyncNotifier<T>` (async) — jamais `StateProvider` au-delà d'un flag booléen simple. La machine à états doit exposer des méthodes nommées (`requestDeletion()`, `reset()`) plutôt qu'une méthode `setState(x)` générique.
+    - **`AsyncValue`** : toujours utiliser `.when(data:, loading:, error:)` — jamais `.value!` sans guard. Le cas `loading` ne doit jamais afficher un écran vide.
+    - **Tests** : overrider les providers via `ProviderScope(overrides: [p.overrideWith(...)])` — jamais patcher un singleton Firebase/Firestore directement. Toute feature testable doit exposer son provider en variable `final` top-level importable.
+
+    **Anti-patterns interdits** :
+    - ❌ `ref.read(provider)` dans `build()` — le widget ne reagit plus aux changements.
+    - ❌ `ref.watch(provider)` dans `onPressed` / `initState` — abonnement hors lifecycle.
+    - ❌ Passer `ref` en paramètre à un `StatelessWidget` (crée une dépendance cachée + impossible à tester).
+    - ❌ `StateProvider<ComplexState>` — utiliser `Notifier<ComplexState>` à la place.
+    - ❌ Lire `.value` d'un `AsyncValue` sans `when` / `maybeWhen` / null-check — crash en loading/error.
+    - ❌ Créer un provider local (`final p = Provider(...)`) à l'intérieur d'une fonction de build ou d'un widget — crée un nouveau provider à chaque rebuild.
+    - ❌ `setState` pour gérer un état métier (auth, profil, erreur réseau) — tout état métier passe par un provider Riverpod.
+
 ### Cross-platform & responsive (V1 = Android + iOS, phone + tablet)
 
 1. **Pas de code plateforme-spécifique non isolé.** Tout `if (Platform.isAndroid)` ou `if (Platform.isIOS)` est confiné à `core/platform/*` (un wrapper par capability divergente : silent mode detection, haptic mapping, etc.). Les couches `domain` et `presentation` ne `import 'dart:io'` jamais.

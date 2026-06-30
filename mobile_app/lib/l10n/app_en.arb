@@ -182,6 +182,11 @@
   "profileLessons": "Lessons",
   "profileAvgScore": "Avg. Score",
   "profileDays": "days",
+  "profileSubjects": "Subjects",
+  "profileExams": "Exams",
+  "profileSectionCourses": "My progress",
+  "profileSectionSettings": "Settings",
+  "profileSectionAccount": "Account",
   "profileMenuSubscription": "My Subscription",
   "profileMenuResults": "My Results",
   "profileMenuLanguage": "Language",
@@ -190,6 +195,12 @@
   "profileMenuSignOut": "Sign out",
   "profileGuestTitle": "Continue with an account",
   "profileGuestSubtitle": "Save your progress and join the leaderboard.",
+  "completeProfileDialogTitle": "Complete your profile",
+  "completeProfileDialogBody": "Complete your profile to save your progress and access all features.",
+
+  "languagePickerTitle": "Choose language",
+  "languageOptionFrench": "French",
+  "languageOptionEnglish": "English",
 
   "onboardingSubSystemTitle": "Choose Your System",
   "onboardingSubSystemSubtitle": "Pick the school system you follow to get started.",
@@ -335,8 +346,12 @@
   "profileSettingsVisitorMessage": "Create a permanent account first to delete it",
   "profileSettingsCreateAccountCta": "Create my account",
   "profileSettingsLinkedAccount": "Linked account",
+  "signOutConfirmTitle": "Sign out?",
+  "signOutConfirmBody": "You can sign back in at any time with your Google or Apple account.",
+  "signOutConfirmCta": "Confirm sign out",
+
   "accountDeletionConfirmTitle": "Are you sure?",
-  "accountDeletionConfirmBody": "Your account will be deleted in 7 days. You can cancel at any time by signing back in during this period.",
+  "accountDeletionConfirmBody": "Your account and all your data will be permanently deleted. This action is irreversible.",
   "accountDeletionConfirmCta": "Confirm deletion",
   "accountDeletionRequestedToast": "Request saved. Sign back in before {date} to cancel.",
   "@accountDeletionRequestedToast": {
@@ -357,6 +372,7 @@
   "accountDeletionCancelledToast": "Deletion cancelled.",
   "accountDeletionAutoCancelledToast": "Your account is active again.",
   "accountDeletionNotAvailableToast": "Feature coming soon.",
+  "accountDeletionRecentLoginToast": "Session expired. Sign in again and retry.",
 
   "dashboardDailyGoalTitle": "Daily goal",
   "dashboardDailyGoalTask": "Complete 1 quiz + read 1 lesson",
@@ -412,9 +428,28 @@
   "profileEditButton": "Edit",
   "profileEditSheetTitle": "Edit my profile",
   "profileEditSuccess": "Profile updated.",
+  "profileEditNameLabel": "First name or nickname",
+  "saveLabel": "Save",
+  "profileDeletionPendingTitle": "Deletion scheduled",
+  "profileDeletionPendingSubtitle": "Your account will be permanently deleted on {date}. Log back in before that date to cancel.",
+  "@profileDeletionPendingSubtitle": {
+    "placeholders": {
+      "date": { "type": "String", "example": "06/16/2026" }
+    }
+  },
   "profileMenuSchool": "My school",
+  "profileMenuName": "My name",
+  "profileMenuAddName": "Add my name",
+  "profileMenuPhone": "My phone",
+  "profileMenuAddPhone": "Add my phone number",
   "profileSchoolSheetTitle": "Change school",
   "profileSchoolUpdateSuccess": "School updated.",
   "profileSchoolRemove": "Remove my school",
-  "featureComingSoon": "Coming soon"
+  "featureComingSoon": "Coming soon",
+
+  "publicProfileStatsTitle": "Stats",
+  "publicProfileLessonsRead": "lessons read",
+  "publicProfileQuizPassed": "quizzes passed",
+  "publicProfileNotFound": "Profile not found",
+  "publicProfileNotFoundSubtitle": "This profile doesn't exist or has been deleted."
 }

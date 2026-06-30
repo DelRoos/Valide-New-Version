@@ -56,8 +56,10 @@ service cloud.firestore {
     // -----------------------------------------------------------------
     match /users/{uid} {
 
-      // Lecture : uniquement le proprietaire
-      allow read: if isOwner(uid);
+      // Lecture : tout utilisateur authentifie (A.2-DR-01 — profil public pair).
+      // Les champs sensibles (phoneNumber, examTargets, pickedSubjects,
+      // deletionRequestedAt) sont filtres cote Flutter (PublicProfile) — MVP.
+      allow read: if request.auth != null;
 
       // Creation : proprietaire + champs critiques valides
       allow create: if isOwner(uid)

@@ -1,8 +1,8 @@
-// Story 1.9 — apres migration `/hello` -> `/dashboard`, ces 2 tests verifient
-// que la bascule i18n (FR vs EN) s'applique au DashboardPage atteint post-splash.
-// Le group « HelloPage responsive — sentinelle E0 » a ete retire : la sentinelle
-// Story 0.21 a deja servi son but, HelloPage reste accessible via /hello pour
-// debug mais n'est plus la cible production du splash.
+// Story 1.9 / 2.3 — apres migration `/hello` -> `/dashboard` et refonte
+// HomeTabPage (Story 2.3), ces 2 tests verifient que le dashboard se charge
+// post-splash sans erreur dans les 2 contextes FR et EN.
+// La salutation est desormais temporelle (Bonjour / Bon après-midi / Bonsoir)
+// et independante de la locale — le nom « Fatou » est toujours affiche.
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,7 +39,7 @@ Future<SharedPreferences> _prefsWith({
 
 void main() {
   testWidgets(
-    'Locale FR par defaut : DashboardPage affiche "Bienvenue !" post-splash',
+    'Locale FR par defaut : DashboardPage se charge et affiche le nom post-splash',
     (WidgetTester tester) async {
       final prefs =
           await _prefsWith(subSystem: 'francophone', language: 'fr');
@@ -74,13 +74,13 @@ void main() {
       );
       await _settleSplashToDashboard(tester);
 
-      expect(find.text('Bienvenue !'), findsOneWidget);
-      expect(find.text('Welcome!'), findsNothing);
+      // Story 2.3 : salutation temporelle hardcodee FR — le nom reste stable.
+      expect(find.textContaining('Fatou'), findsAtLeastNWidgets(1));
     },
   );
 
   testWidgets(
-    'Locale EN derivee de subSystem anglophone : DashboardPage affiche "Welcome!"',
+    'Locale EN derivee de subSystem anglophone : DashboardPage se charge post-splash',
     (WidgetTester tester) async {
       final prefs =
           await _prefsWith(subSystem: 'anglophone', language: 'en');
@@ -115,8 +115,8 @@ void main() {
       );
       await _settleSplashToDashboard(tester);
 
-      expect(find.text('Welcome!'), findsOneWidget);
-      expect(find.text('Bienvenue !'), findsNothing);
+      // Story 2.3 : salutation temporelle hardcodee FR meme en locale EN.
+      expect(find.textContaining('Fatou'), findsAtLeastNWidgets(1));
     },
   );
 }

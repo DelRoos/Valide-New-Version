@@ -62,7 +62,7 @@ class OnboardingFlushService {
     // Audit BUG-02 2026-06-13 : en mode derive (levelRequiresPicker=false),
     // le user saute step 4 -> state.pickedSubjects reste []. Le flush ecrirait
     // pickedSubjects=[] -> profileCompletionProvider retournerait serieMissing
-    // -> redirect /onboarding/v2 -> boucle. Fix : auto-populer pickedSubjects
+    // -> redirect /onboarding -> boucle. Fix : auto-populer pickedSubjects
     // via derive() AVANT le flush si mode derive + liste vide.
     final effectiveState = await _autoPopulateDerivedSubjects(state);
 
@@ -103,6 +103,20 @@ class OnboardingFlushService {
           existing = await docRef.get();
           isCreate = true;
         }
+      }
+
+      // Guard : la rule Firestore CREATE exige trackId + levelId non-null.
+      // Si l'onboarding n'est pas encore complet (flush declenche trop tot
+      // depuis _onGuestTap avant que le user ait choisi track/level), on
+      // skip silencieusement. Le flush sera retente a la fin de l'onboarding.
+      if (isCreate &&
+          (effectiveState.trackId == null || effectiveState.levelId == null)) {
+        AppLogger.i(
+          'flush SKIPPED (incomplete profile, deferred) '
+          'uid=$uidShort trackId=${effectiveState.trackId} '
+          'levelId=${effectiveState.levelId}',
+        );
+        return const Right(null);
       }
 
       final payload = <String, dynamic>{

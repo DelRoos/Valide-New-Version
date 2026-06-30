@@ -2,11 +2,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../logging/app_logger.dart';
 import '../logging/perf_logger.dart';
+import 'app_routes.dart';
 
+import '../../features/account/domain/account_deletion_status.dart';
+import '../../features/account/presentation/public_profile_page.dart';
+import '../../features/account/providers.dart';
 import '../../features/catalogue/presentation/catalogue_waiting_page.dart';
-import '../../features/account/presentation/profile_settings_page.dart';
-import '../../features/dashboard/presentation/_main_shell.dart';
+import '../../features/dashboard/presentation/main_shell.dart';
 import '../../features/dashboard/presentation/home_tab_page.dart';
 import '../../features/dashboard/presentation/exams_tab_page.dart';
 import '../../features/dashboard/presentation/profile_tab_page.dart';
@@ -18,7 +22,6 @@ import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/content_showcase_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
 import '../../features/debug/presentation/test_courses_page.dart';
-import '../../features/hello/presentation/hello_page.dart';
 import '../../features/onboarding/domain/profile_completion_state.dart';
 import '../../features/onboarding/presentation/pages/onboarding_shell.dart';
 import '../../features/onboarding/providers.dart';
@@ -37,6 +40,9 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.listen(profileUpgradeInProgressProvider, (_, _) {
     notifier.value++;
   });
+  ref.listen(accountDeletionStatusNotifierProvider, (_, _) {
+    notifier.value++;
+  });
   ref.onDispose(notifier.dispose);
 
   return GoRouter(
@@ -48,19 +54,16 @@ final routerProvider = Provider<GoRouter>((ref) {
       catalogueCheck: ref.read(appStartupCatalogueCheckProvider),
       profileCompletion: ref.read(profileCompletionProvider),
       upgradeInProgress: ref.read(profileUpgradeInProgressProvider),
+      deletionStatus: ref.read(accountDeletionStatusNotifierProvider),
     ),
     routes: [
       GoRoute(
         path: '/',
-        redirect: (context, state) => '/splash',
+        redirect: (context, state) => AppRoutes.splash,
       ),
       GoRoute(
-        path: '/splash',
+        path: AppRoutes.splash,
         builder: (context, state) => const SplashPage(),
-      ),
-      GoRoute(
-        path: '/hello',
-        builder: (context, state) => const HelloPage(),
       ),
 
       // Shell persistant — 4 branches avec NavigationBar fixe.
@@ -73,7 +76,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/dashboard',
+                path: AppRoutes.dashboard,
                 builder: (context, state) => const HomeTabPage(),
               ),
             ],
@@ -82,7 +85,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/courses',
+                path: AppRoutes.courses,
                 builder: (context, state) => const CoursesPage(),
               ),
             ],
@@ -91,7 +94,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/exams',
+                path: AppRoutes.exams,
                 builder: (context, state) => const ExamsTabPage(),
               ),
             ],
@@ -100,7 +103,7 @@ final routerProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: '/profile',
+                path: AppRoutes.profile,
                 builder: (context, state) => const ProfileTabPage(),
               ),
             ],
@@ -110,20 +113,20 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       // Navigation contenu — pile hors shell (Story 2.2).
       GoRoute(
-        path: '/subject/:subjectId',
+        path: AppRoutes.subjectPath,
         builder: (context, state) => SubjectDetailPage(
           subjectId: state.pathParameters['subjectId']!,
         ),
         routes: [
           GoRoute(
-            path: 'chapter/:chapterId',
+            path: AppRoutes.chapterSegment,
             builder: (context, state) => ChapterPage(
               subjectId: state.pathParameters['subjectId']!,
               chapterId: state.pathParameters['chapterId']!,
             ),
             routes: [
               GoRoute(
-                path: 'lesson/:lessonId',
+                path: AppRoutes.lessonSegment,
                 builder: (context, state) => LessonPage(
                   subjectId: state.pathParameters['subjectId']!,
                   chapterId: state.pathParameters['chapterId']!,
@@ -135,38 +138,40 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
-      // Story E1bis-2bis — UNE seule route pour le flow onboarding refonte.
+      // Story E1bis-2bis — UNE seule route pour le flow onboarding.
       GoRoute(
-        path: '/onboarding/v2',
+        path: AppRoutes.onboarding,
         builder: (context, state) => const OnboardingShell(),
       ),
-      // Story 1.10 — page paramètres (suppression compte FR-7).
+      // Story A.2 — profil public d'un pair (hors shell).
       GoRoute(
-        path: '/profil/settings',
-        builder: (context, state) => const ProfileSettingsPage(),
+        path: AppRoutes.userPath,
+        builder: (context, state) => PublicProfilePage(
+          uid: state.pathParameters['uid']!,
+        ),
       ),
       GoRoute(
-        path: '/catalogue-waiting',
+        path: AppRoutes.catalogueWaiting,
         builder: (context, state) => const CatalogueWaitingPage(),
       ),
       GoRoute(
-        path: '/_crash',
+        path: AppRoutes.crash,
         builder: (context, state) => const CrashSmokePage(),
       ),
       GoRoute(
-        path: '/_showcase',
+        path: AppRoutes.showcase,
         builder: (context, state) => const ContentShowcasePage(),
       ),
       GoRoute(
-        path: '/_ai_smoke',
+        path: AppRoutes.aiSmoke,
         builder: (context, state) => const AISmokePage(),
       ),
       GoRoute(
-        path: '/_test_courses',
+        path: AppRoutes.testCourses,
         builder: (context, state) => const TestCoursesPage(),
         routes: [
           GoRoute(
-            path: ':slug',
+            path: AppRoutes.testCourseSlugSegment,
             builder: (context, state) =>
                 TestCourseDetailPage(slug: state.pathParameters['slug']!),
           ),
@@ -210,19 +215,21 @@ class _PerfNavigatorObserver extends NavigatorObserver {
 ///   1. Bypass systeme : `/`, `/splash`, `/_*` -> null.
 ///   2. Catalogue check : si vide+offline -> /catalogue-waiting.
 ///   3. Sortie /catalogue-waiting quand catalogue OK -> /.
-///   4. Anti-replay sur /onboarding/v2 quand profil complet -> /dashboard.
-///   5. Garde profil-incomplet : sur routes metier, si profil incomplet -> /onboarding/v2.
+///   4. Anti-replay sur /onboarding quand profil complet -> /dashboard.
+///   5. Garde profil-incomplet : sur routes metier, si profil incomplet -> /onboarding.
 @visibleForTesting
 String? evaluateRedirect({
   required String location,
   required AsyncValue<bool> catalogueCheck,
   required AsyncValue<ProfileCompletionState> profileCompletion,
   bool upgradeInProgress = false,
+  AccountDeletionStatus? deletionStatus,
 }) {
   // 1. Bypass inconditionnel : routes systeme + debug.
   if (location == '/' ||
       location.startsWith('/splash') ||
       location.startsWith('/_')) {
+    AppLogger.d('redirect: bypass $location');
     return null;
   }
 
@@ -232,37 +239,60 @@ String? evaluateRedirect({
     loading: () => true,
     error: (_, _) => false,
   );
-  if (!catalogueOk && location != '/catalogue-waiting') {
-    return '/catalogue-waiting';
+  if (!catalogueOk && location != AppRoutes.catalogueWaiting) {
+    AppLogger.d('redirect: catalogue→ /catalogue-waiting (from $location)');
+    return AppRoutes.catalogueWaiting;
   }
-  if (catalogueOk && location == '/catalogue-waiting') {
+  if (catalogueOk && location == AppRoutes.catalogueWaiting) {
+    AppLogger.d('redirect: catalogue-ok exit /catalogue-waiting → /');
     return '/';
   }
 
-  // 3. Anti-replay sur /onboarding/v2 : si profil complet, sortie directe
+  // 3. Anti-replay sur /onboarding : si profil complet, sortie directe
   //    vers /dashboard. Exception upgradeInProgress (visiteur qui upgrade).
-  if (location == '/onboarding/v2' && !upgradeInProgress) {
+  if (location == AppRoutes.onboarding && !upgradeInProgress) {
     final complete = profileCompletion.maybeWhen(
       data: (s) => s.isComplete,
       orElse: () => false,
     );
-    if (complete) return '/dashboard';
+    if (complete) {
+      AppLogger.d('redirect: anti-replay /onboarding → /dashboard (profile complete)');
+      return AppRoutes.dashboard;
+    }
   }
 
   // 4. Garde profil-incomplet pour les routes metier.
   //    loading -> NE PAS rediriger (stream post-flush encore en route).
-  //    error -> rediriger /onboarding/v2 (safe fallback).
+  //    error -> rediriger /onboarding (safe fallback).
   //    data incomplete -> rediriger.
+  //    Exception : si suppression en cours (deleting) ou en erreur partielle
+  //    (auth delete failed apres Firestore delete), ne pas rediriger — sinon
+  //    SuccessCelebrationStepBody (step 9 en memoire) se monterait et recrée
+  //    le doc Firestore supprime (Bug B 2026-06-29).
   if (!upgradeInProgress &&
-      !location.startsWith('/onboarding/') &&
-      location != '/catalogue-waiting') {
-    final shouldBlock = profileCompletion.when(
-      data: (s) => !s.isComplete,
-      loading: () => false,
-      error: (_, _) => true,
-    );
-    if (shouldBlock) return '/onboarding/v2';
+      !location.startsWith(AppRoutes.onboarding) &&
+      location != AppRoutes.catalogueWaiting) {
+    final isDeletionActive = deletionStatus is AccountDeletionStatusDeleting ||
+        deletionStatus is AccountDeletionStatusError;
+    if (!isDeletionActive) {
+      final shouldBlock = profileCompletion.when(
+        data: (s) => !s.isComplete,
+        loading: () => false,
+        error: (_, _) => true,
+      );
+      if (shouldBlock) {
+        final stateLabel = profileCompletion.maybeWhen(
+          data: (s) => s.name,
+          orElse: () => profileCompletion.isLoading ? 'loading' : 'error',
+        );
+        AppLogger.d(
+            'redirect: guard $location → /onboarding (state=$stateLabel)');
+        return AppRoutes.onboarding;
+      }
+    }
   }
 
+  AppLogger.d('redirect: pass $location'
+      '${upgradeInProgress ? ' [upgradeInProgress]' : ''}');
   return null;
 }

@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/app_button.dart';
+import '../../../../core/widgets/app_modal.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
 /// Donnees retournees par AddSchoolDialog quand l'utilisateur soumet.
@@ -73,104 +75,118 @@ class _AddSchoolDialogState extends State<AddSchoolDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return AlertDialog(
-      title: Text(l10n.onboardingSchoolAddDialogTitle),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              controller: _nameCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogNameLabel,
-              ),
-              onChanged: (_) => setState(() {}),
-            ),
-            TextField(
-              controller: _cityCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogCityLabel,
-              ),
-              onChanged: (_) => setState(() {}),
-            ),
-            TextField(
-              controller: _regionCtrl,
-              decoration: InputDecoration(
-                labelText: l10n.onboardingSchoolAddDialogRegionLabel,
-              ),
-            ),
-            SizedBox(height: AppSpacing.s3.h),
-            Text(
-              l10n.onboardingSchoolAddDialogSubSystemLabel,
-              style: AppTypography.bodyStrong,
-            ),
-            RadioGroup<_SubSystemChoice>(
-              groupValue: _subSystem,
-              onChanged: (v) => setState(() => _subSystem = v!),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemFrancophone,
-                    ),
-                    value: _SubSystemChoice.francophone,
+    return AppDialogCard(
+      title: l10n.onboardingSchoolAddDialogTitle,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _nameCtrl,
+                  decoration: InputDecoration(
+                    labelText: l10n.onboardingSchoolAddDialogNameLabel,
                   ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemAnglophone,
-                    ),
-                    value: _SubSystemChoice.anglophone,
+                  onChanged: (_) => setState(() {}),
+                ),
+                TextField(
+                  controller: _cityCtrl,
+                  decoration: InputDecoration(
+                    labelText: l10n.onboardingSchoolAddDialogCityLabel,
                   ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemBoth,
-                    ),
-                    value: _SubSystemChoice.both,
+                  onChanged: (_) => setState(() {}),
+                ),
+                TextField(
+                  controller: _regionCtrl,
+                  decoration: InputDecoration(
+                    labelText: l10n.onboardingSchoolAddDialogRegionLabel,
                   ),
-                  RadioListTile<_SubSystemChoice>(
-                    dense: true,
-                    contentPadding: EdgeInsets.zero,
-                    title: Text(
-                      l10n.onboardingSchoolAddDialogSubSystemUnknown,
-                    ),
-                    value: _SubSystemChoice.unknown,
+                ),
+                SizedBox(height: AppSpacing.s3.h),
+                Text(
+                  l10n.onboardingSchoolAddDialogSubSystemLabel,
+                  style: AppTypography.bodyStrong,
+                ),
+                RadioGroup<_SubSystemChoice>(
+                  groupValue: _subSystem,
+                  onChanged: (v) => setState(() => _subSystem = v!),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RadioListTile<_SubSystemChoice>(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          l10n.onboardingSchoolAddDialogSubSystemFrancophone,
+                        ),
+                        value: _SubSystemChoice.francophone,
+                      ),
+                      RadioListTile<_SubSystemChoice>(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          l10n.onboardingSchoolAddDialogSubSystemAnglophone,
+                        ),
+                        value: _SubSystemChoice.anglophone,
+                      ),
+                      RadioListTile<_SubSystemChoice>(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          l10n.onboardingSchoolAddDialogSubSystemBoth,
+                        ),
+                        value: _SubSystemChoice.both,
+                      ),
+                      RadioListTile<_SubSystemChoice>(
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                        title: Text(
+                          l10n.onboardingSchoolAddDialogSubSystemUnknown,
+                        ),
+                        value: _SubSystemChoice.unknown,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: AppSpacing.s5.h),
+          Row(
+            children: [
+              Expanded(
+                child: AppButton.secondary(
+                  label: l10n.back,
+                  onPressed: () => Navigator.of(context).pop(),
+                ),
+              ),
+              SizedBox(width: AppSpacing.s3.w),
+              Expanded(
+                child: AppButton.primary(
+                  label: l10n.onboardingSchoolAddDialogSubmitCta,
+                  onPressed: _canSubmit
+                      ? () {
+                          final regionInput = _regionCtrl.text.trim();
+                          Navigator.of(context).pop(
+                            AddSchoolFormData(
+                              name: _nameCtrl.text.trim(),
+                              city: _cityCtrl.text.trim(),
+                              region: regionInput.isEmpty ? null : regionInput,
+                              subSystem: _subSystemValue(),
+                            ),
+                          );
+                        }
+                      : null,
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text(l10n.back),
-        ),
-        ElevatedButton(
-          onPressed: _canSubmit
-              ? () {
-                  final regionInput = _regionCtrl.text.trim();
-                  Navigator.of(context).pop(
-                    AddSchoolFormData(
-                      name: _nameCtrl.text.trim(),
-                      city: _cityCtrl.text.trim(),
-                      region: regionInput.isEmpty ? null : regionInput,
-                      subSystem: _subSystemValue(),
-                    ),
-                  );
-                }
-              : null,
-          child: Text(l10n.onboardingSchoolAddDialogSubmitCta),
-        ),
-      ],
     );
   }
 }
