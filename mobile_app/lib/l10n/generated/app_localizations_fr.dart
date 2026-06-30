@@ -924,6 +924,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Session expirée. Reconnecte-toi et réessaie.';
 
   @override
+  String get accountDeletionReauthTitle => 'Vérification requise';
+
+  @override
+  String get accountDeletionReauthBody =>
+      'Ta session a expiré. Reconnecte-toi avec Google pour confirmer la suppression de ton compte.';
+
+  @override
   String get dashboardDailyGoalTitle => 'Objectif du jour';
 
   @override

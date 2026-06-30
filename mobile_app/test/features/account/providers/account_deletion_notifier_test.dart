@@ -49,6 +49,10 @@ class _FakeRepo implements AccountDeletionRepository {
     deleteNowCalls++;
     return deleteNowResult ?? const Right(null);
   }
+
+  @override
+  Future<Either<AccountDeletionFailure, void>>
+      reauthenticateWithGoogle() async => const Right(null);
 }
 
 void main() {

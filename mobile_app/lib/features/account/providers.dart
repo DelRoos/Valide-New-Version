@@ -21,16 +21,21 @@ import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
 import '../onboarding/providers.dart';
 import 'data/account_deletion_repository_impl.dart';
+import 'domain/account_deletion_failure.dart';
 import 'domain/account_deletion_repository.dart';
 import 'domain/account_deletion_status.dart';
 
 /// Repository de la suppression compte. Lazy.
 final accountDeletionRepositoryProvider =
     Provider<AccountDeletionRepository>((ref) {
+  final googleSignIn = ref.watch(googleSignInProvider);
   return AccountDeletionRepositoryImpl(
     ref.watch(cloudFunctionsProvider),
     ref.watch(firebaseAuthProvider),
     ref.watch(firestoreProvider),
+    googleSignIn: () => googleSignIn.authenticate(
+      scopeHint: const ['email', 'profile'],
+    ),
   );
 });
 
@@ -63,11 +68,11 @@ class AccountDeletionStatusNotifier extends Notifier<AccountDeletionStatus> {
 
   /// Suppression immediate : nettoie le draft local, supprime Firestore + Auth.
   /// En cas de succes, transite vers `deleted` — l'UI doit naviguer vers '/'.
+  /// En cas de `requiresRecentLogin`, transite vers `requiresReauth` pour que
+  /// l'UI propose le bouton Google sans fermer la modale.
   Future<void> deleteNow() async {
     if (state.isLoading) return;
     state = const AccountDeletionStatus.deleting();
-    // Nettoyer le draft onboarding local avant la suppression remote.
-    // Best-effort : si clear() echoue (rarissime), on continue quand meme.
     try {
       final prefs = await SharedPreferences.getInstance();
       await prefs.clear();
@@ -77,6 +82,41 @@ class AccountDeletionStatusNotifier extends Notifier<AccountDeletionStatus> {
     final result =
         await ref.read(accountDeletionRepositoryProvider).deleteAccountNow();
     state = result.fold(
+      (failure) {
+        if (failure.kind == AccountDeletionFailureKind.requiresRecentLogin) {
+          return const AccountDeletionStatus.requiresReauth();
+        }
+        return AccountDeletionStatus.error(failure);
+      },
+      (_) => const AccountDeletionStatus.deleted(),
+    );
+  }
+
+  /// Re-authentifie via Google puis retente la suppression.
+  /// Si l'utilisateur annule le flux Google, retourne en `requiresReauth`
+  /// pour qu'il puisse réessayer. En cas d'erreur grave → `error`.
+  Future<void> reauthAndDeleteNow() async {
+    if (state.isLoading) return;
+    state = const AccountDeletionStatus.reauthing();
+    final reauthResult =
+        await ref.read(accountDeletionRepositoryProvider).reauthenticateWithGoogle();
+    if (reauthResult.isLeft()) {
+      state = reauthResult.fold(
+        (failure) {
+          if (failure.kind == AccountDeletionFailureKind.requiresRecentLogin) {
+            // Annulation par l'utilisateur → revenir au choix reauth.
+            return const AccountDeletionStatus.requiresReauth();
+          }
+          return AccountDeletionStatus.error(failure);
+        },
+        (_) => throw StateError('impossible'),
+      );
+      return;
+    }
+    // Reauth réussie → retenter la suppression.
+    final deleteResult =
+        await ref.read(accountDeletionRepositoryProvider).deleteAccountNow();
+    state = deleteResult.fold(
       (failure) => AccountDeletionStatus.error(failure),
       (_) => const AccountDeletionStatus.deleted(),
     );

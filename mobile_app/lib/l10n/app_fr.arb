@@ -803,6 +803,12 @@
   "accountDeletionRecentLoginToast": "Session expirée. Reconnecte-toi et réessaie.",
   "@accountDeletionRecentLoginToast": { "description": "Toast warning quand Firebase Auth exige une re-authentification récente avant deleteAccountNow." },
 
+  "accountDeletionReauthTitle": "Vérification requise",
+  "@accountDeletionReauthTitle": { "description": "Titre de la modale de re-authentification avant suppression de compte." },
+
+  "accountDeletionReauthBody": "Ta session a expiré. Reconnecte-toi avec Google pour confirmer la suppression de ton compte.",
+  "@accountDeletionReauthBody": { "description": "Corps de la modale de re-authentification avant suppression (requiresRecentLogin)." },
+
   "dashboardDailyGoalTitle": "Objectif du jour",
   "@dashboardDailyGoalTitle": { "description": "Titre de la section Objectif du jour du dashboard (Story 2.3 AC2)." },
 

@@ -22,6 +22,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_modal.dart';
 import '../../../../core/widgets/app_toast.dart';
+import '../../../../core/widgets/auth/social_brand_icons.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../account/domain/account_deletion_failure.dart';
 import '../../../account/domain/account_deletion_status.dart';
@@ -62,7 +63,7 @@ class _ProfileAccountSectionState
             ref
                 .read(profileUpgradeInProgressProvider.notifier)
                 .setInProgress(false);
-            if (context.mounted) GoRouter.of(context).go('/');
+            if (context.mounted) context.go('/');
 
           case AccountDeletionStatusError(:final failure):
             _closeDialogIfOpen();
@@ -75,18 +76,10 @@ class _ProfileAccountSectionState
               AccountDeletionFailureKind.unknown => l10n.errorGeneric,
             };
             AppToast.show(context, message: message, tone: ToastTone.warning);
-            // Ne pas reset() pour requiresRecentLogin : le rollback dans le repo
-            // restaure le doc Firestore de facon async (Platform Channel).
-            // Garder l'etat error comme bouclier routeur (isDeletionActive) le
-            // temps que profileCompletionProvider recoive le callback Firestore
-            // et emette complete. L'utilisateur re-tape "Supprimer" pour retenter,
-            // ce qui transite vers deleting et efface l'etat error.
-            if (failure.kind != AccountDeletionFailureKind.requiresRecentLogin) {
-              ref
-                  .read(accountDeletionStatusNotifierProvider.notifier)
-                  .reset();
-            }
+            ref.read(accountDeletionStatusNotifierProvider.notifier).reset();
 
+          // requiresReauth / reauthing : le dialog reste ouvert et se rebuilde
+          // via le Consumer interne — pas de close ici (default: break).
           default:
             break;
         }
@@ -136,14 +129,21 @@ class _ProfileAccountSectionState
           builder: (_, ref, _) {
             final status = ref.watch(accountDeletionStatusNotifierProvider);
             final isLoading = status.isLoading;
+            final isReauth = status is AccountDeletionStatusRequiresReauth;
+            final notifier =
+                ref.read(accountDeletionStatusNotifierProvider.notifier);
             return AppDialogCard(
-              title: l10n.accountDeletionConfirmTitle,
+              title: isReauth
+                  ? l10n.accountDeletionReauthTitle
+                  : l10n.accountDeletionConfirmTitle,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    l10n.accountDeletionConfirmBody,
+                    isReauth
+                        ? l10n.accountDeletionReauthBody
+                        : l10n.accountDeletionConfirmBody,
                     style: AppTypography.body.copyWith(
                       color: AppColors.inkSoft,
                       fontSize: AppFontSize.body,
@@ -157,22 +157,33 @@ class _ProfileAccountSectionState
                           label: l10n.cancelLabel,
                           onPressed: isLoading
                               ? null
-                              : () => Navigator.of(dialogContext).pop(),
+                              : () {
+                                  notifier.reset();
+                                  Navigator.of(dialogContext).pop();
+                                },
                         ),
                       ),
                       SizedBox(width: AppSpacing.s3.w),
-                      Expanded(
-                        child: AppButton.danger(
-                          label: l10n.accountDeletionConfirmCta,
-                          loading: isLoading,
-                          onPressed: isLoading
-                              ? null
-                              : () => ref
-                                  .read(accountDeletionStatusNotifierProvider
-                                      .notifier)
-                                  .deleteNow(),
+                      if (isReauth)
+                        Expanded(
+                          child: AppButton.primary(
+                            label: l10n.onboardingAuthGoogleLabel,
+                            iconWidget: const GoogleBrandIcon(),
+                            loading: isLoading,
+                            onPressed: isLoading
+                                ? null
+                                : notifier.reauthAndDeleteNow,
+                          ),
+                        )
+                      else
+                        Expanded(
+                          child: AppButton.danger(
+                            label: l10n.accountDeletionConfirmCta,
+                            loading: isLoading,
+                            onPressed:
+                                isLoading ? null : notifier.deleteNow,
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ],
@@ -182,6 +193,12 @@ class _ProfileAccountSectionState
         );
       },
     );
+    // Reset si le dialog est ferme depuis l'exterieur (back button) pendant
+    // l'etat requiresReauth : evite que la prochaine ouverture saute la confirmation.
+    final currentStatus = ref.read(accountDeletionStatusNotifierProvider);
+    if (currentStatus is AccountDeletionStatusRequiresReauth) {
+      ref.read(accountDeletionStatusNotifierProvider.notifier).reset();
+    }
     _dialogContext = null;
   }
 

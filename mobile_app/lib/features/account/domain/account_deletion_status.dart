@@ -5,6 +5,8 @@
 //   idle -> requesting -> requested|error
 //   idle (suite a banner dashboard) -> cancelling -> cancelled|error
 //   idle -> deleting -> deleted|error   (suppression immediate)
+//   deleting -> requiresReauth          (Firebase exige re-auth)
+//   requiresReauth -> reauthing -> deleted|requiresReauth|error
 
 import 'package:equatable/equatable.dart';
 
@@ -36,10 +38,21 @@ sealed class AccountDeletionStatus extends Equatable {
   const factory AccountDeletionStatus.error(AccountDeletionFailure failure) =
       AccountDeletionStatusError;
 
+  /// Firebase Auth exige une re-authentification recente. L'UI doit proposer
+  /// le bouton "Se reconnecter avec Google" pour que l'utilisateur complete le
+  /// flow sans quitter la modale.
+  const factory AccountDeletionStatus.requiresReauth() =
+      AccountDeletionStatusRequiresReauth;
+
+  /// Re-authentification Google + suppression en cours (apres requiresReauth).
+  const factory AccountDeletionStatus.reauthing() =
+      AccountDeletionStatusReauthing;
+
   bool get isLoading => switch (this) {
         AccountDeletionStatusRequesting() => true,
         AccountDeletionStatusCancelling() => true,
         AccountDeletionStatusDeleting() => true,
+        AccountDeletionStatusReauthing() => true,
         _ => false,
       };
 }
@@ -91,4 +104,16 @@ class AccountDeletionStatusError extends AccountDeletionStatus {
   final AccountDeletionFailure failure;
   @override
   List<Object?> get props => ['error', failure];
+}
+
+class AccountDeletionStatusRequiresReauth extends AccountDeletionStatus {
+  const AccountDeletionStatusRequiresReauth();
+  @override
+  List<Object?> get props => const ['requiresReauth'];
+}
+
+class AccountDeletionStatusReauthing extends AccountDeletionStatus {
+  const AccountDeletionStatusReauthing();
+  @override
+  List<Object?> get props => const ['reauthing'];
 }

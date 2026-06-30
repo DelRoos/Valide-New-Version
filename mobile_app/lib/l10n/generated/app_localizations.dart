@@ -1700,6 +1700,18 @@ abstract class AppLocalizations {
   /// **'Session expirée. Reconnecte-toi et réessaie.'**
   String get accountDeletionRecentLoginToast;
 
+  /// Titre de la modale de re-authentification avant suppression de compte.
+  ///
+  /// In fr, this message translates to:
+  /// **'Vérification requise'**
+  String get accountDeletionReauthTitle;
+
+  /// Corps de la modale de re-authentification avant suppression (requiresRecentLogin).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta session a expiré. Reconnecte-toi avec Google pour confirmer la suppression de ton compte.'**
+  String get accountDeletionReauthBody;
+
   /// Titre de la section Objectif du jour du dashboard (Story 2.3 AC2).
   ///
   /// In fr, this message translates to:

@@ -373,6 +373,8 @@
   "accountDeletionAutoCancelledToast": "Your account is active again.",
   "accountDeletionNotAvailableToast": "Feature coming soon.",
   "accountDeletionRecentLoginToast": "Session expired. Sign in again and retry.",
+  "accountDeletionReauthTitle": "Verification required",
+  "accountDeletionReauthBody": "Your session has expired. Sign in with Google to confirm your account deletion.",
 
   "dashboardDailyGoalTitle": "Daily goal",
   "dashboardDailyGoalTask": "Complete 1 quiz + read 1 lesson",
