@@ -104,7 +104,7 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
         (prev, next) {
       if (next is AccountLinkingSuccess) {
         if (mounted) {
-          // showDialog (useRootNavigator:true) → pop doit aussi cibler le root navigator.
+          // showDialog useRootNavigator:true → rootNavigator requis ; maybePop absorbe la race condition GoRouter si uid change avant le pop.
           Navigator.of(context, rootNavigator: true).maybePop();
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (mounted) widget.onLinked?.call();
