@@ -97,17 +97,33 @@ class _SchoolProfileEditSheetState
 
   List<Serie> _compatibleStreams(String levelId, CatalogueSnapshot snapshot) {
     return snapshot.series
-        .where((s) => s.isActive && s.niveauId == levelId && s.filiereId == widget.trackId)
+        .where((s) =>
+            s.isActive &&
+            s.niveauId == levelId &&
+            (widget.trackId.isEmpty || s.filiereId == widget.trackId))
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  }
+
+  // Même logique que l'onboarding : le picker s'affiche si > 1 série ou
+  // si au moins une série a un pickerMode non-derived (choix interactif).
+  bool _requiresStreamPicker(List<Serie> streams) {
+    return streams.length > 1 ||
+        streams.any((s) => s.pickerMode != PickerMode.derived);
   }
 
   void _onLevelSelected(String levelId, CatalogueSnapshot snapshot) {
     _levelId = levelId;
     final streams = _compatibleStreams(levelId, snapshot);
 
-    if (streams.length == 1) {
-      _onStreamSelected(streams.first.serieId, snapshot);
+    if (!_requiresStreamPicker(streams)) {
+      if (streams.length == 1) {
+        _onStreamSelected(streams.first.serieId, snapshot);
+      } else {
+        // 0 séries — données incomplètes, on saute directement aux matières.
+        setState(() {});
+        _goTo(2);
+      }
       return;
     }
     // Conserver la série actuelle uniquement si compatible avec le nouveau niveau.
@@ -252,7 +268,9 @@ class _SchoolProfileEditSheetState
                   if (_step > 0) ...[
                     GestureDetector(
                       onTap: () {
-                        if (_step == 2 && _compatibleStreams(_levelId, snapshot).length <= 1) {
+                        if (_step == 2 &&
+                            !_requiresStreamPicker(
+                                _compatibleStreams(_levelId, snapshot))) {
                           _goTo(0);
                         } else {
                           _goTo(_step - 1);
