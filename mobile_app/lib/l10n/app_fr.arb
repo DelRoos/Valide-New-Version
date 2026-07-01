@@ -386,6 +386,9 @@
   "coursesStartLesson": "Commencer",
   "@coursesStartLesson": { "description": "CTA du banner recommandation sur la page Cours." },
 
+  "coursesRecommendedBannerTitle": "Reprends là où tu t'es arrêté",
+  "@coursesRecommendedBannerTitle": { "description": "Titre du banner recommandation — générique jusqu'à implémentation du moteur de recommandation." },
+
   "dashboardTabActivities": "Examen",
   "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
@@ -954,6 +957,9 @@
 
   "profileMenuSchool": "Mon école",
   "@profileMenuSchool": { "description": "Item menu 'Mon école' dans la section Compte du profil — ouvre le sheet de changement d'école (Story A.1 AC6)." },
+
+  "profileMenuClass": "Ma classe",
+  "@profileMenuClass": { "description": "Item menu 'Ma classe' dans la section Compte du profil — ouvre SchoolProfileEditSheet (Story A.3)." },
 
   "profileMenuName": "Mon nom",
   "@profileMenuName": { "description": "Label item menu nom dans la section Compte — affiché en permanence, valeur en sous-titre." },

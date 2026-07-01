@@ -402,6 +402,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get coursesStartLesson => 'Commencer';
 
   @override
+  String get coursesRecommendedBannerTitle => 'Reprends là où tu t\'es arrêté';
+
+  @override
   String get dashboardTabActivities => 'Examen';
 
   @override
@@ -1065,6 +1068,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileMenuSchool => 'Mon école';
+
+  @override
+  String get profileMenuClass => 'Ma classe';
 
   @override
   String get profileMenuName => 'Mon nom';

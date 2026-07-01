@@ -764,6 +764,12 @@ abstract class AppLocalizations {
   /// **'Commencer'**
   String get coursesStartLesson;
 
+  /// Titre du banner recommandation — générique jusqu'à implémentation du moteur de recommandation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprends là où tu t\'es arrêté'**
+  String get coursesRecommendedBannerTitle;
+
   /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
@@ -1945,6 +1951,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mon école'**
   String get profileMenuSchool;
+
+  /// Item menu 'Ma classe' dans la section Compte du profil — ouvre SchoolProfileEditSheet (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma classe'**
+  String get profileMenuClass;
 
   /// Label item menu nom dans la section Compte — affiché en permanence, valeur en sous-titre.
   ///

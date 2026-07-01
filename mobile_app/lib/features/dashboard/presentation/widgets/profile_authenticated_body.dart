@@ -23,6 +23,7 @@ import 'profile_header.dart';
 import 'profile_menu_section.dart';
 import 'profile_stats_row.dart';
 import 'school_edit_sheet.dart';
+import 'school_profile_edit_sheet.dart';
 
 class ProfileAuthenticatedBody extends ConsumerWidget {
   const ProfileAuthenticatedBody({
@@ -72,6 +73,12 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
     final schoolName = data?['schoolName'] as String?;
     final displayName = data?['displayName'] as String?;
     final phoneNumber = data?['phoneNumber'] as String?;
+    final subSystem = data?['subSystem'] as String? ?? '';
+    final trackId = data?['trackId'] as String? ?? '';
+    final levelId = data?['levelId'] as String? ?? '';
+    final streamId = data?['streamId'] as String? ?? '';
+    final pickedSubjectIds =
+        List<String>.from(data?['pickedSubjects'] as List? ?? []);
     final subjectsCount = (data?['pickedSubjects'] as List?)?.length ?? 0;
     final examsCount = (data?['examTargets'] as List?)?.length ?? 0;
     final currentLocale = ref.watch(localeProvider);
@@ -118,6 +125,23 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
                           context,
                           schoolId: schoolId,
                           schoolName: schoolName,
+                        ),
+                      ),
+                    ),
+                    ProfileMenuItemData(
+                      icon: LucideIcons.graduationCap,
+                      label: l10n.profileMenuClass,
+                      color: const Color(0xFFF59E0B),
+                      onTap: () => CompleteProfileDialog.guardAnonymous(
+                        context,
+                        ref,
+                        action: () => SchoolProfileEditSheet.show(
+                          context,
+                          subSystem: subSystem,
+                          trackId: trackId,
+                          levelId: levelId,
+                          streamId: streamId,
+                          pickedSubjectIds: pickedSubjectIds,
                         ),
                       ),
                     ),
