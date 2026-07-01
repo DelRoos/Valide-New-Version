@@ -381,6 +381,65 @@ class UserProfileRepositoryFirestoreImpl implements UserProfileRepository {
   }
 
   // ===================================================================
+  // Story A.3 — updateSchoolProfile() : édition niveau/série/matières
+  //
+  // Approche B (client direct) : .update() partiel, 8 champs + updatedAt.
+  // Les règles firestore.rules ont été assouplies (trackId/levelId/streamId
+  // ne sont plus immutables). subSystem/language/createdAt restent bloqués.
+  // Cost : 1 write users/{uid} — feature rare (< 1×/mois par user).
+  // ===================================================================
+
+  @override
+  Future<Either<ProfileFailure, void>> updateSchoolProfile({
+    required String trackId,
+    required String levelId,
+    required String streamId,
+    required List<String> derivedSubjects,
+    required List<String> examTargets,
+    required List<String> pickedSubjects,
+    required List<String> optedOutSubjects,
+  }) async {
+    final uid = _getUid();
+    if (uid == null) {
+      AppLogger.w('updateSchoolProfile() aborted: no current user uid');
+      return const Left(ProfileFailure.notAuthenticated());
+    }
+    try {
+      await logPerf(
+        'users.updateSchoolProfile',
+        () => _firestore.collection(_kCollection).doc(uid).update({
+          'trackId': trackId,
+          'levelId': levelId,
+          'streamId': streamId,
+          'derivedSubjects': derivedSubjects,
+          'examTargets': examTargets,
+          'pickedSubjects': pickedSubjects,
+          'optedOutSubjects': optedOutSubjects,
+          'updatedAt': FieldValue.serverTimestamp(),
+        }),
+      );
+      AppLogger.i('updateSchoolProfile: success levelId=$levelId streamId=$streamId');
+      return const Right(null);
+    } on FirebaseException catch (e, st) {
+      AppLogger.w(
+        'updateSchoolProfile() FirebaseException: ${e.code} ${e.message}',
+        error: e,
+      );
+      AppLogger.w('updateSchoolProfile() stack: $st');
+      return Left(
+        ProfileFailure.firestoreError(
+          e.message ?? 'Firebase: ${e.code}',
+          code: e.code,
+        ),
+      );
+    } catch (e, st) {
+      AppLogger.w('updateSchoolProfile() unexpected error: $e', error: e);
+      AppLogger.w('updateSchoolProfile() stack: $st');
+      return Left(ProfileFailure.firestoreError(e.toString()));
+    }
+  }
+
+  // ===================================================================
   // Story A.2 — fetchPublicProfile() : lecture profil public d'un pair
   //
   // Règle Firestore A.2-DR-01 : allow read: if request.auth != null.

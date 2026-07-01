@@ -1874,6 +1874,36 @@ abstract class AppLocalizations {
   /// **'Profil mis à jour.'**
   String get profileEditSuccess;
 
+  /// Titre du bottom sheet d'édition du profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de classe'**
+  String get profileEditSchoolTitle;
+
+  /// Label étape 1 (sélection du niveau) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle est ta classe ?'**
+  String get profileEditSchoolLevelLabel;
+
+  /// Label étape 2 (sélection de la série) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle est ta spécialité ?'**
+  String get profileEditSchoolStreamLabel;
+
+  /// Label étape 3 (récap/ajustement matières) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tes matières'**
+  String get profileEditSchoolSubjectsLabel;
+
+  /// Label bouton pendant sauvegarde du profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Mise à jour…'**
+  String get profileEditSchoolSaving;
+
   /// Label du champ nom dans le bottom sheet d'édition du profil.
   ///
   /// In fr, this message translates to:

@@ -1029,6 +1029,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileEditSuccess => 'Profil mis à jour.';
 
   @override
+  String get profileEditSchoolTitle => 'Changer de classe';
+
+  @override
+  String get profileEditSchoolLevelLabel => 'Quelle est ta classe ?';
+
+  @override
+  String get profileEditSchoolStreamLabel => 'Quelle est ta spécialité ?';
+
+  @override
+  String get profileEditSchoolSubjectsLabel => 'Tes matières';
+
+  @override
+  String get profileEditSchoolSaving => 'Mise à jour…';
+
+  @override
   String get profileEditNameLabel => 'Prénom ou surnom';
 
   @override

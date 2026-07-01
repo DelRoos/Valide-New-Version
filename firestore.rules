@@ -77,18 +77,17 @@ service cloud.firestore {
       // Update : proprietaire + immutabilite conditionnelle des champs
       // structurants (ADR-006 etendu E1bis).
       //
-      // Pattern : pour chaque champ, "si le resource a deja une valeur,
+      // Pattern : pour chaque champ immutable, "si le resource a deja une valeur,
       // alors la nouvelle valeur doit etre identique ; sinon permettre
       // d'ajouter le champ". Ca permet la migration des docs legacy
       // (Epic 1 stockait filiere/niveau/serie, E1bis ecrit
       // trackId/levelId/streamId — les docs migres ajoutent les nouveaux
       // champs sans casser).
+      // Immutables : subSystem, language, createdAt.
+      // Mutables depuis Story A.3 (Approche B) : trackId, levelId, streamId.
       allow update: if isOwner(uid)
         && (!('subSystem' in resource.data) || request.resource.data.subSystem == resource.data.subSystem)
         && (!('language' in resource.data) || request.resource.data.language == resource.data.language)
-        && (!('trackId' in resource.data) || request.resource.data.trackId == resource.data.trackId)
-        && (!('levelId' in resource.data) || request.resource.data.levelId == resource.data.levelId)
-        && (!('streamId' in resource.data) || request.resource.data.streamId == resource.data.streamId)
         && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
 
       // Delete : autorise pour le proprietaire (self-delete). Permet le

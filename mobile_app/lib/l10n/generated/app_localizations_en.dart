@@ -1023,6 +1023,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileEditSuccess => 'Profile updated.';
 
   @override
+  String get profileEditSchoolTitle => 'Change class';
+
+  @override
+  String get profileEditSchoolLevelLabel => 'What\'s your class?';
+
+  @override
+  String get profileEditSchoolStreamLabel => 'What\'s your specialty?';
+
+  @override
+  String get profileEditSchoolSubjectsLabel => 'Your subjects';
+
+  @override
+  String get profileEditSchoolSaving => 'Updating…';
+
+  @override
   String get profileEditNameLabel => 'First name or nickname';
 
   @override

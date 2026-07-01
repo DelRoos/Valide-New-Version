@@ -914,6 +914,21 @@
   "profileEditSuccess": "Profil mis à jour.",
   "@profileEditSuccess": { "description": "Toast succès après sauvegarde du nom et/ou téléphone (Story A.1 AC5)." },
 
+  "profileEditSchoolTitle": "Changer de classe",
+  "@profileEditSchoolTitle": { "description": "Titre du bottom sheet d'édition du profil scolaire (Story A.3)." },
+
+  "profileEditSchoolLevelLabel": "Quelle est ta classe ?",
+  "@profileEditSchoolLevelLabel": { "description": "Label étape 1 (sélection du niveau) du sheet édition profil scolaire (Story A.3)." },
+
+  "profileEditSchoolStreamLabel": "Quelle est ta spécialité ?",
+  "@profileEditSchoolStreamLabel": { "description": "Label étape 2 (sélection de la série) du sheet édition profil scolaire (Story A.3)." },
+
+  "profileEditSchoolSubjectsLabel": "Tes matières",
+  "@profileEditSchoolSubjectsLabel": { "description": "Label étape 3 (récap/ajustement matières) du sheet édition profil scolaire (Story A.3)." },
+
+  "profileEditSchoolSaving": "Mise à jour…",
+  "@profileEditSchoolSaving": { "description": "Label bouton pendant sauvegarde du profil scolaire (Story A.3)." },
+
   "profileEditNameLabel": "Prénom ou surnom",
   "@profileEditNameLabel": { "description": "Label du champ nom dans le bottom sheet d'édition du profil." },
 

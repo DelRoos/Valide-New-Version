@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../onboarding/providers.dart';
+import 'school_profile_edit_sheet.dart';
 
 // ---------------------------------------------------------------------------
 // Fake data — section programme uniquement
@@ -31,13 +34,18 @@ const _kSubjects = [
 // Section programme
 // ---------------------------------------------------------------------------
 
-class ProgrammeSection extends StatelessWidget {
+class ProgrammeSection extends ConsumerWidget {
   const ProgrammeSection({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pct = (_kGlobalCoverage * 100).round();
     final isLow = _kGlobalCoverage < 0.40;
+
+    final profileData = ref.watch(profileDataProvider).maybeWhen(
+          data: (d) => d,
+          orElse: () => null,
+        );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,6 +72,25 @@ class ProgrammeSection extends StatelessWidget {
                 color: isLow ? AppColors.danger : AppColors.primary,
               ),
             ),
+            if (profileData != null) ...[
+              SizedBox(width: AppSpacing.s1.w),
+              GestureDetector(
+                onTap: () => SchoolProfileEditSheet.show(
+                  context,
+                  subSystem: (profileData['subSystem'] as String?) ?? '',
+                  trackId: (profileData['trackId'] as String?) ?? '',
+                  levelId: (profileData['levelId'] as String?) ?? '',
+                  streamId: (profileData['streamId'] as String?) ?? '',
+                  pickedSubjectIds: List<String>.from(
+                      profileData['pickedSubjects'] as List? ?? []),
+                ),
+                child: Icon(
+                  LucideIcons.pencil,
+                  size: AppIconSize.sm,
+                  color: AppColors.muted,
+                ),
+              ),
+            ],
           ],
         ),
         SizedBox(height: AppSpacing.s3.h),
