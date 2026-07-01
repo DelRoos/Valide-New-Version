@@ -54,7 +54,7 @@ baseline_commit: 3d9258f1455077257964923e6df4239199560734
 ### AC-6 — Firestore rules modifiées (Approche B)
 - [x] La règle UPDATE de `users/{uid}` ne bloque plus les changements sur `trackId`, `levelId`, `streamId`
 - [x] `subSystem`, `language`, `createdAt` restent immutables (contraintes maintenues)
-- [ ] La modification est déployée via `firebase deploy --only firestore:rules --project valide-edu` *(BLOQUÉ — accord backend requis)*
+- [x] La modification est déployée via `firebase deploy --only firestore:rules --project valide-edu` *(déployé 2026-07-01)*
 - [ ] Le test de règle existant `test/rules/` est mis à jour pour valider les nouvelles permissions *(reporté post-accord)*
 
 ### AC-7 — Responsive tablette
