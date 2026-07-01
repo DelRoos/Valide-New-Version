@@ -95,12 +95,16 @@ class _SchoolProfileEditSheetState
     );
   }
 
-  void _onLevelSelected(String levelId, CatalogueSnapshot snapshot) {
-    _levelId = levelId;
-    final streams = snapshot.series
+  List<Serie> _compatibleStreams(String levelId, CatalogueSnapshot snapshot) {
+    return snapshot.series
         .where((s) => s.isActive && s.niveauId == levelId && s.filiereId == widget.trackId)
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+  }
+
+  void _onLevelSelected(String levelId, CatalogueSnapshot snapshot) {
+    _levelId = levelId;
+    final streams = _compatibleStreams(levelId, snapshot);
 
     if (streams.length == 1) {
       _onStreamSelected(streams.first.serieId, snapshot);
@@ -247,7 +251,13 @@ class _SchoolProfileEditSheetState
                 children: [
                   if (_step > 0) ...[
                     GestureDetector(
-                      onTap: () => _goTo(_step - 1),
+                      onTap: () {
+                        if (_step == 2 && _compatibleStreams(_levelId, snapshot).length <= 1) {
+                          _goTo(0);
+                        } else {
+                          _goTo(_step - 1);
+                        }
+                      },
                       child: Icon(LucideIcons.arrowLeft,
                           size: AppIconSize.md, color: AppColors.ink),
                     ),
@@ -329,10 +339,7 @@ class _SchoolProfileEditSheetState
 
   Widget _buildStreamStep(
       CatalogueSnapshot snapshot, String locale, AppLocalizations l10n) {
-    final streams = snapshot.series
-        .where((s) => s.isActive && s.niveauId == _levelId && s.filiereId == widget.trackId)
-        .toList()
-      ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
+    final streams = _compatibleStreams(_levelId, snapshot);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
