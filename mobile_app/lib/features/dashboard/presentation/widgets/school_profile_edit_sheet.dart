@@ -248,12 +248,13 @@ class _SchoolProfileEditSheetState
     );
   }
 
-  // Chip matière : style onboarding (pill, icône + texte).
-  // toggleable=false → lecture seule (obligatoires / mode derived).
+  // Chip matière : style pill onboarding.
+  // toggleable=true → icône check/plus + GestureDetector.
+  // toggleable=false → pas d'icône, lecture seule (obligatoires ou mode fully-derived).
   Widget _chipFor(Subject s, String locale, {bool toggleable = false}) {
     final name = s.name[locale] ?? s.name['fr'] ?? s.subjectId;
     final isPicked = _pickedSubjectIds.contains(s.subjectId);
-    final active = isPicked || !toggleable;
+    final isOn = isPicked || !toggleable;
 
     final content = Container(
       padding: EdgeInsets.symmetric(
@@ -261,31 +262,31 @@ class _SchoolProfileEditSheetState
         vertical: AppSpacing.s2.h,
       ),
       decoration: BoxDecoration(
-        color: active ? AppColors.primarySoft : AppColors.bg,
+        color: isOn ? AppColors.primarySoft : AppColors.bg,
         borderRadius: BorderRadius.circular(AppRadius.pill),
         border: Border.all(
-          color: active
+          color: isOn
               ? AppColors.primary.withValues(alpha: 0.5)
               : AppColors.border,
-          width: active ? AppBorderWidth.bold : AppBorderWidth.hairline,
+          width: isOn ? AppBorderWidth.bold : AppBorderWidth.hairline,
         ),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            toggleable
-                ? (isPicked ? LucideIcons.checkCircle : LucideIcons.plusCircle)
-                : LucideIcons.checkCircle,
-            color: active ? AppColors.primary : AppColors.inkSoft,
-            size: AppIconSize.sm,
-          ),
-          SizedBox(width: AppSpacing.s1.w),
+          if (toggleable) ...[
+            Icon(
+              isPicked ? LucideIcons.checkCircle : LucideIcons.plusCircle,
+              color: isPicked ? AppColors.primary : AppColors.inkSoft,
+              size: AppIconSize.sm,
+            ),
+            SizedBox(width: AppSpacing.s1.w),
+          ],
           Text(
             name,
             style: AppTypography.bodyStrong.copyWith(
               fontSize: AppFontSize.bodySmall,
-              color: active ? AppColors.primary : AppColors.inkSoft,
+              color: isOn ? AppColors.primary : AppColors.inkSoft,
             ),
           ),
         ],
@@ -461,6 +462,8 @@ class _SchoolProfileEditSheetState
     if (d == null) return const SizedBox.shrink();
 
     final isInteractive = d.pickerMode != PickerMode.derived;
+    final obligatoryIds =
+        d.obligatorySubjects.map((s) => s.subjectId).toSet();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -473,7 +476,7 @@ class _SchoolProfileEditSheetState
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Optionnelles (toggleables) en premier — action principale.
+                // Mode interactif : optionnelles (toggleables) puis obligatoires.
                 if (isInteractive && d.optionalSubjects.isNotEmpty) ...[
                   Text(
                     l10n.onboardingPickerOptionalTitle,
@@ -500,12 +503,19 @@ class _SchoolProfileEditSheetState
                   ),
                   SizedBox(height: AppSpacing.s2.h),
                 ],
-                // Toutes les matières (mode derived) ou obligatoires (mode interactif).
+                // Toutes les matières (derived) ou obligatoires (interactive).
+                // En mode derived + canOptOut : les non-obligatoires sont décochables.
                 Wrap(
                   spacing: AppSpacing.s2.w,
                   runSpacing: AppSpacing.s2.h,
                   children: (isInteractive ? d.obligatorySubjects : d.subjects)
-                      .map((s) => _chipFor(s, locale))
+                      .map((s) => _chipFor(
+                            s,
+                            locale,
+                            toggleable: !isInteractive &&
+                                d.canOptOut &&
+                                !obligatoryIds.contains(s.subjectId),
+                          ))
                       .toList(),
                 ),
               ],
