@@ -98,7 +98,7 @@ class _SchoolProfileEditSheetState
   void _onLevelSelected(String levelId, CatalogueSnapshot snapshot) {
     _levelId = levelId;
     final streams = snapshot.series
-        .where((s) => s.isActive && s.niveauId == levelId)
+        .where((s) => s.isActive && s.niveauId == levelId && s.filiereId == widget.trackId)
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 
@@ -261,7 +261,7 @@ class _SchoolProfileEditSheetState
               ),
               SizedBox(height: AppSpacing.s3.h),
               SizedBox(
-                height: 340.h,
+                height: 380.h,
                 child: PageView(
                   controller: _pageCtrl,
                   physics: const NeverScrollableScrollPhysics(),
@@ -304,7 +304,7 @@ class _SchoolProfileEditSheetState
                   crossAxisCount: cols,
                   crossAxisSpacing: AppSpacing.s2.w,
                   mainAxisSpacing: AppSpacing.s2.h,
-                  childAspectRatio: 2.2,
+                  mainAxisExtent: 52.h,
                 ),
                 itemCount: levels.length,
                 itemBuilder: (_, i) {
@@ -330,7 +330,7 @@ class _SchoolProfileEditSheetState
   Widget _buildStreamStep(
       CatalogueSnapshot snapshot, String locale, AppLocalizations l10n) {
     final streams = snapshot.series
-        .where((s) => s.isActive && s.niveauId == _levelId)
+        .where((s) => s.isActive && s.niveauId == _levelId && s.filiereId == widget.trackId)
         .toList()
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
 

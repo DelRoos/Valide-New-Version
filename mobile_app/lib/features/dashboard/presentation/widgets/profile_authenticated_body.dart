@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../app.dart';
+import '../../../../core/catalogue/providers.dart';
 import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
@@ -86,6 +87,20 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
         ? l10n.languageOptionFrench
         : l10n.languageOptionEnglish;
 
+    // Label "Seconde — C" calculé depuis le catalogue (même logique que ProfileHeader).
+    final classLabel = ref.watch(catalogueProvider).maybeWhen(
+      data: (cat) {
+        final lang = languageCode;
+        final lvl = cat.niveaux.where((n) => n.niveauId == levelId).firstOrNull;
+        final str = cat.series.where((s) => s.serieId == streamId).firstOrNull;
+        final lvlName = lvl?.name[lang] ?? lvl?.name['fr'];
+        final strName = str?.name[lang] ?? str?.name['fr'];
+        if (lvlName != null && strName != null) return '$lvlName — $strName';
+        return lvlName ?? strName;
+      },
+      orElse: () => null,
+    );
+
     return CustomScrollView(
       slivers: [
         SliverToBoxAdapter(
@@ -131,6 +146,7 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
                     ProfileMenuItemData(
                       icon: LucideIcons.graduationCap,
                       label: l10n.profileMenuClass,
+                      subtitle: classLabel,
                       color: const Color(0xFFF59E0B),
                       onTap: () => CompleteProfileDialog.guardAnonymous(
                         context,
