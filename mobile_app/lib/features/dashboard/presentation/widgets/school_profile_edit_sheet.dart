@@ -3,6 +3,10 @@
 // Approche B (client direct). Derive les matières en mémoire depuis
 // catalogueProvider (déjà chargé au boot) — 0 read Firestore supplémentaire.
 // PageController interne : chaque step est une page de la PageView.
+//
+// UX : si l'utilisateur a déjà une classe (initialStreamId non vide),
+// on ouvre directement sur l'étape matières (step 2). Il peut revenir
+// en arrière pour changer de niveau/série.
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -64,7 +68,8 @@ class SchoolProfileEditSheet extends ConsumerStatefulWidget {
 
 class _SchoolProfileEditSheetState
     extends ConsumerState<SchoolProfileEditSheet> {
-  final _pageCtrl = PageController();
+  late final PageController _pageCtrl;
+  bool _catalogueInitialized = false;
   int _step = 0;
   late String _levelId;
   String? _streamId;
@@ -76,8 +81,12 @@ class _SchoolProfileEditSheetState
   void initState() {
     super.initState();
     _levelId = widget.initialLevelId;
-    _streamId = widget.initialStreamId;
+    _streamId =
+        widget.initialStreamId.isNotEmpty ? widget.initialStreamId : null;
     _pickedSubjectIds = Set.from(widget.initialPickedSubjectIds);
+    // Ouvrir directement sur les matières si le user a déjà une classe.
+    _step = _streamId != null ? 2 : 0;
+    _pageCtrl = PageController(initialPage: _step);
   }
 
   @override
@@ -105,8 +114,7 @@ class _SchoolProfileEditSheetState
       ..sort((a, b) => a.sortOrder.compareTo(b.sortOrder));
   }
 
-  // Même logique que l'onboarding : le picker s'affiche si > 1 série ou
-  // si au moins une série a un pickerMode non-derived (choix interactif).
+  // Même logique que l'onboarding : picker visible si > 1 série ou pickerMode ≠ derived.
   bool _requiresStreamPicker(List<Serie> streams) {
     return streams.length > 1 ||
         streams.any((s) => s.pickerMode != PickerMode.derived);
@@ -117,16 +125,12 @@ class _SchoolProfileEditSheetState
     final streams = _compatibleStreams(levelId, snapshot);
 
     if (!_requiresStreamPicker(streams)) {
-      if (streams.length == 1) {
+      if (streams.isNotEmpty) {
         _onStreamSelected(streams.first.serieId, snapshot);
-      } else {
-        // 0 séries — données incomplètes, on saute directement aux matières.
-        setState(() {});
-        _goTo(2);
       }
+      // streams vide : données incomplètes, rester sur step 0.
       return;
     }
-    // Conserver la série actuelle uniquement si compatible avec le nouveau niveau.
     if (!streams.any((s) => s.serieId == _streamId)) {
       _streamId = null;
     }
@@ -160,8 +164,9 @@ class _SchoolProfileEditSheetState
     final serie =
         snapshot.series.where((s) => s.serieId == streamId).firstOrNull;
     final subjectSet = rule.subjectIds.toSet();
-    final subjects =
-        snapshot.subjects.where((s) => subjectSet.contains(s.subjectId)).toList();
+    final subjects = snapshot.subjects
+        .where((s) => subjectSet.contains(s.subjectId))
+        .toList();
     final examTargets = snapshot.examTargets
         .where((e) => rule!.examTargetIds.contains(e.examTargetId))
         .toList();
@@ -189,10 +194,8 @@ class _SchoolProfileEditSheetState
       _pickedSubjectIds = Set.from(allIds);
       return;
     }
-    // Conserver l'intersection avec les ids dérivés ; fallback = tout dériver.
     final kept = _pickedSubjectIds.intersection(allIds);
     _pickedSubjectIds = kept.isEmpty ? Set.from(allIds) : kept;
-    // Les obligatoires sont toujours inclus.
     for (final s in _derived!.obligatorySubjects) {
       _pickedSubjectIds.add(s.subjectId);
     }
@@ -245,6 +248,64 @@ class _SchoolProfileEditSheetState
     );
   }
 
+  // Chip matière : style onboarding (pill, icône + texte).
+  // toggleable=false → lecture seule (obligatoires / mode derived).
+  Widget _chipFor(Subject s, String locale, {bool toggleable = false}) {
+    final name = s.name[locale] ?? s.name['fr'] ?? s.subjectId;
+    final isPicked = _pickedSubjectIds.contains(s.subjectId);
+    final active = isPicked || !toggleable;
+
+    final content = Container(
+      padding: EdgeInsets.symmetric(
+        horizontal: AppSpacing.s3.w,
+        vertical: AppSpacing.s2.h,
+      ),
+      decoration: BoxDecoration(
+        color: active ? AppColors.primarySoft : AppColors.bg,
+        borderRadius: BorderRadius.circular(AppRadius.pill),
+        border: Border.all(
+          color: active
+              ? AppColors.primary.withValues(alpha: 0.5)
+              : AppColors.border,
+          width: active ? AppBorderWidth.bold : AppBorderWidth.hairline,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            toggleable
+                ? (isPicked ? LucideIcons.checkCircle : LucideIcons.plusCircle)
+                : LucideIcons.checkCircle,
+            color: active ? AppColors.primary : AppColors.inkSoft,
+            size: AppIconSize.sm,
+          ),
+          SizedBox(width: AppSpacing.s1.w),
+          Text(
+            name,
+            style: AppTypography.bodyStrong.copyWith(
+              fontSize: AppFontSize.bodySmall,
+              color: active ? AppColors.primary : AppColors.inkSoft,
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (!toggleable) return content;
+
+    return GestureDetector(
+      onTap: () => setState(() {
+        if (isPicked) {
+          _pickedSubjectIds.remove(s.subjectId);
+        } else {
+          _pickedSubjectIds.add(s.subjectId);
+        }
+      }),
+      child: content,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -252,58 +313,66 @@ class _SchoolProfileEditSheetState
     final catalogueAsync = ref.watch(catalogueProvider);
 
     return catalogueAsync.when(
-      loading: () =>
-          const SizedBox(height: 200, child: Center(child: CircularProgressIndicator())),
+      loading: () => const SizedBox(
+          height: 200, child: Center(child: CircularProgressIndicator())),
       error: (e, st) => const SizedBox.shrink(),
-      data: (snapshot) => Center(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 560.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // En-tête avec bouton retour
-              Row(
-                children: [
-                  if (_step > 0) ...[
-                    GestureDetector(
-                      onTap: () {
-                        if (_step == 2 &&
-                            !_requiresStreamPicker(
-                                _compatibleStreams(_levelId, snapshot))) {
-                          _goTo(0);
-                        } else {
-                          _goTo(_step - 1);
-                        }
-                      },
-                      child: Icon(LucideIcons.arrowLeft,
-                          size: AppIconSize.md, color: AppColors.ink),
-                    ),
-                    SizedBox(width: AppSpacing.s2.w),
-                  ],
-                  Expanded(
-                    child: Text(l10n.profileEditSchoolTitle,
-                        style: AppTypography.h3),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.s3.h),
-              SizedBox(
-                height: 380.h,
-                child: PageView(
-                  controller: _pageCtrl,
-                  physics: const NeverScrollableScrollPhysics(),
+      data: (snapshot) {
+        // Initialisation unique : dérive les matières depuis le streamId existant.
+        if (!_catalogueInitialized && _streamId != null) {
+          _catalogueInitialized = true;
+          _derived = _deriveFromSnapshot(_streamId!, snapshot);
+          _initPickedSubjects();
+        }
+
+        return Center(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 560.w),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
                   children: [
-                    _buildLevelStep(snapshot, locale, l10n),
-                    _buildStreamStep(snapshot, locale, l10n),
-                    _buildSubjectsStep(locale, l10n),
+                    if (_step > 0) ...[
+                      GestureDetector(
+                        onTap: () {
+                          if (_step == 2 &&
+                              !_requiresStreamPicker(
+                                  _compatibleStreams(_levelId, snapshot))) {
+                            _goTo(0);
+                          } else {
+                            _goTo(_step - 1);
+                          }
+                        },
+                        child: Icon(LucideIcons.arrowLeft,
+                            size: AppIconSize.md, color: AppColors.ink),
+                      ),
+                      SizedBox(width: AppSpacing.s2.w),
+                    ],
+                    Expanded(
+                      child: Text(l10n.profileEditSchoolTitle,
+                          style: AppTypography.h3),
+                    ),
                   ],
                 ),
-              ),
-            ],
+                SizedBox(height: AppSpacing.s3.h),
+                SizedBox(
+                  height: 380.h,
+                  child: PageView(
+                    controller: _pageCtrl,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: [
+                      _buildLevelStep(snapshot, locale, l10n),
+                      _buildStreamStep(snapshot, locale, l10n),
+                      _buildSubjectsStep(locale, l10n),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -320,8 +389,7 @@ class _SchoolProfileEditSheetState
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(l10n.profileEditSchoolLevelLabel,
-            style: AppTypography.bodyStrong),
+        Text(l10n.profileEditSchoolLevelLabel, style: AppTypography.bodyStrong),
         SizedBox(height: AppSpacing.s3.h),
         Expanded(
           child: LayoutBuilder(
@@ -393,8 +461,6 @@ class _SchoolProfileEditSheetState
     if (d == null) return const SizedBox.shrink();
 
     final isInteractive = d.pickerMode != PickerMode.derived;
-    final obligatoryIds =
-        d.obligatorySubjects.map((s) => s.subjectId).toSet();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -404,39 +470,45 @@ class _SchoolProfileEditSheetState
         SizedBox(height: AppSpacing.s3.h),
         Expanded(
           child: SingleChildScrollView(
-            child: Wrap(
-              spacing: AppSpacing.s2.w,
-              runSpacing: AppSpacing.s2.h,
-              children: d.subjects.map((s) {
-                final name = s.name[locale] ?? s.name['fr'] ?? s.subjectId;
-                final isPicked = _pickedSubjectIds.contains(s.subjectId);
-                final isObligatory = obligatoryIds.contains(s.subjectId);
-                // Les obligatoires et le mode derived ne sont pas toggleables.
-                final toggleable = isInteractive && !isObligatory;
-                return FilterChip(
-                  label: Text(name,
-                      style: AppTypography.caption.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: isPicked ? AppColors.primary : AppColors.inkSoft,
-                      )),
-                  selected: isPicked,
-                  onSelected: toggleable
-                      ? (v) => setState(() {
-                            if (v) {
-                              _pickedSubjectIds.add(s.subjectId);
-                            } else {
-                              _pickedSubjectIds.remove(s.subjectId);
-                            }
-                          })
-                      : null,
-                  selectedColor: AppColors.primarySoft,
-                  backgroundColor: AppColors.bg,
-                  checkmarkColor: AppColors.primary,
-                  side: BorderSide(
-                    color: isPicked ? AppColors.primary : AppColors.border,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Optionnelles (toggleables) en premier — action principale.
+                if (isInteractive && d.optionalSubjects.isNotEmpty) ...[
+                  Text(
+                    l10n.onboardingPickerOptionalTitle,
+                    style: AppTypography.caption.copyWith(
+                      color: AppColors.inkSoft,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                );
-              }).toList(),
+                  SizedBox(height: AppSpacing.s2.h),
+                  Wrap(
+                    spacing: AppSpacing.s2.w,
+                    runSpacing: AppSpacing.s2.h,
+                    children: d.optionalSubjects
+                        .map((s) => _chipFor(s, locale, toggleable: true))
+                        .toList(),
+                  ),
+                  SizedBox(height: AppSpacing.s4.h),
+                  Text(
+                    l10n.onboardingPickerObligatoryTitle,
+                    style: AppTypography.caption.copyWith(
+                      color: AppColors.inkSoft,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  SizedBox(height: AppSpacing.s2.h),
+                ],
+                // Toutes les matières (mode derived) ou obligatoires (mode interactif).
+                Wrap(
+                  spacing: AppSpacing.s2.w,
+                  runSpacing: AppSpacing.s2.h,
+                  children: (isInteractive ? d.obligatorySubjects : d.subjects)
+                      .map((s) => _chipFor(s, locale))
+                      .toList(),
+                ),
+              ],
             ),
           ),
         ),
