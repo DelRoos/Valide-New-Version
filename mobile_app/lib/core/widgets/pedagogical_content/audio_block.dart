@@ -45,7 +45,12 @@ class _AudioBlockState extends State<_AudioBlock> {
   // Un seul lecteur audio actif à la fois dans toute l'app.
   static _AudioBlockState? _activePlaying;
 
+  // Taille du bouton play/pause circulaire (dp, pas responsive — zone de touch stable).
+  static const double _kPlayButtonSize = 40;
+
   late final AudioPlayer _player;
+  // Subscriptions stockées pour annulation dans dispose().
+  final _subs = <StreamSubscription<dynamic>>[];
   PlayerState _state = PlayerState.stopped;
   Duration _position = Duration.zero;
   Duration _duration = Duration.zero;
@@ -56,6 +61,8 @@ class _AudioBlockState extends State<_AudioBlock> {
   bool _sourceReady = false;
   // true si le codec/réseau a rendu l'audio indisponible
   bool _hasError = false;
+  // true dès que dispose() est appelé — stoppe _preload() si encore en vol.
+  bool _disposed = false;
   // Chemin local du fichier audio préchargé — null tant que _sourceReady == false.
   String? _localFilePath;
 
@@ -63,24 +70,25 @@ class _AudioBlockState extends State<_AudioBlock> {
   void initState() {
     super.initState();
     _player = AudioPlayer();
-    _player.onPlayerStateChanged.listen((s) {
-      if (mounted) setState(() => _state = s);
-    });
-    _player.onPositionChanged.listen((p) {
-      if (mounted) setState(() => _position = p);
-    });
-    _player.onDurationChanged.listen((d) {
-      if (mounted) setState(() => _duration = d);
-    });
-    _player.onPlayerComplete.listen((_) {
-      if (mounted) {
-        setState(() {
-          _state = PlayerState.stopped;
-          _position = Duration.zero;
-        });
-        if (_activePlaying == this) _activePlaying = null;
-      }
-    });
+    _subs
+      ..add(_player.onPlayerStateChanged.listen((s) {
+        if (mounted) setState(() => _state = s);
+      }))
+      ..add(_player.onPositionChanged.listen((p) {
+        if (mounted) setState(() => _position = p);
+      }))
+      ..add(_player.onDurationChanged.listen((d) {
+        if (mounted) setState(() => _duration = d);
+      }))
+      ..add(_player.onPlayerComplete.listen((_) {
+        if (mounted) {
+          setState(() {
+            _state = PlayerState.stopped;
+            _position = Duration.zero;
+          });
+          if (_activePlaying == this) _activePlaying = null;
+        }
+      }));
     // Pré-charge la source en arrière-plan dès l'ouverture de la leçon.
     // Téléchargement via http.get (headers custom) + lecture depuis fichier local —
     // Android MediaPlayer ne supporte pas les headers sur HTTPS, ce qui provoque
@@ -100,6 +108,7 @@ class _AudioBlockState extends State<_AudioBlock> {
       if (await file.exists()) {
         AppLogger.d('[AudioBlock] cache hit url=${widget.url}');
         _localFilePath = file.path;
+        if (_disposed) return;
         await _player.setSourceDeviceFile(file.path);
         if (mounted) setState(() { _preloading = false; _sourceReady = true; });
         return;
@@ -121,6 +130,7 @@ class _AudioBlockState extends State<_AudioBlock> {
 
       await file.writeAsBytes(response.bodyBytes, flush: true);
       _localFilePath = file.path;
+      if (_disposed) return;
       await _player.setSourceDeviceFile(file.path);
       AppLogger.i('[AudioBlock] ready url=${widget.url} size=${response.bodyBytes.length}B');
       if (mounted) setState(() { _preloading = false; _sourceReady = true; });
@@ -146,6 +156,10 @@ class _AudioBlockState extends State<_AudioBlock> {
 
   @override
   void dispose() {
+    _disposed = true;
+    for (final s in _subs) {
+      s.cancel();
+    }
     if (_activePlaying == this) _activePlaying = null;
     _player.dispose();
     super.dispose();
@@ -171,7 +185,7 @@ class _AudioBlockState extends State<_AudioBlock> {
       try {
         if (_state == PlayerState.paused) {
           await _player.resume();
-        } else if (_sourceReady) {
+        } else if (_sourceReady && _localFilePath != null) {
           // resume() ne fonctionne que sur état paused — état stopped après fin :
           // relancer depuis le fichier local préchargé.
           await _player.play(DeviceFileSource(_localFilePath!));
@@ -313,7 +327,7 @@ class _AudioBlockState extends State<_AudioBlock> {
                             size: AppIconSize.xs,
                             color: AppColors.dangerInk,
                           ),
-                          SizedBox(width: 4.w),
+                          SizedBox(width: AppSpacing.s1.w),
                           Text(
                             'Réessayer',
                             style: TextStyle(
@@ -336,8 +350,8 @@ class _AudioBlockState extends State<_AudioBlock> {
                   GestureDetector(
                     onTap: (_preloading || _hasError) ? null : _toggle,
                     child: Container(
-                      width: 40,
-                      height: 40,
+                      width: _kPlayButtonSize,
+                      height: _kPlayButtonSize,
                       decoration: BoxDecoration(
                         color: AppColors.sky,
                         shape: BoxShape.circle,

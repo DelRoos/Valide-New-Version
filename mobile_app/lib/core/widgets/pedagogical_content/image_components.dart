@@ -431,9 +431,13 @@ class _VideoBlock extends StatelessWidget {
   Future<void> _launch() async {
     final uri = Uri.tryParse(url);
     if (uri == null) return;
-    // inAppWebView → Chrome Custom Tab (Android) / SFSafariViewController (iOS)
-    // L'utilisateur reste dans l'app et peut revenir avec le bouton retour.
-    await launchUrl(uri, mode: LaunchMode.inAppWebView);
+    try {
+      // inAppWebView → Chrome Custom Tab (Android) / SFSafariViewController (iOS)
+      // L'utilisateur reste dans l'app et peut revenir avec le bouton retour.
+      await launchUrl(uri, mode: LaunchMode.inAppWebView);
+    } catch (e) {
+      AppLogger.w('[VideoBlock] launchUrl failed url=$url', error: e);
+    }
   }
 
   @override
@@ -482,10 +486,10 @@ class _VideoBlock extends StatelessWidget {
                       color: Colors.black45,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.play_arrow_rounded,
                       color: Colors.white,
-                      size: 36,
+                      size: AppIconSize.xl5,
                     ),
                   ),
                 ],

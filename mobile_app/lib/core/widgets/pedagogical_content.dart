@@ -11,6 +11,7 @@
 // taille de ce fichier. Les fichiers `part` partagent la portée de la librairie
 // et peuvent utiliser `GptMarkdown` sans importer le package eux-mêmes —
 // ADR-014 est donc pleinement respecté.
+import 'dart:async';
 import 'dart:convert';
 // ignore: unused_import — utilisé par audio_block (part) pour File + writeAsBytes.
 import 'dart:io';

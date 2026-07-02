@@ -30,7 +30,11 @@ final contentRepositoryProvider = Provider<ContentRepository>((ref) {
 final chaptersProvider =
     FutureProvider.autoDispose.family<List<ChapterEntity>, String>(
   (ref, subjectId) async {
-    final profileData = ref.watch(profileDataProvider).maybeWhen(
+    // ref.read (pas ref.watch) : évite d'invalider chaptersProvider à chaque
+    // emit de profileDataProvider (StreamProvider Firestore). Le niveau est lu
+    // une seule fois à la création du provider ; autoDispose garantit la fraîcheur
+    // à la prochaine navigation.
+    final profileData = ref.read(profileDataProvider).maybeWhen(
           data: (d) => d,
           orElse: () => null,
         );

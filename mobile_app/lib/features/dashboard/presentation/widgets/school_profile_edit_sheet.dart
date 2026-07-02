@@ -73,7 +73,7 @@ class SchoolProfileEditSheet extends ConsumerStatefulWidget {
 
 class _SchoolProfileEditSheetState
     extends ConsumerState<SchoolProfileEditSheet> {
-  final _pageCtrl = PageController();
+  late final PageController _pageCtrl;
   int _step = 0;
   late String _levelId;
   String? _streamId;
@@ -90,9 +90,13 @@ class _SchoolProfileEditSheetState
     _streamId =
         widget.initialStreamId.isNotEmpty ? widget.initialStreamId : null;
     _pickedSubjectIds = Set.from(widget.initialPickedSubjectIds);
+    // Si l'utilisateur a déjà une série, ouvrir directement sur l'étape matières (step 2).
+    final startStep = _streamId != null ? 2 : 0;
+    _step = startStep;
+    _pageCtrl = PageController(initialPage: startStep);
     AppLogger.d(
       'SchoolProfileEditSheet.initState: subSystem=${widget.subSystem} trackId=${widget.trackId} '
-      'levelId=$_levelId streamId=$_streamId pickedSubjects=${_pickedSubjectIds.length}',
+      'levelId=$_levelId streamId=$_streamId pickedSubjects=${_pickedSubjectIds.length} startStep=$startStep',
     );
     if (_streamId != null) {
       final snapshot = ref.read(catalogueProvider).value;
