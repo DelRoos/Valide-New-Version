@@ -6,7 +6,6 @@ import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/picker/subject_icon_resolver.dart';
-import '../../../dashboard/data/fake/dashboard_fake_data.dart';
 
 // Palette de couleurs cyclique pour identifier visuellement chaque matière.
 const List<Color> _kSubjectPalette = [
@@ -35,7 +34,6 @@ class SubjectGridCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final langKey = Localizations.localeOf(context).languageCode;
-    final pct = fakeProgressAt(index).clamp(0, 100);
     final abbr = subject.abbreviationFor(langKey);
     final name =
         subject.name[langKey] ?? subject.name['fr'] ?? subject.subjectId;
@@ -78,62 +76,25 @@ class SubjectGridCard extends StatelessWidget {
                   ),
                 ),
               ),
-              // Info bas : nom + progression
+              // Nom de la matière
               Expanded(
-                flex: 8,
+                flex: 5,
                 child: Padding(
-                  padding: EdgeInsets.fromLTRB(
-                    AppSpacing.s3.w,
-                    AppSpacing.s3.h,
-                    AppSpacing.s3.w,
-                    AppSpacing.s3.h,
+                  padding: EdgeInsets.symmetric(
+                    horizontal: AppSpacing.s3.w,
+                    vertical: AppSpacing.s2.h,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        label,
-                        style: AppTypography.bodyStrong.copyWith(
-                          fontSize: AppFontSize.bodySmall,
-                          color: AppColors.ink,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      label,
+                      style: AppTypography.bodyStrong.copyWith(
+                        fontSize: AppFontSize.bodySmall,
+                        color: AppColors.ink,
                       ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                '$pct%',
-                                style: AppTypography.eyebrow.copyWith(
-                                  color: color,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: AppFontSize.eyebrow,
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 4.h),
-                          ClipRRect(
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.pill),
-                            child: LinearProgressIndicator(
-                              value: pct / 100,
-                              backgroundColor:
-                                  color.withValues(alpha: 0.12),
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(color),
-                              minHeight: 5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ),
               ),

@@ -197,6 +197,7 @@ class _CalloutState extends State<_Callout> {
                           useDollarSignsForLatex: true,
                           imageBuilder: PedagogicalContent._imageBuilder,
                           codeBuilder: PedagogicalContent._codeBuilder,
+                          latexBuilder: PedagogicalContent._latexBuilder,
                         ),
                       )
                     : const SizedBox.shrink(),

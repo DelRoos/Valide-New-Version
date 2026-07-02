@@ -80,8 +80,10 @@ class _LessonPageState extends ConsumerState<LessonPage> {
           list.where((s) => s.subjectId == widget.subjectId).firstOrNull,
       orElse: () => null,
     );
-    final subjectAbbrev =
-        subject?.abbreviationFor(langCode) ?? widget.subjectId.toUpperCase();
+    final subjectAbbrev = subject?.abbreviationFor(langCode) ??
+        subject?.name[langCode] ??
+        subject?.name['fr'] ??
+        widget.subjectId;
     final breadcrumb = '$subjectAbbrev · CH. $chapterOrder';
 
     return Scaffold(
@@ -164,17 +166,19 @@ class _LessonPageState extends ConsumerState<LessonPage> {
             error: error,
             onRetry: () => ref.invalidate(lessonContentProvider(widget.lessonId)),
           ),
-          data: (lessonContent) => InteractiveViewer(
-            panEnabled: false,
-            scaleEnabled: true,
-            minScale: 0.7,
-            maxScale: 3.5,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final width = constraints.maxWidth;
-                final bottomInset = MediaQuery.paddingOf(context).bottom;
-                final content = lessonContent.contentFor(langCode);
-                final scrollContent = SingleChildScrollView(
+          data: (lessonContent) {
+            final screenWidth = MediaQuery.sizeOf(context).width;
+            final bottomInset = MediaQuery.paddingOf(context).bottom;
+            final content = lessonContent.contentFor(langCode);
+            final effectiveMaxWidth = screenWidth >= 840
+                ? 720.0
+                : screenWidth >= 600
+                    ? 600.0
+                    : screenWidth;
+            return Center(
+              child: SizedBox(
+                width: effectiveMaxWidth,
+                child: SingleChildScrollView(
                   controller: _scrollController,
                   padding: EdgeInsets.fromLTRB(
                     AppSpacing.s4,
@@ -194,27 +198,10 @@ class _LessonPageState extends ConsumerState<LessonPage> {
                       LessonCtaRow(isFr: isFr),
                     ],
                   ),
-                );
-
-                if (width >= 840) {
-                  return Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 720),
-                      child: scrollContent,
-                    ),
-                  );
-                } else if (width >= 600) {
-                  return Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 600),
-                      child: scrollContent,
-                    ),
-                  );
-                }
-                return scrollContent;
-              },
-            ),
-          ),
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

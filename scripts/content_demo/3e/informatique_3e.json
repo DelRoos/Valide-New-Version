@@ -1,0 +1,1365 @@
+{
+  "meta": {
+    "subjectId": "francophone_info_college",
+    "levelId": "francophone_3e",
+    "examTarget": "BEPC",
+    "language": "fr",
+    "generatedAt": "2026-06-30",
+    "version": "1.0.0"
+  },
+  "chapters": [
+    {
+      "id": "ch_info_3e_01",
+      "title": {
+        "fr": "Introduction à l'informatique et aux systèmes d'information",
+        "en": "Introduction to computing and information systems"
+      },
+      "sortOrder": 1,
+      "lessonIds": ["les_info_3e_01_01", "les_info_3e_01_02", "les_info_3e_01_03", "les_info_3e_01_04", "les_info_3e_01_05"]
+    },
+    {
+      "id": "ch_info_3e_02",
+      "title": {
+        "fr": "Algorithmique et programmation",
+        "en": "Algorithms and programming"
+      },
+      "sortOrder": 2,
+      "lessonIds": ["les_info_3e_02_01", "les_info_3e_02_02", "les_info_3e_02_03", "les_info_3e_02_04", "les_info_3e_02_05"]
+    },
+    {
+      "id": "ch_info_3e_03",
+      "title": {
+        "fr": "Réseaux et Internet",
+        "en": "Networks and the Internet"
+      },
+      "sortOrder": 3,
+      "lessonIds": ["les_info_3e_03_01", "les_info_3e_03_02", "les_info_3e_03_03", "les_info_3e_03_04", "les_info_3e_03_05"]
+    }
+  ],
+  "lessons": [
+    {
+      "id": "les_info_3e_01_01",
+      "chapterId": "ch_info_3e_01",
+      "title": { "fr": "Matériel informatique : composants et rôles", "en": "Computer hardware: components and roles" },
+      "sortOrder": 1,
+      "notionIds": ["not_info_ordinateur", "not_info_processeur", "not_info_memoire_vive", "not_info_peripherique"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_01_01.md",
+        "en": "lessons/en/les_info_3e_01_01.md"
+      }
+    },
+    {
+      "id": "les_info_3e_01_02",
+      "chapterId": "ch_info_3e_01",
+      "title": { "fr": "Systèmes d'exploitation et logiciels", "en": "Operating systems and software" },
+      "sortOrder": 2,
+      "notionIds": ["not_info_systeme_exploitation", "not_info_logiciel"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_01_02.md",
+        "en": "lessons/en/les_info_3e_01_02.md"
+      }
+    },
+    {
+      "id": "les_info_3e_01_03",
+      "chapterId": "ch_info_3e_01",
+      "title": { "fr": "Traitement de texte", "en": "Word processing" },
+      "sortOrder": 3,
+      "notionIds": ["not_info_logiciel"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_01_03.md",
+        "en": "lessons/en/les_info_3e_01_03.md"
+      }
+    },
+    {
+      "id": "les_info_3e_01_04",
+      "chapterId": "ch_info_3e_01",
+      "title": { "fr": "Tableurs et calculs automatiques", "en": "Spreadsheets and automated calculations" },
+      "sortOrder": 4,
+      "notionIds": ["not_info_tableur", "not_info_formule_tableur"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_01_04.md",
+        "en": "lessons/en/les_info_3e_01_04.md"
+      }
+    },
+    {
+      "id": "les_info_3e_01_05",
+      "chapterId": "ch_info_3e_01",
+      "title": { "fr": "Bases de données : organisation de l'information", "en": "Databases: organising information" },
+      "sortOrder": 5,
+      "notionIds": ["not_info_base_donnees", "not_info_table_bd"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_01_05.md",
+        "en": "lessons/en/les_info_3e_01_05.md"
+      }
+    },
+    {
+      "id": "les_info_3e_02_01",
+      "chapterId": "ch_info_3e_02",
+      "title": { "fr": "Introduction aux algorithmes et au pseudocode", "en": "Introduction to algorithms and pseudocode" },
+      "sortOrder": 1,
+      "notionIds": ["not_info_algorithme", "not_info_pseudocode"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_02_01.md",
+        "en": "lessons/en/les_info_3e_02_01.md"
+      }
+    },
+    {
+      "id": "les_info_3e_02_02",
+      "chapterId": "ch_info_3e_02",
+      "title": { "fr": "Variables, types de données et opérations", "en": "Variables, data types and operations" },
+      "sortOrder": 2,
+      "notionIds": ["not_info_variable", "not_info_type_donnee"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_02_02.md",
+        "en": "lessons/en/les_info_3e_02_02.md"
+      }
+    },
+    {
+      "id": "les_info_3e_02_03",
+      "chapterId": "ch_info_3e_02",
+      "title": { "fr": "Structures conditionnelles", "en": "Conditional structures" },
+      "sortOrder": 3,
+      "notionIds": ["not_info_condition", "not_info_structure_cond"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_02_03.md",
+        "en": "lessons/en/les_info_3e_02_03.md"
+      }
+    },
+    {
+      "id": "les_info_3e_02_04",
+      "chapterId": "ch_info_3e_02",
+      "title": { "fr": "Structures répétitives : les boucles", "en": "Repetitive structures: loops" },
+      "sortOrder": 4,
+      "notionIds": ["not_info_boucle"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_02_04.md",
+        "en": "lessons/en/les_info_3e_02_04.md"
+      }
+    },
+    {
+      "id": "les_info_3e_02_05",
+      "chapterId": "ch_info_3e_02",
+      "title": { "fr": "Sous-programmes : fonctions et procédures", "en": "Subprograms: functions and procedures" },
+      "sortOrder": 5,
+      "notionIds": ["not_info_fonction"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_02_05.md",
+        "en": "lessons/en/les_info_3e_02_05.md"
+      }
+    },
+    {
+      "id": "les_info_3e_03_01",
+      "chapterId": "ch_info_3e_03",
+      "title": { "fr": "Architecture des réseaux informatiques", "en": "Computer network architecture" },
+      "sortOrder": 1,
+      "notionIds": ["not_info_reseau"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_03_01.md",
+        "en": "lessons/en/les_info_3e_03_01.md"
+      }
+    },
+    {
+      "id": "les_info_3e_03_02",
+      "chapterId": "ch_info_3e_03",
+      "title": { "fr": "Internet : protocoles et services", "en": "The Internet: protocols and services" },
+      "sortOrder": 2,
+      "notionIds": ["not_info_protocole", "not_info_internet", "not_info_url"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_03_02.md",
+        "en": "lessons/en/les_info_3e_03_02.md"
+      }
+    },
+    {
+      "id": "les_info_3e_03_03",
+      "chapterId": "ch_info_3e_03",
+      "title": { "fr": "Sécurité informatique", "en": "Computer security" },
+      "sortOrder": 3,
+      "notionIds": ["not_info_virus", "not_info_phishing"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_03_03.md",
+        "en": "lessons/en/les_info_3e_03_03.md"
+      }
+    },
+    {
+      "id": "les_info_3e_03_04",
+      "chapterId": "ch_info_3e_03",
+      "title": { "fr": "Vie privée et données personnelles", "en": "Privacy and personal data" },
+      "sortOrder": 4,
+      "notionIds": ["not_info_donnees_perso"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_03_04.md",
+        "en": "lessons/en/les_info_3e_03_04.md"
+      }
+    },
+    {
+      "id": "les_info_3e_03_05",
+      "chapterId": "ch_info_3e_03",
+      "title": { "fr": "Usages responsables du numérique", "en": "Responsible use of digital technology" },
+      "sortOrder": 5,
+      "notionIds": ["not_info_donnees_perso", "not_info_phishing"],
+      "content": {
+        "fr": "lessons/fr/les_info_3e_03_05.md",
+        "en": "lessons/en/les_info_3e_03_05.md"
+      }
+    }
+  ],
+  "notions": [
+    {
+      "id": "not_info_ordinateur",
+      "title": { "fr": "Ordinateur", "en": "Computer" },
+      "definition": {
+        "fr": "Machine électronique programmable capable d'acquérir, de stocker, de traiter et de restituer des informations selon des instructions organisées en programme.",
+        "en": "A programmable electronic machine capable of acquiring, storing, processing and outputting information according to instructions organised into a program."
+      },
+      "lessonIds": ["les_info_3e_01_01"]
+    },
+    {
+      "id": "not_info_processeur",
+      "title": { "fr": "Processeur (CPU)", "en": "Processor (CPU)" },
+      "definition": {
+        "fr": "Composant électronique qui exécute les instructions des programmes. C'est le «cerveau» de l'ordinateur ; sa performance se mesure en GHz (gigahertz) et en nombre de cœurs.",
+        "en": "Electronic component that executes program instructions. It is the «brain» of the computer; its performance is measured in GHz (gigahertz) and number of cores."
+      },
+      "lessonIds": ["les_info_3e_01_01"]
+    },
+    {
+      "id": "not_info_memoire_vive",
+      "title": { "fr": "Mémoire vive (RAM)", "en": "Random Access Memory (RAM)" },
+      "definition": {
+        "fr": "Mémoire temporaire de l'ordinateur qui stocke les données et programmes en cours d'utilisation. Son contenu s'efface entièrement à l'extinction de la machine.",
+        "en": "Temporary computer memory that stores data and programs currently in use. Its contents are completely erased when the computer is switched off."
+      },
+      "lessonIds": ["les_info_3e_01_01"]
+    },
+    {
+      "id": "not_info_peripherique",
+      "title": { "fr": "Périphérique", "en": "Peripheral device" },
+      "definition": {
+        "fr": "Appareil externe connecté à l'ordinateur. Périphériques d'entrée (clavier, souris) : envoient des données vers l'ordinateur. Périphériques de sortie (écran, imprimante) : reçoivent des données de l'ordinateur.",
+        "en": "External device connected to the computer. Input peripherals (keyboard, mouse): send data to the computer. Output peripherals (screen, printer): receive data from the computer."
+      },
+      "lessonIds": ["les_info_3e_01_01"]
+    },
+    {
+      "id": "not_info_systeme_exploitation",
+      "title": { "fr": "Système d'exploitation (SE)", "en": "Operating system (OS)" },
+      "definition": {
+        "fr": "Logiciel de base qui gère les ressources matérielles (processeur, mémoire, disque) et fournit une interface entre l'utilisateur et la machine. Exemples : Windows, Ubuntu Linux, macOS, Android.",
+        "en": "Basic software that manages hardware resources (processor, memory, disk) and provides an interface between the user and the machine. Examples: Windows, Ubuntu Linux, macOS, Android."
+      },
+      "lessonIds": ["les_info_3e_01_02"]
+    },
+    {
+      "id": "not_info_logiciel",
+      "title": { "fr": "Logiciel", "en": "Software" },
+      "definition": {
+        "fr": "Programme ou ensemble de programmes permettant à un ordinateur d'effectuer des tâches spécifiques. On distingue les logiciels système (SE, pilotes) et les logiciels d'application (traitement de texte, navigateur, jeux…).",
+        "en": "A program or set of programs enabling a computer to perform specific tasks. System software (OS, drivers) and application software (word processor, browser, games…) are distinguished."
+      },
+      "lessonIds": ["les_info_3e_01_02", "les_info_3e_01_03"]
+    },
+    {
+      "id": "not_info_tableur",
+      "title": { "fr": "Tableur", "en": "Spreadsheet software" },
+      "definition": {
+        "fr": "Logiciel organisant les données en feuilles de calcul composées de cellules identifiées par une colonne (lettre) et une ligne (numéro), comme A1 ou B3. Permet d'effectuer des calculs automatiques.",
+        "en": "Software that organises data into calculation sheets made up of cells identified by a column (letter) and a row (number), such as A1 or B3. It allows automatic calculations."
+      },
+      "lessonIds": ["les_info_3e_01_04"]
+    },
+    {
+      "id": "not_info_formule_tableur",
+      "title": { "fr": "Formule de calcul", "en": "Calculation formula" },
+      "definition": {
+        "fr": "Expression commençant par = dans un tableur permettant d'effectuer des calculs automatiques. Exemple : =SOMME(A1:A5) additionne les valeurs des cellules A1 à A5.",
+        "en": "An expression beginning with = in a spreadsheet, used for automatic calculations. Example: =SUM(A1:A5) adds the values of cells A1 to A5."
+      },
+      "lessonIds": ["les_info_3e_01_04"]
+    },
+    {
+      "id": "not_info_base_donnees",
+      "title": { "fr": "Base de données", "en": "Database" },
+      "definition": {
+        "fr": "Collection organisée d'informations structurées, stockées et gérées par un Système de Gestion de Base de Données (SGBD). Exemples de SGBD : MySQL, LibreOffice Base, Microsoft Access.",
+        "en": "An organised collection of structured information stored and managed by a Database Management System (DBMS). DBMS examples: MySQL, LibreOffice Base, Microsoft Access."
+      },
+      "lessonIds": ["les_info_3e_01_05"]
+    },
+    {
+      "id": "not_info_table_bd",
+      "title": { "fr": "Table (base de données)", "en": "Table (database)" },
+      "definition": {
+        "fr": "Structure de base d'une base de données, organisée en lignes (enregistrements) et en colonnes (champs). Chaque ligne représente un objet ou une personne ; chaque colonne, un type d'information.",
+        "en": "Basic structure of a database, organised in rows (records) and columns (fields). Each row represents an object or person; each column a type of information."
+      },
+      "lessonIds": ["les_info_3e_01_05"]
+    },
+    {
+      "id": "not_info_algorithme",
+      "title": { "fr": "Algorithme", "en": "Algorithm" },
+      "definition": {
+        "fr": "Suite finie, non ambiguë et ordonnée d'instructions permettant de résoudre un problème ou d'accomplir une tâche. Un algorithme prend des données en entrée et produit un résultat en sortie.",
+        "en": "A finite, unambiguous and ordered sequence of instructions for solving a problem or completing a task. An algorithm takes data as input and produces a result as output."
+      },
+      "lessonIds": ["les_info_3e_02_01"]
+    },
+    {
+      "id": "not_info_pseudocode",
+      "title": { "fr": "Pseudocode", "en": "Pseudocode" },
+      "definition": {
+        "fr": "Langage intermédiaire entre le français courant et un langage de programmation, utilisé pour décrire un algorithme de façon lisible et indépendante de tout langage particulier.",
+        "en": "An intermediate language between plain language and a programming language, used to describe an algorithm in a readable, language-independent way."
+      },
+      "lessonIds": ["les_info_3e_02_01"]
+    },
+    {
+      "id": "not_info_variable",
+      "title": { "fr": "Variable", "en": "Variable" },
+      "definition": {
+        "fr": "Espace mémoire nommé dans lequel on stocke une valeur pouvant changer au cours de l'exécution. Chaque variable a un nom, un type et une valeur. On l'affecte avec ← en pseudocode.",
+        "en": "A named memory space in which a value is stored that can change during execution. Each variable has a name, a type and a value. It is assigned using ← in pseudocode."
+      },
+      "lessonIds": ["les_info_3e_02_02"]
+    },
+    {
+      "id": "not_info_type_donnee",
+      "title": { "fr": "Type de données", "en": "Data type" },
+      "definition": {
+        "fr": "Caractéristique d'une variable définissant la nature des valeurs qu'elle peut stocker. Types courants : ENTIER (nombres entiers), REEL (décimaux), CHAINE (texte), BOOLEEN (VRAI ou FAUX).",
+        "en": "A characteristic of a variable that defines the nature of the values it can store. Common types: INTEGER (whole numbers), REAL (decimals), STRING (text), BOOLEAN (TRUE or FALSE)."
+      },
+      "lessonIds": ["les_info_3e_02_02"]
+    },
+    {
+      "id": "not_info_condition",
+      "title": { "fr": "Condition", "en": "Condition" },
+      "definition": {
+        "fr": "Expression logique dont l'évaluation donne VRAI ou FAUX. Utilisée dans les structures conditionnelles et les boucles pour orienter l'exécution. Opérateurs : <, >, ≤, ≥, =, ≠, ET, OU, NON.",
+        "en": "A logical expression that evaluates to TRUE or FALSE. Used in conditional structures and loops to guide program execution. Operators: <, >, ≤, ≥, =, ≠, AND, OR, NOT."
+      },
+      "lessonIds": ["les_info_3e_02_03"]
+    },
+    {
+      "id": "not_info_structure_cond",
+      "title": { "fr": "Structure conditionnelle (SI…SINON)", "en": "Conditional structure (IF…ELSE)" },
+      "definition": {
+        "fr": "Instruction permettant d'exécuter un bloc d'instructions uniquement si une condition est vraie. Forme : SI condition ALORS instructions [SINON autres_instructions] FINSI.",
+        "en": "An instruction that executes a block of instructions only if a condition is true. Form: IF condition THEN instructions [ELSE other_instructions] ENDIF."
+      },
+      "lessonIds": ["les_info_3e_02_03"]
+    },
+    {
+      "id": "not_info_boucle",
+      "title": { "fr": "Boucle (structure répétitive)", "en": "Loop (repetitive structure)" },
+      "definition": {
+        "fr": "Instruction répétant un bloc d'instructions plusieurs fois. Trois formes : POUR (nombre fixe d'itérations), TANTQUE (condition testée avant), REPETER…JUSQU'À (condition testée après).",
+        "en": "An instruction that repeats a block of instructions multiple times. Three forms: FOR (fixed iterations), WHILE (condition tested before), REPEAT…UNTIL (condition tested after)."
+      },
+      "lessonIds": ["les_info_3e_02_04"]
+    },
+    {
+      "id": "not_info_fonction",
+      "title": { "fr": "Fonction", "en": "Function" },
+      "definition": {
+        "fr": "Bloc d'instructions nommé et réutilisable qui reçoit des paramètres en entrée et retourne une valeur. Elle permet la modularité et évite la répétition de code.",
+        "en": "A named, reusable block of instructions that receives parameters as input and returns a value. It enables modularity and avoids code repetition."
+      },
+      "lessonIds": ["les_info_3e_02_05"]
+    },
+    {
+      "id": "not_info_reseau",
+      "title": { "fr": "Réseau informatique", "en": "Computer network" },
+      "definition": {
+        "fr": "Ensemble d'équipements informatiques interconnectés permettant de partager des ressources et de communiquer. LAN = réseau local (bâtiment) ; WAN = réseau étendu (sites distants).",
+        "en": "A set of interconnected computing devices allowing resource sharing and communication. LAN = local area network (building); WAN = wide area network (distant sites)."
+      },
+      "lessonIds": ["les_info_3e_03_01"]
+    },
+    {
+      "id": "not_info_protocole",
+      "title": { "fr": "Protocole de communication", "en": "Communication protocol" },
+      "definition": {
+        "fr": "Ensemble de règles définissant comment les données sont échangées entre équipements. Exemples : TCP/IP (transport Internet), HTTP/HTTPS (pages web), FTP (fichiers), SMTP (e-mail).",
+        "en": "A set of rules defining how data is exchanged between devices. Examples: TCP/IP (Internet transport), HTTP/HTTPS (web pages), FTP (files), SMTP (email)."
+      },
+      "lessonIds": ["les_info_3e_03_02"]
+    },
+    {
+      "id": "not_info_internet",
+      "title": { "fr": "Internet", "en": "Internet" },
+      "definition": {
+        "fr": "Réseau mondial d'ordinateurs interconnectés utilisant le protocole TCP/IP. Supporte de nombreux services : Web (HTTP), messagerie (SMTP), téléphonie IP (VoIP), transfert de fichiers (FTP).",
+        "en": "A worldwide network of interconnected computers using the TCP/IP protocol. Supports many services: Web (HTTP), email (SMTP), voice over IP (VoIP), file transfer (FTP)."
+      },
+      "lessonIds": ["les_info_3e_03_02"]
+    },
+    {
+      "id": "not_info_url",
+      "title": { "fr": "URL (adresse web)", "en": "URL (web address)" },
+      "definition": {
+        "fr": "Uniform Resource Locator — adresse unique identifiant une ressource sur Internet. Structure : protocole://domaine/chemin. Exemple : https://www.lycee.cm/cours/maths.",
+        "en": "Uniform Resource Locator — a unique address identifying a resource on the Internet. Structure: protocol://domain/path. Example: https://www.lycee.cm/cours/maths."
+      },
+      "lessonIds": ["les_info_3e_03_02"]
+    },
+    {
+      "id": "not_info_virus",
+      "title": { "fr": "Virus informatique", "en": "Computer virus" },
+      "definition": {
+        "fr": "Programme malveillant conçu pour se reproduire et perturber un système. Il s'attache à un fichier hôte. À distinguer du ver (se propage seul) et du cheval de Troie (se déguise en programme légitime).",
+        "en": "A malicious program designed to replicate and disrupt a system. It attaches to a host file. Distinguished from a worm (spreads alone) and a Trojan horse (disguises as legitimate software)."
+      },
+      "lessonIds": ["les_info_3e_03_03"]
+    },
+    {
+      "id": "not_info_phishing",
+      "title": { "fr": "Hameçonnage (Phishing)", "en": "Phishing" },
+      "definition": {
+        "fr": "Technique frauduleuse consistant à envoyer de faux messages imitant des organisations officielles (banque, administration) pour inciter la victime à divulguer ses identifiants ou données personnelles.",
+        "en": "A fraudulent technique involving fake messages imitating official organisations (banks, government) to trick victims into disclosing login credentials or personal data."
+      },
+      "lessonIds": ["les_info_3e_03_03", "les_info_3e_03_05"]
+    },
+    {
+      "id": "not_info_donnees_perso",
+      "title": { "fr": "Données personnelles", "en": "Personal data" },
+      "definition": {
+        "fr": "Toute information permettant d'identifier directement ou indirectement une personne : nom, adresse, numéro de téléphone, photo, adresse e-mail, localisation GPS. Protégées par la loi.",
+        "en": "Any information that directly or indirectly identifies a person: name, address, phone number, photo, email address, GPS location. Protected by law."
+      },
+      "lessonIds": ["les_info_3e_03_04", "les_info_3e_03_05"]
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "qz_info_3e_01_01",
+      "lessonId": "les_info_3e_01_01",
+      "questions": [
+        {
+          "id": "qz_info_3e_01_01_q1",
+          "text": { "fr": "Quel composant est considéré comme le «cerveau» de l'ordinateur ?", "en": "Which component is considered the «brain» of the computer?" },
+          "options": {
+            "fr": ["La mémoire vive (RAM)", "Le processeur (CPU)", "Le disque dur", "La carte mère"],
+            "en": ["Random Access Memory (RAM)", "The processor (CPU)", "The hard drive", "The motherboard"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le processeur (CPU) exécute toutes les instructions des programmes. C'est lui qui effectue tous les calculs et traite toutes les informations, d'où le surnom de «cerveau» de l'ordinateur.",
+            "en": "The processor (CPU) executes all program instructions. It performs all calculations and processes all information, hence the nickname «brain» of the computer."
+          },
+          "notionId": "not_info_processeur"
+        },
+        {
+          "id": "qz_info_3e_01_01_q2",
+          "text": { "fr": "Que se passe-t-il avec le contenu de la mémoire vive (RAM) quand on éteint l'ordinateur ?", "en": "What happens to the contents of RAM when the computer is switched off?" },
+          "options": {
+            "fr": ["Il est sauvegardé automatiquement sur le disque dur", "Il s'efface entièrement", "Il est transféré vers la ROM", "Il reste intact pendant 24 heures"],
+            "en": ["It is automatically saved to the hard drive", "It is completely erased", "It is transferred to ROM", "It remains intact for 24 hours"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "La RAM est une mémoire volatile : toutes les données qu'elle contient disparaissent dès que l'ordinateur est éteint. C'est pourquoi il faut enregistrer son travail (Ctrl+S) avant d'éteindre la machine.",
+            "en": "RAM is volatile memory: all data it contains disappears as soon as the computer is switched off. That is why you must save your work (Ctrl+S) before turning off the machine."
+          },
+          "notionId": "not_info_memoire_vive"
+        },
+        {
+          "id": "qz_info_3e_01_01_q3",
+          "text": { "fr": "Un fichier occupe 2 048 octets. Cela représente combien de kilooctets (Ko) ?", "en": "A file takes up 2,048 bytes. How many kilobytes (KB) is that?" },
+          "options": {
+            "fr": ["0,5 Ko", "2 Ko", "4 Ko", "20 Ko"],
+            "en": ["0.5 KB", "2 KB", "4 KB", "20 KB"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "1 Ko = 1 024 octets. Donc 2 048 ÷ 1 024 = 2 Ko. Les unités de mesure de l'information utilisent des puissances de 2 (1 024 = 2¹⁰) et non des puissances de 10.",
+            "en": "1 KB = 1,024 bytes. Therefore 2,048 ÷ 1,024 = 2 KB. Information units use powers of 2 (1,024 = 2¹⁰), not powers of 10."
+          },
+          "notionId": "not_info_ordinateur"
+        },
+        {
+          "id": "qz_info_3e_01_01_q4",
+          "text": { "fr": "Le clavier est un périphérique d'...", "en": "A keyboard is a ... peripheral." },
+          "options": {
+            "fr": ["Sortie uniquement", "Entrée uniquement", "Entrée et de sortie", "Stockage"],
+            "en": ["Output only", "Input only", "Input and output", "Storage"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le clavier envoie des données (touches frappées) vers l'ordinateur : c'est un périphérique d'entrée. D'autres exemples d'entrée : souris, microphone, scanner. Exemples de sortie : écran, imprimante, haut-parleurs.",
+            "en": "The keyboard sends data (keys pressed) to the computer: it is an input peripheral. Other input examples: mouse, microphone, scanner. Output examples: screen, printer, speakers."
+          },
+          "notionId": "not_info_peripherique"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_01_02",
+      "lessonId": "les_info_3e_01_02",
+      "questions": [
+        {
+          "id": "qz_info_3e_01_02_q1",
+          "text": { "fr": "Quel est le rôle principal d'un système d'exploitation ?", "en": "What is the main role of an operating system?" },
+          "options": {
+            "fr": ["Rédiger des documents texte", "Gérer les ressources matérielles et logicielles de l'ordinateur", "Naviguer sur Internet", "Créer des présentations animées"],
+            "en": ["Write text documents", "Manage the computer's hardware and software resources", "Browse the Internet", "Create animated presentations"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le système d'exploitation (SE) est le logiciel fondamental : il gère le processeur, la mémoire, les fichiers et les périphériques, et fournit une interface utilisateur. Sans SE, aucun autre logiciel ne peut fonctionner.",
+            "en": "The operating system (OS) is the fundamental software: it manages the processor, memory, files and peripherals, and provides a user interface. Without an OS, no other software can function."
+          },
+          "notionId": "not_info_systeme_exploitation"
+        },
+        {
+          "id": "qz_info_3e_01_02_q2",
+          "text": { "fr": "Lequel de ces systèmes d'exploitation est libre (open source) ?", "en": "Which of these operating systems is free and open source?" },
+          "options": {
+            "fr": ["Windows 11", "macOS Ventura", "Ubuntu Linux", "iOS 17"],
+            "en": ["Windows 11", "macOS Ventura", "Ubuntu Linux", "iOS 17"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "Ubuntu Linux est une distribution du noyau Linux, un système libre et gratuit dont le code source est accessible et modifiable par tous. Windows, macOS et iOS sont des logiciels propriétaires payants.",
+            "en": "Ubuntu Linux is a distribution of the Linux kernel, a free and open-source system whose source code is accessible and modifiable by all. Windows, macOS and iOS are paid proprietary software."
+          },
+          "notionId": "not_info_logiciel"
+        },
+        {
+          "id": "qz_info_3e_01_02_q3",
+          "text": { "fr": "Dans l'arborescence de fichiers, qu'est-ce qu'un dossier (répertoire) ?", "en": "In a file tree, what is a folder (directory)?" },
+          "options": {
+            "fr": ["Un fichier de très grande taille", "Un conteneur permettant d'organiser des fichiers et d'autres dossiers", "Un programme exécutable", "Une partition du disque dur"],
+            "en": ["A very large file", "A container for organising files and other folders", "An executable program", "A hard disk partition"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un dossier (ou répertoire) est un conteneur virtuel qui regroupe des fichiers et d'autres dossiers de façon organisée. On peut imbriquer des dossiers, formant une arborescence en forme d'arbre.",
+            "en": "A folder (or directory) is a virtual container that groups files and other folders in an organised way. Folders can be nested, forming a tree-like structure."
+          },
+          "notionId": "not_info_systeme_exploitation"
+        },
+        {
+          "id": "qz_info_3e_01_02_q4",
+          "text": { "fr": "LibreOffice Writer appartient à la catégorie des...", "en": "LibreOffice Writer belongs to the category of..." },
+          "options": {
+            "fr": ["Logiciels système", "Pilotes (drivers)", "Logiciels d'application", "Systèmes d'exploitation"],
+            "en": ["System software", "Drivers", "Application software", "Operating systems"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "LibreOffice Writer est un logiciel d'application : il est conçu pour accomplir une tâche précise (rédiger du texte). Les systèmes d'exploitation et les pilotes sont des logiciels système de bas niveau.",
+            "en": "LibreOffice Writer is application software: it is designed to perform a specific task (writing text). Operating systems and drivers are low-level system software."
+          },
+          "notionId": "not_info_logiciel"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_01_03",
+      "lessonId": "les_info_3e_01_03",
+      "questions": [
+        {
+          "id": "qz_info_3e_01_03_q1",
+          "text": { "fr": "Quel format de fichier préserve exactement la mise en page lors du partage d'un document ?", "en": "Which file format exactly preserves the layout when sharing a document?" },
+          "options": {
+            "fr": [".DOCX", ".TXT", ".PDF", ".ODT"],
+            "en": [".DOCX", ".TXT", ".PDF", ".ODT"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "Le PDF (Portable Document Format) préserve exactement la mise en page quel que soit le logiciel ou le système utilisé pour l'ouvrir. C'est le format standard de partage de documents finaux.",
+            "en": "PDF (Portable Document Format) exactly preserves the layout regardless of the software or system used to open it. It is the standard format for sharing final documents."
+          },
+          "notionId": "not_info_logiciel"
+        },
+        {
+          "id": "qz_info_3e_01_03_q2",
+          "text": { "fr": "Quel raccourci clavier permet d'annuler la dernière action sous Windows ?", "en": "Which keyboard shortcut undoes the last action on Windows?" },
+          "options": {
+            "fr": ["Ctrl + Z", "Ctrl + S", "Ctrl + C", "Ctrl + P"],
+            "en": ["Ctrl + Z", "Ctrl + S", "Ctrl + C", "Ctrl + P"]
+          },
+          "correctIndex": 0,
+          "explanation": {
+            "fr": "Ctrl + Z est le raccourci universel «Annuler» (Undo) sous Windows. Ctrl + S = Enregistrer, Ctrl + C = Copier, Ctrl + V = Coller, Ctrl + P = Imprimer.",
+            "en": "Ctrl + Z is the universal «Undo» shortcut on Windows. Ctrl + S = Save, Ctrl + C = Copy, Ctrl + V = Paste, Ctrl + P = Print."
+          },
+          "notionId": "not_info_logiciel"
+        },
+        {
+          "id": "qz_info_3e_01_03_q3",
+          "text": { "fr": "En traitement de texte, un «style» (ex. Titre 1) est...", "en": "In word processing, a «style» (e.g. Heading 1) is..." },
+          "options": {
+            "fr": ["Une couleur de fond de page", "Un ensemble de mises en forme prédéfinies applicables en un clic", "Un modèle de document vierge", "Une image insérée dans le texte"],
+            "en": ["A page background colour", "A set of predefined formatting applicable in one click", "A blank document template", "An image inserted in the text"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un style est un ensemble de paramètres de mise en forme (police, taille, couleur, alignement, interligne…) enregistrés sous un nom. Appliquer un style formate automatiquement le texte sélectionné.",
+            "en": "A style is a set of formatting parameters (font, size, colour, alignment, line spacing…) saved under a name. Applying a style automatically formats the selected text."
+          },
+          "notionId": "not_info_logiciel"
+        },
+        {
+          "id": "qz_info_3e_01_03_q4",
+          "text": { "fr": "Pour créer une table des matières automatique, il faut d'abord...", "en": "To create an automatic table of contents, you must first..." },
+          "options": {
+            "fr": ["La rédiger manuellement puis la lier", "Appliquer les styles Titre (Titre 1, Titre 2…) aux titres du document", "Activer le correcteur orthographique", "Enregistrer en format PDF"],
+            "en": ["Write it manually then link it", "Apply heading styles (Heading 1, Heading 2…) to document titles", "Activate the spell checker", "Save as PDF"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "La table des matières automatique se génère à partir des styles Titre appliqués au document. Le logiciel détecte les titres et leurs niveaux pour construire la table avec les numéros de page correspondants.",
+            "en": "The automatic table of contents is generated from the Heading styles applied to the document. The software detects titles and their levels to build the table with corresponding page numbers."
+          },
+          "notionId": "not_info_logiciel"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_01_04",
+      "lessonId": "les_info_3e_01_04",
+      "questions": [
+        {
+          "id": "qz_info_3e_01_04_q1",
+          "text": { "fr": "Dans un tableur, la référence C3 désigne...", "en": "In a spreadsheet, the reference C3 refers to..." },
+          "options": {
+            "fr": ["La 3ème feuille, colonne C", "La cellule à l'intersection de la colonne C et de la ligne 3", "Le 3ème caractère de la colonne C", "La cellule numéro 3 comptée de gauche à droite"],
+            "en": ["The 3rd sheet, column C", "The cell at the intersection of column C and row 3", "The 3rd character in column C", "Cell number 3 counted from left to right"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Dans un tableur, les colonnes sont repérées par des lettres (A, B, C…) et les lignes par des numéros (1, 2, 3…). C3 désigne la cellule à l'intersection de la colonne C et de la ligne 3.",
+            "en": "In a spreadsheet, columns are identified by letters (A, B, C…) and rows by numbers (1, 2, 3…). C3 refers to the cell at the intersection of column C and row 3."
+          },
+          "notionId": "not_info_tableur"
+        },
+        {
+          "id": "qz_info_3e_01_04_q2",
+          "text": { "fr": "Que calcule la formule =SOMME(A1:A5) ?", "en": "What does the formula =SUM(A1:A5) calculate?" },
+          "options": {
+            "fr": ["La valeur de A1 divisée par A5", "La somme des valeurs des cellules A1, A2, A3, A4 et A5", "Le nombre de cellules de A1 à A5", "La moyenne des valeurs de A1 à A5"],
+            "en": ["The value of A1 divided by A5", "The sum of the values of cells A1, A2, A3, A4 and A5", "The number of cells from A1 to A5", "The average of values from A1 to A5"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "=SOMME(A1:A5) additionne toutes les valeurs de la plage A1 à A5, soit A1+A2+A3+A4+A5. Pour la moyenne, on utilise =MOYENNE(A1:A5) ; pour compter les cellules non vides, =NB(A1:A5).",
+            "en": "=SUM(A1:A5) adds all values in the range A1 to A5: A1+A2+A3+A4+A5. For the average, use =AVERAGE(A1:A5); to count non-empty cells, use =COUNT(A1:A5)."
+          },
+          "notionId": "not_info_formule_tableur"
+        },
+        {
+          "id": "qz_info_3e_01_04_q3",
+          "text": { "fr": "Dans la formule =A$1+B2, que fixe le signe $ ?", "en": "In the formula =A$1+B2, what does the $ sign fix?" },
+          "options": {
+            "fr": ["La cellule contient un montant en dollars", "La ligne 1 est absolue (ne change pas lors de la recopie de la formule)", "La colonne A est fixée", "Toute la formule est fixée"],
+            "en": ["The cell contains a dollar amount", "Row 1 is absolute (does not change when the formula is copied)", "Column A is fixed", "The entire formula is fixed"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le signe $ fixe la référence devant laquelle il est placé. A$1 fixe la ligne 1 (la colonne A peut changer). $A1 fixerait la colonne A. $A$1 fixerait les deux : référence absolue complète.",
+            "en": "The $ sign fixes the reference it precedes. A$1 fixes row 1 (column A can change). $A1 would fix column A. $A$1 fixes both: a complete absolute reference."
+          },
+          "notionId": "not_info_formule_tableur"
+        },
+        {
+          "id": "qz_info_3e_01_04_q4",
+          "text": { "fr": "Quel logiciel gratuit est une alternative à Microsoft Excel ?", "en": "Which free software is an alternative to Microsoft Excel?" },
+          "options": {
+            "fr": ["Adobe Photoshop", "LibreOffice Calc", "Mozilla Firefox", "VLC Media Player"],
+            "en": ["Adobe Photoshop", "LibreOffice Calc", "Mozilla Firefox", "VLC Media Player"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "LibreOffice Calc est le tableur de la suite LibreOffice, gratuite et libre. Il peut ouvrir et enregistrer les fichiers Excel (.xlsx) et propose les mêmes fonctions de base que Microsoft Excel.",
+            "en": "LibreOffice Calc is the spreadsheet in the free and open-source LibreOffice suite. It can open and save Excel files (.xlsx) and offers the same basic functions as Microsoft Excel."
+          },
+          "notionId": "not_info_tableur"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_01_05",
+      "lessonId": "les_info_3e_01_05",
+      "questions": [
+        {
+          "id": "qz_info_3e_01_05_q1",
+          "text": { "fr": "Dans une base de données, une «table» est...", "en": "In a database, a «table» is..." },
+          "options": {
+            "fr": ["Un meuble pour ranger les serveurs", "Un ensemble d'enregistrements structurés en lignes et colonnes", "Un logiciel de gestion", "Une sauvegarde sur clé USB"],
+            "en": ["A piece of furniture for storing servers", "A set of records structured in rows and columns", "Management software", "A backup on a USB key"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Dans une base de données, une table est un tableau à deux dimensions : les lignes représentent les enregistrements (chaque personne, produit…) et les colonnes représentent les champs (nom, prénom, date…).",
+            "en": "In a database, a table is a two-dimensional array: rows represent records (each person, product…) and columns represent fields (name, first name, date…)."
+          },
+          "notionId": "not_info_table_bd"
+        },
+        {
+          "id": "qz_info_3e_01_05_q2",
+          "text": { "fr": "Qu'est-ce qu'un «champ» dans une table de base de données ?", "en": "What is a «field» in a database table?" },
+          "options": {
+            "fr": ["Un serveur de données", "Une colonne contenant un type particulier d'information", "Un enregistrement complet", "Le mot de passe d'accès"],
+            "en": ["A data server", "A column containing a particular type of information", "A complete record", "The access password"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un champ est une colonne d'une table. Par exemple, dans une table ELEVES : les champs sont Matricule, Nom, Prénom, DateNaissance, Classe. Chaque champ contient un seul type d'information.",
+            "en": "A field is a column in a table. For example, in a STUDENTS table: the fields are ID, Surname, FirstName, DateOfBirth, Class. Each field contains a single type of information."
+          },
+          "notionId": "not_info_base_donnees"
+        },
+        {
+          "id": "qz_info_3e_01_05_q3",
+          "text": { "fr": "Que signifie l'abréviation SGBD ?", "en": "What does the abbreviation DBMS stand for?" },
+          "options": {
+            "fr": ["Système Graphique de Base de Données", "Système de Gestion de Base de Données", "Support Général de Base Décisionnelle", "Structure Générale de Base de Données"],
+            "en": ["Graphical Database System", "Database Management System", "General Decision-making Base Support", "General Database Structure"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "SGBD = Système de Gestion de Base de Données (en anglais DBMS). C'est le logiciel permettant de créer, organiser, interroger et maintenir une base de données. Exemples : MySQL, PostgreSQL, LibreOffice Base.",
+            "en": "DBMS = Database Management System. It is the software that allows a database to be created, organised, queried and maintained. Examples: MySQL, PostgreSQL, LibreOffice Base."
+          },
+          "notionId": "not_info_base_donnees"
+        },
+        {
+          "id": "qz_info_3e_01_05_q4",
+          "text": { "fr": "Dans quel domaine les bases de données sont-elles indispensables ?", "en": "In which domain are databases indispensable?" },
+          "options": {
+            "fr": ["Écouter de la musique en ligne", "Gérer les dossiers médicaux de milliers de patients", "Regarder des vidéos sur YouTube", "Envoyer des SMS"],
+            "en": ["Listening to music online", "Managing medical records of thousands of patients", "Watching videos on YouTube", "Sending text messages"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Les bases de données sont indispensables pour gérer de grandes quantités d'informations structurées : dossiers médicaux, registres scolaires, gestion de stock, réservations d'hôtel, catalogues de bibliothèque…",
+            "en": "Databases are indispensable for managing large amounts of structured information: medical records, school registers, stock management, hotel reservations, library catalogues…"
+          },
+          "notionId": "not_info_table_bd"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_02_01",
+      "lessonId": "les_info_3e_02_01",
+      "questions": [
+        {
+          "id": "qz_info_3e_02_01_q1",
+          "text": { "fr": "Quelle propriété d'un algorithme garantit qu'il se termine en un nombre fini d'étapes ?", "en": "Which property of an algorithm guarantees it terminates in a finite number of steps?" },
+          "options": {
+            "fr": ["La clarté", "La finitude", "La généralité", "L'efficacité"],
+            "en": ["Clarity", "Finiteness", "Generality", "Efficiency"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "La finitude est la propriété qui garantit qu'un algorithme se termine. Un algorithme qui ne se termine jamais (boucle infinie) n'est pas valide. Les autres propriétés sont : non-ambiguïté, entrée/sortie définies, effectivité.",
+            "en": "Finiteness is the property that guarantees an algorithm terminates. An algorithm that never ends (infinite loop) is not valid. Other properties include: unambiguity, defined inputs/outputs, effectiveness."
+          },
+          "notionId": "not_info_algorithme"
+        },
+        {
+          "id": "qz_info_3e_02_01_q2",
+          "text": { "fr": "À quoi sert le pseudocode ?", "en": "What is pseudocode used for?" },
+          "options": {
+            "fr": ["Exécuter directement un programme", "Décrire un algorithme en langage proche du français, indépendamment de tout langage de programmation", "Corriger les erreurs d'un programme", "Créer une interface graphique"],
+            "en": ["Directly executing a program", "Describing an algorithm in plain language, independently of any programming language", "Correcting program errors", "Creating a graphical interface"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le pseudocode sert à décrire un algorithme de façon lisible sans syntaxe formelle. On peut ensuite traduire ce pseudocode dans n'importe quel langage de programmation (Python, Java, C…).",
+            "en": "Pseudocode is used to describe an algorithm in a readable way without formal syntax. The pseudocode can then be translated into any programming language (Python, Java, C…)."
+          },
+          "notionId": "not_info_pseudocode"
+        },
+        {
+          "id": "qz_info_3e_02_01_q3",
+          "text": { "fr": "En pseudocode, que fait l'instruction LIRE(x) ?", "en": "In pseudocode, what does the instruction READ(x) do?" },
+          "options": {
+            "fr": ["Elle affiche la valeur de x à l'écran", "Elle lit un fichier nommé x", "Elle saisit une valeur depuis l'utilisateur et la stocke dans x", "Elle déclare la variable x"],
+            "en": ["It displays the value of x on screen", "It reads a file named x", "It takes a value from the user and stores it in x", "It declares the variable x"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "LIRE(x) est l'instruction d'entrée : elle invite l'utilisateur à saisir une valeur et stocke cette valeur dans la variable x. Son équivalent de sortie est ECRIRE(x) qui affiche la valeur de x.",
+            "en": "READ(x) is the input instruction: it prompts the user to enter a value and stores that value in variable x. Its output equivalent is WRITE(x), which displays the value of x."
+          },
+          "notionId": "not_info_algorithme"
+        },
+        {
+          "id": "qz_info_3e_02_01_q4",
+          "text": { "fr": "Quelle est la définition correcte d'un algorithme ?", "en": "What is the correct definition of an algorithm?" },
+          "options": {
+            "fr": ["Un logiciel de calcul scientifique", "Une suite finie et ordonnée d'instructions permettant de résoudre un problème", "Un langage de programmation orienté objet", "Un fichier de configuration d'un système"],
+            "en": ["Scientific computing software", "A finite, ordered sequence of instructions for solving a problem", "An object-oriented programming language", "A system configuration file"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un algorithme est une suite finie, non ambiguë et ordonnée d'instructions pour résoudre un problème. Il est indépendant de tout langage de programmation et peut être exprimé en pseudocode ou en algorigramme.",
+            "en": "An algorithm is a finite, unambiguous and ordered sequence of instructions for solving a problem. It is independent of any programming language and can be expressed in pseudocode or flowchart."
+          },
+          "notionId": "not_info_algorithme"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_02_02",
+      "lessonId": "les_info_3e_02_02",
+      "questions": [
+        {
+          "id": "qz_info_3e_02_02_q1",
+          "text": { "fr": "Quelle variable peut stocker la valeur 3,14 ?", "en": "Which variable type can store the value 3.14?" },
+          "options": {
+            "fr": ["Type ENTIER", "Type REEL", "Type CHAINE", "Type BOOLEEN"],
+            "en": ["INTEGER type", "REAL type", "STRING type", "BOOLEAN type"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un REEL (nombre réel) peut stocker des valeurs décimales comme 3,14 ou −2,5. Un ENTIER ne stocke que des nombres sans virgule (−5, 0, 42…). CHAINE stocke du texte ; BOOLEEN stocke VRAI ou FAUX.",
+            "en": "A REAL (real number) can store decimal values such as 3.14 or −2.5. INTEGER only stores whole numbers (−5, 0, 42…). STRING stores text; BOOLEAN stores TRUE or FALSE."
+          },
+          "notionId": "not_info_type_donnee"
+        },
+        {
+          "id": "qz_info_3e_02_02_q2",
+          "text": { "fr": "En pseudocode, que signifie l'instruction age ← 16 ?", "en": "In pseudocode, what does the instruction age ← 16 mean?" },
+          "options": {
+            "fr": ["Comparer age à 16", "Affecter la valeur 16 à la variable age", "Effacer la variable age", "Déclarer age de type ENTIER"],
+            "en": ["Compare age to 16", "Assign the value 16 to the variable age", "Clear the variable age", "Declare age as INTEGER type"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "← est l'opérateur d'affectation en pseudocode. age ← 16 signifie : stocker la valeur 16 dans la variable age. Après cette instruction, age contient 16. L'ancienne valeur (si elle existait) est remplacée.",
+            "en": "← is the assignment operator in pseudocode. age ← 16 means: store the value 16 in the variable age. After this instruction, age contains 16. The previous value (if any) is replaced."
+          },
+          "notionId": "not_info_variable"
+        },
+        {
+          "id": "qz_info_3e_02_02_q3",
+          "text": { "fr": "Quel type de données ne peut prendre que les valeurs VRAI ou FAUX ?", "en": "Which data type can only take the values TRUE or FALSE?" },
+          "options": {
+            "fr": ["ENTIER", "REEL", "CHAINE", "BOOLEEN"],
+            "en": ["INTEGER", "REAL", "STRING", "BOOLEAN"]
+          },
+          "correctIndex": 3,
+          "explanation": {
+            "fr": "Le type BOOLEEN (ou logique) ne peut prendre que deux valeurs : VRAI (True) ou FAUX (False). Il est utilisé pour les variables de test logique, comme estPair, estConnecte, aTermine.",
+            "en": "The BOOLEAN (or logical) type can only take two values: TRUE or FALSE. It is used for logical test variables, such as isEven, isConnected, hasFinished."
+          },
+          "notionId": "not_info_type_donnee"
+        },
+        {
+          "id": "qz_info_3e_02_02_q4",
+          "text": { "fr": "Quelle déclaration de variable est syntaxiquement correcte en pseudocode ?", "en": "Which variable declaration is syntactically correct in pseudocode?" },
+          "options": {
+            "fr": ["nom : ENTIER", "nom : CHAINE", "CHAINE = nom", "nom ← CHAINE"],
+            "en": ["name : INTEGER", "name : STRING", "STRING = name", "name ← STRING"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "En pseudocode algorithmique, la déclaration suit le format : nom_variable : TYPE. Pour une variable texte, on déclare nom : CHAINE (ou CHAÎNE DE CARACTÈRES). Exemples : age : ENTIER, prix : REEL.",
+            "en": "In algorithmic pseudocode, declaration follows the format: variable_name : TYPE. For a text variable, declare name : STRING. Examples: age : INTEGER, price : REAL."
+          },
+          "notionId": "not_info_variable"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_02_03",
+      "lessonId": "les_info_3e_02_03",
+      "questions": [
+        {
+          "id": "qz_info_3e_02_03_q1",
+          "text": { "fr": "Quelle structure permet d'exécuter des instructions différentes selon qu'une condition est vraie ou fausse ?", "en": "Which structure executes different instructions depending on whether a condition is true or false?" },
+          "options": {
+            "fr": ["La boucle POUR", "La structure SI…ALORS…SINON", "La déclaration de variable", "L'instruction ECRIRE"],
+            "en": ["The FOR loop", "The IF…THEN…ELSE structure", "The variable declaration", "The WRITE instruction"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "SI…ALORS…SINON est la structure conditionnelle fondamentale : si la condition est VRAIE, le bloc ALORS est exécuté ; sinon le bloc SINON. Le bloc SINON est facultatif.",
+            "en": "IF…THEN…ELSE is the fundamental conditional structure: if the condition is TRUE, the THEN block executes; otherwise the ELSE block. The ELSE block is optional."
+          },
+          "notionId": "not_info_structure_cond"
+        },
+        {
+          "id": "qz_info_3e_02_03_q2",
+          "text": { "fr": "Que teste la condition x MOD 2 = 0 ?", "en": "What does the condition x MOD 2 = 0 test?" },
+          "options": {
+            "fr": ["Si x est supérieur à 2", "Si x est positif", "Si x est un nombre pair", "Si x est un nombre premier"],
+            "en": ["Whether x is greater than 2", "Whether x is positive", "Whether x is an even number", "Whether x is a prime number"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "MOD est l'opérateur modulo (reste de la division euclidienne). x MOD 2 = 0 signifie que x divisé par 2 laisse un reste nul : x est donc divisible par 2, c'est-à-dire pair.",
+            "en": "MOD is the modulo operator (remainder of Euclidean division). x MOD 2 = 0 means that dividing x by 2 leaves a zero remainder: x is therefore divisible by 2, i.e. even."
+          },
+          "notionId": "not_info_condition"
+        },
+        {
+          "id": "qz_info_3e_02_03_q3",
+          "text": { "fr": "Quel symbole représente l'opérateur «différent de» en pseudocode algorithmique français ?", "en": "Which symbol represents the «not equal to» operator in French algorithmic pseudocode?" },
+          "options": {
+            "fr": ["!=", "<>", "≠", "/="],
+            "en": ["!=", "<>", "≠", "/="]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "En pseudocode algorithmique français, «différent de» s'écrit ≠. Exemple : SI a ≠ 0 ALORS… Dans les langages de programmation, != est utilisé en Python/Java/C et <> en Visual Basic.",
+            "en": "In French algorithmic pseudocode, «not equal to» is written ≠. Example: IF a ≠ 0 THEN… In programming languages, != is used in Python/Java/C, and <> in Visual Basic."
+          },
+          "notionId": "not_info_condition"
+        },
+        {
+          "id": "qz_info_3e_02_03_q4",
+          "text": { "fr": "Le bloc SINON est-il obligatoire dans une structure SI ?", "en": "Is the ELSE block mandatory in an IF structure?" },
+          "options": {
+            "fr": ["Oui, toujours", "Non, la structure SI peut exister sans SINON", "Oui, mais seulement en Python", "Non, mais il doit être remplacé par FINSI"],
+            "en": ["Yes, always", "No, the IF structure can exist without ELSE", "Yes, but only in Python", "No, but it must be replaced by ENDIF"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le bloc SINON est facultatif. SI condition ALORS instructions FINSI est une structure valide. Si la condition est fausse, on passe simplement au FINSI et on continue l'exécution normalement.",
+            "en": "The ELSE block is optional. IF condition THEN instructions ENDIF is a valid structure. If the condition is false, execution jumps to ENDIF and continues normally."
+          },
+          "notionId": "not_info_structure_cond"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_02_04",
+      "lessonId": "les_info_3e_02_04",
+      "questions": [
+        {
+          "id": "qz_info_3e_02_04_q1",
+          "text": { "fr": "Combien de fois la boucle «POUR i DE 1 A 5 FAIRE» s'exécute-t-elle ?", "en": "How many times does the loop «FOR i FROM 1 TO 5 DO» execute?" },
+          "options": {
+            "fr": ["4 fois", "5 fois", "6 fois", "Indéterminé"],
+            "en": ["4 times", "5 times", "6 times", "Indeterminate"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "La boucle POUR i DE 1 A 5 exécute le corps pour i = 1, 2, 3, 4 et 5, soit exactement 5 fois. La boucle POUR est utilisée quand le nombre d'itérations est connu à l'avance.",
+            "en": "The FOR i FROM 1 TO 5 loop executes the body for i = 1, 2, 3, 4 and 5, which is exactly 5 times. The FOR loop is used when the number of iterations is known in advance."
+          },
+          "notionId": "not_info_boucle"
+        },
+        {
+          "id": "qz_info_3e_02_04_q2",
+          "text": { "fr": "Quelle est la différence principale entre TANTQUE et REPETER…JUSQU'À ?", "en": "What is the main difference between WHILE and REPEAT…UNTIL?" },
+          "options": {
+            "fr": ["TANTQUE est plus rapide", "TANTQUE teste la condition avant chaque itération ; REPETER la teste après", "REPETER n'existe pas en algorithmique", "TANTQUE s'arrête quand la condition est VRAIE"],
+            "en": ["WHILE is faster", "WHILE tests the condition before each iteration; REPEAT tests it after", "REPEAT does not exist in algorithmics", "WHILE stops when the condition is TRUE"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "TANTQUE teste avant : si la condition est fausse d'entrée, le corps n'est jamais exécuté (0 itération possible). REPETER teste après : le corps est toujours exécuté au moins une fois avant le premier test.",
+            "en": "WHILE tests before: if the condition is false initially, the body is never executed (0 iterations possible). REPEAT tests after: the body is always executed at least once before the first test."
+          },
+          "notionId": "not_info_boucle"
+        },
+        {
+          "id": "qz_info_3e_02_04_q3",
+          "text": { "fr": "Une boucle infinie se produit quand...", "en": "An infinite loop occurs when..." },
+          "options": {
+            "fr": ["On utilise POUR avec un grand nombre d'itérations", "La condition de sortie de la boucle n'est jamais satisfaite", "On imbrique deux boucles l'une dans l'autre", "On utilise une variable non déclarée"],
+            "en": ["FOR is used with a large number of iterations", "The loop exit condition is never satisfied", "Two loops are nested inside each other", "An undeclared variable is used"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Une boucle infinie survient quand la condition d'un TANTQUE reste toujours VRAIE (ou que la condition JUSQU'À d'un REPETER reste toujours FAUSSE). Le programme ne termine plus — c'est une erreur de logique.",
+            "en": "An infinite loop occurs when the WHILE condition always remains TRUE (or the UNTIL condition of a REPEAT always remains FALSE). The program never ends — this is a logic error."
+          },
+          "notionId": "not_info_boucle"
+        },
+        {
+          "id": "qz_info_3e_02_04_q4",
+          "text": { "fr": "Quelle boucle est la plus adaptée pour afficher les entiers de 1 à 100 ?", "en": "Which loop is most suitable for displaying integers from 1 to 100?" },
+          "options": {
+            "fr": ["REPETER…JUSQU'À car le résultat est inconnu", "POUR i DE 1 A 100 FAIRE car le nombre d'itérations est connu", "TANTQUE car la condition change à chaque tour", "Aucune boucle n'est adaptée"],
+            "en": ["REPEAT…UNTIL because the result is unknown", "FOR i FROM 1 TO 100 DO because the number of iterations is known", "WHILE because the condition changes each turn", "No loop is suitable"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "La boucle POUR est idéale quand le nombre d'itérations est connu à l'avance. Ici, 100 itérations de 1 à 100 : POUR i DE 1 A 100 FAIRE ECRIRE(i) FINPOUR est la solution naturelle et lisible.",
+            "en": "The FOR loop is ideal when the number of iterations is known in advance. Here, 100 iterations from 1 to 100: FOR i FROM 1 TO 100 DO WRITE(i) ENDFOR is the natural, readable solution."
+          },
+          "notionId": "not_info_boucle"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_02_05",
+      "lessonId": "les_info_3e_02_05",
+      "questions": [
+        {
+          "id": "qz_info_3e_02_05_q1",
+          "text": { "fr": "Quel est le principal avantage d'utiliser des fonctions ?", "en": "What is the main advantage of using functions?" },
+          "options": {
+            "fr": ["Ralentir le programme pour vérifier les erreurs", "Permettre la réutilisation du code et décomposer le problème en sous-parties", "Augmenter la mémoire utilisée", "Éviter d'utiliser des variables"],
+            "en": ["Slow down the program to check for errors", "Allow code reuse and break the problem into sub-parts", "Increase memory usage", "Avoid using variables"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Les fonctions apportent réutilisabilité (écrire le code une fois, l'appeler plusieurs fois) et modularité (décomposer un problème complexe en sous-problèmes plus simples et testables indépendamment).",
+            "en": "Functions bring reusability (write the code once, call it multiple times) and modularity (break a complex problem into simpler sub-problems that can be tested independently)."
+          },
+          "notionId": "not_info_fonction"
+        },
+        {
+          "id": "qz_info_3e_02_05_q2",
+          "text": { "fr": "Qu'est-ce qu'un paramètre d'une fonction ?", "en": "What is a function parameter?" },
+          "options": {
+            "fr": ["Le résultat renvoyé par la fonction", "Une variable locale créée à l'intérieur de la fonction", "Une valeur passée à la fonction lors de son appel pour personnaliser son comportement", "Le nom de la fonction"],
+            "en": ["The result returned by the function", "A local variable created inside the function", "A value passed to the function when called to customise its behaviour", "The name of the function"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "Un paramètre est une valeur passée à la fonction pour qu'elle travaille dessus. Exemple : FONCTION Surface_Rectangle(longueur, largeur : REEL) — longueur et largeur sont les paramètres.",
+            "en": "A parameter is a value passed to the function for it to work on. Example: FUNCTION Rectangle_Area(length, width : REAL) — length and width are the parameters."
+          },
+          "notionId": "not_info_fonction"
+        },
+        {
+          "id": "qz_info_3e_02_05_q3",
+          "text": { "fr": "Quelle est la différence entre une fonction et une procédure ?", "en": "What is the difference between a function and a procedure?" },
+          "options": {
+            "fr": ["Une fonction prend des paramètres ; une procédure non", "Une fonction retourne une valeur ; une procédure effectue des actions sans retourner de valeur", "Une procédure est plus rapide", "Il n'y a aucune différence"],
+            "en": ["A function takes parameters; a procedure does not", "A function returns a value; a procedure performs actions without returning a value", "A procedure is faster", "There is no difference"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Distinction fondamentale : une FONCTION calcule et retourne une valeur (ex : Surface_Carre retourne l'aire). Une PROCEDURE effectue des actions (affichages, modifications) sans retourner de valeur.",
+            "en": "Fundamental distinction: a FUNCTION calculates and returns a value (e.g. Area_Square returns the area). A PROCEDURE performs actions (displays, modifications) without returning a value."
+          },
+          "notionId": "not_info_fonction"
+        },
+        {
+          "id": "qz_info_3e_02_05_q4",
+          "text": { "fr": "L'instruction RETOURNER dans une fonction sert à...", "en": "The RETURN instruction in a function is used to..." },
+          "options": {
+            "fr": ["Revenir au début de la fonction", "Arrêter complètement le programme", "Renvoyer le résultat calculé et terminer l'exécution de la fonction", "Afficher le résultat à l'écran"],
+            "en": ["Return to the start of the function", "Stop the program entirely", "Return the calculated result and end the function execution", "Display the result on screen"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "RETOURNER (RETURN) termine l'exécution de la fonction et transmet la valeur spécifiée à l'appelant. C'est ce résultat que reçoit le code qui a appelé la fonction.",
+            "en": "RETURN terminates function execution and passes the specified value back to the caller. This result is received by the code that called the function."
+          },
+          "notionId": "not_info_fonction"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_03_01",
+      "lessonId": "les_info_3e_03_01",
+      "questions": [
+        {
+          "id": "qz_info_3e_03_01_q1",
+          "text": { "fr": "Que signifie LAN en informatique ?", "en": "What does LAN stand for in computing?" },
+          "options": {
+            "fr": ["Large Area Network", "Local Area Network", "Linked Access Node", "Light Access Network"],
+            "en": ["Large Area Network", "Local Area Network", "Linked Access Node", "Light Access Network"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "LAN = Local Area Network = réseau local. Un LAN interconnecte des équipements dans un espace limité (bâtiment, campus). Sa portée est de l'ordre de quelques centaines de mètres.",
+            "en": "LAN = Local Area Network. A LAN interconnects devices in a limited space (building, campus). Its range is of the order of a few hundred metres."
+          },
+          "notionId": "not_info_reseau"
+        },
+        {
+          "id": "qz_info_3e_03_01_q2",
+          "text": { "fr": "Quel équipement relie plusieurs réseaux différents et choisit le chemin pour acheminer les données ?", "en": "Which device connects multiple different networks and chooses the path to route data?" },
+          "options": {
+            "fr": ["Un switch (commutateur)", "Un routeur", "Un modem", "Un hub"],
+            "en": ["A switch", "A router", "A modem", "A hub"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un routeur relie plusieurs réseaux et sélectionne le meilleur chemin pour acheminer les paquets de données. La box Internet domestique est un modem-routeur : elle connecte le réseau local à Internet.",
+            "en": "A router connects multiple networks and selects the best path to route data packets. A home Internet box is a modem-router: it connects the local network to the Internet."
+          },
+          "notionId": "not_info_reseau"
+        },
+        {
+          "id": "qz_info_3e_03_01_q3",
+          "text": { "fr": "Dans une topologie réseau en étoile, chaque poste est connecté à...", "en": "In a star network topology, each device is connected to..." },
+          "options": {
+            "fr": ["Tous les autres postes directement", "Un équipement central (switch ou hub)", "Le poste suivant dans un anneau", "Internet uniquement"],
+            "en": ["All other devices directly", "A central device (switch or hub)", "The next device in a ring", "The Internet only"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Dans une topologie en étoile, tous les postes sont reliés à un nœud central (switch ou hub). Si un câble tombe en panne, seule la machine concernée est coupée. C'est la topologie la plus utilisée aujourd'hui.",
+            "en": "In a star topology, all devices are connected to a central node (switch or hub). If one cable fails, only the affected machine is disconnected. It is the most widely used topology today."
+          },
+          "notionId": "not_info_reseau"
+        },
+        {
+          "id": "qz_info_3e_03_01_q4",
+          "text": { "fr": "Quel est le principal avantage d'un réseau informatique ?", "en": "What is the main advantage of a computer network?" },
+          "options": {
+            "fr": ["Augmenter la consommation électrique", "Permettre le partage de ressources et la communication entre utilisateurs", "Ralentir les ordinateurs pour plus de sécurité", "Limiter l'accès à Internet"],
+            "en": ["Increase electricity consumption", "Enable resource sharing and communication between users", "Slow down computers for greater security", "Limit access to the Internet"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un réseau permet de partager des ressources (imprimante commune, dossiers partagés, connexion Internet commune) et de communiquer (messagerie interne, e-mail). Cela réduit les coûts et améliore la collaboration.",
+            "en": "A network enables sharing resources (shared printer, shared folders, shared Internet connection) and communication (internal messaging, email). This reduces costs and improves collaboration."
+          },
+          "notionId": "not_info_reseau"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_03_02",
+      "lessonId": "les_info_3e_03_02",
+      "questions": [
+        {
+          "id": "qz_info_3e_03_02_q1",
+          "text": { "fr": "Quel protocole est utilisé pour afficher des pages web de façon sécurisée ?", "en": "Which protocol is used to display web pages securely?" },
+          "options": {
+            "fr": ["FTP", "HTTP", "HTTPS", "SMTP"],
+            "en": ["FTP", "HTTP", "HTTPS", "SMTP"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "HTTPS (HyperText Transfer Protocol Secure) est la version sécurisée de HTTP. Il chiffre les données avec TLS, protégeant les informations sensibles (mots de passe, données bancaires) des interceptions.",
+            "en": "HTTPS (HyperText Transfer Protocol Secure) is the secure version of HTTP. It encrypts data using TLS, protecting sensitive information (passwords, banking data) from interception."
+          },
+          "notionId": "not_info_protocole"
+        },
+        {
+          "id": "qz_info_3e_03_02_q2",
+          "text": { "fr": "Dans l'URL https://www.lycee.cm/cours/maths, quel est le nom de domaine ?", "en": "In the URL https://www.lycee.cm/cours/maths, what is the domain name?" },
+          "options": {
+            "fr": ["https", "www.lycee.cm", "/cours/maths", ".cm"],
+            "en": ["https", "www.lycee.cm", "/cours/maths", ".cm"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Structure d'une URL : protocole://domaine/chemin. Ici : https est le protocole, www.lycee.cm est le nom de domaine (l'adresse du serveur), /cours/maths est le chemin vers la ressource.",
+            "en": "URL structure: protocol://domain/path. Here: https is the protocol, www.lycee.cm is the domain name (the server address), /cours/maths is the path to the resource."
+          },
+          "notionId": "not_info_url"
+        },
+        {
+          "id": "qz_info_3e_03_02_q3",
+          "text": { "fr": "Le DNS (Domain Name System) sert à...", "en": "The DNS (Domain Name System) is used to..." },
+          "options": {
+            "fr": ["Protéger le réseau contre les virus", "Traduire un nom de domaine en adresse IP numérique", "Partager des fichiers entre ordinateurs", "Gérer les e-mails entrants et sortants"],
+            "en": ["Protect the network from viruses", "Translate a domain name into a numeric IP address", "Share files between computers", "Manage incoming and outgoing emails"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le DNS traduit les noms de domaine lisibles (google.com) en adresses IP numériques (142.250.74.46) que les routeurs utilisent pour acheminer les données. C'est l'«annuaire» d'Internet.",
+            "en": "DNS translates readable domain names (google.com) into numeric IP addresses (142.250.74.46) that routers use to route data. It is the Internet's «directory»."
+          },
+          "notionId": "not_info_protocole"
+        },
+        {
+          "id": "qz_info_3e_03_02_q4",
+          "text": { "fr": "Qu'est-ce qui différencie HTTPS de HTTP ?", "en": "What distinguishes HTTPS from HTTP?" },
+          "options": {
+            "fr": ["HTTPS est plus lent", "HTTPS chiffre les données échangées, rendant les interceptions illisibles", "HTTPS fonctionne uniquement en réseau local", "HTTPS est le protocole de transfert d'e-mails"],
+            "en": ["HTTPS is slower", "HTTPS encrypts exchanged data, making interceptions unreadable", "HTTPS only works on local networks", "HTTPS is the email transfer protocol"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "HTTPS utilise le protocole TLS pour chiffrer les données. Même si quelqu'un intercepte le trafic réseau, les données sont illisibles. Le cadenas dans la barre d'adresse du navigateur indique une connexion HTTPS.",
+            "en": "HTTPS uses the TLS protocol to encrypt data. Even if someone intercepts network traffic, the data is unreadable. The padlock in the browser's address bar indicates an HTTPS connection."
+          },
+          "notionId": "not_info_internet"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_03_03",
+      "lessonId": "les_info_3e_03_03",
+      "questions": [
+        {
+          "id": "qz_info_3e_03_03_q1",
+          "text": { "fr": "Comment un virus informatique se distingue-t-il d'un ver ?", "en": "How does a computer virus differ from a worm?" },
+          "options": {
+            "fr": ["Un virus détruit toujours les données ; un ver pas", "Un virus nécessite un fichier hôte pour se propager ; un ver se propage seul via le réseau", "Un ver infecte uniquement les tablettes", "Virus et ver sont des synonymes"],
+            "en": ["A virus always destroys data; a worm does not", "A virus needs a host file to spread; a worm spreads alone through the network", "A worm only infects tablets", "Virus and worm are synonyms"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Un virus s'attache à un fichier hôte existant et se propage quand ce fichier est partagé. Un ver est autonome : il exploite des failles réseau pour se reproduire et se propager sans intervention humaine.",
+            "en": "A virus attaches itself to an existing host file and spreads when that file is shared. A worm is autonomous: it exploits network vulnerabilities to reproduce and spread without human intervention."
+          },
+          "notionId": "not_info_virus"
+        },
+        {
+          "id": "qz_info_3e_03_03_q2",
+          "text": { "fr": "Parmi ces propositions, lequel est un mot de passe fort ?", "en": "Which of these is a strong password?" },
+          "options": {
+            "fr": ["monnom", "12345678", "P@ssw0rd!2024", "azerty"],
+            "en": ["myname", "12345678", "P@ssw0rd!2024", "qwerty"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "P@ssw0rd!2024 est fort car il combine : longueur (13 caractères), majuscule (P), minuscules, chiffres (0, 2024) et caractères spéciaux (@, !). Un bon mot de passe a ≥ 8 caractères et mélange ces types.",
+            "en": "P@ssw0rd!2024 is strong because it combines: length (13 characters), uppercase (P), lowercase, digits (0, 2024) and special characters (@, !). A good password has ≥ 8 characters mixing these types."
+          },
+          "notionId": "not_info_virus"
+        },
+        {
+          "id": "qz_info_3e_03_03_q3",
+          "text": { "fr": "La règle de sauvegarde 3-2-1 recommande...", "en": "The 3-2-1 backup rule recommends..." },
+          "options": {
+            "fr": ["3 sauvegardes par jour, 2 disques durs, 1 connexion Internet", "3 copies des données sur 2 supports différents dont 1 copie hors site", "3 antivirus, 2 pare-feux, 1 mise à jour mensuelle", "3 mots de passe, 2 comptes, 1 administrateur"],
+            "en": ["3 backups per day, 2 hard drives, 1 Internet connection", "3 copies of data on 2 different media with 1 offsite copy", "3 antiviruses, 2 firewalls, 1 monthly update", "3 passwords, 2 accounts, 1 administrator"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Règle 3-2-1 : 3 copies au total (dont l'original), sur 2 supports de stockage différents (ex : disque interne + clé USB), avec 1 copie hors site (cloud ou autre lieu). Protège contre la perte accidentelle et les sinistres.",
+            "en": "3-2-1 rule: 3 copies in total (including the original), on 2 different storage media (e.g. internal drive + USB key), with 1 offsite copy (cloud or other location). Protects against accidental loss and disasters."
+          },
+          "notionId": "not_info_virus"
+        },
+        {
+          "id": "qz_info_3e_03_03_q4",
+          "text": { "fr": "Le phishing (hameçonnage) vise à...", "en": "Phishing aims to..." },
+          "options": {
+            "fr": ["Accélérer la connexion Internet", "Voler des informations personnelles par des messages frauduleux imitant des organisations légitimes", "Partager des fichiers anonymement", "Mettre à jour automatiquement les logiciels"],
+            "en": ["Speed up the Internet connection", "Steal personal information through fraudulent messages imitating legitimate organisations", "Share files anonymously", "Update software automatically"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le phishing envoie de faux e-mails/SMS imitant des banques, administrations ou services populaires pour piéger la victime et lui faire saisir ses identifiants sur un faux site.",
+            "en": "Phishing sends fake emails/texts imitating banks, government agencies or popular services to trick the victim into entering their credentials on a fake website."
+          },
+          "notionId": "not_info_phishing"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_03_04",
+      "lessonId": "les_info_3e_03_04",
+      "questions": [
+        {
+          "id": "qz_info_3e_03_04_q1",
+          "text": { "fr": "Laquelle de ces informations est une donnée personnelle ?", "en": "Which of these is personal data?" },
+          "options": {
+            "fr": ["Le prix d'un article en magasin", "Le numéro de téléphone d'une personne", "La météo d'une ville", "Le score d'un match"],
+            "en": ["The price of an item in a shop", "A person's telephone number", "The weather in a city", "A match score"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Une donnée personnelle est toute information permettant d'identifier une personne. Un numéro de téléphone identifie son propriétaire : c'est une donnée personnelle. Le prix, la météo et un score sportif n'identifient personne.",
+            "en": "Personal data is any information that can identify a person. A phone number identifies its owner: it is personal data. A price, weather report and sports score do not identify anyone."
+          },
+          "notionId": "not_info_donnees_perso"
+        },
+        {
+          "id": "qz_info_3e_03_04_q2",
+          "text": { "fr": "Qu'appelle-t-on «empreinte numérique» ?", "en": "What is called a «digital footprint»?" },
+          "options": {
+            "fr": ["L'empreinte digitale pour déverrouiller un smartphone", "L'ensemble des traces laissées par une personne lors de ses activités en ligne", "Le code de démarrage d'un ordinateur", "La marque d'un logiciel sur un document"],
+            "en": ["The fingerprint used to unlock a smartphone", "All traces left by a person during their online activities", "The startup code of a computer", "The watermark of software on a document"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "L'empreinte numérique regroupe toutes les traces qu'on laisse en ligne : sites visités, publications, achats, recherches… Ces données peuvent être collectées, analysées et utilisées sans que l'on s'en rende compte.",
+            "en": "The digital footprint encompasses all traces left online: sites visited, posts, purchases, searches… This data can be collected, analysed and used without the person being aware."
+          },
+          "notionId": "not_info_donnees_perso"
+        },
+        {
+          "id": "qz_info_3e_03_04_q3",
+          "text": { "fr": "Quels droits a-t-on sur ses données personnelles détenues par une entreprise ?", "en": "What rights does one have over personal data held by a company?" },
+          "options": {
+            "fr": ["Aucun droit, les données appartiennent à l'entreprise", "Droit d'accès, de rectification et de demande de suppression", "Droit de vendre ces données à d'autres", "Droit de modifier les données d'autres utilisateurs"],
+            "en": ["No rights — the data belongs to the company", "Right of access, rectification and deletion request", "The right to sell this data to others", "The right to modify other users' data"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Selon les lois de protection des données, toute personne a le droit d'accéder à ses données (droit d'accès), de les faire corriger (droit de rectification) et de demander leur effacement (droit à l'oubli).",
+            "en": "Under data protection laws, everyone has the right to access their data (right of access), have it corrected (right of rectification) and request its deletion (right to erasure/right to be forgotten)."
+          },
+          "notionId": "not_info_donnees_perso"
+        },
+        {
+          "id": "qz_info_3e_03_04_q4",
+          "text": { "fr": "Publier une photo d'un camarade sans sa permission, c'est...", "en": "Publishing a classmate's photo without their permission is..." },
+          "options": {
+            "fr": ["Légal si la photo est belle", "Une violation de sa vie privée, potentiellement illégale", "Obligatoire pour taguer quelqu'un", "Sans conséquence si le compte est privé"],
+            "en": ["Legal if the photo is nice", "A violation of their privacy, potentially illegal", "Compulsory when tagging someone", "Inconsequential if the account is private"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Publier l'image d'une personne sans son consentement viole son droit à l'image et sa vie privée. C'est illégal et peut causer des préjudices graves (harcèlement, humiliation). Il faut toujours obtenir l'accord de la personne.",
+            "en": "Publishing someone's image without their consent violates their right to their image and privacy. It is illegal and can cause serious harm (bullying, humiliation). The person's agreement must always be obtained."
+          },
+          "notionId": "not_info_donnees_perso"
+        }
+      ]
+    },
+    {
+      "id": "qz_info_3e_03_05",
+      "lessonId": "les_info_3e_03_05",
+      "questions": [
+        {
+          "id": "qz_info_3e_03_05_q1",
+          "text": { "fr": "Comment définit-on le cyberharcèlement ?", "en": "How is cyberbullying defined?" },
+          "options": {
+            "fr": ["Un virus attaquant les réseaux sociaux", "Des actes de harcèlement répétés envers une personne via les outils numériques", "Un problème technique de réseau", "Des publicités intempestives sur Internet"],
+            "en": ["A virus attacking social networks", "Repeated acts of harassment against a person via digital tools", "A network technical problem", "Intrusive adverts on the Internet"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Le cyberharcèlement utilise les outils numériques (réseaux sociaux, SMS, e-mail) pour harceler une personne de façon répétée : messages offensants, faux profils, partage d'images humiliantes… Il peut avoir de graves conséquences psychologiques.",
+            "en": "Cyberbullying uses digital tools (social networks, SMS, email) to repeatedly harass a person: offensive messages, fake profiles, sharing humiliating images… It can have serious psychological consequences."
+          },
+          "notionId": "not_info_donnees_perso"
+        },
+        {
+          "id": "qz_info_3e_03_05_q2",
+          "text": { "fr": "Les droits d'auteur protègent...", "en": "Copyright protects..." },
+          "options": {
+            "fr": ["Uniquement les logiciels commerciaux", "Les œuvres créatives (textes, musiques, films, photos) contre leur reproduction non autorisée", "Les données personnelles des internautes", "Les brevets d'inventions industrielles"],
+            "en": ["Commercial software only", "Creative works (texts, music, films, photos) against unauthorised reproduction", "Internet users' personal data", "Industrial patents"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Les droits d'auteur protègent automatiquement toute œuvre originale dès sa création : textes, musiques, films, photos, logiciels, dessins… Les reproduire, diffuser ou modifier sans autorisation est illégal.",
+            "en": "Copyright automatically protects any original work from its creation: texts, music, films, photos, software, drawings… Reproducing, distributing or modifying them without permission is illegal."
+          },
+          "notionId": "not_info_donnees_perso"
+        },
+        {
+          "id": "qz_info_3e_03_05_q3",
+          "text": { "fr": "Une licence Creative Commons permet à l'auteur de...", "en": "A Creative Commons licence allows the author to..." },
+          "options": {
+            "fr": ["Copier n'importe quelle œuvre sans restriction", "Définir les conditions selon lesquelles son œuvre peut être utilisée, partagée ou modifiée", "Vendre une œuvre protégée sans autorisation", "Supprimer les droits d'auteur d'une œuvre"],
+            "en": ["Copy any work without restriction", "Define the conditions under which their work may be used, shared or modified", "Sell a protected work without permission", "Remove the copyright from a work"]
+          },
+          "correctIndex": 1,
+          "explanation": {
+            "fr": "Les licences Creative Commons sont des outils juridiques permettant aux auteurs de partager leurs œuvres tout en précisant les conditions (attribution obligatoire, usage non commercial, interdiction de modifications…).",
+            "en": "Creative Commons licences are legal tools allowing authors to share their works while specifying conditions (mandatory attribution, non-commercial use, prohibition of modifications…)."
+          },
+          "notionId": "not_info_phishing"
+        },
+        {
+          "id": "qz_info_3e_03_05_q4",
+          "text": { "fr": "Face à une situation de cyberharcèlement, que faire en priorité ?", "en": "When facing cyberbullying, what should be done first?" },
+          "options": {
+            "fr": ["Répondre agressivement pour se défendre", "Ne rien faire et ignorer", "Signaler le contenu, ne pas répondre et en parler à un adulte de confiance", "Supprimer immédiatement tous ses comptes"],
+            "en": ["Respond aggressively in self-defence", "Do nothing and ignore it", "Report the content, do not respond, and tell a trusted adult", "Immediately delete all accounts"]
+          },
+          "correctIndex": 2,
+          "explanation": {
+            "fr": "Face au cyberharcèlement : (1) ne pas répondre aux agresseurs (ça les encourage), (2) sauvegarder les preuves (captures d'écran), (3) signaler sur la plateforme, (4) en parler à un adulte ou contacter une ligne d'aide.",
+            "en": "When facing cyberbullying: (1) do not respond to aggressors (it encourages them), (2) save evidence (screenshots), (3) report on the platform, (4) tell a trusted adult or contact a helpline."
+          },
+          "notionId": "not_info_donnees_perso"
+        }
+      ]
+    }
+  ]
+}

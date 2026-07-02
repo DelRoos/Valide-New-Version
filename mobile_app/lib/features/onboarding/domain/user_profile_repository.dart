@@ -145,6 +145,29 @@ abstract interface class UserProfileRepository {
   ///   - FirebaseException remontée (firestoreError)
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce();
 
+  /// Story A.3 — Met à jour le profil scolaire (niveau, série, matières).
+  ///
+  /// Écrit un `.update()` partiel (CLAUDE.md règle 10.l) sur les 7 champs
+  /// scolaires + `updatedAt` serverTimestamp. `subSystem`, `language` et
+  /// `createdAt` restent immutables (contraintes firestore.rules Story A.3).
+  ///
+  /// Les `derivedSubjects`, `examTargets`, `pickedSubjects`, `optedOutSubjects`
+  /// sont recalculés côté client via `derive()` avant l'appel (cohérent avec
+  /// l'onboarding, Décision 4 Story A.3).
+  ///
+  /// Retourne `Left(ProfileFailure)` si :
+  ///   - currentUser absent (notAuthenticated)
+  ///   - FirebaseException remontée (firestoreError)
+  Future<Either<ProfileFailure, void>> updateSchoolProfile({
+    required String trackId,
+    required String levelId,
+    required String streamId,
+    required List<String> derivedSubjects,
+    required List<String> examTargets,
+    required List<String> pickedSubjects,
+    required List<String> optedOutSubjects,
+  });
+
   /// Story A.2 — Lecture unique du profil public d'un autre utilisateur.
   ///
   /// Lit users/{uid} via `.get()` (1 read, pas de stream — donnée statique

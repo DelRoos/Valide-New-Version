@@ -1,0 +1,948 @@
+{
+  "meta": {
+    "subjectId": "francophone_svt",
+    "subjectName": "Sciences de la Vie et de la Terre",
+    "levelId": "francophone_3e",
+    "levelName": "3ème",
+    "examTarget": "BEPC",
+    "language": "fr",
+    "description": "Contenu de démonstration — SVT 3ème (programme BEPC francophone Cameroun)",
+    "version": "1.0.0",
+    "createdAt": "2026-06-30"
+  },
+
+  "chapters": [
+    {
+      "id": "ch_svt_3e_01",
+      "subjectId": "francophone_svt",
+      "levelId": "francophone_3e",
+      "title": { "fr": "La cellule et le fonctionnement de l'organisme" },
+      "sortOrder": 1
+    },
+    {
+      "id": "ch_svt_3e_02",
+      "subjectId": "francophone_svt",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Reproduction et génétique" },
+      "sortOrder": 2
+    },
+    {
+      "id": "ch_svt_3e_03",
+      "subjectId": "francophone_svt",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Écologie et environnement" },
+      "sortOrder": 3
+    }
+  ],
+
+  "lessons": [
+    {
+      "id": "les_svt_3e_01_01",
+      "chapterId": "ch_svt_3e_01",
+      "title": { "fr": "La cellule : unité de base du vivant" },
+      "sortOrder": 1,
+      "notionIds": ["not_svt_cellule", "not_svt_organite"],
+      "content": {
+        "fr": "# La cellule : unité de base du vivant\n\nTous les êtres vivants sont constitués de cellules. La cellule est la plus petite unité vivante capable de se reproduire.\n\n:::definition\nLa **cellule** est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une **membrane plasmique** et contient un ensemble d'**organites** dont le **noyau**, siège de l'information génétique (l'ADN).\n:::\n\n## Types de cellules\n\nOn distingue deux grands types de cellules :\n\n- **Cellule procaryote** : pas de noyau véritable (l'ADN est dans le cytoplasme). Exemple : les bactéries.\n- **Cellule eucaryote** : possède un noyau délimité par une enveloppe nucléaire. Exemples : cellules animales, végétales, champignons.\n\n:::propriete\n**Composition d'une cellule eucaryote animale :**\n\n- **Membrane plasmique** : délimite la cellule, contrôle les échanges.\n- **Cytoplasme** : milieu intérieur de la cellule.\n- **Noyau** : contient l'ADN (chromosomes), centre de contrôle.\n- **Mitochondries** : production d'énergie (respiration cellulaire).\n- **Ribosomes** : synthèse des protéines.\n:::\n\n:::exemple\nLa cellule végétale possède en plus :\n- Une **paroi cellulosique** rigide entourant la membrane.\n- Des **chloroplastes** (photosynthèse).\n- Une ou plusieurs grandes **vacuoles** remplies de sève.\n:::\n\n:::methode\nPour identifier une cellule végétale vs animale sur un dessin :\n\n1. Chercher une paroi cellulosique (contour rigide, visible) → végétale.\n2. Chercher des chloroplastes (organites verts) → végétale.\n3. Grande vacuole centrale → végétale.\n4. Absence de ces éléments + forme irrégulière → animale.\n:::\n\n:::attention\nLa membrane plasmique existe dans TOUTES les cellules (animales ET végétales). La paroi cellulosique, elle, est propre aux cellules végétales (et à certaines bactéries).\n:::\n\n:::retenir\n- La cellule est l'unité de base du vivant.\n- Procaryote = sans noyau ; eucaryote = avec noyau.\n- Cellule végétale = paroi cellulosique + chloroplastes + vacuole.\n- Noyau = siège de l'ADN et du contrôle cellulaire.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_01_02",
+      "chapterId": "ch_svt_3e_01",
+      "title": { "fr": "La respiration cellulaire" },
+      "sortOrder": 2,
+      "notionIds": ["not_svt_respiration_cellulaire", "not_svt_atp"],
+      "content": {
+        "fr": "# La respiration cellulaire\n\nToutes les cellules ont besoin d'énergie pour fonctionner. Cette énergie est fournie par la respiration cellulaire.\n\n:::definition\nLa **respiration cellulaire** est l'ensemble des réactions chimiques qui se déroulent dans les mitochondries pour produire de l'énergie (ATP) à partir du glucose et du dioxygène.\n\n$$\\text{Glucose} + \\text{O}_2 \\rightarrow \\text{CO}_2 + \\text{H}_2\\text{O} + \\text{Énergie (ATP)}$$\n:::\n\n## Les échanges gazeux\n\n:::propriete\nBilan de la respiration cellulaire :\n\n- **Substrats (entrées)** : glucose ($C_6H_{12}O_6$) + dioxygène ($O_2$)\n- **Produits (sorties)** : dioxyde de carbone ($CO_2$) + eau ($H_2O$) + ATP\n- **Lieu** : mitochondries\n\nÉquation simplifiée : $C_6H_{12}O_6 + 6\\,O_2 \\rightarrow 6\\,CO_2 + 6\\,H_2O + \\text{ATP}$\n:::\n\n:::exemple\nUn muscle en activité consomme plus de glucose et de $O_2$ qu'au repos car la demande en énergie (ATP) est plus grande. C'est pourquoi on respire plus vite à l'effort.\n:::\n\n## La fermentation\n\n:::propriete\nEn l'absence de $O_2$ (anaérobie), les cellules peuvent produire de l'énergie par **fermentation** :\n\n- **Fermentation lactique** : glucose → acide lactique + ATP (ex : muscles en effort intense, bactéries du yaourt).\n- **Fermentation alcoolique** : glucose → éthanol + $CO_2$ + ATP (ex : levures dans le pain, vin).\n\nLa fermentation produit moins d'ATP que la respiration aérobie.\n:::\n\n:::attention\nNe pas confondre la **respiration cellulaire** (au niveau cellulaire, dans les mitochondries) et la **respiration pulmonaire** (au niveau de l'organisme, échange d'air). La première utilise le $O_2$ amené par la seconde.\n:::\n\n:::retenir\n- Respiration cellulaire : glucose + $O_2$ → $CO_2$ + $H_2O$ + ATP (dans les mitochondries).\n- ATP = monnaie énergétique de la cellule.\n- Sans $O_2$ → fermentation (moins efficace).\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_01_03",
+      "chapterId": "ch_svt_3e_01",
+      "title": { "fr": "La photosynthèse" },
+      "sortOrder": 3,
+      "notionIds": ["not_svt_photosynthese", "not_svt_chlorophylle"],
+      "content": {
+        "fr": "# La photosynthèse\n\nLes végétaux chlorophylliens fabriquent leur propre matière organique grâce à la lumière — c'est la photosynthèse.\n\n:::definition\nLa **photosynthèse** est le processus par lequel les chloroplastes des cellules végétales convertissent l'énergie lumineuse en énergie chimique pour synthétiser des glucides à partir de $CO_2$ et d'eau.\n\n$$\\text{CO}_2 + \\text{H}_2\\text{O} \\xrightarrow{\\text{lumière}} \\text{Glucose} + \\text{O}_2$$\n:::\n\n## Conditions et lieu\n\n:::propriete\nConditions nécessaires à la photosynthèse :\n\n1. **Lumière** : source d'énergie captée par la chlorophylle.\n2. **Dioxyde de carbone** ($CO_2$) : absorbé par les stomates des feuilles.\n3. **Eau** ($H_2O$) : absorbée par les racines, transportée jusqu'aux feuilles.\n4. **Chlorophylle** : pigment vert contenu dans les chloroplastes, capte la lumière.\n\nÉquation : $6\\,CO_2 + 6\\,H_2O \\xrightarrow{\\text{lumière}} C_6H_{12}O_6 + 6\\,O_2$\n:::\n\n:::exemple\nExpérience de Priestley : une plante placée sous cloche avec une bougie qui s'éteint (manque de $O_2$) peut, si exposée à la lumière, régénérer le $O_2$ et permettre à la bougie de se rallumer.\n:::\n\n## Photosynthèse vs respiration\n\n:::propriete\n| | Photosynthèse | Respiration |\n|---|---|---|\n| Lieu | Chloroplaste | Mitochondrie |\n| Entrées | $CO_2 + H_2O +$ lumière | Glucose $+ O_2$ |\n| Sorties | Glucose $+ O_2$ | $CO_2 + H_2O +$ ATP |\n| Qui ? | Végétaux verts | Toutes les cellules |\n:::\n\n:::attention\nLes plantes font **les deux** : photosynthèse (le jour, si lumière) ET respiration (jour et nuit, en permanence). De nuit, seule la respiration est active, donc la plante consomme du $O_2$ et libère du $CO_2$.\n:::\n\n:::retenir\n- Photosynthèse : $CO_2 + H_2O +$ lumière → glucose $+ O_2$ (dans les chloroplastes).\n- Chlorophylle = pigment capteur de lumière.\n- Plante : photosynthèse le jour, respiration 24h/24.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_01_04",
+      "chapterId": "ch_svt_3e_01",
+      "title": { "fr": "Le système nerveux et la commande du mouvement" },
+      "sortOrder": 4,
+      "notionIds": ["not_svt_neurone", "not_svt_reflexe"],
+      "content": {
+        "fr": "# Le système nerveux et la commande du mouvement\n\nLe système nerveux coordonne l'ensemble des activités de l'organisme. Il reçoit les informations sensorielles et envoie des ordres moteurs.\n\n:::definition\nLe **système nerveux** est l'ensemble des organes (cerveau, moelle épinière, nerfs) qui reçoivent, traitent et transmettent les informations sous forme de messages nerveux (influx nerveux).\n\nL'unité fonctionnelle du système nerveux est le **neurone**.\n:::\n\n## Structure du neurone\n\n:::propriete\nUn **neurone** comprend :\n\n- Un **corps cellulaire** (soma) avec le noyau.\n- Des **dendrites** : prolongements courts qui reçoivent les messages nerveux.\n- Un **axone** : prolongement long qui conduit l'influx nerveux vers d'autres neurones ou organes effecteurs.\n- La **synapse** : zone de jonction entre deux neurones (ou entre un neurone et un muscle).\n:::\n\n## L'arc réflexe\n\n:::definition\nUn **réflexe** est une réponse automatique, involontaire et stéréotypée à un stimulus. Il est géré par la moelle épinière sans intervention du cerveau.\n\nL'**arc réflexe** comprend : récepteur → nerf sensitif → centre nerveux (moelle épinière) → nerf moteur → effecteur (muscle).\n:::\n\n:::exemple\nRéflexe rotulien : un choc sous le genou provoque l'extension de la jambe. Le message passe par la moelle épinière, sans passer par le cerveau.\n:::\n\n:::methode\nPour décrire un arc réflexe :\n\n1. **Récepteur** : capte le stimulus (peau, articulation).\n2. **Nerf sensitif (afférent)** : conduit l'influx vers la moelle.\n3. **Centre nerveux** : moelle épinière (intègre et répond).\n4. **Nerf moteur (efférent)** : conduit l'ordre vers le muscle.\n5. **Effecteur** : muscle qui se contracte.\n:::\n\n:::retenir\n- Neurone = corps cellulaire + dendrites + axone.\n- Influx nerveux : va des dendrites vers l'axone.\n- Réflexe = réponse automatique coordonnée par la moelle épinière.\n- Arc réflexe : récepteur → nerf sensitif → moelle → nerf moteur → muscle.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_01_05",
+      "chapterId": "ch_svt_3e_01",
+      "title": { "fr": "Le sang et la circulation sanguine" },
+      "sortOrder": 5,
+      "notionIds": ["not_svt_sang", "not_svt_circulation"],
+      "content": {
+        "fr": "# Le sang et la circulation sanguine\n\nLe sang est un tissu liquide qui assure le transport des nutriments, des gaz respiratoires et des déchets dans l'organisme.\n\n:::definition\nLe **sang** est un tissu liquide composé de :\n\n- Le **plasma** (55%) : liquide jaunâtre contenant eau, protéines, nutriments, hormones.\n- Les **globules rouges** (érythrocytes) : transportent le $O_2$ grâce à l'hémoglobine.\n- Les **globules blancs** (leucocytes) : défense immunitaire.\n- Les **plaquettes** (thrombocytes) : coagulation du sang.\n:::\n\n## La circulation sanguine\n\n:::propriete\nLa circulation sanguine est **double** :\n\n- **Grande circulation** (systémique) : cœur → artères → organes → veines → cœur.\n- **Petite circulation** (pulmonaire) : cœur → poumons → cœur.\n\nLe **cœur** est la pompe qui propulse le sang. Il comporte 4 cavités : 2 oreillettes (reçoivent) et 2 ventricules (éjectent).\n:::\n\n:::exemple\nTrajet d'un globule rouge :\n1. Sort du ventricule gauche par l'aorte (sang oxygéné).\n2. Va aux organes, libère $O_2$, prend $CO_2$.\n3. Revient au cœur droit par les veines caves.\n4. Repart aux poumons (artère pulmonaire) pour se réoxygéner.\n5. Revient au cœur gauche (veines pulmonaires).\n:::\n\n:::attention\nLes **artères** transportent le sang **en partant** du cœur (généralement oxygéné). Les **veines** transportent le sang **en revenant** au cœur. Exception : l'artère pulmonaire transporte du sang **peu oxygéné** (du cœur aux poumons).\n:::\n\n:::retenir\n- Sang : plasma + globules rouges ($O_2$) + globules blancs (défense) + plaquettes.\n- Grande circulation : cœur → organes → cœur.\n- Petite circulation : cœur → poumons → cœur.\n- Artères : sortent du cœur ; veines : arrivent au cœur.\n:::"
+      }
+    },
+
+    {
+      "id": "les_svt_3e_02_01",
+      "chapterId": "ch_svt_3e_02",
+      "title": { "fr": "La reproduction sexuée chez les vertébrés" },
+      "sortOrder": 1,
+      "notionIds": ["not_svt_gamete", "not_svt_fecondation"],
+      "content": {
+        "fr": "# La reproduction sexuée chez les vertébrés\n\nLa reproduction sexuée assure la pérennité des espèces et introduit une diversité génétique.\n\n:::definition\nLa **reproduction sexuée** est le mode de reproduction qui implique la fusion de deux cellules reproductrices spécialisées appelées **gamètes** pour former un **zygote** (œuf fécondé).\n\n- Gamète mâle : **spermatozoïde** (produit dans les testicules).\n- Gamète femelle : **ovule** (produit dans les ovaires).\n:::\n\n:::definition\nLa **fécondation** est la fusion d'un spermatozoïde avec un ovule, donnant naissance à un **zygote** qui possède le nombre chromosomique de l'espèce.\n\nChez l'humain : spermatozoïde (23 chromosomes) + ovule (23 chromosomes) → zygote (46 chromosomes).\n:::\n\n## Types de fécondation\n\n:::propriete\n- **Fécondation externe** : gamètes libérés dans le milieu extérieur (eau), rencontre en dehors du corps. Exemples : poissons, grenouilles.\n- **Fécondation interne** : rencontre des gamètes à l'intérieur de l'organisme femelle. Exemples : reptiles, oiseaux, mammifères.\n:::\n\n:::exemple\nLa grenouille pond ses œufs dans l'eau (fécondation externe). La femme a une fécondation interne dans les trompes de Fallope. Dans les deux cas, un zygote est formé.\n:::\n\n:::methode\nPour classer un animal :\n1. Identifier le mode de fécondation (interne ou externe).\n2. Identifier le lieu de développement de l'embryon (vivipare = utérus, ovipare = œuf, ovovivipare = œuf dans le corps).\n3. Le type de fécondation et de développement définit la stratégie reproductive de l'espèce.\n:::\n\n:::retenir\n- Gamètes : spermatozoïde (n) + ovule (n) → zygote (2n).\n- Fécondation externe (poissons, amphibiens) vs interne (mammifères, oiseaux).\n- Le zygote est la première cellule du nouvel être vivant.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_02_02",
+      "chapterId": "ch_svt_3e_02",
+      "title": { "fr": "Les chromosomes et l'information génétique" },
+      "sortOrder": 2,
+      "notionIds": ["not_svt_chromosome", "not_svt_adn"],
+      "content": {
+        "fr": "# Les chromosomes et l'information génétique\n\n:::definition\nLes **chromosomes** sont des structures filamenteuses présentes dans le noyau des cellules eucaryotes. Ils sont constitués d'**ADN** (acide désoxyribonucléique) associé à des protéines.\n\nL'**ADN** porte l'information génétique sous forme de **gènes** — des séquences de nucléotides codant pour des protéines.\n:::\n\n## Organisation chromosomique\n\n:::propriete\nChez l'humain :\n\n- Chaque cellule somatique possède **46 chromosomes** (23 paires) = formule **2n = 46** (diploïde).\n- Les gamètes possèdent **23 chromosomes** (1 de chaque paire) = formule **n = 23** (haploïde).\n- 22 paires de **chromosomes autosomes** (identiques chez l'homme et la femme).\n- 1 paire de **chromosomes sexuels** : XX (femme) ou XY (homme).\n:::\n\n:::exemple\n**Caryotype humain :** représentation photographique des 46 chromosomes rangés par paires. Le caryotype permet de détecter des anomalies chromosomiques (ex. trisomie 21 : 3 chromosomes 21 au lieu de 2).\n:::\n\n## La mitose\n\n:::definition\nLa **mitose** est la division cellulaire qui produit deux cellules filles identiques à la cellule mère (même nombre de chromosomes). Elle assure la croissance et le renouvellement des cellules.\n\n$2n \\rightarrow 2n + 2n$\n:::\n\n:::attention\nNe pas confondre **mitose** (2n → 2n, division ordinaire) et **méiose** (2n → n, division qui produit les gamètes). La méiose divise par deux le nombre de chromosomes.\n:::\n\n:::retenir\n- Chromosome = ADN + protéines, porteur des gènes.\n- Cellule humaine : 2n = 46 chromosomes (23 paires).\n- Gamètes : n = 23 chromosomes.\n- Mitose : 2n → 2n ; méiose : 2n → n (gamètes).\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_02_03",
+      "chapterId": "ch_svt_3e_02",
+      "title": { "fr": "Les lois de Mendel — hérédité" },
+      "sortOrder": 3,
+      "notionIds": ["not_svt_gene", "not_svt_allele", "not_svt_phenotype"],
+      "content": {
+        "fr": "# Les lois de Mendel — hérédité\n\n:::definition\nUn **gène** est un segment d'ADN occupant un locus précis sur un chromosome, et portant l'information pour la synthèse d'une protéine. Un gène peut exister sous différentes formes appelées **allèles**.\n\n- **Génotype** : constitution génétique d'un individu (allèles portés).\n- **Phénotype** : caractère observable qui résulte de l'expression du génotype (et de l'environnement).\n:::\n\n## Dominance et récessivité\n\n:::definition\nOn note les allèles avec des lettres :\n\n- **Allèle dominant** (en majuscule, ex. $A$) : s'exprime même en un seul exemplaire.\n- **Allèle récessif** (en minuscule, ex. $a$) : ne s'exprime que si présent en deux exemplaires.\n\n- **Homozygote dominant** : $AA$ → phénotype dominant.\n- **Hétérozygote** : $Aa$ → phénotype dominant (car $A$ est dominant).\n- **Homozygote récessif** : $aa$ → phénotype récessif.\n:::\n\n:::exemple\nCouleur des fleurs chez le pois (Mendel) : fleur violette (allèle $V$, dominant) vs fleur blanche (allèle $v$, récessif).\n\n- $VV$ → fleur violette\n- $Vv$ → fleur violette (V dominant)\n- $vv$ → fleur blanche\n\nCroisement $Vv \\times Vv$ :\n\n| | $V$ | $v$ |\n|---|---|---|\n| $V$ | $VV$ | $Vv$ |\n| $v$ | $Vv$ | $vv$ |\n\nPhénotypes : 3/4 violette, 1/4 blanche.\n:::\n\n:::methode\nPour résoudre un problème de génétique :\n\n1. Identifier les allèles et leur dominance.\n2. Écrire les génotypes des parents.\n3. Former les gamètes (un allèle par gamète).\n4. Faire l'échiquier de Punnett.\n5. Calculer les proportions phénotypiques.\n:::\n\n:::retenir\n- Gène → allèles (dominant/récessif).\n- Génotype (constitution) → phénotype (aspect observable).\n- Hétérozygote = un allèle de chaque ; phénotype = dominant si allèle dominant présent.\n- Échiquier de Punnett pour les croisements.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_02_04",
+      "chapterId": "ch_svt_3e_02",
+      "title": { "fr": "Les maladies héréditaires" },
+      "sortOrder": 4,
+      "notionIds": ["not_svt_maladie_hereditaire", "not_svt_mutation"],
+      "content": {
+        "fr": "# Les maladies héréditaires\n\n:::definition\nUne **maladie héréditaire** est une maladie causée par une anomalie de l'ADN (mutation) transmissible de parents à enfants. Elle est due à un allèle anormal pouvant être dominant ou récessif.\n\nUne **mutation** est une modification de la séquence de l'ADN, pouvant être spontanée ou provoquée par des agents mutagènes (radiations, produits chimiques).\n:::\n\n## Maladies récessives\n\n:::exemple\n**Drépanocytose (anémie falciforme)** : maladie génétique récessive.\n\n- Allèle normal : $H^A$ (hémoglobine normale)\n- Allèle muté : $H^S$ (hémoglobine anormale → globules rouges en faucille)\n\n| Génotype | $H^A H^A$ | $H^A H^S$ | $H^S H^S$ |\n|---|---|---|---|\n| Phénotype | Normal | Porteur sain | Malade |\n\nTrès répandue en Afrique subsaharienne (dont le Cameroun). Les porteurs sains sont résistants au paludisme.\n:::\n\n## Maladies liées au sexe\n\n:::propriete\nCertaines maladies sont portées par le chromosome X :\n\n- L'hémophilie A (déficit en facteur de coagulation) : gène sur le chromosome X.\n- La femme peut être porteuse saine ($X^H X^h$) sans être malade.\n- L'homme ($X^h Y$) est malade car il n'a qu'un seul chromosome X.\n:::\n\n:::attention\nUne maladie héréditaire n'est pas forcément visible chez tous les porteurs. Un porteur sain transmet l'allèle pathologique sans être malade lui-même (cas des maladies récessives).\n:::\n\n:::retenir\n- Maladie héréditaire = anomalie de l'ADN (mutation) transmissible.\n- Récessive : malade seulement si $aa$ (deux allèles mutés).\n- Porteur sain : $Aa$ (n'est pas malade mais peut transmettre).\n- Maladies liées au X : plus fréquentes chez l'homme (XY).\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_02_05",
+      "chapterId": "ch_svt_3e_02",
+      "title": { "fr": "La puberté et les appareils reproducteurs" },
+      "sortOrder": 5,
+      "notionIds": ["not_svt_puberte", "not_svt_hormone"],
+      "content": {
+        "fr": "# La puberté et les appareils reproducteurs\n\n:::definition\nLa **puberté** est la période de transition entre l'enfance et l'âge adulte, au cours de laquelle l'organisme acquiert sa maturité sexuelle sous l'influence d'**hormones** sécrétées par les gonades.\n\nUne **hormone** est une substance chimique produite par une glande endocrine, transportée par le sang et agissant sur des organes cibles.\n:::\n\n## Appareil reproducteur masculin\n\n:::propriete\n**Organes et fonctions :**\n\n- **Testicules** : produisent les spermatozoïdes (spermatogenèse) et la **testostérone**.\n- **Épididymes** : maturation et stockage des spermatozoïdes.\n- **Canaux déférents** : transport des spermatozoïdes.\n- **Prostate et vésicules séminales** : produisent le liquide séminal.\n- **Pénis** : organe de copulation et d'émission d'urine.\n:::\n\n## Appareil reproducteur féminin\n\n:::propriete\n**Organes et fonctions :**\n\n- **Ovaires** : produisent les ovules (ovogenèse) et les hormones **oestrogènes** et **progestérone**.\n- **Trompes de Fallope** : lieu de la fécondation et transport de l'ovule.\n- **Utérus** : organe de la gestation (grossesse).\n- **Vagin** : canal de copulation et voie d'accouchement.\n\nLe cycle menstruel dure en moyenne 28 jours. L'ovulation a lieu vers le 14ème jour.\n:::\n\n:::attention\nLes hormones sexuelles (testostérone, oestrogènes) contrôlent à la fois les caractères sexuels secondaires (lors de la puberté) ET la production des gamètes chez l'adulte. Elles sont elles-mêmes régulées par l'hypophyse (LH, FSH).\n:::\n\n:::retenir\n- Puberté : maturation sexuelle sous contrôle hormonal.\n- Testostérone → caractères masculins + spermatogenèse.\n- Oestrogènes/progestérone → caractères féminins + cycle menstruel.\n- Ovulation : libération d'un ovule (vers J14 du cycle).\n:::"
+      }
+    },
+
+    {
+      "id": "les_svt_3e_03_01",
+      "chapterId": "ch_svt_3e_03",
+      "title": { "fr": "Les écosystèmes et les chaînes alimentaires" },
+      "sortOrder": 1,
+      "notionIds": ["not_svt_ecosysteme", "not_svt_chaine_alimentaire"],
+      "content": {
+        "fr": "# Les écosystèmes et les chaînes alimentaires\n\n:::definition\nUn **écosystème** est l'ensemble formé par une **biocénose** (communauté d'êtres vivants) et son **biotope** (milieu physico-chimique : sol, eau, air, climat). Les deux composantes interagissent en permanence.\n\nExemples : forêt équatoriale, lac, savane, récif corallien, forêt tropicale camerounaise.\n:::\n\n## Les chaînes alimentaires\n\n:::definition\nUne **chaîne alimentaire** est une suite d'organismes dans laquelle chaque maillon se nourrit du précédent, permettant le transfert de matière et d'énergie.\n\n**Producteurs** (végétaux) → **Consommateurs primaires** (herbivores) → **Consommateurs secondaires** (carnivores) → **Décomposeurs**\n:::\n\n:::exemple\nExemple de chaîne alimentaire en forêt camerounaise :\n\nFeuilles d'arbre → Chenilles → Grenouilles → Serpents → Aigles\n\nExemple en savane :\n\nHerbe → Antilope → Lion → Décomposeurs (bactéries, champignons)\n:::\n\n:::propriete\n**Niveaux trophiques :**\n\n- **Producteurs primaires** : végétaux (photosynthèse) — niveau 1.\n- **Consommateurs primaires** : herbivores — niveau 2.\n- **Consommateurs secondaires** : carnivores de 1er ordre — niveau 3.\n- **Consommateurs tertiaires** : carnivores de 2ème ordre — niveau 4.\n- **Décomposeurs** : bactéries et champignons, recyclent la matière organique.\n:::\n\n:::attention\nL'énergie diminue à chaque niveau trophique (environ 90% de perte entre chaque maillon). C'est pourquoi les grandes chaînes alimentaires comptent rarement plus de 5 niveaux.\n:::\n\n:::retenir\n- Écosystème = biocénose + biotope.\n- Chaîne alimentaire : producteur → consommateur primaire → consommateur secondaire → décomposeurs.\n- Énergie diminue à chaque niveau (10% seulement transféré).\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_03_02",
+      "chapterId": "ch_svt_3e_03",
+      "title": { "fr": "Le cycle du carbone" },
+      "sortOrder": 2,
+      "notionIds": ["not_svt_cycle_carbone", "not_svt_effet_de_serre"],
+      "content": {
+        "fr": "# Le cycle du carbone\n\n:::definition\nLe **cycle du carbone** est le cycle biogéochimique qui décrit la circulation du carbone dans les différents réservoirs de la Terre : atmosphère ($CO_2$), biosphère (êtres vivants), hydrosphère (océans), lithosphère (roches, pétrole, charbon).\n:::\n\n## Les flux de carbone\n\n:::propriete\n**Processus qui stockent le $CO_2$ (flux entrants dans la biosphère) :**\n- Photosynthèse des végétaux : $CO_2 + H_2O +$ lumière → matière organique.\n- Dissolution dans les océans.\n- Formation de combustibles fossiles (millions d'années).\n\n**Processus qui libèrent du $CO_2$ :**\n- Respiration de tous les êtres vivants.\n- Décomposition de la matière organique.\n- Combustion (feu, moteurs, centrales électriques).\n- Éruptions volcaniques.\n:::\n\n:::exemple\nPar la photosynthèse, une forêt tropicale absorbe des milliards de tonnes de $CO_2$ par an. La forêt du bassin du Congo (Cameroun, RDC, Gabon) est le 2ème poumon vert mondial après l'Amazonie.\n:::\n\n## L'effet de serre et le réchauffement climatique\n\n:::definition\nL'**effet de serre** est un phénomène naturel par lequel certains gaz de l'atmosphère ($CO_2$, $CH_4$, $H_2O$ vapeur) retiennent la chaleur émise par la Terre, maintenant une température propice à la vie.\n\nL'**intensification** de l'effet de serre due aux activités humaines (combustion de fossiles, déforestation) provoque le **réchauffement climatique**.\n:::\n\n:::attention\nL'effet de serre n'est pas mauvais en soi — sans lui, la Terre serait à $-18°C$. C'est son **intensification anthropique** (due à l'humain) qui pose problème.\n:::\n\n:::retenir\n- Cycle du carbone : circulation du C entre atmosphère, biosphère, océans, roches.\n- Photosynthèse stocke le $CO_2$ ; respiration et combustion le libèrent.\n- Effet de serre naturel = utile ; intensification humaine = réchauffement climatique.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_03_03",
+      "chapterId": "ch_svt_3e_03",
+      "title": { "fr": "Les impacts humains sur l'environnement" },
+      "sortOrder": 3,
+      "notionIds": ["not_svt_deforestation", "not_svt_pollution"],
+      "content": {
+        "fr": "# Les impacts humains sur l'environnement\n\nL'activité humaine modifie profondément les écosystèmes, menaçant la biodiversité et l'équilibre du vivant.\n\n:::definition\nLa **déforestation** est l'action de couper ou brûler des forêts pour exploiter le bois ou créer des terres agricoles. Elle entraîne la perte de biodiversité, l'érosion des sols et l'augmentation du $CO_2$ atmosphérique.\n\nLa **pollution** est l'introduction dans le milieu naturel de substances (polluants) qui en altèrent la qualité et nuisent aux organismes vivants.\n:::\n\n## Types de pollution\n\n:::propriete\n**Principales formes de pollution :**\n\n- **Pollution de l'air** : gaz d'échappement, fumées industrielles ($CO_2$, $SO_2$, particules fines).\n- **Pollution de l'eau** : rejets agricoles (pesticides, engrais), déchets industriels, eaux usées.\n- **Pollution des sols** : déchets solides, produits chimiques.\n- **Pollution sonore** : nuisances sonores affectant la faune et la santé humaine.\n:::\n\n:::exemple\nAu Cameroun, l'exploitation forestière intensive dans le Bassin du Congo détruit l'habitat des grands singes (gorilles, chimpanzés) et des éléphants de forêt, dont de nombreuses populations sont en danger critique d'extinction.\n:::\n\n## Les solutions\n\n:::propriete\n**Actions pour préserver l'environnement :**\n\n- Reboisement et agroforesterie.\n- Énergies renouvelables (solaire, hydro-électrique).\n- Réduction des déchets et recyclage.\n- Aires protégées et parcs nationaux (ex. Parc national de Waza, Cameroun).\n- Agriculture durable (sans pesticides de synthèse).\n:::\n\n:::attention\nLa déforestation ne concerne pas uniquement les forêts tropicales. Les savanes et mangroves sont aussi des écosystèmes essentiels au maintien de la biodiversité et du cycle de l'eau.\n:::\n\n:::retenir\n- Déforestation → perte de biodiversité + érosion + hausse $CO_2$.\n- Pollutions : air, eau, sol, sonore.\n- Solutions : reboisement, énergies renouvelables, aires protégées.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_03_04",
+      "chapterId": "ch_svt_3e_03",
+      "title": { "fr": "La biodiversité et son importance" },
+      "sortOrder": 4,
+      "notionIds": ["not_svt_biodiversite", "not_svt_espece"],
+      "content": {
+        "fr": "# La biodiversité et son importance\n\n:::definition\nLa **biodiversité** (diversité biologique) désigne la variété du monde vivant à trois niveaux :\n\n1. **Diversité des espèces** : nombre et variété des espèces vivantes.\n2. **Diversité génétique** : variabilité des gènes au sein d'une même espèce.\n3. **Diversité des écosystèmes** : variété des milieux de vie.\n:::\n\n## Mesure de la biodiversité\n\n:::definition\nUne **espèce** est un groupe d'individus qui se ressemblent morphologiquement, partagent un patrimoine génétique commun et peuvent se reproduire entre eux en donnant des descendants fertiles.\n\nOn estime le nombre d'espèces vivantes connues à environ **8,7 millions**, dont seulement 1,9 million ont été décrites scientifiquement.\n:::\n\n:::exemple\nLe Cameroun est l'un des pays les plus riches en biodiversité d'Afrique :\n\n- Plus de **9 000 espèces de plantes**.\n- Plus de **900 espèces d'oiseaux**.\n- **Gorille des plaines occidentales**, chimpanzé, drill (primates menacés).\n- Mont Cameroun : l'une des zones de plus grande diversité floristique d'Afrique.\n:::\n\n## Pourquoi protéger la biodiversité ?\n\n:::propriete\n**Services rendus par la biodiversité :**\n\n- **Services de fourniture** : nourriture, médicaments, fibres, bois.\n- **Services de régulation** : purification de l'eau et de l'air, pollinisation, régulation du climat.\n- **Services culturels** : tourisme, valeur esthétique, patrimoine culturel.\n- **Services de soutien** : formation des sols, cycle des nutriments.\n:::\n\n:::attention\nL'extinction d'une espèce est **irréversible**. Chaque espèce joue un rôle dans son écosystème (pollinisateur, prédateur, décomposeur). La disparition d'une espèce clé peut déséquilibrer tout l'écosystème (effet cascade).\n:::\n\n:::retenir\n- Biodiversité : diversité des espèces + génétique + écosystèmes.\n- Espèce = groupe à patrimoine génétique commun, interfécond.\n- Cameroun = hotspot de biodiversité africain.\n- Protéger la biodiversité = protéger les services essentiels à la vie humaine.\n:::"
+      }
+    },
+    {
+      "id": "les_svt_3e_03_05",
+      "chapterId": "ch_svt_3e_03",
+      "title": { "fr": "Le développement durable" },
+      "sortOrder": 5,
+      "notionIds": ["not_svt_developpement_durable"],
+      "content": {
+        "fr": "# Le développement durable\n\n:::definition\nLe **développement durable** est un mode de développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre à leurs propres besoins (définition Brundtland, 1987).\n\nIl repose sur trois piliers interdépendants :\n1. **Économique** : croissance et efficacité économique.\n2. **Social** : équité et bien-être pour tous.\n3. **Environnemental** : préservation des ressources naturelles et des écosystèmes.\n:::\n\n## Les enjeux au niveau planétaire\n\n:::propriete\n**17 Objectifs de Développement Durable (ODD)** adoptés par l'ONU en 2015 :\n\n- ODD 13 : Lutte contre les changements climatiques.\n- ODD 14 : Vie aquatique (préserver les océans).\n- ODD 15 : Vie terrestre (forêts, désertification, biodiversité).\n- ODD 7 : Énergie propre et d'un coût abordable.\n\nObjectif : atteindre ces buts avant 2030.\n:::\n\n:::exemple\nExemples d'actions durables au Cameroun :\n\n- Les plans de gestion forestière durable (exploitation contrôlée du bois).\n- L'agriculture biologique et l'agroforesterie (cacao sous ombrage).\n- Le développement de l'hydroélectricité (barrages de Lom Pangar, Memve'ele).\n- La création de réserves de biosphère (Dja, Waza).\n:::\n\n:::methode\nPour analyser si une action est « durable » :\n\n1. Impact **économique** : crée-t-elle des emplois et richesses locales ?\n2. Impact **social** : améliore-t-elle les conditions de vie sans exclure les plus vulnérables ?\n3. Impact **environnemental** : préserve-t-elle la nature pour les générations futures ?\n\nUne action durable satisfait les trois dimensions simultanément.\n:::\n\n:::retenir\n- Développement durable = économique + social + environnemental.\n- Objectif : satisfaire les besoins présents sans priver les générations futures.\n- 17 ODD de l'ONU (horizon 2030).\n- Cameroun : forêt du Congo, hydroélectricité, agroforesterie = exemples locaux.\n:::"
+      }
+    }
+  ],
+
+  "notions": [
+    {
+      "id": "not_svt_cellule",
+      "title": { "fr": "Cellule" },
+      "definition": { "fr": "La cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites." },
+      "lessonIds": ["les_svt_3e_01_01"]
+    },
+    {
+      "id": "not_svt_organite",
+      "title": { "fr": "Organite" },
+      "definition": { "fr": "Un organite est une structure spécialisée présente dans le cytoplasme d'une cellule. Exemples : noyau (ADN), mitochondrie (énergie), chloroplaste (photosynthèse), ribosome (protéines)." },
+      "lessonIds": ["les_svt_3e_01_01"]
+    },
+    {
+      "id": "not_svt_respiration_cellulaire",
+      "title": { "fr": "Respiration cellulaire" },
+      "definition": { "fr": "La respiration cellulaire est l'ensemble des réactions chimiques (dans les mitochondries) qui produisent de l'énergie (ATP) à partir du glucose et du dioxygène : glucose + O₂ → CO₂ + H₂O + ATP." },
+      "lessonIds": ["les_svt_3e_01_02"]
+    },
+    {
+      "id": "not_svt_atp",
+      "title": { "fr": "ATP (Adénosine Triphosphate)" },
+      "definition": { "fr": "L'ATP est la molécule énergétique universelle des cellules vivantes. Elle est produite par la respiration cellulaire et utilisée pour alimenter toutes les activités cellulaires (mouvement, synthèse, transport)." },
+      "lessonIds": ["les_svt_3e_01_02"]
+    },
+    {
+      "id": "not_svt_photosynthese",
+      "title": { "fr": "Photosynthèse" },
+      "definition": { "fr": "La photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂." },
+      "lessonIds": ["les_svt_3e_01_03"]
+    },
+    {
+      "id": "not_svt_chlorophylle",
+      "title": { "fr": "Chlorophylle" },
+      "definition": { "fr": "La chlorophylle est le pigment vert contenu dans les chloroplastes des cellules végétales. Elle absorbe la lumière (surtout rouge et bleue) pour permettre la photosynthèse. C'est elle qui donne leur couleur verte aux plantes." },
+      "lessonIds": ["les_svt_3e_01_03"]
+    },
+    {
+      "id": "not_svt_neurone",
+      "title": { "fr": "Neurone" },
+      "definition": { "fr": "Le neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse." },
+      "lessonIds": ["les_svt_3e_01_04"]
+    },
+    {
+      "id": "not_svt_reflexe",
+      "title": { "fr": "Réflexe" },
+      "definition": { "fr": "Un réflexe est une réponse automatique, involontaire et rapide à un stimulus, coordonnée par la moelle épinière sans intervention du cerveau. L'arc réflexe comprend : récepteur → nerf sensitif → moelle → nerf moteur → muscle." },
+      "lessonIds": ["les_svt_3e_01_04"]
+    },
+    {
+      "id": "not_svt_sang",
+      "title": { "fr": "Sang" },
+      "definition": { "fr": "Le sang est un tissu liquide composé de plasma (55%), de globules rouges (transport du O₂ via l'hémoglobine), de globules blancs (défense immunitaire) et de plaquettes (coagulation)." },
+      "lessonIds": ["les_svt_3e_01_05"]
+    },
+    {
+      "id": "not_svt_circulation",
+      "title": { "fr": "Double circulation sanguine" },
+      "definition": { "fr": "La circulation sanguine est double : la grande circulation (cœur → organes → cœur) et la petite circulation (cœur → poumons → cœur). Le cœur (4 cavités) est la pompe qui propulse le sang." },
+      "lessonIds": ["les_svt_3e_01_05"]
+    },
+    {
+      "id": "not_svt_gamete",
+      "title": { "fr": "Gamète" },
+      "definition": { "fr": "Un gamète est une cellule reproductrices haploïde (n chromosomes). Le gamète mâle est le spermatozoïde, le gamète femelle est l'ovule. Leur fusion lors de la fécondation donne un zygote diploïde (2n)." },
+      "lessonIds": ["les_svt_3e_02_01"]
+    },
+    {
+      "id": "not_svt_fecondation",
+      "title": { "fr": "Fécondation" },
+      "definition": { "fr": "La fécondation est la fusion d'un spermatozoïde (n) et d'un ovule (n) pour former un zygote (2n). Chez l'humain : 23 + 23 = 46 chromosomes. Elle peut être externe (dans l'eau) ou interne (dans le corps de la femelle)." },
+      "lessonIds": ["les_svt_3e_02_01"]
+    },
+    {
+      "id": "not_svt_chromosome",
+      "title": { "fr": "Chromosome" },
+      "definition": { "fr": "Un chromosome est une structure constituée d'ADN et de protéines, présente dans le noyau des cellules. La cellule humaine possède 46 chromosomes (23 paires). Les gamètes en ont 23 (haploïdes)." },
+      "lessonIds": ["les_svt_3e_02_02"]
+    },
+    {
+      "id": "not_svt_adn",
+      "title": { "fr": "ADN" },
+      "definition": { "fr": "L'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes." },
+      "lessonIds": ["les_svt_3e_02_02"]
+    },
+    {
+      "id": "not_svt_gene",
+      "title": { "fr": "Gène" },
+      "definition": { "fr": "Un gène est un segment d'ADN occupant un locus précis sur un chromosome, codant pour une protéine ou régulant l'expression d'autres gènes. Un gène peut exister sous plusieurs formes (allèles)." },
+      "lessonIds": ["les_svt_3e_02_03"]
+    },
+    {
+      "id": "not_svt_allele",
+      "title": { "fr": "Allèle" },
+      "definition": { "fr": "Un allèle est l'une des formes d'un même gène. L'allèle dominant s'exprime même en un seul exemplaire (noté en majuscule). L'allèle récessif ne s'exprime que si présent en deux exemplaires (noté en minuscule)." },
+      "lessonIds": ["les_svt_3e_02_03"]
+    },
+    {
+      "id": "not_svt_phenotype",
+      "title": { "fr": "Phénotype" },
+      "definition": { "fr": "Le phénotype est l'ensemble des caractères observables d'un individu, résultant de l'expression de son génotype dans un environnement donné. Par opposition, le génotype est la constitution allélique de l'individu." },
+      "lessonIds": ["les_svt_3e_02_03"]
+    },
+    {
+      "id": "not_svt_maladie_hereditaire",
+      "title": { "fr": "Maladie héréditaire" },
+      "definition": { "fr": "Une maladie héréditaire est causée par une anomalie génétique (mutation) transmissible des parents aux enfants. Elle peut être dominante (un allèle suffit) ou récessive (deux allèles nécessaires). Exemple : drépanocytose, hémophilie." },
+      "lessonIds": ["les_svt_3e_02_04"]
+    },
+    {
+      "id": "not_svt_mutation",
+      "title": { "fr": "Mutation" },
+      "definition": { "fr": "Une mutation est une modification permanente de la séquence d'ADN. Elle peut être spontanée ou provoquée par des agents mutagènes (rayons UV, produits chimiques). Une mutation dans une cellule germinale (gamète) est transmissible à la descendance." },
+      "lessonIds": ["les_svt_3e_02_04"]
+    },
+    {
+      "id": "not_svt_puberte",
+      "title": { "fr": "Puberté" },
+      "definition": { "fr": "La puberté est la période de maturation sexuelle marquée par le développement des organes reproducteurs et des caractères sexuels secondaires (pilosité, mue de voix, poitrine), sous l'effet des hormones sexuelles." },
+      "lessonIds": ["les_svt_3e_02_05"]
+    },
+    {
+      "id": "not_svt_hormone",
+      "title": { "fr": "Hormone" },
+      "definition": { "fr": "Une hormone est une substance chimique sécrétée par une glande endocrine, transportée par le sang jusqu'à ses organes cibles. Exemples : testostérone (testicules), oestrogènes et progestérone (ovaires), insuline (pancréas)." },
+      "lessonIds": ["les_svt_3e_02_05"]
+    },
+    {
+      "id": "not_svt_ecosysteme",
+      "title": { "fr": "Écosystème" },
+      "definition": { "fr": "Un écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane." },
+      "lessonIds": ["les_svt_3e_03_01"]
+    },
+    {
+      "id": "not_svt_chaine_alimentaire",
+      "title": { "fr": "Chaîne alimentaire" },
+      "definition": { "fr": "Une chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon." },
+      "lessonIds": ["les_svt_3e_03_01"]
+    },
+    {
+      "id": "not_svt_cycle_carbone",
+      "title": { "fr": "Cycle du carbone" },
+      "definition": { "fr": "Le cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent." },
+      "lessonIds": ["les_svt_3e_03_02"]
+    },
+    {
+      "id": "not_svt_effet_de_serre",
+      "title": { "fr": "Effet de serre" },
+      "definition": { "fr": "L'effet de serre est un phénomène naturel où certains gaz atmosphériques (CO₂, CH₄, vapeur d'eau) retiennent la chaleur solaire, maintenant la Terre à une température vivable. Son intensification due aux activités humaines cause le réchauffement climatique." },
+      "lessonIds": ["les_svt_3e_03_02"]
+    },
+    {
+      "id": "not_svt_deforestation",
+      "title": { "fr": "Déforestation" },
+      "definition": { "fr": "La déforestation est la destruction ou dégradation des forêts par coupe, brûlis ou exploitation intensive. Elle entraîne la perte de biodiversité, l'érosion des sols, la perturbation des cycles de l'eau et l'augmentation du CO₂ atmosphérique." },
+      "lessonIds": ["les_svt_3e_03_03"]
+    },
+    {
+      "id": "not_svt_pollution",
+      "title": { "fr": "Pollution" },
+      "definition": { "fr": "La pollution est l'introduction de substances nocives (polluants) dans l'environnement (air, eau, sol) qui en altèrent la qualité et nuisent aux êtres vivants. Elle peut être atmosphérique, aquatique, tellurique ou sonore." },
+      "lessonIds": ["les_svt_3e_03_03"]
+    },
+    {
+      "id": "not_svt_biodiversite",
+      "title": { "fr": "Biodiversité" },
+      "definition": { "fr": "La biodiversité désigne la variété du vivant à trois niveaux : diversité des espèces, diversité génétique au sein d'une espèce, et diversité des écosystèmes. Elle est essentielle au maintien des équilibres naturels et des services rendus à l'humain." },
+      "lessonIds": ["les_svt_3e_03_04"]
+    },
+    {
+      "id": "not_svt_espece",
+      "title": { "fr": "Espèce" },
+      "definition": { "fr": "Une espèce est un groupe d'individus qui se ressemblent morphologiquement, partagent un patrimoine génétique commun et peuvent se reproduire entre eux en donnant des descendants fertiles. On en dénombre environ 8,7 millions sur Terre." },
+      "lessonIds": ["les_svt_3e_03_04"]
+    },
+    {
+      "id": "not_svt_developpement_durable",
+      "title": { "fr": "Développement durable" },
+      "definition": { "fr": "Le développement durable est un développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs. Il repose sur trois piliers : économique, social et environnemental." },
+      "lessonIds": ["les_svt_3e_03_05"]
+    }
+  ],
+
+  "quizzes": [
+    {
+      "id": "qz_svt_3e_01_01",
+      "lessonId": "les_svt_3e_01_01",
+      "questions": [
+        {
+          "id": "qz_svt_3e_01_01_q1",
+          "text": "Quelle est la différence principale entre une cellule procaryote et une cellule eucaryote ?",
+          "options": ["La taille de la cellule", "La présence ou l'absence d'un noyau véritable", "La présence ou l'absence de cytoplasme", "La forme de la cellule"],
+          "correctIndex": 1,
+          "explanation": "Les cellules procaryotes (bactéries) n'ont pas de noyau délimité par une membrane nucléaire. Les cellules eucaryotes (animales, végétales) ont un noyau véritable avec son enveloppe nucléaire.",
+          "notionId": "not_svt_cellule"
+        },
+        {
+          "id": "qz_svt_3e_01_01_q2",
+          "text": "Quel organite est responsable de la production d'énergie dans la cellule ?",
+          "options": ["Le noyau", "Le ribosome", "La mitochondrie", "Le chloroplaste"],
+          "correctIndex": 2,
+          "explanation": "Les mitochondries sont le siège de la respiration cellulaire, qui produit l'ATP (énergie). On les appelle parfois les « centrales énergétiques » de la cellule.",
+          "notionId": "not_svt_organite"
+        },
+        {
+          "id": "qz_svt_3e_01_01_q3",
+          "text": "Lequel de ces éléments est UNIQUEMENT présent dans la cellule végétale (et absent de la cellule animale) ?",
+          "options": ["La membrane plasmique", "Le noyau", "La paroi cellulosique", "Les mitochondries"],
+          "correctIndex": 2,
+          "explanation": "La paroi cellulosique rigide est une caractéristique propre aux cellules végétales (et à certaines bactéries). Membrane, noyau et mitochondries sont présents dans les deux types.",
+          "notionId": "not_svt_cellule"
+        },
+        {
+          "id": "qz_svt_3e_01_01_q4",
+          "text": "Quel est le rôle principal du noyau cellulaire ?",
+          "options": ["Produire de l'énergie", "Contenir l'ADN et diriger les activités cellulaires", "Synthétiser les lipides", "Effectuer la photosynthèse"],
+          "correctIndex": 1,
+          "explanation": "Le noyau contient l'ADN (chromosomes) et constitue le centre de contrôle de la cellule. Il dirige la synthèse des protéines et la division cellulaire.",
+          "notionId": "not_svt_cellule"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_01_02",
+      "lessonId": "les_svt_3e_01_02",
+      "questions": [
+        {
+          "id": "qz_svt_3e_01_02_q1",
+          "text": "Quels sont les produits de la respiration cellulaire ?",
+          "options": ["Glucose et O₂", "CO₂, H₂O et ATP", "O₂ et ATP seulement", "CO₂ et glucose"],
+          "correctIndex": 1,
+          "explanation": "La respiration cellulaire transforme glucose + O₂ en CO₂ + H₂O + ATP. L'ATP est l'énergie utilisable par la cellule.",
+          "notionId": "not_svt_respiration_cellulaire"
+        },
+        {
+          "id": "qz_svt_3e_01_02_q2",
+          "text": "Où se déroule la respiration cellulaire dans la cellule ?",
+          "options": ["Dans le noyau", "Dans les chloroplastes", "Dans les mitochondries", "Dans les ribosomes"],
+          "correctIndex": 2,
+          "explanation": "La respiration cellulaire se déroule dans les mitochondries, qui sont les organites spécialisés dans la production d'énergie.",
+          "notionId": "not_svt_respiration_cellulaire"
+        },
+        {
+          "id": "qz_svt_3e_01_02_q3",
+          "text": "Qu'est-ce que l'ATP ?",
+          "options": ["Un type de sucre", "Un gaz respiratoire", "La monnaie énergétique de la cellule", "Un pigment cellulaire"],
+          "correctIndex": 2,
+          "explanation": "L'ATP (Adénosine TriPhosphate) est la molécule qui stocke et transporte l'énergie dans toutes les cellules vivantes. Elle est produite par la respiration cellulaire et utilisée pour alimenter toutes les activités cellulaires.",
+          "notionId": "not_svt_atp"
+        },
+        {
+          "id": "qz_svt_3e_01_02_q4",
+          "text": "La fermentation lactique produit-elle autant d'ATP que la respiration aérobie ?",
+          "options": ["Oui, exactement autant", "Non, elle en produit beaucoup moins", "Non, elle en produit plus", "Elles produisent le même type mais pas la même quantité"],
+          "correctIndex": 1,
+          "explanation": "La fermentation (sans O₂) produit beaucoup moins d'ATP que la respiration aérobie. C'est pourquoi les muscles s'épuisent rapidement en effort intense (fonctionnement en fermentation lactique).",
+          "notionId": "not_svt_respiration_cellulaire"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_01_03",
+      "lessonId": "les_svt_3e_01_03",
+      "questions": [
+        {
+          "id": "qz_svt_3e_01_03_q1",
+          "text": "Quel est le bilan de la photosynthèse ?",
+          "options": ["Glucose + O₂ → CO₂ + H₂O", "CO₂ + H₂O + lumière → Glucose + O₂", "CO₂ + O₂ → Glucose + H₂O", "H₂O + O₂ + lumière → CO₂ + Glucose"],
+          "correctIndex": 1,
+          "explanation": "La photosynthèse utilise le CO₂ et l'eau comme matières premières, et la lumière comme source d'énergie, pour produire du glucose et libérer du O₂.",
+          "notionId": "not_svt_photosynthese"
+        },
+        {
+          "id": "qz_svt_3e_01_03_q2",
+          "text": "Où se déroule la photosynthèse dans la cellule végétale ?",
+          "options": ["Dans les mitochondries", "Dans le noyau", "Dans les chloroplastes", "Dans les vacuoles"],
+          "correctIndex": 2,
+          "explanation": "La photosynthèse se déroule dans les chloroplastes, organites contenant la chlorophylle, pigment qui capte l'énergie lumineuse.",
+          "notionId": "not_svt_photosynthese"
+        },
+        {
+          "id": "qz_svt_3e_01_03_q3",
+          "text": "Quel pigment permet à la plante de capter la lumière pour la photosynthèse ?",
+          "options": ["L'hémoglobine", "La mélanine", "La chlorophylle", "La carotène uniquement"],
+          "correctIndex": 2,
+          "explanation": "La chlorophylle est le pigment vert des chloroplastes qui absorbe principalement la lumière rouge et bleue pour alimenter la photosynthèse.",
+          "notionId": "not_svt_chlorophylle"
+        },
+        {
+          "id": "qz_svt_3e_01_03_q4",
+          "text": "La nuit, une plante verte réalise-t-elle la photosynthèse ?",
+          "options": ["Oui, toujours", "Non, jamais la nuit", "Seulement si elle a suffisamment d'eau", "Oui, mais à un rythme réduit"],
+          "correctIndex": 1,
+          "explanation": "La photosynthèse nécessite de la lumière. La nuit, sans lumière, elle s'arrête complètement. La plante ne réalise que la respiration cellulaire (24h/24), consommant du O₂ et libérant du CO₂.",
+          "notionId": "not_svt_photosynthese"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_01_04",
+      "lessonId": "les_svt_3e_01_04",
+      "questions": [
+        {
+          "id": "qz_svt_3e_01_04_q1",
+          "text": "Quelle est l'unité fonctionnelle du système nerveux ?",
+          "options": ["La synapse", "L'axone", "Le neurone", "Le cerveau"],
+          "correctIndex": 2,
+          "explanation": "Le neurone est l'unité de base du système nerveux. Il reçoit, intègre et transmet les messages nerveux (influx nerveux).",
+          "notionId": "not_svt_neurone"
+        },
+        {
+          "id": "qz_svt_3e_01_04_q2",
+          "text": "Quel est le rôle des dendrites dans un neurone ?",
+          "options": ["Envoyer l'influx nerveux", "Recevoir les messages nerveux", "Produire l'énergie", "Protéger le noyau"],
+          "correctIndex": 1,
+          "explanation": "Les dendrites sont les prolongements courts du neurone qui reçoivent les messages nerveux venant d'autres neurones ou de récepteurs sensoriels.",
+          "notionId": "not_svt_neurone"
+        },
+        {
+          "id": "qz_svt_3e_01_04_q3",
+          "text": "Un réflexe est coordonné par :",
+          "options": ["Le cerveau", "Le cervelet", "La moelle épinière", "Les nerfs périphériques"],
+          "correctIndex": 2,
+          "explanation": "Un réflexe est une réponse automatique coordonnée par la moelle épinière, sans intervention du cerveau. C'est ce qui le rend si rapide.",
+          "notionId": "not_svt_reflexe"
+        },
+        {
+          "id": "qz_svt_3e_01_04_q4",
+          "text": "Dans quel ordre les éléments d'un arc réflexe transmettent-ils l'information ?",
+          "options": ["Effecteur → centre nerveux → récepteur", "Récepteur → nerf sensitif → moelle → nerf moteur → effecteur", "Moelle → récepteur → nerf → muscle", "Cerveau → moelle → muscle → récepteur"],
+          "correctIndex": 1,
+          "explanation": "L'arc réflexe suit toujours ce trajet : stimulus → récepteur → nerf sensitif (afférent) → moelle épinière → nerf moteur (efférent) → effecteur (muscle).",
+          "notionId": "not_svt_reflexe"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_01_05",
+      "lessonId": "les_svt_3e_01_05",
+      "questions": [
+        {
+          "id": "qz_svt_3e_01_05_q1",
+          "text": "Quel composant du sang transporte le dioxygène (O₂) ?",
+          "options": ["Le plasma", "Les plaquettes", "Les globules blancs", "Les globules rouges"],
+          "correctIndex": 3,
+          "explanation": "Les globules rouges (érythrocytes) contiennent l'hémoglobine, une protéine qui fixe le dioxygène dans les poumons et le libère dans les organes.",
+          "notionId": "not_svt_sang"
+        },
+        {
+          "id": "qz_svt_3e_01_05_q2",
+          "text": "Quel est le rôle des globules blancs ?",
+          "options": ["Transporter le O₂", "Assurer la coagulation", "Défendre l'organisme (immunité)", "Nourrir les cellules"],
+          "correctIndex": 2,
+          "explanation": "Les globules blancs (leucocytes) constituent le système de défense de l'organisme contre les microbes, virus et autres agents pathogènes.",
+          "notionId": "not_svt_sang"
+        },
+        {
+          "id": "qz_svt_3e_01_05_q3",
+          "text": "Quelle est la différence entre la grande circulation et la petite circulation ?",
+          "options": ["La grande : cœur → poumons ; la petite : cœur → organes", "La grande : cœur → organes ; la petite : cœur → poumons", "Elles sont identiques", "La grande concerne le sang artériel, la petite le sang veineux"],
+          "correctIndex": 1,
+          "explanation": "La grande circulation (systémique) va du cœur aux organes du corps et retourne au cœur. La petite circulation (pulmonaire) va du cœur aux poumons pour oxygéner le sang.",
+          "notionId": "not_svt_circulation"
+        },
+        {
+          "id": "qz_svt_3e_01_05_q4",
+          "text": "L'artère pulmonaire transporte du sang :",
+          "options": ["Riche en O₂, du cœur vers les poumons", "Pauvre en O₂, du cœur vers les poumons", "Riche en O₂, des poumons vers le cœur", "Pauvre en O₂, des poumons vers le cœur"],
+          "correctIndex": 1,
+          "explanation": "Exception à la règle générale : l'artère pulmonaire transporte du sang pauvre en O₂ (et riche en CO₂) du cœur vers les poumons pour se réoxygéner.",
+          "notionId": "not_svt_circulation"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_02_01",
+      "lessonId": "les_svt_3e_02_01",
+      "questions": [
+        {
+          "id": "qz_svt_3e_02_01_q1",
+          "text": "Qu'est-ce qu'un gamète ?",
+          "options": ["Une cellule somatique", "Une cellule reproductrice haploïde", "Un organe reproducteur", "Une cellule diploïde"],
+          "correctIndex": 1,
+          "explanation": "Un gamète est une cellule reproductrice haploïde (n chromosomes). Le spermatozoïde est le gamète mâle, l'ovule est le gamète femelle.",
+          "notionId": "not_svt_gamete"
+        },
+        {
+          "id": "qz_svt_3e_02_01_q2",
+          "text": "Combien de chromosomes contient le zygote humain après fécondation ?",
+          "options": ["23", "46", "92", "44"],
+          "correctIndex": 1,
+          "explanation": "Spermatozoïde (23) + ovule (23) = zygote (46 chromosomes). Le nombre diploïde de l'espèce humaine est rétabli à la fécondation.",
+          "notionId": "not_svt_fecondation"
+        },
+        {
+          "id": "qz_svt_3e_02_01_q3",
+          "text": "Quelle est la différence entre fécondation interne et externe ?",
+          "options": ["Interne = dans l'eau ; externe = dans le corps", "Interne = dans le corps de la femelle ; externe = dans le milieu extérieur", "Interne = plus efficace ; externe = moins efficace", "Elles produisent des résultats différents"],
+          "correctIndex": 1,
+          "explanation": "Fécondation interne : rencontre des gamètes à l'intérieur du corps de la femelle (mammifères, oiseaux). Fécondation externe : gamètes libérés dans l'eau (poissons, amphibiens).",
+          "notionId": "not_svt_fecondation"
+        },
+        {
+          "id": "qz_svt_3e_02_01_q4",
+          "text": "Chez la grenouille, la fécondation est :",
+          "options": ["Interne, comme chez les mammifères", "Externe, les gamètes se rencontrent dans l'eau", "Absente (reproduction asexuée)", "Interne, mais dans un œuf externe"],
+          "correctIndex": 1,
+          "explanation": "La grenouille est un amphibien. Elle pond ses œufs dans l'eau et le mâle y libère ses spermatozoïdes : la fécondation est externe.",
+          "notionId": "not_svt_fecondation"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_02_02",
+      "lessonId": "les_svt_3e_02_02",
+      "questions": [
+        {
+          "id": "qz_svt_3e_02_02_q1",
+          "text": "Combien de chromosomes possède une cellule somatique (non-reproductrice) humaine ?",
+          "options": ["23", "46", "2", "44"],
+          "correctIndex": 1,
+          "explanation": "Toutes les cellules somatiques humaines sont diploïdes et possèdent 2n = 46 chromosomes (23 paires).",
+          "notionId": "not_svt_chromosome"
+        },
+        {
+          "id": "qz_svt_3e_02_02_q2",
+          "text": "Quelle est la molécule porteuse de l'information génétique ?",
+          "options": ["ARN", "ATP", "ADN", "Glucose"],
+          "correctIndex": 2,
+          "explanation": "L'ADN (Acide DésoxyriboNucléique) est la molécule porteuse de l'information génétique. Il est organisé en gènes et localisé dans les chromosomes du noyau.",
+          "notionId": "not_svt_adn"
+        },
+        {
+          "id": "qz_svt_3e_02_02_q3",
+          "text": "Le caryotype d'une femme est :",
+          "options": ["44 + XY", "44 + XX", "46 + XY", "46 + XX"],
+          "correctIndex": 1,
+          "explanation": "Une femme possède 44 autosomes (22 paires) + 2 chromosomes sexuels XX, soit 46 chromosomes au total. Un homme a 44 + XY.",
+          "notionId": "not_svt_chromosome"
+        },
+        {
+          "id": "qz_svt_3e_02_02_q4",
+          "text": "Quelle division cellulaire produit les gamètes ?",
+          "options": ["La mitose", "La méiose", "La cytocinèse", "La mitose et la méiose ensemble"],
+          "correctIndex": 1,
+          "explanation": "La méiose est la division cellulaire qui réduit le nombre de chromosomes de moitié (2n → n) pour produire des gamètes haploïdes. La mitose produit des cellules identiques à 2n.",
+          "notionId": "not_svt_chromosome"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_02_03",
+      "lessonId": "les_svt_3e_02_03",
+      "questions": [
+        {
+          "id": "qz_svt_3e_02_03_q1",
+          "text": "Un individu de génotype $Aa$ est :",
+          "options": ["Homozygote dominant", "Homozygote récessif", "Hétérozygote", "Malade si $a$ est récessif"],
+          "correctIndex": 2,
+          "explanation": "Un individu $Aa$ est hétérozygote (possède deux allèles différents). Son phénotype est dominant car $A$ est dominant sur $a$.",
+          "notionId": "not_svt_allele"
+        },
+        {
+          "id": "qz_svt_3e_02_03_q2",
+          "text": "Lors du croisement $Aa \\times Aa$, quel est le rapport phénotypique attendu ?",
+          "options": ["1 dominant : 1 récessif", "3 dominants : 1 récessif", "Tous dominants", "Tous récessifs"],
+          "correctIndex": 1,
+          "explanation": "Échiquier : $AA$ (1/4) + $Aa$ (2/4) + $aa$ (1/4). Phénotype : 3/4 à phénotype dominant ($AA$ et $Aa$) et 1/4 récessif ($aa$).",
+          "notionId": "not_svt_gene"
+        },
+        {
+          "id": "qz_svt_3e_02_03_q3",
+          "text": "Quelle est la différence entre génotype et phénotype ?",
+          "options": ["Le génotype est observable, le phénotype est génétique", "Le génotype est la constitution allélique ; le phénotype est le caractère observable", "Ils sont identiques", "Le génotype concerne l'environnement, le phénotype les gènes"],
+          "correctIndex": 1,
+          "explanation": "Le génotype est la composition en allèles (ex : $Aa$), inscrite dans l'ADN. Le phénotype est le caractère observable qui résulte de l'expression du génotype (ex : fleur violette).",
+          "notionId": "not_svt_phenotype"
+        },
+        {
+          "id": "qz_svt_3e_02_03_q4",
+          "text": "Pour que l'allèle récessif $a$ s'exprime dans le phénotype, l'individu doit être :",
+          "options": ["$Aa$", "$AA$", "$aa$", "$Aa$ ou $AA$"],
+          "correctIndex": 2,
+          "explanation": "Un allèle récessif ne s'exprime que lorsqu'il est présent en deux exemplaires ($aa$, homozygote récessif). S'il est présent avec l'allèle dominant ($Aa$), il est masqué.",
+          "notionId": "not_svt_allele"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_02_04",
+      "lessonId": "les_svt_3e_02_04",
+      "questions": [
+        {
+          "id": "qz_svt_3e_02_04_q1",
+          "text": "La drépanocytose est due à :",
+          "options": ["Un virus", "Une bactérie", "Une mutation du gène de l'hémoglobine", "Un manque de vitamines"],
+          "correctIndex": 2,
+          "explanation": "La drépanocytose est une maladie héréditaire causée par une mutation de l'allèle codant l'hémoglobine ($H^S$), entraînant des globules rouges en forme de faucille.",
+          "notionId": "not_svt_maladie_hereditaire"
+        },
+        {
+          "id": "qz_svt_3e_02_04_q2",
+          "text": "Un porteur sain de drépanocytose est de génotype :",
+          "options": ["$H^A H^A$", "$H^A H^S$", "$H^S H^S$", "$H^S Y$"],
+          "correctIndex": 1,
+          "explanation": "Un porteur sain ($H^A H^S$) a un allèle normal et un allèle muté. Il n'est pas malade (car $H^A$ domine) mais peut transmettre $H^S$ à ses enfants.",
+          "notionId": "not_svt_maladie_hereditaire"
+        },
+        {
+          "id": "qz_svt_3e_02_04_q3",
+          "text": "Qu'est-ce qu'une mutation génétique ?",
+          "options": ["Un changement de l'environnement", "Une modification permanente de la séquence d'ADN", "Une maladie contagieuse", "Un changement de phénotype sans changement de génotype"],
+          "correctIndex": 1,
+          "explanation": "Une mutation est une modification permanente de la séquence nucléotidique de l'ADN. Elle peut être spontanée ou provoquée par des agents mutagènes (UV, produits chimiques).",
+          "notionId": "not_svt_mutation"
+        },
+        {
+          "id": "qz_svt_3e_02_04_q4",
+          "text": "Pourquoi les maladies liées au chromosome X affectent-elles plus les hommes que les femmes ?",
+          "options": ["Les hommes ont un système immunitaire plus faible", "Les hommes n'ont qu'un seul chromosome X (XY), donc un seul exemplaire du gène", "Les femmes ont une meilleure alimentation", "Les maladies X ne se transmettent que par la mère"],
+          "correctIndex": 1,
+          "explanation": "Les hommes (XY) n'ont qu'un chromosome X. Si cet X porte un allèle pathologique récessif, il s'exprime car il n'y a pas d'allèle sain sur le chromosome Y pour le masquer.",
+          "notionId": "not_svt_maladie_hereditaire"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_02_05",
+      "lessonId": "les_svt_3e_02_05",
+      "questions": [
+        {
+          "id": "qz_svt_3e_02_05_q1",
+          "text": "Quelle hormone est principalement responsable des caractères sexuels secondaires masculins ?",
+          "options": ["Les oestrogènes", "La progestérone", "La testostérone", "L'insuline"],
+          "correctIndex": 2,
+          "explanation": "La testostérone, produite par les testicules, est l'hormone qui contrôle les caractères sexuels secondaires masculins (pilosité, mue de voix, masse musculaire) et la spermatogenèse.",
+          "notionId": "not_svt_hormone"
+        },
+        {
+          "id": "qz_svt_3e_02_05_q2",
+          "text": "Où a lieu la fécondation chez la femme ?",
+          "options": ["Dans l'utérus", "Dans le vagin", "Dans les trompes de Fallope", "Dans les ovaires"],
+          "correctIndex": 2,
+          "explanation": "La fécondation a lieu dans les trompes de Fallope (aussi appelées oviductes), où le spermatozoïde rencontre l'ovule libéré lors de l'ovulation.",
+          "notionId": "not_svt_puberte"
+        },
+        {
+          "id": "qz_svt_3e_02_05_q3",
+          "text": "Quand a lieu l'ovulation dans un cycle menstruel de 28 jours ?",
+          "options": ["Vers le 7ème jour", "Vers le 14ème jour", "Vers le 21ème jour", "Le 28ème jour"],
+          "correctIndex": 1,
+          "explanation": "Dans un cycle de 28 jours, l'ovulation a lieu vers le 14ème jour. C'est la période de fertilité maximale de la femme.",
+          "notionId": "not_svt_hormone"
+        },
+        {
+          "id": "qz_svt_3e_02_05_q4",
+          "text": "Où sont produits les spermatozoïdes ?",
+          "options": ["Dans la prostate", "Dans les épididymes", "Dans les testicules", "Dans les canaux déférents"],
+          "correctIndex": 2,
+          "explanation": "Les spermatozoïdes sont produits dans les testicules (spermatogenèse), sous l'influence de la testostérone et de l'hormone FSH.",
+          "notionId": "not_svt_puberte"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_03_01",
+      "lessonId": "les_svt_3e_03_01",
+      "questions": [
+        {
+          "id": "qz_svt_3e_03_01_q1",
+          "text": "Dans la chaîne alimentaire : Herbe → Antilope → Lion → Décomposeurs, quel est le niveau trophique du lion ?",
+          "options": ["Producteur primaire", "Consommateur primaire", "Consommateur secondaire", "Décomposeur"],
+          "correctIndex": 2,
+          "explanation": "Herbe = producteur (niveau 1), Antilope = consommateur primaire (niveau 2), Lion = consommateur secondaire (niveau 3). Le lion mange l'antilope (herbivore).",
+          "notionId": "not_svt_chaine_alimentaire"
+        },
+        {
+          "id": "qz_svt_3e_03_01_q2",
+          "text": "Qu'est-ce que la biocénose dans un écosystème ?",
+          "options": ["Le milieu physique (sol, eau, air)", "La communauté d'êtres vivants", "Les déchets organiques", "Le cycle de l'eau"],
+          "correctIndex": 1,
+          "explanation": "La biocénose est l'ensemble des êtres vivants (animaux, végétaux, champignons, bactéries) qui peuplent un écosystème. Le biotope est le milieu physique qui les accueille.",
+          "notionId": "not_svt_ecosysteme"
+        },
+        {
+          "id": "qz_svt_3e_03_01_q3",
+          "text": "Pourquoi les chaînes alimentaires comportent-elles rarement plus de 5 maillons ?",
+          "options": ["Parce qu'il n'existe pas plus de 5 types d'animaux", "Parce que l'énergie diminue (environ 90% perdue) à chaque niveau", "Parce que les animaux ne vivent pas assez longtemps", "Pour des raisons géographiques"],
+          "correctIndex": 1,
+          "explanation": "Seulement environ 10% de l'énergie d'un niveau est transférée au niveau suivant (90% est perdue en chaleur, mouvements, etc.). Au bout de 5-6 maillons, l'énergie est trop faible pour soutenir un prédateur.",
+          "notionId": "not_svt_chaine_alimentaire"
+        },
+        {
+          "id": "qz_svt_3e_03_01_q4",
+          "text": "Quel est le rôle des décomposeurs dans un écosystème ?",
+          "options": ["Produire de l'énergie par photosynthèse", "Manger les consommateurs tertiaires", "Recycler la matière organique morte en matière minérale", "Protéger les producteurs des herbivores"],
+          "correctIndex": 2,
+          "explanation": "Les décomposeurs (bactéries et champignons) décomposent la matière organique morte (cadavres, feuilles mortes) en matière minérale, qui retourne dans le sol et peut être réutilisée par les plantes.",
+          "notionId": "not_svt_ecosysteme"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_03_02",
+      "lessonId": "les_svt_3e_03_02",
+      "questions": [
+        {
+          "id": "qz_svt_3e_03_02_q1",
+          "text": "Quel processus naturel absorbe le CO₂ atmosphérique dans la biosphère ?",
+          "options": ["La respiration cellulaire", "La fermentation", "La photosynthèse", "La combustion"],
+          "correctIndex": 2,
+          "explanation": "La photosynthèse des végétaux absorbe le CO₂ atmosphérique pour synthétiser des glucides, stockant ainsi le carbone dans la biosphère.",
+          "notionId": "not_svt_cycle_carbone"
+        },
+        {
+          "id": "qz_svt_3e_03_02_q2",
+          "text": "L'effet de serre naturel est :",
+          "options": ["Un phénomène uniquement humain et néfaste", "Un phénomène naturel bénéfique qui maintient la Terre à une température habitable", "La cause directe des pluies acides", "Un phénomène qui n'existait pas avant l'industrialisation"],
+          "correctIndex": 1,
+          "explanation": "L'effet de serre naturel est indispensable à la vie : sans lui, la température moyenne de la Terre serait de -18°C au lieu de +15°C. C'est son intensification due aux activités humaines qui pose problème.",
+          "notionId": "not_svt_effet_de_serre"
+        },
+        {
+          "id": "qz_svt_3e_03_02_q3",
+          "text": "Lequel de ces processus libère du CO₂ dans l'atmosphère ?",
+          "options": ["La photosynthèse", "La dissolution du CO₂ dans les océans", "La combustion de combustibles fossiles", "La formation de pétrole"],
+          "correctIndex": 2,
+          "explanation": "La combustion des combustibles fossiles (pétrole, gaz, charbon) libère le carbone stocké depuis des millions d'années sous forme de CO₂, contribuant à l'intensification de l'effet de serre.",
+          "notionId": "not_svt_cycle_carbone"
+        },
+        {
+          "id": "qz_svt_3e_03_02_q4",
+          "text": "Pourquoi la forêt du bassin du Congo est-elle importante pour le climat mondial ?",
+          "options": ["Elle produit de l'oxygène uniquement pour l'Afrique", "Elle est le 2ème plus grand puits de carbone tropical, absorbant des milliards de tonnes de CO₂", "Elle régule uniquement les pluies locales", "Elle ne joue aucun rôle climatique global"],
+          "correctIndex": 1,
+          "explanation": "La forêt du bassin du Congo (Cameroun, RDC, Gabon...) est le 2ème plus grand massif forestier tropical mondial. Par la photosynthèse, elle absorbe des milliards de tonnes de CO₂, jouant un rôle crucial dans la régulation du climat planétaire.",
+          "notionId": "not_svt_cycle_carbone"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_03_03",
+      "lessonId": "les_svt_3e_03_03",
+      "questions": [
+        {
+          "id": "qz_svt_3e_03_03_q1",
+          "text": "Quelle est une conséquence directe de la déforestation ?",
+          "options": ["Augmentation de la biodiversité", "Diminution du CO₂ atmosphérique", "Érosion des sols et perte de biodiversité", "Amélioration de la qualité de l'eau"],
+          "correctIndex": 2,
+          "explanation": "La déforestation entraîne : perte de biodiversité (disparition d'habitats), érosion des sols (racines ne les maintiennent plus), perturbation des cycles de l'eau, et libération de CO₂ dans l'atmosphère.",
+          "notionId": "not_svt_deforestation"
+        },
+        {
+          "id": "qz_svt_3e_03_03_q2",
+          "text": "Les particules fines dans l'air (pollution atmosphérique) proviennent principalement de :",
+          "options": ["La photosynthèse des végétaux", "La décomposition naturelle", "La combustion (moteurs, industrie, feux)", "L'évaporation de l'eau"],
+          "correctIndex": 2,
+          "explanation": "Les particules fines (PM2.5, PM10) sont produites principalement par la combustion incomplète : moteurs à explosion, centrales thermiques, feux de biomasse, industries.",
+          "notionId": "not_svt_pollution"
+        },
+        {
+          "id": "qz_svt_3e_03_03_q3",
+          "text": "Laquelle de ces actions contribue à lutter contre la déforestation ?",
+          "options": ["Augmenter la consommation de bois", "Pratiquer l'agroforesterie et le reboisement", "Créer de nouvelles zones industrielles en forêt", "Importer plus de produits agricoles"],
+          "correctIndex": 1,
+          "explanation": "L'agroforesterie (combinaison d'arbres et de cultures) et le reboisement sont des pratiques durables qui préservent ou restaurent le couvert forestier.",
+          "notionId": "not_svt_deforestation"
+        },
+        {
+          "id": "qz_svt_3e_03_03_q4",
+          "text": "La pollution de l'eau par les pesticides agricoles peut affecter :",
+          "options": ["Uniquement les plantes", "Uniquement les poissons", "Toute la chaîne alimentaire aquatique", "Seulement les humains qui boivent l'eau"],
+          "correctIndex": 2,
+          "explanation": "Les pesticides peuvent se bioaccumuler dans la chaîne alimentaire : plantes → invertébrés → poissons → oiseaux → humains. Plus on monte dans la chaîne, plus la concentration de polluants est élevée (bioamplification).",
+          "notionId": "not_svt_pollution"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_03_04",
+      "lessonId": "les_svt_3e_03_04",
+      "questions": [
+        {
+          "id": "qz_svt_3e_03_04_q1",
+          "text": "La biodiversité comprend :",
+          "options": ["Uniquement le nombre d'espèces", "La diversité des espèces, génétique et des écosystèmes", "Uniquement la flore et la faune", "Uniquement les espèces menacées"],
+          "correctIndex": 1,
+          "explanation": "La biodiversité s'évalue à trois niveaux : (1) diversité des espèces, (2) diversité génétique au sein d'une espèce, et (3) diversité des écosystèmes.",
+          "notionId": "not_svt_biodiversite"
+        },
+        {
+          "id": "qz_svt_3e_03_04_q2",
+          "text": "Deux animaux appartiennent à la même espèce s'ils peuvent :",
+          "options": ["Se ressembler physiquement", "Vivre dans le même milieu", "Se reproduire et donner des descendants fertiles", "Avoir le même régime alimentaire"],
+          "correctIndex": 2,
+          "explanation": "Le critère définissant l'espèce est l'interfécondité : deux individus de la même espèce peuvent se reproduire et donner des descendants fertiles capables de se reproduire à leur tour.",
+          "notionId": "not_svt_espece"
+        },
+        {
+          "id": "qz_svt_3e_03_04_q3",
+          "text": "Pourquoi l'extinction d'une espèce est-elle un problème grave ?",
+          "options": ["Elle n'est un problème que si l'espèce est utile à l'humain", "Elle est irréversible et peut déséquilibrer tout l'écosystème", "Elle permet à d'autres espèces de se développer plus facilement", "Elle n'affecte que la biodiversité locale"],
+          "correctIndex": 1,
+          "explanation": "L'extinction est définitive et irréversible. Chaque espèce joue un rôle dans son écosystème. La disparition d'une espèce clé peut déséquilibrer toute la chaîne alimentaire et l'écosystème (effet cascade).",
+          "notionId": "not_svt_biodiversite"
+        },
+        {
+          "id": "qz_svt_3e_03_04_q4",
+          "text": "Le Cameroun est considéré comme un hotspot de biodiversité car :",
+          "options": ["Il a le plus grand nombre d'habitants d'Afrique", "Il possède une très grande richesse en espèces animales et végétales", "Il exporte beaucoup de ressources naturelles", "Il a mis en place beaucoup de lois environnementales"],
+          "correctIndex": 1,
+          "explanation": "Le Cameroun abrite plus de 9 000 espèces de plantes, 900 espèces d'oiseaux, et de nombreux primates rares. Le mont Cameroun et le bassin du Congo en font l'un des pays les plus riches en biodiversité d'Afrique.",
+          "notionId": "not_svt_espece"
+        }
+      ]
+    },
+    {
+      "id": "qz_svt_3e_03_05",
+      "lessonId": "les_svt_3e_03_05",
+      "questions": [
+        {
+          "id": "qz_svt_3e_03_05_q1",
+          "text": "Le développement durable repose sur :",
+          "options": ["L'économie uniquement", "L'environnement uniquement", "Trois piliers : économique, social et environnemental", "La technologie et l'innovation"],
+          "correctIndex": 2,
+          "explanation": "Le développement durable est défini par ses trois piliers interdépendants : économique (richesse), social (équité) et environnemental (préservation). Il ne peut être durable que si les trois sont satisfaits simultanément.",
+          "notionId": "not_svt_developpement_durable"
+        },
+        {
+          "id": "qz_svt_3e_03_05_q2",
+          "text": "Combien d'Objectifs de Développement Durable (ODD) l'ONU a-t-elle adoptés en 2015 ?",
+          "options": ["7", "10", "17", "25"],
+          "correctIndex": 2,
+          "explanation": "L'ONU a adopté 17 Objectifs de Développement Durable (ODD) en 2015, à atteindre avant 2030, couvrant la pauvreté, la santé, l'éducation, le climat, la biodiversité, etc.",
+          "notionId": "not_svt_developpement_durable"
+        },
+        {
+          "id": "qz_svt_3e_03_05_q3",
+          "text": "L'agroforesterie est un exemple de développement durable car :",
+          "options": ["Elle maximise la production agricole sans tenir compte de l'environnement", "Elle combine arbres et cultures, préservant les sols et la biodiversité tout en produisant des revenus", "Elle élimine tous les arbres pour créer plus de terres agricoles", "Elle est uniquement réservée aux pays développés"],
+          "correctIndex": 1,
+          "explanation": "L'agroforesterie associe des arbres et des cultures (ex. cacao sous ombrage au Cameroun). Elle préserve les sols, maintient la biodiversité, stocke le carbone et génère des revenus — un exemple parfait de développement durable.",
+          "notionId": "not_svt_developpement_durable"
+        },
+        {
+          "id": "qz_svt_3e_03_05_q4",
+          "text": "Que signifie « ne pas compromettre la capacité des générations futures » dans la définition du développement durable ?",
+          "options": ["Épuiser les ressources naturelles maintenant pour laisser de l'argent aux futures générations", "Utiliser les ressources naturelles de façon à ce qu'elles restent disponibles pour les générations à venir", "Ne rien changer à l'environnement actuel", "Interdire toute exploitation des ressources naturelles"],
+          "correctIndex": 1,
+          "explanation": "Cela signifie utiliser les ressources de manière raisonnée et renouvelable, de sorte que les générations futures trouvent des ressources naturelles en quantité et qualité suffisantes pour répondre à leurs propres besoins.",
+          "notionId": "not_svt_developpement_durable"
+        }
+      ]
+    }
+  ]
+}

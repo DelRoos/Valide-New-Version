@@ -4,22 +4,17 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../l10n/generated/app_localizations.dart';
-import '../../../dashboard/data/fake/dashboard_fake_data.dart';
 
 class CoursesRecommendationBanner extends StatelessWidget {
   const CoursesRecommendationBanner({
     super.key,
-    required this.languageCode,
     required this.l10n,
   });
 
-  final String languageCode;
   final AppLocalizations l10n;
 
   @override
   Widget build(BuildContext context) {
-    final title = kFakeRecommendation.title(languageCode);
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppRadius.xl),
       child: Material(
@@ -74,9 +69,9 @@ class CoursesRecommendationBanner extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: AppSpacing.s3.h),
-                      // Titre leçon
+                      // Titre
                       Text(
-                        title,
+                        l10n.coursesRecommendedBannerTitle,
                         style: AppTypography.bodyStrong.copyWith(
                           fontSize: AppFontSize.body,
                           color: Colors.white,

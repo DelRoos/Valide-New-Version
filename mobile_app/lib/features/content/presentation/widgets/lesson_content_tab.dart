@@ -117,21 +117,23 @@ class _LessonContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.s4,
-            AppSpacing.s4,
-            AppSpacing.s4,
-            AppSpacing.s2,
-          ),
-          child: _RecommendedCard(
-            lesson: lessons.first,
-            languageCode: languageCode,
-            onTap: () => context.push(
-              AppRoutes.lesson(subjectId, chapterId, lessons.first.lessonId),
-            ),
-          ),
-        ),
+        // TODO: réactiver quand la logique de progression est prête.
+        // if (doneCount == 0)
+        //   Padding(
+        //     padding: EdgeInsets.fromLTRB(
+        //       AppSpacing.s4,
+        //       AppSpacing.s4,
+        //       AppSpacing.s4,
+        //       AppSpacing.s2,
+        //     ),
+        //     child: _RecommendedCard(
+        //       lesson: lessons.first,
+        //       languageCode: languageCode,
+        //       onTap: () => context.push(
+        //         AppRoutes.lesson(subjectId, chapterId, lessons.first.lessonId),
+        //       ),
+        //     ),
+        //   ),
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.fromLTRB(
@@ -139,6 +141,9 @@ class _LessonContent extends StatelessWidget {
               AppSpacing.s2,
               AppSpacing.s4,
               AppSpacing.s4,
+            ).copyWith(
+              bottom: AppSpacing.s4 +
+                  MediaQuery.of(context).padding.bottom,
             ),
             itemCount: lessons.length + (studentCount > 0 ? 1 : 0),
             itemBuilder: (_, i) {
@@ -168,6 +173,7 @@ class _LessonContent extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _RecommendedCard extends StatelessWidget {
   const _RecommendedCard({
     required this.lesson,

@@ -59,6 +59,11 @@ dependencies:
   # KO de flutter_smooth_markdown en phase terrain Story 0.19).
   # Mermaid non supporte nativement -> fallback bloc code brut.
   gpt_markdown: ^1.1.7
+  # Dépendance directe déclarée explicitement pour usage dans pedagogical_content.dart
+  # (latexBuilder pour formules bloc → SingleChildScrollView horizontal, Story 2.4-fix).
+  # flutter_math_fork est aussi une transitive dep de gpt_markdown — la déclarer
+  # directement évite la fragilité si gpt_markdown change d'implémentation.
+  flutter_math_fork: ^0.7.3
 
   # Story 0.6 — Firebase Android + iOS + Firebase AI Logic (cf. ADR-003,
   # ADR-012). Tous les modules sont consommes via providers Riverpod
@@ -96,6 +101,16 @@ dependencies:
   # 2026-06-12 — detection connectivite reseau pour banner offline global.
   # Isole derriere lib/core/connectivity/connectivity_provider.dart.
   connectivity_plus: ^6.1.0
+
+  # Story 2.4 — ouverture liens externes (video YouTube depuis _VideoBlock).
+  # Utilise uniquement dans lib/core/widgets/pedagogical_content.dart (via part files).
+  url_launcher: ^6.3.0
+
+  # Story 2.4 — pré-chargement audio via http (Android MediaPlayer ne supporte pas
+  # les headers custom sur HTTPS → Wikimedia bloque). Le fichier est téléchargé en
+  # local puis lu depuis le disque. path_provider pour le répertoire temporaire.
+  http: ^1.4.0
+  path_provider: ^2.1.5
 
 dev_dependencies:
   flutter_test:

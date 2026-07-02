@@ -77,6 +77,41 @@ void main() {
         expect(lessons.first.order, 1);
         expect(lessons.last.order, 3);
       });
+
+      test('filtre par chapterId : ne retourne pas les leçons d\'autres chapitres',
+          () async {
+        await fakeFirestore.collection('lessons').add({
+          'chapterId': 'ch01',
+          'order': 1,
+          'title': {'fr': 'Leçon ch01', 'en': 'Lesson ch01'},
+          'content': {'fr': '', 'en': ''},
+        });
+        await fakeFirestore.collection('lessons').add({
+          'chapterId': 'ch02',
+          'order': 1,
+          'title': {'fr': 'Leçon ch02', 'en': 'Lesson ch02'},
+          'content': {'fr': '', 'en': ''},
+        });
+
+        final result = await repo.getLessons('ch01');
+
+        expect(result.isRight(), isTrue);
+        final lessons = result.getRight().toNullable()!;
+        expect(lessons.length, 1);
+        expect(lessons.first.chapterId, 'ch01');
+      });
+
+      test('retourne liste vide si aucune leçon pour chapterId', () async {
+        final result = await repo.getLessons('chapitre_inexistant');
+
+        expect(result.isRight(), isTrue);
+        expect(result.getRight().toNullable()!, isEmpty);
+      });
+
+      // Note : le mapping FirebaseException → ContentFailure.networkError suit
+      // le même code path que getChapters (même catch block). FakeFirebaseFirestore
+      // ne peut pas simuler FirebaseException — ce path est couvert par le test
+      // getChapters + la vérification du code de mapping dans content_failure.dart.
     });
 
     // ── getLessonById ─────────────────────────────────────

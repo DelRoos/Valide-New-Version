@@ -77,18 +77,17 @@ service cloud.firestore {
       // Update : proprietaire + immutabilite conditionnelle des champs
       // structurants (ADR-006 etendu E1bis).
       //
-      // Pattern : pour chaque champ, "si le resource a deja une valeur,
+      // Pattern : pour chaque champ immutable, "si le resource a deja une valeur,
       // alors la nouvelle valeur doit etre identique ; sinon permettre
       // d'ajouter le champ". Ca permet la migration des docs legacy
       // (Epic 1 stockait filiere/niveau/serie, E1bis ecrit
       // trackId/levelId/streamId — les docs migres ajoutent les nouveaux
       // champs sans casser).
+      // Immutables : subSystem, language, createdAt.
+      // Mutables depuis Story A.3 (Approche B) : trackId, levelId, streamId.
       allow update: if isOwner(uid)
         && (!('subSystem' in resource.data) || request.resource.data.subSystem == resource.data.subSystem)
         && (!('language' in resource.data) || request.resource.data.language == resource.data.language)
-        && (!('trackId' in resource.data) || request.resource.data.trackId == resource.data.trackId)
-        && (!('levelId' in resource.data) || request.resource.data.levelId == resource.data.levelId)
-        && (!('streamId' in resource.data) || request.resource.data.streamId == resource.data.streamId)
         && (!('createdAt' in resource.data) || request.resource.data.createdAt == resource.data.createdAt);
 
       // Delete : autorise pour le proprietaire (self-delete). Permet le
@@ -170,7 +169,7 @@ service cloud.firestore {
     }
 
     // -----------------------------------------------------------------
-    // chapters/{chapterId}, lessons/{lessonId}, notions/{notionId}
+    // chapters/{chapterId}, lessons/{lessonId}
     // Contenu pedagogique (Story 2.1, Epic 2)
     //
     // Lecture : tout user authentifie (y compris visiteur anonyme signInAnonymously).
@@ -180,6 +179,15 @@ service cloud.firestore {
     //
     // Ecriture : interdite cote client. Seul le script Python `seed_content.py`
     // (avec service-account) ou la Firebase Console admin peut ecrire.
+    //
+    // Schema v2 (Story 2.4) — sous-collections par lecon :
+    //   lessons/{lessonId}/content/main  — Markdown FR + EN
+    //   lessons/{lessonId}/notions/{notionId}  — fiches de revision
+    //   lessons/{lessonId}/quizzes/{quizId}    — quiz QCM
+    //
+    // Note : les matches de sous-collections sont OBLIGATOIRES en Firestore —
+    // un match sur le parent ne couvre pas les sous-collections (cf. PERMISSION_DENIED
+    // Story 2.4 — fix deploye story-2-4-fix).
     //
     // Indexes : (subjectId, order), (chapterId, order), (lessonId, order)
     // declares dans firestore.indexes.json (Story 2.1).
@@ -193,7 +201,22 @@ service cloud.firestore {
     match /lessons/{lessonId} {
       allow read: if request.auth != null;
       allow write: if false;
+
+      // Sous-collections contenu pedagogique (schema v2-subcollections)
+      match /content/{doc} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
+      match /notions/{notionId} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
+      match /quizzes/{quizId} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
     }
+    // Legacy : collection racine notions/ (schema v1 — conservee pour compatibilite)
     match /notions/{notionId} {
       allow read: if request.auth != null;
       allow write: if false;

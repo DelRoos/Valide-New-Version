@@ -165,6 +165,7 @@
   "dashboardTabSubjects": "Courses",
   "coursesPageTitle": "My Courses",
   "coursesStartLesson": "Start",
+  "coursesRecommendedBannerTitle": "Pick up where you left off",
   "dashboardTabActivities": "Exams",
   "dashboardTabProfile": "Profile",
 
@@ -431,6 +432,11 @@
   "profileEditButton": "Edit",
   "profileEditSheetTitle": "Edit my profile",
   "profileEditSuccess": "Profile updated.",
+  "profileEditSchoolTitle": "Change class",
+  "profileEditSchoolLevelLabel": "What's your class?",
+  "profileEditSchoolStreamLabel": "What's your specialty?",
+  "profileEditSchoolSubjectsLabel": "Your subjects",
+  "profileEditSchoolSaving": "Updating…",
   "profileEditNameLabel": "First name or nickname",
   "saveLabel": "Save",
   "profileSetupSheetTitle": "Complete your account",
@@ -443,6 +449,7 @@
     }
   },
   "profileMenuSchool": "My school",
+  "profileMenuClass": "My class",
   "profileMenuName": "My name",
   "profileMenuAddName": "Add my name",
   "profileMenuPhone": "My phone",

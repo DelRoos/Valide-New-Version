@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../app.dart';
+import '../../../../core/catalogue/providers.dart';
 import '../../../../core/firebase/providers.dart';
 import '../../../../core/logging/app_logger.dart';
 import '../../../../core/theme/tokens.dart';
@@ -23,6 +24,7 @@ import 'profile_header.dart';
 import 'profile_menu_section.dart';
 import 'profile_stats_row.dart';
 import 'school_edit_sheet.dart';
+import 'school_profile_edit_sheet.dart';
 
 class ProfileAuthenticatedBody extends ConsumerWidget {
   const ProfileAuthenticatedBody({
@@ -72,12 +74,32 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
     final schoolName = data?['schoolName'] as String?;
     final displayName = data?['displayName'] as String?;
     final phoneNumber = data?['phoneNumber'] as String?;
+    final subSystem = data?['subSystem'] as String? ?? '';
+    final trackId = data?['trackId'] as String? ?? '';
+    final levelId = data?['levelId'] as String? ?? '';
+    final streamId = data?['streamId'] as String? ?? '';
+    final pickedSubjectIds =
+        List<String>.from(data?['pickedSubjects'] as List? ?? []);
     final subjectsCount = (data?['pickedSubjects'] as List?)?.length ?? 0;
     final examsCount = (data?['examTargets'] as List?)?.length ?? 0;
     final currentLocale = ref.watch(localeProvider);
     final currentLanguageLabel = currentLocale.languageCode == 'fr'
         ? l10n.languageOptionFrench
         : l10n.languageOptionEnglish;
+
+    // Label "Seconde — C" calculé depuis le catalogue (même logique que ProfileHeader).
+    final classLabel = ref.watch(catalogueProvider).maybeWhen(
+      data: (cat) {
+        final lang = languageCode;
+        final lvl = cat.niveaux.where((n) => n.niveauId == levelId).firstOrNull;
+        final str = cat.series.where((s) => s.serieId == streamId).firstOrNull;
+        final lvlName = lvl?.name[lang] ?? lvl?.name['fr'];
+        final strName = str?.name[lang] ?? str?.name['fr'];
+        if (lvlName != null && strName != null) return '$lvlName — $strName';
+        return lvlName ?? strName;
+      },
+      orElse: () => null,
+    );
 
     return CustomScrollView(
       slivers: [
@@ -118,6 +140,24 @@ class ProfileAuthenticatedBody extends ConsumerWidget {
                           context,
                           schoolId: schoolId,
                           schoolName: schoolName,
+                        ),
+                      ),
+                    ),
+                    ProfileMenuItemData(
+                      icon: LucideIcons.graduationCap,
+                      label: l10n.profileMenuClass,
+                      subtitle: classLabel,
+                      color: const Color(0xFFF59E0B),
+                      onTap: () => CompleteProfileDialog.guardAnonymous(
+                        context,
+                        ref,
+                        action: () => SchoolProfileEditSheet.show(
+                          context,
+                          subSystem: subSystem,
+                          trackId: trackId,
+                          levelId: levelId,
+                          streamId: streamId,
+                          pickedSubjectIds: pickedSubjectIds,
                         ),
                       ),
                     ),

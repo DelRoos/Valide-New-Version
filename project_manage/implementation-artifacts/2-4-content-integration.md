@@ -1,7 +1,7 @@
 ---
 story: 2.4
 title: "Intégration Firestore — module contenu (chapitres + leçons)"
-status: review
+status: done
 baseline_commit: "44ba9ee8fdcb45d60744e87af4459bdc79731411"
 ---
 
@@ -340,3 +340,23 @@ Story 2.2 a livré les pages UI de navigation contenu (SubjectDetailPage, Chapte
 | 2026-06-23 | T9 : 15 tests unitaires ChapterModel + LessonModel + ContentFirestoreRepositoryImpl |
 | 2026-06-23 | T10–T11 : 13 tests widget/golden content_pages_test.dart (smoke + états async + goldens phone/tablet) |
 | 2026-06-23 | T12 : sprint-status mis à jour, COMPOSANTS-REUTILISABLES.md complété |
+
+---
+
+### Review Findings
+
+Code review du 2026-07-02 (3 agents : Blind Hunter, Edge Case Hunter, Acceptance Auditor).
+
+- [x] `Review/Patch` — `_localFilePath!` null dereference dans `_toggle()` : `_retry()` reset `_sourceReady → false` mais pas `_localFilePath → null`, race possible ([audio_block.dart:177](../../mobile_app/lib/core/widgets/pedagogical_content/audio_block.dart))
+- [x] `Review/Patch` — 4 StreamSubscriptions (`onPlayerStateChanged`, `onPositionChanged`, `onDurationChanged`, `onPlayerComplete`) non stockées ni annulées dans `dispose()` ([audio_block.dart:66-83](../../mobile_app/lib/core/widgets/pedagogical_content/audio_block.dart))
+- [x] `Review/Patch` — `_preload()` continue après `dispose()` : `_player.setSourceDeviceFile()` sur player libéré (exception swallowed, download gaspillé) ([audio_block.dart](../../mobile_app/lib/core/widgets/pedagogical_content/audio_block.dart))
+- [x] `Review/Patch` — Magic numbers non tokenisés : `4.w` (→ `AppSpacing.s1.w`), `40`×`40` play button (→ `_kPlayButtonSize`), `36` icône play vidéo (→ `AppIconSize.xl5`) ([audio_block.dart:316,339-340](../../mobile_app/lib/core/widgets/pedagogical_content/audio_block.dart), [image_components.dart](../../mobile_app/lib/core/widgets/pedagogical_content/image_components.dart))
+- [x] `Review/Patch` — `launchUrl` sans try/catch → `PlatformException` sur Android sans Chrome ou iOS sans SFSafari ([image_components.dart](../../mobile_app/lib/core/widgets/pedagogical_content/image_components.dart))
+- [x] `Review/Patch` — `_goTo(2)` absent de `initState` : sheet s'ouvre toujours step 0 alors que le commentaire l.14 promet l'ouverture directe sur matières si streamId existant ([school_profile_edit_sheet.dart:87-108](../../mobile_app/lib/features/dashboard/presentation/widgets/school_profile_edit_sheet.dart))
+- [x] `Review/Patch` — `ref.watch(profileDataProvider)` (StreamProvider Firestore) dans `chaptersProvider` FutureProvider : invalide tous les chapitres à chaque emit du profil ; remplacé par `ref.read` ([content/providers.dart:33](../../mobile_app/lib/features/content/providers.dart))
+- [x] `Review/Patch` — Failure case absent : ajout de 2 tests `getLessons` (filtre chapterId + liste vide) ; note sur la limite FakeFirebaseFirestore pour FirebaseException ([content_firestore_repository_impl_test.dart](../../mobile_app/test/features/content/data/repositories/content_firestore_repository_impl_test.dart))
+- [x] `Review/Defer` — SVG dans gallery sans httpHeaders : `SvgPicture.network` ne supporte pas ce paramètre, aucun SVG en gallery actuellement, risque théorique — deferred, pré-existant
+- [x] `Review/Defer` — TODO sans lien issue (`// TODO: réactiver quand la logique de progression est prête`) : feature future planifiée, pas un bug — deferred, pré-existant
+- [x] `Review/Defer` — `_RecommendedCard` dead code + `// ignore: unused_element` : gardé intentionnellement pour réactivation future — deferred, pré-existant
+- [x] `Review/Defer` — Extension audio fragile `split('.').last` : URLs contrôlées par les seeds, risque théorique — deferred, pré-existant
+- [x] `Review/Defer` — `MediaQuery.sizeOf` sans `LayoutBuilder` : pré-existant (Story 2.2), non introduit par cette PR — deferred, pré-existant

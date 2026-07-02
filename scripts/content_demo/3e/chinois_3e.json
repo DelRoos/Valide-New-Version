@@ -1,0 +1,921 @@
+{
+  "meta": {
+    "subjectId": "francophone_chinois_lv2",
+    "levelId": "francophone_3e",
+    "subject": { "fr": "Chinois LV2", "en": "Chinese LV2" },
+    "level": { "fr": "3ème", "en": "Year 9" },
+    "examTarget": "BEPC",
+    "totalChapters": 3,
+    "totalLessons": 15,
+    "totalNotions": 25,
+    "totalQuizzes": 15
+  },
+  "chapters": [
+    {
+      "id": "chinois_3e_ch01",
+      "order": 1,
+      "title": { "fr": "Phonétique, écriture et bases du mandarin", "en": "Phonetics, writing and Mandarin basics" },
+      "description": { "fr": "Maîtriser le pinyin, les tons, les caractères hanzi et le vocabulaire fondamental.", "en": "Master pinyin, tones, hanzi characters and fundamental vocabulary." }
+    },
+    {
+      "id": "chinois_3e_ch02",
+      "order": 2,
+      "title": { "fr": "Vie quotidienne et communication de base", "en": "Daily life and basic communication" },
+      "description": { "fr": "Exprimer la famille, l'alimentation, le temps, les transports et les achats.", "en": "Express family, food, time, transport and shopping in Mandarin." }
+    },
+    {
+      "id": "chinois_3e_ch03",
+      "order": 3,
+      "title": { "fr": "Culture et civilisation chinoises", "en": "Chinese culture and civilisation" },
+      "description": { "fr": "Découvrir les fêtes, la gastronomie, la géographie, les arts et la relation Chine-Afrique.", "en": "Discover festivals, gastronomy, geography, arts and the China-Africa relationship." }
+    }
+  ],
+  "lessons": [
+    {
+      "id": "chinois_3e_01_01",
+      "chapterId": "chinois_3e_ch01",
+      "order": 1,
+      "title": { "fr": "Le système pinyin et les tons", "en": "The pinyin system and tones" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_01_01.md",
+        "en": "lessons/en/les_chinois_3e_01_01.md"
+      }
+    },
+    {
+      "id": "chinois_3e_01_02",
+      "chapterId": "chinois_3e_ch01",
+      "order": 2,
+      "title": { "fr": "Les caractères chinois — hanzi et radicaux", "en": "Chinese characters — hanzi and radicals" },
+      "duration": 50,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_01_02.md",
+        "en": "lessons/en/les_chinois_3e_01_02.md"
+      }
+    },
+    {
+      "id": "chinois_3e_01_03",
+      "chapterId": "chinois_3e_ch01",
+      "order": 3,
+      "title": { "fr": "Salutations et présentations", "en": "Greetings and introductions" },
+      "duration": 40,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_01_03.md",
+        "en": "lessons/en/les_chinois_3e_01_03.md"
+      }
+    },
+    {
+      "id": "chinois_3e_01_04",
+      "chapterId": "chinois_3e_ch01",
+      "order": 4,
+      "title": { "fr": "Les chiffres et les mots-mesure", "en": "Numbers and measure words" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_01_04.md",
+        "en": "lessons/en/les_chinois_3e_01_04.md"
+      }
+    },
+    {
+      "id": "chinois_3e_01_05",
+      "chapterId": "chinois_3e_ch01",
+      "order": 5,
+      "title": { "fr": "Les couleurs, adjectifs et la négation", "en": "Colours, adjectives and negation" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_01_05.md",
+        "en": "lessons/en/les_chinois_3e_01_05.md"
+      }
+    },
+    {
+      "id": "chinois_3e_02_01",
+      "chapterId": "chinois_3e_ch02",
+      "order": 6,
+      "title": { "fr": "La famille", "en": "The family" },
+      "duration": 40,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_02_01.md",
+        "en": "lessons/en/les_chinois_3e_02_01.md"
+      }
+    },
+    {
+      "id": "chinois_3e_02_02",
+      "chapterId": "chinois_3e_ch02",
+      "order": 7,
+      "title": { "fr": "Les repas et la nourriture", "en": "Meals and food" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_02_02.md",
+        "en": "lessons/en/les_chinois_3e_02_02.md"
+      }
+    },
+    {
+      "id": "chinois_3e_02_03",
+      "chapterId": "chinois_3e_ch02",
+      "order": 8,
+      "title": { "fr": "Le temps et les dates", "en": "Time and dates" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_02_03.md",
+        "en": "lessons/en/les_chinois_3e_02_03.md"
+      }
+    },
+    {
+      "id": "chinois_3e_02_04",
+      "chapterId": "chinois_3e_ch02",
+      "order": 9,
+      "title": { "fr": "Les transports et les directions", "en": "Transport and directions" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_02_04.md",
+        "en": "lessons/en/les_chinois_3e_02_04.md"
+      }
+    },
+    {
+      "id": "chinois_3e_02_05",
+      "chapterId": "chinois_3e_ch02",
+      "order": 10,
+      "title": { "fr": "Le shopping et l'argent", "en": "Shopping and money" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_02_05.md",
+        "en": "lessons/en/les_chinois_3e_02_05.md"
+      }
+    },
+    {
+      "id": "chinois_3e_03_01",
+      "chapterId": "chinois_3e_ch03",
+      "order": 11,
+      "title": { "fr": "Les fêtes traditionnelles chinoises", "en": "Chinese traditional festivals" },
+      "duration": 50,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_03_01.md",
+        "en": "lessons/en/les_chinois_3e_03_01.md"
+      }
+    },
+    {
+      "id": "chinois_3e_03_02",
+      "chapterId": "chinois_3e_ch03",
+      "order": 12,
+      "title": { "fr": "La gastronomie chinoise", "en": "Chinese gastronomy" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_03_02.md",
+        "en": "lessons/en/les_chinois_3e_03_02.md"
+      }
+    },
+    {
+      "id": "chinois_3e_03_03",
+      "chapterId": "chinois_3e_ch03",
+      "order": 13,
+      "title": { "fr": "La géographie et les grandes villes de Chine", "en": "Geography and major cities of China" },
+      "duration": 45,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_03_03.md",
+        "en": "lessons/en/les_chinois_3e_03_03.md"
+      }
+    },
+    {
+      "id": "chinois_3e_03_04",
+      "chapterId": "chinois_3e_ch03",
+      "order": 14,
+      "title": { "fr": "Les arts et traditions chinoises", "en": "Chinese arts and traditions" },
+      "duration": 50,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_03_04.md",
+        "en": "lessons/en/les_chinois_3e_03_04.md"
+      }
+    },
+    {
+      "id": "chinois_3e_03_05",
+      "chapterId": "chinois_3e_ch03",
+      "order": 15,
+      "title": { "fr": "La Chine et l'Afrique — coopération Chine-Cameroun", "en": "China and Africa — China-Cameroon cooperation" },
+      "duration": 50,
+      "content": {
+        "fr": "lessons/fr/les_chinois_3e_03_05.md",
+        "en": "lessons/en/les_chinois_3e_03_05.md"
+      }
+    }
+  ],
+  "notions": [
+    {
+      "id": "chinois_3e_n01",
+      "lessonId": "chinois_3e_01_01",
+      "term": { "fr": "Pinyin", "en": "Pinyin" },
+      "definition": { "fr": "Système de transcription phonétique officiel du mandarin en alphabet latin, créé en 1958 et adopté par l'ONU en 1982.", "en": "Official phonetic transcription system for Mandarin using the Latin alphabet, created in 1958 and adopted by the UN in 1982." }
+    },
+    {
+      "id": "chinois_3e_n02",
+      "lessonId": "chinois_3e_01_01",
+      "term": { "fr": "Tons du mandarin", "en": "Mandarin tones" },
+      "definition": { "fr": "Le mandarin possède 4 tons + 1 ton neutre : 1er (haut plat ā), 2e (montant á), 3e (descendant-montant ǎ), 4e (descendant à), neutre (bref a).", "en": "Mandarin has 4 tones + 1 neutral tone: 1st (high flat ā), 2nd (rising á), 3rd (dipping ǎ), 4th (falling à), neutral (short a)." }
+    },
+    {
+      "id": "chinois_3e_n03",
+      "lessonId": "chinois_3e_01_02",
+      "term": { "fr": "Hanzi (汉字)", "en": "Hanzi (汉字)" },
+      "definition": { "fr": "Caractères chinois — système d'écriture logographique avec plus de 50 000 caractères répertoriés ; 2 000-3 000 suffisent pour la vie quotidienne.", "en": "Chinese characters — a logographic writing system with over 50,000 catalogued characters; 2,000-3,000 are enough for daily life." }
+    },
+    {
+      "id": "chinois_3e_n04",
+      "lessonId": "chinois_3e_01_02",
+      "term": { "fr": "Radical (部首 bùshǒu)", "en": "Radical (部首 bùshǒu)" },
+      "definition": { "fr": "Composant graphique qui classifie les caractères chinois dans les dictionnaires. Il y en a 214 dans le dictionnaire Kangxi (1716). Ex : 氵= eau, 木 = bois.", "en": "Graphic component that classifies Chinese characters in dictionaries. There are 214 in the Kangxi dictionary (1716). E.g.: 氵= water, 木 = wood." }
+    },
+    {
+      "id": "chinois_3e_n05",
+      "lessonId": "chinois_3e_01_03",
+      "term": { "fr": "Salutations formelles vs informelles", "en": "Formal vs informal greetings" },
+      "definition": { "fr": "你好 nǐ hǎo (bonjour, neutre) vs 您好 nín hǎo (bonjour formel, respectueux — envers les aînés ou supérieurs).", "en": "你好 nǐ hǎo (hello, neutral) vs 您好 nín hǎo (formal hello, respectful — to elders or superiors)." }
+    },
+    {
+      "id": "chinois_3e_n06",
+      "lessonId": "chinois_3e_01_04",
+      "term": { "fr": "Classificateur (量词 liàngcí)", "en": "Measure word (量词 liàngcí)" },
+      "definition": { "fr": "Mot-mesure obligatoire entre un nombre et un nom en chinois. Ex : 一本书 (un livre), 两个人 (deux personnes), 三张纸 (trois feuilles).", "en": "Obligatory measure word between a number and a noun in Chinese. E.g.: 一本书 (one book), 两个人 (two people), 三张纸 (three sheets)." }
+    },
+    {
+      "id": "chinois_3e_n07",
+      "lessonId": "chinois_3e_01_04",
+      "term": { "fr": "两 liǎng vs 二 èr", "en": "两 liǎng vs 二 èr" },
+      "definition": { "fr": "Les deux mots signifient '2'. 二 èr s'utilise pour compter (1, 2, 3...) et dans les nombres composés (12, 20). 两 liǎng s'utilise toujours devant un classificateur : 两个 (deux + classificateur général).", "en": "Both mean '2'. 二 èr is used for counting (1, 2, 3...) and in compound numbers (12, 20). 两 liǎng is always used before a measure word: 两个 (two + general classifier)." }
+    },
+    {
+      "id": "chinois_3e_n08",
+      "lessonId": "chinois_3e_01_05",
+      "term": { "fr": "Négation : 不 bù vs 没 méi", "en": "Negation: 不 bù vs 没 méi" },
+      "definition": { "fr": "不 bù nie les actions habituelles, les états et les intentions (futur/présent). 没 méi nie les actions accomplies (passé) et la possession. Ex : 我不吃 (je ne mange pas) vs 我没吃 (je n'ai pas mangé).", "en": "不 bù negates habitual actions, states and intentions (future/present). 没 méi negates completed actions (past) and possession. E.g.: 我不吃 (I don't eat) vs 我没吃 (I haven't eaten)." }
+    },
+    {
+      "id": "chinois_3e_n09",
+      "lessonId": "chinois_3e_02_01",
+      "term": { "fr": "Termes de parenté paternel vs maternel", "en": "Paternal vs maternal kinship terms" },
+      "definition": { "fr": "Le chinois distingue la lignée paternelle et maternelle : grand-père paternel = 爷爷 yéye, maternel = 外公 wàigōng. Grand-mère paternelle = 奶奶 nǎinai, maternelle = 外婆 wàipó.", "en": "Chinese distinguishes paternal and maternal lineage: paternal grandfather = 爷爷 yéye, maternal = 外公 wàigōng. Paternal grandmother = 奶奶 nǎinai, maternal = 外婆 wàipó." }
+    },
+    {
+      "id": "chinois_3e_n10",
+      "lessonId": "chinois_3e_02_02",
+      "term": { "fr": "买单 mǎidān", "en": "买单 mǎidān" },
+      "definition": { "fr": "Expression pour demander l'addition au restaurant (littéralement 'acheter l'addition'). Équivalent : 结账 jiézhàng. Usage : 服务员，买单！(Serveur, l'addition !)", "en": "Expression to ask for the bill at a restaurant (literally 'buy the bill'). Equivalent: 结账 jiézhàng. Usage: 服务员，买单！(Waiter, the bill!)" }
+    },
+    {
+      "id": "chinois_3e_n11",
+      "lessonId": "chinois_3e_02_03",
+      "term": { "fr": "Structure de l'heure en chinois", "en": "Time structure in Chinese" },
+      "definition": { "fr": "Heure + 点 diǎn + minutes : 三点 (3h), 三点半 (3h30), 三点一刻 (3h15), 差五分三点 (2h55 — il manque 5 min à 3h).", "en": "Hour + 点 diǎn + minutes: 三点 (3:00), 三点半 (3:30), 三点一刻 (3:15), 差五分三点 (2:55 — 5 min to 3)." }
+    },
+    {
+      "id": "chinois_3e_n12",
+      "lessonId": "chinois_3e_02_03",
+      "term": { "fr": "Ordre des dates en chinois", "en": "Date order in Chinese" },
+      "definition": { "fr": "En chinois, l'ordre est du plus grand au plus petit : Année + 年 + Mois + 月 + Jour + 号. Ex : 2025年6月30号 = 30 juin 2025. Inverse de l'ordre occidental (Jour/Mois/Année).", "en": "In Chinese, order goes from largest to smallest unit: Year + 年 + Month + 月 + Day + 号. E.g.: 2025年6月30号 = 30 June 2025. Opposite of Western order (Day/Month/Year)." }
+    },
+    {
+      "id": "chinois_3e_n13",
+      "lessonId": "chinois_3e_02_04",
+      "term": { "fr": "Verbes de transport : 坐/骑/开", "en": "Transport verbs: 坐/骑/开" },
+      "definition": { "fr": "坐 zuò = prendre (transports en commun, avion, bateau) ; 骑 qí = chevaucher/pédaler (vélo, moto, cheval) ; 开 kāi = conduire (voiture, train). Ex : 坐公共汽车 (prendre le bus), 骑自行车 (faire du vélo).", "en": "坐 zuò = take (public transport, plane, boat); 骑 qí = ride (bike, motorbike, horse); 开 kāi = drive (car, train). E.g.: 坐公共汽车 (take the bus), 骑自行车 (ride a bike)." }
+    },
+    {
+      "id": "chinois_3e_n14",
+      "lessonId": "chinois_3e_02_05",
+      "term": { "fr": "Renminbi (人民币 rénmínbì)", "en": "Renminbi (人民币 rénmínbì)" },
+      "definition": { "fr": "Monnaie officielle de la Chine (symbole ¥). Unité principale : 元 yuán (块 kuài à l'oral). Structure : 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn.", "en": "Official currency of China (symbol ¥). Main unit: 元 yuán (块 kuài spoken). Structure: 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn." }
+    },
+    {
+      "id": "chinois_3e_n15",
+      "lessonId": "chinois_3e_02_05",
+      "term": { "fr": "打折 dǎ zhé — système de réduction chinois", "en": "打折 dǎ zhé — Chinese discount system" },
+      "definition": { "fr": "En Chine, le chiffre après 打 représente le pourcentage À PAYER (pas le pourcentage déduit). 打八折 = payer 80% (réduction de 20%). 打五折 = payer 50% (moitié prix).", "en": "In China, the number after 打 represents the percentage TO PAY (not the percentage off). 打八折 = pay 80% (20% off). 打五折 = pay 50% (half price)." }
+    },
+    {
+      "id": "chinois_3e_n16",
+      "lessonId": "chinois_3e_03_01",
+      "term": { "fr": "Calendrier lunaire (农历 nónglì)", "en": "Lunar calendar (农历 nónglì)" },
+      "definition": { "fr": "Calendrier basé sur les cycles de la lune, fondement de toutes les fêtes traditionnelles chinoises. Coexiste avec le calendrier grégorien (阳历 yánglì) utilisé officiellement.", "en": "Calendar based on lunar cycles, the foundation of all traditional Chinese festivals. Coexists with the Gregorian calendar (阳历 yánglì) used officially." }
+    },
+    {
+      "id": "chinois_3e_n17",
+      "lessonId": "chinois_3e_03_01",
+      "term": { "fr": "Zodiaque chinois (十二生肖 shí'èr shēngxiào)", "en": "Chinese zodiac (十二生肖 shí'èr shēngxiào)" },
+      "definition": { "fr": "Cycle de 12 animaux associés aux années : rat, bœuf, tigre, lapin, dragon, serpent, cheval, chèvre, singe, coq, chien, cochon. 2025 = Serpent (蛇 shé), 2026 = Cheval (马 mǎ).", "en": "A 12-animal cycle associated with years: rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey, rooster, dog, pig. 2025 = Snake (蛇 shé), 2026 = Horse (马 mǎ)." }
+    },
+    {
+      "id": "chinois_3e_n18",
+      "lessonId": "chinois_3e_03_01",
+      "term": { "fr": "Fête du Printemps (春节 Chūnjié)", "en": "Spring Festival (春节 Chūnjié)" },
+      "definition": { "fr": "La fête la plus importante en Chine — Nouvel An lunaire. Célébrée entre fin janvier et mi-février. Traditions : nettoyage, décorations, dîner de réveillon (年夜饭), enveloppes rouges (红包), feux d'artifice.", "en": "The most important festival in China — the Lunar New Year. Celebrated between late January and mid-February. Traditions: cleaning, decorations, New Year's Eve dinner (年夜饭), red envelopes (红包), fireworks." }
+    },
+    {
+      "id": "chinois_3e_n19",
+      "lessonId": "chinois_3e_03_02",
+      "term": { "fr": "Huit grandes cuisines (八大菜系 bā dà càixì)", "en": "Eight great regional cuisines (八大菜系 bā dà càixì)" },
+      "definition": { "fr": "Les 8 traditions culinaires régionales majeures de Chine : cantonaise (粤), sichuanaise (川), pékinoise (京), shanghaïenne (沪), hunanaise (湘), fujianaise (闽), Anhui (徽), Shandong (鲁).", "en": "The 8 major regional culinary traditions of China: Cantonese (粤), Sichuanese (川), Pekinese (京), Shanghainese (沪), Hunanese (湘), Fujianese (闽), Anhui (徽), Shandong (鲁)." }
+    },
+    {
+      "id": "chinois_3e_n20",
+      "lessonId": "chinois_3e_03_02",
+      "term": { "fr": "Étiquette des baguettes (筷子 kuàizi)", "en": "Chopstick etiquette (筷子 kuàizi)" },
+      "definition": { "fr": "Règle fondamentale : ne jamais planter les baguettes verticalement dans le riz — rappelle les bâtons d'encens funéraires, très mauvais augure. Ne pas pointer vers quelqu'un. Poser sur le repose-baguettes entre les bouchées.", "en": "Fundamental rule: never stand chopsticks vertically in rice — it resembles funeral incense sticks, a very bad omen. Do not point them at someone. Rest them on the chopstick holder between bites." }
+    },
+    {
+      "id": "chinois_3e_n21",
+      "lessonId": "chinois_3e_03_03",
+      "term": { "fr": "Fleuve Jaune (黄河 Huáng Hé)", "en": "Yellow River (黄河 Huáng Hé)" },
+      "definition": { "fr": "Appelé 母亲河 Mǔqīn hé (fleuve mère), c'est le berceau de la civilisation chinoise. Long de 5 464 km. Les premières dynasties (Xia, Shang, Zhou) se sont développées sur ses rives.", "en": "Called 母亲河 Mǔqīn hé (mother river), it is the cradle of Chinese civilisation. 5,464 km long. The first dynasties (Xia, Shang, Zhou) developed on its banks." }
+    },
+    {
+      "id": "chinois_3e_n22",
+      "lessonId": "chinois_3e_03_04",
+      "term": { "fr": "Les Quatre Trésors du Lettré (文房四宝 wénfáng sìbǎo)", "en": "Four Treasures of the Study (文房四宝 wénfáng sìbǎo)" },
+      "definition": { "fr": "Les quatre instruments de la calligraphie et de l'écriture chinoise classique : le pinceau (笔 bǐ), l'encre (墨 mò), le papier (纸 zhǐ) et la pierre à encre (砚 yàn).", "en": "The four instruments of Chinese calligraphy and classical writing: the brush (笔 bǐ), the ink (墨 mò), the paper (纸 zhǐ) and the ink stone (砚 yàn)." }
+    },
+    {
+      "id": "chinois_3e_n23",
+      "lessonId": "chinois_3e_03_04",
+      "term": { "fr": "Opéra de Pékin (京剧 Jīngjù)", "en": "Peking Opera (京剧 Jīngjù)" },
+      "definition": { "fr": "Forme théâtrale totale (chant, acrobaties, combat, costumes) inscrite au patrimoine UNESCO depuis 2010. Code couleur du maquillage : rouge = loyauté, blanc = trahison, noir = honnêteté.", "en": "A total theatrical form (singing, acrobatics, combat, costumes) listed on UNESCO heritage since 2010. Face-paint colour code: red = loyalty, white = treachery, black = honesty." }
+    },
+    {
+      "id": "chinois_3e_n24",
+      "lessonId": "chinois_3e_03_05",
+      "term": { "fr": "FOCAC (Forum sur la coopération sino-africaine)", "en": "FOCAC (Forum on China-Africa Cooperation)" },
+      "definition": { "fr": "Cadre officiel des relations Chine-Afrique créé en 2000 à Beijing. Sommet tous les 3 ans. Depuis 2009, la Chine est le 1er partenaire commercial de l'Afrique avec ~282 milliards USD d'échanges en 2023.", "en": "Official framework for China-Africa relations created in 2000 in Beijing. Summit every 3 years. Since 2009, China is Africa's top trading partner with ~282 billion USD in trade in 2023." }
+    },
+    {
+      "id": "chinois_3e_n25",
+      "lessonId": "chinois_3e_03_05",
+      "term": { "fr": "HSK (汉语水平考试 Hànyǔ Shuǐpíng Kǎoshì)", "en": "HSK (汉语水平考试 Hànyǔ Shuǐpíng Kǎoshì)" },
+      "definition": { "fr": "Examen officiel de compétence en mandarin (6 niveaux). HSK 1 = 150 mots (débutant), HSK 3 = 600 mots (communication quotidienne), HSK 6 = 5 000+ mots (universitaire). Organisé en Chine et dans les Instituts Confucius.", "en": "Official Mandarin proficiency exam (6 levels). HSK 1 = 150 words (beginner), HSK 3 = 600 words (daily communication), HSK 6 = 5,000+ words (university level). Administered in China and at Confucius Institutes." }
+    }
+  ],
+  "quizzes": [
+    {
+      "id": "chinois_3e_q01",
+      "lessonId": "chinois_3e_01_01",
+      "questions": [
+        {
+          "id": "chinois_3e_q01_1",
+          "question": { "fr": "Quel signe diacritique représente le 2e ton en pinyin ?", "en": "Which diacritic mark represents the 2nd tone in pinyin?" },
+          "options": {
+            "fr": ["Un accent aigu montant (á)", "Un accent grave descendant (à)", "Un accent circonflexe (â)", "Pas de signe (a)"],
+            "en": ["A rising acute accent (á)", "A falling grave accent (à)", "A circumflex accent (â)", "No mark (a)"]
+          },
+          "correctIndex": 0,
+          "explanation": { "fr": "Le 2e ton est montant, représenté par un accent aigu : á. Le 1er ton est plat (ā), le 3e descendant-montant (ǎ), le 4e descendant (à).", "en": "The 2nd tone is rising, shown by an acute accent: á. The 1st tone is flat (ā), 3rd dipping (ǎ), 4th falling (à)." }
+        },
+        {
+          "id": "chinois_3e_q01_2",
+          "question": { "fr": "Combien de tons le mandarin standard possède-t-il au total ?", "en": "How many tones does standard Mandarin have in total?" },
+          "options": {
+            "fr": ["4 tons", "5 tons (4 + ton neutre)", "6 tons", "3 tons"],
+            "en": ["4 tones", "5 tones (4 + neutral tone)", "6 tones", "3 tones"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "Le mandarin a 4 tons principaux + 1 ton neutre (bref, non accentué). Au total : 5.", "en": "Mandarin has 4 main tones + 1 neutral tone (short, unstressed). Total: 5." }
+        },
+        {
+          "id": "chinois_3e_q01_3",
+          "question": { "fr": "Quel ton prend 不 bù lorsqu'il précède un mot au 4e ton ?", "en": "Which tone does 不 bù take when it precedes a 4th-tone word?" },
+          "options": {
+            "fr": ["Il reste au 4e ton (bù)", "Il passe au 2e ton (bú)", "Il passe au 1er ton (bū)", "Il devient ton neutre (bu)"],
+            "en": ["It stays 4th tone (bù)", "It shifts to 2nd tone (bú)", "It shifts to 1st tone (bū)", "It becomes neutral tone (bu)"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "Règle de changement de ton : 不 bù (4e ton) devient bú (2e ton) devant un autre 4e ton. Ex : 不是 bú shì (n'est pas).", "en": "Tone sandhi rule: 不 bù (4th tone) becomes bú (2nd tone) before another 4th tone. E.g.: 不是 bú shì (is not)." }
+        },
+        {
+          "id": "chinois_3e_q01_4",
+          "question": { "fr": "Que sont les initiales j, q, x en pinyin ?", "en": "What are the initials j, q, x in pinyin?" },
+          "options": {
+            "fr": ["Des consonnes rétroflexes (langue relevée)", "Des consonnes palatales (prononcées devant -i et -ü)", "Des voyelles nasales", "Des tons alternatifs"],
+            "en": ["Retroflex consonants (tongue curled back)", "Palatal consonants (pronounced before -i and -ü)", "Nasal vowels", "Alternative tones"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "j, q, x sont des consonnes palatales qui ne s'associent qu'aux finales -i et -ü. Ils n'existent pas en français et nécessitent un placement particulier de la langue.", "en": "j, q, x are palatal consonants that only combine with finals -i and -ü. They do not exist in French/English and require a specific tongue placement." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q02",
+      "lessonId": "chinois_3e_01_02",
+      "questions": [
+        {
+          "id": "chinois_3e_q02_1",
+          "question": { "fr": "Combien y a-t-il de traits de base dans le système d'écriture chinoise ?", "en": "How many basic strokes are there in the Chinese writing system?" },
+          "options": { "fr": ["4", "6", "8", "12"], "en": ["4", "6", "8", "12"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "Il y a 8 traits de base : 横 (horizontal), 竖 (vertical), 撇 (gauche descendant), 捺 (droite descendant), 折 (angle), 点 (point), 钩 (crochet), 提 (relevé).", "en": "There are 8 basic strokes: 横 (horizontal), 竖 (vertical), 撇 (left-falling), 捺 (right-falling), 折 (turning), 点 (dot), 钩 (hook), 提 (rising)." }
+        },
+        {
+          "id": "chinois_3e_q02_2",
+          "question": { "fr": "Quel radical signifie 'eau' et apparaît à gauche d'un caractère ?", "en": "Which radical means 'water' and appears on the left side of a character?" },
+          "options": { "fr": ["木 mù", "氵(trois points d'eau)", "口 kǒu", "火 huǒ"], "en": ["木 mù", "氵(three water dots)", "口 kǒu", "火 huǒ"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "氵(trois points d'eau) est la forme réduite de 水 (eau) utilisée comme radical à gauche. On le retrouve dans 河 (rivière), 海 (mer), 洗 (laver).", "en": "氵(three water dots) is the reduced form of 水 (water) used as a left-side radical. Found in 河 (river), 海 (sea), 洗 (wash)." }
+        },
+        {
+          "id": "chinois_3e_q02_3",
+          "question": { "fr": "Quelle est la première règle de l'ordre des traits ?", "en": "What is the first rule of stroke order?" },
+          "options": {
+            "fr": ["De bas en haut", "De droite à gauche", "De gauche à droite", "Du centre vers l'extérieur"],
+            "en": ["Bottom to top", "Right to left", "Left to right", "Centre outward"]
+          },
+          "correctIndex": 2,
+          "explanation": { "fr": "La première règle est : de gauche à droite (左→右). Les autres règles sont : de haut en bas, horizontal avant vertical, extérieur avant intérieur.", "en": "The first rule is: left to right (左→右). Other rules include: top to bottom, horizontal before vertical, outside before inside." }
+        },
+        {
+          "id": "chinois_3e_q02_4",
+          "question": { "fr": "Combien y a-t-il de radicaux dans le dictionnaire Kangxi (1716) ?", "en": "How many radicals are there in the Kangxi dictionary (1716)?" },
+          "options": { "fr": ["108", "214", "365", "512"], "en": ["108", "214", "365", "512"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "Le dictionnaire Kangxi (1716) classe les caractères selon 214 radicaux. Ce système est encore utilisé dans la plupart des dictionnaires chinois modernes.", "en": "The Kangxi dictionary (1716) classifies characters under 214 radicals. This system is still used in most modern Chinese dictionaries." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q03",
+      "lessonId": "chinois_3e_01_03",
+      "questions": [
+        {
+          "id": "chinois_3e_q03_1",
+          "question": { "fr": "Comment dit-on 'Au revoir' en mandarin ?", "en": "How do you say 'Goodbye' in Mandarin?" },
+          "options": { "fr": ["你好 nǐ hǎo", "再见 zàijiàn", "谢谢 xièxiè", "对不起 duìbuqǐ"], "en": ["你好 nǐ hǎo", "再见 zàijiàn", "谢谢 xièxiè", "对不起 duìbuqǐ"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "再见 zàijiàn signifie 'Au revoir' (littéralement 'se revoir à nouveau'). 你好 = bonjour, 谢谢 = merci, 对不起 = pardon/désolé.", "en": "再见 zàijiàn means 'Goodbye' (literally 'see again'). 你好 = hello, 谢谢 = thank you, 对不起 = sorry." }
+        },
+        {
+          "id": "chinois_3e_q03_2",
+          "question": { "fr": "Quelle formule utilise-t-on pour s'excuser ou demander pardon en chinois ?", "en": "What expression is used to apologise in Chinese?" },
+          "options": { "fr": ["不客气 bú kèqi", "请 qǐng", "对不起 duìbuqǐ", "没关系 méi guānxi"], "en": ["不客气 bú kèqi", "请 qǐng", "对不起 duìbuqǐ", "没关系 méi guānxi"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "对不起 duìbuqǐ = pardon / désolé. La réponse est souvent 没关系 méi guānxi (ce n'est pas grave). 不客气 = de rien, 请 = s'il vous plaît.", "en": "对不起 duìbuqǐ = sorry / excuse me. The reply is often 没关系 méi guānxi (no problem). 不客气 = you're welcome, 请 = please." }
+        },
+        {
+          "id": "chinois_3e_q03_3",
+          "question": { "fr": "Quelle phrase utilise-t-on pour dire 'Je m'appelle...' en chinois ?", "en": "Which phrase means 'My name is...' in Chinese?" },
+          "options": { "fr": ["我是... wǒ shì", "我叫... wǒ jiào", "我来自... wǒ láizì", "我有... wǒ yǒu"], "en": ["我是... wǒ shì", "我叫... wǒ jiào", "我来自... wǒ láizì", "我有... wǒ yǒu"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "我叫... wǒ jiào... = Je m'appelle... (pour le prénom). 我是... = Je suis... (pour la nationalité ou le rôle). 我来自... = Je viens de...", "en": "我叫... wǒ jiào... = My name is... (for given name). 我是... = I am... (for nationality or role). 我来自... = I come from..." }
+        },
+        {
+          "id": "chinois_3e_q03_4",
+          "question": { "fr": "Quelle est la différence entre 你好 nǐ hǎo et 您好 nín hǎo ?", "en": "What is the difference between 你好 nǐ hǎo and 您好 nín hǎo?" },
+          "options": {
+            "fr": ["Aucune différence, ce sont des synonymes", "您好 est plus formel/respectueux, utilisé avec les aînés et supérieurs", "你好 est réservé au matin, 您好 au soir", "您好 s'utilise entre amis uniquement"],
+            "en": ["No difference, they are synonyms", "您好 is more formal/respectful, used with elders and superiors", "你好 is used in the morning, 您好 in the evening", "您好 is used only between friends"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "您 nín est la forme polie/respectueuse de 你 nǐ (tu/vous). 您好 s'utilise envers les aînés, supérieurs ou inconnus dans un contexte formel. 你好 est neutre et courant.", "en": "您 nín is the polite/respectful form of 你 nǐ (you). 您好 is used with elders, superiors or strangers in formal contexts. 你好 is neutral and common." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q04",
+      "lessonId": "chinois_3e_01_04",
+      "questions": [
+        {
+          "id": "chinois_3e_q04_1",
+          "question": { "fr": "Quelle forme du chiffre 2 utilise-t-on obligatoirement devant un classificateur ?", "en": "Which form of the number 2 must be used before a measure word?" },
+          "options": { "fr": ["二 èr", "两 liǎng", "双 shuāng", "对 duì"], "en": ["二 èr", "两 liǎng", "双 shuāng", "对 duì"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "两 liǎng est obligatoire devant les classificateurs : 两个人 (deux personnes), 两本书 (deux livres). 二 èr s'utilise dans les nombres composés (十二, 二十) et pour compter seul.", "en": "两 liǎng is mandatory before measure words: 两个人 (two people), 两本书 (two books). 二 èr is used in compound numbers (十二, 二十) and for counting alone." }
+        },
+        {
+          "id": "chinois_3e_q04_2",
+          "question": { "fr": "Quel classificateur utilise-t-on pour les livres et cahiers ?", "en": "Which measure word is used for books and notebooks?" },
+          "options": { "fr": ["个 gè", "张 zhāng", "本 běn", "条 tiáo"], "en": ["个 gè", "张 zhāng", "本 běn", "条 tiáo"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "本 běn est le classificateur pour les objets reliés (livres, cahiers, albums) : 一本书 (un livre), 两本作业本 (deux cahiers). 张 = feuilles, 条 = objets longs, 个 = général.", "en": "本 běn is the measure word for bound objects (books, notebooks, albums): 一本书 (one book), 两本作业本 (two notebooks). 张 = sheets, 条 = long objects, 个 = general." }
+        },
+        {
+          "id": "chinois_3e_q04_3",
+          "question": { "fr": "Quelle est la valeur de 万 wàn en chiffres ?", "en": "What is the numerical value of 万 wàn?" },
+          "options": { "fr": ["100", "1 000", "10 000", "100 000"], "en": ["100", "1,000", "10,000", "100,000"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "万 wàn = 10 000 (dix mille). Le système chinois groupe par 万 (myriades) et non par milliers. Ex : 50 000 = 五万 wǔ wàn.", "en": "万 wàn = 10,000 (ten thousand). The Chinese system groups by 万 (myriads) not thousands. E.g.: 50,000 = 五万 wǔ wàn." }
+        },
+        {
+          "id": "chinois_3e_q04_4",
+          "question": { "fr": "Quel chiffre est considéré comme porte-malheur en Chine car il ressemble phonétiquement à 死 sǐ (mourir) ?", "en": "Which number is considered unlucky in China because it sounds like 死 sǐ (to die)?" },
+          "options": { "fr": ["6", "4", "7", "9"], "en": ["6", "4", "7", "9"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "4 (四 sì) est mal vu car il ressemble à 死 sǐ (mort). On évite les numéros d'appartement, de chambre ou de téléphone contenant 4. À l'inverse, 8 (八 bā) ressemble à 发 fā (prospérer) et est chanceux.", "en": "4 (四 sì) is unlucky because it sounds like 死 sǐ (death). Apartment, room or phone numbers with 4 are avoided. Conversely, 8 (八 bā) sounds like 发 fā (to prosper) and is lucky." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q05",
+      "lessonId": "chinois_3e_01_05",
+      "questions": [
+        {
+          "id": "chinois_3e_q05_1",
+          "question": { "fr": "Quelle couleur est traditionnellement associée au deuil et aux funérailles en Chine ?", "en": "Which colour is traditionally associated with mourning and funerals in China?" },
+          "options": { "fr": ["Noir 黑色", "Rouge 红色", "Blanc 白色", "Jaune 黄色"], "en": ["Black 黑色", "Red 红色", "White 白色", "Yellow 黄色"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "En Chine, le blanc (白色 báisè) est la couleur du deuil (l'inverse de la tradition occidentale où c'est le noir). Le rouge est la couleur de la chance et de la joie.", "en": "In China, white (白色 báisè) is the colour of mourning (opposite of Western tradition where black is used). Red is the colour of luck and joy." }
+        },
+        {
+          "id": "chinois_3e_q05_2",
+          "question": { "fr": "Quelle particule de négation utilise-t-on pour nier une action passée ou la possession ?", "en": "Which negation particle is used to negate a past action or possession?" },
+          "options": { "fr": ["不 bù", "没 méi", "非 fēi", "无 wú"], "en": ["不 bù", "没 méi", "非 fēi", "无 wú"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "没 méi (ou 没有 méiyǒu) nie les actions accomplies et la possession : 我没吃 (je n'ai pas mangé), 我没有钱 (je n'ai pas d'argent). 不 bù nie les habitudes et intentions.", "en": "没 méi (or 没有 méiyǒu) negates completed actions and possession: 我没吃 (I haven't eaten), 我没有钱 (I have no money). 不 bù negates habits and intentions." }
+        },
+        {
+          "id": "chinois_3e_q05_3",
+          "question": { "fr": "Comment dit-on 'Il n'est pas grand' en chinois ?", "en": "How do you say 'He is not tall' in Chinese?" },
+          "options": { "fr": ["他没高 tā méi gāo", "他不高 tā bù gāo", "他无高 tā wú gāo", "他非高 tā fēi gāo"], "en": ["他没高 tā méi gāo", "他不高 tā bù gāo", "他无高 tā wú gāo", "他非高 tā fēi gāo"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "Pour nier un état ou une qualité (adjectif), on utilise 不 bù : 他不高 (il n'est pas grand). 没 serait incorrect ici car 高 est un état permanent, pas une action accomplie.", "en": "To negate a state or quality (adjective), use 不 bù: 他不高 (he is not tall). 没 would be incorrect here because 高 is a permanent state, not a completed action." }
+        },
+        {
+          "id": "chinois_3e_q05_4",
+          "question": { "fr": "Quelle particule ajoute-t-on entre un adjectif attributif et le nom qu'il qualifie ?", "en": "Which particle is added between an attributive adjective and the noun it modifies?" },
+          "options": { "fr": ["了 le", "吗 ma", "的 de", "呢 ne"], "en": ["了 le", "吗 ma", "的 de", "呢 ne"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "的 de est la particule d'attribution : 红色的苹果 (une pomme rouge), 漂亮的女孩 (une belle fille). Sans 的, l'adjectif fonctionne comme prédicat : 苹果很红 (la pomme est rouge).", "en": "的 de is the attributive particle: 红色的苹果 (a red apple), 漂亮的女孩 (a beautiful girl). Without 的, the adjective functions as a predicate: 苹果很红 (the apple is red)." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q06",
+      "lessonId": "chinois_3e_02_01",
+      "questions": [
+        {
+          "id": "chinois_3e_q06_1",
+          "question": { "fr": "Comment appelle-t-on le grand-père du côté maternel en chinois ?", "en": "What is the word for maternal grandfather in Chinese?" },
+          "options": { "fr": ["爷爷 yéye", "外公 wàigōng", "公公 gōnggong", "姥爷 lǎoye"], "en": ["爷爷 yéye", "外公 wàigōng", "公公 gōnggong", "姥爷 lǎoye"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "外公 wàigōng = grand-père maternel (外 wài signifie 'extérieur', côté de la mère). 爷爷 yéye = grand-père paternel. Le préfixe 外- marque la famille maternelle.", "en": "外公 wàigōng = maternal grandfather (外 wài means 'outside', the mother's side). 爷爷 yéye = paternal grandfather. The prefix 外- marks the maternal family." }
+        },
+        {
+          "id": "chinois_3e_q06_2",
+          "question": { "fr": "Quelle particule exprime la possession en chinois ?", "en": "Which particle expresses possession in Chinese?" },
+          "options": { "fr": ["是 shì", "有 yǒu", "的 de", "在 zài"], "en": ["是 shì", "有 yǒu", "的 de", "在 zài"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "的 de est la particule de possession : 我的书 (mon livre), 他的家 (sa maison), 我们的老师 (notre professeur). Structure : possesseur + 的 + possédé.", "en": "的 de is the possession particle: 我的书 (my book), 他的家 (his/her home), 我们的老师 (our teacher). Structure: possessor + 的 + possessed." }
+        },
+        {
+          "id": "chinois_3e_q06_3",
+          "question": { "fr": "Quel classificateur utilise-t-on pour compter les membres d'une famille ?", "en": "Which measure word is used to count family members?" },
+          "options": { "fr": ["个 gè", "口 kǒu", "位 wèi", "人 rén"], "en": ["个 gè", "口 kǒu", "位 wèi", "人 rén"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "口 kǒu est le classificateur traditionnel pour les membres d'une famille : 我家有四口人 (ma famille compte 4 personnes). 位 wèi est plus formel/respectueux.", "en": "口 kǒu is the traditional measure word for family members: 我家有四口人 (my family has 4 people). 位 wèi is more formal/respectful." }
+        },
+        {
+          "id": "chinois_3e_q06_4",
+          "question": { "fr": "Comment dit-on 'frère aîné' en mandarin ?", "en": "How do you say 'older brother' in Mandarin?" },
+          "options": { "fr": ["弟弟 dìdi", "哥哥 gēge", "兄弟 xiōngdì", "兄 xiōng"], "en": ["弟弟 dìdi", "哥哥 gēge", "兄弟 xiōngdì", "兄 xiōng"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "哥哥 gēge = frère aîné. 弟弟 dìdi = frère cadet. Le chinois distingue toujours l'aîné du cadet pour les frères et sœurs : 姐姐 jiějie (sœur aînée), 妹妹 mèimei (sœur cadette).", "en": "哥哥 gēge = older brother. 弟弟 dìdi = younger brother. Chinese always distinguishes older from younger for siblings: 姐姐 jiějie (older sister), 妹妹 mèimei (younger sister)." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q07",
+      "lessonId": "chinois_3e_02_02",
+      "questions": [
+        {
+          "id": "chinois_3e_q07_1",
+          "question": { "fr": "Comment dit-on qu'un plat est délicieux en chinois ?", "en": "How do you say a dish is delicious in Chinese?" },
+          "options": { "fr": ["很辣 hěn là", "好吃 hǎochī", "不甜 bù tián", "太苦 tài kǔ"], "en": ["很辣 hěn là", "好吃 hǎochī", "不甜 bù tián", "太苦 tài kǔ"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "好吃 hǎochī = délicieux (littéralement 'bon à manger'). Pour les boissons : 好喝 hǎohē (bon à boire). Contraire : 难吃 nán chī (mauvais, difficile à manger).", "en": "好吃 hǎochī = delicious (literally 'good to eat'). For drinks: 好喝 hǎohē (good to drink). Opposite: 难吃 nán chī (bad, difficult to eat)." }
+        },
+        {
+          "id": "chinois_3e_q07_2",
+          "question": { "fr": "Que signifie 辣 là ?", "en": "What does 辣 là mean?" },
+          "options": { "fr": ["Sucré", "Salé", "Épicé / pimenté", "Acide"], "en": ["Sweet", "Salty", "Spicy / hot", "Sour"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "辣 là = épicé, pimenté. Les 5 goûts de base en cuisine chinoise : 甜 (sucré), 酸 (acide), 苦 (amer), 辣 (épicé), 咸 (salé).", "en": "辣 là = spicy, hot (chilli). The 5 basic tastes in Chinese cuisine: 甜 (sweet), 酸 (sour), 苦 (bitter), 辣 (spicy), 咸 (salty)." }
+        },
+        {
+          "id": "chinois_3e_q07_3",
+          "question": { "fr": "Comment demande-t-on l'addition au restaurant en Chine ?", "en": "How do you ask for the bill at a restaurant in China?" },
+          "options": { "fr": ["我吃完了！Wǒ chī wán le!", "买单！Mǎidān!", "谢谢！Xièxie!", "再来一碗！Zài lái yī wǎn!"], "en": ["我吃完了！Wǒ chī wán le!", "买单！Mǎidān!", "谢谢！Xièxie!", "再来一碗！Zài lái yī wǎn!"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "买单！Mǎidān! = L'addition ! (littéralement 'acheter l'addition'). Équivalent : 结账！Jiézhàng! On dit d'abord 服务员！(serveur !) pour attirer l'attention.", "en": "买单！Mǎidān! = The bill! (literally 'buy the bill'). Equivalent: 结账！Jiézhàng! You first say 服务员！(waiter!) to get attention." }
+        },
+        {
+          "id": "chinois_3e_q07_4",
+          "question": { "fr": "Quel est le repas du matin en chinois ?", "en": "What is the word for breakfast in Chinese?" },
+          "options": { "fr": ["午饭 wǔfàn", "晚饭 wǎnfàn", "早饭 zǎofàn", "夜宵 yèxiāo"], "en": ["午饭 wǔfàn", "晚饭 wǎnfàn", "早饭 zǎofàn", "夜宵 yèxiāo"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "早饭 zǎofàn = petit-déjeuner (早 zǎo = tôt/matin). 午饭 wǔfàn = déjeuner, 晚饭 wǎnfàn = dîner. 早餐 zǎocān est un synonyme plus formel.", "en": "早饭 zǎofàn = breakfast (早 zǎo = early/morning). 午饭 wǔfàn = lunch, 晚饭 wǎnfàn = dinner. 早餐 zǎocān is a more formal synonym." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q08",
+      "lessonId": "chinois_3e_02_03",
+      "questions": [
+        {
+          "id": "chinois_3e_q08_1",
+          "question": { "fr": "Comment dit-on '3h30' en chinois ?", "en": "How do you say '3:30' in Chinese?" },
+          "options": { "fr": ["三点三十 sān diǎn sānshí", "三点半 sān diǎn bàn", "差三十分四点 chā sānshí fēn sì diǎn", "三时半 sān shí bàn"], "en": ["三点三十 sān diǎn sānshí", "三点半 sān diǎn bàn", "差三十分四点 chā sānshí fēn sì diǎn", "三时半 sān shí bàn"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "三点半 sān diǎn bàn = 3h30 (半 bàn = moitié, la demie). On peut aussi dire 三点三十分 mais 三点半 est plus courant. 差 chā signifie 'il manque'.", "en": "三点半 sān diǎn bàn = 3:30 (半 bàn = half). You can also say 三点三十分 but 三点半 is more common. 差 chā means 'minus/lacking'." }
+        },
+        {
+          "id": "chinois_3e_q08_2",
+          "question": { "fr": "Quel mot signifie 'demain' en mandarin ?", "en": "Which word means 'tomorrow' in Mandarin?" },
+          "options": { "fr": ["今天 jīntiān", "昨天 zuótiān", "明天 míngtiān", "后天 hòutiān"], "en": ["今天 jīntiān", "昨天 zuótiān", "明天 míngtiān", "后天 hòutiān"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "明天 míngtiān = demain. 今天 jīntiān = aujourd'hui, 昨天 zuótiān = hier, 后天 hòutiān = après-demain, 前天 qiántiān = avant-hier.", "en": "明天 míngtiān = tomorrow. 今天 jīntiān = today, 昨天 zuótiān = yesterday, 后天 hòutiān = the day after tomorrow, 前天 qiántiān = the day before yesterday." }
+        },
+        {
+          "id": "chinois_3e_q08_3",
+          "question": { "fr": "Dans quel ordre s'écrit une date complète en chinois ?", "en": "In what order is a full date written in Chinese?" },
+          "options": {
+            "fr": ["Jour + Mois + Année", "Mois + Jour + Année", "Année + Mois + Jour", "Jour + Année + Mois"],
+            "en": ["Day + Month + Year", "Month + Day + Year", "Year + Month + Day", "Day + Year + Month"]
+          },
+          "correctIndex": 2,
+          "explanation": { "fr": "En chinois : Année + 年 + Mois + 月 + Jour + 号/日. Ex : 2025年6月30号 (30 juin 2025). Du plus grand au plus petit, comme une adresse (pays → ville → rue → numéro).", "en": "In Chinese: Year + 年 + Month + 月 + Day + 号/日. E.g.: 2025年6月30号 (30 June 2025). From largest to smallest unit, like an address (country → city → street → number)." }
+        },
+        {
+          "id": "chinois_3e_q08_4",
+          "question": { "fr": "Comment dit-on 'lundi' en mandarin ?", "en": "How do you say 'Monday' in Mandarin?" },
+          "options": { "fr": ["星期日 xīngqī rì", "星期一 xīngqī yī", "月曜日 yuè yào rì", "第一天 dì yī tiān"], "en": ["星期日 xīngqī rì", "星期一 xīngqī yī", "月曜日 yuè yào rì", "第一天 dì yī tiān"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "星期一 xīngqī yī = lundi (jour 1). Les jours utilisent les chiffres : 星期二 = mardi, 星期三 = mercredi... 星期日/星期天 = dimanche (exception : pas 星期七).", "en": "星期一 xīngqī yī = Monday (day 1). Days use numbers: 星期二 = Tuesday, 星期三 = Wednesday... 星期日/星期天 = Sunday (exception: not 星期七)." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q09",
+      "lessonId": "chinois_3e_02_04",
+      "questions": [
+        {
+          "id": "chinois_3e_q09_1",
+          "question": { "fr": "Quel verbe utilise-t-on pour dire 'prendre le bus' en chinois ?", "en": "Which verb is used to say 'take the bus' in Chinese?" },
+          "options": { "fr": ["骑 qí", "开 kāi", "坐 zuò", "走 zǒu"], "en": ["骑 qí", "开 kāi", "坐 zuò", "走 zǒu"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "坐 zuò (littéralement 'être assis') s'utilise pour les transports où l'on est passager : 坐公共汽车 (prendre le bus), 坐飞机 (prendre l'avion). 骑 = pédaler/chevaucher, 开 = conduire.", "en": "坐 zuò (literally 'to sit') is used for transport where you are a passenger: 坐公共汽车 (take the bus), 坐飞机 (take the plane). 骑 = ride/pedal, 开 = drive." }
+        },
+        {
+          "id": "chinois_3e_q09_2",
+          "question": { "fr": "Comment dit-on 'Tournez à gauche' en mandarin ?", "en": "How do you say 'Turn left' in Mandarin?" },
+          "options": { "fr": ["往右转 wǎng yòu zhuǎn", "直走 zhí zǒu", "往左转 wǎng zuǒ zhuǎn", "前面走 qiánmiàn zǒu"], "en": ["往右转 wǎng yòu zhuǎn", "直走 zhí zǒu", "往左转 wǎng zuǒ zhuǎn", "前面走 qiánmiàn zǒu"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "往左转 wǎng zuǒ zhuǎn = tourner à gauche (往 = vers, 左 = gauche, 转 = tourner). 往右转 = tourner à droite, 直走 = aller tout droit.", "en": "往左转 wǎng zuǒ zhuǎn = turn left (往 = towards, 左 = left, 转 = turn). 往右转 = turn right, 直走 = go straight." }
+        },
+        {
+          "id": "chinois_3e_q09_3",
+          "question": { "fr": "Que signifie 高铁 gāotiě ?", "en": "What does 高铁 gāotiě mean?" },
+          "options": {
+            "fr": ["Métro souterrain", "Train à grande vitesse (TGV)", "Téléphérique", "Bus express"],
+            "en": ["Underground metro", "High-speed rail (HSR)", "Cable car", "Express bus"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "高铁 gāotiě = train à grande vitesse (高 gāo = haut, 铁 tiě = fer/rail). La Chine possède le plus grand réseau de TGV au monde (~45 000 km), avec des vitesses jusqu'à 350 km/h.", "en": "高铁 gāotiě = high-speed rail (高 gāo = high, 铁 tiě = iron/rail). China has the world's largest HSR network (~45,000 km), with speeds up to 350 km/h." }
+        },
+        {
+          "id": "chinois_3e_q09_4",
+          "question": { "fr": "Comment demande-t-on 'Où est la gare ?' en mandarin ?", "en": "How do you ask 'Where is the train station?' in Mandarin?" },
+          "options": {
+            "fr": ["火车站怎么走？Huǒchēzhàn zěnme zǒu?", "请问，火车站在哪里？Qǐngwèn, huǒchēzhàn zài nǎlǐ?", "我要去火车站。Wǒ yào qù huǒchēzhàn.", "火车站远不远？Huǒchēzhàn yuǎn bu yuǎn?"],
+            "en": ["火车站怎么走？Huǒchēzhàn zěnme zǒu?", "请问，火车站在哪里？Qǐngwèn, huǒchēzhàn zài nǎlǐ?", "我要去火车站。Wǒ yào qù huǒchēzhàn.", "火车站远不远？Huǒchēzhàn yuǎn bu yuǎn?"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "请问，火车站在哪里？= Excusez-moi, où est la gare ? (请问 = formule de politesse pour interpeller, 在哪里 = où est). L'option A demande 'comment y aller', pas 'où c'est'.", "en": "请问，火车站在哪里？= Excuse me, where is the train station? (请问 = polite opener, 在哪里 = where is). Option A asks 'how to get there', not 'where it is'." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q10",
+      "lessonId": "chinois_3e_02_05",
+      "questions": [
+        {
+          "id": "chinois_3e_q10_1",
+          "question": { "fr": "Que signifie 打八折 dǎ bā zhé ?", "en": "What does 打八折 dǎ bā zhé mean?" },
+          "options": {
+            "fr": ["Réduction de 80%", "Payer 80% du prix (réduction de 20%)", "Payer 8 yuans", "Réduction de 8%"],
+            "en": ["80% discount", "Pay 80% of the price (20% off)", "Pay 8 yuan", "8% discount"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "En Chine, 打X折 signifie 'payer X×10%'. 打八折 = payer 8×10% = 80% du prix = 20% de réduction. Exemple : un article à 100 yuans en 打八折 coûte 80 yuans.", "en": "In China, 打X折 means 'pay X×10%'. 打八折 = pay 8×10% = 80% of the price = 20% off. Example: an item at 100 yuan on 打八折 costs 80 yuan." }
+        },
+        {
+          "id": "chinois_3e_q10_2",
+          "question": { "fr": "Comment dit-on 'Trop cher !' en mandarin ?", "en": "How do you say 'Too expensive!' in Mandarin?" },
+          "options": { "fr": ["很便宜！Hěn piányí!", "太贵了！Tài guì le!", "打折！Dǎ zhé!", "免费！Miǎnfèi!"], "en": ["很便宜！Hěn piányí!", "太贵了！Tài guì le!", "打折！Dǎ zhé!", "免费！Miǎnfèi!"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "太贵了！Tài guì le! = Trop cher ! (太 = trop, 贵 = cher). Pour négocier ensuite : 可以便宜点儿吗？(Vous pouvez faire moins cher ?). 便宜 piányí = pas cher.", "en": "太贵了！Tài guì le! = Too expensive! (太 = too, 贵 = expensive). To negotiate: 可以便宜点儿吗？(Can you make it cheaper?). 便宜 piányí = cheap." }
+        },
+        {
+          "id": "chinois_3e_q10_3",
+          "question": { "fr": "Quelle est l'unité orale courante du yuan chinois ?", "en": "What is the common spoken unit for the Chinese yuan?" },
+          "options": { "fr": ["元 yuán", "块 kuài", "角 jiǎo", "分 fēn"], "en": ["元 yuán", "块 kuài", "角 jiǎo", "分 fēn"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "块 kuài est la forme orale et informelle de 元 yuán. À l'écrit et dans les contextes formels on dit 元, mais à l'oral et dans les marchés on dit 块. De même, 毛 máo remplace 角 jiǎo à l'oral.", "en": "块 kuài is the spoken/informal form of 元 yuán. In writing and formal contexts one says 元, but spoken and in markets one says 块. Similarly, 毛 máo replaces 角 jiǎo in speech." }
+        },
+        {
+          "id": "chinois_3e_q10_4",
+          "question": { "fr": "Quels sont les deux systèmes de paiement numérique dominants en Chine ?", "en": "What are the two dominant digital payment systems in China?" },
+          "options": {
+            "fr": ["Visa et Mastercard", "WeChat Pay (微信支付) et Alipay (支付宝)", "PayPal et Apple Pay", "UnionPay et Bitcoin"],
+            "en": ["Visa and Mastercard", "WeChat Pay (微信支付) and Alipay (支付宝)", "PayPal and Apple Pay", "UnionPay and Bitcoin"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "WeChat Pay (微信支付 Wēixìn Zhīfù) et Alipay (支付宝 Zhīfùbǎo) couvrent ~95% des paiements en Chine via QR codes. Les espèces sont quasi disparues dans les villes.", "en": "WeChat Pay (微信支付 Wēixìn Zhīfù) and Alipay (支付宝 Zhīfùbǎo) cover ~95% of payments in China via QR codes. Cash has almost disappeared in cities." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q11",
+      "lessonId": "chinois_3e_03_01",
+      "questions": [
+        {
+          "id": "chinois_3e_q11_1",
+          "question": { "fr": "Sur quel calendrier sont basées toutes les fêtes traditionnelles chinoises ?", "en": "On which calendar are all traditional Chinese festivals based?" },
+          "options": {
+            "fr": ["Le calendrier solaire grégorien (阳历)", "Le calendrier lunaire (农历 nónglì)", "Le calendrier républicain", "Le calendrier tibétain"],
+            "en": ["The solar Gregorian calendar (阳历)", "The lunar calendar (农历 nónglì)", "The Republican calendar", "The Tibetan calendar"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "农历 nónglì (calendrier lunaire, littéralement 'calendrier agricole') est la base de toutes les fêtes traditionnelles : Fête du Printemps, Mi-Automne, Bateaux-Dragons, Lanternes.", "en": "农历 nónglì (lunar calendar, literally 'agricultural calendar') is the foundation of all traditional festivals: Spring Festival, Mid-Autumn, Dragon Boat, Lantern Festival." }
+        },
+        {
+          "id": "chinois_3e_q11_2",
+          "question": { "fr": "Quelle fête est célébrée le 15e jour du 8e mois lunaire ?", "en": "Which festival is celebrated on the 15th day of the 8th lunar month?" },
+          "options": {
+            "fr": ["La Fête du Printemps (春节)", "La Fête des Lanternes (元宵节)", "La Fête de la Mi-Automne (中秋节)", "La Fête des Bateaux-Dragons (端午节)"],
+            "en": ["Spring Festival (春节)", "Lantern Festival (元宵节)", "Mid-Autumn Festival (中秋节)", "Dragon Boat Festival (端午节)"]
+          },
+          "correctIndex": 2,
+          "explanation": { "fr": "中秋节 Zhōngqiūjié (Fête de la Mi-Automne) tombe le 15e jour du 8e mois lunaire — pleine lune maximale. On mange des gâteaux de lune (月饼 yuèbǐng) et on contemple la lune.", "en": "中秋节 Zhōngqiūjié (Mid-Autumn Festival) falls on the 15th day of the 8th lunar month — maximum full moon. Mooncakes (月饼 yuèbǐng) are eaten and the moon is gazed at." }
+        },
+        {
+          "id": "chinois_3e_q11_3",
+          "question": { "fr": "En quelle année du zodiaque chinois sera 2026 ?", "en": "Which Chinese zodiac year will 2026 be?" },
+          "options": { "fr": ["Année du Serpent (蛇 shé)", "Année du Cheval (马 mǎ)", "Année du Dragon (龙 lóng)", "Année du Coq (鸡 jī)"], "en": ["Year of the Snake (蛇 shé)", "Year of the Horse (马 mǎ)", "Year of the Dragon (龙 lóng)", "Year of the Rooster (鸡 jī)"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "2025 = Année du Serpent (蛇 shé), 2026 = Année du Cheval (马 mǎ). Le cycle des 12 animaux suit l'ordre : rat, bœuf, tigre, lapin, dragon, serpent, cheval, chèvre, singe, coq, chien, cochon.", "en": "2025 = Year of the Snake (蛇 shé), 2026 = Year of the Horse (马 mǎ). The 12-animal cycle follows: rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey, rooster, dog, pig." }
+        },
+        {
+          "id": "chinois_3e_q11_4",
+          "question": { "fr": "Que signifie 恭喜发财 Gōngxǐ fācái ?", "en": "What does 恭喜发财 Gōngxǐ fācái mean?" },
+          "options": {
+            "fr": ["Bonne Année !", "Bonne santé !", "Que la prospérité t'accompagne !", "Que tes études progressent !"],
+            "en": ["Happy New Year!", "Good health!", "Wishing you prosperity!", "May your studies progress!"]
+          },
+          "correctIndex": 2,
+          "explanation": { "fr": "恭喜发财 = Que la prospérité t'accompagne (恭喜 = félicitations/bienvenue, 发财 = s'enrichir). C'est l'un des vœux les plus courants au Nouvel An. 新年快乐 = Bonne Année.", "en": "恭喜发财 = Wishing you prosperity (恭喜 = congratulations/welcome, 发财 = to become wealthy). It is one of the most common New Year greetings. 新年快乐 = Happy New Year." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q12",
+      "lessonId": "chinois_3e_03_02",
+      "questions": [
+        {
+          "id": "chinois_3e_q12_1",
+          "question": { "fr": "Que signifie le dicton culinaire 南米北面 Nán mǐ Běi miàn ?", "en": "What does the culinary saying 南米北面 Nán mǐ Běi miàn mean?" },
+          "options": {
+            "fr": ["Le riz vient du Nord, les nouilles du Sud", "Le Sud mange du riz, le Nord mange des nouilles", "Les meilleures nouilles sont dans le Sud", "Le riz est meilleur que les nouilles"],
+            "en": ["Rice comes from the North, noodles from the South", "The South eats rice, the North eats noodles", "The best noodles are in the South", "Rice is better than noodles"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "南米北面 = Le Sud (南) mange du riz (米), le Nord (北) mange des nouilles (面). Cette différence s'explique par le climat : le riz pousse dans le Sud chaud et humide, le blé dans le Nord froid et sec.", "en": "南米北面 = The South (南) eats rice (米), the North (北) eats noodles (面). This difference is explained by climate: rice grows in the warm humid South, wheat in the cold dry North." }
+        },
+        {
+          "id": "chinois_3e_q12_2",
+          "question": { "fr": "Quel est le plat emblématique de Pékin, servi avec des crêpes et de la sauce hoisin ?", "en": "What is Beijing's signature dish, served with pancakes and hoisin sauce?" },
+          "options": { "fr": ["火锅 huǒguō", "饺子 jiǎozi", "北京烤鸭 Běijīng kǎoyā", "麻婆豆腐 mápó dòufu"], "en": ["火锅 huǒguō", "饺子 jiǎozi", "北京烤鸭 Běijīng kǎoyā", "麻婆豆腐 mápó dòufu"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "北京烤鸭 Běijīng kǎoyā (canard laqué de Pékin) est le plat le plus connu de la capitale. Le canard est rôti jusqu'à ce que la peau soit croustillante et servi découpé avec des crêpes fines.", "en": "北京烤鸭 Běijīng kǎoyā (Peking duck) is the capital's most famous dish. The duck is roasted until the skin is crispy and served sliced with thin pancakes." }
+        },
+        {
+          "id": "chinois_3e_q12_3",
+          "question": { "fr": "Pourquoi ne faut-il JAMAIS planter ses baguettes verticalement dans un bol de riz en Chine ?", "en": "Why should you NEVER stick chopsticks vertically into a bowl of rice in China?" },
+          "options": {
+            "fr": ["C'est inconfortable pour manger", "Cela rappelle les bâtons d'encens des funérailles — très mauvais augure", "Les baguettes risquent de tomber", "C'est une règle d'hygiène"],
+            "en": ["It is uncomfortable for eating", "It resembles funeral incense sticks — a very bad omen", "The chopsticks might fall", "It is a hygiene rule"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "Des baguettes plantées verticalement dans du riz ressemblent aux bâtons d'encens que l'on plante devant les autels lors des funérailles en Chine. C'est un tabou culturel fort.", "en": "Chopsticks standing vertically in rice resemble incense sticks planted before altars at Chinese funerals. It is a strong cultural taboo." }
+        },
+        {
+          "id": "chinois_3e_q12_4",
+          "question": { "fr": "Comment s'appelle le thé semi-fermenté aux arômes floraux, entre thé vert et thé noir ?", "en": "What is the semi-fermented tea with floral aromas, between green and black tea?" },
+          "options": { "fr": ["绿茶 lǜ chá", "普洱茶 pǔ'ěr chá", "乌龙茶 wūlóng chá", "白茶 bái chá"], "en": ["绿茶 lǜ chá", "普洱茶 pǔ'ěr chá", "乌龙茶 wūlóng chá", "白茶 bái chá"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "乌龙茶 wūlóng chá (oolong) est semi-fermenté — entre thé vert (non fermenté) et thé noir (fermenté). Il a des arômes floraux ou fruités. Produit principalement au Fujian et à Taiwan.", "en": "乌龙茶 wūlóng chá (oolong) is semi-fermented — between green tea (unfermented) and black tea (fermented). It has floral or fruity aromas. Mainly produced in Fujian and Taiwan." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q13",
+      "lessonId": "chinois_3e_03_03",
+      "questions": [
+        {
+          "id": "chinois_3e_q13_1",
+          "question": { "fr": "Quelle est la capitale officielle de la République populaire de Chine ?", "en": "What is the official capital of the People's Republic of China?" },
+          "options": { "fr": ["上海 Shànghǎi", "广州 Guǎngzhōu", "北京 Běijīng", "深圳 Shēnzhèn"], "en": ["上海 Shànghǎi", "广州 Guǎngzhōu", "北京 Běijīng", "深圳 Shēnzhèn"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "北京 Běijīng (Pékin) est la capitale politique et culturelle de la Chine. Shanghai est la plus grande ville par population et la capitale économique, mais pas la capitale officielle.", "en": "北京 Běijīng (Beijing) is China's political and cultural capital. Shanghai is the largest city by population and the economic capital, but not the official capital." }
+        },
+        {
+          "id": "chinois_3e_q13_2",
+          "question": { "fr": "Quel fleuve est surnommé 母亲河 Mǔqīn hé (fleuve mère) car c'est le berceau de la civilisation chinoise ?", "en": "Which river is nicknamed 母亲河 Mǔqīn hé (mother river) as the cradle of Chinese civilisation?" },
+          "options": { "fr": ["长江 Cháng Jiāng (Yangtsé)", "黄河 Huáng Hé (Fleuve Jaune)", "珠江 Zhū Jiāng (Rivière des Perles)", "淮河 Huái Hé"], "en": ["长江 Cháng Jiāng (Yangtze)", "黄河 Huáng Hé (Yellow River)", "珠江 Zhū Jiāng (Pearl River)", "淮河 Huái Hé"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "黄河 Huáng Hé (Fleuve Jaune) est appelé 母亲河 (fleuve mère) car les premières dynasties chinoises (Xia, Shang, Zhou) se sont développées sur ses rives. Sa couleur jaune vient des sédiments de lœss.", "en": "黄河 Huáng Hé (Yellow River) is called 母亲河 (mother river) because the first Chinese dynasties (Xia, Shang, Zhou) developed on its banks. Its yellow colour comes from loess sediments." }
+        },
+        {
+          "id": "chinois_3e_q13_3",
+          "question": { "fr": "Avec combien de pays la Chine partage-t-elle une frontière terrestre ?", "en": "With how many countries does China share a land border?" },
+          "options": { "fr": ["8", "10", "14", "17"], "en": ["8", "10", "14", "17"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "La Chine a 14 voisins frontaliers terrestres — un record mondial : Russie, Mongolie, Kazakhstan, Kirghizstan, Tadjikistan, Afghanistan, Pakistan, Inde, Népal, Bhoutan, Myanmar, Laos, Vietnam, Corée du Nord.", "en": "China has 14 land border neighbours — a world record: Russia, Mongolia, Kazakhstan, Kyrgyzstan, Tajikistan, Afghanistan, Pakistan, India, Nepal, Bhutan, Myanmar, Laos, Vietnam, North Korea." }
+        },
+        {
+          "id": "chinois_3e_q13_4",
+          "question": { "fr": "Quelle est l'altitude moyenne du Plateau tibétain (青藏高原), surnommé 'Toit du monde' ?", "en": "What is the average altitude of the Tibetan Plateau (青藏高原), nicknamed 'Roof of the World'?" },
+          "options": { "fr": ["1 500 m", "2 500 m", "4 500 m", "7 000 m"], "en": ["1,500 m", "2,500 m", "4,500 m", "7,000 m"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "Le Plateau tibétain (青藏高原) a une altitude moyenne de 4 500 m — d'où son surnom de 'Toit du monde'. Il abrite les sources du Yangtsé, du Mékong et du Brahmapoutre.", "en": "The Tibetan Plateau (青藏高原) has an average altitude of 4,500 m — hence its nickname 'Roof of the World'. It is the source of the Yangtze, Mekong and Brahmaputra rivers." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q14",
+      "lessonId": "chinois_3e_03_04",
+      "questions": [
+        {
+          "id": "chinois_3e_q14_1",
+          "question": { "fr": "Quels sont les 'Quatre Trésors du Lettré' (文房四宝) ?", "en": "What are the 'Four Treasures of the Study' (文房四宝)?" },
+          "options": {
+            "fr": ["Pinceau, encre, papier, pierre à encre", "Pinceau, peinture, soie, porcelaine", "Calligraphie, poésie, peinture, musique", "Bambou, jade, soie, bronze"],
+            "en": ["Brush, ink, paper, ink stone", "Brush, paint, silk, porcelain", "Calligraphy, poetry, painting, music", "Bamboo, jade, silk, bronze"]
+          },
+          "correctIndex": 0,
+          "explanation": { "fr": "Les 文房四宝 wénfáng sìbǎo sont : 笔 bǐ (pinceau), 墨 mò (encre), 纸 zhǐ (papier), 砚 yàn (pierre à encre). Ensemble indispensable du lettré chinois depuis l'Antiquité.", "en": "The 文房四宝 wénfáng sìbǎo are: 笔 bǐ (brush), 墨 mò (ink), 纸 zhǐ (paper), 砚 yàn (ink stone). The indispensable set of the Chinese scholar since antiquity." }
+        },
+        {
+          "id": "chinois_3e_q14_2",
+          "question": { "fr": "Dans le maquillage de l'Opéra de Pékin, quelle couleur symbolise la trahison et la fourberie ?", "en": "In Peking Opera face paint, which colour symbolises treachery and cunning?" },
+          "options": { "fr": ["Rouge", "Noir", "Blanc", "Doré"], "en": ["Red", "Black", "White", "Gold"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "Blanc = trahison, ruse, fourberie dans le 脸谱 liǎnpǔ (maquillage de l'Opéra de Pékin). Rouge = loyauté/courage, Noir = honnêteté/justice, Jaune = cruauté, Doré/Argenté = divinités.", "en": "White = treachery, cunning, deceitfulness in 脸谱 liǎnpǔ (Peking Opera face paint). Red = loyalty/courage, Black = honesty/justice, Yellow = cruelty, Gold/Silver = deities." }
+        },
+        {
+          "id": "chinois_3e_q14_3",
+          "question": { "fr": "Quel art martial interne a été inscrit au patrimoine immatériel de l'UNESCO en 2020 ?", "en": "Which internal martial art was inscribed on UNESCO's Intangible Cultural Heritage in 2020?" },
+          "options": { "fr": ["少林功夫 Shàolín gōngfū", "太极拳 Tàijíquán", "武术 wǔshù", "散打 sǎndǎ"], "en": ["少林功夫 Shàolín gōngfū", "太极拳 Tàijíquán", "武术 wǔshù", "散打 sǎndǎ"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "太极拳 Tàijíquán (Tai-chi) a été inscrit à l'UNESCO en 2020. C'est un art martial interne basé sur le principe yin/yang, avec des mouvements lents et fluides pratiqués par des millions de Chinois dans les parcs.", "en": "太极拳 Tàijíquán (Tai chi) was inscribed on UNESCO in 2020. It is an internal martial art based on the yin/yang principle, with slow fluid movements practised by millions of Chinese in parks." }
+        },
+        {
+          "id": "chinois_3e_q14_4",
+          "question": { "fr": "Pourquoi le mot anglais 'China' désigne-t-il à la fois la Chine et la porcelaine ?", "en": "Why does the English word 'China' refer both to the country and to porcelain?" },
+          "options": {
+            "fr": ["C'est une coïncidence sans relation", "La porcelaine (瓷器) a été inventée en Chine et exportée vers l'Europe sous ce nom", "Les Chinois utilisaient de la porcelaine comme monnaie", "La porcelaine blanche ressemble aux neiges chinoises"],
+            "en": ["It is a coincidence with no relation", "Porcelain (瓷器) was invented in China and exported to Europe under that name", "The Chinese used porcelain as currency", "White porcelain resembles Chinese snow"]
+          },
+          "correctIndex": 1,
+          "explanation": { "fr": "La 瓷器 cíqì (porcelaine) a été inventée en Chine aux Ve-VIe siècles et exportée massivement vers l'Europe. Les Européens appelaient cet objet 'china' en référence à son pays d'origine — le nom est resté.", "en": "瓷器 cíqì (porcelain) was invented in China in the 5th-6th centuries and massively exported to Europe. Europeans called the object 'china' after its country of origin — and the name stuck." }
+        }
+      ]
+    },
+    {
+      "id": "chinois_3e_q15",
+      "lessonId": "chinois_3e_03_05",
+      "questions": [
+        {
+          "id": "chinois_3e_q15_1",
+          "question": { "fr": "En quelle année le Forum sur la coopération sino-africaine (FOCAC) a-t-il été créé ?", "en": "In which year was the Forum on China-Africa Cooperation (FOCAC) created?" },
+          "options": { "fr": ["1990", "1995", "2000", "2009"], "en": ["1990", "1995", "2000", "2009"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "Le FOCAC a été créé en l'an 2000 à Beijing. C'est le cadre officiel des relations diplomatiques, commerciales et de développement entre la Chine et les pays africains.", "en": "FOCAC was created in the year 2000 in Beijing. It is the official framework for diplomatic, trade and development relations between China and African countries." }
+        },
+        {
+          "id": "chinois_3e_q15_2",
+          "question": { "fr": "Depuis quelle année la Chine est-elle le premier partenaire commercial de l'Afrique ?", "en": "Since which year has China been Africa's top trading partner?" },
+          "options": { "fr": ["2000", "2005", "2009", "2015"], "en": ["2000", "2005", "2009", "2015"] },
+          "correctIndex": 2,
+          "explanation": { "fr": "La Chine est devenue le premier partenaire commercial de l'Afrique en 2009, dépassant les États-Unis et la France. Le volume des échanges a atteint ~282 milliards USD en 2023.", "en": "China became Africa's top trading partner in 2009, overtaking the United States and France. Trade volume reached ~282 billion USD in 2023." }
+        },
+        {
+          "id": "chinois_3e_q15_3",
+          "question": { "fr": "Quel grand barrage hydroélectrique camerounais a été financé et construit avec le soutien de la Chine ?", "en": "Which major Cameroonian hydroelectric dam was financed and built with Chinese support?" },
+          "options": {
+            "fr": ["Barrage de Lagdo", "Barrage de Song Loulou", "Barrage de Memve'ele", "Barrage de Bamendjin"],
+            "en": ["Lagdo dam", "Song Loulou dam", "Memve'ele dam", "Bamendjin dam"]
+          },
+          "correctIndex": 2,
+          "explanation": { "fr": "Le barrage de Memve'ele (211 MW), situé dans la région du Sud près de la frontière guinéo-équatorienne, a été financé par la Chine et construit par Sinohydro. Il a renforcé la capacité électrique nationale.", "en": "The Memve'ele dam (211 MW), located in the South region near the Equatorial Guinea border, was financed by China and built by Sinohydro. It boosted national electricity capacity." }
+        },
+        {
+          "id": "chinois_3e_q15_4",
+          "question": { "fr": "Quel examen certifie officiellement le niveau de compétence en mandarin dans le monde entier ?", "en": "Which exam officially certifies Mandarin proficiency worldwide?" },
+          "options": { "fr": ["DELF", "HSK (汉语水平考试)", "TOEFL", "JLPT"], "en": ["DELF", "HSK (汉语水平考试)", "TOEFL", "JLPT"] },
+          "correctIndex": 1,
+          "explanation": { "fr": "HSK (汉语水平考试 Hànyǔ Shuǐpíng Kǎoshì) est l'examen officiel de compétence en mandarin, en 6 niveaux. Il est organisé par le Hanban (gouvernement chinois) dans le monde entier, dont au Cameroun via les Instituts Confucius.", "en": "HSK (汉语水平考试 Hànyǔ Shuǐpíng Kǎoshì) is the official Mandarin proficiency test, in 6 levels. It is administered by Hanban (Chinese government) worldwide, including in Cameroon via Confucius Institutes." }
+        }
+      ]
+    }
+  ]
+}

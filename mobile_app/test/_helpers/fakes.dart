@@ -130,6 +130,18 @@ class FakeUserProfileRepository implements UserProfileRepository {
       const Right(null);
 
   @override
+  Future<Either<ProfileFailure, void>> updateSchoolProfile({
+    required String trackId,
+    required String levelId,
+    required String streamId,
+    required List<String> derivedSubjects,
+    required List<String> examTargets,
+    required List<String> pickedSubjects,
+    required List<String> optedOutSubjects,
+  }) async =>
+      const Right(null);
+
+  @override
   Future<Either<ProfileFailure, Map<String, dynamic>?>> fetchProfileOnce() async =>
       Right(profileData);
 

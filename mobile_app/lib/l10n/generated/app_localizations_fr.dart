@@ -402,6 +402,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get coursesStartLesson => 'Commencer';
 
   @override
+  String get coursesRecommendedBannerTitle => 'Reprends là où tu t\'es arrêté';
+
+  @override
   String get dashboardTabActivities => 'Examen';
 
   @override
@@ -1029,6 +1032,21 @@ class AppLocalizationsFr extends AppLocalizations {
   String get profileEditSuccess => 'Profil mis à jour.';
 
   @override
+  String get profileEditSchoolTitle => 'Changer de classe';
+
+  @override
+  String get profileEditSchoolLevelLabel => 'Quelle est ta classe ?';
+
+  @override
+  String get profileEditSchoolStreamLabel => 'Quelle est ta spécialité ?';
+
+  @override
+  String get profileEditSchoolSubjectsLabel => 'Tes matières';
+
+  @override
+  String get profileEditSchoolSaving => 'Mise à jour…';
+
+  @override
   String get profileEditNameLabel => 'Prénom ou surnom';
 
   @override
@@ -1050,6 +1068,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get profileMenuSchool => 'Mon école';
+
+  @override
+  String get profileMenuClass => 'Ma classe';
 
   @override
   String get profileMenuName => 'Mon nom';
