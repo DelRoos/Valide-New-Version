@@ -62,8 +62,10 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
           list.where((s) => s.subjectId == widget.subjectId).firstOrNull,
       orElse: () => null,
     );
-    final subjectAbbrev =
-        subject?.abbreviationFor(langCode) ?? widget.subjectId.toUpperCase();
+    final subjectAbbrev = subject?.abbreviationFor(langCode) ??
+        subject?.name[langCode] ??
+        subject?.name['fr'] ??
+        widget.subjectId;
 
     final tabLabels = [
       isFr ? 'Leçons' : 'Lessons',

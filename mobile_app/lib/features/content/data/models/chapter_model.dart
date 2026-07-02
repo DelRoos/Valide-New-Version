@@ -6,6 +6,7 @@ class ChapterModel {
   const ChapterModel({
     required this.chapterId,
     required this.subjectId,
+    required this.levelId,
     required this.order,
     required this.titleFr,
     required this.titleEn,
@@ -20,6 +21,7 @@ class ChapterModel {
 
   final String chapterId;
   final String subjectId;
+  final String levelId;
   final int order;
   final String titleFr;
   final String titleEn;
@@ -41,6 +43,7 @@ class ChapterModel {
     return ChapterModel(
       chapterId: doc.id,
       subjectId: (data['subjectId'] as String?) ?? '',
+      levelId: (data['levelId'] as String?) ?? '',
       order: (data['order'] as num?)?.toInt() ?? 0,
       titleFr: (title['fr'] as String?) ?? '',
       titleEn: (title['en'] as String?) ?? '',
@@ -57,6 +60,7 @@ class ChapterModel {
   ChapterEntity toEntity() => ChapterEntity(
         chapterId: chapterId,
         subjectId: subjectId,
+        levelId: levelId,
         order: order,
         titleFr: titleFr,
         titleEn: titleEn,

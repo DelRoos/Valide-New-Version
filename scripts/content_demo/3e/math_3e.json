@@ -1,0 +1,912 @@
+{
+  "meta": {
+    "subjectId": "francophone_math",
+    "subjectName": "Mathématiques",
+    "levelId": "francophone_3e",
+    "levelName": "3ème",
+    "examTarget": "BEPC",
+    "language": "fr",
+    "description": "Contenu de démonstration — Mathématiques 3ème (programme BEPC francophone Cameroun)",
+    "version": "1.0.0",
+    "createdAt": "2026-06-30"
+  },
+
+  "chapters": [
+    {
+      "id": "ch_math_3e_01",
+      "subjectId": "francophone_math",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Calcul numérique et algébrique" },
+      "sortOrder": 1
+    },
+    {
+      "id": "ch_math_3e_02",
+      "subjectId": "francophone_math",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Géométrie dans le plan" },
+      "sortOrder": 2
+    },
+    {
+      "id": "ch_math_3e_03",
+      "subjectId": "francophone_math",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Statistiques et probabilités" },
+      "sortOrder": 3
+    }
+  ],
+
+  "lessons": [
+    {
+      "id": "les_math_3e_01_01",
+      "chapterId": "ch_math_3e_01",
+      "title": { "fr": "Nombres relatifs — opérations" },
+      "sortOrder": 1,
+      "notionIds": ["not_math_nombre_relatif", "not_math_valeur_absolue"],
+      "content": {
+        "fr": "# Nombres relatifs — opérations\n\nEn classe de 3ème, on consolide les opérations sur les nombres relatifs avant d'aborder les calculs algébriques.\n\n:::definition\nUn **nombre relatif** est un nombre muni d'un signe (+ ou −). Sa **valeur absolue** est sa distance à zéro sur la droite numérique, notée $|a|$.\n\n$$|a| = a \\text{ si } a \\geq 0, \\quad |a| = -a \\text{ si } a < 0$$\n:::\n\n## Addition et soustraction\n\nPour additionner deux nombres relatifs :\n- Même signe → on additionne les valeurs absolues et on garde le signe commun.\n- Signes différents → on soustrait la plus petite valeur absolue de la plus grande et on garde le signe du plus grand.\n\n:::exemple\n$$(-7) + (+3) = -(7 - 3) = -4$$\n\n$$(-5) + (-8) = -(5 + 8) = -13$$\n:::\n\n## Multiplication et division\n\n:::propriete\n**Règle des signes :**\n\n- $(+) \\times (+) = (+)$\n- $(-) \\times (-) = (+)$\n- $(+) \\times (-) = (-)$\n- $(-) \\times (+) = (-)$\n\nLa même règle s'applique à la division.\n:::\n\n:::exemple\n$$(-4) \\times (+5) = -20$$\n\n$$(-6) \\times (-3) = +18$$\n\n$$\\frac{-15}{+3} = -5$$\n:::\n\n:::methode\nPour calculer une expression avec plusieurs opérations :\n\n1. Supprimer les parenthèses (attention aux signes)\n2. Effectuer les multiplications et divisions\n3. Effectuer les additions et soustractions\n\n$$(-3) \\times 4 - (-2) \\times 5 = -12 + 10 = -2$$\n:::\n\n:::attention\nNe pas confondre le **signe** d'un nombre et l'opération de **soustraction** : $-(-5) = +5$ car soustraire un négatif revient à additionner son opposé.\n:::\n\n:::retenir\n- La valeur absolue de $a$ est $|a| \\geq 0$.\n- Même signe → somme ; signes opposés → différence des valeurs absolues.\n- Produit ou quotient de deux négatifs → positif.\n- Produit ou quotient de signes différents → négatif.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_01_02",
+      "chapterId": "ch_math_3e_01",
+      "title": { "fr": "Identités remarquables" },
+      "sortOrder": 2,
+      "notionIds": ["not_math_identite_remarquable", "not_math_developpement", "not_math_factorisation"],
+      "content": {
+        "fr": "# Identités remarquables\n\nLes identités remarquables permettent de développer ou de factoriser rapidement certaines expressions algébriques.\n\n:::definition\nOn appelle **identités remarquables** les trois égalités algébriques suivantes, vraies pour tous réels $a$ et $b$ :\n\n$$\\text{(1)} \\quad (a+b)^2 = a^2 + 2ab + b^2$$\n\n$$\\text{(2)} \\quad (a-b)^2 = a^2 - 2ab + b^2$$\n\n$$\\text{(3)} \\quad (a+b)(a-b) = a^2 - b^2$$\n:::\n\n## Développement\n\n:::methode\nPour **développer** une expression, on applique l'identité de gauche à droite.\n\n**Exemple :** Développer $(3x + 2)^2$\n\nOn pose $a = 3x$ et $b = 2$ :\n\n$$(3x+2)^2 = (3x)^2 + 2 \\times 3x \\times 2 + 2^2 = 9x^2 + 12x + 4$$\n:::\n\n## Factorisation\n\n:::methode\nPour **factoriser**, on reconnaît la forme carrée ou le produit de la somme par la différence.\n\n**Exemple :** Factoriser $x^2 - 9$\n\nOn reconnaît $x^2 - 3^2 = (x+3)(x-3)$ (identité 3).\n\n**Exemple :** Factoriser $4x^2 + 4x + 1$\n\nOn reconnaît $(2x)^2 + 2 \\times 2x \\times 1 + 1^2 = (2x+1)^2$ (identité 1).\n:::\n\n:::exemple\nDévelopper puis simplifier $(x+5)^2 - (x-3)^2$ :\n\n$$(x+5)^2 - (x-3)^2 = (x^2+10x+25) - (x^2-6x+9) = 16x + 16 = 16(x+1)$$\n\nOn aurait pu aussi utiliser l'identité 3 : $(x+5+x-3)(x+5-x+3) = (2x+2)(8) = 16(x+1)$.\n:::\n\n:::attention\n$(a+b)^2 \\neq a^2 + b^2$ — ne pas oublier le terme $2ab$. Cette erreur est l'une des plus fréquentes au BEPC.\n:::\n\n:::retenir\n- $(a+b)^2 = a^2 + 2ab + b^2$\n- $(a-b)^2 = a^2 - 2ab + b^2$\n- $(a+b)(a-b) = a^2 - b^2$\n- Développer = appliquer de gauche à droite ; factoriser = reconnaître la forme.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_01_03",
+      "chapterId": "ch_math_3e_01",
+      "title": { "fr": "Fractions algébriques — simplification et opérations" },
+      "sortOrder": 3,
+      "notionIds": ["not_math_fraction_algebrique"],
+      "content": {
+        "fr": "# Fractions algébriques — simplification et opérations\n\nUne fraction algébrique est une expression de la forme $\\frac{P(x)}{Q(x)}$ où $P$ et $Q$ sont des expressions algébriques.\n\n:::definition\nLa **fraction algébrique** $\\frac{A}{B}$ est définie pour $B \\neq 0$. On la simplifie en divisant numérateur et dénominateur par leur plus grand commun diviseur (PGCD).\n:::\n\n## Simplification\n\n:::methode\nPour simplifier une fraction algébrique :\n\n1. Factoriser le numérateur\n2. Factoriser le dénominateur\n3. Simplifier par les facteurs communs (en précisant que ces facteurs sont non nuls)\n\n**Exemple :** Simplifier $\\frac{6x^2 - 6x}{3x}$ (pour $x \\neq 0$)\n\n$$\\frac{6x^2 - 6x}{3x} = \\frac{6x(x-1)}{3x} = \\frac{6(x-1)}{3} = 2(x-1)$$\n:::\n\n## Opérations sur les fractions\n\n:::propriete\n**Addition** (même dénominateur) : $\\frac{a}{c} + \\frac{b}{c} = \\frac{a+b}{c}$\n\n**Dénominateurs différents** : réduire au même dénominateur (PPCM).\n\n**Multiplication** : $\\frac{a}{b} \\times \\frac{c}{d} = \\frac{ac}{bd}$\n\n**Division** : $\\frac{a}{b} \\div \\frac{c}{d} = \\frac{a}{b} \\times \\frac{d}{c} = \\frac{ad}{bc}$ (avec $c \\neq 0$)\n:::\n\n:::exemple\nCalculer $\\frac{2}{x+1} + \\frac{3}{x-1}$ (pour $x \\neq \\pm 1$) :\n\n$$\\frac{2}{x+1} + \\frac{3}{x-1} = \\frac{2(x-1) + 3(x+1)}{(x+1)(x-1)} = \\frac{2x - 2 + 3x + 3}{x^2 - 1} = \\frac{5x+1}{x^2-1}$$\n:::\n\n:::attention\nUne fraction est **nulle** lorsque son numérateur est nul ET son dénominateur est non nul. On ne peut jamais annuler le dénominateur.\n:::\n\n:::retenir\n- Simplifier = factoriser numérateur et dénominateur puis éliminer les facteurs communs.\n- Addition de fractions → trouver un dénominateur commun.\n- Division → multiplier par l'inverse du diviseur.\n- Toujours préciser les valeurs interdites ($B \\neq 0$).\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_01_04",
+      "chapterId": "ch_math_3e_01",
+      "title": { "fr": "Équations du premier degré à une inconnue" },
+      "sortOrder": 4,
+      "notionIds": ["not_math_equation_1er_degre", "not_math_solution_equation"],
+      "content": {
+        "fr": "# Équations du premier degré à une inconnue\n\n:::definition\nUne **équation du premier degré** à une inconnue $x$ est une équation de la forme $ax + b = 0$ avec $a \\neq 0$. **Résoudre** une équation, c'est trouver toutes les valeurs de $x$ qui vérifient l'égalité — ces valeurs s'appellent les **solutions**.\n:::\n\n## Techniques de résolution\n\n:::methode\nPour résoudre $ax + b = cx + d$ :\n\n1. Regrouper les termes en $x$ d'un côté\n2. Regrouper les constantes de l'autre côté\n3. Diviser par le coefficient de $x$\n\n**Exemple :** Résoudre $3x - 5 = x + 7$\n\n$$3x - x = 7 + 5 \\implies 2x = 12 \\implies x = 6$$\n\n**Vérification :** $3 \\times 6 - 5 = 13$ et $6 + 7 = 13$ ✓\n:::\n\n:::exemple\nRésoudre $\\frac{x+1}{2} - \\frac{x-3}{4} = 1$\n\nOn multiplie par 4 (PPCM de 2 et 4) :\n\n$$2(x+1) - (x-3) = 4$$\n\n$$2x + 2 - x + 3 = 4 \\implies x + 5 = 4 \\implies x = -1$$\n:::\n\n## Équation-produit\n\n:::methode\nSi $A \\times B = 0$, alors $A = 0$ ou $B = 0$.\n\n**Exemple :** Résoudre $(2x - 4)(x + 3) = 0$\n\n$$2x - 4 = 0 \\implies x = 2 \\quad \\text{ou} \\quad x + 3 = 0 \\implies x = -3$$\n\nL'ensemble solution est $S = \\{-3 \\,;\\, 2\\}$.\n:::\n\n:::attention\nPenser à **vérifier** chaque solution en la réinjectant dans l'équation initiale. Si l'équation contient des fractions avec $x$ au dénominateur, toujours exclure les valeurs qui annulent ce dénominateur.\n:::\n\n:::retenir\n- $ax + b = 0 \\Rightarrow x = -\\frac{b}{a}$ si $a \\neq 0$.\n- On applique la même opération des deux membres de l'égalité.\n- $AB = 0 \\Leftrightarrow A = 0$ ou $B = 0$.\n- Toujours vérifier la solution.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_01_05",
+      "chapterId": "ch_math_3e_01",
+      "title": { "fr": "Inéquations du premier degré" },
+      "sortOrder": 5,
+      "notionIds": ["not_math_inequation"],
+      "content": {
+        "fr": "# Inéquations du premier degré\n\n:::definition\nUne **inéquation du premier degré** à une inconnue est une inégalité de la forme $ax + b > 0$, $ax + b \\geq 0$, $ax + b < 0$ ou $ax + b \\leq 0$. L'ensemble des solutions est un intervalle représenté sur la droite numérique.\n:::\n\n## Règles de transformation\n\n:::propriete\n- On peut **additionner** ou **soustraire** le même nombre des deux membres.\n- On peut **multiplier** ou **diviser** par un nombre **positif** : l'inégalité est conservée.\n- On peut **multiplier** ou **diviser** par un nombre **négatif** : l'inégalité **change de sens**.\n:::\n\n:::methode\nRésoudre $2x - 3 > x + 5$ :\n\n$$2x - x > 5 + 3 \\implies x > 8$$\n\n$S = ]8 \\,;\\, +\\infty[$\n\nRésoudre $-3x \\leq 9$ :\n\n$$x \\geq \\frac{9}{-3} = -3 \\quad \\text{(signe change car on divise par } -3 < 0 \\text{)}$$\n\n$S = [-3 \\,;\\, +\\infty[$\n:::\n\n:::exemple\nRésoudre $\\frac{x}{2} + 1 \\geq \\frac{3x}{4} - 2$ :\n\nMultiplier par 4 :\n\n$$2x + 4 \\geq 3x - 8 \\implies 4 + 8 \\geq 3x - 2x \\implies 12 \\geq x$$\n\nDonc $x \\leq 12$. $S = ]-\\infty \\,;\\, 12]$.\n:::\n\n:::attention\n**Attention au changement de sens !** Si on multiplie ou divise par un nombre **négatif**, le signe de l'inégalité s'inverse ($<$ devient $>$, $\\leq$ devient $\\geq$). C'est l'erreur la plus courante au BEPC.\n:::\n\n:::retenir\n- Mêmes règles que les équations, sauf pour la multiplication/division par un négatif qui **inverse** le signe de l'inégalité.\n- Solutions = intervalle représenté sur la droite numérique.\n- Toujours préciser l'ensemble solution $S$ avec la notation d'intervalle.\n:::"
+      }
+    },
+
+    {
+      "id": "les_math_3e_02_01",
+      "chapterId": "ch_math_3e_02",
+      "title": { "fr": "Théorème de Pythagore et sa réciproque" },
+      "sortOrder": 1,
+      "notionIds": ["not_math_pythagore", "not_math_triangle_rectangle"],
+      "content": {
+        "fr": "# Théorème de Pythagore et sa réciproque\n\nLe théorème de Pythagore relie les longueurs des côtés d'un triangle rectangle. Il est fondamental pour calculer des longueurs en géométrie plane.\n\n:::theoreme\n**Théorème de Pythagore** : Dans un triangle rectangle en $A$, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés :\n\n$$BC^2 = AB^2 + AC^2$$\n\noù $BC$ est l'hypoténuse (côté opposé à l'angle droit en $A$).\n:::\n\n:::image\nurl=https://upload.wikimedia.org/wikipedia/commons/4/4b/Pythagorean.svg\ncaption=Démonstration géométrique : les carrés sur les trois côtés — BC² = AB² + AC²\n:::\n\n:::theoreme\n**Réciproque** : Si dans un triangle $ABC$ on a $BC^2 = AB^2 + AC^2$, alors le triangle est **rectangle en $A$**.\n:::\n\n:::exemple\nDans un triangle $ABC$, $AB = 3$ cm, $AC = 4$ cm, $BC = 5$ cm. Est-il rectangle ?\n\n$$BC^2 = 25 \\quad \\text{et} \\quad AB^2 + AC^2 = 9 + 16 = 25$$\n\n$BC^2 = AB^2 + AC^2$, donc le triangle est **rectangle en $A$**.\n\n$(3, 4, 5)$ est un **triplet pythagoricien**.\n:::\n\n:::methode\nTriplets pythagoriciens à connaître : $(3, 4, 5)$, $(5, 12, 13)$, $(8, 15, 17)$.\n\nPour calculer un côté inconnu, par exemple $AB$ dans un triangle rectangle en $A$ :\n\n$$AB = \\sqrt{BC^2 - AC^2}$$\n\n**Exemple :** $BC = 10$ cm, $AC = 6$ cm.\n\n$$AB = \\sqrt{100 - 36} = \\sqrt{64} = 8 \\text{ cm}$$\n:::\n\n:::attention\nL'hypoténuse est toujours le côté **opposé** à l'angle droit, et c'est le **plus grand** côté. On ne peut jamais avoir l'hypoténuse d'un côté égale à la somme (non carrée) des deux autres.\n:::\n\n:::retenir\n- Triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ ($BC$ = hypoténuse, côté opposé à l'angle droit).\n- Réciproque : $BC^2 = AB^2 + AC^2 \\Rightarrow$ triangle rectangle en $A$.\n- Triplets : $(3, 4, 5)$ ; $(5, 12, 13)$ ; $(8, 15, 17)$.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_02_02",
+      "chapterId": "ch_math_3e_02",
+      "title": { "fr": "Théorème de Thalès et sa réciproque" },
+      "sortOrder": 2,
+      "notionIds": ["not_math_thales"],
+      "content": {
+        "fr": "# Théorème de Thalès et sa réciproque\n\nLe théorème de Thalès établit des égalités de rapports lorsque deux droites sont coupées par des parallèles.\n\n:::theoreme\n**Théorème de Thalès** : Soient $M$ et $N$ des points sur les côtés $[AB]$ et $[AC]$ d'un triangle $ABC$ tels que $(MN) \\parallel (BC)$. Alors :\n\n$$\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$$\n:::\n\n:::theoreme\n**Réciproque de Thalès** : Si $M \\in [AB]$, $N \\in [AC]$ et $\\frac{AM}{AB} = \\frac{AN}{AC}$, alors $(MN) \\parallel (BC)$.\n:::\n\n:::methode\nPour calculer une longueur inconnue avec Thalès :\n\n1. Identifier les droites parallèles et le sommet commun.\n2. Écrire l'égalité de rapports.\n3. Résoudre l'équation en cross-multipliant.\n\n**Exemple :** Dans le triangle $ABC$, $(MN) \\parallel (BC)$, $AM = 3$, $AB = 5$, $BC = 8$. Calculer $MN$.\n\n$$\\frac{AM}{AB} = \\frac{MN}{BC} \\implies \\frac{3}{5} = \\frac{MN}{8} \\implies MN = \\frac{3 \\times 8}{5} = \\frac{24}{5} = 4{,}8 \\text{ cm}$$\n:::\n\n:::exemple\nDans le triangle $DEF$, $(GH) \\parallel (EF)$, $DG = 4$ cm, $GE = 2$ cm, $EF = 9$ cm. Calculer $GH$.\n\n$DE = DG + GE = 4 + 2 = 6$ cm.\n\n$$\\frac{DG}{DE} = \\frac{GH}{EF} \\implies \\frac{4}{6} = \\frac{GH}{9} \\implies GH = \\frac{4 \\times 9}{6} = 6 \\text{ cm}$$\n:::\n\n:::attention\nVérifier que les points sont dans le **bon ordre** sur les côtés du triangle. Ne pas confondre Thalès (longueurs proportionnelles, droites parallèles) et Pythagore (angle droit, hypoténuse).\n:::\n\n:::retenir\n- $(MN) \\parallel (BC)$ dans le triangle $ABC$ → $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$.\n- Réciproque : égalité des rapports → droites parallèles.\n- Calculer toujours les longueurs totales des côtés avant d'écrire les rapports.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_02_03",
+      "chapterId": "ch_math_3e_02",
+      "title": { "fr": "Trigonométrie dans le triangle rectangle" },
+      "sortOrder": 3,
+      "notionIds": ["not_math_sin", "not_math_cos", "not_math_tan"],
+      "content": {
+        "fr": "# Trigonométrie dans le triangle rectangle\n\n:::definition\nDans un triangle rectangle en $A$, pour un angle aigu $\\hat{B}$ :\n\n- **Sinus** : $\\sin \\hat{B} = \\dfrac{\\text{côté opposé à } \\hat{B}}{\\text{hypoténuse}} = \\dfrac{AC}{BC}$\n\n- **Cosinus** : $\\cos \\hat{B} = \\dfrac{\\text{côté adjacent à } \\hat{B}}{\\text{hypoténuse}} = \\dfrac{AB}{BC}$\n\n- **Tangente** : $\\tan \\hat{B} = \\dfrac{\\text{côté opposé}}{\\text{côté adjacent}} = \\dfrac{AC}{AB}$\n:::\n\n## Valeurs remarquables\n\n| Angle | $30°$ | $45°$ | $60°$ |\n|---|---|---|---|\n| $\\sin$ | $\\dfrac{1}{2}$ | $\\dfrac{\\sqrt{2}}{2}$ | $\\dfrac{\\sqrt{3}}{2}$ |\n| $\\cos$ | $\\dfrac{\\sqrt{3}}{2}$ | $\\dfrac{\\sqrt{2}}{2}$ | $\\dfrac{1}{2}$ |\n| $\\tan$ | $\\dfrac{\\sqrt{3}}{3}$ | $1$ | $\\sqrt{3}$ |\n\n:::propriete\nPour tout angle aigu $\\alpha$ dans un triangle rectangle :\n\n$$\\sin^2 \\alpha + \\cos^2 \\alpha = 1 \\qquad \\text{et} \\qquad \\tan \\alpha = \\frac{\\sin \\alpha}{\\cos \\alpha}$$\n:::\n\n:::methode\n**Calculer un côté :** identifier l'angle connu, l'hypoténuse et les côtés, puis utiliser sin/cos/tan.\n\n**Exemple :** Triangle rectangle en $A$, $BC = 10$ cm, $\\hat{B} = 35°$. Calculer $AC$.\n\n$$\\sin 35° = \\frac{AC}{BC} \\implies AC = BC \\times \\sin 35° \\approx 10 \\times 0{,}574 = 5{,}74 \\text{ cm}$$\n\n**Calculer un angle :** utiliser la calculatrice — $\\hat{B} = \\arcsin\\!\\left(\\frac{AC}{BC}\\right)$ ou $\\arccos$/$\\arctan$.\n:::\n\n:::retenir\n- $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$, $\\cos \\hat{B} = \\frac{\\text{adjacent}}{\\text{hypoténuse}}$, $\\tan \\hat{B} = \\frac{\\text{opposé}}{\\text{adjacent}}$.\n- Moyen mnémotechnique : **SOH-CAH-TOA**.\n- $\\sin^2 \\alpha + \\cos^2 \\alpha = 1$ (relation fondamentale).\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_02_04",
+      "chapterId": "ch_math_3e_02",
+      "title": { "fr": "Cercle — angle au centre et angle inscrit" },
+      "sortOrder": 4,
+      "notionIds": ["not_math_angle_inscrit"],
+      "content": {
+        "fr": "# Cercle — angle au centre et angle inscrit\n\n:::definition\nDans un cercle de centre $O$ :\n\n- **L'angle au centre** est un angle dont le sommet est le centre $O$.\n- **L'angle inscrit** est un angle dont le sommet est un point du cercle et dont les côtés coupent le cercle en deux autres points.\n\nCes deux angles **interceptent le même arc** si leurs côtés passent par les mêmes points du cercle.\n:::\n\n:::theoreme\n**Théorème de l'angle inscrit** : L'angle inscrit est la **moitié** de l'angle au centre qui intercepte le même arc.\n\n$$\\widehat{BAC} = \\frac{1}{2} \\widehat{BOC}$$\n\noù $A$ est un point du cercle et $O$ est le centre.\n:::\n\n:::theoreme\n**Cas particulier — angle dans un demi-cercle** : Si $[BC]$ est un diamètre du cercle de centre $O$, alors pour tout point $A$ du cercle distinct de $B$ et $C$ :\n\n$$\\widehat{BAC} = 90°$$\n:::\n\n:::exemple\nDans un cercle de centre $O$, l'angle au centre $\\widehat{BOC} = 120°$. Tous les angles inscrits interceptant l'arc $BC$ (du même côté) mesurent $\\frac{120°}{2} = 60°$.\n:::\n\n:::methode\nPour résoudre un exercice sur les angles inscrit / au centre :\n\n1. Repérer l'arc intercepté commun.\n2. Appliquer la relation : angle inscrit = $\\frac{1}{2}$ angle au centre.\n3. Si $[BC]$ est un diamètre et $A$ est sur le cercle → $\\widehat{BAC} = 90°$, puis appliquer Pythagore si nécessaire.\n:::\n\n:::retenir\n- Angle inscrit $= \\frac{1}{2}$ angle au centre (même arc intercepté).\n- Tous les angles inscrits interceptant le même arc (du même côté) sont **égaux**.\n- Angle inscrit dans un demi-cercle $= 90°$.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_02_05",
+      "chapterId": "ch_math_3e_02",
+      "title": { "fr": "Agrandissements et réductions — coefficient de similitude" },
+      "sortOrder": 5,
+      "notionIds": ["not_math_coefficient_similitude"],
+      "content": {
+        "fr": "# Agrandissements et réductions\n\n:::definition\nOn dit qu'une figure $F'$ est un **agrandissement** (ou une **réduction**) de la figure $F$ de **coefficient** $k > 0$ si toutes les longueurs de $F'$ sont égales à $k$ fois les longueurs correspondantes de $F$.\n\n- Si $k > 1$ : **agrandissement**.\n- Si $0 < k < 1$ : **réduction**.\n:::\n\n:::propriete\nSi $F'$ est un agrandissement ou une réduction de $F$ de coefficient $k$ :\n\n- Les **longueurs** sont multipliées par $k$.\n- Les **aires** sont multipliées par $k^2$.\n- Les **angles** sont **conservés** (les figures sont similaires).\n:::\n\n:::exemple\nUne photo de $6 \\times 4$ cm est agrandie par un coefficient $k = 3$.\n\n- Nouvelles dimensions : $6 \\times 3 = 18$ cm et $4 \\times 3 = 12$ cm.\n- Aire originale : $6 \\times 4 = 24$ cm².\n- Aire agrandie : $18 \\times 12 = 216$ cm² $= 24 \\times 9 = 24 \\times k^2$. ✓\n:::\n\n:::methode\nPour trouver le coefficient $k$ entre deux figures similaires :\n\n$$k = \\frac{\\text{longueur dans } F'}{\\text{longueur correspondante dans } F}$$\n\nPour calculer une longueur inconnue dans $F'$ :\n\n$$\\text{longueur dans } F' = k \\times \\text{longueur dans } F$$\n\n**Exemple :** Un triangle a des côtés 3 cm, 4 cm, 5 cm. Son image par un agrandissement $k = 2{,}5$ a des côtés 7,5 cm, 10 cm, 12,5 cm.\n:::\n\n:::attention\nL'aire est multipliée par $k^2$, **pas** par $k$. Ne pas multiplier les superficies directement par le coefficient de similitude.\n:::\n\n:::retenir\n- Coefficient $k$ : longueurs $\\times k$, aires $\\times k^2$, angles conservés.\n- $k > 1$ → agrandissement ; $0 < k < 1$ → réduction.\n- Le théorème de Thalès justifie les agrandissements/réductions en géométrie.\n:::"
+      }
+    },
+
+    {
+      "id": "les_math_3e_03_01",
+      "chapterId": "ch_math_3e_03",
+      "title": { "fr": "Séries statistiques — effectifs et fréquences" },
+      "sortOrder": 1,
+      "notionIds": ["not_math_effectif", "not_math_frequence"],
+      "content": {
+        "fr": "# Séries statistiques — effectifs et fréquences\n\n:::definition\nUne **série statistique** est un ensemble de données numériques recueillies lors d'une observation. Pour chaque valeur $x_i$ :\n\n- L'**effectif** $n_i$ est le nombre de fois où $x_i$ apparaît.\n- L'**effectif total** $N = \\sum n_i$.\n- La **fréquence** $f_i = \\dfrac{n_i}{N}$ (aussi exprimée en pourcentage : $f_i \\times 100\\%$).\n- L'**effectif cumulé croissant** est la somme des effectifs de toutes les valeurs inférieures ou égales à $x_i$.\n:::\n\n## Tableau statistique\n\n:::exemple\nNotes de 20 élèves : 5, 8, 10, 10, 12, 12, 12, 14, 14, 15, 15, 15, 16, 16, 16, 16, 17, 18, 18, 20.\n\n| Valeur | Effectif $n_i$ | Fréquence $f_i$ | Eff. cumulé |\n|---|---|---|---|\n| 5 | 1 | 0,05 | 1 |\n| 8 | 1 | 0,05 | 2 |\n| 10 | 2 | 0,10 | 4 |\n| 12 | 3 | 0,15 | 7 |\n| 14 | 2 | 0,10 | 9 |\n| 15 | 3 | 0,15 | 12 |\n| 16 | 4 | 0,20 | 16 |\n| 17 | 1 | 0,05 | 17 |\n| 18 | 2 | 0,10 | 19 |\n| 20 | 1 | 0,05 | 20 |\n| **Total** | **20** | **1** | |\n:::\n\n:::methode\nVérification : $\\sum n_i = N$ et $\\sum f_i = 1$ (ou 100%). Si ce n'est pas le cas, il y a une erreur dans les calculs.\n:::\n\n:::retenir\n- Effectif $n_i$ : nombre d'occurrences de la valeur $x_i$.\n- Fréquence $f_i = \\frac{n_i}{N}$, avec $\\sum f_i = 1$.\n- Effectif total $N = \\sum n_i$.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_03_02",
+      "chapterId": "ch_math_3e_03",
+      "title": { "fr": "Moyenne, médiane et mode" },
+      "sortOrder": 2,
+      "notionIds": ["not_math_moyenne", "not_math_mediane"],
+      "content": {
+        "fr": "# Moyenne, médiane et mode\n\n:::definition\nPour une série de $N$ valeurs $x_1, x_2, \\ldots, x_p$ avec effectifs $n_1, n_2, \\ldots, n_p$ :\n\n- La **moyenne** : $\\bar{x} = \\dfrac{\\sum n_i \\cdot x_i}{N} = \\dfrac{n_1 x_1 + n_2 x_2 + \\cdots + n_p x_p}{N}$\n\n- La **médiane** $Me$ est la valeur qui partage la série ordonnée en deux moitiés égales (50% en dessous, 50% au-dessus).\n\n- Le **mode** est la valeur (ou la classe) qui a l'effectif le plus élevé.\n:::\n\n:::methode\n**Calcul de la médiane :**\n1. Ordonner toutes les valeurs.\n2. Si $N$ est **impair** : $Me$ = valeur de rang $\\dfrac{N+1}{2}$.\n3. Si $N$ est **pair** : $Me$ = moyenne des valeurs de rangs $\\dfrac{N}{2}$ et $\\dfrac{N}{2}+1$.\n:::\n\n:::exemple\nNotes (ordonnées) de 10 élèves : 5, 8, 10, 12, 14, 15, 16, 16, 18, 20.\n\n**Moyenne :** $\\bar{x} = \\dfrac{5+8+10+12+14+15+16+16+18+20}{10} = \\dfrac{134}{10} = 13{,}4$\n\n**Médiane :** $N = 10$ (pair) $\\Rightarrow Me = \\dfrac{14+15}{2} = 14{,}5$\n\n**Mode :** 16 (apparaît 2 fois, le plus souvent).\n:::\n\n:::attention\nLa moyenne est sensible aux **valeurs extrêmes**. La médiane est plus robuste. Dans un exercice de BEPC, lire attentivement si on demande la moyenne, la médiane ou le mode — ce ne sont pas les mêmes calculs.\n:::\n\n:::retenir\n- Moyenne : $\\bar{x} = \\frac{\\sum n_i x_i}{N}$ (pondérée par les effectifs).\n- Médiane : valeur centrale de la série ordonnée.\n- Mode : valeur la plus fréquente.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_03_03",
+      "chapterId": "ch_math_3e_03",
+      "title": { "fr": "Représentations graphiques en statistiques" },
+      "sortOrder": 3,
+      "notionIds": ["not_math_frequence", "not_math_effectif"],
+      "content": {
+        "fr": "# Représentations graphiques en statistiques\n\n:::definition\nUn **diagramme statistique** est une représentation graphique d'une série de données. Les principaux types sont :\n\n- Le **diagramme en bâtons** : barres verticales proportionnelles aux effectifs (données discrètes).\n- Le **diagramme circulaire** (camembert) : secteurs angulaires proportionnels aux fréquences.\n- L'**histogramme** : pour les données groupées en classes.\n- Le **polygone des fréquences** : courbe reliant les milieux des bâtons.\n:::\n\n## Diagramme circulaire\n\n:::methode\nPour construire un diagramme circulaire :\n\n1. Calculer l'angle de chaque secteur : $\\alpha_i = f_i \\times 360°$\n2. Tracer le cercle et placer les secteurs au rapporteur.\n3. Légender chaque secteur (valeur ou pourcentage).\n\n**Exemple :** Un sondage donne 40% de oui, 35% de non, 25% sans avis.\n\n- Secteur « oui » : $0{,}40 \\times 360° = 144°$\n- Secteur « non » : $0{,}35 \\times 360° = 126°$\n- Secteur « sans avis » : $0{,}25 \\times 360° = 90°$\n\nVérification : $144 + 126 + 90 = 360°$ ✓\n:::\n\n:::exemple\nSi 25% des élèves ont entre 15 et 20, le secteur correspondant dans le diagramme circulaire mesure $0{,}25 \\times 360° = 90°$.\n:::\n\n:::attention\nDans un histogramme, c'est **l'aire** des rectangles qui est proportionnelle aux effectifs (pas la hauteur seule, si les classes ont des largeurs différentes).\n:::\n\n:::retenir\n- Diagramme en bâtons → effectifs ou fréquences, données discrètes.\n- Diagramme circulaire → angle = fréquence $\\times$ 360°.\n- Histogramme → données continues groupées en classes.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_03_04",
+      "chapterId": "ch_math_3e_03",
+      "title": { "fr": "Introduction aux probabilités" },
+      "sortOrder": 4,
+      "notionIds": ["not_math_probabilite", "not_math_experience_aleatoire"],
+      "content": {
+        "fr": "# Introduction aux probabilités\n\n:::definition\nUne **expérience aléatoire** est une expérience dont on ne peut pas prévoir le résultat avec certitude. L'ensemble de tous les résultats possibles est appelé l'**univers** $\\Omega$.\n\nUn **événement** est un sous-ensemble de $\\Omega$. La **probabilité** d'un événement $A$ est un nombre réel $P(A)$ tel que $0 \\leq P(A) \\leq 1$.\n:::\n\n:::propriete\n**Propriétés fondamentales :**\n\n- $P(\\Omega) = 1$ (l'événement certain)\n- $P(\\emptyset) = 0$ (l'événement impossible)\n- $P(\\bar{A}) = 1 - P(A)$ ($\\bar{A}$ est l'événement contraire de $A$)\n- Événements incompatibles $A \\cap B = \\emptyset$ : $P(A \\cup B) = P(A) + P(B)$\n:::\n\n:::methode\n**Équiprobabilité** : si toutes les issues sont également probables :\n\n$$P(A) = \\frac{\\text{nombre d'issues favorables à } A}{\\text{nombre total d'issues}} = \\frac{|A|}{|\\Omega|}$$\n\n**Exemple :** On lance un dé à 6 faces. P(nombre pair) = ?\n\n$\\Omega = \\{1, 2, 3, 4, 5, 6\\}$, $A = \\{2, 4, 6\\}$\n\n$$P(A) = \\frac{3}{6} = \\frac{1}{2}$$\n:::\n\n:::exemple\nOn tire une carte dans un jeu de 32 cartes. Quelle est la probabilité de tirer un as ?\n\n$\\Omega$ = 32 cartes équiprobables, il y a 4 as.\n\n$$P(\\text{as}) = \\frac{4}{32} = \\frac{1}{8}$$\n:::\n\n:::retenir\n- Probabilité $\\in [0, 1]$ ; certitude = 1 ; impossibilité = 0.\n- Équiprobabilité : $P(A) = \\frac{|A|}{|\\Omega|}$.\n- Événement contraire : $P(\\bar{A}) = 1 - P(A)$.\n:::"
+      }
+    },
+    {
+      "id": "les_math_3e_03_05",
+      "chapterId": "ch_math_3e_03",
+      "title": { "fr": "Calcul de probabilités — événements et formules" },
+      "sortOrder": 5,
+      "notionIds": ["not_math_evenement", "not_math_probabilite"],
+      "content": {
+        "fr": "# Calcul de probabilités — événements et formules\n\n:::definition\nDeux événements $A$ et $B$ sont **incompatibles** si $A \\cap B = \\emptyset$ (ils ne peuvent pas se réaliser simultanément).\n\nDeux événements sont **indépendants** si la réalisation de l'un n'affecte pas la probabilité de l'autre : $P(A \\cap B) = P(A) \\times P(B)$.\n:::\n\n:::propriete\n**Formules de probabilité :**\n\n- **Réunion** : $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$\n- **Incompatibles** : $P(A \\cup B) = P(A) + P(B)$ (car $P(A \\cap B) = 0$)\n- **Indépendants** : $P(A \\cap B) = P(A) \\times P(B)$\n:::\n\n:::exemple\nOn lance deux dés à 6 faces. Calculer la probabilité d'obtenir **au moins un 6**.\n\n$A$ = « 1er dé donne 6 » ; $P(A) = \\frac{1}{6}$.\n$B$ = « 2ème dé donne 6 » ; $P(B) = \\frac{1}{6}$.\n\n$A$ et $B$ sont indépendants : $P(A \\cap B) = \\frac{1}{36}$.\n\n$$P(A \\cup B) = \\frac{1}{6} + \\frac{1}{6} - \\frac{1}{36} = \\frac{6+6-1}{36} = \\frac{11}{36}$$\n:::\n\n:::methode\n**Stratégie avec l'événement contraire** : pour « au moins un », utiliser $P(\\text{au moins un}) = 1 - P(\\text{aucun})$.\n\n$$P(\\text{au moins un 6}) = 1 - P(\\text{aucun 6}) = 1 - \\frac{5}{6} \\times \\frac{5}{6} = 1 - \\frac{25}{36} = \\frac{11}{36}$$\n:::\n\n:::retenir\n- $P(A \\cup B) = P(A) + P(B) - P(A \\cap B)$\n- Incompatibles : $P(A \\cap B) = 0$\n- Indépendants : $P(A \\cap B) = P(A) \\times P(B)$\n- « Au moins un » → passer par le contraire $1 - P(\\text{aucun})$\n:::"
+      }
+    }
+  ],
+
+  "notions": [
+    {
+      "id": "not_math_nombre_relatif",
+      "title": { "fr": "Nombre relatif" },
+      "definition": { "fr": "Un nombre relatif est un nombre muni d'un signe + ou −. Les positifs se situent à droite de zéro sur la droite numérique, les négatifs à gauche. Exemples : +5, −3, −12." },
+      "lessonIds": ["les_math_3e_01_01"]
+    },
+    {
+      "id": "not_math_valeur_absolue",
+      "title": { "fr": "Valeur absolue" },
+      "definition": { "fr": "La valeur absolue de $a$, notée $|a|$, est la distance de $a$ à zéro sur la droite numérique. Elle est toujours positive ou nulle : $|{-7}| = 7$, $|4| = 4$, $|0| = 0$." },
+      "lessonIds": ["les_math_3e_01_01"]
+    },
+    {
+      "id": "not_math_identite_remarquable",
+      "title": { "fr": "Identité remarquable" },
+      "definition": { "fr": "Une identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$." },
+      "lessonIds": ["les_math_3e_01_02"]
+    },
+    {
+      "id": "not_math_developpement",
+      "title": { "fr": "Développement" },
+      "definition": { "fr": "Développer une expression algébrique, c'est l'écrire sans parenthèses en effectuant les multiplications. On applique les identités remarquables ou la distributivité de gauche à droite." },
+      "lessonIds": ["les_math_3e_01_02"]
+    },
+    {
+      "id": "not_math_factorisation",
+      "title": { "fr": "Factorisation" },
+      "definition": { "fr": "Factoriser une expression algébrique, c'est l'écrire sous la forme d'un produit de facteurs. On reconnaît une identité remarquable ou on met un facteur commun en évidence." },
+      "lessonIds": ["les_math_3e_01_02"]
+    },
+    {
+      "id": "not_math_fraction_algebrique",
+      "title": { "fr": "Fraction algébrique" },
+      "definition": { "fr": "Une fraction algébrique est une fraction $\\frac{A}{B}$ où $A$ et $B$ sont des expressions algébriques, avec $B \\neq 0$. Elle se simplifie en divisant le numérateur et le dénominateur par leurs facteurs communs." },
+      "lessonIds": ["les_math_3e_01_03"]
+    },
+    {
+      "id": "not_math_equation_1er_degre",
+      "title": { "fr": "Équation du premier degré" },
+      "definition": { "fr": "Une équation du premier degré en $x$ est de la forme $ax + b = 0$ avec $a \\neq 0$. Sa solution unique est $x = -\\frac{b}{a}$. Résoudre une équation, c'est trouver les valeurs de l'inconnue qui vérifient l'égalité." },
+      "lessonIds": ["les_math_3e_01_04"]
+    },
+    {
+      "id": "not_math_solution_equation",
+      "title": { "fr": "Solution d'une équation" },
+      "definition": { "fr": "Une solution d'une équation est une valeur de l'inconnue qui rend l'égalité vraie. On vérifie une solution en la substituant dans l'équation et en vérifiant que les deux membres sont égaux." },
+      "lessonIds": ["les_math_3e_01_04"]
+    },
+    {
+      "id": "not_math_inequation",
+      "title": { "fr": "Inéquation du premier degré" },
+      "definition": { "fr": "Une inéquation du premier degré est une inégalité de la forme $ax + b > 0$ (ou $\\geq$, $<$, $\\leq$). L'ensemble des solutions est un intervalle. Attention : multiplier/diviser par un négatif inverse le sens de l'inégalité." },
+      "lessonIds": ["les_math_3e_01_05"]
+    },
+    {
+      "id": "not_math_pythagore",
+      "title": { "fr": "Théorème de Pythagore" },
+      "definition": { "fr": "Dans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13)." },
+      "lessonIds": ["les_math_3e_02_01"]
+    },
+    {
+      "id": "not_math_triangle_rectangle",
+      "title": { "fr": "Triangle rectangle" },
+      "definition": { "fr": "Un triangle rectangle possède un angle droit (90°). Le côté opposé à l'angle droit s'appelle l'hypoténuse ; c'est le plus long côté du triangle." },
+      "lessonIds": ["les_math_3e_02_01"]
+    },
+    {
+      "id": "not_math_thales",
+      "title": { "fr": "Théorème de Thalès" },
+      "definition": { "fr": "Si $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles." },
+      "lessonIds": ["les_math_3e_02_02"]
+    },
+    {
+      "id": "not_math_sin",
+      "title": { "fr": "Sinus d'un angle" },
+      "definition": { "fr": "Dans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$." },
+      "lessonIds": ["les_math_3e_02_03"]
+    },
+    {
+      "id": "not_math_cos",
+      "title": { "fr": "Cosinus d'un angle" },
+      "definition": { "fr": "Dans un triangle rectangle, le cosinus d'un angle aigu $\\hat{B}$ est le rapport du côté adjacent à $\\hat{B}$ sur l'hypoténuse : $\\cos \\hat{B} = \\frac{\\text{adjacent}}{\\text{hypoténuse}}$. Valeurs : $\\cos 60° = 0{,}5$, $\\cos 45° \\approx 0{,}707$." },
+      "lessonIds": ["les_math_3e_02_03"]
+    },
+    {
+      "id": "not_math_tan",
+      "title": { "fr": "Tangente d'un angle" },
+      "definition": { "fr": "Dans un triangle rectangle, la tangente d'un angle aigu $\\hat{B}$ est le rapport du côté opposé sur le côté adjacent : $\\tan \\hat{B} = \\frac{\\text{opposé}}{\\text{adjacent}}$. Valeurs remarquables : $\\tan 45° = 1$, $\\tan 60° = \\sqrt{3} \\approx 1{,}732$." },
+      "lessonIds": ["les_math_3e_02_03"]
+    },
+    {
+      "id": "not_math_angle_inscrit",
+      "title": { "fr": "Angle inscrit" },
+      "definition": { "fr": "Un angle inscrit dans un cercle a son sommet sur le cercle. Il mesure la moitié de l'angle au centre interceptant le même arc. Un angle inscrit dans un demi-cercle (diamètre = côté opposé) vaut toujours 90°." },
+      "lessonIds": ["les_math_3e_02_04"]
+    },
+    {
+      "id": "not_math_coefficient_similitude",
+      "title": { "fr": "Coefficient de similitude" },
+      "definition": { "fr": "Le coefficient de similitude $k$ entre deux figures est le rapport des longueurs correspondantes. Si $k > 1$ : agrandissement ; si $0 < k < 1$ : réduction. Les longueurs sont multipliées par $k$, les aires par $k^2$, les angles sont conservés." },
+      "lessonIds": ["les_math_3e_02_05"]
+    },
+    {
+      "id": "not_math_effectif",
+      "title": { "fr": "Effectif" },
+      "definition": { "fr": "L'effectif $n_i$ d'une valeur $x_i$ dans une série statistique est le nombre de fois que cette valeur apparaît. L'effectif total est $N = \\sum n_i$." },
+      "lessonIds": ["les_math_3e_03_01", "les_math_3e_03_03"]
+    },
+    {
+      "id": "not_math_frequence",
+      "title": { "fr": "Fréquence" },
+      "definition": { "fr": "La fréquence d'une valeur $x_i$ est $f_i = \\frac{n_i}{N}$, avec $N$ l'effectif total. Elle est comprise entre 0 et 1, et la somme de toutes les fréquences vaut 1. Elle peut s'exprimer en pourcentage." },
+      "lessonIds": ["les_math_3e_03_01", "les_math_3e_03_03"]
+    },
+    {
+      "id": "not_math_moyenne",
+      "title": { "fr": "Moyenne" },
+      "definition": { "fr": "La moyenne d'une série statistique est $\\bar{x} = \\frac{\\sum n_i x_i}{N}$. C'est la valeur qui équilibre la série. Elle est sensible aux valeurs extrêmes." },
+      "lessonIds": ["les_math_3e_03_02"]
+    },
+    {
+      "id": "not_math_mediane",
+      "title": { "fr": "Médiane" },
+      "definition": { "fr": "La médiane d'une série ordonnée partage la série en deux moitiés égales : 50% des valeurs sont inférieures ou égales à la médiane, 50% sont supérieures ou égales. Si $N$ est pair, c'est la moyenne des deux valeurs centrales." },
+      "lessonIds": ["les_math_3e_03_02"]
+    },
+    {
+      "id": "not_math_probabilite",
+      "title": { "fr": "Probabilité" },
+      "definition": { "fr": "La probabilité d'un événement $A$ est un nombre entre 0 et 1 mesurant la chance que $A$ se réalise. En cas d'équiprobabilité : $P(A) = \\frac{\\text{nb d'issues favorables}}{\\text{nb total d'issues}}$. L'événement contraire vérifie $P(\\bar{A}) = 1 - P(A)$." },
+      "lessonIds": ["les_math_3e_03_04", "les_math_3e_03_05"]
+    },
+    {
+      "id": "not_math_experience_aleatoire",
+      "title": { "fr": "Expérience aléatoire" },
+      "definition": { "fr": "Une expérience aléatoire est une expérience dont on ne peut pas prévoir avec certitude le résultat. L'ensemble de tous les résultats possibles est l'univers $\\Omega$. Exemples : lancer un dé, tirer une carte, tirer une bille d'un sac." },
+      "lessonIds": ["les_math_3e_03_04"]
+    },
+    {
+      "id": "not_math_evenement",
+      "title": { "fr": "Événement" },
+      "definition": { "fr": "Un événement est un sous-ensemble de l'univers $\\Omega$. Deux événements sont incompatibles si leur intersection est vide ($A \\cap B = \\emptyset$), et indépendants si $P(A \\cap B) = P(A) \\times P(B)$." },
+      "lessonIds": ["les_math_3e_03_05"]
+    }
+  ],
+
+  "quizzes": [
+    {
+      "id": "qz_math_3e_01_01",
+      "lessonId": "les_math_3e_01_01",
+      "questions": [
+        {
+          "id": "qz_math_3e_01_01_q1",
+          "text": "Calculer $(-5) + (-8)$.",
+          "options": ["-3", "-13", "13", "3"],
+          "correctIndex": 1,
+          "explanation": "Même signe (tous les deux négatifs) → on additionne les valeurs absolues et on garde le signe : $5 + 8 = 13$, donc le résultat est $-13$.",
+          "notionId": "not_math_nombre_relatif"
+        },
+        {
+          "id": "qz_math_3e_01_01_q2",
+          "text": "Calculer $(-4) \\times (-3)$.",
+          "options": ["-12", "12", "-7", "7"],
+          "correctIndex": 1,
+          "explanation": "Produit de deux nombres de même signe (tous deux négatifs) → résultat positif : $(-4) \\times (-3) = +12$.",
+          "notionId": "not_math_nombre_relatif"
+        },
+        {
+          "id": "qz_math_3e_01_01_q3",
+          "text": "Quelle est la valeur absolue de $-7$ ?",
+          "options": ["-7", "0", "7", "14"],
+          "correctIndex": 2,
+          "explanation": "La valeur absolue d'un nombre est sa distance à zéro : $|-7| = 7$. Elle est toujours positive ou nulle.",
+          "notionId": "not_math_valeur_absolue"
+        },
+        {
+          "id": "qz_math_3e_01_01_q4",
+          "text": "Calculer $\\dfrac{-15}{+3}$.",
+          "options": ["5", "-5", "45", "-45"],
+          "correctIndex": 1,
+          "explanation": "Quotient de signes différents → résultat négatif : $\\frac{-15}{+3} = -5$.",
+          "notionId": "not_math_nombre_relatif"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_01_02",
+      "lessonId": "les_math_3e_01_02",
+      "questions": [
+        {
+          "id": "qz_math_3e_01_02_q1",
+          "text": "Développer $(x + 3)^2$.",
+          "options": ["$x^2 + 9$", "$x^2 + 3x + 9$", "$x^2 + 6x + 9$", "$x^2 - 6x + 9$"],
+          "correctIndex": 2,
+          "explanation": "$(x+3)^2 = x^2 + 2 \\times x \\times 3 + 3^2 = x^2 + 6x + 9$. Ne pas oublier le terme $2ab = 6x$.",
+          "notionId": "not_math_identite_remarquable"
+        },
+        {
+          "id": "qz_math_3e_01_02_q2",
+          "text": "Factoriser $x^2 - 16$.",
+          "options": ["$(x-4)^2$", "$(x+4)(x-4)$", "$(x-4)(x-4)$", "$(x+8)(x-2)$"],
+          "correctIndex": 1,
+          "explanation": "$x^2 - 16 = x^2 - 4^2 = (x+4)(x-4)$. On utilise l'identité remarquable $a^2 - b^2 = (a+b)(a-b)$ avec $a = x$ et $b = 4$.",
+          "notionId": "not_math_identite_remarquable"
+        },
+        {
+          "id": "qz_math_3e_01_02_q3",
+          "text": "Développer $(2x - 1)^2$.",
+          "options": ["$4x^2 + 1$", "$4x^2 - 1$", "$4x^2 - 4x + 1$", "$4x^2 + 4x + 1$"],
+          "correctIndex": 2,
+          "explanation": "$(2x-1)^2 = (2x)^2 - 2 \\times 2x \\times 1 + 1^2 = 4x^2 - 4x + 1$. On applique $(a-b)^2 = a^2 - 2ab + b^2$.",
+          "notionId": "not_math_developpement"
+        },
+        {
+          "id": "qz_math_3e_01_02_q4",
+          "text": "Quelle est la forme factorisée de $x^2 + 10x + 25$ ?",
+          "options": ["$(x+5)(x-5)$", "$(x-5)^2$", "$(x+5)^2$", "$(x+10)(x+2{,}5)$"],
+          "correctIndex": 2,
+          "explanation": "$x^2 + 10x + 25 = x^2 + 2 \\times 5 \\times x + 5^2 = (x+5)^2$. On reconnaît l'identité $(a+b)^2$ avec $a = x$ et $b = 5$.",
+          "notionId": "not_math_factorisation"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_01_03",
+      "lessonId": "les_math_3e_01_03",
+      "questions": [
+        {
+          "id": "qz_math_3e_01_03_q1",
+          "text": "Simplifier $\\dfrac{6x}{9}$ (pour $x \\neq 0$).",
+          "options": ["$\\dfrac{3}{2x}$", "$\\dfrac{2x}{3}$", "$\\dfrac{x}{3}$", "$\\dfrac{2}{3}$"],
+          "correctIndex": 1,
+          "explanation": "$\\frac{6x}{9} = \\frac{6}{9} \\times x = \\frac{2}{3} x = \\frac{2x}{3}$. On simplifie par 3.",
+          "notionId": "not_math_fraction_algebrique"
+        },
+        {
+          "id": "qz_math_3e_01_03_q2",
+          "text": "Calculer $\\dfrac{1}{2} + \\dfrac{1}{3}$.",
+          "options": ["$\\dfrac{1}{6}$", "$\\dfrac{2}{5}$", "$\\dfrac{5}{6}$", "$\\dfrac{1}{5}$"],
+          "correctIndex": 2,
+          "explanation": "$\\frac{1}{2} + \\frac{1}{3} = \\frac{3}{6} + \\frac{2}{6} = \\frac{5}{6}$. On réduit au dénominateur commun 6.",
+          "notionId": "not_math_fraction_algebrique"
+        },
+        {
+          "id": "qz_math_3e_01_03_q3",
+          "text": "Pour quelles valeurs de $x$ la fraction $\\dfrac{1}{x - 2}$ est-elle définie ?",
+          "options": ["$x \\neq 0$", "$x \\neq -2$", "$x \\neq 2$", "Pour tout $x$"],
+          "correctIndex": 2,
+          "explanation": "La fraction est définie lorsque le dénominateur est non nul : $x - 2 \\neq 0$, donc $x \\neq 2$.",
+          "notionId": "not_math_fraction_algebrique"
+        },
+        {
+          "id": "qz_math_3e_01_03_q4",
+          "text": "Calculer $\\dfrac{2}{3} \\times \\dfrac{3}{4}$.",
+          "options": ["$\\dfrac{5}{7}$", "$\\dfrac{6}{7}$", "$\\dfrac{1}{3}$", "$\\dfrac{1}{2}$"],
+          "correctIndex": 3,
+          "explanation": "$\\frac{2}{3} \\times \\frac{3}{4} = \\frac{2 \\times 3}{3 \\times 4} = \\frac{6}{12} = \\frac{1}{2}$.",
+          "notionId": "not_math_fraction_algebrique"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_01_04",
+      "lessonId": "les_math_3e_01_04",
+      "questions": [
+        {
+          "id": "qz_math_3e_01_04_q1",
+          "text": "Résoudre $2x + 5 = 11$.",
+          "options": ["$x = 8$", "$x = 3$", "$x = -3$", "$x = 6$"],
+          "correctIndex": 1,
+          "explanation": "$2x + 5 = 11 \\Rightarrow 2x = 11 - 5 = 6 \\Rightarrow x = 3$. Vérification : $2 \\times 3 + 5 = 11$ ✓",
+          "notionId": "not_math_equation_1er_degre"
+        },
+        {
+          "id": "qz_math_3e_01_04_q2",
+          "text": "Résoudre $3x - 7 = x + 5$.",
+          "options": ["$x = 1$", "$x = -1$", "$x = 6$", "$x = -6$"],
+          "correctIndex": 2,
+          "explanation": "$3x - x = 5 + 7 \\Rightarrow 2x = 12 \\Rightarrow x = 6$. Vérification : $3 \\times 6 - 7 = 11 = 6 + 5$ ✓",
+          "notionId": "not_math_solution_equation"
+        },
+        {
+          "id": "qz_math_3e_01_04_q3",
+          "text": "Résoudre $(x + 1)(x - 3) = 0$.",
+          "options": ["$x = 3$ seulement", "$x = -1$ seulement", "$x = -1$ ou $x = 3$", "$x = 1$ ou $x = -3$"],
+          "correctIndex": 2,
+          "explanation": "Un produit est nul si et seulement si l'un des facteurs est nul : $x + 1 = 0 \\Rightarrow x = -1$ ou $x - 3 = 0 \\Rightarrow x = 3$.",
+          "notionId": "not_math_equation_1er_degre"
+        },
+        {
+          "id": "qz_math_3e_01_04_q4",
+          "text": "Résoudre $5 - x = 2x + 2$.",
+          "options": ["$x = 7$", "$x = -7$", "$x = 1$", "$x = -1$"],
+          "correctIndex": 2,
+          "explanation": "$5 - 2 = 2x + x \\Rightarrow 3 = 3x \\Rightarrow x = 1$. Vérification : $5 - 1 = 4 = 2 \\times 1 + 2$ ✓",
+          "notionId": "not_math_equation_1er_degre"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_01_05",
+      "lessonId": "les_math_3e_01_05",
+      "questions": [
+        {
+          "id": "qz_math_3e_01_05_q1",
+          "text": "Résoudre $3x > 9$.",
+          "options": ["$x > 27$", "$x > 3$", "$x < 3$", "$x < 27$"],
+          "correctIndex": 1,
+          "explanation": "$3x > 9 \\Rightarrow x > \\frac{9}{3} = 3$. On divise par 3 (positif) : le sens de l'inégalité est conservé.",
+          "notionId": "not_math_inequation"
+        },
+        {
+          "id": "qz_math_3e_01_05_q2",
+          "text": "Résoudre $-2x \\geq 8$.",
+          "options": ["$x \\geq -4$", "$x \\leq -4$", "$x \\geq 4$", "$x \\leq 4$"],
+          "correctIndex": 1,
+          "explanation": "$-2x \\geq 8 \\Rightarrow x \\leq \\frac{8}{-2} = -4$. On divise par $-2$ (négatif) : le sens de l'inégalité s'inverse.",
+          "notionId": "not_math_inequation"
+        },
+        {
+          "id": "qz_math_3e_01_05_q3",
+          "text": "Résoudre $x + 5 < 2x - 1$.",
+          "options": ["$x < 6$", "$x > 6$", "$x < -6$", "$x > -6$"],
+          "correctIndex": 1,
+          "explanation": "$x + 5 < 2x - 1 \\Rightarrow 5 + 1 < 2x - x \\Rightarrow 6 < x$, donc $x > 6$.",
+          "notionId": "not_math_inequation"
+        },
+        {
+          "id": "qz_math_3e_01_05_q4",
+          "text": "L'ensemble solution de $-x > 5$ est :",
+          "options": ["$]5 ; +\\infty[$", "$]-\\infty ; 5[$", "$]-\\infty ; -5[$", "$]-5 ; +\\infty[$"],
+          "correctIndex": 2,
+          "explanation": "$-x > 5 \\Rightarrow x < -5$ (division par $-1$ : inégalité change de sens). $S = ]-\\infty \\,;\\, -5[$.",
+          "notionId": "not_math_inequation"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_02_01",
+      "lessonId": "les_math_3e_02_01",
+      "questions": [
+        {
+          "id": "qz_math_3e_02_01_q1",
+          "text": "Dans un triangle rectangle en $A$, $AB = 3$ cm et $AC = 4$ cm. Calculer $BC$.",
+          "options": ["5 cm", "7 cm", "$\\sqrt{7}$ cm", "$\\sqrt{14}$ cm"],
+          "correctIndex": 0,
+          "explanation": "$BC^2 = AB^2 + AC^2 = 9 + 16 = 25$, donc $BC = 5$ cm. $(3, 4, 5)$ est un triplet pythagoricien.",
+          "notionId": "not_math_pythagore"
+        },
+        {
+          "id": "qz_math_3e_02_01_q2",
+          "text": "Un triangle a les côtés $5$ cm, $12$ cm et $13$ cm. Est-il rectangle ?",
+          "options": ["Non, car $5 + 12 \\neq 13$", "Oui, car $5^2 + 12^2 = 13^2$", "Non, car aucun angle ne se voit droit", "Impossible à déterminer sans mesurer les angles"],
+          "correctIndex": 1,
+          "explanation": "$5^2 + 12^2 = 25 + 144 = 169 = 13^2$. Par la réciproque de Pythagore, le triangle est rectangle (en face du côté 13).",
+          "notionId": "not_math_pythagore"
+        },
+        {
+          "id": "qz_math_3e_02_01_q3",
+          "text": "Dans un triangle rectangle, l'hypoténuse est :",
+          "options": ["Le plus petit côté", "Le côté adjacent à l'angle droit", "Le côté opposé à l'angle droit", "N'importe quel côté"],
+          "correctIndex": 2,
+          "explanation": "L'hypoténuse est le côté opposé à l'angle droit. C'est toujours le plus grand côté du triangle rectangle.",
+          "notionId": "not_math_triangle_rectangle"
+        },
+        {
+          "id": "qz_math_3e_02_01_q4",
+          "text": "Dans un triangle rectangle en $A$, $BC = 10$ cm et $AB = 6$ cm. Calculer $AC$.",
+          "options": ["4 cm", "8 cm", "$\\sqrt{136}$ cm", "16 cm"],
+          "correctIndex": 1,
+          "explanation": "$BC^2 = AB^2 + AC^2 \\Rightarrow AC^2 = BC^2 - AB^2 = 100 - 36 = 64 \\Rightarrow AC = 8$ cm.",
+          "notionId": "not_math_pythagore"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_02_02",
+      "lessonId": "les_math_3e_02_02",
+      "questions": [
+        {
+          "id": "qz_math_3e_02_02_q1",
+          "text": "Dans un triangle $ABC$, $(MN) \\parallel (BC)$, $AM = 4$ cm, $AB = 8$ cm, $MN = 5$ cm. Calculer $BC$.",
+          "options": ["2,5 cm", "10 cm", "20 cm", "8 cm"],
+          "correctIndex": 1,
+          "explanation": "Par Thalès : $\\frac{AM}{AB} = \\frac{MN}{BC} \\Rightarrow \\frac{4}{8} = \\frac{5}{BC} \\Rightarrow BC = \\frac{5 \\times 8}{4} = 10$ cm.",
+          "notionId": "not_math_thales"
+        },
+        {
+          "id": "qz_math_3e_02_02_q2",
+          "text": "$(MN) \\parallel (BC)$, $\\frac{AM}{AB} = \\frac{2}{3}$ et $BC = 9$ cm. Calculer $MN$.",
+          "options": ["6 cm", "13,5 cm", "3 cm", "4,5 cm"],
+          "correctIndex": 0,
+          "explanation": "Par Thalès : $\\frac{MN}{BC} = \\frac{AM}{AB} = \\frac{2}{3}$, donc $MN = \\frac{2}{3} \\times 9 = 6$ cm.",
+          "notionId": "not_math_thales"
+        },
+        {
+          "id": "qz_math_3e_02_02_q3",
+          "text": "La réciproque du théorème de Thalès permet de démontrer que deux droites sont :",
+          "options": ["Perpendiculaires", "Parallèles", "Sécantes", "Confondues"],
+          "correctIndex": 1,
+          "explanation": "La réciproque de Thalès dit que si les rapports $\\frac{AM}{AB} = \\frac{AN}{AC}$ sont égaux, alors $(MN) \\parallel (BC)$. Elle sert à prouver le parallélisme.",
+          "notionId": "not_math_thales"
+        },
+        {
+          "id": "qz_math_3e_02_02_q4",
+          "text": "Dans le triangle $DEF$, $(GH) \\parallel (EF)$, $DG = 6$ cm, $GE = 3$ cm, $EF = 12$ cm. Calculer $GH$.",
+          "options": ["6 cm", "8 cm", "4 cm", "9 cm"],
+          "correctIndex": 1,
+          "explanation": "$DE = DG + GE = 9$ cm. Par Thalès : $\\frac{DG}{DE} = \\frac{GH}{EF} \\Rightarrow \\frac{6}{9} = \\frac{GH}{12} \\Rightarrow GH = \\frac{6 \\times 12}{9} = 8$ cm.",
+          "notionId": "not_math_thales"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_02_03",
+      "lessonId": "les_math_3e_02_03",
+      "questions": [
+        {
+          "id": "qz_math_3e_02_03_q1",
+          "text": "Dans un triangle rectangle en $A$, $BC = 5$ cm et $AB = 3$ cm. Calculer $\\cos \\hat{B}$.",
+          "options": ["$\\dfrac{3}{5}$", "$\\dfrac{4}{5}$", "$\\dfrac{3}{4}$", "$\\dfrac{5}{3}$"],
+          "correctIndex": 0,
+          "explanation": "$\\cos \\hat{B} = \\frac{\\text{adjacent}}{\\text{hypoténuse}} = \\frac{AB}{BC} = \\frac{3}{5} = 0{,}6$.",
+          "notionId": "not_math_cos"
+        },
+        {
+          "id": "qz_math_3e_02_03_q2",
+          "text": "$\\sin(30°)$ est égal à :",
+          "options": ["$\\dfrac{\\sqrt{3}}{2}$", "$\\dfrac{\\sqrt{2}}{2}$", "$\\dfrac{1}{2}$", "$1$"],
+          "correctIndex": 2,
+          "explanation": "C'est une valeur remarquable à connaître : $\\sin(30°) = \\frac{1}{2} = 0{,}5$.",
+          "notionId": "not_math_sin"
+        },
+        {
+          "id": "qz_math_3e_02_03_q3",
+          "text": "Dans un triangle rectangle en $A$, $AC = 4$ cm et $AB = 3$ cm. Calculer $\\tan \\hat{B}$.",
+          "options": ["$\\dfrac{3}{4}$", "$\\dfrac{4}{3}$", "$\\dfrac{4}{5}$", "$\\dfrac{3}{5}$"],
+          "correctIndex": 1,
+          "explanation": "$\\tan \\hat{B} = \\frac{\\text{opposé}}{\\text{adjacent}} = \\frac{AC}{AB} = \\frac{4}{3} \\approx 1{,}333$.",
+          "notionId": "not_math_tan"
+        },
+        {
+          "id": "qz_math_3e_02_03_q4",
+          "text": "Laquelle de ces relations est toujours vraie pour un angle aigu $\\alpha$ ?",
+          "options": ["$\\sin^2 \\alpha + \\cos^2 \\alpha = 2$", "$\\sin \\alpha = \\cos \\alpha$", "$\\sin^2 \\alpha + \\cos^2 \\alpha = 1$", "$\\tan \\alpha = \\sin \\alpha \\times \\cos \\alpha$"],
+          "correctIndex": 2,
+          "explanation": "La relation fondamentale de la trigonométrie est $\\sin^2 \\alpha + \\cos^2 \\alpha = 1$, vraie pour tout angle $\\alpha$.",
+          "notionId": "not_math_sin"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_02_04",
+      "lessonId": "les_math_3e_02_04",
+      "questions": [
+        {
+          "id": "qz_math_3e_02_04_q1",
+          "text": "L'angle au centre $\\widehat{BOC} = 80°$. Quelle est la mesure de l'angle inscrit $\\widehat{BAC}$ interceptant le même arc ?",
+          "options": ["160°", "80°", "40°", "20°"],
+          "correctIndex": 2,
+          "explanation": "L'angle inscrit est la moitié de l'angle au centre interceptant le même arc : $\\widehat{BAC} = \\frac{80°}{2} = 40°$.",
+          "notionId": "not_math_angle_inscrit"
+        },
+        {
+          "id": "qz_math_3e_02_04_q2",
+          "text": "$[BC]$ est un diamètre d'un cercle et $A$ est un point du cercle distinct de $B$ et $C$. Que vaut $\\widehat{BAC}$ ?",
+          "options": ["45°", "60°", "180°", "90°"],
+          "correctIndex": 3,
+          "explanation": "Tout angle inscrit dans un demi-cercle est un angle droit : $\\widehat{BAC} = 90°$. C'est le théorème de l'angle dans un demi-cercle.",
+          "notionId": "not_math_angle_inscrit"
+        },
+        {
+          "id": "qz_math_3e_02_04_q3",
+          "text": "Deux angles inscrits $\\widehat{BAC}$ et $\\widehat{BDC}$ interceptant le même arc $BC$ (du même côté) sont-ils toujours égaux ?",
+          "options": ["Non, ça dépend de la position de $A$ et $D$", "Oui, ils sont toujours égaux", "Seulement si $A$ et $D$ sont symétriques", "Oui, seulement si $[BC]$ est un diamètre"],
+          "correctIndex": 1,
+          "explanation": "Tous les angles inscrits interceptant le même arc (du même côté) sont égaux entre eux — ils valent chacun la moitié de l'angle au centre correspondant.",
+          "notionId": "not_math_angle_inscrit"
+        },
+        {
+          "id": "qz_math_3e_02_04_q4",
+          "text": "Un angle inscrit $\\widehat{BAC} = 35°$. Quel est l'angle au centre $\\widehat{BOC}$ interceptant le même arc ?",
+          "options": ["17,5°", "35°", "70°", "105°"],
+          "correctIndex": 2,
+          "explanation": "L'angle au centre est le double de l'angle inscrit interceptant le même arc : $\\widehat{BOC} = 2 \\times 35° = 70°$.",
+          "notionId": "not_math_angle_inscrit"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_02_05",
+      "lessonId": "les_math_3e_02_05",
+      "questions": [
+        {
+          "id": "qz_math_3e_02_05_q1",
+          "text": "Un rectangle de $4 \\times 6$ cm est agrandi par le coefficient $k = 2$. Quelles sont ses nouvelles dimensions ?",
+          "options": ["$6 \\times 8$ cm", "$8 \\times 12$ cm", "$2 \\times 3$ cm", "$4 \\times 12$ cm"],
+          "correctIndex": 1,
+          "explanation": "Toutes les longueurs sont multipliées par $k = 2$ : $4 \\times 2 = 8$ cm et $6 \\times 2 = 12$ cm.",
+          "notionId": "not_math_coefficient_similitude"
+        },
+        {
+          "id": "qz_math_3e_02_05_q2",
+          "text": "Un agrandissement de coefficient $k = 3$. Par quel facteur l'aire est-elle multipliée ?",
+          "options": ["3", "6", "9", "$\\sqrt{3}$"],
+          "correctIndex": 2,
+          "explanation": "Les aires sont multipliées par $k^2 = 3^2 = 9$, pas par $k$. C'est une erreur classique de multiplier les aires par $k$.",
+          "notionId": "not_math_coefficient_similitude"
+        },
+        {
+          "id": "qz_math_3e_02_05_q3",
+          "text": "Toutes les longueurs d'une figure $F'$ sont égales à $0{,}5$ fois celles de $F$. Quel est le coefficient de similitude ?",
+          "options": ["2", "$\\sqrt{0{,}5}$", "0,25", "0,5"],
+          "correctIndex": 3,
+          "explanation": "Le coefficient de similitude est $k = 0{,}5$. Puisque $0 < k < 1$, il s'agit d'une réduction.",
+          "notionId": "not_math_coefficient_similitude"
+        },
+        {
+          "id": "qz_math_3e_02_05_q4",
+          "text": "Une photo de $5 \\times 4$ cm est réduite à $2{,}5 \\times 2$ cm. Quel est le coefficient de réduction ?",
+          "options": ["0,25", "2", "0,5", "4"],
+          "correctIndex": 2,
+          "explanation": "$k = \\frac{2{,}5}{5} = 0{,}5$ (ou $\\frac{2}{4} = 0{,}5$). C'est bien une réduction car $k = 0{,}5 < 1$.",
+          "notionId": "not_math_coefficient_similitude"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_03_01",
+      "lessonId": "les_math_3e_03_01",
+      "questions": [
+        {
+          "id": "qz_math_3e_03_01_q1",
+          "text": "L'effectif total est $N = 40$ et l'effectif de la valeur 15 est $n_{15} = 8$. Quelle est la fréquence de 15 ?",
+          "options": ["0,5", "0,2", "0,08", "0,15"],
+          "correctIndex": 1,
+          "explanation": "$f_{15} = \\frac{n_{15}}{N} = \\frac{8}{40} = 0{,}2$. Cela correspond à 20% des données.",
+          "notionId": "not_math_frequence"
+        },
+        {
+          "id": "qz_math_3e_03_01_q2",
+          "text": "La fréquence d'une valeur est $0{,}25$ et l'effectif total est $N = 80$. Quel est son effectif ?",
+          "options": ["320", "40", "20", "25"],
+          "correctIndex": 2,
+          "explanation": "$n_i = f_i \\times N = 0{,}25 \\times 80 = 20$.",
+          "notionId": "not_math_effectif"
+        },
+        {
+          "id": "qz_math_3e_03_01_q3",
+          "text": "Vrai ou faux : la somme de toutes les fréquences d'une série statistique est toujours égale à 1.",
+          "options": ["Vrai", "Faux, ça dépend du nombre de valeurs", "Faux, elle est égale à 100", "Vrai, seulement si les valeurs sont toutes différentes"],
+          "correctIndex": 0,
+          "explanation": "La somme des fréquences est toujours $\\sum f_i = 1$ car $\\sum n_i = N$, donc $\\sum \\frac{n_i}{N} = \\frac{N}{N} = 1$.",
+          "notionId": "not_math_frequence"
+        },
+        {
+          "id": "qz_math_3e_03_01_q4",
+          "text": "Une série a les effectifs : valeur 5 → 3 élèves, valeur 8 → 5 élèves, valeur 10 → 2 élèves. Quel est l'effectif cumulé jusqu'à 8 ?",
+          "options": ["5", "8", "10", "3"],
+          "correctIndex": 1,
+          "explanation": "L'effectif cumulé jusqu'à 8 est la somme des effectifs des valeurs $\\leq 8$ : $3 + 5 = 8$.",
+          "notionId": "not_math_effectif"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_03_02",
+      "lessonId": "les_math_3e_03_02",
+      "questions": [
+        {
+          "id": "qz_math_3e_03_02_q1",
+          "text": "Calculer la moyenne de la série : 4, 8, 10, 14.",
+          "options": ["8", "9", "10", "7"],
+          "correctIndex": 1,
+          "explanation": "$\\bar{x} = \\frac{4 + 8 + 10 + 14}{4} = \\frac{36}{4} = 9$.",
+          "notionId": "not_math_moyenne"
+        },
+        {
+          "id": "qz_math_3e_03_02_q2",
+          "text": "Série ordonnée de 5 valeurs : 2, 5, 7, 10, 15. Quelle est la médiane ?",
+          "options": ["5", "6", "7", "10"],
+          "correctIndex": 2,
+          "explanation": "$N = 5$ (impair) → la médiane est la valeur de rang $\\frac{5+1}{2} = 3$, soit la 3ème valeur : $Me = 7$.",
+          "notionId": "not_math_mediane"
+        },
+        {
+          "id": "qz_math_3e_03_02_q3",
+          "text": "3 élèves ont $10$, 5 élèves ont $14$, 2 élèves ont $16$. Quelle est la moyenne ?",
+          "options": ["13", "13,2", "14", "13,5"],
+          "correctIndex": 1,
+          "explanation": "$\\bar{x} = \\frac{3 \\times 10 + 5 \\times 14 + 2 \\times 16}{10} = \\frac{30 + 70 + 32}{10} = \\frac{132}{10} = 13{,}2$.",
+          "notionId": "not_math_moyenne"
+        },
+        {
+          "id": "qz_math_3e_03_02_q4",
+          "text": "Série ordonnée : 1, 3, 5, 7. Quelle est la médiane ?",
+          "options": ["3", "5", "4", "3,5"],
+          "correctIndex": 2,
+          "explanation": "$N = 4$ (pair) → $Me = \\frac{\\text{valeur de rang 2} + \\text{valeur de rang 3}}{2} = \\frac{3 + 5}{2} = 4$.",
+          "notionId": "not_math_mediane"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_03_03",
+      "lessonId": "les_math_3e_03_03",
+      "questions": [
+        {
+          "id": "qz_math_3e_03_03_q1",
+          "text": "Une fréquence est $0{,}30$. Quel est l'angle du secteur correspondant dans un diagramme circulaire ?",
+          "options": ["30°", "90°", "108°", "180°"],
+          "correctIndex": 2,
+          "explanation": "$\\alpha = f \\times 360° = 0{,}30 \\times 360° = 108°$.",
+          "notionId": "not_math_frequence"
+        },
+        {
+          "id": "qz_math_3e_03_03_q2",
+          "text": "Dans un diagramme circulaire, la somme de tous les angles des secteurs vaut :",
+          "options": ["180°", "90°", "270°", "360°"],
+          "correctIndex": 3,
+          "explanation": "La somme des angles est toujours $360°$ car les fréquences s'additionnent à 1 : $\\sum (f_i \\times 360°) = 360° \\times \\sum f_i = 360°$.",
+          "notionId": "not_math_frequence"
+        },
+        {
+          "id": "qz_math_3e_03_03_q3",
+          "text": "Dans un sondage : 30% bleu, 50% rouge, 20% vert. Quel est l'angle du secteur rouge ?",
+          "options": ["50°", "100°", "180°", "120°"],
+          "correctIndex": 2,
+          "explanation": "$\\alpha_{rouge} = 0{,}50 \\times 360° = 180°$.",
+          "notionId": "not_math_frequence"
+        },
+        {
+          "id": "qz_math_3e_03_03_q4",
+          "text": "On utilise un histogramme plutôt qu'un diagramme en bâtons pour représenter :",
+          "options": ["Des données qualitatives", "Des données discrètes isolées", "Des données continues groupées en classes", "Des pourcentages"],
+          "correctIndex": 2,
+          "explanation": "L'histogramme est adapté aux données numériques continues groupées en classes (comme des tranches d'âge ou de notes). Le diagramme en bâtons est pour des valeurs discrètes isolées.",
+          "notionId": "not_math_effectif"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_03_04",
+      "lessonId": "les_math_3e_03_04",
+      "questions": [
+        {
+          "id": "qz_math_3e_03_04_q1",
+          "text": "On lance un dé à 6 faces équilibré. Quelle est la probabilité d'obtenir un 4 ?",
+          "options": ["$\\dfrac{1}{4}$", "$\\dfrac{1}{3}$", "$\\dfrac{1}{6}$", "$\\dfrac{4}{6}$"],
+          "correctIndex": 2,
+          "explanation": "Le dé a 6 faces équiprobables. Il y a 1 seule issue favorable (le 4). $P(4) = \\frac{1}{6}$.",
+          "notionId": "not_math_probabilite"
+        },
+        {
+          "id": "qz_math_3e_03_04_q2",
+          "text": "Quelle est la probabilité d'un événement **impossible** ?",
+          "options": ["1", "0,5", "0", "Indéfinie"],
+          "correctIndex": 2,
+          "explanation": "Un événement impossible ne peut jamais se réaliser. Sa probabilité est $P(\\emptyset) = 0$.",
+          "notionId": "not_math_probabilite"
+        },
+        {
+          "id": "qz_math_3e_03_04_q3",
+          "text": "On tire au hasard un nombre dans $\\{1, 2, 3, 4, 5\\}$. Quelle est la probabilité de tirer un nombre pair ?",
+          "options": ["$\\dfrac{1}{5}$", "$\\dfrac{3}{5}$", "$\\dfrac{2}{5}$", "$\\dfrac{1}{2}$"],
+          "correctIndex": 2,
+          "explanation": "$\\Omega = \\{1,2,3,4,5\\}$ (5 issues équiprobables). Les nombres pairs sont $\\{2, 4\\}$ (2 issues). $P = \\frac{2}{5}$.",
+          "notionId": "not_math_probabilite"
+        },
+        {
+          "id": "qz_math_3e_03_04_q4",
+          "text": "Si $P(A) = 0{,}3$, quelle est la probabilité de l'événement contraire $\\bar{A}$ ?",
+          "options": ["0,3", "0,6", "0,7", "0"],
+          "correctIndex": 2,
+          "explanation": "$P(\\bar{A}) = 1 - P(A) = 1 - 0{,}3 = 0{,}7$.",
+          "notionId": "not_math_probabilite"
+        }
+      ]
+    },
+    {
+      "id": "qz_math_3e_03_05",
+      "lessonId": "les_math_3e_03_05",
+      "questions": [
+        {
+          "id": "qz_math_3e_03_05_q1",
+          "text": "$A$ et $B$ sont incompatibles, $P(A) = 0{,}3$ et $P(B) = 0{,}4$. Calculer $P(A \\cup B)$.",
+          "options": ["0,12", "0,1", "0,7", "1"],
+          "correctIndex": 2,
+          "explanation": "$A$ et $B$ incompatibles → $P(A \\cap B) = 0$. Donc $P(A \\cup B) = P(A) + P(B) = 0{,}3 + 0{,}4 = 0{,}7$.",
+          "notionId": "not_math_evenement"
+        },
+        {
+          "id": "qz_math_3e_03_05_q2",
+          "text": "On lance 2 dés indépendants. Quelle est la probabilité d'obtenir **aucun 6** ?",
+          "options": ["$\\dfrac{1}{36}$", "$\\dfrac{25}{36}$", "$\\dfrac{11}{36}$", "$\\dfrac{1}{6}$"],
+          "correctIndex": 1,
+          "explanation": "P(pas de 6 sur un dé) $= \\frac{5}{6}$. Les deux lancers sont indépendants : $P(\\text{aucun 6}) = \\frac{5}{6} \\times \\frac{5}{6} = \\frac{25}{36}$.",
+          "notionId": "not_math_probabilite"
+        },
+        {
+          "id": "qz_math_3e_03_05_q3",
+          "text": "$A$ et $B$ sont indépendants, $P(A) = \\dfrac{1}{3}$ et $P(B) = \\dfrac{1}{4}$. Calculer $P(A \\cap B)$.",
+          "options": ["$\\dfrac{7}{12}$", "$\\dfrac{1}{12}$", "$\\dfrac{1}{7}$", "$\\dfrac{5}{12}$"],
+          "correctIndex": 1,
+          "explanation": "Événements indépendants : $P(A \\cap B) = P(A) \\times P(B) = \\frac{1}{3} \\times \\frac{1}{4} = \\frac{1}{12}$.",
+          "notionId": "not_math_evenement"
+        },
+        {
+          "id": "qz_math_3e_03_05_q4",
+          "text": "On lance 2 dés. Quelle est la probabilité d'obtenir **au moins un 6** ?",
+          "options": ["$\\dfrac{1}{36}$", "$\\dfrac{1}{6}$", "$\\dfrac{25}{36}$", "$\\dfrac{11}{36}$"],
+          "correctIndex": 3,
+          "explanation": "$P(\\text{au moins un 6}) = 1 - P(\\text{aucun 6}) = 1 - \\frac{25}{36} = \\frac{11}{36}$. Passer par le contraire est plus rapide.",
+          "notionId": "not_math_probabilite"
+        }
+      ]
+    }
+  ]
+}

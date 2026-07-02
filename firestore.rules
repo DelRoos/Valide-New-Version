@@ -169,7 +169,7 @@ service cloud.firestore {
     }
 
     // -----------------------------------------------------------------
-    // chapters/{chapterId}, lessons/{lessonId}, notions/{notionId}
+    // chapters/{chapterId}, lessons/{lessonId}
     // Contenu pedagogique (Story 2.1, Epic 2)
     //
     // Lecture : tout user authentifie (y compris visiteur anonyme signInAnonymously).
@@ -179,6 +179,15 @@ service cloud.firestore {
     //
     // Ecriture : interdite cote client. Seul le script Python `seed_content.py`
     // (avec service-account) ou la Firebase Console admin peut ecrire.
+    //
+    // Schema v2 (Story 2.4) — sous-collections par lecon :
+    //   lessons/{lessonId}/content/main  — Markdown FR + EN
+    //   lessons/{lessonId}/notions/{notionId}  — fiches de revision
+    //   lessons/{lessonId}/quizzes/{quizId}    — quiz QCM
+    //
+    // Note : les matches de sous-collections sont OBLIGATOIRES en Firestore —
+    // un match sur le parent ne couvre pas les sous-collections (cf. PERMISSION_DENIED
+    // Story 2.4 — fix deploye story-2-4-fix).
     //
     // Indexes : (subjectId, order), (chapterId, order), (lessonId, order)
     // declares dans firestore.indexes.json (Story 2.1).
@@ -192,7 +201,22 @@ service cloud.firestore {
     match /lessons/{lessonId} {
       allow read: if request.auth != null;
       allow write: if false;
+
+      // Sous-collections contenu pedagogique (schema v2-subcollections)
+      match /content/{doc} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
+      match /notions/{notionId} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
+      match /quizzes/{quizId} {
+        allow read: if request.auth != null;
+        allow write: if false;
+      }
     }
+    // Legacy : collection racine notions/ (schema v1 — conservee pour compatibilite)
     match /notions/{notionId} {
       allow read: if request.auth != null;
       allow write: if false;
