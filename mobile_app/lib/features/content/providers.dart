@@ -2,7 +2,7 @@
 //
 // Providers exposés :
 //   1. `contentRepositoryProvider` — impl Firestore du ContentRepository.
-//   2. `chaptersProvider(subjectId)` — FutureProvider.family liste des chapitres.
+//   2. `chaptersProvider(subjectId)` — FutureProvider.family chapitres filtrés par levelId utilisateur.
 //   3. `lessonsProvider(chapterId)` — FutureProvider.family liste des leçons.
 //   4. `lessonByIdProvider(lessonId)` — FutureProvider.family métadonnées leçon.
 //   5. `lessonContentProvider(lessonId)` — FutureProvider.family blob Markdown (sous-doc).
@@ -11,6 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../core/firebase/providers.dart';
 import '../../core/logging/app_logger.dart';
+import '../onboarding/providers.dart';
 import 'data/repositories/content_firestore_repository_impl.dart';
 import 'domain/entities/chapter_entity.dart';
 import 'domain/entities/lesson_content_entity.dart';
@@ -23,11 +24,22 @@ final contentRepositoryProvider = Provider<ContentRepository>((ref) {
   );
 });
 
-/// Liste des chapitres d'une matière, triée par `order`.
-/// Throw `ContentFailure` en cas d'erreur Firestore (capturé par `.when(error:)`).
+/// Liste des chapitres d'une matière filtrée par le levelId du profil utilisateur.
+/// Un élève en 3e ne voit que les chapitres de 3e, même si la matière a du contenu
+/// pour d'autres niveaux. Filtrage client-side (volume ≤ 30 docs — _kMaxChapters).
 final chaptersProvider =
     FutureProvider.autoDispose.family<List<ChapterEntity>, String>(
   (ref, subjectId) async {
+    // ref.read (pas ref.watch) : évite d'invalider chaptersProvider à chaque
+    // emit de profileDataProvider (StreamProvider Firestore). Le niveau est lu
+    // une seule fois à la création du provider ; autoDispose garantit la fraîcheur
+    // à la prochaine navigation.
+    final profileData = ref.read(profileDataProvider).maybeWhen(
+          data: (d) => d,
+          orElse: () => null,
+        );
+    final userLevelId = profileData?['levelId'] as String?;
+
     final result =
         await ref.watch(contentRepositoryProvider).getChapters(subjectId);
     return result.fold(
@@ -37,7 +49,10 @@ final chaptersProvider =
         );
         throw failure;
       },
-      (chapters) => chapters,
+      (chapters) {
+        if (userLevelId == null || userLevelId.isEmpty) return chapters;
+        return chapters.where((c) => c.levelId == userLevelId).toList();
+      },
     );
   },
 );

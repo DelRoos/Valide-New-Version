@@ -10,14 +10,18 @@
 1. [Structure d'une leçon](#1-structure-dune-leçon)
 2. [Titre de leçon](#2-titre-de-leçon)
 3. [Blocs pédagogiques (callouts)](#3-blocs-pédagogiques-callouts)
-4. [Mathématiques et LaTeX](#4-mathématiques-et-latex)
-5. [Tableaux](#5-tableaux)
-6. [Listes](#6-listes)
-7. [Texte mis en valeur](#7-texte-mis-en-valeur)
-8. [Diagrammes Mermaid](#8-diagrammes-mermaid)
-9. [Citations](#9-citations)
-10. [Bonnes pratiques](#10-bonnes-pratiques)
-11. [Exemple complet](#11-exemple-complet)
+4. [Bloc audio](#4-bloc-audio)
+5. [Bloc image](#5-bloc-image)
+6. [Galerie d'images](#6-galerie-dimages)
+7. [Bloc vidéo](#7-bloc-vidéo)
+8. [Mathématiques et LaTeX](#8-mathématiques-et-latex)
+9. [Tableaux](#9-tableaux)
+10. [Listes](#10-listes)
+11. [Texte mis en valeur](#11-texte-mis-en-valeur)
+12. [Diagrammes Mermaid](#12-diagrammes-mermaid)
+13. [Citations](#13-citations)
+14. [Bonnes pratiques](#14-bonnes-pratiques)
+15. [Exemple complet](#15-exemple-complet)
 
 ---
 
@@ -187,7 +191,206 @@ $$f'(2) = \lim_{h \to 0} \frac{(2+h)^3 - 8}{h} = \lim_{h \to 0} \frac{12h + 6h^2
 
 ---
 
-## 4. Mathématiques et LaTeX
+## 4. Bloc audio
+
+Le bloc audio permet d'insérer un **lecteur audio inline** directement dans le cours. Il est rendu par le widget `_AudioBlock` de l'application (implémenté dans `core/widgets/pedagogical_content/audio_block.dart`).
+
+### Syntaxe
+
+```
+:::audio
+url=https://example.com/audio.ogg
+label=Description affichée sous le titre AUDIO
+:::
+```
+
+- `url=` (obligatoire) : URL directe vers un fichier audio. Formats supportés : OGG, MP3, M4A. **Pour la production iOS, privilégier M4A** (OGG non supporté nativement par iOS).
+- `label=` (optionnel) : texte descriptif affiché sous le badge AUDIO. Recommandé pour indiquer ce qui est prononcé.
+
+### Sources audio gratuites recommandées
+
+| Source | URL de base | Usage |
+|---|---|---|
+| Wikimedia Commons | `https://upload.wikimedia.org/wikipedia/commons/...` | Prononciations de mots en toutes langues, libre de droits |
+| Archive.org | `https://archive.org/download/...` | Enregistrements historiques, musique libre |
+
+Pour trouver un fichier audio sur Wikimedia Commons : rechercher le mot sur [fr.wiktionary.org](https://fr.wiktionary.org), cliquer sur le symbole audio ▶ et copier l'URL du fichier OGG.
+
+### Exemples
+
+**Prononciation d'un mot chinois :**
+```
+:::audio
+url=https://upload.wikimedia.org/wikipedia/commons/e/ed/Zh-ni3hao3.ogg
+label=Écoute : nǐ hǎo 你好 — bonjour
+:::
+```
+
+**Prononciation d'un mot français :**
+```
+:::audio
+url=https://upload.wikimedia.org/wikipedia/commons/3/33/Fr-Paris.ogg
+label=Prononciation : Paris
+:::
+```
+
+### Bonnes pratiques audio
+
+- Placer le bloc audio **immédiatement après** le tableau ou le texte qu'il illustre.
+- Limiter à **2-4 blocs audio par leçon** pour ne pas alourdir la page.
+- Toujours renseigner `label=` avec ce qui est prononcé et sa traduction.
+- Pour les langues à tons (mandarin, vietnamien), insérer un audio par ton distinct.
+- Tester l'URL avant publication — un fichier introuvable affiche le lecteur sans pouvoir démarrer.
+
+> ⚠️ **iOS en production** : les fichiers OGG (format Wikimedia) fonctionnent sur Android mais pas nativement sur iOS. Pour une expérience cross-platform complète, convertir en M4A et héberger sur Firebase Storage ou un CDN.
+
+---
+
+## 5. Bloc image
+
+Le bloc image affiche une image **inline dans la leçon**, chargée depuis une URL réseau, avec mise en cache, squelette de chargement, gestion des erreurs (bouton « Réessayer ») et agrandissement plein écran au tap.
+
+### Syntaxe
+
+```
+:::image
+url=https://example.com/image.png
+caption=Description affichée sous l'image (optionnel)
+:::
+```
+
+- `url=` (obligatoire) : URL directe vers un fichier image. Formats supportés : PNG, JPEG, WebP, GIF, SVG.
+- `caption=` (optionnel) : légende affichée sous l'image.
+
+### Comportement
+
+- **Skeleton** : pendant le chargement, un rectangle animé remplace l'image.
+- **Erreur + retry** : si l'image ne se charge pas, un bouton « Réessayer » réessaie le téléchargement et vide le cache.
+- **Plein écran** : un tap sur l'image ouvre une vue plein écran avec zoom pinch-to-zoom (InteractiveViewer).
+- **Cache** : l'image est mise en cache sur le disque par `cached_network_image` — pas de re-téléchargement entre sessions.
+
+### Sources d'images recommandées
+
+| Source | Format | Usage |
+|---|---|---|
+| Wikimedia Commons | PNG, SVG | Diagrammes scientifiques, cartes, œuvres d'art — libre de droits |
+| Firebase Storage | PNG, JPEG | Images propriétaires hébergées par Valide |
+
+Pour Wikimedia : utiliser `https://commons.wikimedia.org/wiki/Special:FilePath/NOM_DU_FICHIER.png?width=480` pour un redimensionnement automatique.
+
+### Exemples
+
+**Schéma géométrique :**
+```
+:::image
+url=https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Pythagorean.svg/220px-Pythagorean.svg.png
+caption=Démonstration géométrique du théorème de Pythagore — BC² = AB² + AC²
+:::
+```
+
+**Carte ou photographie :**
+```
+:::image
+url=https://commons.wikimedia.org/wiki/Special:FilePath/Map_of_China.png?width=480
+caption=Carte de la Chine — territoire de la République populaire de Chine
+:::
+```
+
+---
+
+## 6. Galerie d'images
+
+La galerie affiche **plusieurs images en carrousel horizontal** avec indicateur de points et légende par diapositive. Chaque image est tappable pour ouvrir le plein écran.
+
+### Syntaxe
+
+```
+:::gallery
+https://url-image-1.jpg|Légende de l'image 1
+https://url-image-2.jpg|Légende de l'image 2
+https://url-image-3.png|Légende de l'image 3
+:::
+```
+
+Chaque ligne contient l'URL, un `|`, puis la légende (optionnelle). Les lignes vides sont ignorées.
+
+### Comportement
+
+- Affichage en **PageView horizontal** avec balayage gauche/droite.
+- Indicateur de points animé en bas.
+- Légende dynamique selon la diapositive courante.
+- Tap → plein écran avec InteractiveViewer.
+
+### Exemple
+
+```
+:::gallery
+https://commons.wikimedia.org/wiki/Special:FilePath/Longueuil_chinese_new_year.jpg?width=480|春节 Chūnjié — danse du dragon, tradition millénaire
+https://commons.wikimedia.org/wiki/Special:FilePath/Moon_cakes_and_tea.jpg?width=480|中秋节 Zhōngqiūjié — gâteaux de lune (月饼 yuèbǐng)
+https://commons.wikimedia.org/wiki/Special:FilePath/Dragon_boat_racing.jpg?width=480|端午节 Duānwǔjié — courses de bateaux-dragons (龙舟 lóngzhōu)
+:::
+```
+
+### Quand utiliser galerie vs image unique
+
+| Cas | Bloc à utiliser |
+|---|---|
+| Une seule illustration | `:::image` |
+| 2+ illustrations d'un même thème | `:::gallery` |
+| Chronologie visuelle (avant/après, étapes) | `:::gallery` |
+
+---
+
+## 7. Bloc vidéo
+
+Le bloc vidéo affiche une **carte cliquable** avec la miniature YouTube et un bouton lecture. Le tap ouvre la vidéo dans l'application YouTube (ou le navigateur) via `url_launcher`.
+
+### Syntaxe
+
+```
+:::video
+url=https://www.youtube.com/watch?v=VIDEO_ID
+caption=Titre ou description de la vidéo (optionnel)
+:::
+```
+
+ou avec un lien court :
+
+```
+:::video
+url=https://youtu.be/VIDEO_ID
+caption=Titre ou description de la vidéo
+:::
+```
+
+- `url=` (obligatoire) : lien YouTube (`youtube.com/watch?v=` ou `youtu.be/`). La miniature est générée automatiquement.
+- `caption=` (optionnel) : texte affiché sous la miniature — recommandé pour indiquer le titre et la langue.
+
+### Comportement
+
+- La miniature YouTube est chargée automatiquement (format `hqdefault`).
+- Si la miniature échoue : fond gris avec icône lecture.
+- Tap → ouvre la vidéo dans l'app YouTube ou le navigateur externe.
+
+### Bonnes pratiques vidéo
+
+- Vérifier que la vidéo est disponible dans les pays cibles (Cameroun).
+- Préférer des vidéos avec **sous-titres français** disponibles.
+- Indiquer la durée et la langue dans `caption=` pour aider l'élève.
+- Une seule vidéo par leçon, en complément — pas comme seule source d'information.
+
+### Exemple
+
+```
+:::video
+url=https://www.youtube.com/watch?v=ZNXo-sqaM2E
+caption=春节 Chūnjié — Traditions du Nouvel An Chinois (7 min, FR)
+:::
+```
+
+---
+
+## 8. Mathématiques et LaTeX  
 
 L'application supporte le LaTeX pour les formules mathématiques.
 
@@ -242,7 +445,7 @@ $3{,}14$ et non $3.14$
 
 ---
 
-## 5. Tableaux
+## 9. Tableaux
 
 Les tableaux s'affichent avec un en-tête TABLEAU, un fond alterné par ligne et un scroll horizontal sur mobile.
 
@@ -260,7 +463,7 @@ Les tableaux s'affichent avec un en-tête TABLEAU, un fond alterné par ligne et
 
 ---
 
-## 6. Listes
+## 10. Listes
 
 **Liste à puces :**
 ```markdown
@@ -279,7 +482,7 @@ Les tableaux s'affichent avec un en-tête TABLEAU, un fond alterné par ligne et
 
 ---
 
-## 7. Texte mis en valeur
+## 11. Texte mis en valeur
 
 | Rendu | Syntaxe |
 |---|---|
@@ -292,7 +495,7 @@ Les tableaux s'affichent avec un en-tête TABLEAU, un fond alterné par ligne et
 
 ---
 
-## 8. Diagrammes Mermaid
+## 12. Diagrammes Mermaid
 
 Pour les graphes, schémas de processus et arbres de décision. Utiliser un bloc de code avec le langage `mermaid` :
 
@@ -318,7 +521,7 @@ flowchart LR  ← flowchart
 
 ---
 
-## 9. Citations
+## 13. Citations
 
 Les citations (blockquotes) s'affichent avec un guillemet décoratif et un fond légèrement coloré. Utiliser pour les citations de définitions officielles ou les références historiques.
 
@@ -329,7 +532,7 @@ Les citations (blockquotes) s'affichent avec un guillemet décoratif et un fond 
 
 ---
 
-## 10. Bonnes pratiques
+## 14. Bonnes pratiques
 
 ### À faire ✅
 
@@ -353,7 +556,7 @@ Les citations (blockquotes) s'affichent avec un guillemet décoratif et un fond 
 
 ---
 
-## 11. Exemple complet
+## 15. Exemple complet
 
 Voici une leçon complète, prête à être saisie dans `content_demo.json` (champ `content.fr`) :
 
@@ -415,6 +618,7 @@ Pour démontrer qu'une équation $f(x) = 0$ admet une solution sur $[a, b]$ par 
 
 ## Référence rapide
 
+**Blocs pédagogiques :**
 ```
 :::definition   → notion principale (bleu)
 :::theoreme     → résultat important (violet)
@@ -427,8 +631,41 @@ Pour démontrer qu'une équation $f(x) = 0$ admet une solution sur $[a, b]$ par 
 :::figure       → illustration ou graphe (teal)
 ```
 
-LaTeX inline : `$formule$`  
-LaTeX display : `$$formule$$` (sur sa propre ligne)  
+**Bloc audio :**
+```
+:::audio
+url=https://...fichier.ogg
+label=Description de ce qu'on entend
+:::
+```
+
+**Bloc image :**
+```
+:::image
+url=https://...image.png
+caption=Légende de l'image (optionnel)
+:::
+```
+
+**Galerie d'images :**
+```
+:::gallery
+https://url1.jpg|Légende 1
+https://url2.jpg|Légende 2
+:::
+```
+
+**Bloc vidéo (YouTube) :**
+```
+:::video
+url=https://www.youtube.com/watch?v=VIDEO_ID
+caption=Titre de la vidéo
+:::
+```
+
+**LaTeX :**  
+Inline : `$formule$`  
+Display : `$$formule$$` (sur sa propre ligne)  
 Virgule décimale FR : `$3{,}14$`
 
 ---

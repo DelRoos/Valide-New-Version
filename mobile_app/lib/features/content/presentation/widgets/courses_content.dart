@@ -32,10 +32,7 @@ class CoursesContent extends StatelessWidget {
               AppSpacing.s4.w,
               AppSpacing.s5.h,
             ),
-            child: CoursesRecommendationBanner(
-              languageCode: languageCode,
-              l10n: l10n,
-            ),
+            child: CoursesRecommendationBanner(l10n: l10n),
           ),
         ),
         // Grille matières

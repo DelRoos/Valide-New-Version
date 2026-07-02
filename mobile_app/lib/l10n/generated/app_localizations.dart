@@ -764,6 +764,12 @@ abstract class AppLocalizations {
   /// **'Commencer'**
   String get coursesStartLesson;
 
+  /// Titre du banner recommandation — générique jusqu'à implémentation du moteur de recommandation.
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprends là où tu t\'es arrêté'**
+  String get coursesRecommendedBannerTitle;
+
   /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
@@ -1874,6 +1880,36 @@ abstract class AppLocalizations {
   /// **'Profil mis à jour.'**
   String get profileEditSuccess;
 
+  /// Titre du bottom sheet d'édition du profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Changer de classe'**
+  String get profileEditSchoolTitle;
+
+  /// Label étape 1 (sélection du niveau) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle est ta classe ?'**
+  String get profileEditSchoolLevelLabel;
+
+  /// Label étape 2 (sélection de la série) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quelle est ta spécialité ?'**
+  String get profileEditSchoolStreamLabel;
+
+  /// Label étape 3 (récap/ajustement matières) du sheet édition profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Tes matières'**
+  String get profileEditSchoolSubjectsLabel;
+
+  /// Label bouton pendant sauvegarde du profil scolaire (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Mise à jour…'**
+  String get profileEditSchoolSaving;
+
   /// Label du champ nom dans le bottom sheet d'édition du profil.
   ///
   /// In fr, this message translates to:
@@ -1915,6 +1951,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Mon école'**
   String get profileMenuSchool;
+
+  /// Item menu 'Ma classe' dans la section Compte du profil — ouvre SchoolProfileEditSheet (Story A.3).
+  ///
+  /// In fr, this message translates to:
+  /// **'Ma classe'**
+  String get profileMenuClass;
 
   /// Label item menu nom dans la section Compte — affiché en permanence, valeur en sous-titre.
   ///

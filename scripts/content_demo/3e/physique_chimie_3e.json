@@ -1,0 +1,948 @@
+{
+  "meta": {
+    "subjectId": "francophone_sciences_phy",
+    "subjectName": "Physique-Chimie",
+    "levelId": "francophone_3e",
+    "levelName": "3ème",
+    "examTarget": "BEPC",
+    "language": "fr",
+    "description": "Contenu de démonstration — Physique-Chimie 3ème (programme BEPC francophone Cameroun)",
+    "version": "1.0.0",
+    "createdAt": "2026-06-30"
+  },
+
+  "chapters": [
+    {
+      "id": "ch_pc_3e_01",
+      "subjectId": "francophone_sciences_phy",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Électricité : circuits, loi d'Ohm et puissance" },
+      "sortOrder": 1
+    },
+    {
+      "id": "ch_pc_3e_02",
+      "subjectId": "francophone_sciences_phy",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Optique — lumière et lentilles" },
+      "sortOrder": 2
+    },
+    {
+      "id": "ch_pc_3e_03",
+      "subjectId": "francophone_sciences_phy",
+      "levelId": "francophone_3e",
+      "title": { "fr": "Chimie — matière, atomes et réactions chimiques" },
+      "sortOrder": 3
+    }
+  ],
+
+  "lessons": [
+    {
+      "id": "les_pc_3e_01_01",
+      "chapterId": "ch_pc_3e_01",
+      "title": { "fr": "Le circuit électrique — courant et tension" },
+      "sortOrder": 1,
+      "notionIds": ["not_pc_courant", "not_pc_tension", "not_pc_intensite"],
+      "content": {
+        "fr": "# Le circuit électrique — courant et tension\n\nUn circuit électrique permet la circulation des charges électriques, produisant un courant qui transporte de l'énergie.\n\n:::definition\nUn **circuit électrique** est un ensemble de composants reliés entre eux qui permet la circulation d'un **courant électrique**. Le courant ne circule que si le circuit est fermé.\n\n- Le **courant électrique** est un mouvement ordonné de charges électriques (électrons dans les métaux).\n- L'**intensité** du courant $I$ est la quantité de charges passant par section de conducteur par seconde. Unité : **ampère** (A), mesurée par un **ampèremètre** (en série).\n- La **tension électrique** $U$ est la différence de potentiel entre deux points. Unité : **volt** (V), mesurée par un **voltmètre** (en dérivation).\n:::\n\n## Sens du courant\n\n:::propriete\n- **Sens conventionnel** du courant : de la borne + vers la borne − du générateur à l'extérieur du générateur.\n- **Sens réel** : les électrons se déplacent de − vers + (sens opposé à la convention).\n\nDans les conducteurs métalliques, ce sont les **électrons libres** qui se déplacent.\n:::\n\n## Circuits série et dérivation\n\n:::propriete\n**Circuit série :** tous les composants sont sur la même boucle.\n- Le courant $I$ est le même en tout point : $I_1 = I_2 = I$.\n- La tension totale est la somme : $U = U_1 + U_2 + \\ldots$\n\n**Circuit en dérivation (parallèle) :** les composants sont sur des branches différentes.\n- La tension est la même aux bornes de chaque branche : $U_1 = U_2 = U$.\n- Les courants s'additionnent : $I = I_1 + I_2 + \\ldots$\n:::\n\n:::exemple\nDans un circuit série avec une lampe $L_1$ et une lampe $L_2$ alimentées par une pile de 9 V :\n- Si $U_1 = 4$ V, alors $U_2 = 9 - 4 = 5$ V.\n- Le même courant $I$ traverse $L_1$ et $L_2$.\n\nSi les deux lampes sont en dérivation : chacune reçoit 9 V.\n:::\n\n:::attention\nL'ampèremètre se branche **en série** dans le circuit (résistance interne très faible). Le voltmètre se branche **en dérivation** (résistance interne très grande). Intervertir les deux endommage les appareils.\n:::\n\n:::retenir\n- Courant $I$ en ampères (A) → ampèremètre en série.\n- Tension $U$ en volts (V) → voltmètre en dérivation.\n- Série : même $I$, tensions s'additionnent.\n- Dérivation : même $U$, courants s'additionnent.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_01_02",
+      "chapterId": "ch_pc_3e_01",
+      "title": { "fr": "La loi d'Ohm — résistance électrique" },
+      "sortOrder": 2,
+      "notionIds": ["not_pc_resistance", "not_pc_loi_ohm"],
+      "content": {
+        "fr": "# La loi d'Ohm — résistance électrique\n\nLa loi d'Ohm est la relation fondamentale qui lie la tension, l'intensité et la résistance dans un conducteur.\n\n:::theoreme\n**Loi d'Ohm** : Pour un conducteur ohmique (résistance), la tension $U$ à ses bornes est proportionnelle à l'intensité $I$ qui le traverse :\n\n$$U = R \\times I$$\n\noù $R$ est la **résistance** du conducteur, exprimée en **ohms** (Ω).\n:::\n\n:::definition\nLa **résistance électrique** $R$ d'un conducteur est la grandeur qui caractérise sa capacité à s'opposer au passage du courant. Plus $R$ est grande, plus le conducteur freine le courant.\n\n$$R = \\frac{U}{I} \\quad \\text{(en Ohm, Ω)}$$\n:::\n\n## Résistances en série et en dérivation\n\n:::propriete\n**Résistances en série :** la résistance équivalente est la somme :\n\n$$R_{\\text{éq}} = R_1 + R_2 + \\cdots + R_n$$\n\n**Résistances en dérivation :** l'inverse de la résistance équivalente est la somme des inverses :\n\n$$\\frac{1}{R_{\\text{éq}}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\cdots$$\n\nPour deux résistances en dérivation : $R_{\\text{éq}} = \\dfrac{R_1 \\times R_2}{R_1 + R_2}$\n:::\n\n:::exemple\n**Exemple 1 :** $R_1 = 10\\,\\Omega$, $U_1 = 5$ V. Calculer $I$.\n\n$$I = \\frac{U_1}{R_1} = \\frac{5}{10} = 0{,}5 \\text{ A}$$\n\n**Exemple 2 :** $R_1 = 6\\,\\Omega$ et $R_2 = 4\\,\\Omega$ en dérivation.\n\n$$R_{\\text{éq}} = \\frac{6 \\times 4}{6 + 4} = \\frac{24}{10} = 2{,}4\\,\\Omega$$\n:::\n\n:::methode\nPour résoudre un exercice sur la loi d'Ohm :\n\n1. Identifier le type de circuit (série ou dérivation).\n2. Calculer la résistance équivalente si nécessaire.\n3. Appliquer $U = R \\times I$ pour trouver la grandeur inconnue.\n4. Vérifier les unités (V = Ω × A).\n:::\n\n:::attention\nLa loi d'Ohm ne s'applique qu'aux **conducteurs ohmiques** (résistors). Elle ne s'applique pas aux lampes à filament, diodes ou moteurs dont la résistance varie avec la température ou la tension.\n:::\n\n:::retenir\n- Loi d'Ohm : $U = R \\times I$ (donc $R = U/I$, $I = U/R$).\n- $R$ en Ω, $U$ en V, $I$ en A.\n- Série : $R_{\\text{éq}} = R_1 + R_2$ ; dérivation : $\\frac{1}{R_{\\text{éq}}} = \\frac{1}{R_1} + \\frac{1}{R_2}$.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_01_03",
+      "chapterId": "ch_pc_3e_01",
+      "title": { "fr": "Puissance et énergie électriques" },
+      "sortOrder": 3,
+      "notionIds": ["not_pc_puissance", "not_pc_energie_elec"],
+      "content": {
+        "fr": "# Puissance et énergie électriques\n\n:::definition\nLa **puissance électrique** $P$ mesure l'énergie transférée par unité de temps. Elle s'exprime en **watts** (W).\n\n$$P = U \\times I$$\n\noù $U$ est la tension (V) et $I$ l'intensité (A).\n\nEn combinant avec la loi d'Ohm : $P = R \\times I^2 = \\dfrac{U^2}{R}$\n:::\n\n:::definition\nL'**énergie électrique** $E$ consommée est le produit de la puissance par le temps :\n\n$$E = P \\times t$$\n\noù $t$ est le temps en secondes (s). L'énergie s'exprime en **joules** (J) ou en **kilowattheures** (kWh) :\n\n$$1 \\text{ kWh} = 3\\,600\\,000 \\text{ J} = 3{,}6 \\times 10^6 \\text{ J}$$\n:::\n\n## Applications\n\n:::exemple\nUn fer à repasser affiche « 1000 W, 220 V ».\n\n- Intensité absorbée : $I = \\frac{P}{U} = \\frac{1000}{220} \\approx 4{,}5$ A.\n- Énergie consommée en 30 min : $E = P \\times t = 1000 \\times (30 \\times 60) = 1\\,800\\,000$ J $= 0{,}5$ kWh.\n:::\n\n:::methode\nConversion kWh → J :\n\n$$E (\\text{J}) = E (\\text{kWh}) \\times 3{,}6 \\times 10^6$$\n\nConversion J → kWh :\n\n$$E (\\text{kWh}) = \\frac{E (\\text{J})}{3{,}6 \\times 10^6}$$\n\nPour comparer deux appareils, calculer leur **coût** :\n- Coût = Énergie (kWh) × Tarif (FCFA/kWh).\n:::\n\n:::propriete\n**Effets du courant électrique :**\n\n- **Effet thermique (Joule)** : le courant réchauffe un conducteur résistif ($P = R \\times I^2$). Utilisé dans les résistances chauffantes (fer à repasser, bouilloire).\n- **Effet lumineux** : lampe à incandescence, LED, néon.\n- **Effet chimique** : électrolyse (décomposition de l'eau, placage métallique).\n- **Effet magnétique** : électroaimant, moteur électrique.\n:::\n\n:::attention\nUn appareil de forte puissance absorbe un courant élevé → risque de surchauffe des fils → risque d'incendie. Les fusibles et disjoncteurs protègent le circuit en coupant le courant si $I$ dépasse un seuil.\n:::\n\n:::retenir\n- Puissance : $P = U \\times I$ (en W).\n- Énergie : $E = P \\times t$ (en J ou kWh).\n- 1 kWh = 3,6 × 10⁶ J.\n- Effets du courant : thermique, lumineux, chimique, magnétique.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_01_04",
+      "chapterId": "ch_pc_3e_01",
+      "title": { "fr": "Le générateur et le récepteur — caractéristiques" },
+      "sortOrder": 4,
+      "notionIds": ["not_pc_generateur", "not_pc_recepteur"],
+      "content": {
+        "fr": "# Le générateur et le récepteur\n\n:::definition\nUn **générateur** est un dipôle qui fournit de l'énergie électrique au circuit. Il est caractérisé par :\n\n- Sa **force électromotrice (f.e.m.)** $E$ : tension à vide (bornes non connectées), en volts.\n- Sa **résistance interne** $r$ : résistance propre du générateur.\n- Sa **tension aux bornes** (sous charge) : $U = E - r \\times I$\n\nExemples : pile, accumulateur, générateur solaire, alternateur.\n:::\n\n:::definition\nUn **récepteur** est un dipôle qui consomme de l'énergie électrique pour la convertir en une autre forme.\n\n- **Résisteur (conducteur ohmique)** : $P_{\\text{dissipée}} = R \\times I^2$ (tout converti en chaleur).\n- **Moteur électrique** : converti en énergie mécanique (+ une part thermique).\n- **Électrolyseur** : converti en énergie chimique (+ une part thermique).\n:::\n\n:::propriete\nBilan énergétique d'un circuit :\n\n$$P_{\\text{générateur}} = P_{\\text{utile}} + P_{\\text{pertes (interne)}}$$\n\n$$E \\times I = U \\times I + r \\times I^2$$\n\nLe **rendement** du générateur : $\\eta = \\dfrac{P_{\\text{utile}}}{P_{\\text{totale}}} = \\dfrac{U}{E}$\n:::\n\n:::exemple\nUne pile de f.e.m. $E = 4{,}5$ V et de résistance interne $r = 0{,}5\\,\\Omega$ alimente un circuit de résistance $R = 8{,}5\\,\\Omega$.\n\n$$I = \\frac{E}{R + r} = \\frac{4{,}5}{8{,}5 + 0{,}5} = \\frac{4{,}5}{9} = 0{,}5 \\text{ A}$$\n\nTension aux bornes : $U = E - r \\times I = 4{,}5 - 0{,}5 \\times 0{,}5 = 4{,}25$ V.\n:::\n\n:::attention\nLorsque le courant augmente, la tension aux bornes d'un générateur **diminue** (chute de tension interne $r \\times I$). À court-circuit ($R = 0$), la tension est nulle et le courant maximal $I_{cc} = E/r$ est dangereux.\n:::\n\n:::retenir\n- Générateur : $U = E - r \\times I$ (tension baisse quand $I$ augmente).\n- Rendement : $\\eta = U/E$.\n- Récepteurs : résisteur (chaleur), moteur (mécanique), électrolyseur (chimique).\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_01_05",
+      "chapterId": "ch_pc_3e_01",
+      "title": { "fr": "La sécurité électrique" },
+      "sortOrder": 5,
+      "notionIds": ["not_pc_securite_elec"],
+      "content": {
+        "fr": "# La sécurité électrique\n\n:::definition\nL'**électrocution** est l'accident grave dû au passage du courant électrique dans le corps humain. La résistance du corps humain varie de 1 000 Ω (peau mouillée) à 100 000 Ω (peau sèche). Un courant de 10 mA déjà provoque des convulsions ; au-delà de 30 mA, il peut être mortel.\n:::\n\n## Dangers et protections\n\n:::propriete\n**Règles de sécurité fondamentales :**\n\n1. Ne jamais toucher un conducteur sous tension.\n2. Ne jamais utiliser d'appareils électriques à proximité de l'eau ou avec les mains mouillées.\n3. Ne pas surcharger une prise (éviter les multiprises surchargées).\n4. Remplacer les fils dénudés ou abîmés.\n5. Couper le courant avant toute intervention sur un circuit.\n\n**Dispositifs de protection :**\n- **Fusible** : fil qui fond si $I$ dépasse un seuil → circuit ouvert.\n- **Disjoncteur** : déclenche et coupe automatiquement si $I$ dépasse le seuil.\n- **Prise de terre** : dérive le courant dangereux vers la terre en cas de défaut d'isolement.\n- **Disjoncteur différentiel** : coupe si une fuite de courant est détectée (30 mA).\n:::\n\n:::exemple\nUn climatiseur de 2 000 W sous 220 V absorbe $I = P/U = 2000/220 \\approx 9{,}1$ A. Un fusible de 10 A est adapté. Un fusible de 2 A sauterait en permanence.\n:::\n\n:::methode\nChoisir un fusible adapté :\n\n1. Calculer l'intensité maximale : $I_{\\max} = P / U$.\n2. Choisir un fusible calibré **légèrement au-dessus** de $I_{\\max}$ (sans excès).\n3. Ne jamais utiliser un fusible de calibre trop élevé (risque d'incendie).\n:::\n\n:::attention\nLe courant alternatif (AC) du réseau EDF (220 V, 50 Hz) est beaucoup plus dangereux que le courant continu (CC) des piles. La fréquence 50 Hz correspond à la fréquence de résonance du cœur humain, augmentant le risque de fibrillation cardiaque.\n:::\n\n:::retenir\n- Corps humain : résistance diminue si peau mouillée → danger accru.\n- 30 mA peut être mortel → disjoncteur différentiel 30 mA obligatoire.\n- Fusible / disjoncteur : protègent les fils (surcharge).\n- Prise de terre : protège les personnes (défaut d'isolement).\n:::"
+      }
+    },
+
+    {
+      "id": "les_pc_3e_02_01",
+      "chapterId": "ch_pc_3e_02",
+      "title": { "fr": "Propagation de la lumière — modèle du rayon lumineux" },
+      "sortOrder": 1,
+      "notionIds": ["not_pc_rayon_lumineux", "not_pc_source_lumineuse"],
+      "content": {
+        "fr": "# Propagation de la lumière — modèle du rayon lumineux\n\n:::definition\nLa **lumière** est une onde électromagnétique qui se propage en ligne droite dans un milieu homogène et transparent. Le **rayon lumineux** est le modèle géométrique représentant le trajet de la lumière par une droite orientée dans le sens de propagation.\n\nUne **source lumineuse** est tout objet qui émet de la lumière :\n- **Source primaire** : produit elle-même la lumière (étoile, lampe, bougie).\n- **Source secondaire** : diffuse la lumière reçue d'une source primaire (Lune, objets éclairés).\n:::\n\n## La propagation rectiligne\n\n:::propriete\nDans un milieu **homogène** (même nature partout) et **transparent** (laisse passer la lumière), la lumière se propage en **ligne droite**.\n\nVitesse de la lumière dans le vide et l'air : $c = 3 \\times 10^8$ m/s $= 300\\,000$ km/s.\n\nDans l'eau, la lumière se propage moins vite : $v_{\\text{eau}} = \\dfrac{c}{n}$, où $n$ est l'indice de réfraction ($n_{\\text{eau}} \\approx 1{,}33$).\n:::\n\n## Ombres et pénombres\n\n:::propriete\n**Ombre et pénombre :**\n\nQuand une source **étendue** (de grande taille) éclaire un objet opaque :\n- La zone où aucun rayon n'arrive = **ombre totale**.\n- La zone où certains rayons arrivent = **pénombre**.\n\nQuand la source est **ponctuelle** : ombre nette, sans pénombre.\n:::\n\n:::exemple\nLes éclipses :\n- **Éclipse de Soleil** : la Lune est entre la Terre et le Soleil. Les habitants dans l'ombre de la Lune voient une éclipse totale ; ceux dans la pénombre, une éclipse partielle.\n- **Éclipse de Lune** : la Terre est entre le Soleil et la Lune. La Lune passe dans l'ombre de la Terre.\n:::\n\n:::attention\nNe jamais regarder directement le Soleil, même brièvement, car sa lumière peut brûler la rétine irréversiblement. Lors d'une éclipse, utiliser des lunettes homologuées.\n:::\n\n:::retenir\n- Lumière : propagation rectiligne dans un milieu homogène.\n- $c = 3 \\times 10^8$ m/s dans le vide.\n- Source primaire : émet ; source secondaire : diffuse.\n- Ombre (source ponctuelle) vs ombre + pénombre (source étendue).\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_02_02",
+      "chapterId": "ch_pc_3e_02",
+      "title": { "fr": "Réflexion et réfraction de la lumière" },
+      "sortOrder": 2,
+      "notionIds": ["not_pc_reflexion", "not_pc_refraction"],
+      "content": {
+        "fr": "# Réflexion et réfraction de la lumière\n\n:::definition\nLa **réflexion** est le changement de direction d'un rayon lumineux au contact d'une surface réfléchissante (miroir). Le rayon qui arrive est le **rayon incident**, celui qui repart est le **rayon réfléchi**.\n\nLa **réfraction** est le changement de direction d'un rayon lumineux lorsqu'il passe d'un milieu transparent à un autre de propriétés différentes (ex. air → eau).\n:::\n\n## Lois de la réflexion\n\n:::theoreme\n**Lois de la réflexion :**\n\n1. Le rayon incident, la normale à la surface au point d'incidence, et le rayon réfléchi sont dans le **même plan**.\n2. L'angle d'incidence $i$ est **égal** à l'angle de réflexion $r$ : $i = r$\n\nCes angles sont mesurés par rapport à la **normale** (perpendiculaire) à la surface.\n:::\n\n## Lois de la réfraction (lois de Snell-Descartes)\n\n:::theoreme\n**Lois de Snell-Descartes :**\n\n1. Le rayon incident, la normale et le rayon réfracté sont dans le même plan.\n2. $n_1 \\sin i_1 = n_2 \\sin i_2$\n\noù $n_1$, $n_2$ sont les indices de réfraction des deux milieux et $i_1$, $i_2$ les angles d'incidence et de réfraction.\n\n- Si $n_2 > n_1$ (ex. air → eau) : le rayon se rapproche de la normale ($i_2 < i_1$).\n- Si $n_2 < n_1$ (ex. eau → air) : le rayon s'éloigne de la normale ($i_2 > i_1$).\n:::\n\n:::exemple\nIndices : $n_{\\text{air}} = 1$, $n_{\\text{eau}} = 1{,}33$, $n_{\\text{verre}} = 1{,}5$.\n\nUn rayon frappe la surface eau-air avec $i_1 = 30°$.\n\n$$n_{\\text{eau}} \\sin 30° = n_{\\text{air}} \\sin i_2 \\implies 1{,}33 \\times 0{,}5 = 1 \\times \\sin i_2 \\implies \\sin i_2 = 0{,}665 \\implies i_2 \\approx 41{,}7°$$\n\nLe rayon s'éloigne de la normale en passant dans l'air.\n:::\n\n:::attention\n**Réflexion totale interne** : quand un rayon passe d'un milieu dense à un milieu moins dense, si l'angle d'incidence dépasse un **angle critique** $i_c$ ($\\sin i_c = n_2/n_1$), le rayon ne peut plus sortir — il est totalement réfléchi. Principe des fibres optiques.\n:::\n\n:::retenir\n- Réflexion : $i = r$ (angle incident = angle réfléchi, mesurés par rapport à la normale).\n- Réfraction : $n_1 \\sin i_1 = n_2 \\sin i_2$.\n- Milieu plus dense → rayon se rapproche de la normale.\n- Réflexion totale interne → base des fibres optiques.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_02_03",
+      "chapterId": "ch_pc_3e_02",
+      "title": { "fr": "Les lentilles convergentes — construction d'images" },
+      "sortOrder": 3,
+      "notionIds": ["not_pc_lentille", "not_pc_foyer"],
+      "content": {
+        "fr": "# Les lentilles convergentes — construction d'images\n\n:::definition\nUne **lentille convergente** (convexe) est un disque de verre (ou plastique) qui fait converger les rayons lumineux parallèles vers un point appelé **foyer image** $F'$.\n\nLa **distance focale** $f'$ est la distance entre le centre optique $O$ et le foyer $F'$. La **vergence** $V = \\dfrac{1}{f'}$ s'exprime en **dioptries** (δ).\n:::\n\n## Rayons particuliers\n\n:::propriete\nTrois rayons permettent de construire l'image d'un objet :\n\n1. Rayon passant par le **centre optique** $O$ → non dévié.\n2. Rayon parallèle à l'axe optique → passe par le **foyer image** $F'$.\n3. Rayon passant par le **foyer objet** $F$ → émerge parallèle à l'axe.\n:::\n\n:::methode\nConstruction de l'image d'un objet $AB$ par une lentille convergente :\n\n1. Tracer les 3 rayons particuliers issus du point $B$ (sommet de l'objet).\n2. L'image $B'$ est à l'intersection de ces rayons (ou de leurs prolongements).\n3. L'image $A'B'$ est complète : $A'$ se trouve sur l'axe optique.\n\n**Cas selon la position de l'objet :**\n\n- Objet à l'infini → image au foyer $F'$ (réelle, renversée, ponctuelle).\n- Objet entre $F$ et $O$ → image **virtuelle, droite, agrandie** (loupe).\n- Objet entre $F$ et 2$F$ → image réelle, renversée, agrandie.\n- Objet au-delà de 2$F$ → image réelle, renversée, réduite.\n:::\n\n:::exemple\nLentille de vergence $V = +4\\,\\delta$ → $f' = 1/4 = 0{,}25$ m $= 25$ cm.\n\nObjet à $25$ cm ($= f'$) de la lentille : image à l'infini (objet au foyer).\n\nObjet à $50$ cm ($= 2f'$) : image à $50$ cm de l'autre côté (réelle, renversée, même taille).\n:::\n\n:::attention\nUne image est **réelle** si les rayons convergent effectivement vers elle (peut être projetée sur un écran). Une image est **virtuelle** si les rayons ne convergent pas réellement mais semblent provenir de ce point (ne peut pas être projetée).\n:::\n\n:::retenir\n- Lentille convergente : fait converger les rayons parallèles vers $F'$.\n- Vergence $V = 1/f'$ en dioptries.\n- 3 rayons pour construire l'image.\n- Objet entre $F$ et $O$ → image virtuelle, droite, agrandie (loupe).\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_02_04",
+      "chapterId": "ch_pc_3e_02",
+      "title": { "fr": "L'œil et les défauts de la vision" },
+      "sortOrder": 4,
+      "notionIds": ["not_pc_oeil", "not_pc_defaut_vision"],
+      "content": {
+        "fr": "# L'œil et les défauts de la vision\n\n:::definition\nL'**œil** est un système optique qui forme des images sur la **rétine**. Il fonctionne comme une lentille convergente dont la vergence peut varier (accommodation).\n\nPrincipales parties de l'œil :\n- **Cornée** : surface avant transparente qui réfracte la lumière.\n- **Cristallin** : lentille convergente dont la courbure est réglable (accommodation).\n- **Rétine** : surface photosensible au fond de l'œil où se forme l'image réelle renversée.\n- **Nerf optique** : transmet l'image au cerveau (qui la redresse).\n- **Iris / pupille** : régule la quantité de lumière entrante.\n:::\n\n## Défauts de la vision\n\n:::propriete\n**Myopie** : l'image se forme avant la rétine. L'œil voit bien de près, mal de loin.\n\n- Cause : globe oculaire trop long ou cristallin trop convergent.\n- Correction : lentille **divergente** (vergence négative).\n\n**Hypermétropie** : l'image se forme derrière la rétine. L'œil voit mal de près, mieux de loin.\n\n- Cause : globe oculaire trop court ou cristallin trop peu convergent.\n- Correction : lentille **convergente** (vergence positive).\n\n**Presbytie** : perte de la capacité d'accommodation avec l'âge. Correction : verres progressifs.\n\n**Astigmatisme** : image déformée car la cornée n'est pas parfaitement sphérique. Correction : lentilles cylindriques.\n:::\n\n:::exemple\nUne personne myope à $-3\\,\\delta$ porte des verres de $-3$ dioptries (lentilles divergentes) qui éloignent les rayons avant qu'ils n'entrent dans l'œil, compensant la convergence excessive.\n:::\n\n:::methode\nPour identifier un défaut de vision :\n\n1. Myopie → image avant la rétine → correction : lentille divergente (−).\n2. Hypermétropie → image derrière la rétine → correction : lentille convergente (+).\n3. Presbytie → avec l'âge → verres progressifs ou lunettes de lecture.\n:::\n\n:::retenir\n- Œil = système optique : image réelle renversée sur la rétine.\n- Myopie → divergente (−) ; hypermétropie → convergente (+).\n- Accommodation = réglage du cristallin.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_02_05",
+      "chapterId": "ch_pc_3e_02",
+      "title": { "fr": "La couleur de la lumière — dispersion et synthèse" },
+      "sortOrder": 5,
+      "notionIds": ["not_pc_lumiere_blanche", "not_pc_dispersion"],
+      "content": {
+        "fr": "# La couleur de la lumière — dispersion et synthèse\n\n:::definition\nLa **lumière blanche** est une lumière composée de toutes les radiations du spectre visible, de longueur d'onde allant du violet (400 nm) au rouge (700 nm).\n\nLa **couleur** d'un objet dépend des longueurs d'onde qu'il réfléchit ou transmet.\n:::\n\n## La dispersion\n\n:::definition\nLa **dispersion** est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction (car chaque couleur a un indice de réfraction légèrement différent).\n\nUn **prisme** ou les gouttes de pluie dispersent la lumière blanche → **arc-en-ciel** (rouge, orange, jaune, vert, bleu, indigo, violet).\n:::\n\n## Synthèse additive et soustractive\n\n:::propriete\n**Synthèse additive** (lumière) : addition de lumières colorées.\n\n- Les **3 couleurs primaires** de la lumière : **rouge, vert, bleu** (RVB).\n- Rouge + Vert = Jaune ; Rouge + Bleu = Magenta ; Vert + Bleu = Cyan.\n- Rouge + Vert + Bleu = **Blanc**.\n- Utilisé dans les écrans (TV, téléphone).\n\n**Synthèse soustractive** (peinture/impression) : les pigments absorbent certaines longueurs d'onde.\n\n- Les **3 couleurs primaires** pigments : **cyan, magenta, jaune** (CMJ).\n- Cyan + Magenta + Jaune = **Noir** (absorption totale).\n- Utilisé dans l'impression (imprimante, peinture).\n:::\n\n:::exemple\nUne tomate rouge éclairée en lumière blanche paraît rouge car elle absorbe le vert et le bleu, et réfléchit uniquement le rouge. Si on l'éclaire en lumière bleue pure, elle apparaît noire (elle absorbe tout le bleu).\n:::\n\n:::attention\nNe pas confondre **synthèse additive** (lumière = écrans) et **synthèse soustractive** (pigments = peintures). Dans la synthèse additive, ajouter des couleurs donne du blanc ; dans la soustractive, ajouter des pigments donne du noir.\n:::\n\n:::retenir\n- Lumière blanche = mélange de toutes les couleurs (400–700 nm).\n- Dispersion → décomposition en spectre (prisme, arc-en-ciel).\n- Synthèse additive (lumière) : RVB → blanc ; soustractive (pigments) : CMJ → noir.\n:::"
+      }
+    },
+
+    {
+      "id": "les_pc_3e_03_01",
+      "chapterId": "ch_pc_3e_03",
+      "title": { "fr": "Structure de la matière — atomes et molécules" },
+      "sortOrder": 1,
+      "notionIds": ["not_pc_atome", "not_pc_molecule"],
+      "content": {
+        "fr": "# Structure de la matière — atomes et molécules\n\n:::definition\nL'**atome** est la plus petite unité constitutive d'un élément chimique. Il est composé :\n\n- D'un **noyau** (central, positif) contenant des **protons** (charge +) et des **neutrons** (charge 0).\n- D'un **nuage électronique** : des **électrons** (charge −) qui tournent autour du noyau.\n\nUn atome est électriquement neutre : nombre de protons = nombre d'électrons.\n:::\n\n## Caractérisation d'un atome\n\n:::propriete\nUn atome est caractérisé par :\n\n- Le **numéro atomique** $Z$ = nombre de protons (et d'électrons).\n- Le **nombre de masse** $A$ = nombre de protons + nombre de neutrons.\n- Notation : ${}^{A}_{Z}X$ (ex. carbone : ${}^{12}_{6}C$, oxygène : ${}^{16}_{8}O$, hydrogène : ${}^{1}_{1}H$).\n\n**Isotopes** : atomes du même élément ($Z$ identique) mais avec un nombre de neutrons différent ($A$ différent). Ex. : ${}^{12}_{6}C$ et ${}^{14}_{6}C$ (carbone 14, radioactif).\n:::\n\n:::definition\nUne **molécule** est un édifice chimique formé par l'assemblage d'au moins deux atomes liés par des liaisons covalentes.\n\nExemples : $H_2O$ (eau, 2 H + 1 O), $CO_2$ (dioxyde de carbone, 1 C + 2 O), $O_2$ (dioxygène, 2 O), $NaCl$ (chlorure de sodium — ionique).\n:::\n\n:::exemple\nLe fer est constitué d'atomes de fer (${}^{56}_{26}Fe$ : 26 protons, 30 neutrons, 26 électrons). L'eau ($H_2O$) est une molécule covalente : deux atomes d'hydrogène liés à un atome d'oxygène.\n:::\n\n:::attention\nNe pas confondre **atome** (électriquement neutre) et **ion** (atome ayant perdu ou gagné des électrons). Le fer peut former des ions $Fe^{2+}$ ou $Fe^{3+}$ en perdant 2 ou 3 électrons.\n:::\n\n:::retenir\n- Atome = noyau (protons + neutrons) + électrons.\n- $Z$ = nb de protons ; $A$ = protons + neutrons.\n- Isotopes : même $Z$, $A$ différent.\n- Molécule = assemblage d'atomes par liaisons covalentes.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_03_02",
+      "chapterId": "ch_pc_3e_03",
+      "title": { "fr": "Les réactions chimiques — équations et conservation" },
+      "sortOrder": 2,
+      "notionIds": ["not_pc_reaction_chimique", "not_pc_equation_chimique"],
+      "content": {
+        "fr": "# Les réactions chimiques — équations et conservation de la matière\n\n:::definition\nUne **réaction chimique** est une transformation qui convertit des **réactifs** en **produits**. Lors d'une réaction, les liaisons entre atomes sont rompues et de nouvelles liaisons sont formées. Les atomes sont conservés (la matière ne se crée ni ne se détruit).\n\nLa **loi de conservation de la masse** (Lavoisier) : la masse totale des réactifs est égale à la masse totale des produits.\n\n$$m(\\text{réactifs}) = m(\\text{produits})$$\n:::\n\n:::definition\nUne **équation chimique** est la représentation symbolique d'une réaction chimique. Elle doit être **équilibrée** : le nombre d'atomes de chaque élément est le même à gauche et à droite.\n\n$$\\text{Réactifs} \\rightarrow \\text{Produits}$$\n\nCoefficients stœchiométriques = nombres entiers qui équilibrent l'équation.\n:::\n\n## Équilibrage d'une équation\n\n:::methode\nPour équilibrer une équation chimique :\n\n1. Écrire les formules des réactifs et des produits.\n2. Compter les atomes de chaque élément de chaque côté.\n3. Ajuster les coefficients stœchiométriques (ne jamais changer les indices dans les formules).\n4. Vérifier que tous les éléments sont balancés.\n\n**Exemple :** Combustion du méthane dans l'oxygène :\n\n$CH_4 + O_2 \\rightarrow CO_2 + H_2O$\n\nC : 1 = 1 ✓ ; H : 4 ≠ 2 ; O : 2 ≠ 3\n\n$CH_4 + 2\\,O_2 \\rightarrow CO_2 + 2\\,H_2O$\n\nC : 1 = 1 ✓ ; H : 4 = 4 ✓ ; O : 4 = 4 ✓\n:::\n\n:::exemple\nOxydo-réduction du fer : $4\\,Fe + 3\\,O_2 \\rightarrow 2\\,Fe_2O_3$ (formation de la rouille).\n\nVérification : Fe : 4 = 4 ✓ ; O : 6 = 6 ✓.\n\nCombustion de l'hydrogène : $2\\,H_2 + O_2 \\rightarrow 2\\,H_2O$.\n:::\n\n:::attention\nOn ne change **jamais** les indices dans les formules chimiques (changer $H_2O$ en $H_2O_2$ est interdit — ce serait une molécule différente). On ne peut ajuster que les **coefficients** devant les formules.\n:::\n\n:::retenir\n- Loi de Lavoisier : masse conservée au cours d'une réaction.\n- Équation chimique : réactifs → produits (doit être équilibrée).\n- Équilibrer = ajuster les coefficients stœchiométriques.\n- Ne jamais modifier les indices dans les formules.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_03_03",
+      "chapterId": "ch_pc_3e_03",
+      "title": { "fr": "Les solutions aqueuses — acides, bases et pH" },
+      "sortOrder": 3,
+      "notionIds": ["not_pc_solution", "not_pc_ph"],
+      "content": {
+        "fr": "# Les solutions aqueuses — acides, bases et pH\n\n:::definition\nUne **solution aqueuse** est un mélange homogène d'une substance (soluté) dissoute dans l'eau (solvant). La **concentration massique** d'un soluté est :\n\n$$C_m = \\frac{m_{\\text{soluté}}}{V_{\\text{solution}}} \\quad \\text{(g/L)}$$\n:::\n\n## Acides et bases\n\n:::definition\nEn chimie des solutions :\n\n- Un **acide** est une substance qui libère des ions hydrogène $H^+$ (protons) en solution aqueuse. Exemples : HCl (acide chlorhydrique), $H_2SO_4$ (acide sulfurique), $CH_3COOH$ (acide acétique = vinaigre).\n\n- Une **base** est une substance qui libère des ions hydroxyde $OH^-$ (ou accepte des protons $H^+$) en solution aqueuse. Exemples : NaOH (soude), $Ca(OH)_2$ (chaux).\n:::\n\n## Le pH\n\n:::definition\nLe **pH** (potentiel Hydrogène) est une grandeur sans dimension qui mesure l'acidité ou la basicité d'une solution :\n\n- $pH < 7$ : solution **acide** (ex. jus de citron pH ≈ 2, coca pH ≈ 3).\n- $pH = 7$ : solution **neutre** (eau pure à 25°C).\n- $pH > 7$ : solution **basique** (alcaline) (ex. eau de javel pH ≈ 12, ammoniaque pH ≈ 11).\n\nPlage : de 0 (très acide) à 14 (très basique).\n:::\n\n:::exemple\nNeutralisation acide-base (réaction de neutralisation) :\n\n$$HCl + NaOH \\rightarrow NaCl + H_2O$$\n\nL'acide chlorhydrique et la soude se neutralisent pour former du sel (NaCl) et de l'eau. Le pH de la solution obtenue est 7 si les quantités sont stœchiométriques.\n:::\n\n:::methode\nMesure du pH :\n\n1. **Papier pH** : tremper dans la solution, comparer la couleur à une échelle colorée. Précision ± 1 unité.\n2. **pH-mètre** : appareil électronique, précision ±0,1 unité.\n3. **Indicateurs colorés** : hélianthine (rouge < 4, orange 4–6, jaune > 6), phénolphtaléine (incolore < 8,2 ; rose > 10).\n:::\n\n:::attention\nLes acides concentrés (HCl, H₂SO₄) et les bases concentrées (NaOH) sont corrosifs — risque grave de brûlures chimiques. Toujours porter des gants et des lunettes de protection.\n:::\n\n:::retenir\n- Solution acide : pH < 7 ; neutre : pH = 7 ; basique : pH > 7.\n- Acide libère $H^+$ ; base libère $OH^-$.\n- Neutralisation : acide + base → sel + eau.\n- Concentration massique : $C_m = m/V$ (g/L).\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_03_04",
+      "chapterId": "ch_pc_3e_03",
+      "title": { "fr": "Les types de réactions chimiques — oxydation et réduction" },
+      "sortOrder": 4,
+      "notionIds": ["not_pc_oxydation", "not_pc_reduction"],
+      "content": {
+        "fr": "# Les types de réactions chimiques — oxydation et réduction\n\n:::definition\nUne réaction d'**oxydation** est une réaction au cours de laquelle une espèce chimique **perd** des électrons.\n\nUne réaction de **réduction** est une réaction au cours de laquelle une espèce chimique **gagne** des électrons.\n\nCes deux processus sont toujours couplés → réaction d'**oxydoréduction** (redox).\n\nMoyen mnémotechnique : **OIL RIG** (Oxidation Is Loss, Reduction Is Gain).\n:::\n\n:::propriete\n**Couples oxydant/réducteur** : pour un couple $Ox/Red$, la demi-équation est :\n\n$$Ox + n\\,e^- \\rightarrow Red$$\n\nDans une réaction redox, l'**oxydant** (capte des électrons) oxyde le **réducteur** (donne des électrons) :\n\n$$Red_1 + Ox_2 \\rightarrow Ox_1 + Red_2$$\n:::\n\n:::exemple\n**Réaction du zinc avec le sulfate de cuivre :**\n\n- Zinc se dissout (oxydation) : $Zn \\rightarrow Zn^{2+} + 2e^-$\n- Ions cuivre se déposent (réduction) : $Cu^{2+} + 2e^- \\rightarrow Cu$\n\nÉquation bilan : $Zn + Cu^{2+} \\rightarrow Zn^{2+} + Cu$\n\nObservation : dépôt de cuivre rouge sur le zinc, la solution bleue (Cu²⁺) se décolore.\n:::\n\n:::exemple\n**Combustion** : oxydation d'un combustible par le dioxygène (oxydant).\n\n$$C + O_2 \\rightarrow CO_2 \\quad \\text{(combustion du carbone)}$$\n\nLe carbone est le réducteur (s'oxyde), $O_2$ est l'oxydant (se réduit).\n:::\n\n:::attention\nL'oxydation implique une **perte** d'électrons (et non un gain). Ne pas confondre avec la signification courante du mot « oxydation » (rouille, etc.) — la rouille est bien une oxydoréduction mais implique aussi l'eau.\n:::\n\n:::retenir\n- Oxydation = perte d'électrons ; réduction = gain d'électrons.\n- Oxydoréduction : toujours couplées.\n- Oxydant + Réducteur → produits.\n- Exemples : rouille du fer, combustion, piles électrochimiques.\n:::"
+      }
+    },
+    {
+      "id": "les_pc_3e_03_05",
+      "chapterId": "ch_pc_3e_03",
+      "title": { "fr": "Les combustions et la chimie de l'environnement" },
+      "sortOrder": 5,
+      "notionIds": ["not_pc_combustion", "not_pc_pollution_chimique"],
+      "content": {
+        "fr": "# Les combustions et la chimie de l'environnement\n\n:::definition\nLa **combustion** est une réaction chimique exothermique (qui dégage de la chaleur) entre un **combustible** et un **comburant** (généralement le dioxygène $O_2$).\n\n- **Combustion complète** : tout le carbone est transformé en $CO_2$. Exemple : $CH_4 + 2O_2 \\rightarrow CO_2 + 2H_2O$.\n- **Combustion incomplète** : manque de $O_2$, production de monoxyde de carbone $CO$ (gaz toxique) et/ou de suie (carbone $C$).\n:::\n\n## Combustibles fossiles et impact environnemental\n\n:::propriete\n**Combustibles courants :**\n\n| Combustible | Formule | Usage |\n|---|---|---|\n| Méthane (gaz naturel) | $CH_4$ | Cuisine, chauffage |\n| Propane | $C_3H_8$ | Bouteilles de gaz |\n| Butane | $C_4H_{10}$ | Briquets, réchauds |\n| Éthanol | $C_2H_5OH$ | Carburant (bioéthanol) |\n| Octane (essence) | $C_8H_{18}$ | Moteurs thermiques |\n:::\n\n:::exemple\nCombustion complète du propane :\n\n$$C_3H_8 + 5\\,O_2 \\rightarrow 3\\,CO_2 + 4\\,H_2O$$\n\nVérification : C : 3 = 3 ✓ ; H : 8 = 8 ✓ ; O : 10 = 10 ✓\n\nCette combustion libère de l'énergie (chaleur et lumière) mais aussi du $CO_2$ contribuant à l'effet de serre.\n:::\n\n## Impact sur l'environnement\n\n:::propriete\n**Polluants issus des combustions :**\n\n- $CO_2$ → effet de serre (réchauffement climatique).\n- $CO$ → gaz toxique (fixation à l'hémoglobine, empoisonnement).\n- $SO_2$ → pluies acides (combustion du charbon sulfureux).\n- $NO_x$ → pluies acides, smog (moteurs thermiques).\n- Particules fines → maladies respiratoires.\n:::\n\n:::methode\nPour limiter l'impact des combustions :\n\n1. Utiliser des combustibles moins polluants (gaz naturel vs charbon).\n2. Développer les énergies renouvelables (solaire, hydro-électrique).\n3. Optimiser la combustion (excès d'air, post-traitement des fumées).\n4. Isoler thermiquement les bâtiments (réduire la consommation).\n:::\n\n:::retenir\n- Combustion complète → $CO_2 + H_2O$ ; incomplète → $CO$ + suie.\n- $CO$ est un gaz toxique inodore et invisible, très dangereux.\n- $CO_2$ → effet de serre ; $SO_2$ et $NO_x$ → pluies acides.\n- Solutions : énergies renouvelables, efficacité énergétique.\n:::"
+      }
+    }
+  ],
+
+  "notions": [
+    {
+      "id": "not_pc_courant",
+      "title": { "fr": "Courant électrique" },
+      "definition": { "fr": "Le courant électrique est un mouvement ordonné de charges électriques (électrons dans les métaux). Il ne circule que dans un circuit fermé. Son sens conventionnel va de la borne + vers la borne − du générateur." },
+      "lessonIds": ["les_pc_3e_01_01"]
+    },
+    {
+      "id": "not_pc_tension",
+      "title": { "fr": "Tension électrique" },
+      "definition": { "fr": "La tension électrique U est la différence de potentiel entre deux points d'un circuit. Elle s'exprime en volts (V) et se mesure avec un voltmètre branché en dérivation aux bornes du dipôle." },
+      "lessonIds": ["les_pc_3e_01_01"]
+    },
+    {
+      "id": "not_pc_intensite",
+      "title": { "fr": "Intensité du courant" },
+      "definition": { "fr": "L'intensité I du courant est la quantité de charges électriques qui traverse une section de conducteur par seconde. Elle s'exprime en ampères (A) et se mesure avec un ampèremètre branché en série dans le circuit." },
+      "lessonIds": ["les_pc_3e_01_01"]
+    },
+    {
+      "id": "not_pc_resistance",
+      "title": { "fr": "Résistance électrique" },
+      "definition": { "fr": "La résistance électrique R d'un conducteur (en ohms, Ω) caractérise sa capacité à s'opposer au passage du courant. Plus R est grande, plus le conducteur freine le courant. R = U/I selon la loi d'Ohm." },
+      "lessonIds": ["les_pc_3e_01_02"]
+    },
+    {
+      "id": "not_pc_loi_ohm",
+      "title": { "fr": "Loi d'Ohm" },
+      "definition": { "fr": "La loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues." },
+      "lessonIds": ["les_pc_3e_01_02"]
+    },
+    {
+      "id": "not_pc_puissance",
+      "title": { "fr": "Puissance électrique" },
+      "definition": { "fr": "La puissance électrique P mesure l'énergie transférée par unité de temps. Elle s'exprime en watts (W) : P = U × I. Pour une résistance : P = R × I² = U²/R." },
+      "lessonIds": ["les_pc_3e_01_03"]
+    },
+    {
+      "id": "not_pc_energie_elec",
+      "title": { "fr": "Énergie électrique" },
+      "definition": { "fr": "L'énergie électrique E consommée par un appareil est E = P × t (en joules ou kilowattheures). Conversion : 1 kWh = 3,6 × 10⁶ J. C'est cette énergie qui est facturée par les distributeurs d'électricité." },
+      "lessonIds": ["les_pc_3e_01_03"]
+    },
+    {
+      "id": "not_pc_generateur",
+      "title": { "fr": "Générateur électrique" },
+      "definition": { "fr": "Un générateur est un dipôle qui fournit de l'énergie électrique. Il est caractérisé par sa force électromotrice (f.e.m.) E et sa résistance interne r. Sa tension aux bornes sous charge est U = E − r × I." },
+      "lessonIds": ["les_pc_3e_01_04"]
+    },
+    {
+      "id": "not_pc_recepteur",
+      "title": { "fr": "Récepteur électrique" },
+      "definition": { "fr": "Un récepteur est un dipôle qui consomme de l'énergie électrique et la convertit en une autre forme : chaleur (résisteur), énergie mécanique (moteur) ou énergie chimique (électrolyseur)." },
+      "lessonIds": ["les_pc_3e_01_04"]
+    },
+    {
+      "id": "not_pc_securite_elec",
+      "title": { "fr": "Sécurité électrique" },
+      "definition": { "fr": "Un courant de 30 mA traversant le corps humain peut être mortel. Les protections incluent : fusible/disjoncteur (surcharge), disjoncteur différentiel 30 mA (fuite de courant), prise de terre (défaut d'isolement)." },
+      "lessonIds": ["les_pc_3e_01_05"]
+    },
+    {
+      "id": "not_pc_rayon_lumineux",
+      "title": { "fr": "Rayon lumineux" },
+      "definition": { "fr": "Le rayon lumineux est le modèle géométrique du trajet de la lumière, représenté par une droite orientée dans le sens de propagation. La lumière se propage en ligne droite dans un milieu homogène et transparent à c = 3 × 10⁸ m/s." },
+      "lessonIds": ["les_pc_3e_02_01"]
+    },
+    {
+      "id": "not_pc_source_lumineuse",
+      "title": { "fr": "Source lumineuse" },
+      "definition": { "fr": "Une source primaire produit elle-même de la lumière (Soleil, lampe, bougie). Une source secondaire diffuse la lumière reçue (Lune, objets éclairés). La Lune est une source secondaire : elle réfléchit la lumière du Soleil." },
+      "lessonIds": ["les_pc_3e_02_01"]
+    },
+    {
+      "id": "not_pc_reflexion",
+      "title": { "fr": "Réflexion de la lumière" },
+      "definition": { "fr": "La réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface)." },
+      "lessonIds": ["les_pc_3e_02_02"]
+    },
+    {
+      "id": "not_pc_refraction",
+      "title": { "fr": "Réfraction de la lumière" },
+      "definition": { "fr": "La réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense." },
+      "lessonIds": ["les_pc_3e_02_02"]
+    },
+    {
+      "id": "not_pc_lentille",
+      "title": { "fr": "Lentille convergente" },
+      "definition": { "fr": "Une lentille convergente (convexe) fait converger les rayons parallèles vers son foyer image F'. Sa vergence V = 1/f' s'exprime en dioptries (δ). Elle est utilisée dans les loupes, objectifs photographiques et verres correcteurs." },
+      "lessonIds": ["les_pc_3e_02_03"]
+    },
+    {
+      "id": "not_pc_foyer",
+      "title": { "fr": "Foyer d'une lentille" },
+      "definition": { "fr": "Le foyer image F' est le point où convergent les rayons incidents parallèles à l'axe optique après passage dans la lentille. Le foyer objet F est symétrique de F' par rapport au centre O. Distance focale f' = distance O à F'." },
+      "lessonIds": ["les_pc_3e_02_03"]
+    },
+    {
+      "id": "not_pc_oeil",
+      "title": { "fr": "L'œil — système optique" },
+      "definition": { "fr": "L'œil est un système optique qui forme une image réelle renversée sur la rétine. Le cristallin est une lentille convergente dont la vergence est réglable (accommodation). La rétine transmet l'image au cerveau via le nerf optique." },
+      "lessonIds": ["les_pc_3e_02_04"]
+    },
+    {
+      "id": "not_pc_defaut_vision",
+      "title": { "fr": "Défauts de la vision" },
+      "definition": { "fr": "Myopie : image avant la rétine → correction par lentille divergente (−). Hypermétropie : image derrière la rétine → correction par lentille convergente (+). Presbytie : perte d'accommodation avec l'âge → verres progressifs." },
+      "lessonIds": ["les_pc_3e_02_04"]
+    },
+    {
+      "id": "not_pc_lumiere_blanche",
+      "title": { "fr": "Lumière blanche" },
+      "definition": { "fr": "La lumière blanche est la superposition de toutes les radiations visibles, du violet (400 nm) au rouge (700 nm). Elle peut être dispersée par un prisme en un spectre continu de couleurs (arc-en-ciel). Synthèse additive : rouge + vert + bleu = blanc." },
+      "lessonIds": ["les_pc_3e_02_05"]
+    },
+    {
+      "id": "not_pc_dispersion",
+      "title": { "fr": "Dispersion de la lumière" },
+      "definition": { "fr": "La dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible." },
+      "lessonIds": ["les_pc_3e_02_05"]
+    },
+    {
+      "id": "not_pc_atome",
+      "title": { "fr": "Atome" },
+      "definition": { "fr": "L'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons." },
+      "lessonIds": ["les_pc_3e_03_01"]
+    },
+    {
+      "id": "not_pc_molecule",
+      "title": { "fr": "Molécule" },
+      "definition": { "fr": "Une molécule est un ensemble d'atomes liés par des liaisons covalentes. Exemples : H₂O (eau), CO₂ (dioxyde de carbone), O₂ (dioxygène), CH₄ (méthane). La formule moléculaire indique la nature et le nombre d'atomes." },
+      "lessonIds": ["les_pc_3e_03_01"]
+    },
+    {
+      "id": "not_pc_reaction_chimique",
+      "title": { "fr": "Réaction chimique" },
+      "definition": { "fr": "Une réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits." },
+      "lessonIds": ["les_pc_3e_03_02"]
+    },
+    {
+      "id": "not_pc_equation_chimique",
+      "title": { "fr": "Équation chimique" },
+      "definition": { "fr": "Une équation chimique est la représentation symbolique d'une réaction. Elle doit être équilibrée : même nombre d'atomes de chaque élément de chaque côté. On ajuste les coefficients stœchiométriques (entiers) sans modifier les formules." },
+      "lessonIds": ["les_pc_3e_03_02"]
+    },
+    {
+      "id": "not_pc_solution",
+      "title": { "fr": "Solution aqueuse" },
+      "definition": { "fr": "Une solution aqueuse est un mélange homogène d'un soluté dissous dans l'eau (solvant). La concentration massique est Cm = m(soluté) / V(solution) en g/L. Exemples : eau salée, eau sucrée, solutions d'acides ou de bases." },
+      "lessonIds": ["les_pc_3e_03_03"]
+    },
+    {
+      "id": "not_pc_ph",
+      "title": { "fr": "pH" },
+      "definition": { "fr": "Le pH mesure l'acidité ou la basicité d'une solution aqueuse. pH < 7 : acide ; pH = 7 : neutre ; pH > 7 : basique. Il se mesure avec un papier pH, un pH-mètre ou des indicateurs colorés." },
+      "lessonIds": ["les_pc_3e_03_03"]
+    },
+    {
+      "id": "not_pc_oxydation",
+      "title": { "fr": "Oxydation" },
+      "definition": { "fr": "L'oxydation est la perte d'électrons par une espèce chimique (le réducteur). Elle est toujours couplée à une réduction. Moyen mnémotechnique : OIL (Oxidation Is Loss). Exemples : rouille du fer, combustion." },
+      "lessonIds": ["les_pc_3e_03_04"]
+    },
+    {
+      "id": "not_pc_reduction",
+      "title": { "fr": "Réduction" },
+      "definition": { "fr": "La réduction est le gain d'électrons par une espèce chimique (l'oxydant). Elle est toujours couplée à une oxydation. Moyen mnémotechnique : RIG (Reduction Is Gain). Les deux forment une réaction d'oxydoréduction (redox)." },
+      "lessonIds": ["les_pc_3e_03_04"]
+    },
+    {
+      "id": "not_pc_combustion",
+      "title": { "fr": "Combustion" },
+      "definition": { "fr": "La combustion est une réaction exothermique d'un combustible avec le dioxygène. Complète : produits = CO₂ + H₂O. Incomplète (manque O₂) : production de CO (toxique) et suie. Exemples : méthane, propane, essence." },
+      "lessonIds": ["les_pc_3e_03_05"]
+    },
+    {
+      "id": "not_pc_pollution_chimique",
+      "title": { "fr": "Pollution chimique" },
+      "definition": { "fr": "Les combustions génèrent des polluants : CO₂ (effet de serre), CO (toxique), SO₂ et NOₓ (pluies acides), particules fines (maladies respiratoires). Les solutions incluent les énergies renouvelables et l'efficacité énergétique." },
+      "lessonIds": ["les_pc_3e_03_05"]
+    }
+  ],
+
+  "quizzes": [
+    {
+      "id": "qz_pc_3e_01_01",
+      "lessonId": "les_pc_3e_01_01",
+      "questions": [
+        {
+          "id": "qz_pc_3e_01_01_q1",
+          "text": "Un ampèremètre doit être branché :",
+          "options": ["En dérivation aux bornes du dipôle", "En série dans le circuit", "Entre les deux bornes du générateur", "En parallèle avec le voltmètre"],
+          "correctIndex": 1,
+          "explanation": "L'ampèremètre mesure l'intensité du courant qui traverse le circuit. Il doit être branché en série (le courant le traverse). Sa résistance interne est très faible pour ne pas perturber le circuit.",
+          "notionId": "not_pc_intensite"
+        },
+        {
+          "id": "qz_pc_3e_01_01_q2",
+          "text": "Dans un circuit série, deux lampes L1 et L2 sont alimentées par une pile de 12 V. Si U1 = 5 V, quelle est U2 ?",
+          "options": ["5 V", "12 V", "7 V", "17 V"],
+          "correctIndex": 2,
+          "explanation": "En série, les tensions s'additionnent : U = U1 + U2. Donc U2 = 12 − 5 = 7 V.",
+          "notionId": "not_pc_tension"
+        },
+        {
+          "id": "qz_pc_3e_01_01_q3",
+          "text": "Dans un circuit en dérivation, deux branches ont respectivement I1 = 0,3 A et I2 = 0,5 A. Quelle est l'intensité totale I ?",
+          "options": ["0,2 A", "0,3 A", "0,5 A", "0,8 A"],
+          "correctIndex": 3,
+          "explanation": "En dérivation, les courants s'additionnent : I = I1 + I2 = 0,3 + 0,5 = 0,8 A.",
+          "notionId": "not_pc_courant"
+        },
+        {
+          "id": "qz_pc_3e_01_01_q4",
+          "text": "Dans un circuit en dérivation, quelle est la tension aux bornes de chaque branche ?",
+          "options": ["Elle est différente pour chaque branche", "Elle est nulle", "Elle est la même pour toutes les branches", "Elle est la somme des tensions de chaque branche"],
+          "correctIndex": 2,
+          "explanation": "En dérivation, la tension est identique aux bornes de chaque branche : U1 = U2 = U (tension du générateur).",
+          "notionId": "not_pc_tension"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_01_02",
+      "lessonId": "les_pc_3e_01_02",
+      "questions": [
+        {
+          "id": "qz_pc_3e_01_02_q1",
+          "text": "Calculer l'intensité dans un résisteur de R = 20 Ω soumis à une tension U = 10 V.",
+          "options": ["200 A", "2 A", "0,5 A", "0,02 A"],
+          "correctIndex": 2,
+          "explanation": "Loi d'Ohm : I = U/R = 10/20 = 0,5 A.",
+          "notionId": "not_pc_loi_ohm"
+        },
+        {
+          "id": "qz_pc_3e_01_02_q2",
+          "text": "Deux résistances R1 = 4 Ω et R2 = 6 Ω sont branchées en série. Quelle est la résistance équivalente ?",
+          "options": ["2,4 Ω", "10 Ω", "5 Ω", "24 Ω"],
+          "correctIndex": 1,
+          "explanation": "En série : Réq = R1 + R2 = 4 + 6 = 10 Ω.",
+          "notionId": "not_pc_resistance"
+        },
+        {
+          "id": "qz_pc_3e_01_02_q3",
+          "text": "Deux résistances R1 = 6 Ω et R2 = 3 Ω sont branchées en dérivation. Quelle est la résistance équivalente ?",
+          "options": ["9 Ω", "3 Ω", "2 Ω", "18 Ω"],
+          "correctIndex": 2,
+          "explanation": "En dérivation : Réq = (R1 × R2)/(R1 + R2) = (6 × 3)/(6 + 3) = 18/9 = 2 Ω.",
+          "notionId": "not_pc_resistance"
+        },
+        {
+          "id": "qz_pc_3e_01_02_q4",
+          "text": "Un résistor de R = 100 Ω est traversé par un courant de I = 0,2 A. Calculer la tension à ses bornes.",
+          "options": ["500 V", "0,002 V", "20 V", "0,02 V"],
+          "correctIndex": 2,
+          "explanation": "Loi d'Ohm : U = R × I = 100 × 0,2 = 20 V.",
+          "notionId": "not_pc_loi_ohm"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_01_03",
+      "lessonId": "les_pc_3e_01_03",
+      "questions": [
+        {
+          "id": "qz_pc_3e_01_03_q1",
+          "text": "Calculer la puissance d'un appareil alimenté sous U = 220 V et traversé par I = 2 A.",
+          "options": ["110 W", "440 W", "222 W", "218 W"],
+          "correctIndex": 1,
+          "explanation": "P = U × I = 220 × 2 = 440 W.",
+          "notionId": "not_pc_puissance"
+        },
+        {
+          "id": "qz_pc_3e_01_03_q2",
+          "text": "Combien vaut 1 kWh en joules ?",
+          "options": ["1 000 J", "3 600 J", "3 600 000 J", "1 000 000 J"],
+          "correctIndex": 2,
+          "explanation": "1 kWh = 1 000 W × 3 600 s = 3 600 000 J = 3,6 × 10⁶ J.",
+          "notionId": "not_pc_energie_elec"
+        },
+        {
+          "id": "qz_pc_3e_01_03_q3",
+          "text": "Un appareil de 500 W fonctionne pendant 2 heures. Quelle est l'énergie consommée en kWh ?",
+          "options": ["250 kWh", "1 kWh", "1 000 kWh", "0,5 kWh"],
+          "correctIndex": 1,
+          "explanation": "E = P × t = 500 W × 2 h = 1 000 Wh = 1 kWh.",
+          "notionId": "not_pc_energie_elec"
+        },
+        {
+          "id": "qz_pc_3e_01_03_q4",
+          "text": "Quel effet du courant électrique est utilisé dans un fer à repasser ?",
+          "options": ["Effet lumineux", "Effet chimique", "Effet magnétique", "Effet thermique (Joule)"],
+          "correctIndex": 3,
+          "explanation": "Le fer à repasser utilise l'effet Joule : le courant chauffe une résistance métallique, produisant de la chaleur utilisée pour repasser les vêtements.",
+          "notionId": "not_pc_puissance"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_01_04",
+      "lessonId": "les_pc_3e_01_04",
+      "questions": [
+        {
+          "id": "qz_pc_3e_01_04_q1",
+          "text": "Une pile a une f.e.m. E = 6 V et une résistance interne r = 1 Ω. Elle alimente une résistance R = 5 Ω. Calculer l'intensité.",
+          "options": ["6 A", "1,2 A", "1 A", "0,83 A"],
+          "correctIndex": 2,
+          "explanation": "I = E / (R + r) = 6 / (5 + 1) = 6/6 = 1 A.",
+          "notionId": "not_pc_generateur"
+        },
+        {
+          "id": "qz_pc_3e_01_04_q2",
+          "text": "Dans la situation précédente, quelle est la tension aux bornes de la pile ?",
+          "options": ["6 V", "5 V", "4 V", "1 V"],
+          "correctIndex": 1,
+          "explanation": "U = E − r × I = 6 − 1 × 1 = 5 V. La chute de tension interne est r × I = 1 V.",
+          "notionId": "not_pc_generateur"
+        },
+        {
+          "id": "qz_pc_3e_01_04_q3",
+          "text": "Un moteur électrique est un exemple de :",
+          "options": ["Générateur", "Récepteur convertissant l'électricité en énergie mécanique", "Récepteur convertissant l'électricité en chaleur", "Source d'énergie chimique"],
+          "correctIndex": 1,
+          "explanation": "Un moteur électrique est un récepteur qui convertit l'énergie électrique en énergie mécanique (rotation). Une partie est aussi dissipée en chaleur.",
+          "notionId": "not_pc_recepteur"
+        },
+        {
+          "id": "qz_pc_3e_01_04_q4",
+          "text": "Quand l'intensité débitée par un générateur augmente, sa tension aux bornes :",
+          "options": ["Augmente", "Reste constante", "Diminue", "Devient nulle instantanément"],
+          "correctIndex": 2,
+          "explanation": "La tension aux bornes est U = E − r × I. Quand I augmente, la chute de tension r × I augmente, donc U diminue.",
+          "notionId": "not_pc_generateur"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_01_05",
+      "lessonId": "les_pc_3e_01_05",
+      "questions": [
+        {
+          "id": "qz_pc_3e_01_05_q1",
+          "text": "À partir de quelle intensité un courant électrique peut-il être mortel pour l'être humain ?",
+          "options": ["1 A", "100 mA", "30 mA", "10 mA"],
+          "correctIndex": 2,
+          "explanation": "Un courant de 30 mA traversant le corps humain peut provoquer une fibrillation cardiaque mortelle. C'est pourquoi les disjoncteurs différentiels se déclenchent à 30 mA.",
+          "notionId": "not_pc_securite_elec"
+        },
+        {
+          "id": "qz_pc_3e_01_05_q2",
+          "text": "Quel dispositif protège les personnes contre les défauts d'isolement (fuite de courant) ?",
+          "options": ["Le fusible", "Le disjoncteur magnéto-thermique", "La prise de terre avec disjoncteur différentiel", "L'interrupteur"],
+          "correctIndex": 2,
+          "explanation": "La prise de terre (ou disjoncteur différentiel) détecte les fuites de courant et protège les personnes. Les fusibles et disjoncteurs magnéto-thermiques protègent les installations (surcharges), pas les personnes.",
+          "notionId": "not_pc_securite_elec"
+        },
+        {
+          "id": "qz_pc_3e_01_05_q3",
+          "text": "Pourquoi est-il plus dangereux de manipuler des appareils électriques avec les mains mouillées ?",
+          "options": ["L'eau rouille les appareils", "La résistance du corps diminue avec l'humidité, augmentant l'intensité du courant", "L'eau conduit mieux l'électricité que les appareils", "Il n'y a pas de danger supplémentaire"],
+          "correctIndex": 1,
+          "explanation": "La résistance du corps humain diminue fortement quand la peau est mouillée (de ~100 000 Ω à ~1 000 Ω). Pour une même tension, I = U/R augmente donc l'intensité traversant le corps est beaucoup plus élevée → danger accru.",
+          "notionId": "not_pc_securite_elec"
+        },
+        {
+          "id": "qz_pc_3e_01_05_q4",
+          "text": "Un climatiseur de 2 200 W est branché sous 220 V. Quel fusible choisir ?",
+          "options": ["Fusible 5 A", "Fusible 10 A", "Fusible 2 A", "Fusible 100 A"],
+          "correctIndex": 1,
+          "explanation": "I = P/U = 2200/220 = 10 A. Un fusible de 10 A est adapté. Un fusible de 5 A sauterait ; un fusible trop élevé (100 A) ne protégerait pas.",
+          "notionId": "not_pc_securite_elec"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_02_01",
+      "lessonId": "les_pc_3e_02_01",
+      "questions": [
+        {
+          "id": "qz_pc_3e_02_01_q1",
+          "text": "Quelle est la vitesse de la lumière dans le vide ?",
+          "options": ["3 × 10⁶ m/s", "3 × 10⁸ m/s", "3 × 10¹⁰ m/s", "300 m/s"],
+          "correctIndex": 1,
+          "explanation": "La vitesse de la lumière dans le vide est c = 3 × 10⁸ m/s = 300 000 km/s.",
+          "notionId": "not_pc_rayon_lumineux"
+        },
+        {
+          "id": "qz_pc_3e_02_01_q2",
+          "text": "La Lune est une source lumineuse :",
+          "options": ["Primaire, car elle brille", "Secondaire, car elle diffuse la lumière du Soleil", "Ni l'une ni l'autre", "Primaire, comme une lampe"],
+          "correctIndex": 1,
+          "explanation": "La Lune est une source secondaire : elle ne produit pas sa propre lumière mais réfléchit la lumière solaire vers la Terre.",
+          "notionId": "not_pc_source_lumineuse"
+        },
+        {
+          "id": "qz_pc_3e_02_01_q3",
+          "text": "Dans quel milieu la lumière se propage-t-elle en ligne droite ?",
+          "options": ["Dans tous les milieux", "Dans un milieu homogène et transparent uniquement", "Dans le vide uniquement", "Dans l'eau uniquement"],
+          "correctIndex": 1,
+          "explanation": "La lumière se propage en ligne droite (propagation rectiligne) dans un milieu homogène (même composition partout) et transparent (laisse passer la lumière).",
+          "notionId": "not_pc_rayon_lumineux"
+        },
+        {
+          "id": "qz_pc_3e_02_01_q4",
+          "text": "Lors d'une éclipse totale de Soleil, la Lune se trouve :",
+          "options": ["Derrière la Terre", "Entre la Terre et le Soleil", "Perpendiculairement au plan Terre-Soleil", "Au même niveau que la Terre par rapport au Soleil"],
+          "correctIndex": 1,
+          "explanation": "Lors d'une éclipse solaire totale, la Lune s'interpose entre le Soleil et la Terre, projetant son ombre sur une partie de la Terre.",
+          "notionId": "not_pc_source_lumineuse"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_02_02",
+      "lessonId": "les_pc_3e_02_02",
+      "questions": [
+        {
+          "id": "qz_pc_3e_02_02_q1",
+          "text": "Un rayon lumineux frappe un miroir plan avec un angle d'incidence de 40° (par rapport à la normale). Quel est l'angle de réflexion ?",
+          "options": ["80°", "50°", "40°", "90°"],
+          "correctIndex": 2,
+          "explanation": "Première loi de la réflexion : angle d'incidence = angle de réflexion = 40°. Les angles sont mesurés par rapport à la normale à la surface.",
+          "notionId": "not_pc_reflexion"
+        },
+        {
+          "id": "qz_pc_3e_02_02_q2",
+          "text": "Un rayon passe de l'air (n=1) dans l'eau (n=1,33) avec i₁ = 30°. Il se rapproche ou s'éloigne de la normale ?",
+          "options": ["S'éloigne", "Reste parallèle à la normale", "Se rapproche", "Ne change pas de direction"],
+          "correctIndex": 2,
+          "explanation": "En passant d'un milieu moins dense (air, n=1) à un milieu plus dense (eau, n=1,33), le rayon se rapproche de la normale. n₁ sin i₁ = n₂ sin i₂ → sin i₂ = sin(30°)/1,33 < sin(30°) → i₂ < i₁.",
+          "notionId": "not_pc_refraction"
+        },
+        {
+          "id": "qz_pc_3e_02_02_q3",
+          "text": "La loi de Snell-Descartes pour la réfraction est :",
+          "options": ["i₁ = i₂", "n₁ + n₂ = constante", "n₁ sin i₁ = n₂ sin i₂", "n₁ / n₂ = i₁ / i₂"],
+          "correctIndex": 2,
+          "explanation": "La relation de Snell-Descartes est n₁ sin i₁ = n₂ sin i₂, où n₁ et n₂ sont les indices de réfraction des deux milieux.",
+          "notionId": "not_pc_refraction"
+        },
+        {
+          "id": "qz_pc_3e_02_02_q4",
+          "text": "La réflexion totale interne se produit quand :",
+          "options": ["L'angle d'incidence est nul", "Un rayon passe d'un milieu dense à un moins dense, avec un angle supérieur à l'angle critique", "Un rayon arrive perpendiculairement à la surface", "L'indice de réfraction est égal dans les deux milieux"],
+          "correctIndex": 1,
+          "explanation": "La réflexion totale interne se produit quand un rayon passe d'un milieu plus dense vers un milieu moins dense, et que l'angle d'incidence dépasse l'angle critique. C'est le principe des fibres optiques.",
+          "notionId": "not_pc_refraction"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_02_03",
+      "lessonId": "les_pc_3e_02_03",
+      "questions": [
+        {
+          "id": "qz_pc_3e_02_03_q1",
+          "text": "Une lentille convergente a une vergence V = +5 δ. Quelle est sa distance focale ?",
+          "options": ["5 m", "0,5 m", "0,2 m", "2 m"],
+          "correctIndex": 2,
+          "explanation": "f' = 1/V = 1/5 = 0,2 m = 20 cm.",
+          "notionId": "not_pc_lentille"
+        },
+        {
+          "id": "qz_pc_3e_02_03_q2",
+          "text": "Un objet est placé entre le foyer F et le centre O d'une lentille convergente. L'image est :",
+          "options": ["Réelle, renversée, agrandie", "Virtuelle, droite, agrandie (loupe)", "Réelle, renversée, réduite", "Virtuelle, renversée, réduite"],
+          "correctIndex": 1,
+          "explanation": "Quand l'objet est entre F et O, l'image est virtuelle (les rayons ne convergent pas vraiment), droite et agrandie. C'est le principe de la loupe.",
+          "notionId": "not_pc_lentille"
+        },
+        {
+          "id": "qz_pc_3e_02_03_q3",
+          "text": "Un rayon passant par le centre optique O d'une lentille :",
+          "options": ["Est dévié vers le foyer", "N'est pas dévié (passe en ligne droite)", "Est réfléchi", "Est totalement absorbé"],
+          "correctIndex": 1,
+          "explanation": "Le rayon passant par le centre optique O d'une lentille n'est pas dévié : il continue en ligne droite.",
+          "notionId": "not_pc_foyer"
+        },
+        {
+          "id": "qz_pc_3e_02_03_q4",
+          "text": "Une image est dite « réelle » quand :",
+          "options": ["On peut la voir à l'œil nu", "Les rayons convergent effectivement vers elle (peut être projetée)", "Elle se forme du même côté que l'objet", "Elle est toujours droite"],
+          "correctIndex": 1,
+          "explanation": "Une image réelle est formée par la convergence effective des rayons. On peut la projeter sur un écran. Une image virtuelle ne peut pas être projetée (les rayons ne convergent pas vraiment).",
+          "notionId": "not_pc_foyer"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_02_04",
+      "lessonId": "les_pc_3e_02_04",
+      "questions": [
+        {
+          "id": "qz_pc_3e_02_04_q1",
+          "text": "Où se forme l'image dans un œil myope ?",
+          "options": ["Sur la rétine", "Devant la rétine", "Derrière la rétine", "Sur le cristallin"],
+          "correctIndex": 1,
+          "explanation": "Dans un œil myope, l'image se forme avant (devant) la rétine, car l'œil est trop convergent ou trop long. La vision est floue de loin.",
+          "notionId": "not_pc_defaut_vision"
+        },
+        {
+          "id": "qz_pc_3e_02_04_q2",
+          "text": "Quel type de lentille corrige la myopie ?",
+          "options": ["Lentille convergente (vergence positive)", "Lentille divergente (vergence négative)", "Lentille cylindrique", "Lentille plan-convexe"],
+          "correctIndex": 1,
+          "explanation": "La myopie est corrigée par une lentille divergente (vergence négative, −δ) qui éloigne les rayons avant qu'ils entrent dans l'œil, compensant l'excès de convergence.",
+          "notionId": "not_pc_defaut_vision"
+        },
+        {
+          "id": "qz_pc_3e_02_04_q3",
+          "text": "Quel est le rôle du cristallin ?",
+          "options": ["Protéger l'œil", "Réguler la quantité de lumière (comme un diaphragme)", "Lentille convergente à vergence variable (accommodation)", "Transmettre l'image au cerveau"],
+          "correctIndex": 2,
+          "explanation": "Le cristallin est une lentille convergente dont la courbure (et donc la vergence) peut varier grâce aux muscles ciliaires. Cette capacité s'appelle l'accommodation et permet de voir net à différentes distances.",
+          "notionId": "not_pc_oeil"
+        },
+        {
+          "id": "qz_pc_3e_02_04_q4",
+          "text": "La presbytie est un défaut de vision qui touche principalement :",
+          "options": ["Les enfants", "Les personnes âgées (perte d'accommodation)", "Les personnes myopes uniquement", "Les personnes hypermétropes uniquement"],
+          "correctIndex": 1,
+          "explanation": "La presbytie est due au durcissement du cristallin avec l'âge, réduisant sa capacité à changer de courbure (accommodation). Elle affecte généralement les personnes à partir de 45 ans.",
+          "notionId": "not_pc_defaut_vision"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_02_05",
+      "lessonId": "les_pc_3e_02_05",
+      "questions": [
+        {
+          "id": "qz_pc_3e_02_05_q1",
+          "text": "La lumière blanche est :",
+          "options": ["Une lumière d'une seule couleur", "La superposition de toutes les radiations visibles (400–700 nm)", "Une lumière sans couleur ni longueur d'onde", "Uniquement la lumière du Soleil"],
+          "correctIndex": 1,
+          "explanation": "La lumière blanche est composée de toutes les longueurs d'onde du spectre visible, du violet (~400 nm) au rouge (~700 nm).",
+          "notionId": "not_pc_lumiere_blanche"
+        },
+        {
+          "id": "qz_pc_3e_02_05_q2",
+          "text": "En synthèse additive (lumière), quelles sont les 3 couleurs primaires ?",
+          "options": ["Cyan, Magenta, Jaune", "Rouge, Vert, Bleu", "Rouge, Jaune, Bleu", "Vert, Orange, Violet"],
+          "correctIndex": 1,
+          "explanation": "En synthèse additive (lumière, écrans), les 3 couleurs primaires sont Rouge, Vert et Bleu (RVB). Leur mélange donne la lumière blanche.",
+          "notionId": "not_pc_lumiere_blanche"
+        },
+        {
+          "id": "qz_pc_3e_02_05_q3",
+          "text": "Un prisme décompose la lumière blanche. Ce phénomène s'appelle :",
+          "options": ["La réflexion", "La diffusion", "La dispersion", "La diffraction"],
+          "correctIndex": 2,
+          "explanation": "La dispersion est la décomposition de la lumière blanche en ses composantes colorées par un prisme. Elle est due au fait que chaque couleur a un indice de réfraction légèrement différent.",
+          "notionId": "not_pc_dispersion"
+        },
+        {
+          "id": "qz_pc_3e_02_05_q4",
+          "text": "En synthèse soustractive (pigments), cyan + magenta + jaune donne :",
+          "options": ["Blanc", "Noir", "Gris", "Brun"],
+          "correctIndex": 1,
+          "explanation": "En synthèse soustractive (pigments, imprimerie), cyan + magenta + jaune absorbent toutes les longueurs d'onde → noir théorique. En pratique, on obtient un brun foncé, d'où l'ajout d'encre noire (K) dans les imprimantes CMJN.",
+          "notionId": "not_pc_lumiere_blanche"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_03_01",
+      "lessonId": "les_pc_3e_03_01",
+      "questions": [
+        {
+          "id": "qz_pc_3e_03_01_q1",
+          "text": "Quel est le numéro atomique Z de l'oxygène ${}^{16}_{8}O$ ?",
+          "options": ["16", "8", "24", "2"],
+          "correctIndex": 1,
+          "explanation": "Le numéro atomique Z est le nombre de protons = 8. Le nombre de masse A = 16 (8 protons + 8 neutrons).",
+          "notionId": "not_pc_atome"
+        },
+        {
+          "id": "qz_pc_3e_03_01_q2",
+          "text": "Combien de neutrons possède l'atome de carbone ${}^{12}_{6}C$ ?",
+          "options": ["12", "6", "18", "2"],
+          "correctIndex": 1,
+          "explanation": "Nombre de neutrons = A − Z = 12 − 6 = 6 neutrons.",
+          "notionId": "not_pc_atome"
+        },
+        {
+          "id": "qz_pc_3e_03_01_q3",
+          "text": "Deux atomes sont des **isotopes** si :",
+          "options": ["Ils ont le même nombre de masse A", "Ils ont le même numéro atomique Z mais des nombres de masse différents", "Ils ont le même nombre de neutrons", "Ils ont la même masse"],
+          "correctIndex": 1,
+          "explanation": "Des isotopes sont des atomes du même élément chimique (même Z, donc même nombre de protons et d'électrons) mais avec un nombre différent de neutrons (A différent).",
+          "notionId": "not_pc_atome"
+        },
+        {
+          "id": "qz_pc_3e_03_01_q4",
+          "text": "La molécule H₂O est composée de :",
+          "options": ["1 atome d'hydrogène et 2 atomes d'oxygène", "2 atomes d'hydrogène et 1 atome d'oxygène", "2 atomes d'hydrogène et 2 atomes d'oxygène", "1 atome d'hydrogène et 1 atome d'oxygène"],
+          "correctIndex": 1,
+          "explanation": "H₂O signifie 2 atomes d'hydrogène (indice 2 après H) et 1 atome d'oxygène (pas d'indice = 1). C'est la formule de l'eau.",
+          "notionId": "not_pc_molecule"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_03_02",
+      "lessonId": "les_pc_3e_03_02",
+      "questions": [
+        {
+          "id": "qz_pc_3e_03_02_q1",
+          "text": "Quelle loi stipule que la masse se conserve lors d'une réaction chimique ?",
+          "options": ["Loi d'Ohm", "Loi de Lavoisier", "Loi de Newton", "Loi de Faraday"],
+          "correctIndex": 1,
+          "explanation": "La loi de conservation de la masse (Lavoisier, 1789) : la masse totale des réactifs est égale à la masse totale des produits d'une réaction chimique. « Rien ne se perd, rien ne se crée. »",
+          "notionId": "not_pc_reaction_chimique"
+        },
+        {
+          "id": "qz_pc_3e_03_02_q2",
+          "text": "Pour équilibrer l'équation : H₂ + O₂ → H₂O, quel coefficient doit-on placer devant H₂O ?",
+          "options": ["1", "2", "3", "4"],
+          "correctIndex": 1,
+          "explanation": "2 H₂ + O₂ → 2 H₂O. H : gauche = 4, droite = 4 ✓ ; O : gauche = 2, droite = 2 ✓. Le coefficient devant H₂O est 2.",
+          "notionId": "not_pc_equation_chimique"
+        },
+        {
+          "id": "qz_pc_3e_03_02_q3",
+          "text": "Lors de l'équilibrage d'une équation chimique, on peut :",
+          "options": ["Modifier les indices dans les formules", "Supprimer des réactifs", "Ajuster uniquement les coefficients stœchiométriques", "Changer les produits de la réaction"],
+          "correctIndex": 2,
+          "explanation": "Pour équilibrer une équation, on ajuste uniquement les coefficients stœchiométriques (nombres entiers devant les formules). Modifier les indices dans les formules changerait la nature des composés.",
+          "notionId": "not_pc_equation_chimique"
+        },
+        {
+          "id": "qz_pc_3e_03_02_q4",
+          "text": "Dans la réaction 4Fe + 3O₂ → 2Fe₂O₃, quel est le produit formé ?",
+          "options": ["Du fer", "Du dioxygène", "De l'oxyde de fer (III) — la rouille", "De l'eau"],
+          "correctIndex": 2,
+          "explanation": "Fe₂O₃ est l'oxyde de fer (III), communément appelé rouille. C'est le produit de l'oxydation du fer par le dioxygène de l'air.",
+          "notionId": "not_pc_reaction_chimique"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_03_03",
+      "lessonId": "les_pc_3e_03_03",
+      "questions": [
+        {
+          "id": "qz_pc_3e_03_03_q1",
+          "text": "Une solution de pH = 3 est :",
+          "options": ["Neutre", "Basique (alcaline)", "Acide", "Saturée"],
+          "correctIndex": 2,
+          "explanation": "pH < 7 → solution acide. pH = 3 est une solution fortement acide (comme le vinaigre pH ≈ 2-3, le jus de citron pH ≈ 2).",
+          "notionId": "not_pc_ph"
+        },
+        {
+          "id": "qz_pc_3e_03_03_q2",
+          "text": "Quelle espèce chimique les acides libèrent-ils en solution aqueuse ?",
+          "options": ["Des ions OH⁻", "Des ions H⁺", "Des ions Na⁺", "Des molécules d'eau"],
+          "correctIndex": 1,
+          "explanation": "Les acides libèrent des ions hydrogène H⁺ (protons) en solution aqueuse. Ce sont ces ions H⁺ qui donnent le caractère acide à la solution.",
+          "notionId": "not_pc_ph"
+        },
+        {
+          "id": "qz_pc_3e_03_03_q3",
+          "text": "La réaction entre HCl et NaOH produit :",
+          "options": ["HClO₄ + H₂", "NaCl + H₂O", "NaH + ClO₂", "NaOH + HCl (aucune réaction)"],
+          "correctIndex": 1,
+          "explanation": "HCl + NaOH → NaCl + H₂O. C'est une réaction de neutralisation : l'acide et la base se neutralisent en formant du sel (chlorure de sodium) et de l'eau.",
+          "notionId": "not_pc_solution"
+        },
+        {
+          "id": "qz_pc_3e_03_03_q4",
+          "text": "On dissout 20 g de sel dans 500 mL d'eau. Quelle est la concentration massique ?",
+          "options": ["10 g/L", "40 g/L", "0,04 g/L", "100 g/L"],
+          "correctIndex": 1,
+          "explanation": "Cm = m/V = 20 g / 0,5 L = 40 g/L.",
+          "notionId": "not_pc_solution"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_03_04",
+      "lessonId": "les_pc_3e_03_04",
+      "questions": [
+        {
+          "id": "qz_pc_3e_03_04_q1",
+          "text": "L'oxydation d'une espèce chimique correspond à :",
+          "options": ["Un gain d'électrons", "Une perte d'électrons", "Un gain de protons", "Une perte de neutrons"],
+          "correctIndex": 1,
+          "explanation": "L'oxydation = perte d'électrons (OIL : Oxidation Is Loss). L'espèce qui s'oxyde est le réducteur. La réduction, à l'inverse, est un gain d'électrons (RIG : Reduction Is Gain).",
+          "notionId": "not_pc_oxydation"
+        },
+        {
+          "id": "qz_pc_3e_03_04_q2",
+          "text": "Dans la réaction Zn + Cu²⁺ → Zn²⁺ + Cu, quel est l'oxydant ?",
+          "options": ["Zn (zinc)", "Cu²⁺ (ion cuivre)", "Zn²⁺", "Cu (cuivre)"],
+          "correctIndex": 1,
+          "explanation": "Cu²⁺ est l'oxydant car il capte des électrons (se réduit) : Cu²⁺ + 2e⁻ → Cu. Le zinc (Zn) est le réducteur car il donne des électrons (s'oxyde) : Zn → Zn²⁺ + 2e⁻.",
+          "notionId": "not_pc_oxydation"
+        },
+        {
+          "id": "qz_pc_3e_03_04_q3",
+          "text": "La demi-équation de réduction des ions Cu²⁺ est :",
+          "options": ["Cu → Cu²⁺ + 2e⁻", "Cu²⁺ + 2e⁻ → Cu", "Cu²⁺ → Cu + 2e⁻", "2Cu + O₂ → 2CuO"],
+          "correctIndex": 1,
+          "explanation": "La réduction = gain d'électrons. Les ions Cu²⁺ gagnent 2 électrons pour former du cuivre métallique Cu : Cu²⁺ + 2e⁻ → Cu.",
+          "notionId": "not_pc_reduction"
+        },
+        {
+          "id": "qz_pc_3e_03_04_q4",
+          "text": "La combustion est :",
+          "options": ["Une réaction de réduction du combustible", "Une réaction d'oxydation du combustible par le dioxygène", "Une réaction endothermique", "Une réaction sans transfert d'électrons"],
+          "correctIndex": 1,
+          "explanation": "La combustion est une réaction d'oxydoréduction exothermique : le combustible (réducteur) s'oxyde en perdant des électrons, et le dioxygène (oxydant) se réduit en gagnant des électrons.",
+          "notionId": "not_pc_oxydation"
+        }
+      ]
+    },
+    {
+      "id": "qz_pc_3e_03_05",
+      "lessonId": "les_pc_3e_03_05",
+      "questions": [
+        {
+          "id": "qz_pc_3e_03_05_q1",
+          "text": "Quelle est la différence entre combustion complète et incomplète ?",
+          "options": ["Complète → CO + suie ; incomplète → CO₂ + H₂O", "Complète → CO₂ + H₂O ; incomplète → CO + suie (manque de O₂)", "Elles produisent les mêmes produits", "Complète nécessite moins de O₂"],
+          "correctIndex": 1,
+          "explanation": "La combustion complète (assez de O₂) produit CO₂ + H₂O. La combustion incomplète (manque de O₂) produit du CO (toxique) et/ou de la suie (carbone solide).",
+          "notionId": "not_pc_combustion"
+        },
+        {
+          "id": "qz_pc_3e_03_05_q2",
+          "text": "Pourquoi le monoxyde de carbone (CO) est-il particulièrement dangereux ?",
+          "options": ["Il est très visible et brûle les yeux", "Il est inodore, incolore et se fixe à l'hémoglobine (bloque le transport du O₂)", "Il réagit avec l'eau pour former un acide fort", "Il provoque des incendies spontanément"],
+          "correctIndex": 1,
+          "explanation": "Le CO est inodore et incolore (indétectable sans capteur). Il se fixe à l'hémoglobine avec une affinité 250 fois supérieure au O₂, bloquant le transport du dioxygène → asphyxie cellulaire.",
+          "notionId": "not_pc_combustion"
+        },
+        {
+          "id": "qz_pc_3e_03_05_q3",
+          "text": "La combustion complète du méthane CH₄ produit :",
+          "options": ["CO + H₂O", "CO₂ + H₂O", "CO₂ + H₂", "C + H₂O"],
+          "correctIndex": 1,
+          "explanation": "CH₄ + 2O₂ → CO₂ + 2H₂O. La combustion complète d'un hydrocarbure produit du dioxyde de carbone et de l'eau.",
+          "notionId": "not_pc_combustion"
+        },
+        {
+          "id": "qz_pc_3e_03_05_q4",
+          "text": "Quel gaz issu des combustions est principalement responsable des pluies acides ?",
+          "options": ["CO₂", "H₂O", "SO₂ et NOₓ", "O₂"],
+          "correctIndex": 2,
+          "explanation": "SO₂ (dioxyde de soufre, issu de la combustion du charbon riche en soufre) et NOₓ (oxydes d'azote, issus des moteurs thermiques) réagissent avec l'eau atmosphérique pour former des acides → pluies acides.",
+          "notionId": "not_pc_pollution_chimique"
+        }
+      ]
+    }
+  ]
+}

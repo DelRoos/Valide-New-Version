@@ -8,17 +8,6 @@ import '../../../../core/theme/tokens.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../../onboarding/providers.dart';
 
-// Examen visé ID → label affiché (abréviation officielle camerounaise).
-const _kExamLabels = <String, String>{
-  'bepc': 'BEPC',
-  'probatoire': 'Probatoire',
-  'bac': 'BAC',
-  'gce_ol': 'GCE O/L',
-  'gce_al': 'GCE A/L',
-  'cap': 'CAP',
-  'bep': 'BEP',
-  'bts': 'BTS',
-};
 
 class ProfileHeader extends ConsumerWidget {
   const ProfileHeader({
@@ -76,9 +65,19 @@ class ProfileHeader extends ConsumerWidget {
       orElse: () => null,
     );
 
-    final examLabel = examTargetIds.isNotEmpty
-        ? examTargetIds.map((id) => _kExamLabels[id] ?? id).join(' · ')
-        : null;
+    final examLabel = catalogueAsync.maybeWhen(
+      data: (cat) {
+        if (examTargetIds.isEmpty) return null;
+        return examTargetIds.map((id) {
+          final match = cat.examTargets.where((e) => e.examTargetId == id);
+          if (match.isNotEmpty) {
+            return match.first.name[languageCode] ?? match.first.name['fr'] ?? id;
+          }
+          return id;
+        }).join(' · ');
+      },
+      orElse: () => null,
+    );
 
     return Container(
       decoration: const BoxDecoration(

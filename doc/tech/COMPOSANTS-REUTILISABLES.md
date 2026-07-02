@@ -971,6 +971,58 @@ SchoolEditSheet.show(context, schoolId: 'sch_001', schoolName: 'LYCÉE GÉNÉRAL
 
 ---
 
+### Famille School Profile Edit (édition profil scolaire — Story A.3)
+
+> Widget créé en Story A.3. **Feature-specific** dashboard — consomme `catalogueProvider` (en mémoire) + `userProfileRepositoryProvider`. Multi-étapes via `PageController` interne.
+
+**Path** : `lib/features/dashboard/presentation/widgets/school_profile_edit_sheet.dart`
+**Story d'origine** : A.3 (Édition profil scolaire classe → spécialité → matières)
+**Catégorie** : `interaction`
+**Responsive** : `phone + tablet` (`Center + ConstrainedBox(maxWidth: 560.w)` ; grille niveaux : `LayoutBuilder` 2 cols phone / 3 cols tablet ≥ 840 dp)
+
+| Fichier | Composant public | Rôle |
+|---|---|---|
+| `school_profile_edit_sheet.dart` | `SchoolProfileEditSheet` | Bottom sheet 3 étapes (niveau grid → série list → matières chips). Factory `.show()` statique. |
+
+**Props `SchoolProfileEditSheet`** :
+
+| Prop | Type | Description |
+|---|---|---|
+| `subSystem` | `String` | Identifiant sous-système (immutable, pour filtrer niveaux). Ex: `'francophone'` |
+| `trackId` | `String` | Identifiant filière (immutable). Ex: `'generale'` |
+| `initialLevelId` | `String` | Niveau actuel pré-sélectionné. Ex: `'francophone_terminale'` |
+| `initialStreamId` | `String` | Série actuelle pré-sélectionnée. Ex: `'francophone_terminale_d'` |
+| `initialPickedSubjectIds` | `List<String>` | Matières actuellement sélectionnées (intersection conservée si compatible). |
+
+**Exemple d'usage** :
+
+```dart
+SchoolProfileEditSheet.show(
+  context,
+  subSystem: 'francophone',
+  trackId: 'generale',
+  levelId: 'francophone_terminale',
+  streamId: 'francophone_terminale_d',
+  pickedSubjectIds: ['math', 'physique', 'svt'],
+);
+```
+
+**Contraintes non négociables** :
+
+- Consomme `catalogueProvider` (déjà chargé au boot — 0 read Firestore supplémentaire).
+- Auto-skip étape série si 1 seule série disponible pour le niveau sélectionné.
+- Dérivation `DerivedProfile` 100% en mémoire depuis `CatalogueSnapshot`.
+- Fermeture via `Navigator.of(context, rootNavigator: true).maybePop()` (AppBottomSheet useRootNavigator: true).
+- Obligatoires (`obligatorySubjects`) toujours inclus dans `pickedSubjects` — non décochables.
+- `subSystem` et `trackId` immutables : le picker ne permet pas de les changer.
+
+**Tests associés** :
+
+- `test/features/dashboard/presentation/widgets/school_profile_edit_sheet_test.dart` — widget tests (step navigation, auto-skip, save + toast).
+- Goldens : `school_profile_edit_phone.png` (375×812) + `school_profile_edit_tablet.png` (768×1024).
+
+---
+
 ### Famille Public Profile (profil public d'un pair — Story A.2)
 
 > Widgets créés en Story A.2 (Profil public). **Feature-specific** à la feature `account` — consomment `PublicProfile` (domain entity) et `catalogueProvider`. Pas conçus pour réutilisation hors de ce contexte en V1.
