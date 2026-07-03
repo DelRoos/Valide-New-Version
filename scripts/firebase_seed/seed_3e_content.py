@@ -5,7 +5,7 @@ seed_3e_content.py — Seed Firestore depuis data/seed_3e.json (schéma v2).
   chapters/{chapterId}
   lessons/{lessonId}
   lessons/{lessonId}/content/main
-  lessons/{lessonId}/notions/{notionId}
+  notions/{notionId}              ← collection racine (schema v2 — lisible sans lessonId côté mobile)
   lessons/{lessonId}/quizzes/{quizId}
 
 Usage :
@@ -87,6 +87,9 @@ def validate_seed(data: dict) -> None:
             if not isinstance(ch.get("order"), int) or ch["order"] < 1:
                 raise ValueError(f"chapter '{ch_id}' : order doit être entier >= 1")
             _require_bilingual(f"chapter '{ch_id}'.title", ch.get("title"))
+            fiche = ch.get("fiche")
+            if fiche is not None:
+                _require_bilingual(f"chapter '{ch_id}'.fiche", fiche)
 
             for l in ch.get("lessons", []):
                 l_id = l.get("lessonId", "")
@@ -174,6 +177,7 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
         "lessonContents": 0,
         "notions": 0,
         "quizzes": 0,
+        "chapterFiches": 0,
     }
 
     # levelId au format "<subSystem>_<level>" (ex. "francophone_3e")
@@ -201,6 +205,19 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
             if not dry_run:
                 db.collection("chapters").document(ch_id).set(ch_payload, merge=True)
             counts["chapters"] += 1
+
+            # ── Fiche de révision (optionnelle) — chapters/{id}/fiche/main
+            fiche = ch.get("fiche")
+            if fiche and (fiche.get("fr") or fiche.get("en")):
+                fiche_payload = {
+                    "fr": fiche.get("fr", ""),
+                    "en": fiche.get("en") or fiche.get("fr", ""),
+                }
+                if not dry_run:
+                    (db.collection("chapters").document(ch_id)
+                       .collection("fiche").document("main")
+                       .set(fiche_payload, merge=True))
+                counts["chapterFiches"] += 1
 
             for lesson in ch.get("lessons", []):
                 l_id = lesson["lessonId"]
@@ -233,10 +250,12 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                     )
                 counts["lessonContents"] += 1
 
-                # ── Notions — sous-collection lessons/{id}/notions/{notionId}
+                # ── Notions — collection racine notions/{notionId}
+                # (lisible côté mobile via notions/{notionId} sans connaître lessonId)
                 for notion in lesson.get("notions", []):
                     n_id = notion["notionId"]
                     n_payload = {
+                        "notionId": n_id,
                         "lessonId": l_id,
                         "order": notion["order"],
                         "type": notion["type"],
@@ -244,10 +263,8 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                         "content": notion["content"],
                     }
                     if not dry_run:
-                        (
-                            db.collection("lessons").document(l_id)
-                            .collection("notions").document(n_id)
-                            .set(n_payload, merge=True)
+                        db.collection("notions").document(n_id).set(
+                            n_payload, merge=True
                         )
                     counts["notions"] += 1
 

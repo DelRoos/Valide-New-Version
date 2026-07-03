@@ -6,7 +6,9 @@ import '../../../../core/theme/tokens.dart';
 import '../../../onboarding/providers.dart';
 import '../../providers.dart';
 import '../widgets/chapter_header.dart';
+import '../widgets/fiche_tab.dart';
 import '../widgets/lesson_content_tab.dart';
+import '../widgets/quiz_tab.dart';
 
 class ChapterPage extends ConsumerStatefulWidget {
   const ChapterPage({
@@ -106,11 +108,9 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
                   progressPercent: progressPercent,
                   studentCount: studentCount,
                 ),
-                _PlaceholderTab(
-                  icon: Icons.quiz_outlined,
-                  label: isFr
-                      ? 'Quiz bientôt disponibles'
-                      : 'Quizzes coming soon',
+                QuizTab(
+                  subjectId: widget.subjectId,
+                  chapterId: widget.chapterId,
                 ),
                 _PlaceholderTab(
                   icon: Icons.edit_note_outlined,
@@ -118,11 +118,9 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
                       ? 'Exercices bientôt disponibles'
                       : 'Exercises coming soon',
                 ),
-                _PlaceholderTab(
-                  icon: Icons.description_outlined,
-                  label: isFr
-                      ? 'Fiche de révision bientôt disponible'
-                      : 'Study sheet coming soon',
+                FicheTab(
+                  chapterId: widget.chapterId,
+                  languageCode: langCode,
                 ),
               ],
             ),

@@ -59,6 +59,27 @@ _FACT_TOKENS = [
     "historique", "culturel", "géographique",
 ]
 
+# Blocs PedagogicalContent correspondant à chaque type de notion.
+_TYPE_TO_BLOCK: dict[str, str] = {
+    "definition": "definition",
+    "rule": "retenir",
+    "method": "methode",
+    "formula": "retenir",
+    "property": "propriete",
+    "fact": "retenir",
+}
+
+
+def _wrap_pedagogical(content_dict: dict, notion_type: str) -> dict:
+    """Enveloppe le contenu dans un bloc :::type::: pour PedagogicalContent."""
+    block = _TYPE_TO_BLOCK.get(notion_type, "definition")
+
+    def wrap(text: str) -> str:
+        text = text.strip()
+        return f":::{block}\n{text}\n:::" if text else text
+
+    return {"fr": wrap(content_dict.get("fr", "")), "en": wrap(content_dict.get("en", ""))}
+
 
 def infer_notion_type(title_fr: str, content_fr: str) -> str:
     """Infère le type de notion depuis son titre et son contenu (FR)."""
@@ -154,18 +175,20 @@ def _build_notions(raw_notions: list, lesson_id: str) -> list[dict]:
         if not n_id:
             continue
 
-        # Support format A (title only) et format B (term + definition)
+        # Support format A (title only), format B (term + definition) et format C (title + definition)
         if "term" in n:
             title = ensure_bilingual(n["term"])
-            content = ensure_bilingual(n.get("definition", {}))
+            raw_content = ensure_bilingual(n.get("definition", {}))
         elif "title" in n:
             title = ensure_bilingual(n["title"])
-            content = ensure_bilingual(n.get("content", {}))
+            # Certains formats utilisent "definition" plutôt que "content"
+            raw_content = ensure_bilingual(n.get("content") or n.get("definition", {}))
         else:
             title = {"fr": n_id, "en": n_id}
-            content = {"fr": "", "en": ""}
+            raw_content = {"fr": "", "en": ""}
 
-        notion_type = infer_notion_type(title["fr"], content["fr"])
+        notion_type = infer_notion_type(title["fr"], raw_content["fr"])
+        content = _wrap_pedagogical(raw_content, notion_type)
 
         notions_out.append({
             "notionId": n_id,
@@ -329,13 +352,21 @@ def transform_subject(json_path: Path) -> dict:
         # Trier les leçons par order pour garantir l'ordre croissant
         lessons_out.sort(key=lambda l: l["order"])
 
-        chapters_out.append({
+        # Fiche de révision optionnelle sur le chapitre
+        fiche_raw = ch_raw.get("fiche")
+        ch_fiche = resolve_content(fiche_raw, base_dir) if fiche_raw else None
+
+        ch_out: dict = {
             "chapterId": ch_id,
             "order": _get_order(ch_raw),
             "title": ch_title,
             "description": ch_desc,
             "lessons": lessons_out,
-        })
+        }
+        if ch_fiche is not None:
+            ch_out["fiche"] = ch_fiche
+
+        chapters_out.append(ch_out)
 
     chapters_out.sort(key=lambda ch: ch["order"])
 

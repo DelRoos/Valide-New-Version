@@ -1,7 +1,7 @@
 {
   "version": "2.0.0",
   "schema": "v2-subcollections",
-  "generatedAt": "2026-07-02T16:10:46.469150+00:00",
+  "generatedAt": "2026-07-03T09:32:16.463644+00:00",
   "level": "3e",
   "subSystem": "francophone",
   "subjects": [
@@ -42,8 +42,8 @@
                     "en": "Pinyin"
                   },
                   "content": {
-                    "fr": "Système de transcription phonétique officiel du mandarin en alphabet latin, créé en 1958 et adopté par l'ONU en 1982.",
-                    "en": "Official phonetic transcription system for Mandarin using the Latin alphabet, created in 1958 and adopted by the UN in 1982."
+                    "fr": ":::retenir\nSystème de transcription phonétique officiel du mandarin en alphabet latin, créé en 1958 et adopté par l'ONU en 1982.\n:::",
+                    "en": ":::retenir\nOfficial phonetic transcription system for Mandarin using the Latin alphabet, created in 1958 and adopted by the UN in 1982.\n:::"
                   }
                 },
                 {
@@ -55,8 +55,8 @@
                     "en": "Mandarin tones"
                   },
                   "content": {
-                    "fr": "Le mandarin possède 4 tons + 1 ton neutre : 1er (haut plat ā), 2e (montant á), 3e (descendant-montant ǎ), 4e (descendant à), neutre (bref a).",
-                    "en": "Mandarin has 4 tones + 1 neutral tone: 1st (high flat ā), 2nd (rising á), 3rd (dipping ǎ), 4th (falling à), neutral (short a)."
+                    "fr": ":::definition\nLe mandarin possède 4 tons + 1 ton neutre : 1er (haut plat ā), 2e (montant á), 3e (descendant-montant ǎ), 4e (descendant à), neutre (bref a).\n:::",
+                    "en": ":::definition\nMandarin has 4 tones + 1 neutral tone: 1st (high flat ā), 2nd (rising á), 3rd (dipping ǎ), 4th (falling à), neutral (short a).\n:::"
                   }
                 }
               ],
@@ -203,8 +203,8 @@
                     "en": "Hanzi (汉字)"
                   },
                   "content": {
-                    "fr": "Caractères chinois — système d'écriture logographique avec plus de 50 000 caractères répertoriés ; 2 000-3 000 suffisent pour la vie quotidienne.",
-                    "en": "Chinese characters — a logographic writing system with over 50,000 catalogued characters; 2,000-3,000 are enough for daily life."
+                    "fr": ":::definition\nCaractères chinois — système d'écriture logographique avec plus de 50 000 caractères répertoriés ; 2 000-3 000 suffisent pour la vie quotidienne.\n:::",
+                    "en": ":::definition\nChinese characters — a logographic writing system with over 50,000 catalogued characters; 2,000-3,000 are enough for daily life.\n:::"
                   }
                 },
                 {
@@ -216,8 +216,8 @@
                     "en": "Radical (部首 bùshǒu)"
                   },
                   "content": {
-                    "fr": "Composant graphique qui classifie les caractères chinois dans les dictionnaires. Il y en a 214 dans le dictionnaire Kangxi (1716). Ex : 氵= eau, 木 = bois.",
-                    "en": "Graphic component that classifies Chinese characters in dictionaries. There are 214 in the Kangxi dictionary (1716). E.g.: 氵= water, 木 = wood."
+                    "fr": ":::definition\nComposant graphique qui classifie les caractères chinois dans les dictionnaires. Il y en a 214 dans le dictionnaire Kangxi (1716). Ex : 氵= eau, 木 = bois.\n:::",
+                    "en": ":::definition\nGraphic component that classifies Chinese characters in dictionaries. There are 214 in the Kangxi dictionary (1716). E.g.: 氵= water, 木 = wood.\n:::"
                   }
                 }
               ],
@@ -364,8 +364,8 @@
                     "en": "Formal vs informal greetings"
                   },
                   "content": {
-                    "fr": "你好 nǐ hǎo (bonjour, neutre) vs 您好 nín hǎo (bonjour formel, respectueux — envers les aînés ou supérieurs).",
-                    "en": "你好 nǐ hǎo (hello, neutral) vs 您好 nín hǎo (formal hello, respectful — to elders or superiors)."
+                    "fr": ":::definition\n你好 nǐ hǎo (bonjour, neutre) vs 您好 nín hǎo (bonjour formel, respectueux — envers les aînés ou supérieurs).\n:::",
+                    "en": ":::definition\n你好 nǐ hǎo (hello, neutral) vs 您好 nín hǎo (formal hello, respectful — to elders or superiors).\n:::"
                   }
                 }
               ],
@@ -512,8 +512,8 @@
                     "en": "Measure word (量词 liàngcí)"
                   },
                   "content": {
-                    "fr": "Mot-mesure obligatoire entre un nombre et un nom en chinois. Ex : 一本书 (un livre), 两个人 (deux personnes), 三张纸 (trois feuilles).",
-                    "en": "Obligatory measure word between a number and a noun in Chinese. E.g.: 一本书 (one book), 两个人 (two people), 三张纸 (three sheets)."
+                    "fr": ":::retenir\nMot-mesure obligatoire entre un nombre et un nom en chinois. Ex : 一本书 (un livre), 两个人 (deux personnes), 三张纸 (trois feuilles).\n:::",
+                    "en": ":::retenir\nObligatory measure word between a number and a noun in Chinese. E.g.: 一本书 (one book), 两个人 (two people), 三张纸 (three sheets).\n:::"
                   }
                 },
                 {
@@ -525,8 +525,8 @@
                     "en": "两 liǎng vs 二 èr"
                   },
                   "content": {
-                    "fr": "Les deux mots signifient '2'. 二 èr s'utilise pour compter (1, 2, 3...) et dans les nombres composés (12, 20). 两 liǎng s'utilise toujours devant un classificateur : 两个 (deux + classificateur général).",
-                    "en": "Both mean '2'. 二 èr is used for counting (1, 2, 3...) and in compound numbers (12, 20). 两 liǎng is always used before a measure word: 两个 (two + general classifier)."
+                    "fr": ":::retenir\nLes deux mots signifient '2'. 二 èr s'utilise pour compter (1, 2, 3...) et dans les nombres composés (12, 20). 两 liǎng s'utilise toujours devant un classificateur : 两个 (deux + classificateur général).\n:::",
+                    "en": ":::retenir\nBoth mean '2'. 二 èr is used for counting (1, 2, 3...) and in compound numbers (12, 20). 两 liǎng is always used before a measure word: 两个 (two + general classifier).\n:::"
                   }
                 }
               ],
@@ -673,8 +673,8 @@
                     "en": "Negation: 不 bù vs 没 méi"
                   },
                   "content": {
-                    "fr": "不 bù nie les actions habituelles, les états et les intentions (futur/présent). 没 méi nie les actions accomplies (passé) et la possession. Ex : 我不吃 (je ne mange pas) vs 我没吃 (je n'ai pas mangé).",
-                    "en": "不 bù negates habitual actions, states and intentions (future/present). 没 méi negates completed actions (past) and possession. E.g.: 我不吃 (I don't eat) vs 我没吃 (I haven't eaten)."
+                    "fr": ":::definition\n不 bù nie les actions habituelles, les états et les intentions (futur/présent). 没 méi nie les actions accomplies (passé) et la possession. Ex : 我不吃 (je ne mange pas) vs 我没吃 (je n'ai pas mangé).\n:::",
+                    "en": ":::definition\n不 bù negates habitual actions, states and intentions (future/present). 没 méi negates completed actions (past) and possession. E.g.: 我不吃 (I don't eat) vs 我没吃 (I haven't eaten).\n:::"
                   }
                 }
               ],
@@ -835,8 +835,8 @@
                     "en": "Paternal vs maternal kinship terms"
                   },
                   "content": {
-                    "fr": "Le chinois distingue la lignée paternelle et maternelle : grand-père paternel = 爷爷 yéye, maternel = 外公 wàigōng. Grand-mère paternelle = 奶奶 nǎinai, maternelle = 外婆 wàipó.",
-                    "en": "Chinese distinguishes paternal and maternal lineage: paternal grandfather = 爷爷 yéye, maternal = 外公 wàigōng. Paternal grandmother = 奶奶 nǎinai, maternal = 外婆 wàipó."
+                    "fr": ":::definition\nLe chinois distingue la lignée paternelle et maternelle : grand-père paternel = 爷爷 yéye, maternel = 外公 wàigōng. Grand-mère paternelle = 奶奶 nǎinai, maternelle = 外婆 wàipó.\n:::",
+                    "en": ":::definition\nChinese distinguishes paternal and maternal lineage: paternal grandfather = 爷爷 yéye, maternal = 外公 wàigōng. Paternal grandmother = 奶奶 nǎinai, maternal = 外婆 wàipó.\n:::"
                   }
                 }
               ],
@@ -983,8 +983,8 @@
                     "en": "买单 mǎidān"
                   },
                   "content": {
-                    "fr": "Expression pour demander l'addition au restaurant (littéralement 'acheter l'addition'). Équivalent : 结账 jiézhàng. Usage : 服务员，买单！(Serveur, l'addition !)",
-                    "en": "Expression to ask for the bill at a restaurant (literally 'buy the bill'). Equivalent: 结账 jiézhàng. Usage: 服务员，买单！(Waiter, the bill!)"
+                    "fr": ":::definition\nExpression pour demander l'addition au restaurant (littéralement 'acheter l'addition'). Équivalent : 结账 jiézhàng. Usage : 服务员，买单！(Serveur, l'addition !)\n:::",
+                    "en": ":::definition\nExpression to ask for the bill at a restaurant (literally 'buy the bill'). Equivalent: 结账 jiézhàng. Usage: 服务员，买单！(Waiter, the bill!)\n:::"
                   }
                 }
               ],
@@ -1131,8 +1131,8 @@
                     "en": "Time structure in Chinese"
                   },
                   "content": {
-                    "fr": "Heure + 点 diǎn + minutes : 三点 (3h), 三点半 (3h30), 三点一刻 (3h15), 差五分三点 (2h55 — il manque 5 min à 3h).",
-                    "en": "Hour + 点 diǎn + minutes: 三点 (3:00), 三点半 (3:30), 三点一刻 (3:15), 差五分三点 (2:55 — 5 min to 3)."
+                    "fr": ":::definition\nHeure + 点 diǎn + minutes : 三点 (3h), 三点半 (3h30), 三点一刻 (3h15), 差五分三点 (2h55 — il manque 5 min à 3h).\n:::",
+                    "en": ":::definition\nHour + 点 diǎn + minutes: 三点 (3:00), 三点半 (3:30), 三点一刻 (3:15), 差五分三点 (2:55 — 5 min to 3).\n:::"
                   }
                 },
                 {
@@ -1144,8 +1144,8 @@
                     "en": "Date order in Chinese"
                   },
                   "content": {
-                    "fr": "En chinois, l'ordre est du plus grand au plus petit : Année + 年 + Mois + 月 + Jour + 号. Ex : 2025年6月30号 = 30 juin 2025. Inverse de l'ordre occidental (Jour/Mois/Année).",
-                    "en": "In Chinese, order goes from largest to smallest unit: Year + 年 + Month + 月 + Day + 号. E.g.: 2025年6月30号 = 30 June 2025. Opposite of Western order (Day/Month/Year)."
+                    "fr": ":::definition\nEn chinois, l'ordre est du plus grand au plus petit : Année + 年 + Mois + 月 + Jour + 号. Ex : 2025年6月30号 = 30 juin 2025. Inverse de l'ordre occidental (Jour/Mois/Année).\n:::",
+                    "en": ":::definition\nIn Chinese, order goes from largest to smallest unit: Year + 年 + Month + 月 + Day + 号. E.g.: 2025年6月30号 = 30 June 2025. Opposite of Western order (Day/Month/Year).\n:::"
                   }
                 }
               ],
@@ -1292,8 +1292,8 @@
                     "en": "Transport verbs: 坐/骑/开"
                   },
                   "content": {
-                    "fr": "坐 zuò = prendre (transports en commun, avion, bateau) ; 骑 qí = chevaucher/pédaler (vélo, moto, cheval) ; 开 kāi = conduire (voiture, train). Ex : 坐公共汽车 (prendre le bus), 骑自行车 (faire du vélo).",
-                    "en": "坐 zuò = take (public transport, plane, boat); 骑 qí = ride (bike, motorbike, horse); 开 kāi = drive (car, train). E.g.: 坐公共汽车 (take the bus), 骑自行车 (ride a bike)."
+                    "fr": ":::definition\n坐 zuò = prendre (transports en commun, avion, bateau) ; 骑 qí = chevaucher/pédaler (vélo, moto, cheval) ; 开 kāi = conduire (voiture, train). Ex : 坐公共汽车 (prendre le bus), 骑自行车 (faire du vélo).\n:::",
+                    "en": ":::definition\n坐 zuò = take (public transport, plane, boat); 骑 qí = ride (bike, motorbike, horse); 开 kāi = drive (car, train). E.g.: 坐公共汽车 (take the bus), 骑自行车 (ride a bike).\n:::"
                   }
                 }
               ],
@@ -1440,8 +1440,8 @@
                     "en": "Renminbi (人民币 rénmínbì)"
                   },
                   "content": {
-                    "fr": "Monnaie officielle de la Chine (symbole ¥). Unité principale : 元 yuán (块 kuài à l'oral). Structure : 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn.",
-                    "en": "Official currency of China (symbol ¥). Main unit: 元 yuán (块 kuài spoken). Structure: 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn."
+                    "fr": ":::definition\nMonnaie officielle de la Chine (symbole ¥). Unité principale : 元 yuán (块 kuài à l'oral). Structure : 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn.\n:::",
+                    "en": ":::definition\nOfficial currency of China (symbol ¥). Main unit: 元 yuán (块 kuài spoken). Structure: 1 元 = 10 角 jiǎo (毛 máo) = 100 分 fēn.\n:::"
                   }
                 },
                 {
@@ -1453,8 +1453,8 @@
                     "en": "打折 dǎ zhé — Chinese discount system"
                   },
                   "content": {
-                    "fr": "En Chine, le chiffre après 打 représente le pourcentage À PAYER (pas le pourcentage déduit). 打八折 = payer 80% (réduction de 20%). 打五折 = payer 50% (moitié prix).",
-                    "en": "In China, the number after 打 represents the percentage TO PAY (not the percentage off). 打八折 = pay 80% (20% off). 打五折 = pay 50% (half price)."
+                    "fr": ":::retenir\nEn Chine, le chiffre après 打 représente le pourcentage À PAYER (pas le pourcentage déduit). 打八折 = payer 80% (réduction de 20%). 打五折 = payer 50% (moitié prix).\n:::",
+                    "en": ":::retenir\nIn China, the number after 打 represents the percentage TO PAY (not the percentage off). 打八折 = pay 80% (20% off). 打五折 = pay 50% (half price).\n:::"
                   }
                 }
               ],
@@ -1615,8 +1615,8 @@
                     "en": "Lunar calendar (农历 nónglì)"
                   },
                   "content": {
-                    "fr": "Calendrier basé sur les cycles de la lune, fondement de toutes les fêtes traditionnelles chinoises. Coexiste avec le calendrier grégorien (阳历 yánglì) utilisé officiellement.",
-                    "en": "Calendar based on lunar cycles, the foundation of all traditional Chinese festivals. Coexists with the Gregorian calendar (阳历 yánglì) used officially."
+                    "fr": ":::definition\nCalendrier basé sur les cycles de la lune, fondement de toutes les fêtes traditionnelles chinoises. Coexiste avec le calendrier grégorien (阳历 yánglì) utilisé officiellement.\n:::",
+                    "en": ":::definition\nCalendar based on lunar cycles, the foundation of all traditional Chinese festivals. Coexists with the Gregorian calendar (阳历 yánglì) used officially.\n:::"
                   }
                 },
                 {
@@ -1628,8 +1628,8 @@
                     "en": "Chinese zodiac (十二生肖 shí'èr shēngxiào)"
                   },
                   "content": {
-                    "fr": "Cycle de 12 animaux associés aux années : rat, bœuf, tigre, lapin, dragon, serpent, cheval, chèvre, singe, coq, chien, cochon. 2025 = Serpent (蛇 shé), 2026 = Cheval (马 mǎ).",
-                    "en": "A 12-animal cycle associated with years: rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey, rooster, dog, pig. 2025 = Snake (蛇 shé), 2026 = Horse (马 mǎ)."
+                    "fr": ":::definition\nCycle de 12 animaux associés aux années : rat, bœuf, tigre, lapin, dragon, serpent, cheval, chèvre, singe, coq, chien, cochon. 2025 = Serpent (蛇 shé), 2026 = Cheval (马 mǎ).\n:::",
+                    "en": ":::definition\nA 12-animal cycle associated with years: rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey, rooster, dog, pig. 2025 = Snake (蛇 shé), 2026 = Horse (马 mǎ).\n:::"
                   }
                 },
                 {
@@ -1641,8 +1641,8 @@
                     "en": "Spring Festival (春节 Chūnjié)"
                   },
                   "content": {
-                    "fr": "La fête la plus importante en Chine — Nouvel An lunaire. Célébrée entre fin janvier et mi-février. Traditions : nettoyage, décorations, dîner de réveillon (年夜饭), enveloppes rouges (红包), feux d'artifice.",
-                    "en": "The most important festival in China — the Lunar New Year. Celebrated between late January and mid-February. Traditions: cleaning, decorations, New Year's Eve dinner (年夜饭), red envelopes (红包), fireworks."
+                    "fr": ":::retenir\nLa fête la plus importante en Chine — Nouvel An lunaire. Célébrée entre fin janvier et mi-février. Traditions : nettoyage, décorations, dîner de réveillon (年夜饭), enveloppes rouges (红包), feux d'artifice.\n:::",
+                    "en": ":::retenir\nThe most important festival in China — the Lunar New Year. Celebrated between late January and mid-February. Traditions: cleaning, decorations, New Year's Eve dinner (年夜饭), red envelopes (红包), fireworks.\n:::"
                   }
                 }
               ],
@@ -1789,8 +1789,8 @@
                     "en": "Eight great regional cuisines (八大菜系 bā dà càixì)"
                   },
                   "content": {
-                    "fr": "Les 8 traditions culinaires régionales majeures de Chine : cantonaise (粤), sichuanaise (川), pékinoise (京), shanghaïenne (沪), hunanaise (湘), fujianaise (闽), Anhui (徽), Shandong (鲁).",
-                    "en": "The 8 major regional culinary traditions of China: Cantonese (粤), Sichuanese (川), Pekinese (京), Shanghainese (沪), Hunanese (湘), Fujianese (闽), Anhui (徽), Shandong (鲁)."
+                    "fr": ":::definition\nLes 8 traditions culinaires régionales majeures de Chine : cantonaise (粤), sichuanaise (川), pékinoise (京), shanghaïenne (沪), hunanaise (湘), fujianaise (闽), Anhui (徽), Shandong (鲁).\n:::",
+                    "en": ":::definition\nThe 8 major regional culinary traditions of China: Cantonese (粤), Sichuanese (川), Pekinese (京), Shanghainese (沪), Hunanese (湘), Fujianese (闽), Anhui (徽), Shandong (鲁).\n:::"
                   }
                 },
                 {
@@ -1802,8 +1802,8 @@
                     "en": "Chopstick etiquette (筷子 kuàizi)"
                   },
                   "content": {
-                    "fr": "Règle fondamentale : ne jamais planter les baguettes verticalement dans le riz — rappelle les bâtons d'encens funéraires, très mauvais augure. Ne pas pointer vers quelqu'un. Poser sur le repose-baguettes entre les bouchées.",
-                    "en": "Fundamental rule: never stand chopsticks vertically in rice — it resembles funeral incense sticks, a very bad omen. Do not point them at someone. Rest them on the chopstick holder between bites."
+                    "fr": ":::retenir\nRègle fondamentale : ne jamais planter les baguettes verticalement dans le riz — rappelle les bâtons d'encens funéraires, très mauvais augure. Ne pas pointer vers quelqu'un. Poser sur le repose-baguettes entre les bouchées.\n:::",
+                    "en": ":::retenir\nFundamental rule: never stand chopsticks vertically in rice — it resembles funeral incense sticks, a very bad omen. Do not point them at someone. Rest them on the chopstick holder between bites.\n:::"
                   }
                 }
               ],
@@ -1950,8 +1950,8 @@
                     "en": "Yellow River (黄河 Huáng Hé)"
                   },
                   "content": {
-                    "fr": "Appelé 母亲河 Mǔqīn hé (fleuve mère), c'est le berceau de la civilisation chinoise. Long de 5 464 km. Les premières dynasties (Xia, Shang, Zhou) se sont développées sur ses rives.",
-                    "en": "Called 母亲河 Mǔqīn hé (mother river), it is the cradle of Chinese civilisation. 5,464 km long. The first dynasties (Xia, Shang, Zhou) developed on its banks."
+                    "fr": ":::retenir\nAppelé 母亲河 Mǔqīn hé (fleuve mère), c'est le berceau de la civilisation chinoise. Long de 5 464 km. Les premières dynasties (Xia, Shang, Zhou) se sont développées sur ses rives.\n:::",
+                    "en": ":::retenir\nCalled 母亲河 Mǔqīn hé (mother river), it is the cradle of Chinese civilisation. 5,464 km long. The first dynasties (Xia, Shang, Zhou) developed on its banks.\n:::"
                   }
                 }
               ],
@@ -2098,8 +2098,8 @@
                     "en": "Four Treasures of the Study (文房四宝 wénfáng sìbǎo)"
                   },
                   "content": {
-                    "fr": "Les quatre instruments de la calligraphie et de l'écriture chinoise classique : le pinceau (笔 bǐ), l'encre (墨 mò), le papier (纸 zhǐ) et la pierre à encre (砚 yàn).",
-                    "en": "The four instruments of Chinese calligraphy and classical writing: the brush (笔 bǐ), the ink (墨 mò), the paper (纸 zhǐ) and the ink stone (砚 yàn)."
+                    "fr": ":::definition\nLes quatre instruments de la calligraphie et de l'écriture chinoise classique : le pinceau (笔 bǐ), l'encre (墨 mò), le papier (纸 zhǐ) et la pierre à encre (砚 yàn).\n:::",
+                    "en": ":::definition\nThe four instruments of Chinese calligraphy and classical writing: the brush (笔 bǐ), the ink (墨 mò), the paper (纸 zhǐ) and the ink stone (砚 yàn).\n:::"
                   }
                 },
                 {
@@ -2111,8 +2111,8 @@
                     "en": "Peking Opera (京剧 Jīngjù)"
                   },
                   "content": {
-                    "fr": "Forme théâtrale totale (chant, acrobaties, combat, costumes) inscrite au patrimoine UNESCO depuis 2010. Code couleur du maquillage : rouge = loyauté, blanc = trahison, noir = honnêteté.",
-                    "en": "A total theatrical form (singing, acrobatics, combat, costumes) listed on UNESCO heritage since 2010. Face-paint colour code: red = loyalty, white = treachery, black = honesty."
+                    "fr": ":::retenir\nForme théâtrale totale (chant, acrobaties, combat, costumes) inscrite au patrimoine UNESCO depuis 2010. Code couleur du maquillage : rouge = loyauté, blanc = trahison, noir = honnêteté.\n:::",
+                    "en": ":::retenir\nA total theatrical form (singing, acrobatics, combat, costumes) listed on UNESCO heritage since 2010. Face-paint colour code: red = loyalty, white = treachery, black = honesty.\n:::"
                   }
                 }
               ],
@@ -2259,8 +2259,8 @@
                     "en": "FOCAC (Forum on China-Africa Cooperation)"
                   },
                   "content": {
-                    "fr": "Cadre officiel des relations Chine-Afrique créé en 2000 à Beijing. Sommet tous les 3 ans. Depuis 2009, la Chine est le 1er partenaire commercial de l'Afrique avec ~282 milliards USD d'échanges en 2023.",
-                    "en": "Official framework for China-Africa relations created in 2000 in Beijing. Summit every 3 years. Since 2009, China is Africa's top trading partner with ~282 billion USD in trade in 2023."
+                    "fr": ":::retenir\nCadre officiel des relations Chine-Afrique créé en 2000 à Beijing. Sommet tous les 3 ans. Depuis 2009, la Chine est le 1er partenaire commercial de l'Afrique avec ~282 milliards USD d'échanges en 2023.\n:::",
+                    "en": ":::retenir\nOfficial framework for China-Africa relations created in 2000 in Beijing. Summit every 3 years. Since 2009, China is Africa's top trading partner with ~282 billion USD in trade in 2023.\n:::"
                   }
                 },
                 {
@@ -2272,8 +2272,8 @@
                     "en": "HSK (汉语水平考试 Hànyǔ Shuǐpíng Kǎoshì)"
                   },
                   "content": {
-                    "fr": "Examen officiel de compétence en mandarin (6 niveaux). HSK 1 = 150 mots (débutant), HSK 3 = 600 mots (communication quotidienne), HSK 6 = 5 000+ mots (universitaire). Organisé en Chine et dans les Instituts Confucius.",
-                    "en": "Official Mandarin proficiency exam (6 levels). HSK 1 = 150 words (beginner), HSK 3 = 600 words (daily communication), HSK 6 = 5,000+ words (university level). Administered in China and at Confucius Institutes."
+                    "fr": ":::retenir\nExamen officiel de compétence en mandarin (6 niveaux). HSK 1 = 150 mots (débutant), HSK 3 = 600 mots (communication quotidienne), HSK 6 = 5 000+ mots (universitaire). Organisé en Chine et dans les Instituts Confucius.\n:::",
+                    "en": ":::retenir\nOfficial Mandarin proficiency exam (6 levels). HSK 1 = 150 words (beginner), HSK 3 = 600 words (daily communication), HSK 6 = 5,000+ words (university level). Administered in China and at Confucius Institutes.\n:::"
                   }
                 }
               ],
@@ -2436,8 +2436,8 @@
                     "en": "Computer"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nMachine électronique programmable capable d'acquérir, de stocker, de traiter et de restituer des informations selon des instructions organisées en programme.\n:::",
+                    "en": ":::definition\nA programmable electronic machine capable of acquiring, storing, processing and outputting information according to instructions organised into a program.\n:::"
                   }
                 },
                 {
@@ -2449,8 +2449,8 @@
                     "en": "Processor (CPU)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nComposant électronique qui exécute les instructions des programmes. C'est le «cerveau» de l'ordinateur ; sa performance se mesure en GHz (gigahertz) et en nombre de cœurs.\n:::",
+                    "en": ":::definition\nElectronic component that executes program instructions. It is the «brain» of the computer; its performance is measured in GHz (gigahertz) and number of cores.\n:::"
                   }
                 },
                 {
@@ -2462,8 +2462,8 @@
                     "en": "Random Access Memory (RAM)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nMémoire temporaire de l'ordinateur qui stocke les données et programmes en cours d'utilisation. Son contenu s'efface entièrement à l'extinction de la machine.\n:::",
+                    "en": ":::definition\nTemporary computer memory that stores data and programs currently in use. Its contents are completely erased when the computer is switched off.\n:::"
                   }
                 },
                 {
@@ -2475,8 +2475,8 @@
                     "en": "Peripheral device"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nAppareil externe connecté à l'ordinateur. Périphériques d'entrée (clavier, souris) : envoient des données vers l'ordinateur. Périphériques de sortie (écran, imprimante) : reçoivent des données de l'ordinateur.\n:::",
+                    "en": ":::definition\nExternal device connected to the computer. Input peripherals (keyboard, mouse): send data to the computer. Output peripherals (screen, printer): receive data from the computer.\n:::"
                   }
                 }
               ],
@@ -2623,8 +2623,8 @@
                     "en": "Operating system (OS)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLogiciel de base qui gère les ressources matérielles (processeur, mémoire, disque) et fournit une interface entre l'utilisateur et la machine. Exemples : Windows, Ubuntu Linux, macOS, Android.\n:::",
+                    "en": ":::definition\nBasic software that manages hardware resources (processor, memory, disk) and provides an interface between the user and the machine. Examples: Windows, Ubuntu Linux, macOS, Android.\n:::"
                   }
                 },
                 {
@@ -2636,8 +2636,8 @@
                     "en": "Software"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nProgramme ou ensemble de programmes permettant à un ordinateur d'effectuer des tâches spécifiques. On distingue les logiciels système (SE, pilotes) et les logiciels d'application (traitement de texte, navigateur, jeux…).\n:::",
+                    "en": ":::definition\nA program or set of programs enabling a computer to perform specific tasks. System software (OS, drivers) and application software (word processor, browser, games…) are distinguished.\n:::"
                   }
                 }
               ],
@@ -2784,8 +2784,8 @@
                     "en": "Software"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nProgramme ou ensemble de programmes permettant à un ordinateur d'effectuer des tâches spécifiques. On distingue les logiciels système (SE, pilotes) et les logiciels d'application (traitement de texte, navigateur, jeux…).\n:::",
+                    "en": ":::definition\nA program or set of programs enabling a computer to perform specific tasks. System software (OS, drivers) and application software (word processor, browser, games…) are distinguished.\n:::"
                   }
                 }
               ],
@@ -2932,8 +2932,8 @@
                     "en": "Spreadsheet software"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLogiciel organisant les données en feuilles de calcul composées de cellules identifiées par une colonne (lettre) et une ligne (numéro), comme A1 ou B3. Permet d'effectuer des calculs automatiques.\n:::",
+                    "en": ":::definition\nSoftware that organises data into calculation sheets made up of cells identified by a column (letter) and a row (number), such as A1 or B3. It allows automatic calculations.\n:::"
                   }
                 },
                 {
@@ -2945,8 +2945,8 @@
                     "en": "Calculation formula"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nExpression commençant par = dans un tableur permettant d'effectuer des calculs automatiques. Exemple : =SOMME(A1:A5) additionne les valeurs des cellules A1 à A5.\n:::",
+                    "en": ":::retenir\nAn expression beginning with = in a spreadsheet, used for automatic calculations. Example: =SUM(A1:A5) adds the values of cells A1 to A5.\n:::"
                   }
                 }
               ],
@@ -3093,8 +3093,8 @@
                     "en": "Database"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nCollection organisée d'informations structurées, stockées et gérées par un Système de Gestion de Base de Données (SGBD). Exemples de SGBD : MySQL, LibreOffice Base, Microsoft Access.\n:::",
+                    "en": ":::definition\nAn organised collection of structured information stored and managed by a Database Management System (DBMS). DBMS examples: MySQL, LibreOffice Base, Microsoft Access.\n:::"
                   }
                 },
                 {
@@ -3106,8 +3106,8 @@
                     "en": "Table (database)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nStructure de base d'une base de données, organisée en lignes (enregistrements) et en colonnes (champs). Chaque ligne représente un objet ou une personne ; chaque colonne, un type d'information.\n:::",
+                    "en": ":::definition\nBasic structure of a database, organised in rows (records) and columns (fields). Each row represents an object or person; each column a type of information.\n:::"
                   }
                 }
               ],
@@ -3265,8 +3265,8 @@
                     "en": "Algorithm"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nSuite finie, non ambiguë et ordonnée d'instructions permettant de résoudre un problème ou d'accomplir une tâche. Un algorithme prend des données en entrée et produit un résultat en sortie.\n:::",
+                    "en": ":::definition\nA finite, unambiguous and ordered sequence of instructions for solving a problem or completing a task. An algorithm takes data as input and produces a result as output.\n:::"
                   }
                 },
                 {
@@ -3278,8 +3278,8 @@
                     "en": "Pseudocode"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLangage intermédiaire entre le français courant et un langage de programmation, utilisé pour décrire un algorithme de façon lisible et indépendante de tout langage particulier.\n:::",
+                    "en": ":::definition\nAn intermediate language between plain language and a programming language, used to describe an algorithm in a readable, language-independent way.\n:::"
                   }
                 }
               ],
@@ -3426,21 +3426,21 @@
                     "en": "Variable"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nEspace mémoire nommé dans lequel on stocke une valeur pouvant changer au cours de l'exécution. Chaque variable a un nom, un type et une valeur. On l'affecte avec ← en pseudocode.\n:::",
+                    "en": ":::definition\nA named memory space in which a value is stored that can change during execution. Each variable has a name, a type and a value. It is assigned using ← in pseudocode.\n:::"
                   }
                 },
                 {
                   "notionId": "not_info_type_donnee",
                   "order": 2,
-                  "type": "definition",
+                  "type": "property",
                   "title": {
                     "fr": "Type de données",
                     "en": "Data type"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::propriete\nCaractéristique d'une variable définissant la nature des valeurs qu'elle peut stocker. Types courants : ENTIER (nombres entiers), REEL (décimaux), CHAINE (texte), BOOLEEN (VRAI ou FAUX).\n:::",
+                    "en": ":::propriete\nA characteristic of a variable that defines the nature of the values it can store. Common types: INTEGER (whole numbers), REAL (decimals), STRING (text), BOOLEAN (TRUE or FALSE).\n:::"
                   }
                 }
               ],
@@ -3587,8 +3587,8 @@
                     "en": "Condition"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nExpression logique dont l'évaluation donne VRAI ou FAUX. Utilisée dans les structures conditionnelles et les boucles pour orienter l'exécution. Opérateurs : <, >, ≤, ≥, =, ≠, ET, OU, NON.\n:::",
+                    "en": ":::definition\nA logical expression that evaluates to TRUE or FALSE. Used in conditional structures and loops to guide program execution. Operators: <, >, ≤, ≥, =, ≠, AND, OR, NOT.\n:::"
                   }
                 },
                 {
@@ -3600,8 +3600,8 @@
                     "en": "Conditional structure (IF…ELSE)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nInstruction permettant d'exécuter un bloc d'instructions uniquement si une condition est vraie. Forme : SI condition ALORS instructions [SINON autres_instructions] FINSI.\n:::",
+                    "en": ":::definition\nAn instruction that executes a block of instructions only if a condition is true. Form: IF condition THEN instructions [ELSE other_instructions] ENDIF.\n:::"
                   }
                 }
               ],
@@ -3748,8 +3748,8 @@
                     "en": "Loop (repetitive structure)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nInstruction répétant un bloc d'instructions plusieurs fois. Trois formes : POUR (nombre fixe d'itérations), TANTQUE (condition testée avant), REPETER…JUSQU'À (condition testée après).\n:::",
+                    "en": ":::definition\nAn instruction that repeats a block of instructions multiple times. Three forms: FOR (fixed iterations), WHILE (condition tested before), REPEAT…UNTIL (condition tested after).\n:::"
                   }
                 }
               ],
@@ -3896,8 +3896,8 @@
                     "en": "Function"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nBloc d'instructions nommé et réutilisable qui reçoit des paramètres en entrée et retourne une valeur. Elle permet la modularité et évite la répétition de code.\n:::",
+                    "en": ":::definition\nA named, reusable block of instructions that receives parameters as input and returns a value. It enables modularity and avoids code repetition.\n:::"
                   }
                 }
               ],
@@ -4055,8 +4055,8 @@
                     "en": "Computer network"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nEnsemble d'équipements informatiques interconnectés permettant de partager des ressources et de communiquer. LAN = réseau local (bâtiment) ; WAN = réseau étendu (sites distants).\n:::",
+                    "en": ":::definition\nA set of interconnected computing devices allowing resource sharing and communication. LAN = local area network (building); WAN = wide area network (distant sites).\n:::"
                   }
                 }
               ],
@@ -4197,14 +4197,14 @@
                 {
                   "notionId": "not_info_protocole",
                   "order": 1,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Protocole de communication",
                     "en": "Communication protocol"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nEnsemble de règles définissant comment les données sont échangées entre équipements. Exemples : TCP/IP (transport Internet), HTTP/HTTPS (pages web), FTP (fichiers), SMTP (e-mail).\n:::",
+                    "en": ":::retenir\nA set of rules defining how data is exchanged between devices. Examples: TCP/IP (Internet transport), HTTP/HTTPS (web pages), FTP (files), SMTP (email).\n:::"
                   }
                 },
                 {
@@ -4216,8 +4216,8 @@
                     "en": "Internet"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nRéseau mondial d'ordinateurs interconnectés utilisant le protocole TCP/IP. Supporte de nombreux services : Web (HTTP), messagerie (SMTP), téléphonie IP (VoIP), transfert de fichiers (FTP).\n:::",
+                    "en": ":::definition\nA worldwide network of interconnected computers using the TCP/IP protocol. Supports many services: Web (HTTP), email (SMTP), voice over IP (VoIP), file transfer (FTP).\n:::"
                   }
                 },
                 {
@@ -4229,8 +4229,8 @@
                     "en": "URL (web address)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUniform Resource Locator — adresse unique identifiant une ressource sur Internet. Structure : protocole://domaine/chemin. Exemple : https://www.lycee.cm/cours/maths.\n:::",
+                    "en": ":::definition\nUniform Resource Locator — a unique address identifying a resource on the Internet. Structure: protocol://domain/path. Example: https://www.lycee.cm/cours/maths.\n:::"
                   }
                 }
               ],
@@ -4377,8 +4377,8 @@
                     "en": "Computer virus"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nProgramme malveillant conçu pour se reproduire et perturber un système. Il s'attache à un fichier hôte. À distinguer du ver (se propage seul) et du cheval de Troie (se déguise en programme légitime).\n:::",
+                    "en": ":::definition\nA malicious program designed to replicate and disrupt a system. It attaches to a host file. Distinguished from a worm (spreads alone) and a Trojan horse (disguises as legitimate software).\n:::"
                   }
                 },
                 {
@@ -4390,8 +4390,8 @@
                     "en": "Phishing"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nTechnique frauduleuse consistant à envoyer de faux messages imitant des organisations officielles (banque, administration) pour inciter la victime à divulguer ses identifiants ou données personnelles.\n:::",
+                    "en": ":::definition\nA fraudulent technique involving fake messages imitating official organisations (banks, government) to trick victims into disclosing login credentials or personal data.\n:::"
                   }
                 }
               ],
@@ -4538,8 +4538,8 @@
                     "en": "Personal data"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nToute information permettant d'identifier directement ou indirectement une personne : nom, adresse, numéro de téléphone, photo, adresse e-mail, localisation GPS. Protégées par la loi.\n:::",
+                    "en": ":::definition\nAny information that directly or indirectly identifies a person: name, address, phone number, photo, email address, GPS location. Protected by law.\n:::"
                   }
                 }
               ],
@@ -4686,8 +4686,8 @@
                     "en": "Phishing"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nTechnique frauduleuse consistant à envoyer de faux messages imitant des organisations officielles (banque, administration) pour inciter la victime à divulguer ses identifiants ou données personnelles.\n:::",
+                    "en": ":::definition\nA fraudulent technique involving fake messages imitating official organisations (banks, government) to trick victims into disclosing login credentials or personal data.\n:::"
                   }
                 },
                 {
@@ -4699,8 +4699,8 @@
                     "en": "Personal data"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nToute information permettant d'identifier directement ou indirectement une personne : nom, adresse, numéro de téléphone, photo, adresse e-mail, localisation GPS. Protégées par la loi.\n:::",
+                    "en": ":::definition\nAny information that directly or indirectly identifies a person: name, address, phone number, photo, email address, GPS location. Protected by law.\n:::"
                   }
                 }
               ],
@@ -4863,21 +4863,21 @@
                     "en": "Nombre relatif"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn nombre relatif est un nombre muni d'un signe + ou −. Les positifs se situent à droite de zéro sur la droite numérique, les négatifs à gauche. Exemples : +5, −3, −12.\n:::",
+                    "en": ":::definition\nUn nombre relatif est un nombre muni d'un signe + ou −. Les positifs se situent à droite de zéro sur la droite numérique, les négatifs à gauche. Exemples : +5, −3, −12.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_valeur_absolue",
                   "order": 2,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Valeur absolue",
                     "en": "Valeur absolue"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa valeur absolue de $a$, notée $|a|$, est la distance de $a$ à zéro sur la droite numérique. Elle est toujours positive ou nulle : $|{-7}| = 7$, $|4| = 4$, $|0| = 0$.\n:::",
+                    "en": ":::retenir\nLa valeur absolue de $a$, notée $|a|$, est la distance de $a$ à zéro sur la droite numérique. Elle est toujours positive ou nulle : $|{-7}| = 7$, $|4| = 4$, $|0| = 0$.\n:::"
                   }
                 }
               ],
@@ -5018,14 +5018,14 @@
                 {
                   "notionId": "not_math_identite_remarquable",
                   "order": 1,
-                  "type": "formula",
+                  "type": "rule",
                   "title": {
                     "fr": "Identité remarquable",
                     "en": "Identité remarquable"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::",
+                    "en": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::"
                   }
                 },
                 {
@@ -5037,21 +5037,21 @@
                     "en": "Développement"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nDévelopper une expression algébrique, c'est l'écrire sans parenthèses en effectuant les multiplications. On applique les identités remarquables ou la distributivité de gauche à droite.\n:::",
+                    "en": ":::definition\nDévelopper une expression algébrique, c'est l'écrire sans parenthèses en effectuant les multiplications. On applique les identités remarquables ou la distributivité de gauche à droite.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_factorisation",
                   "order": 3,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Factorisation",
                     "en": "Factorisation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nFactoriser une expression algébrique, c'est l'écrire sous la forme d'un produit de facteurs. On reconnaît une identité remarquable ou on met un facteur commun en évidence.\n:::",
+                    "en": ":::retenir\nFactoriser une expression algébrique, c'est l'écrire sous la forme d'un produit de facteurs. On reconnaît une identité remarquable ou on met un facteur commun en évidence.\n:::"
                   }
                 }
               ],
@@ -5192,14 +5192,14 @@
                 {
                   "notionId": "not_math_fraction_algebrique",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Fraction algébrique",
                     "en": "Fraction algébrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne fraction algébrique est une fraction $\\frac{A}{B}$ où $A$ et $B$ sont des expressions algébriques, avec $B \\neq 0$. Elle se simplifie en divisant le numérateur et le dénominateur par leurs facteurs communs.\n:::",
+                    "en": ":::retenir\nUne fraction algébrique est une fraction $\\frac{A}{B}$ où $A$ et $B$ sont des expressions algébriques, avec $B \\neq 0$. Elle se simplifie en divisant le numérateur et le dénominateur par leurs facteurs communs.\n:::"
                   }
                 }
               ],
@@ -5340,14 +5340,14 @@
                 {
                   "notionId": "not_math_equation_1er_degre",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Équation du premier degré",
                     "en": "Équation du premier degré"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne équation du premier degré en $x$ est de la forme $ax + b = 0$ avec $a \\neq 0$. Sa solution unique est $x = -\\frac{b}{a}$. Résoudre une équation, c'est trouver les valeurs de l'inconnue qui vérifient l'égalité.\n:::",
+                    "en": ":::retenir\nUne équation du premier degré en $x$ est de la forme $ax + b = 0$ avec $a \\neq 0$. Sa solution unique est $x = -\\frac{b}{a}$. Résoudre une équation, c'est trouver les valeurs de l'inconnue qui vérifient l'égalité.\n:::"
                   }
                 },
                 {
@@ -5359,8 +5359,8 @@
                     "en": "Solution d'une équation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne solution d'une équation est une valeur de l'inconnue qui rend l'égalité vraie. On vérifie une solution en la substituant dans l'équation et en vérifiant que les deux membres sont égaux.\n:::",
+                    "en": ":::definition\nUne solution d'une équation est une valeur de l'inconnue qui rend l'égalité vraie. On vérifie une solution en la substituant dans l'équation et en vérifiant que les deux membres sont égaux.\n:::"
                   }
                 }
               ],
@@ -5501,14 +5501,14 @@
                 {
                   "notionId": "not_math_inequation",
                   "order": 1,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Inéquation du premier degré",
                     "en": "Inéquation du premier degré"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne inéquation du premier degré est une inégalité de la forme $ax + b > 0$ (ou $\\geq$, $<$, $\\leq$). L'ensemble des solutions est un intervalle. Attention : multiplier/diviser par un négatif inverse le sens de l'inégalité.\n:::",
+                    "en": ":::retenir\nUne inéquation du premier degré est une inégalité de la forme $ax + b > 0$ (ou $\\geq$, $<$, $\\leq$). L'ensemble des solutions est un intervalle. Attention : multiplier/diviser par un négatif inverse le sens de l'inégalité.\n:::"
                   }
                 }
               ],
@@ -5666,8 +5666,8 @@
                     "en": "Théorème de Pythagore"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::"
                   }
                 },
                 {
@@ -5679,8 +5679,8 @@
                     "en": "Triangle rectangle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn triangle rectangle possède un angle droit (90°). Le côté opposé à l'angle droit s'appelle l'hypoténuse ; c'est le plus long côté du triangle.\n:::",
+                    "en": ":::definition\nUn triangle rectangle possède un angle droit (90°). Le côté opposé à l'angle droit s'appelle l'hypoténuse ; c'est le plus long côté du triangle.\n:::"
                   }
                 }
               ],
@@ -5827,8 +5827,8 @@
                     "en": "Théorème de Thalès"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::",
+                    "en": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::"
                   }
                 }
               ],
@@ -5969,40 +5969,40 @@
                 {
                   "notionId": "not_math_sin",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Sinus d'un angle",
                     "en": "Sinus d'un angle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_cos",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Cosinus d'un angle",
                     "en": "Cosinus d'un angle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nDans un triangle rectangle, le cosinus d'un angle aigu $\\hat{B}$ est le rapport du côté adjacent à $\\hat{B}$ sur l'hypoténuse : $\\cos \\hat{B} = \\frac{\\text{adjacent}}{\\text{hypoténuse}}$. Valeurs : $\\cos 60° = 0{,}5$, $\\cos 45° \\approx 0{,}707$.\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle, le cosinus d'un angle aigu $\\hat{B}$ est le rapport du côté adjacent à $\\hat{B}$ sur l'hypoténuse : $\\cos \\hat{B} = \\frac{\\text{adjacent}}{\\text{hypoténuse}}$. Valeurs : $\\cos 60° = 0{,}5$, $\\cos 45° \\approx 0{,}707$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_tan",
                   "order": 3,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Tangente d'un angle",
                     "en": "Tangente d'un angle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nDans un triangle rectangle, la tangente d'un angle aigu $\\hat{B}$ est le rapport du côté opposé sur le côté adjacent : $\\tan \\hat{B} = \\frac{\\text{opposé}}{\\text{adjacent}}$. Valeurs remarquables : $\\tan 45° = 1$, $\\tan 60° = \\sqrt{3} \\approx 1{,}732$.\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle, la tangente d'un angle aigu $\\hat{B}$ est le rapport du côté opposé sur le côté adjacent : $\\tan \\hat{B} = \\frac{\\text{opposé}}{\\text{adjacent}}$. Valeurs remarquables : $\\tan 45° = 1$, $\\tan 60° = \\sqrt{3} \\approx 1{,}732$.\n:::"
                   }
                 }
               ],
@@ -6143,14 +6143,14 @@
                 {
                   "notionId": "not_math_angle_inscrit",
                   "order": 1,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Angle inscrit",
                     "en": "Angle inscrit"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUn angle inscrit dans un cercle a son sommet sur le cercle. Il mesure la moitié de l'angle au centre interceptant le même arc. Un angle inscrit dans un demi-cercle (diamètre = côté opposé) vaut toujours 90°.\n:::",
+                    "en": ":::retenir\nUn angle inscrit dans un cercle a son sommet sur le cercle. Il mesure la moitié de l'angle au centre interceptant le même arc. Un angle inscrit dans un demi-cercle (diamètre = côté opposé) vaut toujours 90°.\n:::"
                   }
                 }
               ],
@@ -6291,14 +6291,14 @@
                 {
                   "notionId": "not_math_coefficient_similitude",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Coefficient de similitude",
                     "en": "Coefficient de similitude"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLe coefficient de similitude $k$ entre deux figures est le rapport des longueurs correspondantes. Si $k > 1$ : agrandissement ; si $0 < k < 1$ : réduction. Les longueurs sont multipliées par $k$, les aires par $k^2$, les angles sont conservés.\n:::",
+                    "en": ":::retenir\nLe coefficient de similitude $k$ entre deux figures est le rapport des longueurs correspondantes. Si $k > 1$ : agrandissement ; si $0 < k < 1$ : réduction. Les longueurs sont multipliées par $k$, les aires par $k^2$, les angles sont conservés.\n:::"
                   }
                 }
               ],
@@ -6450,27 +6450,27 @@
                 {
                   "notionId": "not_math_effectif",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Effectif",
                     "en": "Effectif"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nL'effectif $n_i$ d'une valeur $x_i$ dans une série statistique est le nombre de fois que cette valeur apparaît. L'effectif total est $N = \\sum n_i$.\n:::",
+                    "en": ":::retenir\nL'effectif $n_i$ d'une valeur $x_i$ dans une série statistique est le nombre de fois que cette valeur apparaît. L'effectif total est $N = \\sum n_i$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_frequence",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Fréquence",
                     "en": "Fréquence"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa fréquence d'une valeur $x_i$ est $f_i = \\frac{n_i}{N}$, avec $N$ l'effectif total. Elle est comprise entre 0 et 1, et la somme de toutes les fréquences vaut 1. Elle peut s'exprimer en pourcentage.\n:::",
+                    "en": ":::retenir\nLa fréquence d'une valeur $x_i$ est $f_i = \\frac{n_i}{N}$, avec $N$ l'effectif total. Elle est comprise entre 0 et 1, et la somme de toutes les fréquences vaut 1. Elle peut s'exprimer en pourcentage.\n:::"
                   }
                 }
               ],
@@ -6611,27 +6611,27 @@
                 {
                   "notionId": "not_math_moyenne",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Moyenne",
                     "en": "Moyenne"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa moyenne d'une série statistique est $\\bar{x} = \\frac{\\sum n_i x_i}{N}$. C'est la valeur qui équilibre la série. Elle est sensible aux valeurs extrêmes.\n:::",
+                    "en": ":::retenir\nLa moyenne d'une série statistique est $\\bar{x} = \\frac{\\sum n_i x_i}{N}$. C'est la valeur qui équilibre la série. Elle est sensible aux valeurs extrêmes.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_mediane",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Médiane",
                     "en": "Médiane"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa médiane d'une série ordonnée partage la série en deux moitiés égales : 50% des valeurs sont inférieures ou égales à la médiane, 50% sont supérieures ou égales. Si $N$ est pair, c'est la moyenne des deux valeurs centrales.\n:::",
+                    "en": ":::retenir\nLa médiane d'une série ordonnée partage la série en deux moitiés égales : 50% des valeurs sont inférieures ou égales à la médiane, 50% sont supérieures ou égales. Si $N$ est pair, c'est la moyenne des deux valeurs centrales.\n:::"
                   }
                 }
               ],
@@ -6772,27 +6772,27 @@
                 {
                   "notionId": "not_math_effectif",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Effectif",
                     "en": "Effectif"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nL'effectif $n_i$ d'une valeur $x_i$ dans une série statistique est le nombre de fois que cette valeur apparaît. L'effectif total est $N = \\sum n_i$.\n:::",
+                    "en": ":::retenir\nL'effectif $n_i$ d'une valeur $x_i$ dans une série statistique est le nombre de fois que cette valeur apparaît. L'effectif total est $N = \\sum n_i$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_frequence",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Fréquence",
                     "en": "Fréquence"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa fréquence d'une valeur $x_i$ est $f_i = \\frac{n_i}{N}$, avec $N$ l'effectif total. Elle est comprise entre 0 et 1, et la somme de toutes les fréquences vaut 1. Elle peut s'exprimer en pourcentage.\n:::",
+                    "en": ":::retenir\nLa fréquence d'une valeur $x_i$ est $f_i = \\frac{n_i}{N}$, avec $N$ l'effectif total. Elle est comprise entre 0 et 1, et la somme de toutes les fréquences vaut 1. Elle peut s'exprimer en pourcentage.\n:::"
                   }
                 }
               ],
@@ -6933,27 +6933,27 @@
                 {
                   "notionId": "not_math_probabilite",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Probabilité",
                     "en": "Probabilité"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa probabilité d'un événement $A$ est un nombre entre 0 et 1 mesurant la chance que $A$ se réalise. En cas d'équiprobabilité : $P(A) = \\frac{\\text{nb d'issues favorables}}{\\text{nb total d'issues}}$. L'événement contraire vérifie $P(\\bar{A}) = 1 - P(A)$.\n:::",
+                    "en": ":::retenir\nLa probabilité d'un événement $A$ est un nombre entre 0 et 1 mesurant la chance que $A$ se réalise. En cas d'équiprobabilité : $P(A) = \\frac{\\text{nb d'issues favorables}}{\\text{nb total d'issues}}$. L'événement contraire vérifie $P(\\bar{A}) = 1 - P(A)$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_experience_aleatoire",
                   "order": 2,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Expérience aléatoire",
                     "en": "Expérience aléatoire"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne expérience aléatoire est une expérience dont on ne peut pas prévoir avec certitude le résultat. L'ensemble de tous les résultats possibles est l'univers $\\Omega$. Exemples : lancer un dé, tirer une carte, tirer une bille d'un sac.\n:::",
+                    "en": ":::retenir\nUne expérience aléatoire est une expérience dont on ne peut pas prévoir avec certitude le résultat. L'ensemble de tous les résultats possibles est l'univers $\\Omega$. Exemples : lancer un dé, tirer une carte, tirer une bille d'un sac.\n:::"
                   }
                 }
               ],
@@ -7094,27 +7094,27 @@
                 {
                   "notionId": "not_math_probabilite",
                   "order": 1,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Probabilité",
                     "en": "Probabilité"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa probabilité d'un événement $A$ est un nombre entre 0 et 1 mesurant la chance que $A$ se réalise. En cas d'équiprobabilité : $P(A) = \\frac{\\text{nb d'issues favorables}}{\\text{nb total d'issues}}$. L'événement contraire vérifie $P(\\bar{A}) = 1 - P(A)$.\n:::",
+                    "en": ":::retenir\nLa probabilité d'un événement $A$ est un nombre entre 0 et 1 mesurant la chance que $A$ se réalise. En cas d'équiprobabilité : $P(A) = \\frac{\\text{nb d'issues favorables}}{\\text{nb total d'issues}}$. L'événement contraire vérifie $P(\\bar{A}) = 1 - P(A)$.\n:::"
                   }
                 },
                 {
                   "notionId": "not_math_evenement",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Événement",
                     "en": "Événement"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUn événement est un sous-ensemble de l'univers $\\Omega$. Deux événements sont incompatibles si leur intersection est vide ($A \\cap B = \\emptyset$), et indépendants si $P(A \\cap B) = P(A) \\times P(B)$.\n:::",
+                    "en": ":::retenir\nUn événement est un sous-ensemble de l'univers $\\Omega$. Deux événements sont incompatibles si leur intersection est vide ($A \\cap B = \\emptyset$), et indépendants si $P(A \\cap B) = P(A) \\times P(B)$.\n:::"
                   }
                 }
               ],
@@ -7277,8 +7277,8 @@
                     "en": "Courant électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe courant électrique est un mouvement ordonné de charges électriques (électrons dans les métaux). Il ne circule que dans un circuit fermé. Son sens conventionnel va de la borne + vers la borne − du générateur.\n:::",
+                    "en": ":::definition\nLe courant électrique est un mouvement ordonné de charges électriques (électrons dans les métaux). Il ne circule que dans un circuit fermé. Son sens conventionnel va de la borne + vers la borne − du générateur.\n:::"
                   }
                 },
                 {
@@ -7290,8 +7290,8 @@
                     "en": "Tension électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa tension électrique U est la différence de potentiel entre deux points d'un circuit. Elle s'exprime en volts (V) et se mesure avec un voltmètre branché en dérivation aux bornes du dipôle.\n:::",
+                    "en": ":::definition\nLa tension électrique U est la différence de potentiel entre deux points d'un circuit. Elle s'exprime en volts (V) et se mesure avec un voltmètre branché en dérivation aux bornes du dipôle.\n:::"
                   }
                 },
                 {
@@ -7303,8 +7303,8 @@
                     "en": "Intensité du courant"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'intensité I du courant est la quantité de charges électriques qui traverse une section de conducteur par seconde. Elle s'exprime en ampères (A) et se mesure avec un ampèremètre branché en série dans le circuit.\n:::",
+                    "en": ":::definition\nL'intensité I du courant est la quantité de charges électriques qui traverse une section de conducteur par seconde. Elle s'exprime en ampères (A) et se mesure avec un ampèremètre branché en série dans le circuit.\n:::"
                   }
                 }
               ],
@@ -7451,8 +7451,8 @@
                     "en": "Résistance électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa résistance électrique R d'un conducteur (en ohms, Ω) caractérise sa capacité à s'opposer au passage du courant. Plus R est grande, plus le conducteur freine le courant. R = U/I selon la loi d'Ohm.\n:::",
+                    "en": ":::definition\nLa résistance électrique R d'un conducteur (en ohms, Ω) caractérise sa capacité à s'opposer au passage du courant. Plus R est grande, plus le conducteur freine le courant. R = U/I selon la loi d'Ohm.\n:::"
                   }
                 },
                 {
@@ -7464,8 +7464,8 @@
                     "en": "Loi d'Ohm"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::",
+                    "en": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::"
                   }
                 }
               ],
@@ -7612,8 +7612,8 @@
                     "en": "Puissance électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa puissance électrique P mesure l'énergie transférée par unité de temps. Elle s'exprime en watts (W) : P = U × I. Pour une résistance : P = R × I² = U²/R.\n:::",
+                    "en": ":::definition\nLa puissance électrique P mesure l'énergie transférée par unité de temps. Elle s'exprime en watts (W) : P = U × I. Pour une résistance : P = R × I² = U²/R.\n:::"
                   }
                 },
                 {
@@ -7625,8 +7625,8 @@
                     "en": "Énergie électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'énergie électrique E consommée par un appareil est E = P × t (en joules ou kilowattheures). Conversion : 1 kWh = 3,6 × 10⁶ J. C'est cette énergie qui est facturée par les distributeurs d'électricité.\n:::",
+                    "en": ":::definition\nL'énergie électrique E consommée par un appareil est E = P × t (en joules ou kilowattheures). Conversion : 1 kWh = 3,6 × 10⁶ J. C'est cette énergie qui est facturée par les distributeurs d'électricité.\n:::"
                   }
                 }
               ],
@@ -7773,8 +7773,8 @@
                     "en": "Générateur électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn générateur est un dipôle qui fournit de l'énergie électrique. Il est caractérisé par sa force électromotrice (f.e.m.) E et sa résistance interne r. Sa tension aux bornes sous charge est U = E − r × I.\n:::",
+                    "en": ":::definition\nUn générateur est un dipôle qui fournit de l'énergie électrique. Il est caractérisé par sa force électromotrice (f.e.m.) E et sa résistance interne r. Sa tension aux bornes sous charge est U = E − r × I.\n:::"
                   }
                 },
                 {
@@ -7786,8 +7786,8 @@
                     "en": "Récepteur électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn récepteur est un dipôle qui consomme de l'énergie électrique et la convertit en une autre forme : chaleur (résisteur), énergie mécanique (moteur) ou énergie chimique (électrolyseur).\n:::",
+                    "en": ":::definition\nUn récepteur est un dipôle qui consomme de l'énergie électrique et la convertit en une autre forme : chaleur (résisteur), énergie mécanique (moteur) ou énergie chimique (électrolyseur).\n:::"
                   }
                 }
               ],
@@ -7934,8 +7934,8 @@
                     "en": "Sécurité électrique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn courant de 30 mA traversant le corps humain peut être mortel. Les protections incluent : fusible/disjoncteur (surcharge), disjoncteur différentiel 30 mA (fuite de courant), prise de terre (défaut d'isolement).\n:::",
+                    "en": ":::definition\nUn courant de 30 mA traversant le corps humain peut être mortel. Les protections incluent : fusible/disjoncteur (surcharge), disjoncteur différentiel 30 mA (fuite de courant), prise de terre (défaut d'isolement).\n:::"
                   }
                 }
               ],
@@ -8093,8 +8093,8 @@
                     "en": "Rayon lumineux"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe rayon lumineux est le modèle géométrique du trajet de la lumière, représenté par une droite orientée dans le sens de propagation. La lumière se propage en ligne droite dans un milieu homogène et transparent à c = 3 × 10⁸ m/s.\n:::",
+                    "en": ":::definition\nLe rayon lumineux est le modèle géométrique du trajet de la lumière, représenté par une droite orientée dans le sens de propagation. La lumière se propage en ligne droite dans un milieu homogène et transparent à c = 3 × 10⁸ m/s.\n:::"
                   }
                 },
                 {
@@ -8106,8 +8106,8 @@
                     "en": "Source lumineuse"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne source primaire produit elle-même de la lumière (Soleil, lampe, bougie). Une source secondaire diffuse la lumière reçue (Lune, objets éclairés). La Lune est une source secondaire : elle réfléchit la lumière du Soleil.\n:::",
+                    "en": ":::definition\nUne source primaire produit elle-même de la lumière (Soleil, lampe, bougie). Une source secondaire diffuse la lumière reçue (Lune, objets éclairés). La Lune est une source secondaire : elle réfléchit la lumière du Soleil.\n:::"
                   }
                 }
               ],
@@ -8254,8 +8254,8 @@
                     "en": "Réflexion de la lumière"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::",
+                    "en": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::"
                   }
                 },
                 {
@@ -8267,8 +8267,8 @@
                     "en": "Réfraction de la lumière"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::",
+                    "en": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::"
                   }
                 }
               ],
@@ -8415,8 +8415,8 @@
                     "en": "Lentille convergente"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne lentille convergente (convexe) fait converger les rayons parallèles vers son foyer image F'. Sa vergence V = 1/f' s'exprime en dioptries (δ). Elle est utilisée dans les loupes, objectifs photographiques et verres correcteurs.\n:::",
+                    "en": ":::definition\nUne lentille convergente (convexe) fait converger les rayons parallèles vers son foyer image F'. Sa vergence V = 1/f' s'exprime en dioptries (δ). Elle est utilisée dans les loupes, objectifs photographiques et verres correcteurs.\n:::"
                   }
                 },
                 {
@@ -8428,8 +8428,8 @@
                     "en": "Foyer d'une lentille"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe foyer image F' est le point où convergent les rayons incidents parallèles à l'axe optique après passage dans la lentille. Le foyer objet F est symétrique de F' par rapport au centre O. Distance focale f' = distance O à F'.\n:::",
+                    "en": ":::definition\nLe foyer image F' est le point où convergent les rayons incidents parallèles à l'axe optique après passage dans la lentille. Le foyer objet F est symétrique de F' par rapport au centre O. Distance focale f' = distance O à F'.\n:::"
                   }
                 }
               ],
@@ -8576,8 +8576,8 @@
                     "en": "L'œil — système optique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'œil est un système optique qui forme une image réelle renversée sur la rétine. Le cristallin est une lentille convergente dont la vergence est réglable (accommodation). La rétine transmet l'image au cerveau via le nerf optique.\n:::",
+                    "en": ":::definition\nL'œil est un système optique qui forme une image réelle renversée sur la rétine. Le cristallin est une lentille convergente dont la vergence est réglable (accommodation). La rétine transmet l'image au cerveau via le nerf optique.\n:::"
                   }
                 },
                 {
@@ -8589,8 +8589,8 @@
                     "en": "Défauts de la vision"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nMyopie : image avant la rétine → correction par lentille divergente (−). Hypermétropie : image derrière la rétine → correction par lentille convergente (+). Presbytie : perte d'accommodation avec l'âge → verres progressifs.\n:::",
+                    "en": ":::definition\nMyopie : image avant la rétine → correction par lentille divergente (−). Hypermétropie : image derrière la rétine → correction par lentille convergente (+). Presbytie : perte d'accommodation avec l'âge → verres progressifs.\n:::"
                   }
                 }
               ],
@@ -8737,8 +8737,8 @@
                     "en": "Lumière blanche"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa lumière blanche est la superposition de toutes les radiations visibles, du violet (400 nm) au rouge (700 nm). Elle peut être dispersée par un prisme en un spectre continu de couleurs (arc-en-ciel). Synthèse additive : rouge + vert + bleu = blanc.\n:::",
+                    "en": ":::definition\nLa lumière blanche est la superposition de toutes les radiations visibles, du violet (400 nm) au rouge (700 nm). Elle peut être dispersée par un prisme en un spectre continu de couleurs (arc-en-ciel). Synthèse additive : rouge + vert + bleu = blanc.\n:::"
                   }
                 },
                 {
@@ -8750,8 +8750,8 @@
                     "en": "Dispersion de la lumière"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::",
+                    "en": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::"
                   }
                 }
               ],
@@ -8909,21 +8909,21 @@
                     "en": "Atome"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::",
+                    "en": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::"
                   }
                 },
                 {
                   "notionId": "not_pc_molecule",
                   "order": 2,
-                  "type": "definition",
+                  "type": "formula",
                   "title": {
                     "fr": "Molécule",
                     "en": "Molécule"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne molécule est un ensemble d'atomes liés par des liaisons covalentes. Exemples : H₂O (eau), CO₂ (dioxyde de carbone), O₂ (dioxygène), CH₄ (méthane). La formule moléculaire indique la nature et le nombre d'atomes.\n:::",
+                    "en": ":::retenir\nUne molécule est un ensemble d'atomes liés par des liaisons covalentes. Exemples : H₂O (eau), CO₂ (dioxyde de carbone), O₂ (dioxygène), CH₄ (méthane). La formule moléculaire indique la nature et le nombre d'atomes.\n:::"
                   }
                 }
               ],
@@ -9070,21 +9070,21 @@
                     "en": "Réaction chimique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::",
+                    "en": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::"
                   }
                 },
                 {
                   "notionId": "not_pc_equation_chimique",
                   "order": 2,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Équation chimique",
                     "en": "Équation chimique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne équation chimique est la représentation symbolique d'une réaction. Elle doit être équilibrée : même nombre d'atomes de chaque élément de chaque côté. On ajuste les coefficients stœchiométriques (entiers) sans modifier les formules.\n:::",
+                    "en": ":::retenir\nUne équation chimique est la représentation symbolique d'une réaction. Elle doit être équilibrée : même nombre d'atomes de chaque élément de chaque côté. On ajuste les coefficients stœchiométriques (entiers) sans modifier les formules.\n:::"
                   }
                 }
               ],
@@ -9231,8 +9231,8 @@
                     "en": "Solution aqueuse"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne solution aqueuse est un mélange homogène d'un soluté dissous dans l'eau (solvant). La concentration massique est Cm = m(soluté) / V(solution) en g/L. Exemples : eau salée, eau sucrée, solutions d'acides ou de bases.\n:::",
+                    "en": ":::definition\nUne solution aqueuse est un mélange homogène d'un soluté dissous dans l'eau (solvant). La concentration massique est Cm = m(soluté) / V(solution) en g/L. Exemples : eau salée, eau sucrée, solutions d'acides ou de bases.\n:::"
                   }
                 },
                 {
@@ -9244,8 +9244,8 @@
                     "en": "pH"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe pH mesure l'acidité ou la basicité d'une solution aqueuse. pH < 7 : acide ; pH = 7 : neutre ; pH > 7 : basique. Il se mesure avec un papier pH, un pH-mètre ou des indicateurs colorés.\n:::",
+                    "en": ":::definition\nLe pH mesure l'acidité ou la basicité d'une solution aqueuse. pH < 7 : acide ; pH = 7 : neutre ; pH > 7 : basique. Il se mesure avec un papier pH, un pH-mètre ou des indicateurs colorés.\n:::"
                   }
                 }
               ],
@@ -9386,27 +9386,27 @@
                 {
                   "notionId": "not_pc_oxydation",
                   "order": 1,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Oxydation",
                     "en": "Oxydation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nL'oxydation est la perte d'électrons par une espèce chimique (le réducteur). Elle est toujours couplée à une réduction. Moyen mnémotechnique : OIL (Oxidation Is Loss). Exemples : rouille du fer, combustion.\n:::",
+                    "en": ":::retenir\nL'oxydation est la perte d'électrons par une espèce chimique (le réducteur). Elle est toujours couplée à une réduction. Moyen mnémotechnique : OIL (Oxidation Is Loss). Exemples : rouille du fer, combustion.\n:::"
                   }
                 },
                 {
                   "notionId": "not_pc_reduction",
                   "order": 2,
-                  "type": "definition",
+                  "type": "rule",
                   "title": {
                     "fr": "Réduction",
                     "en": "Réduction"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nLa réduction est le gain d'électrons par une espèce chimique (l'oxydant). Elle est toujours couplée à une oxydation. Moyen mnémotechnique : RIG (Reduction Is Gain). Les deux forment une réaction d'oxydoréduction (redox).\n:::",
+                    "en": ":::retenir\nLa réduction est le gain d'électrons par une espèce chimique (l'oxydant). Elle est toujours couplée à une oxydation. Moyen mnémotechnique : RIG (Reduction Is Gain). Les deux forment une réaction d'oxydoréduction (redox).\n:::"
                   }
                 }
               ],
@@ -9553,8 +9553,8 @@
                     "en": "Combustion"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa combustion est une réaction exothermique d'un combustible avec le dioxygène. Complète : produits = CO₂ + H₂O. Incomplète (manque O₂) : production de CO (toxique) et suie. Exemples : méthane, propane, essence.\n:::",
+                    "en": ":::definition\nLa combustion est une réaction exothermique d'un combustible avec le dioxygène. Complète : produits = CO₂ + H₂O. Incomplète (manque O₂) : production de CO (toxique) et suie. Exemples : méthane, propane, essence.\n:::"
                   }
                 },
                 {
@@ -9566,8 +9566,8 @@
                     "en": "Pollution chimique"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLes combustions génèrent des polluants : CO₂ (effet de serre), CO (toxique), SO₂ et NOₓ (pluies acides), particules fines (maladies respiratoires). Les solutions incluent les énergies renouvelables et l'efficacité énergétique.\n:::",
+                    "en": ":::definition\nLes combustions génèrent des polluants : CO₂ (effet de serre), CO (toxique), SO₂ et NOₓ (pluies acides), particules fines (maladies respiratoires). Les solutions incluent les énergies renouvelables et l'efficacité énergétique.\n:::"
                   }
                 }
               ],
@@ -9730,8 +9730,8 @@
                     "en": "Cellule"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::",
+                    "en": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::"
                   }
                 },
                 {
@@ -9743,8 +9743,8 @@
                     "en": "Organite"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn organite est une structure spécialisée présente dans le cytoplasme d'une cellule. Exemples : noyau (ADN), mitochondrie (énergie), chloroplaste (photosynthèse), ribosome (protéines).\n:::",
+                    "en": ":::definition\nUn organite est une structure spécialisée présente dans le cytoplasme d'une cellule. Exemples : noyau (ADN), mitochondrie (énergie), chloroplaste (photosynthèse), ribosome (protéines).\n:::"
                   }
                 }
               ],
@@ -9891,8 +9891,8 @@
                     "en": "Respiration cellulaire"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa respiration cellulaire est l'ensemble des réactions chimiques (dans les mitochondries) qui produisent de l'énergie (ATP) à partir du glucose et du dioxygène : glucose + O₂ → CO₂ + H₂O + ATP.\n:::",
+                    "en": ":::definition\nLa respiration cellulaire est l'ensemble des réactions chimiques (dans les mitochondries) qui produisent de l'énergie (ATP) à partir du glucose et du dioxygène : glucose + O₂ → CO₂ + H₂O + ATP.\n:::"
                   }
                 },
                 {
@@ -9904,8 +9904,8 @@
                     "en": "ATP (Adénosine Triphosphate)"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'ATP est la molécule énergétique universelle des cellules vivantes. Elle est produite par la respiration cellulaire et utilisée pour alimenter toutes les activités cellulaires (mouvement, synthèse, transport).\n:::",
+                    "en": ":::definition\nL'ATP est la molécule énergétique universelle des cellules vivantes. Elle est produite par la respiration cellulaire et utilisée pour alimenter toutes les activités cellulaires (mouvement, synthèse, transport).\n:::"
                   }
                 }
               ],
@@ -10052,8 +10052,8 @@
                     "en": "Photosynthèse"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::",
+                    "en": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::"
                   }
                 },
                 {
@@ -10065,8 +10065,8 @@
                     "en": "Chlorophylle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa chlorophylle est le pigment vert contenu dans les chloroplastes des cellules végétales. Elle absorbe la lumière (surtout rouge et bleue) pour permettre la photosynthèse. C'est elle qui donne leur couleur verte aux plantes.\n:::",
+                    "en": ":::definition\nLa chlorophylle est le pigment vert contenu dans les chloroplastes des cellules végétales. Elle absorbe la lumière (surtout rouge et bleue) pour permettre la photosynthèse. C'est elle qui donne leur couleur verte aux plantes.\n:::"
                   }
                 }
               ],
@@ -10213,8 +10213,8 @@
                     "en": "Neurone"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::",
+                    "en": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::"
                   }
                 },
                 {
@@ -10226,8 +10226,8 @@
                     "en": "Réflexe"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn réflexe est une réponse automatique, involontaire et rapide à un stimulus, coordonnée par la moelle épinière sans intervention du cerveau. L'arc réflexe comprend : récepteur → nerf sensitif → moelle → nerf moteur → muscle.\n:::",
+                    "en": ":::definition\nUn réflexe est une réponse automatique, involontaire et rapide à un stimulus, coordonnée par la moelle épinière sans intervention du cerveau. L'arc réflexe comprend : récepteur → nerf sensitif → moelle → nerf moteur → muscle.\n:::"
                   }
                 }
               ],
@@ -10374,8 +10374,8 @@
                     "en": "Sang"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe sang est un tissu liquide composé de plasma (55%), de globules rouges (transport du O₂ via l'hémoglobine), de globules blancs (défense immunitaire) et de plaquettes (coagulation).\n:::",
+                    "en": ":::definition\nLe sang est un tissu liquide composé de plasma (55%), de globules rouges (transport du O₂ via l'hémoglobine), de globules blancs (défense immunitaire) et de plaquettes (coagulation).\n:::"
                   }
                 },
                 {
@@ -10387,8 +10387,8 @@
                     "en": "Double circulation sanguine"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa circulation sanguine est double : la grande circulation (cœur → organes → cœur) et la petite circulation (cœur → poumons → cœur). Le cœur (4 cavités) est la pompe qui propulse le sang.\n:::",
+                    "en": ":::definition\nLa circulation sanguine est double : la grande circulation (cœur → organes → cœur) et la petite circulation (cœur → poumons → cœur). Le cœur (4 cavités) est la pompe qui propulse le sang.\n:::"
                   }
                 }
               ],
@@ -10546,8 +10546,8 @@
                     "en": "Gamète"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn gamète est une cellule reproductrices haploïde (n chromosomes). Le gamète mâle est le spermatozoïde, le gamète femelle est l'ovule. Leur fusion lors de la fécondation donne un zygote diploïde (2n).\n:::",
+                    "en": ":::definition\nUn gamète est une cellule reproductrices haploïde (n chromosomes). Le gamète mâle est le spermatozoïde, le gamète femelle est l'ovule. Leur fusion lors de la fécondation donne un zygote diploïde (2n).\n:::"
                   }
                 },
                 {
@@ -10559,8 +10559,8 @@
                     "en": "Fécondation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa fécondation est la fusion d'un spermatozoïde (n) et d'un ovule (n) pour former un zygote (2n). Chez l'humain : 23 + 23 = 46 chromosomes. Elle peut être externe (dans l'eau) ou interne (dans le corps de la femelle).\n:::",
+                    "en": ":::definition\nLa fécondation est la fusion d'un spermatozoïde (n) et d'un ovule (n) pour former un zygote (2n). Chez l'humain : 23 + 23 = 46 chromosomes. Elle peut être externe (dans l'eau) ou interne (dans le corps de la femelle).\n:::"
                   }
                 }
               ],
@@ -10707,8 +10707,8 @@
                     "en": "Chromosome"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn chromosome est une structure constituée d'ADN et de protéines, présente dans le noyau des cellules. La cellule humaine possède 46 chromosomes (23 paires). Les gamètes en ont 23 (haploïdes).\n:::",
+                    "en": ":::definition\nUn chromosome est une structure constituée d'ADN et de protéines, présente dans le noyau des cellules. La cellule humaine possède 46 chromosomes (23 paires). Les gamètes en ont 23 (haploïdes).\n:::"
                   }
                 },
                 {
@@ -10720,8 +10720,8 @@
                     "en": "ADN"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::",
+                    "en": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::"
                   }
                 }
               ],
@@ -10868,8 +10868,8 @@
                     "en": "Gène"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn gène est un segment d'ADN occupant un locus précis sur un chromosome, codant pour une protéine ou régulant l'expression d'autres gènes. Un gène peut exister sous plusieurs formes (allèles).\n:::",
+                    "en": ":::definition\nUn gène est un segment d'ADN occupant un locus précis sur un chromosome, codant pour une protéine ou régulant l'expression d'autres gènes. Un gène peut exister sous plusieurs formes (allèles).\n:::"
                   }
                 },
                 {
@@ -10881,8 +10881,8 @@
                     "en": "Allèle"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn allèle est l'une des formes d'un même gène. L'allèle dominant s'exprime même en un seul exemplaire (noté en majuscule). L'allèle récessif ne s'exprime que si présent en deux exemplaires (noté en minuscule).\n:::",
+                    "en": ":::definition\nUn allèle est l'une des formes d'un même gène. L'allèle dominant s'exprime même en un seul exemplaire (noté en majuscule). L'allèle récessif ne s'exprime que si présent en deux exemplaires (noté en minuscule).\n:::"
                   }
                 },
                 {
@@ -10894,8 +10894,8 @@
                     "en": "Phénotype"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe phénotype est l'ensemble des caractères observables d'un individu, résultant de l'expression de son génotype dans un environnement donné. Par opposition, le génotype est la constitution allélique de l'individu.\n:::",
+                    "en": ":::definition\nLe phénotype est l'ensemble des caractères observables d'un individu, résultant de l'expression de son génotype dans un environnement donné. Par opposition, le génotype est la constitution allélique de l'individu.\n:::"
                   }
                 }
               ],
@@ -11042,8 +11042,8 @@
                     "en": "Maladie héréditaire"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne maladie héréditaire est causée par une anomalie génétique (mutation) transmissible des parents aux enfants. Elle peut être dominante (un allèle suffit) ou récessive (deux allèles nécessaires). Exemple : drépanocytose, hémophilie.\n:::",
+                    "en": ":::definition\nUne maladie héréditaire est causée par une anomalie génétique (mutation) transmissible des parents aux enfants. Elle peut être dominante (un allèle suffit) ou récessive (deux allèles nécessaires). Exemple : drépanocytose, hémophilie.\n:::"
                   }
                 },
                 {
@@ -11055,8 +11055,8 @@
                     "en": "Mutation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne mutation est une modification permanente de la séquence d'ADN. Elle peut être spontanée ou provoquée par des agents mutagènes (rayons UV, produits chimiques). Une mutation dans une cellule germinale (gamète) est transmissible à la descendance.\n:::",
+                    "en": ":::definition\nUne mutation est une modification permanente de la séquence d'ADN. Elle peut être spontanée ou provoquée par des agents mutagènes (rayons UV, produits chimiques). Une mutation dans une cellule germinale (gamète) est transmissible à la descendance.\n:::"
                   }
                 }
               ],
@@ -11203,8 +11203,8 @@
                     "en": "Puberté"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa puberté est la période de maturation sexuelle marquée par le développement des organes reproducteurs et des caractères sexuels secondaires (pilosité, mue de voix, poitrine), sous l'effet des hormones sexuelles.\n:::",
+                    "en": ":::definition\nLa puberté est la période de maturation sexuelle marquée par le développement des organes reproducteurs et des caractères sexuels secondaires (pilosité, mue de voix, poitrine), sous l'effet des hormones sexuelles.\n:::"
                   }
                 },
                 {
@@ -11216,8 +11216,8 @@
                     "en": "Hormone"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne hormone est une substance chimique sécrétée par une glande endocrine, transportée par le sang jusqu'à ses organes cibles. Exemples : testostérone (testicules), oestrogènes et progestérone (ovaires), insuline (pancréas).\n:::",
+                    "en": ":::definition\nUne hormone est une substance chimique sécrétée par une glande endocrine, transportée par le sang jusqu'à ses organes cibles. Exemples : testostérone (testicules), oestrogènes et progestérone (ovaires), insuline (pancréas).\n:::"
                   }
                 }
               ],
@@ -11375,8 +11375,8 @@
                     "en": "Écosystème"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::",
+                    "en": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::"
                   }
                 },
                 {
@@ -11388,8 +11388,8 @@
                     "en": "Chaîne alimentaire"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::",
+                    "en": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::"
                   }
                 }
               ],
@@ -11536,8 +11536,8 @@
                     "en": "Cycle du carbone"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::",
+                    "en": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::"
                   }
                 },
                 {
@@ -11549,8 +11549,8 @@
                     "en": "Effet de serre"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nL'effet de serre est un phénomène naturel où certains gaz atmosphériques (CO₂, CH₄, vapeur d'eau) retiennent la chaleur solaire, maintenant la Terre à une température vivable. Son intensification due aux activités humaines cause le réchauffement climatique.\n:::",
+                    "en": ":::definition\nL'effet de serre est un phénomène naturel où certains gaz atmosphériques (CO₂, CH₄, vapeur d'eau) retiennent la chaleur solaire, maintenant la Terre à une température vivable. Son intensification due aux activités humaines cause le réchauffement climatique.\n:::"
                   }
                 }
               ],
@@ -11697,8 +11697,8 @@
                     "en": "Déforestation"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa déforestation est la destruction ou dégradation des forêts par coupe, brûlis ou exploitation intensive. Elle entraîne la perte de biodiversité, l'érosion des sols, la perturbation des cycles de l'eau et l'augmentation du CO₂ atmosphérique.\n:::",
+                    "en": ":::definition\nLa déforestation est la destruction ou dégradation des forêts par coupe, brûlis ou exploitation intensive. Elle entraîne la perte de biodiversité, l'érosion des sols, la perturbation des cycles de l'eau et l'augmentation du CO₂ atmosphérique.\n:::"
                   }
                 },
                 {
@@ -11710,8 +11710,8 @@
                     "en": "Pollution"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa pollution est l'introduction de substances nocives (polluants) dans l'environnement (air, eau, sol) qui en altèrent la qualité et nuisent aux êtres vivants. Elle peut être atmosphérique, aquatique, tellurique ou sonore.\n:::",
+                    "en": ":::definition\nLa pollution est l'introduction de substances nocives (polluants) dans l'environnement (air, eau, sol) qui en altèrent la qualité et nuisent aux êtres vivants. Elle peut être atmosphérique, aquatique, tellurique ou sonore.\n:::"
                   }
                 }
               ],
@@ -11858,21 +11858,21 @@
                     "en": "Biodiversité"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLa biodiversité désigne la variété du vivant à trois niveaux : diversité des espèces, diversité génétique au sein d'une espèce, et diversité des écosystèmes. Elle est essentielle au maintien des équilibres naturels et des services rendus à l'humain.\n:::",
+                    "en": ":::definition\nLa biodiversité désigne la variété du vivant à trois niveaux : diversité des espèces, diversité génétique au sein d'une espèce, et diversité des écosystèmes. Elle est essentielle au maintien des équilibres naturels et des services rendus à l'humain.\n:::"
                   }
                 },
                 {
                   "notionId": "not_svt_espece",
                   "order": 2,
-                  "type": "definition",
+                  "type": "fact",
                   "title": {
                     "fr": "Espèce",
                     "en": "Espèce"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::retenir\nUne espèce est un groupe d'individus qui se ressemblent morphologiquement, partagent un patrimoine génétique commun et peuvent se reproduire entre eux en donnant des descendants fertiles. On en dénombre environ 8,7 millions sur Terre.\n:::",
+                    "en": ":::retenir\nUne espèce est un groupe d'individus qui se ressemblent morphologiquement, partagent un patrimoine génétique commun et peuvent se reproduire entre eux en donnant des descendants fertiles. On en dénombre environ 8,7 millions sur Terre.\n:::"
                   }
                 }
               ],
@@ -12019,8 +12019,8 @@
                     "en": "Développement durable"
                   },
                   "content": {
-                    "fr": "",
-                    "en": ""
+                    "fr": ":::definition\nLe développement durable est un développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs. Il repose sur trois piliers : économique, social et environnemental.\n:::",
+                    "en": ":::definition\nLe développement durable est un développement qui répond aux besoins du présent sans compromettre la capacité des générations futures à répondre aux leurs. Il repose sur trois piliers : économique, social et environnemental.\n:::"
                   }
                 }
               ],
