@@ -2,6 +2,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:valide_school/features/content/data/repositories/content_firestore_repository_impl.dart';
+import 'package:valide_school/features/content/domain/entities/chapter_fiche_entity.dart';
 import 'package:valide_school/features/content/domain/failures/content_failure.dart';
 
 void main() {
@@ -133,6 +134,109 @@ void main() {
 
       test('doc inexistant → Left(ContentFailure.notFound)', () async {
         final result = await repo.getLessonById('does_not_exist');
+
+        expect(result.isLeft(), isTrue);
+        final failure = result.getLeft().toNullable()!;
+        expect(failure.kind, ContentFailureKind.notFound);
+      });
+    });
+
+    // ── getQuizQuestions ──────────────────────────────────────
+
+    group('getQuizQuestions', () {
+      test(
+          'succès multi-docs : aplatit les questions de plusieurs quiz docs',
+          () async {
+        final lessonRef =
+            fakeFirestore.collection('lessons').doc('lesson_q1');
+        await lessonRef.collection('quizzes').doc('q01').set({
+          'lessonId': 'lesson_q1',
+          'version': 1,
+          'questions': [
+            {
+              'id': 'q01_1',
+              'notionId': null,
+              'text': {'fr': 'Q1', 'en': 'Q1'},
+              'type': 'mcq',
+              'options': {
+                'fr': ['A', 'B', 'C', 'D'],
+                'en': ['A', 'B', 'C', 'D'],
+              },
+              'correctIndex': 0,
+            },
+            {
+              'id': 'q01_2',
+              'notionId': 'n1',
+              'text': {'fr': 'Q2', 'en': 'Q2'},
+              'type': 'mcq',
+              'options': {
+                'fr': ['A', 'B', 'C', 'D'],
+                'en': ['A', 'B', 'C', 'D'],
+              },
+              'correctIndex': 1,
+            },
+          ],
+        });
+        await lessonRef.collection('quizzes').doc('q02').set({
+          'lessonId': 'lesson_q1',
+          'version': 1,
+          'questions': [
+            {
+              'id': 'q02_1',
+              'notionId': 'n2',
+              'text': {'fr': 'Q3', 'en': 'Q3'},
+              'type': 'mcq',
+              'options': {
+                'fr': ['A', 'B', 'C', 'D'],
+                'en': ['A', 'B', 'C', 'D'],
+              },
+              'correctIndex': 2,
+            },
+          ],
+        });
+
+        final result = await repo.getQuizQuestions('lesson_q1');
+
+        expect(result.isRight(), isTrue);
+        final questions = result.getRight().toNullable()!;
+        expect(questions.length, 3);
+        expect(
+          questions.map((q) => q.id),
+          containsAll(['q01_1', 'q01_2', 'q02_1']),
+        );
+      });
+
+      test('sous-collection vide → Right([])', () async {
+        final result = await repo.getQuizQuestions('lesson_sans_quiz');
+
+        expect(result.isRight(), isTrue);
+        expect(result.getRight().toNullable()!, isEmpty);
+      });
+    });
+
+    // ── getFiche ──────────────────────────────────────────
+
+    group('getFiche', () {
+      test('succès : retourne la fiche avec contentFr et contentEn', () async {
+        await fakeFirestore
+            .collection('chapters')
+            .doc('ch01')
+            .collection('fiche')
+            .doc('main')
+            .set({'fr': '# Résumé FR', 'en': '# Summary EN'});
+
+        final result = await repo.getFiche('ch01');
+
+        expect(result.isRight(), isTrue);
+        final fiche = result.getRight().toNullable()!;
+        expect(fiche, isA<ChapterFicheEntity>());
+        expect(fiche.chapterId, 'ch01');
+        expect(fiche.contentFr, '# Résumé FR');
+        expect(fiche.contentEn, '# Summary EN');
+      });
+
+      test('doc inexistant → Left(ContentFailure.notFound)', () async {
+        final result = await repo.getFiche('ch_inconnu');
 
         expect(result.isLeft(), isTrue);
         final failure = result.getLeft().toNullable()!;

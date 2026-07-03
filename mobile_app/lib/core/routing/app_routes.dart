@@ -18,6 +18,7 @@ abstract final class AppRoutes {
   static const subjectPath = '/subject/:subjectId';
   static const chapterSegment = 'chapter/:chapterId';
   static const lessonSegment = 'lesson/:lessonId';
+  static const quizSegment = 'quiz';
 
   // Contenu — builders de navigation (interpolation des IDs)
   static String subject(String subjectId) => '/subject/$subjectId';
@@ -25,6 +26,14 @@ abstract final class AppRoutes {
       '/subject/$subjectId/chapter/$chapterId';
   static String lesson(String subjectId, String chapterId, String lessonId) =>
       '/subject/$subjectId/chapter/$chapterId/lesson/$lessonId';
+  static String chapterQuiz(String subjectId, String chapterId) =>
+      '/subject/$subjectId/chapter/$chapterId/quiz';
+  static String lessonQuiz(
+    String subjectId,
+    String chapterId,
+    String lessonId,
+  ) =>
+      '/subject/$subjectId/chapter/$chapterId/lesson/$lessonId/quiz';
 
   // Profil public
   static const userPath = '/user/:uid';

@@ -17,10 +17,6 @@ void main() {
         'chapterId': 'ch01',
         'order': 1,
         'title': {'fr': 'Limites finies', 'en': 'Finite Limits'},
-        'content': {
-          'fr': '# Contenu FR\nUn paragraphe.',
-          'en': '# Content EN\nA paragraph.',
-        },
         'subtitle': {'fr': 'Notion clé', 'en': 'Key notion'},
         'durationMinutes': 8,
       });
@@ -33,26 +29,29 @@ void main() {
       expect(entity.order, 1);
       expect(entity.titleFr, 'Limites finies');
       expect(entity.titleEn, 'Finite Limits');
-      expect(entity.contentFr, '# Contenu FR\nUn paragraphe.');
-      expect(entity.contentEn, '# Content EN\nA paragraph.');
+      // Le blob Markdown vit dans lessons/{id}/content/main — absent du document principal.
+      expect(entity.contentFr, isNull);
+      expect(entity.contentEn, isNull);
       expect(entity.subtitleFr, 'Notion clé');
       expect(entity.subtitleEn, 'Key notion');
       expect(entity.durationMinutes, 8);
     });
 
-    test('content.en absent → contentEn vide', () async {
+    test('content dans le doc principal est ignoré (lu depuis sous-doc content/main)', () async {
+      // Vérifie que LessonModel.fromFirestore n'essaie pas de lire le champ
+      // content du document principal — il vit dans lessons/{id}/content/main.
       await fakeFirestore.collection('lessons').doc('l02').set({
         'chapterId': 'ch01',
         'order': 2,
         'title': {'fr': 'Dérivées', 'en': 'Derivatives'},
-        'content': {'fr': '# FR'},
+        'content': {'fr': '# FR'},  // ce champ est ignoré par LessonModel
       });
 
       final doc = await fakeFirestore.collection('lessons').doc('l02').get();
       final entity = LessonModel.fromFirestore(doc).toEntity();
 
-      expect(entity.contentFr, '# FR');
-      expect(entity.contentEn, '');
+      expect(entity.contentFr, isNull);
+      expect(entity.contentEn, isNull);
     });
 
     test('durationMinutes absent → défaut 0', () async {

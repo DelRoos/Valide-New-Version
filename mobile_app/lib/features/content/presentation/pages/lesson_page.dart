@@ -195,7 +195,12 @@ class _LessonPageState extends ConsumerState<LessonPage> {
                       ],
                       PedagogicalContent(data: content),
                       SizedBox(height: AppSpacing.s6),
-                      LessonCtaRow(isFr: isFr),
+                      LessonCtaRow(
+                        isFr: isFr,
+                        subjectId: widget.subjectId,
+                        chapterId: widget.chapterId,
+                        lessonId: widget.lessonId,
+                      ),
                     ],
                   ),
                 ),

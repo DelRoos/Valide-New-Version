@@ -3,12 +3,17 @@ import 'package:fpdart/fpdart.dart';
 
 import '../../../../core/logging/app_logger.dart';
 import '../../domain/entities/chapter_entity.dart';
+import '../../domain/entities/chapter_fiche_entity.dart';
 import '../../domain/entities/lesson_content_entity.dart';
 import '../../domain/entities/lesson_entity.dart';
+import '../../domain/entities/notion_entity.dart';
+import '../../domain/entities/quiz_question_entity.dart';
 import '../../domain/failures/content_failure.dart';
 import '../../domain/repositories/content_repository.dart';
 import '../models/chapter_model.dart';
 import '../models/lesson_model.dart';
+import '../models/notion_model.dart';
+import '../models/quiz_question_model.dart';
 
 class ContentFirestoreRepositoryImpl implements ContentRepository {
   ContentFirestoreRepositoryImpl({required FirebaseFirestore firestore})
@@ -18,7 +23,10 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
 
   static const _kChapters = 'chapters';
   static const _kLessons = 'lessons';
+  static const _kNotions = 'notions';
   static const _kContent = 'content';
+  static const _kFiche = 'fiche';
+  static const _kQuizzes = 'quizzes';
   static const _kMaxChapters = 30;
   static const _kMaxLessons = 50;
 
@@ -127,6 +135,100 @@ class ContentFirestoreRepositoryImpl implements ContentRepository {
       final failure = ContentFailure.unknown(e.toString());
       AppLogger.e('content.getLessonContent unexpected error', error: e);
       return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<ContentFailure, List<QuizQuestionEntity>>> getQuizQuestions(
+    String lessonId,
+  ) async {
+    try {
+      final snap = await _firestore
+          .collection(_kLessons)
+          .doc(lessonId)
+          .collection(_kQuizzes)
+          .get();
+      final questions = snap.docs
+          .expand((doc) {
+            final raw = doc.data()['questions'] as List? ?? [];
+            return raw
+                .whereType<Map<String, dynamic>>()
+                .map(QuizQuestionModel.fromMap)
+                .map((m) => m.toEntity());
+          })
+          .toList();
+      AppLogger.d(
+        'content.getQuizQuestions($lessonId): ${questions.length} questions',
+      );
+      return Right(questions);
+    } on FirebaseException catch (e) {
+      final failure =
+          _mapFirebaseException(e, context: 'getQuizQuestions($lessonId)');
+      AppLogger.e(
+        'content.getQuizQuestions: kind=${failure.kind.name} message=${failure.message}',
+      );
+      return Left(failure);
+    } catch (e) {
+      final failure = ContentFailure.unknown(e.toString());
+      AppLogger.e('content.getQuizQuestions unexpected error', error: e);
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<ContentFailure, NotionEntity>> getNotion(
+    String notionId,
+  ) async {
+    try {
+      final doc = await _firestore
+          .collection(_kNotions)
+          .doc(notionId)
+          .get();
+      if (!doc.exists) {
+        final failure = ContentFailure.notFound(notionId);
+        AppLogger.w('content.getNotion not found: $notionId');
+        return Left(failure);
+      }
+      return Right(NotionModel.fromFirestore(doc).toEntity());
+    } on FirebaseException catch (e) {
+      final failure = _mapFirebaseException(e, context: 'getNotion($notionId)');
+      AppLogger.e('content.getNotion: kind=${failure.kind.name} message=${failure.message}');
+      return Left(failure);
+    } catch (e) {
+      final failure = ContentFailure.unknown(e.toString());
+      AppLogger.e('content.getNotion unexpected error', error: e);
+      return Left(failure);
+    }
+  }
+
+  @override
+  Future<Either<ContentFailure, ChapterFicheEntity>> getFiche(
+    String chapterId,
+  ) async {
+    try {
+      final doc = await _firestore
+          .collection(_kChapters)
+          .doc(chapterId)
+          .collection(_kFiche)
+          .doc('main')
+          .get();
+      if (!doc.exists) {
+        AppLogger.w('content.getFiche not found: $chapterId/fiche/main');
+        return Left(ContentFailure.notFound('$chapterId/fiche/main'));
+      }
+      final data = doc.data() ?? {};
+      return Right(ChapterFicheEntity(
+        chapterId: chapterId,
+        contentFr: (data['fr'] as String?) ?? '',
+        contentEn: (data['en'] as String?) ?? '',
+      ));
+    } on FirebaseException catch (e) {
+      final failure = _mapFirebaseException(e, context: 'getFiche($chapterId)');
+      AppLogger.e('content.getFiche: kind=${failure.kind.name} message=${failure.message}');
+      return Left(failure);
+    } catch (e) {
+      AppLogger.e('content.getFiche unexpected error', error: e);
+      return Left(ContentFailure.unknown(e.toString()));
     }
   }
 

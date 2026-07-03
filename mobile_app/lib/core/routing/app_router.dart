@@ -18,6 +18,7 @@ import '../../features/content/presentation/pages/courses_page.dart';
 import '../../features/content/presentation/pages/subject_detail_page.dart';
 import '../../features/content/presentation/pages/chapter_page.dart';
 import '../../features/content/presentation/pages/lesson_page.dart';
+import '../../features/content/presentation/pages/quiz_page.dart';
 import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/content_showcase_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
@@ -125,6 +126,13 @@ final routerProvider = Provider<GoRouter>((ref) {
               chapterId: state.pathParameters['chapterId']!,
             ),
             routes: [
+              // Quiz chapitre — /subject/:id/chapter/:id/quiz
+              GoRoute(
+                path: AppRoutes.quizSegment,
+                builder: (context, state) => QuizPage(
+                  chapterId: state.pathParameters['chapterId']!,
+                ),
+              ),
               GoRoute(
                 path: AppRoutes.lessonSegment,
                 builder: (context, state) => LessonPage(
@@ -132,6 +140,16 @@ final routerProvider = Provider<GoRouter>((ref) {
                   chapterId: state.pathParameters['chapterId']!,
                   lessonId: state.pathParameters['lessonId']!,
                 ),
+                routes: [
+                  // Quiz leçon — /subject/:id/chapter/:id/lesson/:id/quiz
+                  GoRoute(
+                    path: AppRoutes.quizSegment,
+                    builder: (context, state) => QuizPage(
+                      chapterId: state.pathParameters['chapterId']!,
+                      lessonId: state.pathParameters['lessonId']!,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

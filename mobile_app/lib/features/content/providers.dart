@@ -6,6 +6,7 @@
 //   3. `lessonsProvider(chapterId)` — FutureProvider.family liste des leçons.
 //   4. `lessonByIdProvider(lessonId)` — FutureProvider.family métadonnées leçon.
 //   5. `lessonContentProvider(lessonId)` — FutureProvider.family blob Markdown (sous-doc).
+//   6. `chapterFicheProvider(chapterId)` — FutureProvider.family fiche de révision (sous-doc).
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,9 +15,14 @@ import '../../core/logging/app_logger.dart';
 import '../onboarding/providers.dart';
 import 'data/repositories/content_firestore_repository_impl.dart';
 import 'domain/entities/chapter_entity.dart';
+import 'domain/entities/chapter_fiche_entity.dart';
 import 'domain/entities/lesson_content_entity.dart';
 import 'domain/entities/lesson_entity.dart';
+import 'domain/entities/notion_entity.dart';
+import 'domain/entities/quiz_question_entity.dart';
+import 'domain/failures/content_failure.dart';
 import 'domain/repositories/content_repository.dart';
+import 'domain/services/quiz_picker.dart';
 
 final contentRepositoryProvider = Provider<ContentRepository>((ref) {
   return ContentFirestoreRepositoryImpl(
@@ -110,6 +116,94 @@ final lessonContentProvider =
         throw failure;
       },
       (content) => content,
+    );
+  },
+);
+
+/// Questions piochées pour une session quiz leçon (≤ 15, 2/notion).
+/// Throw `ContentFailure` en cas d'erreur Firestore. Retourne [] si aucune question.
+final lessonQuizSessionProvider =
+    FutureProvider.autoDispose.family<List<QuizQuestionEntity>, String>(
+  (ref, lessonId) async {
+    final result = await ref
+        .watch(contentRepositoryProvider)
+        .getQuizQuestions(lessonId);
+    return result.fold(
+      (failure) {
+        AppLogger.e(
+          'lessonQuizSessionProvider: kind=${failure.kind.name} message=${failure.message}',
+        );
+        throw failure;
+      },
+      QuizPicker.pickLessonSession,
+    );
+  },
+);
+
+/// Questions piochées pour une session quiz chapitre (≤ 20, 2/notion, toutes leçons).
+/// Agrège les questions de toutes les leçons via Future.wait (reads parallèles).
+/// Throw `ContentFailure` si la lecture des leçons échoue ; erreurs quiz par leçon silencieuses.
+final chapterQuizSessionProvider =
+    FutureProvider.autoDispose.family<List<QuizQuestionEntity>, String>(
+  (ref, chapterId) async {
+    final lessons = await ref.watch(lessonsProvider(chapterId).future);
+    final repo = ref.read(contentRepositoryProvider);
+    final results = await Future.wait(
+      lessons.map((l) => repo.getQuizQuestions(l.lessonId)),
+    );
+    final allQuestions = results
+        .expand((r) => r.fold((_) => <QuizQuestionEntity>[], (q) => q))
+        .toList();
+    AppLogger.d(
+      'chapterQuizSessionProvider($chapterId): ${allQuestions.length} questions brutes',
+    );
+    return QuizPicker.pickChapterSession(allQuestions);
+  },
+);
+
+/// Notion par son ID (unité atomique d'évaluation, collection racine `notions/`).
+/// Chargé à la demande depuis le bouton "Besoin d'aide" du quiz.
+/// Retourne null si le document n'existe pas (évite la boucle retry Riverpod 3.x).
+/// Throw uniquement sur erreurs réseau / permission.
+final notionProvider =
+    FutureProvider.autoDispose.family<NotionEntity?, String>(
+  (ref, notionId) async {
+    final result =
+        await ref.watch(contentRepositoryProvider).getNotion(notionId);
+    return result.fold(
+      (failure) {
+        if (failure.kind == ContentFailureKind.notFound) {
+          AppLogger.w(
+            'notionProvider($notionId): notion introuvable — fallback affiché',
+          );
+          return null;
+        }
+        AppLogger.e(
+          'notionProvider($notionId): kind=${failure.kind.name} message=${failure.message}',
+        );
+        throw failure;
+      },
+      (notion) => notion,
+    );
+  },
+);
+
+/// Fiche de révision d'un chapitre depuis chapters/{chapterId}/fiche/main.
+/// Throw `ContentFailure` (incl. notFound) — le widget intercepte notFound
+/// pour afficher l'état vide sans erreur rouge.
+final chapterFicheProvider =
+    FutureProvider.autoDispose.family<ChapterFicheEntity, String>(
+  (ref, chapterId) async {
+    final result =
+        await ref.watch(contentRepositoryProvider).getFiche(chapterId);
+    return result.fold(
+      (failure) {
+        AppLogger.e(
+          'chapterFicheProvider($chapterId): kind=${failure.kind.name} message=${failure.message}',
+        );
+        throw failure;
+      },
+      (fiche) => fiche,
     );
   },
 );
