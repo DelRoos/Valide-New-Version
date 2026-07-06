@@ -13,7 +13,7 @@ import '../../../../core/widgets/pedagogical_content.dart';
 import '../../domain/failures/content_failure.dart';
 import '../../providers.dart';
 
-class FicheTab extends ConsumerWidget {
+class FicheTab extends ConsumerStatefulWidget {
   const FicheTab({
     super.key,
     required this.subjectId,
@@ -26,8 +26,39 @@ class FicheTab extends ConsumerWidget {
   final String languageCode;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final ficheAsync = ref.watch(chapterFicheProvider(chapterId));
+  ConsumerState<FicheTab> createState() => _FicheTabState();
+}
+
+class _FicheTabState extends ConsumerState<FicheTab> {
+  final _scrollController = ScrollController();
+  double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final max = _scrollController.position.maxScrollExtent;
+    if (max <= 0) return;
+    final progress = (_scrollController.offset / max).clamp(0.0, 1.0);
+    if ((progress - _progress).abs() > 0.005) {
+      setState(() => _progress = progress);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ficheAsync = ref.watch(chapterFicheProvider(widget.chapterId));
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -39,35 +70,71 @@ class FicheTab extends ConsumerWidget {
           error: (error, _) {
             if (error is ContentFailure &&
                 error.kind == ContentFailureKind.notFound) {
-              return _FicheEmptyState(languageCode: languageCode);
+              return _FicheEmptyState(languageCode: widget.languageCode);
             }
             return ContentErrorView(
               error: error,
-              onRetry: () => ref.invalidate(chapterFicheProvider(chapterId)),
+              onRetry: () =>
+                  ref.invalidate(chapterFicheProvider(widget.chapterId)),
             );
           },
           data: (fiche) {
-            final content = fiche.contentFor(languageCode);
+            final content = fiche.contentFor(widget.languageCode);
             if (content.isEmpty) {
-              return _FicheEmptyState(languageCode: languageCode);
+              return _FicheEmptyState(languageCode: widget.languageCode);
             }
             final bottomInset = MediaQuery.paddingOf(context).bottom;
-            return Stack(
+            final isFr = widget.languageCode == 'fr';
+            return Column(
               children: [
-                SingleChildScrollView(
-                  padding: EdgeInsets.fromLTRB(
-                    AppSpacing.s4,
-                    AppSpacing.s4,
-                    AppSpacing.s4,
-                    AppSpacing.s6 + bottomInset,
-                  ),
-                  child: PedagogicalContent(data: content),
+                // ── Barre de progression lecture ─────────────────────────
+                LinearProgressIndicator(
+                  value: _progress,
+                  minHeight: 3,
+                  backgroundColor: AppColors.border,
+                  valueColor:
+                      const AlwaysStoppedAnimation<Color>(AppColors.primary),
                 ),
-                Positioned(
-                  top: AppSpacing.s2.h,
-                  right: AppSpacing.s2.w,
-                  child: _ExpandButton(
-                    onTap: () => _openFullscreen(context, content),
+                // ── Contenu scrollable + bouton en fin ───────────────────
+                Expanded(
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        controller: _scrollController,
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.s4,
+                          AppSpacing.s4,
+                          AppSpacing.s4,
+                          AppSpacing.s4,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            PedagogicalContent(data: content),
+                            SizedBox(height: AppSpacing.s6.h),
+                            AppButton.primary(
+                              label: isFr
+                                  ? "S'exercer sur ce chapitre"
+                                  : 'Practice this chapter',
+                              onPressed: () => context.push(
+                                AppRoutes.chapterQuiz(
+                                  widget.subjectId,
+                                  widget.chapterId,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: AppSpacing.s4.h + bottomInset),
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        top: AppSpacing.s2.h,
+                        right: AppSpacing.s2.w,
+                        child: _ExpandButton(
+                          onTap: () => _openFullscreen(context, content),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -105,11 +172,13 @@ class FicheTab extends ConsumerWidget {
           clipBehavior: Clip.hardEdge,
           child: _FicheFullscreenSheet(
             content: content,
-            languageCode: languageCode,
+            languageCode: widget.languageCode,
             onClose: () => Navigator.of(ctx, rootNavigator: true).pop(),
             onExercise: () {
               Navigator.of(ctx, rootNavigator: true).pop();
-              context.push(AppRoutes.chapterQuiz(subjectId, chapterId));
+              context.push(
+                AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId),
+              );
             },
           ),
         ),
