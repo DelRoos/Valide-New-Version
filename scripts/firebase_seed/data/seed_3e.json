@@ -42,8 +42,8 @@
                     "en": "Pinyin"
                   },
                   "content": {
-                    "fr": ":::retenir\nSystème de transcription phonétique officiel du mandarin en alphabet latin, créé en 1958 et adopté par l'ONU en 1982.\n:::",
-                    "en": ":::retenir\nOfficial phonetic transcription system for Mandarin using the Latin alphabet, created in 1958 and adopted by the UN in 1982.\n:::"
+                    "fr": ":::retenir\nSystème de transcription phonétique officiel du mandarin en alphabet latin, créé en 1958 et adopté par l'ONU en 1982.\n:::\n\n:::image\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c5/Mandarin_Tones.png\ncaption=Contours des 4 tons du mandarin — le pinyin note ces tons avec des diacritiques (ā á ǎ à)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0b/Zh-b%C4%81.ogg\nlabel=bā 八 (1er ton) — le pinyin transcrit ce son « bā » et son ton haut plat\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=kp6VkLQGEnk\ncaption=Introduction au pinyin mandarin — leçon audio-visuelle pour débutants\n:::",
+                    "en": ":::retenir\nOfficial phonetic transcription system for Mandarin using the Latin alphabet, created in 1958 and adopted by the UN in 1982.\n:::\n\n:::image\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c5/Mandarin_Tones.png\ncaption=Mandarin's 4 tone contours — pinyin marks these tones with diacritics (ā á ǎ à)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0b/Zh-b%C4%81.ogg\nlabel=bā 八 (1st tone) — pinyin transcribes this as « bā » with a high level tone\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=kp6VkLQGEnk\ncaption=Introduction to Mandarin pinyin — audio-visual lesson for beginners\n:::"
                   }
                 },
                 {
@@ -55,8 +55,8 @@
                     "en": "Mandarin tones"
                   },
                   "content": {
-                    "fr": ":::definition\nLe mandarin possède 4 tons + 1 ton neutre : 1er (haut plat ā), 2e (montant á), 3e (descendant-montant ǎ), 4e (descendant à), neutre (bref a).\n:::",
-                    "en": ":::definition\nMandarin has 4 tones + 1 neutral tone: 1st (high flat ā), 2nd (rising á), 3rd (dipping ǎ), 4th (falling à), neutral (short a).\n:::"
+                    "fr": ":::definition\nLe mandarin possède 4 tons + 1 ton neutre : 1er (haut plat ā), 2e (montant á), 3e (descendant-montant ǎ), 4e (descendant à), neutre (bref a).\n:::\n\n:::image\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c5/Mandarin_Tones.png\ncaption=Les 4 tons du mandarin — contours mélodiques sur l'échelle 1 (bas) à 5 (haut)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0b/Zh-b%C4%81.ogg\nlabel=1er ton (ā) — bā 八 = huit · voix haute et plate\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c9/Zh-m%C3%A1.ogg\nlabel=2e ton (á) — má 麻 = chanvre · voix montante\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/cc/Zh-m%C7%8E.ogg\nlabel=3e ton (ǎ) — mǎ 马 = cheval · voix descendante-montante\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/1/1d/Zh-m%C3%A0.ogg\nlabel=4e ton (à) — mà 骂 = gronder · voix qui tombe brusquement\n:::",
+                    "en": ":::definition\nMandarin has 4 tones + 1 neutral tone: 1st (high flat ā), 2nd (rising á), 3rd (dipping ǎ), 4th (falling à), neutral (short a).\n:::\n\n:::image\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c5/Mandarin_Tones.png\ncaption=Mandarin's 4 tones — melodic contours on scale 1 (low) to 5 (high)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0b/Zh-b%C4%81.ogg\nlabel=1st tone (ā) — bā 八 = eight · high level voice\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c9/Zh-m%C3%A1.ogg\nlabel=2nd tone (á) — má 麻 = hemp · rising voice\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/cc/Zh-m%C7%8E.ogg\nlabel=3rd tone (ǎ) — mǎ 马 = horse · dipping-rising voice\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/1/1d/Zh-m%C3%A0.ogg\nlabel=4th tone (à) — mà 骂 = to scold · sharply falling voice\n:::"
                   }
                 }
               ],
@@ -203,8 +203,8 @@
                     "en": "Hanzi (汉字)"
                   },
                   "content": {
-                    "fr": ":::definition\nCaractères chinois — système d'écriture logographique avec plus de 50 000 caractères répertoriés ; 2 000-3 000 suffisent pour la vie quotidienne.\n:::",
-                    "en": ":::definition\nChinese characters — a logographic writing system with over 50,000 catalogued characters; 2,000-3,000 are enough for daily life.\n:::"
+                    "fr": ":::definition\nCaractères chinois — système d'écriture logographique avec plus de 50 000 caractères répertoriés ; 2 000-3 000 suffisent pour la vie quotidienne.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Animated_stroke_order_of_%E4%B8%AD.gif?width=200\ncaption=中 (zhōng, milieu) — ordre des traits animé · 4 traits selon les règles fondamentales\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=PfRJbIgRBXY\ncaption=Écriture des caractères chinois — initiation aux traits et à l'ordre d'écriture\n:::",
+                    "en": ":::definition\nChinese characters — a logographic writing system with over 50,000 catalogued characters; 2,000-3,000 are enough for daily life.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Animated_stroke_order_of_%E4%B8%AD.gif?width=200\ncaption=中 (zhōng, middle) — animated stroke order · 4 strokes following fundamental rules\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=PfRJbIgRBXY\ncaption=Chinese character writing — introduction to strokes and stroke order\n:::"
                   }
                 },
                 {
@@ -216,8 +216,8 @@
                     "en": "Radical (部首 bùshǒu)"
                   },
                   "content": {
-                    "fr": ":::definition\nComposant graphique qui classifie les caractères chinois dans les dictionnaires. Il y en a 214 dans le dictionnaire Kangxi (1716). Ex : 氵= eau, 木 = bois.\n:::",
-                    "en": ":::definition\nGraphic component that classifies Chinese characters in dictionaries. There are 214 in the Kangxi dictionary (1716). E.g.: 氵= water, 木 = wood.\n:::"
+                    "fr": ":::definition\nComposant graphique qui classifie les caractères chinois dans les dictionnaires. Il y en a 214 dans le dictionnaire Kangxi (1716). Ex : 氵= eau, 木 = bois.\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c8/Zh-shu%C7%90.ogg\nlabel=shuǐ 水 — radical de l'eau (氵) · dans 海 mer, 河 rivière, 洗 laver\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0f/Zh-m%C3%B9.ogg\nlabel=mù 木 — radical du bois · dans 树 arbre, 桌 table, 椅 chaise\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/4/4d/Zh-k%C7%92u.ogg\nlabel=kǒu 口 — radical de la bouche · dans 吃 manger, 说 parler, 叫 appeler\n:::",
+                    "en": ":::definition\nGraphic component that classifies Chinese characters in dictionaries. There are 214 in the Kangxi dictionary (1716). E.g.: 氵= water, 木 = wood.\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/c/c8/Zh-shu%C7%90.ogg\nlabel=shuǐ 水 — water radical (氵) · in 海 sea, 河 river, 洗 to wash\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/0/0f/Zh-m%C3%B9.ogg\nlabel=mù 木 — wood radical · in 树 tree, 桌 table, 椅 chair\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/4/4d/Zh-k%C7%92u.ogg\nlabel=kǒu 口 — mouth radical · in 吃 to eat, 说 to speak, 叫 to call\n:::"
                   }
                 }
               ],
@@ -364,8 +364,8 @@
                     "en": "Formal vs informal greetings"
                   },
                   "content": {
-                    "fr": ":::definition\n你好 nǐ hǎo (bonjour, neutre) vs 您好 nín hǎo (bonjour formel, respectueux — envers les aînés ou supérieurs).\n:::",
-                    "en": ":::definition\n你好 nǐ hǎo (hello, neutral) vs 您好 nín hǎo (formal hello, respectful — to elders or superiors).\n:::"
+                    "fr": ":::definition\n你好 nǐ hǎo (bonjour, neutre) vs 您好 nín hǎo (bonjour formel, respectueux — envers les aînés ou supérieurs).\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/7/73/Zh-n%C7%90.ogg\nlabel=nǐ 你 — composante de nǐ hǎo (bonjour)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/a/a0/Zh-z%C3%A0iji%C3%A0n.ogg\nlabel=zàijiàn 再见 — au revoir\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/2/23/Zh-xie4xie.ogg\nlabel=xièxiè 谢谢 — merci\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=TNS2L4Gmhss\ncaption=Salutations en chinois mandarin — 你好 nín hǎo zàijiàn avec prononciation\n:::",
+                    "en": ":::definition\n你好 nǐ hǎo (hello, neutral) vs 您好 nín hǎo (formal hello, respectful — to elders or superiors).\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/7/73/Zh-n%C7%90.ogg\nlabel=nǐ 你 — part of nǐ hǎo (hello)\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/a/a0/Zh-z%C3%A0iji%C3%A0n.ogg\nlabel=zàijiàn 再见 — goodbye\n:::\n\n:::audio\nurl=https://upload.wikimedia.org/wikipedia/commons/2/23/Zh-xie4xie.ogg\nlabel=xièxiè 谢谢 — thank you\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=TNS2L4Gmhss\ncaption=Mandarin greetings — nǐ hǎo, nín hǎo, zàijiàn with pronunciation\n:::"
                   }
                 }
               ],
@@ -2436,8 +2436,8 @@
                     "en": "Computer"
                   },
                   "content": {
-                    "fr": ":::definition\nMachine électronique programmable capable d'acquérir, de stocker, de traiter et de restituer des informations selon des instructions organisées en programme.\n:::",
-                    "en": ":::definition\nA programmable electronic machine capable of acquiring, storing, processing and outputting information according to instructions organised into a program.\n:::"
+                    "fr": ":::definition\nMachine électronique programmable capable d'acquérir, de stocker, de traiter et de restituer des informations selon des instructions organisées en programme.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Von_Neumann_Architecture.svg\ncaption=Architecture de von Neumann — Unité Centrale, mémoire, entrées/sorties reliés par le bus\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=QXjU9kBmZrs\ncaption=Comment fonctionne un ordinateur — CPU, mémoire et données expliqués en 5 min\n:::",
+                    "en": ":::definition\nA programmable electronic machine capable of acquiring, storing, processing and outputting information according to instructions organised into a program.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Von_Neumann_Architecture.svg\ncaption=Von Neumann architecture — CPU, memory, I/O linked by the bus\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=QXjU9kBmZrs\ncaption=How a computer works — CPU, memory and data explained in 5 min\n:::"
                   }
                 },
                 {
@@ -3265,8 +3265,8 @@
                     "en": "Algorithm"
                   },
                   "content": {
-                    "fr": ":::definition\nSuite finie, non ambiguë et ordonnée d'instructions permettant de résoudre un problème ou d'accomplir une tâche. Un algorithme prend des données en entrée et produit un résultat en sortie.\n:::",
-                    "en": ":::definition\nA finite, unambiguous and ordered sequence of instructions for solving a problem or completing a task. An algorithm takes data as input and produces a result as output.\n:::"
+                    "fr": ":::definition\nSuite finie, non ambiguë et ordonnée d'instructions permettant de résoudre un problème ou d'accomplir une tâche. Un algorithme prend des données en entrée et produit un résultat en sortie.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/LampFlowchart.svg\ncaption=Organigramme d'un algorithme — structure SI/SINON illustrée : la lampe fonctionne-t-elle ?\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=6hfOvs8pY1k\ncaption=Introduction aux algorithmes — logique, pseudocode et premiers exemples\n:::",
+                    "en": ":::definition\nA finite, unambiguous and ordered sequence of instructions for solving a problem or completing a task. An algorithm takes data as input and produces a result as output.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/LampFlowchart.svg\ncaption=Algorithm flowchart — IF/ELSE structure illustrated: does the lamp work?\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=6hfOvs8pY1k\ncaption=Introduction to algorithms — logic, pseudocode and first examples\n:::"
                   }
                 },
                 {
@@ -3748,8 +3748,8 @@
                     "en": "Loop (repetitive structure)"
                   },
                   "content": {
-                    "fr": ":::definition\nInstruction répétant un bloc d'instructions plusieurs fois. Trois formes : POUR (nombre fixe d'itérations), TANTQUE (condition testée avant), REPETER…JUSQU'À (condition testée après).\n:::",
-                    "en": ":::definition\nAn instruction that repeats a block of instructions multiple times. Three forms: FOR (fixed iterations), WHILE (condition tested before), REPEAT…UNTIL (condition tested after).\n:::"
+                    "fr": ":::definition\nInstruction répétant un bloc d'instructions plusieurs fois. Trois formes : POUR (nombre fixe d'itérations), TANTQUE (condition testée avant), REPETER…JUSQU'À (condition testée après).\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=wxds6MAtUQ0\ncaption=Les boucles en algorithmique — TANTQUE et POUR avec exemples concrets\n:::",
+                    "en": ":::definition\nAn instruction that repeats a block of instructions multiple times. Three forms: FOR (fixed iterations), WHILE (condition tested before), REPEAT…UNTIL (condition tested after).\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=wxds6MAtUQ0\ncaption=Loops in algorithms — WHILE and FOR with concrete examples\n:::"
                   }
                 }
               ],
@@ -4055,8 +4055,8 @@
                     "en": "Computer network"
                   },
                   "content": {
-                    "fr": ":::definition\nEnsemble d'équipements informatiques interconnectés permettant de partager des ressources et de communiquer. LAN = réseau local (bâtiment) ; WAN = réseau étendu (sites distants).\n:::",
-                    "en": ":::definition\nA set of interconnected computing devices allowing resource sharing and communication. LAN = local area network (building); WAN = wide area network (distant sites).\n:::"
+                    "fr": ":::definition\nEnsemble d'équipements informatiques interconnectés permettant de partager des ressources et de communiquer. LAN = réseau local (bâtiment) ; WAN = réseau étendu (sites distants).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/NetworkTopologies.svg\ncaption=Topologies de réseau : bus, étoile, anneau, maillage — avantages et usages\n:::",
+                    "en": ":::definition\nA set of interconnected computing devices allowing resource sharing and communication. LAN = local area network (building); WAN = wide area network (distant sites).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/NetworkTopologies.svg\ncaption=Network topologies: bus, star, ring, mesh — advantages and uses\n:::"
                   }
                 }
               ],
@@ -4216,8 +4216,8 @@
                     "en": "Internet"
                   },
                   "content": {
-                    "fr": ":::definition\nRéseau mondial d'ordinateurs interconnectés utilisant le protocole TCP/IP. Supporte de nombreux services : Web (HTTP), messagerie (SMTP), téléphonie IP (VoIP), transfert de fichiers (FTP).\n:::",
-                    "en": ":::definition\nA worldwide network of interconnected computers using the TCP/IP protocol. Supports many services: Web (HTTP), email (SMTP), voice over IP (VoIP), file transfer (FTP).\n:::"
+                    "fr": ":::definition\nRéseau mondial d'ordinateurs interconnectés utilisant le protocole TCP/IP. Supporte de nombreux services : Web (HTTP), messagerie (SMTP), téléphonie IP (VoIP), transfert de fichiers (FTP).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Internet_map_1024.jpg?width=400\ncaption=Carte partielle de l'Internet — chaque point = un routeur, chaque ligne = une liaison IP\n:::",
+                    "en": ":::definition\nA worldwide network of interconnected computers using the TCP/IP protocol. Supports many services: Web (HTTP), email (SMTP), voice over IP (VoIP), file transfer (FTP).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Internet_map_1024.jpg?width=400\ncaption=Partial Internet map — each dot = a router, each line = an IP link\n:::"
                   }
                 },
                 {
@@ -5024,8 +5024,8 @@
                     "en": "Identité remarquable"
                   },
                   "content": {
-                    "fr": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::",
-                    "en": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::"
+                    "fr": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=kNM8Tz5I3As\ncaption=Identités remarquables — (a+b)², (a-b)², (a+b)(a-b) mémorisées avec des exemples\n:::",
+                    "en": ":::retenir\nUne identité remarquable est une égalité algébrique toujours vraie. Les trois principales sont : $(a+b)^2 = a^2+2ab+b^2$, $(a-b)^2 = a^2-2ab+b^2$, $(a+b)(a-b) = a^2-b^2$.\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=kNM8Tz5I3As\ncaption=Notable identities — (a+b)², (a-b)², (a+b)(a-b) memorised with examples\n:::"
                   }
                 },
                 {
@@ -5666,8 +5666,8 @@
                     "en": "Théorème de Pythagore"
                   },
                   "content": {
-                    "fr": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::",
-                    "en": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::"
+                    "fr": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Pythagorean.svg\ncaption=Théorème de Pythagore : a² + b² = c² — illustration géométrique des trois carrés\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=Y4JdJJu8m0A\ncaption=Théorème de Pythagore — démonstration et exercices résolus\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle en $A$ : $BC^2 = AB^2 + AC^2$ où $BC$ est l'hypoténuse. Réciproque : si $BC^2 = AB^2 + AC^2$ alors le triangle est rectangle en $A$. Triplets : (3,4,5), (5,12,13).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Pythagorean.svg\ncaption=Pythagorean theorem: a² + b² = c² — geometric illustration of the three squares\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=Y4JdJJu8m0A\ncaption=Pythagorean theorem — proof and solved exercises\n:::"
                   }
                 },
                 {
@@ -5827,8 +5827,8 @@
                     "en": "Théorème de Thalès"
                   },
                   "content": {
-                    "fr": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::",
-                    "en": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::"
+                    "fr": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Triangle_theorem_of_Thales.svg\ncaption=Théorème de Thalès — configuration classique : droites parallèles coupées par deux sécantes\n:::",
+                    "en": ":::retenir\nSi $(MN) \\parallel (BC)$ dans un triangle $ABC$ avec $M \\in [AB]$ et $N \\in [AC]$, alors $\\frac{AM}{AB} = \\frac{AN}{AC} = \\frac{MN}{BC}$. La réciproque permet de démontrer que deux droites sont parallèles.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Triangle_theorem_of_Thales.svg\ncaption=Thales' theorem — classic configuration: parallel lines cut by two secants\n:::"
                   }
                 }
               ],
@@ -5975,8 +5975,8 @@
                     "en": "Sinus d'un angle"
                   },
                   "content": {
-                    "fr": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::",
-                    "en": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::"
+                    "fr": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Sine_curve_drawing_animation.gif?width=400\ncaption=Animation : construction de la courbe sinusoïdale à partir du cercle trigonométrique\n:::",
+                    "en": ":::retenir\nDans un triangle rectangle, le sinus d'un angle aigu $\\hat{B}$ est le rapport du côté opposé à $\\hat{B}$ sur l'hypoténuse : $\\sin \\hat{B} = \\frac{\\text{opposé}}{\\text{hypoténuse}}$. Valeurs : $\\sin 30° = 0{,}5$, $\\sin 45° \\approx 0{,}707$, $\\sin 60° \\approx 0{,}866$.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Sine_curve_drawing_animation.gif?width=400\ncaption=Animation: sine curve construction from the unit circle\n:::"
                   }
                 },
                 {
@@ -7464,8 +7464,8 @@
                     "en": "Loi d'Ohm"
                   },
                   "content": {
-                    "fr": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::",
-                    "en": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::"
+                    "fr": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Ohms_Law.svg\ncaption=Loi d'Ohm — triangle U = R × I pour retrouver chaque grandeur\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=8gvJzrjwjds\ncaption=La loi d'Ohm — tension, intensité, résistance expliqués avec exercices\n:::",
+                    "en": ":::definition\nLa loi d'Ohm établit que la tension U aux bornes d'un conducteur ohmique est proportionnelle à l'intensité I : U = R × I. Elle permet de calculer n'importe laquelle des trois grandeurs si les deux autres sont connues.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Ohms_Law.svg\ncaption=Ohm's law — triangle V = R × I to find each quantity\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=8gvJzrjwjds\ncaption=Ohm's law — voltage, current, resistance explained with exercises\n:::"
                   }
                 }
               ],
@@ -8254,8 +8254,8 @@
                     "en": "Réflexion de la lumière"
                   },
                   "content": {
-                    "fr": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::",
-                    "en": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::"
+                    "fr": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Reflection_angles.svg\ncaption=Loi de la réflexion : angle d'incidence = angle de réflexion (par rapport à la normale)\n:::",
+                    "en": ":::definition\nLa réflexion est le changement de direction d'un rayon lumineux sur une surface réfléchissante. Loi : l'angle d'incidence i est égal à l'angle de réflexion r (mesurés par rapport à la normale à la surface).\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Reflection_angles.svg\ncaption=Law of reflection: angle of incidence = angle of reflection (measured from normal)\n:::"
                   }
                 },
                 {
@@ -8267,8 +8267,8 @@
                     "en": "Réfraction de la lumière"
                   },
                   "content": {
-                    "fr": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::",
-                    "en": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::"
+                    "fr": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Snells_law2.svg\ncaption=Loi de Snell-Descartes : n₁ sin θ₁ = n₂ sin θ₂ — réfraction à l'interface de deux milieux\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=h7P6hdEXH6M\ncaption=La réfraction de la lumière — loi de Snell-Descartes et applications\n:::",
+                    "en": ":::definition\nLa réfraction est le changement de direction d'un rayon lumineux lors du passage d'un milieu à un autre. Loi de Snell-Descartes : n₁ sin i₁ = n₂ sin i₂. Le rayon se rapproche de la normale en entrant dans un milieu plus dense.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Snells_law2.svg\ncaption=Snell's law: n₁ sin θ₁ = n₂ sin θ₂ — refraction at the interface between two media\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=h7P6hdEXH6M\ncaption=Light refraction — Snell's law and applications\n:::"
                   }
                 }
               ],
@@ -8750,8 +8750,8 @@
                     "en": "Dispersion de la lumière"
                   },
                   "content": {
-                    "fr": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::",
-                    "en": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::"
+                    "fr": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Light_dispersion_conceptual_waves.gif?width=400\ncaption=Dispersion de la lumière blanche par un prisme — le spectre visible (rouge → violet)\n:::",
+                    "en": ":::definition\nLa dispersion est la décomposition de la lumière blanche en ses composantes colorées lors de la réfraction par un prisme (ou des gouttes de pluie). Chaque couleur a un indice de réfraction légèrement différent → spectre visible.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Light_dispersion_conceptual_waves.gif?width=400\ncaption=Dispersion of white light through a prism — the visible spectrum (red → violet)\n:::"
                   }
                 }
               ],
@@ -8909,8 +8909,8 @@
                     "en": "Atome"
                   },
                   "content": {
-                    "fr": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::",
-                    "en": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::"
+                    "fr": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Bohr_atom_model.png?width=400\ncaption=Modèle de Bohr simplifié — noyau (protons + neutrons) entouré de couches électroniques\n:::",
+                    "en": ":::definition\nL'atome est la plus petite unité d'un élément chimique. Il est composé d'un noyau (protons de charge + et neutrons) entouré d'électrons (charge −). Numéro atomique Z = nombre de protons ; nombre de masse A = protons + neutrons.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Bohr_atom_model.png?width=400\ncaption=Simplified Bohr model — nucleus (protons + neutrons) surrounded by electron shells\n:::"
                   }
                 },
                 {
@@ -9070,8 +9070,8 @@
                     "en": "Réaction chimique"
                   },
                   "content": {
-                    "fr": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::",
-                    "en": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::"
+                    "fr": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=1BvMVU6RKTA\ncaption=Les réactions chimiques — réactifs, produits, équilibrage d'équations\n:::",
+                    "en": ":::definition\nUne réaction chimique transforme des réactifs en produits par rupture et formation de liaisons chimiques. La masse est conservée (loi de Lavoisier) : m(réactifs) = m(produits). Les atomes sont réarrangés mais pas créés ni détruits.\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=1BvMVU6RKTA\ncaption=Chemical reactions — reactants, products, balancing equations\n:::"
                   }
                 },
                 {
@@ -9730,8 +9730,8 @@
                     "en": "Cellule"
                   },
                   "content": {
-                    "fr": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::",
-                    "en": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::"
+                    "fr": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Animal_cell_structure_en.svg\ncaption=Structure d'une cellule animale — noyau, mitochondries, réticulum, membrane plasmique\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=URUJD5NEXC8\ncaption=La cellule animale — structure et rôle des organites\n:::",
+                    "en": ":::definition\nLa cellule est l'unité structurale et fonctionnelle de tout être vivant. Elle est délimitée par une membrane plasmique et contient un noyau (chez les eucaryotes), du cytoplasme et des organites.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Animal_cell_structure_en.svg\ncaption=Animal cell structure — nucleus, mitochondria, endoplasmic reticulum, plasma membrane\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=URUJD5NEXC8\ncaption=The animal cell — structure and role of organelles\n:::"
                   }
                 },
                 {
@@ -10052,8 +10052,8 @@
                     "en": "Photosynthèse"
                   },
                   "content": {
-                    "fr": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::",
-                    "en": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::"
+                    "fr": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Simple_photosynthesis_overview.svg\ncaption=Bilan de la photosynthèse : 6 CO₂ + 6 H₂O + lumière → C₆H₁₂O₆ + 6 O₂\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=sQK3Yr4Sc_k\ncaption=La photosynthèse — mécanisme et importance pour la vie sur Terre\n:::",
+                    "en": ":::definition\nLa photosynthèse est le processus par lequel les chloroplastes des végétaux convertissent l'énergie lumineuse en énergie chimique pour synthétiser du glucose à partir de CO₂ et d'eau, en libérant de l'O₂.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Simple_photosynthesis_overview.svg\ncaption=Photosynthesis equation: 6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=sQK3Yr4Sc_k\ncaption=Photosynthesis — mechanism and importance for life on Earth\n:::"
                   }
                 },
                 {
@@ -10213,8 +10213,8 @@
                     "en": "Neurone"
                   },
                   "content": {
-                    "fr": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::",
-                    "en": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::"
+                    "fr": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Blausen_0657_MultipolarNeuron.png?width=400\ncaption=Structure d'un neurone — corps cellulaire, dendrites, axone et gaine de myéline\n:::",
+                    "en": ":::definition\nLe neurone est l'unité fonctionnelle du système nerveux. Il est composé d'un corps cellulaire, de dendrites (réception) et d'un axone (émission de l'influx nerveux). La jonction entre deux neurones s'appelle synapse.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Blausen_0657_MultipolarNeuron.png?width=400\ncaption=Neuron structure — cell body, dendrites, axon and myelin sheath\n:::"
                   }
                 },
                 {
@@ -10720,8 +10720,8 @@
                     "en": "ADN"
                   },
                   "content": {
-                    "fr": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::",
-                    "en": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::"
+                    "fr": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/DNA_double_helix.png?width=400\ncaption=Structure en double hélice de l'ADN — deux brins antiparallèles reliés par des bases azotées\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=qy8dk5iS1f0\ncaption=L'ADN — structure, nucléotides et rôle dans l'information génétique\n:::",
+                    "en": ":::definition\nL'ADN (Acide DésoxyriboNucléique) est la molécule qui porte l'information génétique sous forme de gènes. Sa structure est une double hélice de nucléotides. Il est présent dans le noyau de toutes les cellules eucaryotes.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/DNA_double_helix.png?width=400\ncaption=DNA double helix structure — two antiparallel strands linked by nitrogenous bases\n:::\n\n:::video\nurl=https://www.youtube.com/watch?v=qy8dk5iS1f0\ncaption=DNA — structure, nucleotides and role in genetic information\n:::"
                   }
                 }
               ],
@@ -11375,8 +11375,8 @@
                     "en": "Écosystème"
                   },
                   "content": {
-                    "fr": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::",
-                    "en": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::"
+                    "fr": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Food_chain.svg\ncaption=Exemple de chaîne alimentaire — transfert de matière et d'énergie entre niveaux trophiques\n:::",
+                    "en": ":::definition\nUn écosystème est l'ensemble formé par la biocénose (communauté d'êtres vivants) et le biotope (milieu physico-chimique). Les deux interagissent et s'influencent mutuellement. Exemples : forêt, lac, savane.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Food_chain.svg\ncaption=Food chain example — transfer of matter and energy between trophic levels\n:::"
                   }
                 },
                 {
@@ -11388,8 +11388,8 @@
                     "en": "Chaîne alimentaire"
                   },
                   "content": {
-                    "fr": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::",
-                    "en": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::"
+                    "fr": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Food_chain.svg\ncaption=Chaîne alimentaire : producteurs → consommateurs primaires → secondaires → tertiaires\n:::",
+                    "en": ":::definition\nUne chaîne alimentaire est une succession d'organismes dans laquelle chaque maillon est mangé par le suivant. Elle commence par les producteurs (végétaux) et se termine par les décomposeurs. L'énergie diminue à chaque maillon.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Food_chain.svg\ncaption=Food chain: producers → primary consumers → secondary → tertiary consumers\n:::"
                   }
                 }
               ],
@@ -11536,8 +11536,8 @@
                     "en": "Cycle du carbone"
                   },
                   "content": {
-                    "fr": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::",
-                    "en": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::"
+                    "fr": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Carbon_cycle.svg\ncaption=Cycle du carbone — échanges entre atmosphère, biosphère, hydrosphère et lithosphère\n:::",
+                    "en": ":::definition\nLe cycle du carbone décrit la circulation du carbone entre l'atmosphère (CO₂), la biosphère (êtres vivants), les océans et les roches. La photosynthèse stocke le carbone ; la respiration et la combustion le libèrent.\n:::\n\n:::image\nurl=https://commons.wikimedia.org/wiki/Special:FilePath/Carbon_cycle.svg\ncaption=Carbon cycle — exchanges between atmosphere, biosphere, hydrosphere and lithosphere\n:::"
                   }
                 },
                 {
