@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_skeleton.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
 import '../../../../core/widgets/pedagogical_content.dart';
@@ -13,10 +16,12 @@ import '../../providers.dart';
 class FicheTab extends ConsumerWidget {
   const FicheTab({
     super.key,
+    required this.subjectId,
     required this.chapterId,
     required this.languageCode,
   });
 
+  final String subjectId;
   final String chapterId;
   final String languageCode;
 
@@ -62,7 +67,7 @@ class FicheTab extends ConsumerWidget {
                   top: AppSpacing.s2.h,
                   right: AppSpacing.s2.w,
                   child: _ExpandButton(
-                    onTap: () => _openFullscreen(context, content, languageCode),
+                    onTap: () => _openFullscreen(context, content),
                   ),
                 ),
               ],
@@ -71,19 +76,16 @@ class FicheTab extends ConsumerWidget {
         );
 
         if (maxWidth < width) {
-          return Center(
-            child: SizedBox(width: maxWidth, child: body),
-          );
+          return Center(child: SizedBox(width: maxWidth, child: body));
         }
         return body;
       },
     );
   }
 
-  void _openFullscreen(BuildContext context, String content, String lang) {
-    final screenHeight = MediaQuery.sizeOf(context).height;
+  void _openFullscreen(BuildContext context, String content) {
     final topPad = MediaQuery.paddingOf(context).top;
-    final sheetHeight = screenHeight - topPad - 16.h;
+    final sheetHeight = MediaQuery.sizeOf(context).height - topPad;
 
     showModalBottomSheet<void>(
       context: context,
@@ -100,33 +102,179 @@ class FicheTab extends ConsumerWidget {
               top: Radius.circular(AppRadius.xl2),
             ),
           ),
-          child: Column(
+          clipBehavior: Clip.hardEdge,
+          child: _FicheFullscreenSheet(
+            content: content,
+            languageCode: languageCode,
+            onClose: () => Navigator.of(ctx, rootNavigator: true).pop(),
+            onExercise: () {
+              Navigator.of(ctx, rootNavigator: true).pop();
+              context.push(AppRoutes.chapterQuiz(subjectId, chapterId));
+            },
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Sheet plein écran avec scroll progress + CTA
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _FicheFullscreenSheet extends StatefulWidget {
+  const _FicheFullscreenSheet({
+    required this.content,
+    required this.languageCode,
+    required this.onClose,
+    required this.onExercise,
+  });
+
+  final String content;
+  final String languageCode;
+  final VoidCallback onClose;
+  final VoidCallback onExercise;
+
+  @override
+  State<_FicheFullscreenSheet> createState() => _FicheFullscreenSheetState();
+}
+
+class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
+  final _scrollController = ScrollController();
+  double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    final max = _scrollController.position.maxScrollExtent;
+    if (max <= 0) return;
+    final progress = (_scrollController.offset / max).clamp(0.0, 1.0);
+    if ((progress - _progress).abs() > 0.005) {
+      setState(() => _progress = progress);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bottomInset = MediaQuery.paddingOf(context).bottom;
+    final isFr = widget.languageCode == 'fr';
+
+    return Column(
+      children: [
+        // ── Header : handle + titre + fermer ────────────────────────────
+        _FicheSheetHeader(isFr: isFr, onClose: widget.onClose),
+
+        // ── Barre de progression lecture ─────────────────────────────────
+        LinearProgressIndicator(
+          value: _progress,
+          minHeight: 3,
+          backgroundColor: AppColors.border,
+          valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
+        ),
+
+        // ── Contenu scrollable ───────────────────────────────────────────
+        Expanded(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            padding: EdgeInsets.fromLTRB(
+              AppSpacing.s4,
+              AppSpacing.s4,
+              AppSpacing.s4,
+              AppSpacing.s4,
+            ),
+            child: PedagogicalContent(data: widget.content),
+          ),
+        ),
+
+        // ── CTA S'exercer ────────────────────────────────────────────────
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.card,
+            border: Border(top: BorderSide(color: AppColors.border)),
+          ),
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.s4.w,
+            AppSpacing.s3.h,
+            AppSpacing.s4.w,
+            AppSpacing.s3.h + bottomInset,
+          ),
+          child: AppButton.primary(
+            label: isFr ? "S'exercer sur ce chapitre" : 'Practice this chapter',
+            onPressed: widget.onExercise,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _FicheSheetHeader extends StatelessWidget {
+  const _FicheSheetHeader({required this.isFr, required this.onClose});
+
+  final bool isFr;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Handle
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: AppSpacing.s3.h),
+          child: Container(
+            width: AppSpacing.s9.w,
+            height: 4.h,
+            decoration: BoxDecoration(
+              color: AppColors.mute2,
+              borderRadius: BorderRadius.circular(AppRadius.pill),
+            ),
+          ),
+        ),
+        // Titre + bouton fermer
+        Padding(
+          padding: EdgeInsets.fromLTRB(
+            AppSpacing.s5.w, 0, AppSpacing.s2.w, AppSpacing.s3.h,
+          ),
+          child: Stack(
+            alignment: Alignment.center,
             children: [
-              _FicheSheetHeader(
-                languageCode: lang,
-                onClose: () => Navigator.of(ctx).pop(),
+              Text(
+                isFr ? 'Fiche de révision' : 'Study Sheet',
+                style: AppTypography.h3,
               ),
-              Divider(height: 1, color: AppColors.border),
-              Expanded(
-                child: Builder(
-                  builder: (innerCtx) {
-                    final bottomInset = MediaQuery.paddingOf(innerCtx).bottom;
-                    return SingleChildScrollView(
-                      padding: EdgeInsets.fromLTRB(
-                        AppSpacing.s4,
-                        AppSpacing.s4,
-                        AppSpacing.s4,
-                        AppSpacing.s6 + bottomInset,
-                      ),
-                      child: PedagogicalContent(data: content),
-                    );
-                  },
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  onPressed: onClose,
+                  icon: Icon(
+                    LucideIcons.x,
+                    size: AppIconSize.xl,
+                    color: AppColors.muted,
+                  ),
+                  padding: EdgeInsets.all(AppSpacing.s2),
+                  constraints: const BoxConstraints(),
+                  splashRadius: AppSpacing.s5,
                 ),
               ),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 }
@@ -156,62 +304,6 @@ class _ExpandButton extends StatelessWidget {
             color: AppColors.muted,
           ),
         ),
-      ),
-    );
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _FicheSheetHeader extends StatelessWidget {
-  const _FicheSheetHeader({
-    required this.languageCode,
-    required this.onClose,
-  });
-
-  final String languageCode;
-  final VoidCallback onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-        AppSpacing.s5.w,
-        AppSpacing.s3.h,
-        AppSpacing.s3.w,
-        AppSpacing.s3.h,
-      ),
-      child: Row(
-        children: [
-          // Handle centré simulé via Expanded + Center
-          Center(
-            child: Container(
-              width: AppSpacing.s9.w,
-              height: 4.h,
-              decoration: BoxDecoration(
-                color: AppColors.mute2,
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-              ),
-            ),
-          ),
-          const Spacer(),
-          Text(
-            languageCode == 'fr' ? 'Fiche de révision' : 'Study Sheet',
-            style: AppTypography.h3.copyWith(color: AppColors.ink),
-          ),
-          const Spacer(),
-          IconButton(
-            onPressed: onClose,
-            icon: Icon(
-              LucideIcons.x,
-              size: AppIconSize.xl,
-              color: AppColors.muted,
-            ),
-            splashRadius: AppSpacing.s5,
-            padding: EdgeInsets.all(AppSpacing.s2),
-            constraints: const BoxConstraints(),
-          ),
-        ],
       ),
     );
   }

@@ -119,6 +119,7 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
                       : 'Exercises coming soon',
                 ),
                 FicheTab(
+                  subjectId: widget.subjectId,
                   chapterId: widget.chapterId,
                   languageCode: langCode,
                 ),
