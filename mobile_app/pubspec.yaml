@@ -112,7 +112,7 @@ dependencies:
   # youtube_player_iframe (webview_flutter officiel) choisi à la place de
   # youtube_player_flutter car flutter_inappwebview 5.x n'est pas compatible
   # avec l'AGP de ce projet (namespace non déclaré).
-  youtube_player_iframe: ^3.0.0
+  youtube_player_iframe: ^6.0.0
 
   # Story 2.4 — pré-chargement audio via http (Android MediaPlayer ne supporte pas
   # les headers custom sur HTTPS → Wikimedia bloque). Le fichier est téléchargé en
