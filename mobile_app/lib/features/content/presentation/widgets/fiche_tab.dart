@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_skeleton.dart';
@@ -45,14 +47,25 @@ class FicheTab extends ConsumerWidget {
               return _FicheEmptyState(languageCode: languageCode);
             }
             final bottomInset = MediaQuery.paddingOf(context).bottom;
-            return SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(
-                AppSpacing.s4,
-                AppSpacing.s4,
-                AppSpacing.s4,
-                AppSpacing.s6 + bottomInset,
-              ),
-              child: PedagogicalContent(data: content),
+            return Stack(
+              children: [
+                SingleChildScrollView(
+                  padding: EdgeInsets.fromLTRB(
+                    AppSpacing.s4,
+                    AppSpacing.s4,
+                    AppSpacing.s4,
+                    AppSpacing.s6 + bottomInset,
+                  ),
+                  child: PedagogicalContent(data: content),
+                ),
+                Positioned(
+                  top: AppSpacing.s2.h,
+                  right: AppSpacing.s2.w,
+                  child: _ExpandButton(
+                    onTap: () => _openFullscreen(context, content, languageCode),
+                  ),
+                ),
+              ],
             );
           },
         );
@@ -66,7 +79,145 @@ class FicheTab extends ConsumerWidget {
       },
     );
   }
+
+  void _openFullscreen(BuildContext context, String content, String lang) {
+    final screenHeight = MediaQuery.sizeOf(context).height;
+    final topPad = MediaQuery.paddingOf(context).top;
+    final sheetHeight = screenHeight - topPad - 16.h;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      useRootNavigator: true,
+      backgroundColor: Colors.transparent,
+      barrierColor: AppColors.ink.withValues(alpha: 0.5),
+      builder: (ctx) => SizedBox(
+        height: sheetHeight,
+        child: Container(
+          decoration: BoxDecoration(
+            color: AppColors.card,
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(AppRadius.xl2),
+            ),
+          ),
+          child: Column(
+            children: [
+              _FicheSheetHeader(
+                languageCode: lang,
+                onClose: () => Navigator.of(ctx).pop(),
+              ),
+              Divider(height: 1, color: AppColors.border),
+              Expanded(
+                child: Builder(
+                  builder: (innerCtx) {
+                    final bottomInset = MediaQuery.paddingOf(innerCtx).bottom;
+                    return SingleChildScrollView(
+                      padding: EdgeInsets.fromLTRB(
+                        AppSpacing.s4,
+                        AppSpacing.s4,
+                        AppSpacing.s4,
+                        AppSpacing.s6 + bottomInset,
+                      ),
+                      child: PedagogicalContent(data: content),
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ExpandButton extends StatelessWidget {
+  const _ExpandButton({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.card,
+      borderRadius: BorderRadius.circular(AppRadius.md),
+      elevation: 2,
+      shadowColor: AppColors.ink.withValues(alpha: 0.10),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(AppSpacing.s2),
+          child: Icon(
+            LucideIcons.maximize2,
+            size: AppIconSize.lg,
+            color: AppColors.muted,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _FicheSheetHeader extends StatelessWidget {
+  const _FicheSheetHeader({
+    required this.languageCode,
+    required this.onClose,
+  });
+
+  final String languageCode;
+  final VoidCallback onClose;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.s5.w,
+        AppSpacing.s3.h,
+        AppSpacing.s3.w,
+        AppSpacing.s3.h,
+      ),
+      child: Row(
+        children: [
+          // Handle centré simulé via Expanded + Center
+          Center(
+            child: Container(
+              width: AppSpacing.s9.w,
+              height: 4.h,
+              decoration: BoxDecoration(
+                color: AppColors.mute2,
+                borderRadius: BorderRadius.circular(AppRadius.pill),
+              ),
+            ),
+          ),
+          const Spacer(),
+          Text(
+            languageCode == 'fr' ? 'Fiche de révision' : 'Study Sheet',
+            style: AppTypography.h3.copyWith(color: AppColors.ink),
+          ),
+          const Spacer(),
+          IconButton(
+            onPressed: onClose,
+            icon: Icon(
+              LucideIcons.x,
+              size: AppIconSize.xl,
+              color: AppColors.muted,
+            ),
+            splashRadius: AppSpacing.s5,
+            padding: EdgeInsets.all(AppSpacing.s2),
+            constraints: const BoxConstraints(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 class _FicheEmptyState extends StatelessWidget {
   const _FicheEmptyState({required this.languageCode});
