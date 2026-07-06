@@ -528,7 +528,7 @@ class _VideoBlockState extends State<_VideoBlock> {
 
   @override
   void dispose() {
-    _controller?.dispose();
+    _controller?.close();
     super.dispose();
   }
 
@@ -539,9 +539,13 @@ class _VideoBlockState extends State<_VideoBlock> {
       return;
     }
     setState(() {
-      _controller = YoutubePlayerController(
-        initialVideoId: id,
-        flags: const YoutubePlayerFlags(autoPlay: true, mute: false),
+      _controller = YoutubePlayerController.fromVideoId(
+        videoId: id,
+        autoPlay: true,
+        params: const YoutubePlayerParams(
+          showFullscreenButton: true,
+          mute: false,
+        ),
       );
     });
   }
@@ -644,11 +648,6 @@ class _VideoBlockState extends State<_VideoBlock> {
                   ? YoutubePlayer(
                       key: const ValueKey('player'),
                       controller: _controller!,
-                      showVideoProgressIndicator: true,
-                      progressColors: ProgressBarColors(
-                        playedColor: AppColors.primary,
-                        handleColor: AppColors.primary,
-                      ),
                     )
                   : KeyedSubtree(
                       key: const ValueKey('thumb'),
