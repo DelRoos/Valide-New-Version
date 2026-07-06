@@ -232,19 +232,24 @@ StreamTransformer<ProfileCompletionState, ProfileCompletionState>
 /// Schema legacy Epic 1 (`filiere` + `niveau` + `serie`) : retrocompat tant
 /// que les docs users existants n'ont pas migre (Story 1.19 dette).
 ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
-  if (data == null) return ProfileCompletionState.filiereMissing;
+  if (data == null) {
+    AppLogger.d('profileCompletion[map]: data=null → filiereMissing');
+    return ProfileCompletionState.filiereMissing;
+  }
 
   // Schema E1bis prioritaire (post-2026-06-13).
   final trackId = data['trackId'];
   final levelId = data['levelId'];
   if (trackId is String && trackId.isNotEmpty) {
     if (levelId is! String || levelId.isEmpty) {
+      AppLogger.d('profileCompletion[map]: trackId=set levelId=missing → niveauMissing');
       return ProfileCompletionState.niveauMissing;
     }
     // Audit PR1 : exiger des matieres effectivement rattachees au profil
     // pour eviter les dashboards vides post flush partiel.
     final picked = data['pickedSubjects'];
     if (picked is! List || picked.isEmpty) {
+      AppLogger.d('profileCompletion[map]: trackId=set levelId=set pickedSubjects=empty → serieMissing');
       return ProfileCompletionState.serieMissing;
     }
     // Bug 4 fix : compte permanent sans displayName = upgrade interrompu.
@@ -255,10 +260,16 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
     final displayName = data['displayName'] as String? ?? '';
     if (!isAnonymous && displayName.isEmpty) {
       AppLogger.w(
-        'profileCompletion: compte permanent sans displayName -> identite incomplete',
+        'profileCompletion[map]: isAnonymous=false displayName=empty '
+        '→ identite incomplete → filiereMissing',
       );
       return ProfileCompletionState.filiereMissing;
     }
+    AppLogger.d(
+      'profileCompletion[map]: isAnonymous=$isAnonymous '
+      'displayName=${displayName.isEmpty ? "(empty)" : "(set)"} '
+      'pickedSubjects=${picked.length} → complete',
+    );
     return ProfileCompletionState.complete;
   }
 
@@ -268,14 +279,18 @@ ProfileCompletionState _mapDataToCompletion(Map<String, dynamic>? data) {
   final serie = data['serie'];
 
   if (filiere is! String || filiere.isEmpty) {
+    AppLogger.d('profileCompletion[map]: schema=legacy filiere=missing → filiereMissing');
     return ProfileCompletionState.filiereMissing;
   }
   if (niveau is! String || niveau.isEmpty) {
+    AppLogger.d('profileCompletion[map]: schema=legacy niveau=missing → niveauMissing');
     return ProfileCompletionState.niveauMissing;
   }
   if (serie is! String || serie.isEmpty) {
+    AppLogger.d('profileCompletion[map]: schema=legacy serie=missing → serieMissing');
     return ProfileCompletionState.serieMissing;
   }
+  AppLogger.d('profileCompletion[map]: schema=legacy complet → complete');
   return ProfileCompletionState.complete;
 }
 
@@ -329,26 +344,61 @@ class AccountLinkingNotifier extends Notifier<AccountLinkingState> {
 
   Future<void> linkGoogle() async {
     if (state.isLoading) return;
+    AppLogger.d('AccountLinkingNotifier.linkGoogle: start → loading');
     state = const AccountLinkingState.loading(AccountProvider.google);
     final result = await ref.read(accountLinkingRepositoryProvider).linkGoogle();
-    state = result.fold(
-      (failure) => AccountLinkingState.error(failure),
-      (account) => AccountLinkingState.success(account),
+    AppLogger.d(
+      'AccountLinkingNotifier.linkGoogle: repo returned '
+      'isRight=${result.isRight()} '
+      'isLeft=${result.isLeft()}',
     );
+    state = result.fold(
+      (failure) {
+        AppLogger.w(
+          'AccountLinkingNotifier.linkGoogle: → error kind=${failure.kind.name}',
+        );
+        return AccountLinkingState.error(failure);
+      },
+      (account) {
+        AppLogger.i(
+          'AccountLinkingNotifier.linkGoogle: → success provider=${account.provider.name} '
+          'uid_last4=${account.uid.length >= 4 ? account.uid.substring(account.uid.length - 4) : account.uid}',
+        );
+        return AccountLinkingState.success(account);
+      },
+    );
+    AppLogger.d('AccountLinkingNotifier.linkGoogle: state emitted=${state.runtimeType}');
   }
 
   Future<void> linkApple() async {
     if (state.isLoading) return;
+    AppLogger.d('AccountLinkingNotifier.linkApple: start → loading');
     state = const AccountLinkingState.loading(AccountProvider.apple);
     final result = await ref.read(accountLinkingRepositoryProvider).linkApple();
-    state = result.fold(
-      (failure) => AccountLinkingState.error(failure),
-      (account) => AccountLinkingState.success(account),
+    AppLogger.d(
+      'AccountLinkingNotifier.linkApple: repo returned '
+      'isRight=${result.isRight()} isLeft=${result.isLeft()}',
     );
+    state = result.fold(
+      (failure) {
+        AppLogger.w(
+          'AccountLinkingNotifier.linkApple: → error kind=${failure.kind.name}',
+        );
+        return AccountLinkingState.error(failure);
+      },
+      (account) {
+        AppLogger.i(
+          'AccountLinkingNotifier.linkApple: → success provider=${account.provider.name}',
+        );
+        return AccountLinkingState.success(account);
+      },
+    );
+    AppLogger.d('AccountLinkingNotifier.linkApple: state emitted=${state.runtimeType}');
   }
 
   /// Reset vers idle (ferme la modale conflit, permet de retenter).
   void reset() {
+    AppLogger.d('AccountLinkingNotifier.reset: → idle');
     state = const AccountLinkingState.idle();
   }
 }
@@ -370,7 +420,10 @@ class ProfileUpgradeNotifier extends Notifier<bool> {
   @override
   bool build() => false;
 
-  void setInProgress(bool value) => state = value;
+  void setInProgress(bool value) {
+    AppLogger.d('profileUpgradeInProgress: $state → $value');
+    state = value;
+  }
 }
 
 final profileUpgradeInProgressProvider =
