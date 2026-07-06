@@ -20,7 +20,7 @@ En tant qu'élève, je veux pouvoir faire un quiz interactif sur une leçon ou u
 
 **AC1 — Entrée depuis la leçon**
 Donné que je suis sur la page d'une leçon et que des questions existent dans `lessons/{lessonId}/quizzes/`,
-Quand je tape le bouton "Faire le quiz" (`LessonCtaRow`),
+Quand je tape le bouton "S'exercer" (`LessonCtaRow`),
 Alors j'arrive sur `QuizPage` avec une session ≤ 15 questions issues de cette leçon.
 
 **AC2 — Entrée depuis l'onglet Quiz du chapitre**
@@ -396,8 +396,8 @@ QuizTab(
   - Changer en `ConsumerWidget` ou garder `StatelessWidget` avec `BuildContext` (context.push ne nécessite pas `ref` — `StatelessWidget` suffit)
   - Ajouter params `subjectId`, `chapterId`, `lessonId` (tous `required String`)
   - Ajouter import `go_router/go_router.dart` et `app_routes.dart`
-  - Wirer le bouton "Faire le quiz" : `onPressed: () => context.push(AppRoutes.lessonQuiz(subjectId, chapterId, lessonId))`
-  - Le bouton "Résumé" reste `onPressed: () {}` (stub — Story 2.5 gère la navigation vers la fiche via l'onglet chapitre, pas ce bouton)
+  - Wirer le bouton "S'exercer" (ex "Faire le quiz") : `onPressed: () => context.push(AppRoutes.lessonQuiz(subjectId, chapterId, lessonId))`
+  - Le bouton "Résumé" a été supprimé (redesign validé post code-review — bouton redondant avec l'onglet Fiche du chapitre)
 
 - [x] T11.2 — `lib/features/content/presentation/pages/lesson_page.dart`
   - Mettre à jour l'appel de `LessonCtaRow` pour passer les 3 nouveaux params :
@@ -430,6 +430,33 @@ LessonCtaRow(
 ### T13 — Sprint status
 
 - [x] T13.1 — `project_manage/implementation-artifacts/sprint-status.yaml` : `2-6-quiz-content-integration: backlog → in-progress → review`
+
+### Review Findings
+
+- [x] \[Review\]\[Decision\] LessonCtaRow redesign — bouton "Résumé" supprimé (T11.1 : garder en stub) et libellé changé en "S'exercer" au lieu de "Faire le quiz" (AC1) — **validé** : redesign intentionnel, AC1 + T11.1 mis à jour \[lesson_cta_row.dart\]
+- [ ] \[Review\]\[Patch\] (High) `_selectAnswer` sans garde `_currentIndex < questions.length` après replay — crash potentiel si rebuild intervient pendant transition \[quiz_session_view.dart\]
+- [ ] \[Review\]\[Patch\] (High) `correctIndex` non validé contre `options.length` — crash sur données Firestore corrompues \[quiz_question_model.dart, quiz_session_view.dart\]
+- [ ] \[Review\]\[Patch\] (Med) `ref.invalidate` avant `setState` dans `_replay()` — flash 1 frame d'état `_answers` périmé \[quiz_session_view.dart\]
+- [ ] \[Review\]\[Patch\] (Med) Breakpoints LayoutBuilder avec `.w` (`840.w`/`600.w`) — doit être raw dp `840`/`600` sans ScreenUtil \[quiz_session_view.dart\]
+- [ ] \[Review\]\[Patch\] (Med) `lessonQuizSessionProvider` utilise `ref.watch(contentRepositoryProvider)` mais `chapterQuizSessionProvider` utilise `ref.read` — harmoniser en `ref.watch` \[providers.dart\]
+- [ ] \[Review\]\[Patch\] (Med) `QuizQuestionModel.fromMap` : fallback `id: ''` si champ absent — utiliser l'ID du document Firestore comme fallback \[quiz_question_model.dart\]
+- [ ] \[Review\]\[Patch\] (Med) `chapterQuizSessionProvider` ne logue pas `kind=` quand `lessonsProvider` throw — CLAUDE.md règle 3 \[providers.dart\]
+- [ ] \[Review\]\[Patch\] (Med) `getQuizQuestions` sans `.limit()` — CLAUDE.md règle 10c (ajouter `.limit(50)`) \[content_firestore_repository_impl.dart\]
+- [ ] \[Review\]\[Patch\] (Low) QuizPicker pas de shuffle final quand `picked.length ≤ max` — AC3(d) exige shuffle de la liste finale \[quiz_picker.dart\]
+- [ ] \[Review\]\[Patch\] (Low) `EdgeInsets.all(24)` magic number → `EdgeInsets.all(AppSpacing.s6)` \[quiz_session_view.dart\]
+- [ ] \[Review\]\[Patch\] (Low) `Colors.white` hardcodé (6+ occurrences) → token `AppColors.card` ou équivalent \[quiz_session_view.dart, quiz_result_screen.dart, quiz_review_screen.dart\]
+- [ ] \[Review\]\[Patch\] (Low) `QuizResultScreen` et `QuizReviewScreen` sans contrainte tablet `SizedBox(width: maxWidth)` — AC9 non couvert pour ces écrans \[quiz_result_screen.dart, quiz_review_screen.dart\]
+- [x] \[Review\]\[Defer\] Collection `notions/` non seedée — `getNotion` retourne toujours `notFound`, "Besoin d'aide" affiche toujours le fallback — deferred, infrastructure seed
+- [x] \[Review\]\[Defer\] `lessonsProvider autoDispose` double-read potentiel dans `chapterQuizSessionProvider` — deferred, comportement Riverpod pré-existant
+- [x] \[Review\]\[Defer\] i18n debt — ternaires `isFr ? 'fr' : 'en'` non externalisés en ARB dans les widgets quiz — deferred, pattern pré-existant codebase
+- [x] \[Review\]\[Defer\] `QuizMathText` défini dans `quiz_session_view.dart` au lieu de `core/widgets/` — deferred, usage unique à ce stade
+- [x] \[Review\]\[Defer\] `QuizHelpSheet.notionId` contrat nullable implicite (paramètre `String` alors que sémantiquement nullable) — deferred, pre-existing
+- [x] \[Review\]\[Defer\] `.w` scaling dans les fichiers test sans init ScreenUtil — deferred, tests passent actuellement
+- [x] \[Review\]\[Defer\] `QuizReviewScreen` bottom inset implicite (SafeArea parent atténue) — deferred, low risk
+- [x] \[Review\]\[Defer\] 3e action "Voir mes réponses" sur écran résultat — non spécifiée dans AC5 (scope creep bénin) — deferred, non-blocking
+- [x] \[Review\]\[Defer\] `LayoutBuilder` dans `QuizSessionView` au lieu de `QuizPage` (déviation structurelle mineure vs spec) — deferred, fonctionnellement équivalent
+- [x] \[Review\]\[Defer\] `_answers` sans garde longueur (race condition fast-tap faible risque) — deferred, low risk
+- [x] \[Review\]\[Defer\] `Size.fromHeight(52)` dans AppBar — couvert par exception AppNavBar (hauteur physique stable) — deferred, intentionnel
 
 ---
 

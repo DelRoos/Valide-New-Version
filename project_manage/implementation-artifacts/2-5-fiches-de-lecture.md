@@ -1,7 +1,7 @@
 ---
 story: 2.5
 title: "Fiches de lecture — onglet chapitre"
-status: ready-for-dev
+status: done
 created: 2026-07-02
 ---
 
@@ -294,6 +294,29 @@ if fiche and (fiche.get("fr") or fiche.get("en")):
 ### T10 — Sprint status
 
 - [ ] T10.1 — `project_manage/implementation-artifacts/sprint-status.yaml` : `2-5-fiches-de-lecture: ready-for-dev → in-progress`
+
+### Review Findings
+
+*Code review : 2026-07-03 — 0 decision\_needed · 2 patch · 8 defer · 6 dismissed*
+
+#### Patches
+
+- [x] **\[Review\]\[Patch\] (Med) F1 — Pas de fallback cross-langue dans `contentFor()`** (`chapter_fiche_entity.dart:14`)
+  Si `languageCode == 'en'` et `contentEn` est vide mais `contentFr` est rempli, l'utilisateur voit un état vide alors que la donnée existe. Fix : `if (languageCode == 'fr') return contentFr.isNotEmpty ? contentFr : contentEn; return contentEn.isNotEmpty ? contentEn : contentFr;`
+
+- [x] **\[Review\]\[Patch\] (Low) F2 — `ConstrainedBox` au lieu de `SizedBox` — diverge du pattern `LessonPage`** (`fiche_tab.dart:60-67`)
+  `LessonPage` utilise `SizedBox(width: maxWidth)`. `FicheTab` utilise `ConstrainedBox(constraints: BoxConstraints(maxWidth: maxWidth))`. Fix : `Center(child: SizedBox(width: maxWidth, child: body))`.
+
+#### Deferred
+
+- [x] **\[Review\]\[Defer\] (Low) F3 — Strings hardcodées hors ARB** (`fiche_tab.dart:89-94`) — pré-existant, même pattern que `lesson_content_tab.dart` ; à traiter dans la story i18n complète
+- [x] **\[Review\]\[Defer\] (Low) F4 — Skeleton heights 28/80/120 non tokenisées** (`fiche_tab.dart:119-133`) — pré-existant dans les autres tabs ; à harmoniser dans une story tokens
+- [x] **\[Review\]\[Defer\] (Low) F5 — Incohérence validation `_require_bilingual` vs fallback `seed_content`** (`seed_3e_content.py`) — dead code en pratique (`build_seed_3e.py` force toujours les deux champs)
+- [x] **\[Review\]\[Defer\] (Low) F6 — Pré-rendu `FicheTab` depuis onglet Exercices (TabBarView ±1)** (`chapter_page.dart:101`) — impact V1 négligeable (Exercices est encore placeholder)
+- [x] **\[Review\]\[Defer\] (Low) F7 — Duplication `_PlaceholderTab` / `_FicheEmptyState` (règle 11)** (`chapter_page.dart:134` / `fiche_tab.dart:74`) — refactor cross-story requis
+- [x] **\[Review\]\[Defer\] (Low) F8 — Asymétrie fallback EN : fiche a fallback, leçon non** (`seed_3e_content.py`) — scope limité aux seeds, acceptable V1
+- [x] **\[Review\]\[Defer\] (Low) F9 — Aucun test `contentFor()` cas langue inconnue** (`chapter_fiche_entity.dart`) — à couvrir dans story tests dédiée
+- [x] **\[Review\]\[Defer\] (Low) F10 — Aucun test `FirebaseException` path pour `getFiche`** (`content_firestore_repository_impl_test.dart`) — couvert par pattern documenté dans le bloc `getChapters`
 
 ---
 
