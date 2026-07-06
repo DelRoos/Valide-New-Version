@@ -198,9 +198,16 @@ final chapterFicheProvider =
         await ref.watch(contentRepositoryProvider).getFiche(chapterId);
     return result.fold(
       (failure) {
-        AppLogger.e(
-          'chapterFicheProvider($chapterId): kind=${failure.kind.name} message=${failure.message}',
-        );
+        // notFound = état normal (fiche pas encore seeded) → warning, pas d'erreur Crashlytics.
+        if (failure.kind == ContentFailureKind.notFound) {
+          AppLogger.w(
+            'chapterFicheProvider($chapterId): fiche absente (notFound)',
+          );
+        } else {
+          AppLogger.e(
+            'chapterFicheProvider($chapterId): kind=${failure.kind.name} message=${failure.message}',
+          );
+        }
         throw failure;
       },
       (fiche) => fiche,
