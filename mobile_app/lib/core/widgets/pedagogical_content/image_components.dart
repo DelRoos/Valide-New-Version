@@ -481,9 +481,11 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
 
 // ── _VideoBlock ───────────────────────────────────────────────────────────────
 // Syntaxe : :::video\nurl=...\ncaption=...\n:::
-// Miniature YouTube auto-détectée. Tap → Chrome Custom Tab / SFSafariViewController (in-app).
+//
+// Mode YouTube : thumbnail → tap → player iFrame embarqué (autoplay).
+// Mode non-YouTube : thumbnail grise → tap → launchUrl inAppWebView.
 
-class _VideoBlock extends StatelessWidget {
+class _VideoBlock extends StatefulWidget {
   const _VideoBlock({required this.url, required this.caption});
 
   final String url;
@@ -511,110 +513,150 @@ class _VideoBlock extends StatelessWidget {
     return uri.queryParameters['v'];
   }
 
+  // hqdefault (480×360) est plus stable que mqdefault sur les vidéos récentes.
   static String? _youtubeThumbnail(String url) {
     final id = _youtubeId(url);
-    // mqdefault (320×180) disponible pour toute vidéo — hqdefault absent sur les vidéos peu vues.
-    return id != null ? 'https://img.youtube.com/vi/$id/mqdefault.jpg' : null;
+    return id != null ? 'https://img.youtube.com/vi/$id/hqdefault.jpg' : null;
   }
 
-  Future<void> _launch() async {
-    final uri = Uri.tryParse(url);
+  @override
+  State<_VideoBlock> createState() => _VideoBlockState();
+}
+
+class _VideoBlockState extends State<_VideoBlock> {
+  YoutubePlayerController? _controller;
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  void _activate() {
+    final id = _VideoBlock._youtubeId(widget.url);
+    if (id == null) {
+      _launchExternal();
+      return;
+    }
+    setState(() {
+      _controller = YoutubePlayerController(
+        initialVideoId: id,
+        flags: const YoutubePlayerFlags(autoPlay: true, mute: false),
+      );
+    });
+  }
+
+  Future<void> _launchExternal() async {
+    final uri = Uri.tryParse(widget.url);
     if (uri == null) return;
     try {
-      // inAppWebView → Chrome Custom Tab (Android) / SFSafariViewController (iOS)
-      // L'utilisateur reste dans l'app et peut revenir avec le bouton retour.
       await launchUrl(uri, mode: LaunchMode.inAppWebView);
     } catch (e) {
-      AppLogger.w('[VideoBlock] launchUrl failed url=$url', error: e);
+      AppLogger.w('[VideoBlock] launchUrl failed url=${widget.url}', error: e);
     }
+  }
+
+  Widget _buildCaption() {
+    if (widget.caption.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.s3.w, AppSpacing.s2.h, AppSpacing.s3.w, AppSpacing.s2.h,
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.smart_display_outlined, color: AppColors.primary, size: AppIconSize.sm),
+          SizedBox(width: AppSpacing.s2.w),
+          Expanded(
+            child: Text(
+              widget.caption,
+              style: TextStyle(
+                fontFamily: AppTypography.fontFamily,
+                fontSize: AppFontSize.meta,
+                fontWeight: FontWeight.w600,
+                color: AppColors.ink,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThumbnail() {
+    final thumbUrl = _VideoBlock._youtubeThumbnail(widget.url);
+    return GestureDetector(
+      onTap: _activate,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (thumbUrl != null)
+            CachedNetworkImage(
+              imageUrl: thumbUrl,
+              httpHeaders: _kMediaHeaders,
+              height: 180.h,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (_, _, p) =>
+                  _ImageProgress(progress: p.progress, height: 180.h),
+              errorWidget: (_, url, err) {
+                AppLogger.w('[VideoBlock] thumbnail failed url=$url', error: err);
+                return _buildThumbnailPlaceholder();
+              },
+            )
+          else
+            _buildThumbnailPlaceholder(),
+          Container(
+            padding: EdgeInsets.all(AppSpacing.s3.w),
+            decoration: const BoxDecoration(color: Colors.black45, shape: BoxShape.circle),
+            child: Icon(Icons.play_arrow_rounded, color: Colors.white, size: AppIconSize.xl5),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThumbnailPlaceholder() {
+    return Container(
+      height: 180.h,
+      width: double.infinity,
+      color: AppColors.muted.withValues(alpha: 0.1),
+      child: Icon(Icons.smart_display_outlined, color: AppColors.muted, size: AppIconSize.xl5),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final thumbUrl = _youtubeThumbnail(url);
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.s3.h),
-      child: GestureDetector(
-        onTap: _launch,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border, width: AppBorderWidth.normal),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (thumbUrl != null)
-                    CachedNetworkImage(
-                      imageUrl: thumbUrl,
-                      httpHeaders: _kMediaHeaders,
-                      height: 180.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder: (_, _, p) =>
-                          _ImageProgress(progress: p.progress, height: 180.h),
-                      errorWidget: (_, url, err) {
-                        AppLogger.w('[VideoBlock] thumbnail failed url=$url', error: err);
-                        return Container(height: 180.h, color: AppColors.muted.withValues(alpha: 0.1));
-                      },
-                    )
-                  else
-                    Container(
-                      height: 160.h,
-                      color: AppColors.muted.withValues(alpha: 0.1),
-                    ),
-                  Container(
-                    padding: EdgeInsets.all(AppSpacing.s3.w),
-                    decoration: const BoxDecoration(
-                      color: Colors.black45,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.play_arrow_rounded,
-                      color: Colors.white,
-                      size: AppIconSize.xl5,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.s3.w,
-                  AppSpacing.s2.h,
-                  AppSpacing.s3.w,
-                  AppSpacing.s2.h,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.smart_display_outlined,
-                      color: AppColors.primary,
-                      size: AppIconSize.sm,
-                    ),
-                    SizedBox(width: AppSpacing.s2.w),
-                    Expanded(
-                      child: Text(
-                        caption.isNotEmpty ? caption : 'Voir la vidéo',
-                        style: TextStyle(
-                          fontFamily: AppTypography.fontFamily,
-                          fontSize: AppFontSize.meta,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.ink,
-                        ),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: AppColors.border, width: AppBorderWidth.normal),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: _controller != null
+                  ? YoutubePlayer(
+                      key: const ValueKey('player'),
+                      controller: _controller!,
+                      showVideoProgressIndicator: true,
+                      progressColors: ProgressBarColors(
+                        playedColor: AppColors.primary,
+                        handleColor: AppColors.primary,
                       ),
+                    )
+                  : KeyedSubtree(
+                      key: const ValueKey('thumb'),
+                      child: _buildThumbnail(),
                     ),
-                    Icon(Icons.play_circle_outline, color: AppColors.primary, size: AppIconSize.sm),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+            _buildCaption(),
+          ],
         ),
       ),
     );

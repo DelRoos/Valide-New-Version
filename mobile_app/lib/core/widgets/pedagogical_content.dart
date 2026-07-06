@@ -32,6 +32,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+// ignore: unused_import — utilisé par _VideoBlock (part) pour le player YouTube embarqué.
+// PlayerState masqué : conflit avec audioplayers.PlayerState utilisé dans audio_block.
+import 'package:youtube_player_flutter/youtube_player_flutter.dart' hide PlayerState;
 
 // ignore: unused_import — utilisé par les parts (audio_block, image_components, gallery_block) pour les logs.
 import '../logging/app_logger.dart';
