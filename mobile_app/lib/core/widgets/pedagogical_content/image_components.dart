@@ -200,9 +200,8 @@ class _ImageBlockState extends State<_ImageBlock> {
           }
           return SvgPicture.memory(
             snapshot.data!,
-            height: 180.h,
             width: double.infinity,
-            fit: BoxFit.contain,
+            fit: BoxFit.fitWidth,
           );
         },
       );
@@ -211,9 +210,8 @@ class _ImageBlockState extends State<_ImageBlock> {
       key: ValueKey('${widget.url}_$_retryCount'),
       imageUrl: widget.url,
       httpHeaders: _kMediaHeaders,
-      height: 180.h,
       width: double.infinity,
-      fit: BoxFit.contain,
+      fit: BoxFit.fitWidth,
       progressIndicatorBuilder: (_, _, p) => _ImageProgress(progress: p.progress, height: 180.h),
       errorWidget: (context, url, err) {
         AppLogger.w('[ImageBlock] load failed url=$url', error: err);
@@ -384,6 +382,7 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
           }
           return SvgPicture.memory(
             snapshot.data!,
+            width: double.infinity,
             fit: BoxFit.contain,
           );
         },
@@ -393,6 +392,7 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
       key: ValueKey('${widget.url}_fs_$_retryCount'),
       imageUrl: widget.url,
       httpHeaders: _kMediaHeaders,
+      width: double.infinity,
       fit: BoxFit.contain,
       progressIndicatorBuilder: (_, _, p) =>
           _ImageProgress(progress: p.progress, height: 200.h, width: 200.w),
@@ -428,7 +428,10 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
           child: InteractiveViewer(
             minScale: 0.5,
             maxScale: 6.0,
-            child: _buildImage(),
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              child: _buildImage(),
+            ),
           ),
         ),
         Positioned(

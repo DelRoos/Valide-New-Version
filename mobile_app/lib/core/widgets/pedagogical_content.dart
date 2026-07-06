@@ -154,10 +154,12 @@ class PedagogicalContent extends StatelessWidget {
               block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
             case 'image':
               final block = _ImageBlock.fromBody(body);
-              block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
+              // Image toujours pleine largeur — pas dans le carousel (260.w trop étroit).
+              block != null ? addBlock(block) : addBlock(_md(m.group(1)!, style));
             case 'video':
               final block = _VideoBlock.fromBody(body);
-              block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
+              // Vidéo toujours pleine largeur — pas dans le carousel.
+              block != null ? addBlock(block) : addBlock(_md(m.group(1)!, style));
             case 'gallery':
               // gallery est déjà un carrousel — ne pas grouper avec d'autres médias
               final block = _GalleryBlock.fromBody(body);

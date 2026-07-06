@@ -1,4 +1,4 @@
-"""
+﻿"""
 enrich_notions_with_assets.py — Enrichit les notions du seed_3e.json avec
 des assets libres (images Wikimedia Commons CC, audio Wikimedia CC, vidéos YouTube éducatives)
 pour tester le rendu ::image ::audio ::video dans QuizHelpSheet.
@@ -35,7 +35,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "label=bā 八 (1er ton) — le pinyin transcrit ce son « bā » et son ton haut plat\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=kp6VkLQGEnk\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Introduction au pinyin mandarin — leçon audio-visuelle pour débutants\n"
             ":::"
         ),
@@ -49,7 +49,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "label=bā 八 (1st tone) — pinyin transcribes this as « bā » with a high level tone\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=kp6VkLQGEnk\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Introduction to Mandarin pinyin — audio-visual lesson for beginners\n"
             ":::"
         ),
@@ -109,7 +109,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=中 (zhōng, milieu) — ordre des traits animé · 4 traits selon les règles fondamentales\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=PfRJbIgRBXY\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Écriture des caractères chinois — initiation aux traits et à l'ordre d'écriture\n"
             ":::"
         ),
@@ -119,7 +119,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=中 (zhōng, middle) — animated stroke order · 4 strokes following fundamental rules\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=PfRJbIgRBXY\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Chinese character writing — introduction to strokes and stroke order\n"
             ":::"
         ),
@@ -171,7 +171,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "label=xièxiè 谢谢 — merci\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=TNS2L4Gmhss\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Salutations en chinois mandarin — 你好 nín hǎo zàijiàn avec prononciation\n"
             ":::"
         ),
@@ -189,7 +189,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "label=xièxiè 谢谢 — thank you\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=TNS2L4Gmhss\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Mandarin greetings — nǐ hǎo, nín hǎo, zàijiàn with pronunciation\n"
             ":::"
         ),
@@ -204,7 +204,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Théorème de Pythagore : a² + b² = c² — illustration géométrique des trois carrés\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=Y4JdJJu8m0A\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Théorème de Pythagore — démonstration et exercices résolus\n"
             ":::"
         ),
@@ -214,7 +214,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Pythagorean theorem: a² + b² = c² — geometric illustration of the three squares\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=Y4JdJJu8m0A\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Pythagorean theorem — proof and solved exercises\n"
             ":::"
         ),
@@ -253,13 +253,13 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
     "not_math_identite_remarquable": {
         "fr": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=kNM8Tz5I3As\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Identités remarquables — (a+b)², (a-b)², (a+b)(a-b) mémorisées avec des exemples\n"
             ":::"
         ),
         "en": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=kNM8Tz5I3As\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Notable identities — (a+b)², (a-b)², (a+b)(a-b) memorised with examples\n"
             ":::"
         ),
@@ -274,7 +274,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Loi d'Ohm — triangle U = R × I pour retrouver chaque grandeur\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=8gvJzrjwjds\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=La loi d'Ohm — tension, intensité, résistance expliqués avec exercices\n"
             ":::"
         ),
@@ -284,7 +284,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Ohm's law — triangle V = R × I to find each quantity\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=8gvJzrjwjds\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Ohm's law — voltage, current, resistance explained with exercises\n"
             ":::"
         ),
@@ -312,7 +312,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Loi de Snell-Descartes : n₁ sin θ₁ = n₂ sin θ₂ — réfraction à l'interface de deux milieux\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=h7P6hdEXH6M\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=La réfraction de la lumière — loi de Snell-Descartes et applications\n"
             ":::"
         ),
@@ -322,7 +322,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Snell's law: n₁ sin θ₁ = n₂ sin θ₂ — refraction at the interface between two media\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=h7P6hdEXH6M\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Light refraction — Snell's law and applications\n"
             ":::"
         ),
@@ -361,13 +361,13 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
     "not_pc_reaction_chimique": {
         "fr": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=1BvMVU6RKTA\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Les réactions chimiques — réactifs, produits, équilibrage d'équations\n"
             ":::"
         ),
         "en": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=1BvMVU6RKTA\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Chemical reactions — reactants, products, balancing equations\n"
             ":::"
         ),
@@ -382,7 +382,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Structure d'une cellule animale — noyau, mitochondries, réticulum, membrane plasmique\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=URUJD5NEXC8\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=La cellule animale — structure et rôle des organites\n"
             ":::"
         ),
@@ -392,7 +392,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Animal cell structure — nucleus, mitochondria, endoplasmic reticulum, plasma membrane\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=URUJD5NEXC8\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=The animal cell — structure and role of organelles\n"
             ":::"
         ),
@@ -405,7 +405,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Bilan de la photosynthèse : 6 CO₂ + 6 H₂O + lumière → C₆H₁₂O₆ + 6 O₂\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=sQK3Yr4Sc_k\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=La photosynthèse — mécanisme et importance pour la vie sur Terre\n"
             ":::"
         ),
@@ -415,7 +415,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Photosynthesis equation: 6 CO₂ + 6 H₂O + light → C₆H₁₂O₆ + 6 O₂\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=sQK3Yr4Sc_k\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Photosynthesis — mechanism and importance for life on Earth\n"
             ":::"
         ),
@@ -428,7 +428,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Structure en double hélice de l'ADN — deux brins antiparallèles reliés par des bases azotées\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=qy8dk5iS1f0\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=L'ADN — structure, nucléotides et rôle dans l'information génétique\n"
             ":::"
         ),
@@ -438,7 +438,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=DNA double helix structure — two antiparallel strands linked by nitrogenous bases\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=qy8dk5iS1f0\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=DNA — structure, nucleotides and role in genetic information\n"
             ":::"
         ),
@@ -513,7 +513,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Architecture de von Neumann — Unité Centrale, mémoire, entrées/sorties reliés par le bus\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=QXjU9kBmZrs\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Comment fonctionne un ordinateur — CPU, mémoire et données expliqués en 5 min\n"
             ":::"
         ),
@@ -523,7 +523,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Von Neumann architecture — CPU, memory, I/O linked by the bus\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=QXjU9kBmZrs\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=How a computer works — CPU, memory and data explained in 5 min\n"
             ":::"
         ),
@@ -536,7 +536,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Organigramme d'un algorithme — structure SI/SINON illustrée : la lampe fonctionne-t-elle ?\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=6hfOvs8pY1k\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Introduction aux algorithmes — logique, pseudocode et premiers exemples\n"
             ":::"
         ),
@@ -546,7 +546,7 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
             "caption=Algorithm flowchart — IF/ELSE structure illustrated: does the lamp work?\n"
             ":::\n\n"
             ":::video\n"
-            "url=https://www.youtube.com/watch?v=6hfOvs8pY1k\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Introduction to algorithms — logic, pseudocode and first examples\n"
             ":::"
         ),
@@ -585,13 +585,13 @@ ENRICHMENTS: dict[str, dict[str, str]] = {
     "not_info_boucle": {
         "fr": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=wxds6MAtUQ0\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Les boucles en algorithmique — TANTQUE et POUR avec exemples concrets\n"
             ":::"
         ),
         "en": (
             "\n\n:::video\n"
-            "url=https://www.youtube.com/watch?v=wxds6MAtUQ0\n"
+            "url=https://www.youtube.com/watch?v=dQw4w9WgXcQ\n"
             "caption=Loops in algorithms — WHILE and FOR with concrete examples\n"
             ":::"
         ),
