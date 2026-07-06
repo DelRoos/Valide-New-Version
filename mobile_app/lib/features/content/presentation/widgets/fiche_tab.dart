@@ -184,7 +184,7 @@ class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
           valueColor: const AlwaysStoppedAnimation<Color>(AppColors.primary),
         ),
 
-        // ── Contenu scrollable ───────────────────────────────────────────
+        // ── Contenu scrollable + CTA en fin de lecture ───────────────────
         Expanded(
           child: SingleChildScrollView(
             controller: _scrollController,
@@ -194,25 +194,20 @@ class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
               AppSpacing.s4,
               AppSpacing.s4,
             ),
-            child: PedagogicalContent(data: widget.content),
-          ),
-        ),
-
-        // ── CTA S'exercer ────────────────────────────────────────────────
-        Container(
-          decoration: BoxDecoration(
-            color: AppColors.card,
-            border: Border(top: BorderSide(color: AppColors.border)),
-          ),
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.s4.w,
-            AppSpacing.s3.h,
-            AppSpacing.s4.w,
-            AppSpacing.s3.h + bottomInset,
-          ),
-          child: AppButton.primary(
-            label: isFr ? "S'exercer sur ce chapitre" : 'Practice this chapter',
-            onPressed: widget.onExercise,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                PedagogicalContent(data: widget.content),
+                SizedBox(height: AppSpacing.s6.h),
+                AppButton.primary(
+                  label: isFr
+                      ? "S'exercer sur ce chapitre"
+                      : 'Practice this chapter',
+                  onPressed: widget.onExercise,
+                ),
+                SizedBox(height: AppSpacing.s4.h + bottomInset),
+              ],
+            ),
           ),
         ),
       ],
