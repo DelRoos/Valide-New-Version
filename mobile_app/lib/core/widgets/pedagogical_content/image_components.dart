@@ -136,6 +136,9 @@ class _ImageBlock extends StatefulWidget {
 
 class _ImageBlockState extends State<_ImageBlock> {
   int _retryCount = 0;
+  // Future mémoïsé pour éviter de relancer le fetch à chaque rebuild.
+  // Réinitialisé dans _retry() pour forcer un nouveau téléchargement.
+  Future<Uint8List?>? _svgFuture;
 
   // Vérifie le chemin URI (sans query string) pour éviter les faux positifs
   // ex. Pythagorean.svg/220px-Pythagorean.svg.png → pas SVG (c'est un PNG).
@@ -144,9 +147,35 @@ class _ImageBlockState extends State<_ImageBlock> {
     return path.endsWith('.svg');
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (_isSvg) _svgFuture = _loadSvgBytes();
+  }
+
+  // Télécharge le SVG avec les headers corrects (User-Agent, Referer).
+  // Retourne null si HTTP ≠ 200 ou si la réponse est du HTML (page d'erreur
+  // Wikimedia / redirection) → affiche l'état d'erreur au lieu de crasher.
+  Future<Uint8List?> _loadSvgBytes() async {
+    try {
+      final response = await http.get(Uri.parse(widget.url), headers: _kMediaHeaders);
+      if (response.statusCode != 200) return null;
+      final ct = response.headers['content-type'] ?? '';
+      if (ct.contains('text/html')) return null;
+      return response.bodyBytes;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _retry() async {
     await CachedNetworkImage.evictFromCache(widget.url);
-    if (mounted) setState(() => _retryCount++);
+    if (mounted) {
+      setState(() {
+        _retryCount++;
+        if (_isSvg) _svgFuture = _loadSvgBytes();
+      });
+    }
   }
 
   void _openFullscreen(BuildContext context) {
@@ -159,12 +188,23 @@ class _ImageBlockState extends State<_ImageBlock> {
 
   Widget _buildContent() {
     if (_isSvg) {
-      return SvgPicture.network(
-        widget.url,
-        height: 180.h,
-        width: double.infinity,
-        fit: BoxFit.contain,
-        placeholderBuilder: (_) => _ImageProgress(height: 180.h),
+      return FutureBuilder<Uint8List?>(
+        future: _svgFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return _ImageProgress(height: 180.h);
+          }
+          if (snapshot.data == null) {
+            AppLogger.w('[ImageBlock] SVG load failed url=${widget.url}');
+            return _buildError();
+          }
+          return SvgPicture.memory(
+            snapshot.data!,
+            height: 180.h,
+            width: double.infinity,
+            fit: BoxFit.contain,
+          );
+        },
       );
     }
     return CachedNetworkImage(
@@ -284,23 +324,69 @@ class _FullscreenImageDialog extends StatefulWidget {
 
 class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
   int _retryCount = 0;
+  Future<Uint8List?>? _svgFuture;
 
   bool get _isSvg {
     final path = Uri.tryParse(widget.url)?.path.toLowerCase() ?? '';
     return path.endsWith('.svg');
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (_isSvg) _svgFuture = _loadSvgBytes();
+  }
+
+  Future<Uint8List?> _loadSvgBytes() async {
+    try {
+      final response = await http.get(Uri.parse(widget.url), headers: _kMediaHeaders);
+      if (response.statusCode != 200) return null;
+      final ct = response.headers['content-type'] ?? '';
+      if (ct.contains('text/html')) return null;
+      return response.bodyBytes;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _retry() async {
     await CachedNetworkImage.evictFromCache(widget.url);
-    if (mounted) setState(() => _retryCount++);
+    if (mounted) {
+      setState(() {
+        _retryCount++;
+        if (_isSvg) _svgFuture = _loadSvgBytes();
+      });
+    }
   }
 
   Widget _buildImage() {
     if (_isSvg) {
-      return SvgPicture.network(
-        widget.url,
-        fit: BoxFit.contain,
-        placeholderBuilder: (_) => _ImageProgress(height: 200.h, width: 200.w),
+      return FutureBuilder<Uint8List?>(
+        future: _svgFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return _ImageProgress(height: 200.h, width: 200.w);
+          }
+          if (snapshot.data == null) {
+            AppLogger.w('[ImageBlock] fullscreen SVG load failed url=${widget.url}');
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.broken_image_outlined, color: Colors.white54, size: AppIconSize.xl5),
+                SizedBox(height: AppSpacing.s2.h),
+                TextButton.icon(
+                  onPressed: _retry,
+                  icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+                  label: const Text('Réessayer', style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          }
+          return SvgPicture.memory(
+            snapshot.data!,
+            fit: BoxFit.contain,
+          );
+        },
       );
     }
     return CachedNetworkImage(

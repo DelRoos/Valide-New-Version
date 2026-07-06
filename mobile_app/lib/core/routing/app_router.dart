@@ -287,10 +287,24 @@ String? evaluateRedirect({
   //    (auth delete failed apres Firestore delete), ne pas rediriger — sinon
   //    SuccessCelebrationStepBody (step 9 en memoire) se monterait et recrée
   //    le doc Firestore supprime (Bug B 2026-06-29).
+  final completionLabel = profileCompletion.maybeWhen(
+    data: (s) => s.name,
+    orElse: () => profileCompletion.isLoading ? 'loading' : 'error',
+  );
+  AppLogger.d(
+    'redirect[check4]: location=$location '
+    'upgradeInProgress=$upgradeInProgress '
+    'completion=$completionLabel '
+    'deletion=${deletionStatus?.runtimeType}',
+  );
   if (!upgradeInProgress &&
       !location.startsWith(AppRoutes.onboarding) &&
       location != AppRoutes.catalogueWaiting) {
+    // Reauthing inclus : pendant la réauth Google pour suppression, le doc Firestore
+    // peut émettre null (suppression en cours) ce qui déclencherait un redirect
+    // spurieux vers /onboarding.
     final isDeletionActive = deletionStatus is AccountDeletionStatusDeleting ||
+        deletionStatus is AccountDeletionStatusReauthing ||
         deletionStatus is AccountDeletionStatusError;
     if (!isDeletionActive) {
       final shouldBlock = profileCompletion.when(
@@ -299,12 +313,8 @@ String? evaluateRedirect({
         error: (_, _) => true,
       );
       if (shouldBlock) {
-        final stateLabel = profileCompletion.maybeWhen(
-          data: (s) => s.name,
-          orElse: () => profileCompletion.isLoading ? 'loading' : 'error',
-        );
         AppLogger.d(
-            'redirect: guard $location → /onboarding (state=$stateLabel)');
+            'redirect: guard $location → /onboarding (state=$completionLabel)');
         return AppRoutes.onboarding;
       }
     }

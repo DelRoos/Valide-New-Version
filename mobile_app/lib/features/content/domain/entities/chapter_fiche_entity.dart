@@ -11,8 +11,10 @@ class ChapterFicheEntity extends Equatable {
   final String contentFr;
   final String contentEn;
 
-  String contentFor(String languageCode) =>
-      languageCode == 'fr' ? contentFr : contentEn;
+  String contentFor(String languageCode) {
+    if (languageCode == 'fr') return contentFr.isNotEmpty ? contentFr : contentEn;
+    return contentEn.isNotEmpty ? contentEn : contentFr;
+  }
 
   @override
   List<Object?> get props => [chapterId, contentFr, contentEn];

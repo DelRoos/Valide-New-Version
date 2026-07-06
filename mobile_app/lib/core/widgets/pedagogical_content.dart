@@ -15,6 +15,8 @@ import 'dart:async';
 import 'dart:convert';
 // ignore: unused_import — utilisé par audio_block (part) pour File + writeAsBytes.
 import 'dart:io';
+// ignore: unused_import — utilisé par image_components (part) pour Uint8List (SvgPicture.memory).
+import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 // ignore: unused_import — utilisé par audio_block (part) pour le téléchargement avec headers.

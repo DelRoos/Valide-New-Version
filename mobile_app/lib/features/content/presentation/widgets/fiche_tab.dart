@@ -59,10 +59,7 @@ class FicheTab extends ConsumerWidget {
 
         if (maxWidth < width) {
           return Center(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: maxWidth),
-              child: body,
-            ),
+            child: SizedBox(width: maxWidth, child: body),
           );
         }
         return body;
