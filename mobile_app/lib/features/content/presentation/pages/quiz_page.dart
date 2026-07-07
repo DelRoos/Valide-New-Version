@@ -233,7 +233,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             onRetry: _retryLoad,
           ),
           data: (questions) {
-            if (questions.isEmpty) return QuizEmptyState(isFr: isFr);
+            if (questions.isEmpty) return const QuizEmptyState();
             return QuizSessionView(
               questions: questions,
               currentIndex: _currentIndex,

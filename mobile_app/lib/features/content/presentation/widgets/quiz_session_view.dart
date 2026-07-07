@@ -3,6 +3,7 @@ import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/quiz_question_entity.dart';
 import 'quiz_help_sheet.dart';
 
@@ -44,6 +45,7 @@ class QuizSessionView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return LayoutBuilder(
       builder: (context, constraints) {
         final maxWidth = constraints.maxWidth >= 840.w
@@ -98,7 +100,7 @@ class QuizSessionView extends StatelessWidget {
                               color: AppColors.primary,
                             ),
                             label: Text(
-                              isFr ? 'Besoin d\'aide' : 'Need help',
+                              l10n.quizNeedHelp,
                               style: TextStyle(
                                 fontFamily: AppTypography.fontFamily,
                                 fontSize: AppFontSize.bodySmall,
@@ -294,11 +296,7 @@ class QuizSessionView extends StatelessWidget {
                               elevation: 0,
                             ),
                             child: Text(
-                              _isLast
-                                  ? (isFr ? 'Voir le résultat' : 'See results')
-                                  : (isFr
-                                      ? 'Question suivante'
-                                      : 'Next question'),
+                              _isLast ? l10n.quizSeeResult : l10n.quizNextQuestion,
                               style: TextStyle(
                                 fontFamily: AppTypography.fontFamily,
                                 fontSize: AppFontSize.body,

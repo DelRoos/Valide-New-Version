@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/widgets/picker/subject_icon_resolver.dart';
 import '../../../onboarding/providers.dart';
 import '../../providers.dart';
@@ -19,7 +20,7 @@ class SubjectDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final langCode = Localizations.localeOf(context).languageCode;
-    final isFr = langCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     final chaptersAsync = ref.watch(chaptersProvider(subjectId));
     final subjectsAsync = ref.watch(userSubjectsProvider);
 
@@ -37,7 +38,6 @@ class SubjectDetailPage extends ConsumerWidget {
         loading: () => SubjectLoadingBody(
           subjectName: subjectName,
           subjectIcon: subjectIcon,
-          isFr: isFr,
           onBack: () => context.pop(),
         ),
         error: (error, _) => Column(
@@ -48,7 +48,6 @@ class SubjectDetailPage extends ConsumerWidget {
               eyebrow: '',
               overallProgress: 0,
               rank: 0,
-              isFr: isFr,
               onBack: () => context.pop(),
             ),
             Expanded(
@@ -67,7 +66,7 @@ class SubjectDetailPage extends ConsumerWidget {
                           .fold(0, (s, p) => s + p) /
                       chapters.length)
                   .round();
-          final eyebrow = '${chapters.length} ${isFr ? 'CHAPITRES' : 'CHAPTERS'}';
+          final eyebrow = '${chapters.length} ${l10n.subjectChaptersLabel}';
 
           return Column(
             children: [
@@ -77,7 +76,6 @@ class SubjectDetailPage extends ConsumerWidget {
                 eyebrow: eyebrow,
                 overallProgress: overallProgress,
                 rank: 0,
-                isFr: isFr,
                 onBack: () => context.pop(),
               ),
               Expanded(

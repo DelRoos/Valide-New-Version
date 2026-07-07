@@ -9,13 +9,11 @@ class SubjectLoadingBody extends StatelessWidget {
     super.key,
     required this.subjectName,
     required this.subjectIcon,
-    required this.isFr,
     required this.onBack,
   });
 
   final String subjectName;
   final IconData subjectIcon;
-  final bool isFr;
   final VoidCallback onBack;
 
   @override
@@ -28,7 +26,6 @@ class SubjectLoadingBody extends StatelessWidget {
           eyebrow: '',
           overallProgress: 0,
           rank: 0,
-          isFr: isFr,
           onBack: onBack,
         ),
         Expanded(

@@ -298,7 +298,7 @@ class _AudioBlockState extends State<_AudioBlock> {
                   SizedBox(width: AppSpacing.s2.w),
                   Expanded(
                     child: Text(
-                      'Audio indisponible',
+                      AppLocalizations.of(context).audioUnavailableLabel,
                       style: TextStyle(
                         fontFamily: AppTypography.fontFamily,
                         fontSize: AppFontSize.meta,
@@ -329,7 +329,7 @@ class _AudioBlockState extends State<_AudioBlock> {
                           ),
                           SizedBox(width: AppSpacing.s1.w),
                           Text(
-                            'Réessayer',
+                            AppLocalizations.of(context).retryLabel,
                             style: TextStyle(
                               fontFamily: AppTypography.fontFamily,
                               fontSize: AppFontSize.meta,

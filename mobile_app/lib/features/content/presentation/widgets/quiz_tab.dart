@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class QuizTab extends StatelessWidget {
   const QuizTab({
@@ -16,7 +17,7 @@ class QuizTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFr = Localizations.localeOf(context).languageCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     return Center(
       child: Padding(
         padding: EdgeInsets.all(AppSpacing.s6),
@@ -30,7 +31,7 @@ class QuizTab extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.s3),
             Text(
-              isFr ? 'Teste tes connaissances' : 'Test your knowledge',
+              l10n.quizTabTitle,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.h3Compact,
@@ -41,9 +42,7 @@ class QuizTab extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.s1),
             Text(
-              isFr
-                  ? 'Un quiz personnalisé sur ce chapitre'
-                  : 'A personalized quiz for this chapter',
+              l10n.quizTabSubtitle,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.bodySmall,
@@ -64,7 +63,7 @@ class QuizTab extends StatelessWidget {
                 elevation: 0,
               ),
               child: Text(
-                isFr ? 'Commencer le quiz' : 'Start quiz',
+                l10n.quizTabStart,
                 style: TextStyle(
                   fontFamily: AppTypography.fontFamily,
                   fontSize: AppFontSize.body,

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../onboarding/providers.dart';
 import '../../providers.dart';
 import '../widgets/chapter_header.dart';
@@ -44,7 +45,7 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
   @override
   Widget build(BuildContext context) {
     final langCode = Localizations.localeOf(context).languageCode;
-    final isFr = langCode == 'fr';
+    final l10n = AppLocalizations.of(context);
 
     final chaptersAsync = ref.watch(chaptersProvider(widget.subjectId));
     final subjectsAsync = ref.watch(userSubjectsProvider);
@@ -70,9 +71,9 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
         widget.subjectId;
 
     final tabLabels = [
-      isFr ? 'Leçons' : 'Lessons',
+      l10n.chapterTabLessons,
       'Quiz',
-      isFr ? 'Exercices' : 'Exercises',
+      l10n.chapterTabExercises,
       'Fiche',
     ];
 
@@ -89,7 +90,6 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
                 chapterTitle: chapterTitle,
                 subjectAbbrev: subjectAbbrev,
                 progressPercent: progressPercent,
-                isFr: isFr,
                 tabLabels: tabLabels,
                 selectedTabIndex: _tabController.index,
                 onTabTap: _tabController.animateTo,
@@ -114,9 +114,7 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
                 ),
                 _PlaceholderTab(
                   icon: Icons.edit_note_outlined,
-                  label: isFr
-                      ? 'Exercices bientôt disponibles'
-                      : 'Exercises coming soon',
+                  label: l10n.chapterExercisesComingSoon,
                 ),
                 FicheTab(
                   subjectId: widget.subjectId,

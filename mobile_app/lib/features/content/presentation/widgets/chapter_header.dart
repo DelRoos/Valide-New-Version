@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class ChapterHeader extends StatelessWidget {
   const ChapterHeader({
@@ -9,7 +10,6 @@ class ChapterHeader extends StatelessWidget {
     required this.chapterTitle,
     required this.subjectAbbrev,
     required this.progressPercent,
-    required this.isFr,
     required this.tabLabels,
     required this.selectedTabIndex,
     required this.onTabTap,
@@ -20,7 +20,6 @@ class ChapterHeader extends StatelessWidget {
   final String chapterTitle;
   final String subjectAbbrev;
   final int progressPercent;
-  final bool isFr;
   final List<String> tabLabels;
   final int selectedTabIndex;
   final ValueChanged<int> onTabTap;
@@ -28,6 +27,7 @@ class ChapterHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Padding(
       padding: EdgeInsets.fromLTRB(
         AppSpacing.s2,
@@ -90,9 +90,7 @@ class ChapterHeader extends StatelessWidget {
                 ),
                 SizedBox(width: AppSpacing.s2),
                 Text(
-                  isFr
-                      ? '$subjectAbbrev · CHAPITRE $chapterOrder'
-                      : '$subjectAbbrev · CHAPTER $chapterOrder',
+                  l10n.chapterEyebrow(subjectAbbrev, chapterOrder),
                   style: TextStyle(
                     fontFamily: AppTypography.fontFamily,
                     fontSize: AppFontSize.eyebrow,

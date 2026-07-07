@@ -1072,5 +1072,128 @@
   "@ficheComingSoon": { "description": "État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre." },
 
   "tableLabel": "TABLEAU",
-  "@tableLabel": { "description": "Étiquette affichée en en-tête d'un bloc tableau dans le contenu pédagogique." }
+  "@tableLabel": { "description": "Étiquette affichée en en-tête d'un bloc tableau dans le contenu pédagogique." },
+
+  "quizTabTitle": "Teste tes connaissances",
+  "@quizTabTitle": { "description": "Titre principal de l'onglet quiz chapitre (avant de démarrer)." },
+
+  "quizTabSubtitle": "Un quiz personnalisé sur ce chapitre",
+  "@quizTabSubtitle": { "description": "Sous-titre descriptif de l'onglet quiz chapitre." },
+
+  "quizTabStart": "Commencer le quiz",
+  "@quizTabStart": { "description": "CTA bouton pour démarrer le quiz du chapitre." },
+
+  "quizNeedHelp": "Besoin d'aide",
+  "@quizNeedHelp": { "description": "Bouton d'aide dans le quiz et titre du sheet de notion associée." },
+
+  "quizSeeResult": "Voir le résultat",
+  "@quizSeeResult": { "description": "Bouton CTA affiché à la dernière question du quiz pour naviguer vers les résultats." },
+
+  "quizNextQuestion": "Question suivante",
+  "@quizNextQuestion": { "description": "Bouton CTA entre les questions du quiz pour avancer à la suivante." },
+
+  "quizNoNotionHint": "Relis le cours pour retrouver cette notion.",
+  "@quizNoNotionHint": { "description": "Message affiché quand aucune notion n'est disponible pour l'aide dans le quiz." },
+
+  "quizQuestionsComingSoon": "Questions bientôt disponibles",
+  "@quizQuestionsComingSoon": { "description": "État vide affiché quand aucune question quiz n'est disponible pour cette leçon/chapitre." },
+
+  "subjectProgress": "Progression",
+  "@subjectProgress": { "description": "Label de la barre de progression dans le header d'une matière." },
+
+  "subjectChaptersLabel": "CHAPITRES",
+  "@subjectChaptersLabel": { "description": "Label eyebrow du nombre de chapitres dans le header matière (ex. '8 CHAPITRES')." },
+
+  "lessonLabel": "LEÇON {order}",
+  "@lessonLabel": {
+    "description": "Étiquette eyebrow du numéro de leçon dans la liste des leçons.",
+    "placeholders": { "order": { "type": "int" } }
+  },
+
+  "lessonLinkedQuiz": "Quiz lié",
+  "@lessonLinkedQuiz": { "description": "Indicateur dans la tuile de leçon signalant qu'un quiz est associé." },
+
+  "lessonReadingTime": "{duration} min de lecture",
+  "@lessonReadingTime": {
+    "description": "Pill de durée de lecture estimée d'une leçon.",
+    "placeholders": { "duration": { "type": "int" } }
+  },
+
+  "lessonPractice": "S'exercer",
+  "@lessonPractice": { "description": "CTA bouton pour lancer le quiz d'une leçon depuis la vue contenu." },
+
+  "lessonStartHere": "Commence par cette leçon",
+  "@lessonStartHere": { "description": "Suggestion affichée sur la première leçon non commencée d'un chapitre." },
+
+  "chapterLessonCount": "{count, plural, =1{1 leçon} other{{count} leçons}}",
+  "@chapterLessonCount": {
+    "description": "Nombre de leçons dans une card chapitre, avec pluriel.",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "chapterExerciseCount": "{count, plural, =1{1 exercice} other{{count} exercices}}",
+  "@chapterExerciseCount": {
+    "description": "Nombre d'exercices dans une card chapitre, avec pluriel.",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "chapterStudentsLabel": "élèves",
+  "@chapterStudentsLabel": { "description": "Suffixe du compteur d'élèves dans une card chapitre (ex. '1 234 élèves')." },
+
+  "chapterTabLessons": "Leçons",
+  "@chapterTabLessons": { "description": "Label de l'onglet Leçons dans la page chapitre." },
+
+  "chapterTabExercises": "Exercices",
+  "@chapterTabExercises": { "description": "Label de l'onglet Exercices dans la page chapitre." },
+
+  "lessonsEmptyLabel": "Aucune leçon disponible",
+  "@lessonsEmptyLabel": { "description": "Message affiché quand un chapitre ne contient aucune leçon." },
+
+  "chapterStudentsUsingCount": "{count} élèves utilisent ce chapitre",
+  "@chapterStudentsUsingCount": {
+    "description": "Pied de liste du tab Leçons : nombre d'élèves qui ont commencé ce chapitre.",
+    "placeholders": { "count": { "type": "int" } }
+  },
+
+  "chapterEyebrow": "{subjectAbbrev} · CHAPITRE {chapterOrder}",
+  "@chapterEyebrow": {
+    "description": "Texte eyebrow du header chapitre (ex. 'MATHS · CHAPITRE 3').",
+    "placeholders": {
+      "subjectAbbrev": { "type": "String" },
+      "chapterOrder": { "type": "int" }
+    }
+  },
+
+  "chapterExercisesComingSoon": "Exercices bientôt disponibles",
+  "@chapterExercisesComingSoon": { "description": "Placeholder du tab Exercices quand le contenu n'est pas encore disponible." },
+
+  "chaptersEmptyLabel": "Aucun chapitre disponible",
+  "@chaptersEmptyLabel": { "description": "Message vide quand une matière n'a pas encore de chapitres." },
+
+  "imageUnavailableLabel": "Image indisponible",
+  "@imageUnavailableLabel": { "description": "Message d'erreur affiché quand une image du contenu pédagogique ne peut pas être chargée." },
+
+  "audioUnavailableLabel": "Audio indisponible",
+  "@audioUnavailableLabel": { "description": "Message d'erreur affiché quand un bloc audio du contenu pédagogique ne peut pas être chargé." },
+
+  "calloutDefinition": "DÉFINITION",
+  "@calloutDefinition": { "description": "Label du callout pédagogique de type définition." },
+  "calloutTheorem": "THÉORÈME",
+  "@calloutTheorem": { "description": "Label du callout pédagogique de type théorème." },
+  "calloutDemonstration": "DÉMONSTRATION",
+  "@calloutDemonstration": { "description": "Label du callout pédagogique de type démonstration." },
+  "calloutProperty": "PROPRIÉTÉ",
+  "@calloutProperty": { "description": "Label du callout pédagogique de type propriété." },
+  "calloutMethod": "MÉTHODE",
+  "@calloutMethod": { "description": "Label du callout pédagogique de type méthode." },
+  "calloutWarning": "ATTENTION",
+  "@calloutWarning": { "description": "Label du callout pédagogique de type avertissement." },
+  "calloutRecap": "À RETENIR",
+  "@calloutRecap": { "description": "Label du callout pédagogique de type à retenir / résumé." },
+  "calloutExample": "EXEMPLE",
+  "@calloutExample": { "description": "Label du callout pédagogique de type exemple." },
+  "calloutFigure": "FIGURE",
+  "@calloutFigure": { "description": "Label du callout pédagogique de type figure." },
+  "calloutNote": "NOTE",
+  "@calloutNote": { "description": "Label par défaut pour un callout pédagogique de type inconnu." }
 }

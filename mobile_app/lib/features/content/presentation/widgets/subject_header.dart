@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class SubjectHeader extends StatelessWidget {
   const SubjectHeader({
@@ -10,7 +11,6 @@ class SubjectHeader extends StatelessWidget {
     required this.eyebrow,
     required this.overallProgress,
     required this.rank,
-    required this.isFr,
     required this.onBack,
   });
 
@@ -19,11 +19,11 @@ class SubjectHeader extends StatelessWidget {
   final String eyebrow;
   final int overallProgress;
   final int rank;
-  final bool isFr;
   final VoidCallback onBack;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Material(
       color: AppColors.primaryDark,
       child: SafeArea(
@@ -117,7 +117,7 @@ class SubjectHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    isFr ? 'Progression' : 'Progress',
+                    l10n.subjectProgress,
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.eyebrow,

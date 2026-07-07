@@ -500,5 +500,67 @@
   "fichePracticeChapter": "Practice this chapter",
   "ficheTitle": "Study Sheet",
   "ficheComingSoon": "Study sheet coming soon",
-  "tableLabel": "TABLE"
+  "tableLabel": "TABLE",
+
+  "quizTabTitle": "Test your knowledge",
+  "quizTabSubtitle": "A personalized quiz for this chapter",
+  "quizTabStart": "Start quiz",
+  "quizNeedHelp": "Need help",
+  "quizSeeResult": "See results",
+  "quizNextQuestion": "Next question",
+  "quizNoNotionHint": "Review the lesson to find this concept.",
+  "quizQuestionsComingSoon": "Questions coming soon",
+
+  "subjectProgress": "Progress",
+  "subjectChaptersLabel": "CHAPTERS",
+
+  "lessonLabel": "LESSON {order}",
+  "@lessonLabel": {
+    "placeholders": { "order": { "type": "int" } }
+  },
+  "lessonLinkedQuiz": "Linked quiz",
+  "lessonReadingTime": "{duration} min read",
+  "@lessonReadingTime": {
+    "placeholders": { "duration": { "type": "int" } }
+  },
+  "lessonPractice": "Practice",
+  "lessonStartHere": "Start with this lesson",
+
+  "chapterLessonCount": "{count, plural, =1{1 lesson} other{{count} lessons}}",
+  "@chapterLessonCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "chapterExerciseCount": "{count, plural, =1{1 exercise} other{{count} exercises}}",
+  "@chapterExerciseCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "chapterStudentsLabel": "students",
+  "chapterTabLessons": "Lessons",
+  "chapterTabExercises": "Exercises",
+  "lessonsEmptyLabel": "No lessons available",
+  "chapterStudentsUsingCount": "{count} students using this chapter",
+  "@chapterStudentsUsingCount": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "chapterEyebrow": "{subjectAbbrev} · CHAPTER {chapterOrder}",
+  "@chapterEyebrow": {
+    "placeholders": {
+      "subjectAbbrev": { "type": "String" },
+      "chapterOrder": { "type": "int" }
+    }
+  },
+  "chapterExercisesComingSoon": "Exercises coming soon",
+  "chaptersEmptyLabel": "No chapters available",
+  "imageUnavailableLabel": "Image unavailable",
+  "audioUnavailableLabel": "Audio unavailable",
+  "calloutDefinition": "DEFINITION",
+  "calloutTheorem": "THEOREM",
+  "calloutDemonstration": "DEMONSTRATION",
+  "calloutProperty": "PROPERTY",
+  "calloutMethod": "METHOD",
+  "calloutWarning": "WARNING",
+  "calloutRecap": "KEY TAKEAWAY",
+  "calloutExample": "EXAMPLE",
+  "calloutFigure": "FIGURE",
+  "calloutNote": "NOTE"
 }

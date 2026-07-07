@@ -3,23 +3,23 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class LessonCtaRow extends StatelessWidget {
   const LessonCtaRow({
     super.key,
-    required this.isFr,
     required this.subjectId,
     required this.chapterId,
     required this.lessonId,
   });
 
-  final bool isFr;
   final String subjectId;
   final String chapterId;
   final String lessonId;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
@@ -45,7 +45,7 @@ class LessonCtaRow extends StatelessWidget {
             ),
             SizedBox(width: AppSpacing.s2),
             Text(
-              isFr ? 'S\'exercer' : 'Practice',
+              l10n.lessonPractice,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.body,

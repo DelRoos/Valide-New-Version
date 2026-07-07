@@ -3,11 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_skeleton.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class QuizEmptyState extends StatelessWidget {
-  const QuizEmptyState({super.key, required this.isFr});
-
-  final bool isFr;
+  const QuizEmptyState({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +23,7 @@ class QuizEmptyState extends StatelessWidget {
             ),
             SizedBox(height: AppSpacing.s3),
             Text(
-              isFr
-                  ? 'Questions bientôt disponibles'
-                  : 'Questions coming soon',
+              AppLocalizations.of(context).quizQuestionsComingSoon,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.h3Compact,

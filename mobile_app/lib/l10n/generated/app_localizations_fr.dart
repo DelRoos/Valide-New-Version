@@ -1174,4 +1174,139 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get tableLabel => 'TABLEAU';
+
+  @override
+  String get quizTabTitle => 'Teste tes connaissances';
+
+  @override
+  String get quizTabSubtitle => 'Un quiz personnalisé sur ce chapitre';
+
+  @override
+  String get quizTabStart => 'Commencer le quiz';
+
+  @override
+  String get quizNeedHelp => 'Besoin d\'aide';
+
+  @override
+  String get quizSeeResult => 'Voir le résultat';
+
+  @override
+  String get quizNextQuestion => 'Question suivante';
+
+  @override
+  String get quizNoNotionHint => 'Relis le cours pour retrouver cette notion.';
+
+  @override
+  String get quizQuestionsComingSoon => 'Questions bientôt disponibles';
+
+  @override
+  String get subjectProgress => 'Progression';
+
+  @override
+  String get subjectChaptersLabel => 'CHAPITRES';
+
+  @override
+  String lessonLabel(int order) {
+    return 'LEÇON $order';
+  }
+
+  @override
+  String get lessonLinkedQuiz => 'Quiz lié';
+
+  @override
+  String lessonReadingTime(int duration) {
+    return '$duration min de lecture';
+  }
+
+  @override
+  String get lessonPractice => 'S\'exercer';
+
+  @override
+  String get lessonStartHere => 'Commence par cette leçon';
+
+  @override
+  String chapterLessonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count leçons',
+      one: '1 leçon',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chapterExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercices',
+      one: '1 exercice',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get chapterStudentsLabel => 'élèves';
+
+  @override
+  String get chapterTabLessons => 'Leçons';
+
+  @override
+  String get chapterTabExercises => 'Exercices';
+
+  @override
+  String get lessonsEmptyLabel => 'Aucune leçon disponible';
+
+  @override
+  String chapterStudentsUsingCount(int count) {
+    return '$count élèves utilisent ce chapitre';
+  }
+
+  @override
+  String chapterEyebrow(String subjectAbbrev, int chapterOrder) {
+    return '$subjectAbbrev · CHAPITRE $chapterOrder';
+  }
+
+  @override
+  String get chapterExercisesComingSoon => 'Exercices bientôt disponibles';
+
+  @override
+  String get chaptersEmptyLabel => 'Aucun chapitre disponible';
+
+  @override
+  String get imageUnavailableLabel => 'Image indisponible';
+
+  @override
+  String get audioUnavailableLabel => 'Audio indisponible';
+
+  @override
+  String get calloutDefinition => 'DÉFINITION';
+
+  @override
+  String get calloutTheorem => 'THÉORÈME';
+
+  @override
+  String get calloutDemonstration => 'DÉMONSTRATION';
+
+  @override
+  String get calloutProperty => 'PROPRIÉTÉ';
+
+  @override
+  String get calloutMethod => 'MÉTHODE';
+
+  @override
+  String get calloutWarning => 'ATTENTION';
+
+  @override
+  String get calloutRecap => 'À RETENIR';
+
+  @override
+  String get calloutExample => 'EXEMPLE';
+
+  @override
+  String get calloutFigure => 'FIGURE';
+
+  @override
+  String get calloutNote => 'NOTE';
 }

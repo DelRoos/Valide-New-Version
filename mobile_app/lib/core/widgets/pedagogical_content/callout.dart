@@ -113,9 +113,46 @@ class _Callout extends StatefulWidget {
 class _CalloutState extends State<_Callout> {
   bool _expanded = true;
 
+  static String _localizedLabel(BuildContext context, String type) {
+    final l10n = AppLocalizations.of(context);
+    switch (type) {
+      case 'definition':
+        return l10n.calloutDefinition;
+      case 'theoreme':
+      case 'theorem':
+        return l10n.calloutTheorem;
+      case 'demonstration':
+      case 'demo':
+      case 'preuve':
+        return l10n.calloutDemonstration;
+      case 'propriete':
+      case 'prop':
+      case 'property':
+        return l10n.calloutProperty;
+      case 'methode':
+      case 'method':
+        return l10n.calloutMethod;
+      case 'attention':
+      case 'warning':
+      case 'danger':
+        return l10n.calloutWarning;
+      case 'retenir':
+      case 'recap':
+        return l10n.calloutRecap;
+      case 'exemple':
+      case 'example':
+        return l10n.calloutExample;
+      case 'figure':
+        return l10n.calloutFigure;
+      default:
+        return l10n.calloutNote;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final s = _Callout._styleFor(widget.type);
+    final label = _localizedLabel(context, widget.type);
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.s3.h),
       child: Container(
@@ -155,7 +192,7 @@ class _CalloutState extends State<_Callout> {
                       SizedBox(width: AppSpacing.s2.w),
                       Expanded(
                         child: Text(
-                          s.label,
+                          label,
                           style: TextStyle(
                             fontFamily: AppTypography.fontFamily,
                             fontSize: AppFontSize.eyebrow,

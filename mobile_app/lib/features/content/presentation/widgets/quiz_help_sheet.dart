@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/pedagogical_content.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/notion_entity.dart';
 import '../../providers.dart';
 
@@ -10,10 +11,12 @@ class QuizHelpSheet extends ConsumerWidget {
   const QuizHelpSheet({super.key, required this.notionId, required this.isFr});
 
   final String? notionId;
+  // isFr : langue du contenu pédagogique (notion title/body), pas de l'UI.
   final bool isFr;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final screenHeight = MediaQuery.sizeOf(context).height;
 
     return Container(
@@ -60,7 +63,7 @@ class QuizHelpSheet extends ConsumerWidget {
                 ),
                 SizedBox(width: AppSpacing.s2),
                 Text(
-                  isFr ? 'Besoin d\'aide' : 'Need help',
+                  l10n.quizNeedHelp,
                   style: TextStyle(
                     fontFamily: AppTypography.fontFamily,
                     fontSize: AppFontSize.h3Compact,
@@ -76,11 +79,8 @@ class QuizHelpSheet extends ConsumerWidget {
           // ── Contenu notion ─────────────────────────────────────────────
           Flexible(
             child: notionId != null
-                ? QuizNotionContent(
-                    notionId: notionId!,
-                    isFr: isFr,
-                  )
-                : QuizNoNotionFallback(isFr: isFr),
+                ? QuizNotionContent(notionId: notionId!, isFr: isFr)
+                : const QuizNoNotionFallback(),
           ),
 
           // ── Bouton fermer ───────────────────────────────────────────────
@@ -104,7 +104,7 @@ class QuizHelpSheet extends ConsumerWidget {
                 ),
               ),
               child: Text(
-                isFr ? 'Fermer' : 'Close',
+                l10n.closeLabel,
                 style: TextStyle(
                   fontFamily: AppTypography.fontFamily,
                   fontSize: AppFontSize.body,
@@ -124,6 +124,7 @@ class QuizNotionContent extends ConsumerWidget {
   const QuizNotionContent({super.key, required this.notionId, required this.isFr});
 
   final String notionId;
+  // isFr : sélection langue du contenu notion (fr/en).
   final bool isFr;
 
   String get _langCode => isFr ? 'fr' : 'en';
@@ -136,9 +137,9 @@ class QuizNotionContent extends ConsumerWidget {
         padding: EdgeInsets.all(24),
         child: Center(child: CircularProgressIndicator()),
       ),
-      error: (_, _) => QuizNoNotionFallback(isFr: isFr),
+      error: (_, _) => const QuizNoNotionFallback(),
       data: (NotionEntity? notion) {
-        if (notion == null) return QuizNoNotionFallback(isFr: isFr);
+        if (notion == null) return const QuizNoNotionFallback();
         final title = notion.titleFor(_langCode);
         final content = notion.contentFor(_langCode);
         return SingleChildScrollView(
@@ -161,7 +162,7 @@ class QuizNotionContent extends ConsumerWidget {
               if (content.isNotEmpty)
                 PedagogicalContent(data: content)
               else
-                QuizNoNotionFallback(isFr: isFr),
+                const QuizNoNotionFallback(),
             ],
           ),
         );
@@ -171,18 +172,14 @@ class QuizNotionContent extends ConsumerWidget {
 }
 
 class QuizNoNotionFallback extends StatelessWidget {
-  const QuizNoNotionFallback({super.key, required this.isFr});
-
-  final bool isFr;
+  const QuizNoNotionFallback({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(AppSpacing.s4),
       child: Text(
-        isFr
-            ? 'Relis le cours pour retrouver cette notion.'
-            : 'Review the lesson to find this concept.',
+        AppLocalizations.of(context).quizNoNotionHint,
         style: TextStyle(
           fontFamily: AppTypography.fontFamily,
           fontSize: AppFontSize.body,

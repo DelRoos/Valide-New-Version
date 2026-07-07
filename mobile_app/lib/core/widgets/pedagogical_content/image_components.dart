@@ -95,7 +95,7 @@ class _ImageError extends StatelessWidget {
           SizedBox(width: AppSpacing.s2.w),
           Flexible(
             child: Text(
-              'Image indisponible',
+              AppLocalizations.of(context).imageUnavailableLabel,
               style: AppTypography.meta.copyWith(color: AppColors.dangerInk),
             ),
           ),
@@ -196,7 +196,7 @@ class _ImageBlockState extends State<_ImageBlock> {
           }
           if (snapshot.data == null) {
             AppLogger.w('[ImageBlock] SVG load failed url=${widget.url}');
-            return _buildError();
+            return _buildError(context);
           }
           return SvgPicture.memory(
             snapshot.data!,
@@ -215,12 +215,12 @@ class _ImageBlockState extends State<_ImageBlock> {
       progressIndicatorBuilder: (_, _, p) => _ImageProgress(progress: p.progress, height: 180.h),
       errorWidget: (context, url, err) {
         AppLogger.w('[ImageBlock] load failed url=$url', error: err);
-        return _buildError();
+        return _buildError(context);
       },
     );
   }
 
-  Widget _buildError() {
+  Widget _buildError(BuildContext context) {
     return Container(
       height: 180.h,
       alignment: Alignment.center,
@@ -237,7 +237,7 @@ class _ImageBlockState extends State<_ImageBlock> {
             onPressed: _retry,
             icon: Icon(Icons.refresh_rounded, size: AppIconSize.sm),
             label: Text(
-              'Réessayer',
+              AppLocalizations.of(context).retryLabel,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.meta,
@@ -375,7 +375,7 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
                 TextButton.icon(
                   onPressed: _retry,
                   icon: const Icon(Icons.refresh_rounded, color: Colors.white),
-                  label: const Text('Réessayer', style: TextStyle(color: Colors.white)),
+                  label: Text(AppLocalizations.of(context).retryLabel, style: const TextStyle(color: Colors.white)),
                 ),
               ],
             );
@@ -406,7 +406,7 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
             TextButton.icon(
               onPressed: _retry,
               icon: const Icon(Icons.refresh_rounded, color: Colors.white),
-              label: const Text('Réessayer', style: TextStyle(color: Colors.white)),
+              label: Text(AppLocalizations.of(context).retryLabel, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );
