@@ -22,6 +22,7 @@
 13. [Citations](#13-citations)
 14. [Bonnes pratiques](#14-bonnes-pratiques)
 15. [Exemple complet](#15-exemple-complet)
+16. [Fiche de révision de chapitre](#16-fiche-de-révision-de-chapitre)
 
 ---
 
@@ -667,6 +668,83 @@ caption=Titre de la vidéo
 Inline : `$formule$`  
 Display : `$$formule$$` (sur sa propre ligne)  
 Virgule décimale FR : `$3{,}14$`
+
+---
+
+---
+
+## 16. Fiche de révision de chapitre
+
+La **fiche de révision** est un document condensé associé à un **chapitre** (et non à une leçon). Elle est accessible depuis l'onglet « Fiche » de la page chapitre. Son objectif est de permettre à l'élève de réviser l'essentiel du chapitre en 2 à 5 minutes.
+
+### Où rédiger la fiche ?
+
+Dans `scripts/firebase_seed/data/seed_3e.json`, chaque chapitre peut porter un champ optionnel `fiche` :
+
+```json
+{
+  "chapterId": "francophone_math_3e_ch01",
+  "order": 1,
+  "title": { "fr": "Fonctions numériques", "en": "Numerical Functions" },
+  "fiche": {
+    "fr": "# Fonctions numériques — Révision\n\n...",
+    "en": "# Numerical Functions — Review\n\n..."
+  },
+  "lessons": [...]
+}
+```
+
+Le script `build_seed_3e.py` résout ce champ (chemin relatif vers un fichier `.md` ou contenu inline) puis `seed_3e_content.py` l'écrit dans `chapters/{chapterId}/fiche/main` sur Firestore.
+
+> Si le champ `fiche` est absent d'un chapitre, l'onglet « Fiche » affiche un état vide — c'est normal.
+
+### Structure recommandée d'une fiche
+
+```markdown
+# Titre du chapitre — Révision
+
+[Phrase d'introduction très courte — 1 ligne max]
+
+:::retenir
+- Point clé 1
+- Point clé 2
+- Point clé 3
+:::
+
+:::definition
+[Définition centrale du chapitre, reformulée de façon concise]
+:::
+
+:::propriete
+[Formule ou règle fondamentale à retenir]
+:::
+
+:::methode
+[Méthode type à l'examen, résumée en 3-5 étapes]
+:::
+
+:::attention
+[Erreur fréquente en examen]
+:::
+```
+
+### Contraintes
+
+| Critère | Règle |
+| --- | --- |
+| Bilingue | **Obligatoire** : champs `fr` et `en` tous les deux renseignés |
+| Longueur | 200–600 mots par langue (condensé, pas une copie des leçons) |
+| Blocs utilisés | Privilégier `:::retenir`, `:::definition`, `:::propriete`, `:::methode`, `:::attention` — éviter `:::demonstration` (trop long) et les blocs media (audio/video/image) |
+| LaTeX | Mêmes conventions que les leçons (`$inline$`, `$$display$$`, `$3{,}14$`) |
+| Titre H1 | Un seul `# Titre` en début de fiche |
+| Pas de H2 | Pas de sections `##` — une fiche est un bloc monolithique, pas un plan découpé |
+
+### Ce qu'une fiche N'est pas
+
+- ❌ Une copie des leçons (redondance inutile)
+- ❌ Un cours complet avec démonstrations
+- ❌ Un quiz ou un exercice
+- ❌ Un texte de cours avec `## Partie 1`, `## Partie 2`
 
 ---
 

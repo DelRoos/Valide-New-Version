@@ -95,7 +95,7 @@ class _ImageError extends StatelessWidget {
           SizedBox(width: AppSpacing.s2.w),
           Flexible(
             child: Text(
-              'Image indisponible',
+              AppLocalizations.of(context).imageUnavailableLabel,
               style: AppTypography.meta.copyWith(color: AppColors.dangerInk),
             ),
           ),
@@ -136,6 +136,9 @@ class _ImageBlock extends StatefulWidget {
 
 class _ImageBlockState extends State<_ImageBlock> {
   int _retryCount = 0;
+  // Future mémoïsé pour éviter de relancer le fetch à chaque rebuild.
+  // Réinitialisé dans _retry() pour forcer un nouveau téléchargement.
+  Future<Uint8List?>? _svgFuture;
 
   // Vérifie le chemin URI (sans query string) pour éviter les faux positifs
   // ex. Pythagorean.svg/220px-Pythagorean.svg.png → pas SVG (c'est un PNG).
@@ -144,9 +147,35 @@ class _ImageBlockState extends State<_ImageBlock> {
     return path.endsWith('.svg');
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (_isSvg) _svgFuture = _loadSvgBytes();
+  }
+
+  // Télécharge le SVG avec les headers corrects (User-Agent, Referer).
+  // Retourne null si HTTP ≠ 200 ou si la réponse est du HTML (page d'erreur
+  // Wikimedia / redirection) → affiche l'état d'erreur au lieu de crasher.
+  Future<Uint8List?> _loadSvgBytes() async {
+    try {
+      final response = await http.get(Uri.parse(widget.url), headers: _kMediaHeaders);
+      if (response.statusCode != 200) return null;
+      final ct = response.headers['content-type'] ?? '';
+      if (ct.contains('text/html')) return null;
+      return response.bodyBytes;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _retry() async {
     await CachedNetworkImage.evictFromCache(widget.url);
-    if (mounted) setState(() => _retryCount++);
+    if (mounted) {
+      setState(() {
+        _retryCount++;
+        if (_isSvg) _svgFuture = _loadSvgBytes();
+      });
+    }
   }
 
   void _openFullscreen(BuildContext context) {
@@ -159,30 +188,39 @@ class _ImageBlockState extends State<_ImageBlock> {
 
   Widget _buildContent() {
     if (_isSvg) {
-      return SvgPicture.network(
-        widget.url,
-        height: 180.h,
-        width: double.infinity,
-        fit: BoxFit.contain,
-        placeholderBuilder: (_) => _ImageProgress(height: 180.h),
+      return FutureBuilder<Uint8List?>(
+        future: _svgFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return _ImageProgress(height: 180.h);
+          }
+          if (snapshot.data == null) {
+            AppLogger.w('[ImageBlock] SVG load failed url=${widget.url}');
+            return _buildError(context);
+          }
+          return SvgPicture.memory(
+            snapshot.data!,
+            width: double.infinity,
+            fit: BoxFit.fitWidth,
+          );
+        },
       );
     }
     return CachedNetworkImage(
       key: ValueKey('${widget.url}_$_retryCount'),
       imageUrl: widget.url,
       httpHeaders: _kMediaHeaders,
-      height: 180.h,
       width: double.infinity,
-      fit: BoxFit.contain,
+      fit: BoxFit.fitWidth,
       progressIndicatorBuilder: (_, _, p) => _ImageProgress(progress: p.progress, height: 180.h),
       errorWidget: (context, url, err) {
         AppLogger.w('[ImageBlock] load failed url=$url', error: err);
-        return _buildError();
+        return _buildError(context);
       },
     );
   }
 
-  Widget _buildError() {
+  Widget _buildError(BuildContext context) {
     return Container(
       height: 180.h,
       alignment: Alignment.center,
@@ -199,7 +237,7 @@ class _ImageBlockState extends State<_ImageBlock> {
             onPressed: _retry,
             icon: Icon(Icons.refresh_rounded, size: AppIconSize.sm),
             label: Text(
-              'Réessayer',
+              AppLocalizations.of(context).retryLabel,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.meta,
@@ -284,29 +322,77 @@ class _FullscreenImageDialog extends StatefulWidget {
 
 class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
   int _retryCount = 0;
+  Future<Uint8List?>? _svgFuture;
 
   bool get _isSvg {
     final path = Uri.tryParse(widget.url)?.path.toLowerCase() ?? '';
     return path.endsWith('.svg');
   }
 
+  @override
+  void initState() {
+    super.initState();
+    if (_isSvg) _svgFuture = _loadSvgBytes();
+  }
+
+  Future<Uint8List?> _loadSvgBytes() async {
+    try {
+      final response = await http.get(Uri.parse(widget.url), headers: _kMediaHeaders);
+      if (response.statusCode != 200) return null;
+      final ct = response.headers['content-type'] ?? '';
+      if (ct.contains('text/html')) return null;
+      return response.bodyBytes;
+    } catch (_) {
+      return null;
+    }
+  }
+
   Future<void> _retry() async {
     await CachedNetworkImage.evictFromCache(widget.url);
-    if (mounted) setState(() => _retryCount++);
+    if (mounted) {
+      setState(() {
+        _retryCount++;
+        if (_isSvg) _svgFuture = _loadSvgBytes();
+      });
+    }
   }
 
   Widget _buildImage() {
     if (_isSvg) {
-      return SvgPicture.network(
-        widget.url,
-        fit: BoxFit.contain,
-        placeholderBuilder: (_) => _ImageProgress(height: 200.h, width: 200.w),
+      return FutureBuilder<Uint8List?>(
+        future: _svgFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState != ConnectionState.done) {
+            return _ImageProgress(height: 200.h, width: 200.w);
+          }
+          if (snapshot.data == null) {
+            AppLogger.w('[ImageBlock] fullscreen SVG load failed url=${widget.url}');
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.broken_image_outlined, color: Colors.white54, size: AppIconSize.xl5),
+                SizedBox(height: AppSpacing.s2.h),
+                TextButton.icon(
+                  onPressed: _retry,
+                  icon: const Icon(Icons.refresh_rounded, color: Colors.white),
+                  label: Text(AppLocalizations.of(context).retryLabel, style: const TextStyle(color: Colors.white)),
+                ),
+              ],
+            );
+          }
+          return SvgPicture.memory(
+            snapshot.data!,
+            width: double.infinity,
+            fit: BoxFit.contain,
+          );
+        },
       );
     }
     return CachedNetworkImage(
       key: ValueKey('${widget.url}_fs_$_retryCount'),
       imageUrl: widget.url,
       httpHeaders: _kMediaHeaders,
+      width: double.infinity,
       fit: BoxFit.contain,
       progressIndicatorBuilder: (_, _, p) =>
           _ImageProgress(progress: p.progress, height: 200.h, width: 200.w),
@@ -320,7 +406,7 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
             TextButton.icon(
               onPressed: _retry,
               icon: const Icon(Icons.refresh_rounded, color: Colors.white),
-              label: const Text('Réessayer', style: TextStyle(color: Colors.white)),
+              label: Text(AppLocalizations.of(context).retryLabel, style: const TextStyle(color: Colors.white)),
             ),
           ],
         );
@@ -342,7 +428,10 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
           child: InteractiveViewer(
             minScale: 0.5,
             maxScale: 6.0,
-            child: _buildImage(),
+            child: SizedBox(
+              width: MediaQuery.sizeOf(context).width,
+              child: _buildImage(),
+            ),
           ),
         ),
         Positioned(
@@ -392,9 +481,11 @@ class _FullscreenImageDialogState extends State<_FullscreenImageDialog> {
 
 // ── _VideoBlock ───────────────────────────────────────────────────────────────
 // Syntaxe : :::video\nurl=...\ncaption=...\n:::
-// Miniature YouTube auto-détectée. Tap → Chrome Custom Tab / SFSafariViewController (in-app).
+//
+// Mode YouTube : thumbnail → tap → player iFrame embarqué (autoplay).
+// Mode non-YouTube : thumbnail grise → tap → launchUrl inAppWebView.
 
-class _VideoBlock extends StatelessWidget {
+class _VideoBlock extends StatefulWidget {
   const _VideoBlock({required this.url, required this.caption});
 
   final String url;
@@ -422,110 +513,149 @@ class _VideoBlock extends StatelessWidget {
     return uri.queryParameters['v'];
   }
 
+  // hqdefault (480×360) est plus stable que mqdefault sur les vidéos récentes.
   static String? _youtubeThumbnail(String url) {
     final id = _youtubeId(url);
-    // mqdefault (320×180) disponible pour toute vidéo — hqdefault absent sur les vidéos peu vues.
-    return id != null ? 'https://img.youtube.com/vi/$id/mqdefault.jpg' : null;
+    return id != null ? 'https://img.youtube.com/vi/$id/hqdefault.jpg' : null;
   }
 
-  Future<void> _launch() async {
-    final uri = Uri.tryParse(url);
+  @override
+  State<_VideoBlock> createState() => _VideoBlockState();
+}
+
+class _VideoBlockState extends State<_VideoBlock> {
+  YoutubePlayerController? _controller;
+
+  @override
+  void dispose() {
+    _controller?.close();
+    super.dispose();
+  }
+
+  void _activate() {
+    final id = _VideoBlock._youtubeId(widget.url);
+    if (id == null) {
+      _launchExternal();
+      return;
+    }
+    setState(() {
+      _controller = YoutubePlayerController.fromVideoId(
+        videoId: id,
+        autoPlay: true,
+        params: const YoutubePlayerParams(
+          showFullscreenButton: true,
+          mute: false,
+        ),
+      );
+    });
+  }
+
+  Future<void> _launchExternal() async {
+    final uri = Uri.tryParse(widget.url);
     if (uri == null) return;
     try {
-      // inAppWebView → Chrome Custom Tab (Android) / SFSafariViewController (iOS)
-      // L'utilisateur reste dans l'app et peut revenir avec le bouton retour.
       await launchUrl(uri, mode: LaunchMode.inAppWebView);
     } catch (e) {
-      AppLogger.w('[VideoBlock] launchUrl failed url=$url', error: e);
+      AppLogger.w('[VideoBlock] launchUrl failed url=${widget.url}', error: e);
     }
+  }
+
+  Widget _buildCaption() {
+    if (widget.caption.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.s3.w, AppSpacing.s2.h, AppSpacing.s3.w, AppSpacing.s2.h,
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.smart_display_outlined, color: AppColors.primary, size: AppIconSize.sm),
+          SizedBox(width: AppSpacing.s2.w),
+          Expanded(
+            child: Text(
+              widget.caption,
+              style: TextStyle(
+                fontFamily: AppTypography.fontFamily,
+                fontSize: AppFontSize.meta,
+                fontWeight: FontWeight.w600,
+                color: AppColors.ink,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThumbnail() {
+    final thumbUrl = _VideoBlock._youtubeThumbnail(widget.url);
+    return GestureDetector(
+      onTap: _activate,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          if (thumbUrl != null)
+            CachedNetworkImage(
+              imageUrl: thumbUrl,
+              httpHeaders: _kMediaHeaders,
+              height: 180.h,
+              width: double.infinity,
+              fit: BoxFit.cover,
+              progressIndicatorBuilder: (_, _, p) =>
+                  _ImageProgress(progress: p.progress, height: 180.h),
+              errorWidget: (_, url, err) {
+                AppLogger.w('[VideoBlock] thumbnail failed url=$url', error: err);
+                return _buildThumbnailPlaceholder();
+              },
+            )
+          else
+            _buildThumbnailPlaceholder(),
+          Container(
+            padding: EdgeInsets.all(AppSpacing.s3.w),
+            decoration: const BoxDecoration(color: Colors.black45, shape: BoxShape.circle),
+            child: Icon(Icons.play_arrow_rounded, color: Colors.white, size: AppIconSize.xl5),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildThumbnailPlaceholder() {
+    return Container(
+      height: 180.h,
+      width: double.infinity,
+      color: AppColors.muted.withValues(alpha: 0.1),
+      child: Icon(Icons.smart_display_outlined, color: AppColors.muted, size: AppIconSize.xl5),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final thumbUrl = _youtubeThumbnail(url);
-
     return Padding(
       padding: EdgeInsets.symmetric(vertical: AppSpacing.s3.h),
-      child: GestureDetector(
-        onTap: _launch,
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(color: AppColors.border, width: AppBorderWidth.normal),
-          ),
-          clipBehavior: Clip.hardEdge,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  if (thumbUrl != null)
-                    CachedNetworkImage(
-                      imageUrl: thumbUrl,
-                      httpHeaders: _kMediaHeaders,
-                      height: 180.h,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      progressIndicatorBuilder: (_, _, p) =>
-                          _ImageProgress(progress: p.progress, height: 180.h),
-                      errorWidget: (_, url, err) {
-                        AppLogger.w('[VideoBlock] thumbnail failed url=$url', error: err);
-                        return Container(height: 180.h, color: AppColors.muted.withValues(alpha: 0.1));
-                      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: AppColors.border, width: AppBorderWidth.normal),
+        ),
+        clipBehavior: Clip.hardEdge,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 250),
+              child: _controller != null
+                  ? YoutubePlayer(
+                      key: const ValueKey('player'),
+                      controller: _controller!,
                     )
-                  else
-                    Container(
-                      height: 160.h,
-                      color: AppColors.muted.withValues(alpha: 0.1),
+                  : KeyedSubtree(
+                      key: const ValueKey('thumb'),
+                      child: _buildThumbnail(),
                     ),
-                  Container(
-                    padding: EdgeInsets.all(AppSpacing.s3.w),
-                    decoration: const BoxDecoration(
-                      color: Colors.black45,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      Icons.play_arrow_rounded,
-                      color: Colors.white,
-                      size: AppIconSize.xl5,
-                    ),
-                  ),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.s3.w,
-                  AppSpacing.s2.h,
-                  AppSpacing.s3.w,
-                  AppSpacing.s2.h,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.smart_display_outlined,
-                      color: AppColors.primary,
-                      size: AppIconSize.sm,
-                    ),
-                    SizedBox(width: AppSpacing.s2.w),
-                    Expanded(
-                      child: Text(
-                        caption.isNotEmpty ? caption : 'Voir la vidéo',
-                        style: TextStyle(
-                          fontFamily: AppTypography.fontFamily,
-                          fontSize: AppFontSize.meta,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.ink,
-                        ),
-                      ),
-                    ),
-                    Icon(Icons.play_circle_outline, color: AppColors.primary, size: AppIconSize.sm),
-                  ],
-                ),
-              ),
-            ],
-          ),
+            ),
+            _buildCaption(),
+          ],
         ),
       ),
     );

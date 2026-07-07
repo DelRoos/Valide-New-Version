@@ -2035,6 +2035,342 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ce profil n\'existe pas ou a été supprimé.'**
   String get publicProfileNotFoundSubtitle;
+
+  /// Titre de la page quiz (AppBar).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz'**
+  String get quizPageTitle;
+
+  /// Titre du dialog de confirmation de sortie du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter le quiz ?'**
+  String get quizQuitDialogTitle;
+
+  /// Corps du dialog de sortie du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta progression sera perdue.'**
+  String get quizQuitDialogBody;
+
+  /// Bouton danger pour quitter le quiz et perdre la progression.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get quizQuitLabel;
+
+  /// Compteur de progression affiché sous l'AppBar du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question {n} sur {total}'**
+  String quizProgressLabel(int n, int total);
+
+  /// Titre de résultat quand le score est ≥ 80%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Excellent !'**
+  String get quizResultExcellent;
+
+  /// Titre de résultat quand le score est entre 60% et 79%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bon travail !'**
+  String get quizResultGoodJob;
+
+  /// Titre de résultat quand le score est entre 40% et 59%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continue d\'étudier'**
+  String get quizResultKeepStudying;
+
+  /// Titre de résultat quand le score est inférieur à 40%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Revois le cours !'**
+  String get quizResultReviewLesson;
+
+  /// Badge pourcentage de réponses correctes sur l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'{pct}% de réponses correctes'**
+  String quizResultCorrectPct(int pct);
+
+  /// Bouton pour voir le détail des réponses depuis l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mes réponses'**
+  String get quizResultReviewAnswers;
+
+  /// Bouton principal pour rejouer le quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get quizResultReplay;
+
+  /// Lien retour vers la fiche/leçon depuis l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au cours'**
+  String get quizResultBackToCourse;
+
+  /// Titre de l'écran de revue des réponses du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes réponses — {score} / {total}'**
+  String quizReviewTitle(int score, int total);
+
+  /// Bouton pour revenir à l'écran de résultat depuis la revue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au résultat'**
+  String get quizReviewBack;
+
+  /// CTA en bas de la fiche de révision pour lancer le quiz du chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'exercer sur ce chapitre'**
+  String get fichePracticeChapter;
+
+  /// Titre du sheet plein écran de la fiche de révision.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de révision'**
+  String get ficheTitle;
+
+  /// État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche bientôt disponible'**
+  String get ficheComingSoon;
+
+  /// Étiquette affichée en en-tête d'un bloc tableau dans le contenu pédagogique.
+  ///
+  /// In fr, this message translates to:
+  /// **'TABLEAU'**
+  String get tableLabel;
+
+  /// Titre principal de l'onglet quiz chapitre (avant de démarrer).
+  ///
+  /// In fr, this message translates to:
+  /// **'Teste tes connaissances'**
+  String get quizTabTitle;
+
+  /// Sous-titre descriptif de l'onglet quiz chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Un quiz personnalisé sur ce chapitre'**
+  String get quizTabSubtitle;
+
+  /// CTA bouton pour démarrer le quiz du chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commencer le quiz'**
+  String get quizTabStart;
+
+  /// Bouton d'aide dans le quiz et titre du sheet de notion associée.
+  ///
+  /// In fr, this message translates to:
+  /// **'Besoin d\'aide'**
+  String get quizNeedHelp;
+
+  /// Bouton CTA affiché à la dernière question du quiz pour naviguer vers les résultats.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir le résultat'**
+  String get quizSeeResult;
+
+  /// Bouton CTA entre les questions du quiz pour avancer à la suivante.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question suivante'**
+  String get quizNextQuestion;
+
+  /// Message affiché quand aucune notion n'est disponible pour l'aide dans le quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Relis le cours pour retrouver cette notion.'**
+  String get quizNoNotionHint;
+
+  /// État vide affiché quand aucune question quiz n'est disponible pour cette leçon/chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Questions bientôt disponibles'**
+  String get quizQuestionsComingSoon;
+
+  /// Label de la barre de progression dans le header d'une matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'Progression'**
+  String get subjectProgress;
+
+  /// Label eyebrow du nombre de chapitres dans le header matière (ex. '8 CHAPITRES').
+  ///
+  /// In fr, this message translates to:
+  /// **'CHAPITRES'**
+  String get subjectChaptersLabel;
+
+  /// Étiquette eyebrow du numéro de leçon dans la liste des leçons.
+  ///
+  /// In fr, this message translates to:
+  /// **'LEÇON {order}'**
+  String lessonLabel(int order);
+
+  /// Indicateur dans la tuile de leçon signalant qu'un quiz est associé.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz lié'**
+  String get lessonLinkedQuiz;
+
+  /// Pill de durée de lecture estimée d'une leçon.
+  ///
+  /// In fr, this message translates to:
+  /// **'{duration} min de lecture'**
+  String lessonReadingTime(int duration);
+
+  /// CTA bouton pour lancer le quiz d'une leçon depuis la vue contenu.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'exercer'**
+  String get lessonPractice;
+
+  /// Suggestion affichée sur la première leçon non commencée d'un chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Commence par cette leçon'**
+  String get lessonStartHere;
+
+  /// Nombre de leçons dans une card chapitre, avec pluriel.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 leçon} other{{count} leçons}}'**
+  String chapterLessonCount(int count);
+
+  /// Nombre d'exercices dans une card chapitre, avec pluriel.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{1 exercice} other{{count} exercices}}'**
+  String chapterExerciseCount(int count);
+
+  /// Suffixe du compteur d'élèves dans une card chapitre (ex. '1 234 élèves').
+  ///
+  /// In fr, this message translates to:
+  /// **'élèves'**
+  String get chapterStudentsLabel;
+
+  /// Label de l'onglet Leçons dans la page chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Leçons'**
+  String get chapterTabLessons;
+
+  /// Label de l'onglet Exercices dans la page chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exercices'**
+  String get chapterTabExercises;
+
+  /// Message affiché quand un chapitre ne contient aucune leçon.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune leçon disponible'**
+  String get lessonsEmptyLabel;
+
+  /// Pied de liste du tab Leçons : nombre d'élèves qui ont commencé ce chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count} élèves utilisent ce chapitre'**
+  String chapterStudentsUsingCount(int count);
+
+  /// Texte eyebrow du header chapitre (ex. 'MATHS · CHAPITRE 3').
+  ///
+  /// In fr, this message translates to:
+  /// **'{subjectAbbrev} · CHAPITRE {chapterOrder}'**
+  String chapterEyebrow(String subjectAbbrev, int chapterOrder);
+
+  /// Placeholder du tab Exercices quand le contenu n'est pas encore disponible.
+  ///
+  /// In fr, this message translates to:
+  /// **'Exercices bientôt disponibles'**
+  String get chapterExercisesComingSoon;
+
+  /// Message vide quand une matière n'a pas encore de chapitres.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun chapitre disponible'**
+  String get chaptersEmptyLabel;
+
+  /// Message d'erreur affiché quand une image du contenu pédagogique ne peut pas être chargée.
+  ///
+  /// In fr, this message translates to:
+  /// **'Image indisponible'**
+  String get imageUnavailableLabel;
+
+  /// Message d'erreur affiché quand un bloc audio du contenu pédagogique ne peut pas être chargé.
+  ///
+  /// In fr, this message translates to:
+  /// **'Audio indisponible'**
+  String get audioUnavailableLabel;
+
+  /// Label du callout pédagogique de type définition.
+  ///
+  /// In fr, this message translates to:
+  /// **'DÉFINITION'**
+  String get calloutDefinition;
+
+  /// Label du callout pédagogique de type théorème.
+  ///
+  /// In fr, this message translates to:
+  /// **'THÉORÈME'**
+  String get calloutTheorem;
+
+  /// Label du callout pédagogique de type démonstration.
+  ///
+  /// In fr, this message translates to:
+  /// **'DÉMONSTRATION'**
+  String get calloutDemonstration;
+
+  /// Label du callout pédagogique de type propriété.
+  ///
+  /// In fr, this message translates to:
+  /// **'PROPRIÉTÉ'**
+  String get calloutProperty;
+
+  /// Label du callout pédagogique de type méthode.
+  ///
+  /// In fr, this message translates to:
+  /// **'MÉTHODE'**
+  String get calloutMethod;
+
+  /// Label du callout pédagogique de type avertissement.
+  ///
+  /// In fr, this message translates to:
+  /// **'ATTENTION'**
+  String get calloutWarning;
+
+  /// Label du callout pédagogique de type à retenir / résumé.
+  ///
+  /// In fr, this message translates to:
+  /// **'À RETENIR'**
+  String get calloutRecap;
+
+  /// Label du callout pédagogique de type exemple.
+  ///
+  /// In fr, this message translates to:
+  /// **'EXEMPLE'**
+  String get calloutExample;
+
+  /// Label du callout pédagogique de type figure.
+  ///
+  /// In fr, this message translates to:
+  /// **'FIGURE'**
+  String get calloutFigure;
+
+  /// Label par défaut pour un callout pédagogique de type inconnu.
+  ///
+  /// In fr, this message translates to:
+  /// **'NOTE'**
+  String get calloutNote;
 }
 
 class _AppLocalizationsDelegate

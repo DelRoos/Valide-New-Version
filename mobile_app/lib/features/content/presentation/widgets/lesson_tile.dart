@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/lesson_entity.dart';
 
 enum LessonProgressState { done, current, locked }
@@ -20,7 +21,7 @@ class LessonTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFr = languageCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     final hasDuration = lesson.durationMinutes > 0;
     final isCurrent = state == LessonProgressState.current;
 
@@ -50,7 +51,7 @@ class LessonTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    isFr ? 'LEÇON ${lesson.order}' : 'LESSON ${lesson.order}',
+                    l10n.lessonLabel(lesson.order),
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.eyebrow,
@@ -90,7 +91,7 @@ class LessonTile extends StatelessWidget {
                         SizedBox(width: AppSpacing.s1),
                         Flexible(
                           child: Text(
-                            isFr ? 'Quiz lié' : 'Linked quiz',
+                            l10n.lessonLinkedQuiz,
                             style: TextStyle(
                               fontFamily: AppTypography.fontFamily,
                               fontSize: AppFontSize.meta,

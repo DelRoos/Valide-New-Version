@@ -271,6 +271,12 @@ class AccountLinkingRepositoryFirebaseImpl implements AccountLinkingRepository {
       patch['authProvider'] = authProvider;
       patch['isAnonymous'] = false;
     }
+    AppLogger.d(
+      '_persistIdentity: provider=$authProvider '
+      'displayName=${displayName == null ? "null" : displayName.isEmpty ? "(empty→skipped)" : "(set→written)"} '
+      'photoUrl=${photoUrl == null ? "null" : photoUrl.isEmpty ? "(empty→skipped)" : "(set)"} '
+      'isAnonymous→${authProvider != null ? "false" : "unchanged"}',
+    );
     try {
       // set(merge:true) au lieu de update() : tolère un doc inexistant
       // (cas linkGoogle au step 5 fresh, sans flush prealable).

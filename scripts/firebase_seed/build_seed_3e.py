@@ -59,9 +59,38 @@ _FACT_TOKENS = [
     "historique", "culturel", "géographique",
 ]
 
+# Mapping type interne → type callout Firestore (= nom du bloc PedagogicalContent).
+# Ces valeurs sont reconnues par _Callout._styleFor() dans l'app Flutter.
+# Règle : le type stocké en Firestore = le nom du bloc :::type correspondant.
+_INTERNAL_TO_CALLOUT: dict[str, str] = {
+    "definition": "definition",  # :::definition → icône article, fond bleu primaire
+    "rule":       "retenir",     # :::retenir    → icône ampoule, fond orange
+    "method":     "methode",     # :::methode    → icône liste numérotée, fond orange
+    "formula":    "retenir",     # :::retenir    → formules traitées comme règles à retenir
+    "property":   "propriete",   # :::propriete  → icône check, fond vert
+    "fact":       "retenir",     # :::retenir    → faits culturels/géographiques
+}
+
+
+def _wrap_pedagogical(content_dict: dict, callout_type: str) -> dict:
+    """Enveloppe le contenu dans un bloc :::callout_type::: pour PedagogicalContent.
+
+    Le callout_type est directement le nom du bloc (ex. 'retenir', 'methode') —
+    identique au type stocké dans le champ Firestore notion.type.
+    """
+    def wrap(text: str) -> str:
+        text = text.strip()
+        return f":::{callout_type}\n{text}\n:::" if text else text
+
+    return {"fr": wrap(content_dict.get("fr", "")), "en": wrap(content_dict.get("en", ""))}
+
 
 def infer_notion_type(title_fr: str, content_fr: str) -> str:
-    """Infère le type de notion depuis son titre et son contenu (FR)."""
+    """Infère le type interne de notion depuis son titre et son contenu (FR).
+
+    Retourne un type interne (rule, method, formula, property, fact, definition).
+    Convertir ensuite via _INTERNAL_TO_CALLOUT pour obtenir le type Firestore.
+    """
     text = (title_fr + " " + content_fr).lower()
 
     if any(tok in text for tok in _RULE_TOKENS):
@@ -146,31 +175,54 @@ def _get_order(obj: dict) -> int:
     return int(obj.get("sortOrder") or obj.get("order") or 1)
 
 
-def _build_notions(raw_notions: list, lesson_id: str) -> list[dict]:
-    """Transforme une liste de notions brutes vers le schéma v2."""
+def _build_notions(raw_notions: list, lesson_id: str, seen_notion_ids: set | None = None) -> list[dict]:
+    """Transforme une liste de notions brutes vers le schéma v2.
+
+    Le champ 'type' stocké dans la sortie JSON (et donc dans Firestore) est le
+    type callout (ex. 'retenir', 'methode', 'propriete') — pas le type interne
+    (ex. 'rule', 'method', 'property'). Ceci aligne avec _Callout._styleFor()
+    dans l'app Flutter.
+
+    seen_notion_ids : set global passé par référence pour détecter et déduplicer
+    les notionId partagés entre leçons. En cas de collision, on ajoute le suffixe
+    de la leçon (2 derniers segments de lesson_id, ex. '01_02').
+    """
+    if seen_notion_ids is None:
+        seen_notion_ids = set()
+
+    lesson_suffix = "_".join(lesson_id.split("_")[-2:])
+
     notions_out = []
     for idx, n in enumerate(raw_notions, start=1):
         n_id = _get_id(n, "notionId", "id")
         if not n_id:
             continue
 
-        # Support format A (title only) et format B (term + definition)
+        # Déduplication cross-leçons : si l'ID est déjà pris, on le suffixe
+        if n_id in seen_notion_ids:
+            n_id = f"{n_id}_{lesson_suffix}"
+        seen_notion_ids.add(n_id)
+
+        # Support format A (title only), format B (term + definition) et format C (title + definition)
         if "term" in n:
             title = ensure_bilingual(n["term"])
-            content = ensure_bilingual(n.get("definition", {}))
+            raw_content = ensure_bilingual(n.get("definition", {}))
         elif "title" in n:
             title = ensure_bilingual(n["title"])
-            content = ensure_bilingual(n.get("content", {}))
+            # Certains formats utilisent "definition" plutôt que "content"
+            raw_content = ensure_bilingual(n.get("content") or n.get("definition", {}))
         else:
             title = {"fr": n_id, "en": n_id}
-            content = {"fr": "", "en": ""}
+            raw_content = {"fr": "", "en": ""}
 
-        notion_type = infer_notion_type(title["fr"], content["fr"])
+        internal_type = infer_notion_type(title["fr"], raw_content["fr"])
+        callout_type = _INTERNAL_TO_CALLOUT.get(internal_type, "retenir")
+        content = _wrap_pedagogical(raw_content, callout_type)
 
         notions_out.append({
             "notionId": n_id,
             "order": int(n.get("order", idx)),
-            "type": notion_type,
+            "type": callout_type,  # Type callout aligné avec _Callout._styleFor()
             "title": title,
             "content": content,
         })
@@ -208,7 +260,6 @@ def _build_quizzes(raw_quizzes: list, lesson_id: str) -> list[dict]:
                 "id": q.get("id", ""),
                 "notionId": q.get("notionId", None),  # null → à renseigner manuellement
                 "text": text,
-                "type": "mcq",
                 "options": options,
                 "correctIndex": int(q.get("correctIndex", 0)),
                 "explanation": explanation,
@@ -258,6 +309,7 @@ def transform_subject(json_path: Path) -> dict:
             lessons_by_id[l_id] = l
 
     # ── Construire les chapitres
+    seen_notion_ids: set[str] = set()  # déduplication cross-leçons dans ce sujet
     chapters_out = []
     for ch_raw in raw.get("chapters", []):
         ch_id = _get_id(ch_raw, "id", "chapterId")
@@ -288,6 +340,8 @@ def transform_subject(json_path: Path) -> dict:
                 continue
 
             l_title = ensure_bilingual(l_raw.get("title", {}))
+            l_subtitle_raw = l_raw.get("subtitle")
+            l_subtitle = ensure_bilingual(l_subtitle_raw) if l_subtitle_raw else None
             l_duration = int(
                 l_raw.get("duration")
                 or l_raw.get("durationMinutes")
@@ -310,13 +364,13 @@ def transform_subject(json_path: Path) -> dict:
                     if _get_id(n, "id", "notionId") in notion_ids_set
                 ]
 
-            notions_out = _build_notions(raw_notions, l_id)
+            notions_out = _build_notions(raw_notions, l_id, seen_notion_ids)
 
             # Quizzes
             raw_quizzes = flat_quizzes_by_lesson.get(l_id, [])
             quizzes_out = _build_quizzes(raw_quizzes, l_id)
 
-            lessons_out.append({
+            lesson_entry: dict = {
                 "lessonId": l_id,
                 "order": _get_order(l_raw),
                 "title": l_title,
@@ -324,18 +378,30 @@ def transform_subject(json_path: Path) -> dict:
                 "content": l_content,
                 "notions": notions_out,
                 "quizzes": quizzes_out,
-            })
+            }
+            if l_subtitle:
+                lesson_entry["subtitle"] = l_subtitle
+
+            lessons_out.append(lesson_entry)
 
         # Trier les leçons par order pour garantir l'ordre croissant
         lessons_out.sort(key=lambda l: l["order"])
 
-        chapters_out.append({
+        # Fiche de révision optionnelle sur le chapitre
+        fiche_raw = ch_raw.get("fiche")
+        ch_fiche = resolve_content(fiche_raw, base_dir) if fiche_raw else None
+
+        ch_out: dict = {
             "chapterId": ch_id,
             "order": _get_order(ch_raw),
             "title": ch_title,
             "description": ch_desc,
             "lessons": lessons_out,
-        })
+        }
+        if ch_fiche is not None:
+            ch_out["fiche"] = ch_fiche
+
+        chapters_out.append(ch_out)
 
     chapters_out.sort(key=lambda ch: ch["order"])
 

@@ -18,6 +18,10 @@ import '../../features/content/presentation/pages/courses_page.dart';
 import '../../features/content/presentation/pages/subject_detail_page.dart';
 import '../../features/content/presentation/pages/chapter_page.dart';
 import '../../features/content/presentation/pages/lesson_page.dart';
+import '../../features/content/presentation/pages/quiz_page.dart';
+import '../../features/content/presentation/pages/quiz_extra.dart';
+import '../../features/content/presentation/pages/quiz_result_page.dart';
+import '../../features/content/presentation/pages/quiz_review_page.dart';
 import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/content_showcase_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
@@ -125,6 +129,30 @@ final routerProvider = Provider<GoRouter>((ref) {
               chapterId: state.pathParameters['chapterId']!,
             ),
             routes: [
+              // Quiz chapitre — /subject/:id/chapter/:id/quiz
+              GoRoute(
+                path: AppRoutes.quizSegment,
+                builder: (context, state) => QuizPage(
+                  subjectId: state.pathParameters['subjectId']!,
+                  chapterId: state.pathParameters['chapterId']!,
+                ),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.quizResultSegment,
+                    builder: (context, state) => QuizResultPage(
+                      subjectId: state.pathParameters['subjectId']!,
+                      chapterId: state.pathParameters['chapterId']!,
+                      extra: state.extra as QuizResultExtra,
+                    ),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.quizReviewSegment,
+                    builder: (context, state) => QuizReviewPage(
+                      extra: state.extra as QuizResultExtra,
+                    ),
+                  ),
+                ],
+              ),
               GoRoute(
                 path: AppRoutes.lessonSegment,
                 builder: (context, state) => LessonPage(
@@ -132,6 +160,34 @@ final routerProvider = Provider<GoRouter>((ref) {
                   chapterId: state.pathParameters['chapterId']!,
                   lessonId: state.pathParameters['lessonId']!,
                 ),
+                routes: [
+                  // Quiz leçon — /subject/:id/chapter/:id/lesson/:id/quiz
+                  GoRoute(
+                    path: AppRoutes.quizSegment,
+                    builder: (context, state) => QuizPage(
+                      subjectId: state.pathParameters['subjectId']!,
+                      chapterId: state.pathParameters['chapterId']!,
+                      lessonId: state.pathParameters['lessonId']!,
+                    ),
+                    routes: [
+                      GoRoute(
+                        path: AppRoutes.quizResultSegment,
+                        builder: (context, state) => QuizResultPage(
+                          subjectId: state.pathParameters['subjectId']!,
+                          chapterId: state.pathParameters['chapterId']!,
+                          lessonId: state.pathParameters['lessonId'],
+                          extra: state.extra as QuizResultExtra,
+                        ),
+                      ),
+                      GoRoute(
+                        path: AppRoutes.quizReviewSegment,
+                        builder: (context, state) => QuizReviewPage(
+                          extra: state.extra as QuizResultExtra,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),
@@ -269,10 +325,24 @@ String? evaluateRedirect({
   //    (auth delete failed apres Firestore delete), ne pas rediriger — sinon
   //    SuccessCelebrationStepBody (step 9 en memoire) se monterait et recrée
   //    le doc Firestore supprime (Bug B 2026-06-29).
+  final completionLabel = profileCompletion.maybeWhen(
+    data: (s) => s.name,
+    orElse: () => profileCompletion.isLoading ? 'loading' : 'error',
+  );
+  AppLogger.d(
+    'redirect[check4]: location=$location '
+    'upgradeInProgress=$upgradeInProgress '
+    'completion=$completionLabel '
+    'deletion=${deletionStatus?.runtimeType}',
+  );
   if (!upgradeInProgress &&
       !location.startsWith(AppRoutes.onboarding) &&
       location != AppRoutes.catalogueWaiting) {
+    // Reauthing inclus : pendant la réauth Google pour suppression, le doc Firestore
+    // peut émettre null (suppression en cours) ce qui déclencherait un redirect
+    // spurieux vers /onboarding.
     final isDeletionActive = deletionStatus is AccountDeletionStatusDeleting ||
+        deletionStatus is AccountDeletionStatusReauthing ||
         deletionStatus is AccountDeletionStatusError;
     if (!isDeletionActive) {
       final shouldBlock = profileCompletion.when(
@@ -281,12 +351,8 @@ String? evaluateRedirect({
         error: (_, _) => true,
       );
       if (shouldBlock) {
-        final stateLabel = profileCompletion.maybeWhen(
-          data: (s) => s.name,
-          orElse: () => profileCompletion.isLoading ? 'loading' : 'error',
-        );
         AppLogger.d(
-            'redirect: guard $location → /onboarding (state=$stateLabel)');
+            'redirect: guard $location → /onboarding (state=$completionLabel)');
         return AppRoutes.onboarding;
       }
     }

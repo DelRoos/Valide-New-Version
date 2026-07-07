@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_skeleton.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
 import '../../domain/entities/lesson_entity.dart';
 import '../../providers.dart';
@@ -96,12 +97,11 @@ class _LessonContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (lessons.isEmpty) {
       return Center(
         child: Text(
-          languageCode == 'fr'
-              ? 'Aucune leçon disponible'
-              : 'No lessons available',
+          l10n.lessonsEmptyLabel,
           style: TextStyle(
             fontFamily: AppTypography.fontFamily,
             fontSize: AppFontSize.body,
@@ -187,7 +187,7 @@ class _RecommendedCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isFr = languageCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     final subtitle = lesson.subtitleFor(languageCode);
 
     return GestureDetector(
@@ -216,7 +216,7 @@ class _RecommendedCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    isFr ? 'Commence par cette leçon' : 'Start with this lesson',
+                    l10n.lessonStartHere,
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.meta,
@@ -285,9 +285,7 @@ class _StudentCountFooter extends StatelessWidget {
           ),
           SizedBox(width: AppSpacing.s1),
           Text(
-            languageCode == 'fr'
-                ? '$count élèves utilisent ce chapitre'
-                : '$count students using this chapter',
+            AppLocalizations.of(context).chapterStudentsUsingCount(count),
             style: TextStyle(
               fontFamily: AppTypography.fontFamily,
               fontSize: AppFontSize.meta,

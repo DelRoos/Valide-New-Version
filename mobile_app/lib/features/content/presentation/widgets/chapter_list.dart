@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/chapter_entity.dart';
 import 'chapter_card.dart';
 
@@ -23,7 +24,7 @@ class ChapterList extends StatelessWidget {
     if (chapters.isEmpty) {
       return Center(
         child: Text(
-          languageCode == 'fr' ? 'Aucun chapitre disponible' : 'No chapters available',
+          AppLocalizations.of(context).chaptersEmptyLabel,
           style: TextStyle(
             fontFamily: AppTypography.fontFamily,
             fontSize: AppFontSize.body,

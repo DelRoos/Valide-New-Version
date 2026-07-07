@@ -371,6 +371,15 @@ Et pour les modes (`Fast` / `Coaching`) :
 3. **Pas de magic numbers** — constantes nommées dans `core/theme/tokens.dart` ou config feature.
 4. **Tests obligatoires** : toute logique métier nouvelle (cas succès + ≥ 1 cas d'échec). Tout bug corrigé = test de non-régression.
 5. **Pas de PR sans test** sauf cas trivial (rename, doc, dep bump).
+6. **Zéro string UI hardcodée — tout passe par `AppLocalizations`.** Aucune chaîne visible à l'écran ne peut être écrite en dur dans un widget, même pour une seule langue. Règle absolue :
+   - ❌ `isFr ? 'Fermer' : 'Close'` — interdit même si court.
+   - ❌ `languageCode == 'fr' ? 'Progression' : 'Progress'` — interdit.
+   - ✅ `AppLocalizations.of(context).closeLabel` — seule forme autorisée.
+   - **`isFr` / `languageCode` ne servent qu'à sélectionner la langue du contenu Firestore** (`titleFor(lang)`, `optionsFor(lang)`, etc.) — jamais pour choisir un libellé UI.
+   - Toute nouvelle clé ARB est ajoutée dans `app_fr.arb` ET `app_en.arb` dans la même PR, puis `flutter gen-l10n` est relancé.
+   - Les pluriels utilisent le format ICU : `{count, plural, =1{1 leçon} other{{count} leçons}}`.
+   - `bmad-create-story` : lister explicitement dans les Dev Notes les clés ARB nouvelles ou réutilisées.
+   - `bmad-dev-story` : checkpoint avant push PR — vérifier qu'aucun `isFr ?` résiduel ne traîne dans la couche présentation.
 
 ---
 

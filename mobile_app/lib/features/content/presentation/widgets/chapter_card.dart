@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/chapter_entity.dart';
 
 class ChapterCard extends StatelessWidget {
@@ -21,28 +22,26 @@ class ChapterCard extends StatelessWidget {
     return '$t $r';
   }
 
-  String _countsText() {
-    final isFr = languageCode == 'fr';
+  String _countsText(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final parts = <String>[];
     if (chapter.lessonCount > 0) {
-      final n = chapter.lessonCount;
-      parts.add(isFr ? '$n leçon${n > 1 ? 's' : ''}' : '$n lesson${n > 1 ? 's' : ''}');
+      parts.add(l10n.chapterLessonCount(chapter.lessonCount));
     }
     if (chapter.quizCount > 0) {
       parts.add('${chapter.quizCount} quiz');
     }
     if (chapter.exerciseCount > 0) {
-      final n = chapter.exerciseCount;
-      parts.add(isFr ? '$n exercice${n > 1 ? 's' : ''}' : '$n exercise${n > 1 ? 's' : ''}');
+      parts.add(l10n.chapterExerciseCount(chapter.exerciseCount));
     }
     return parts.join(' · ');
   }
 
   @override
   Widget build(BuildContext context) {
-    final isFr = languageCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     final title = chapter.titleFor(languageCode);
-    final countsText = _countsText();
+    final countsText = _countsText(context);
     final pct = chapter.progressPercent.clamp(0, 100);
     final isDone = pct >= 100;
     final isStarted = pct > 0 && pct < 100;
@@ -143,7 +142,7 @@ class ChapterCard extends StatelessWidget {
                         ),
                         SizedBox(width: AppSpacing.s1),
                         Text(
-                          '${_fmtCount(chapter.studentCount)} ${isFr ? 'élèves' : 'students'}',
+                          '${_fmtCount(chapter.studentCount)} ${l10n.chapterStudentsLabel}',
                           style: TextStyle(
                             fontFamily: AppTypography.fontFamily,
                             fontSize: AppFontSize.meta,

@@ -1105,4 +1105,202 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get publicProfileNotFoundSubtitle =>
       'This profile doesn\'t exist or has been deleted.';
+
+  @override
+  String get quizPageTitle => 'Quiz';
+
+  @override
+  String get quizQuitDialogTitle => 'Quit quiz?';
+
+  @override
+  String get quizQuitDialogBody => 'Your progress will be lost.';
+
+  @override
+  String get quizQuitLabel => 'Quit';
+
+  @override
+  String quizProgressLabel(int n, int total) {
+    return 'Question $n of $total';
+  }
+
+  @override
+  String get quizResultExcellent => 'Excellent!';
+
+  @override
+  String get quizResultGoodJob => 'Good job!';
+
+  @override
+  String get quizResultKeepStudying => 'Keep studying';
+
+  @override
+  String get quizResultReviewLesson => 'Review the lesson!';
+
+  @override
+  String quizResultCorrectPct(int pct) {
+    return '$pct% correct';
+  }
+
+  @override
+  String get quizResultReviewAnswers => 'Review answers';
+
+  @override
+  String get quizResultReplay => 'Play again';
+
+  @override
+  String get quizResultBackToCourse => 'Back to lesson';
+
+  @override
+  String quizReviewTitle(int score, int total) {
+    return 'My answers — $score / $total';
+  }
+
+  @override
+  String get quizReviewBack => 'Back to result';
+
+  @override
+  String get fichePracticeChapter => 'Practice this chapter';
+
+  @override
+  String get ficheTitle => 'Study Sheet';
+
+  @override
+  String get ficheComingSoon => 'Study sheet coming soon';
+
+  @override
+  String get tableLabel => 'TABLE';
+
+  @override
+  String get quizTabTitle => 'Test your knowledge';
+
+  @override
+  String get quizTabSubtitle => 'A personalized quiz for this chapter';
+
+  @override
+  String get quizTabStart => 'Start quiz';
+
+  @override
+  String get quizNeedHelp => 'Need help';
+
+  @override
+  String get quizSeeResult => 'See results';
+
+  @override
+  String get quizNextQuestion => 'Next question';
+
+  @override
+  String get quizNoNotionHint => 'Review the lesson to find this concept.';
+
+  @override
+  String get quizQuestionsComingSoon => 'Questions coming soon';
+
+  @override
+  String get subjectProgress => 'Progress';
+
+  @override
+  String get subjectChaptersLabel => 'CHAPTERS';
+
+  @override
+  String lessonLabel(int order) {
+    return 'LESSON $order';
+  }
+
+  @override
+  String get lessonLinkedQuiz => 'Linked quiz';
+
+  @override
+  String lessonReadingTime(int duration) {
+    return '$duration min read';
+  }
+
+  @override
+  String get lessonPractice => 'Practice';
+
+  @override
+  String get lessonStartHere => 'Start with this lesson';
+
+  @override
+  String chapterLessonCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count lessons',
+      one: '1 lesson',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String chapterExerciseCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count exercises',
+      one: '1 exercise',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get chapterStudentsLabel => 'students';
+
+  @override
+  String get chapterTabLessons => 'Lessons';
+
+  @override
+  String get chapterTabExercises => 'Exercises';
+
+  @override
+  String get lessonsEmptyLabel => 'No lessons available';
+
+  @override
+  String chapterStudentsUsingCount(int count) {
+    return '$count students using this chapter';
+  }
+
+  @override
+  String chapterEyebrow(String subjectAbbrev, int chapterOrder) {
+    return '$subjectAbbrev · CHAPTER $chapterOrder';
+  }
+
+  @override
+  String get chapterExercisesComingSoon => 'Exercises coming soon';
+
+  @override
+  String get chaptersEmptyLabel => 'No chapters available';
+
+  @override
+  String get imageUnavailableLabel => 'Image unavailable';
+
+  @override
+  String get audioUnavailableLabel => 'Audio unavailable';
+
+  @override
+  String get calloutDefinition => 'DEFINITION';
+
+  @override
+  String get calloutTheorem => 'THEOREM';
+
+  @override
+  String get calloutDemonstration => 'DEMONSTRATION';
+
+  @override
+  String get calloutProperty => 'PROPERTY';
+
+  @override
+  String get calloutMethod => 'METHOD';
+
+  @override
+  String get calloutWarning => 'WARNING';
+
+  @override
+  String get calloutRecap => 'KEY TAKEAWAY';
+
+  @override
+  String get calloutExample => 'EXAMPLE';
+
+  @override
+  String get calloutFigure => 'FIGURE';
+
+  @override
+  String get calloutNote => 'NOTE';
 }

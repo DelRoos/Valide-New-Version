@@ -57,7 +57,6 @@ class _LessonPageState extends ConsumerState<LessonPage> {
   @override
   Widget build(BuildContext context) {
     final langCode = Localizations.localeOf(context).languageCode;
-    final isFr = langCode == 'fr';
 
     final lessonAsync = ref.watch(lessonByIdProvider(widget.lessonId));
     final lessonContentAsync = ref.watch(lessonContentProvider(widget.lessonId));
@@ -190,12 +189,16 @@ class _LessonPageState extends ConsumerState<LessonPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       if (duration > 0) ...[
-                        LessonReadingTimePill(duration: duration, isFr: isFr),
+                        LessonReadingTimePill(duration: duration),
                         SizedBox(height: AppSpacing.s4),
                       ],
                       PedagogicalContent(data: content),
                       SizedBox(height: AppSpacing.s6),
-                      LessonCtaRow(isFr: isFr),
+                      LessonCtaRow(
+                        subjectId: widget.subjectId,
+                        chapterId: widget.chapterId,
+                        lessonId: widget.lessonId,
+                      ),
                     ],
                   ),
                 ),

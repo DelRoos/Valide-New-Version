@@ -5,7 +5,7 @@ seed_3e_content.py — Seed Firestore depuis data/seed_3e.json (schéma v2).
   chapters/{chapterId}
   lessons/{lessonId}
   lessons/{lessonId}/content/main
-  lessons/{lessonId}/notions/{notionId}
+  notions/{notionId}              ← collection racine (schema v2 — lisible sans lessonId côté mobile)
   lessons/{lessonId}/quizzes/{quizId}
 
 Usage :
@@ -44,7 +44,20 @@ from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 DEFAULT_DATA_PATH = Path(__file__).resolve().parent / "data" / "seed_3e.json"
 
 EXPECTED_SCHEMA = "v2-subcollections"
-VALID_NOTION_TYPES = {"definition", "rule", "method", "formula", "property", "fact"}
+
+# Types callout reconnus par _Callout._styleFor() dans l'app Flutter.
+# Ces valeurs sont les noms des blocs :::type::: du contenu Markdown.
+VALID_NOTION_TYPES = {
+    "definition",
+    "theoreme", "theorem",
+    "demonstration", "demo", "preuve",
+    "propriete", "prop", "property",
+    "methode", "method",
+    "attention", "warning", "danger",
+    "retenir", "recap",
+    "exemple", "example",
+    "figure",
+}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -87,6 +100,9 @@ def validate_seed(data: dict) -> None:
             if not isinstance(ch.get("order"), int) or ch["order"] < 1:
                 raise ValueError(f"chapter '{ch_id}' : order doit être entier >= 1")
             _require_bilingual(f"chapter '{ch_id}'.title", ch.get("title"))
+            fiche = ch.get("fiche")
+            if fiche is not None:
+                _require_bilingual(f"chapter '{ch_id}'.fiche", fiche)
 
             for l in ch.get("lessons", []):
                 l_id = l.get("lessonId", "")
@@ -174,6 +190,7 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
         "lessonContents": 0,
         "notions": 0,
         "quizzes": 0,
+        "chapterFiches": 0,
     }
 
     # levelId au format "<subSystem>_<level>" (ex. "francophone_3e")
@@ -187,6 +204,10 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
             ch_id = ch["chapterId"]
             lesson_count = len(ch.get("lessons", []))
 
+            quiz_count = sum(
+                1 for l in ch.get("lessons", []) if l.get("quizzes")
+            )
+
             ch_payload = {
                 "subjectId": subject_id,
                 "levelId": level_id,
@@ -195,6 +216,10 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                 "title": ch["title"],
                 "description": ch.get("description"),
                 "lessonCount": lesson_count,
+                "quizCount": quiz_count,
+                "exerciseCount": 0,    # Pas d'exercices en V1
+                "progressPercent": 0,  # Toujours 0 en V1 — placeholder Epic 3
+                "studentCount": 0,     # Initialisé à 0 — Cloud Function met à jour
                 "updatedAt": SERVER_TIMESTAMP,
                 "createdAt": SERVER_TIMESTAMP,
             }
@@ -202,20 +227,36 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                 db.collection("chapters").document(ch_id).set(ch_payload, merge=True)
             counts["chapters"] += 1
 
+            # ── Fiche de révision (optionnelle) — chapters/{id}/fiche/main
+            fiche = ch.get("fiche")
+            if fiche and (fiche.get("fr") or fiche.get("en")):
+                fiche_payload = {
+                    "fr": fiche.get("fr", ""),
+                    "en": fiche.get("en") or fiche.get("fr", ""),
+                    "updatedAt": SERVER_TIMESTAMP,
+                }
+                if not dry_run:
+                    (db.collection("chapters").document(ch_id)
+                       .collection("fiche").document("main")
+                       .set(fiche_payload, merge=True))
+                counts["chapterFiches"] += 1
+
             for lesson in ch.get("lessons", []):
                 l_id = lesson["lessonId"]
-                notion_count = len(lesson.get("notions", []))
 
                 # ── Métadonnées leçon (sans Markdown)
+                # Champs lus par LessonModel.fromFirestore :
+                #   lessonId (doc ID), chapterId, order, title, subtitle?, durationMinutes
                 l_payload = {
                     "chapterId": ch_id,
                     "order": lesson["order"],
                     "title": lesson["title"],
                     "durationMinutes": lesson["durationMinutes"],
-                    "notionCount": notion_count,
                     "updatedAt": SERVER_TIMESTAMP,
                     "createdAt": SERVER_TIMESTAMP,
                 }
+                if lesson.get("subtitle"):
+                    l_payload["subtitle"] = lesson["subtitle"]
                 if not dry_run:
                     db.collection("lessons").document(l_id).set(l_payload, merge=True)
                 counts["lessons"] += 1
@@ -233,10 +274,12 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                     )
                 counts["lessonContents"] += 1
 
-                # ── Notions — sous-collection lessons/{id}/notions/{notionId}
+                # ── Notions — collection racine notions/{notionId}
+                # (lisible côté mobile via notions/{notionId} sans connaître lessonId)
                 for notion in lesson.get("notions", []):
                     n_id = notion["notionId"]
                     n_payload = {
+                        "notionId": n_id,
                         "lessonId": l_id,
                         "order": notion["order"],
                         "type": notion["type"],
@@ -244,10 +287,8 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                         "content": notion["content"],
                     }
                     if not dry_run:
-                        (
-                            db.collection("lessons").document(l_id)
-                            .collection("notions").document(n_id)
-                            .set(n_payload, merge=True)
+                        db.collection("notions").document(n_id).set(
+                            n_payload, merge=True
                         )
                     counts["notions"] += 1
 

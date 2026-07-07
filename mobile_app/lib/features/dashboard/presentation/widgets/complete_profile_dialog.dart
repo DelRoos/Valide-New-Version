@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../../../../core/firebase/providers.dart';
+import '../../../../core/logging/app_logger.dart';
 import '../../../../core/platform/platform_capabilities.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/app_modal.dart';
@@ -34,6 +35,8 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
   }
 
   /// Affiche le dialogue uniquement si l'utilisateur est anonyme.
+  /// [onLinked] par défaut : _setupThenAct avec action vide (vérifie displayName
+  /// + remet profileUpgradeInProgress à false sans navigation supplémentaire).
   static Future<void> showIfAnonymous(
     BuildContext context,
     WidgetRef ref, {
@@ -44,7 +47,10 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
           orElse: () => true,
         );
     if (!isAnonymous) return Future.value();
-    return show(context, onLinked: onLinked);
+    return show(
+      context,
+      onLinked: onLinked ?? () => _setupThenAct(context, ref, () {}),
+    );
   }
 
   /// Garde : anonyme → dialogue linking ; sinon → [action]. orElse=false laisse passer pendant chargement auth.
@@ -60,6 +66,8 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
     if (isAnonymous) {
       return show(
         context,
+        // action passée directement — _setupThenAct dans AccountLinkingSuccess la
+        // wrappera avec la vérification displayName + reset profileUpgradeInProgress.
         onLinked: () => _setupThenAct(context, ref, action),
       );
     }
@@ -68,21 +76,42 @@ class CompleteProfileDialog extends ConsumerStatefulWidget {
   }
 
   /// Post-linking : si displayName vide → ProfileSetupSheet, puis [action].
+  /// Remet profileUpgradeInProgress à false une fois l'action exécutée.
   static void _setupThenAct(
     BuildContext context,
     WidgetRef ref,
     VoidCallback action,
   ) {
-    // Firebase Auth est mis à jour synchronement après linking — plus fiable que le stream Firestore.
-    final displayName =
+    // Firebase Auth peut être vide si le compte Google n'a pas de displayName.
+    // Fallback sur Firestore : _persistIdentity préserve l'ancien nom si Auth n'en fournit pas.
+    final authName =
         ref.read(firebaseAuthProvider).currentUser?.displayName?.trim() ?? '';
-    if (displayName.isEmpty) {
+    final firestoreName = ref.read(profileDataProvider).maybeWhen(
+          data: (data) => (data?['displayName'] as String?)?.trim() ?? '',
+          orElse: () => '',
+        );
+    final effectiveName = authName.isNotEmpty ? authName : firestoreName;
+    AppLogger.d(
+      'CompleteProfileDialog._setupThenAct: '
+      'authName="${authName.isEmpty ? "(empty)" : "(set)"}" '
+      'firestoreName="${firestoreName.isEmpty ? "(empty)" : "(set)"}"',
+    );
+    if (effectiveName.isEmpty) {
       if (!context.mounted) return;
+      AppLogger.i('CompleteProfileDialog: displayName vide → ProfileSetupSheet');
       ProfileSetupSheet.show(context, displayName: '').then((_) {
-        if (context.mounted) action();
+        if (context.mounted) {
+          AppLogger.d('CompleteProfileDialog: ProfileSetupSheet closed → action + upgradeInProgress=false');
+          action();
+          ref
+              .read(profileUpgradeInProgressProvider.notifier)
+              .setInProgress(false);
+        }
       });
     } else {
+      AppLogger.d('CompleteProfileDialog: displayName set → action + upgradeInProgress=false');
       action();
+      ref.read(profileUpgradeInProgressProvider.notifier).setInProgress(false);
     }
   }
 
@@ -102,7 +131,13 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
 
     ref.listen<AccountLinkingState>(accountLinkingNotifierProvider,
         (prev, next) {
+      AppLogger.d(
+        'CompleteProfileDialog.listener: ${prev.runtimeType} → ${next.runtimeType} mounted=$mounted',
+      );
       if (next is AccountLinkingSuccess) {
+        AppLogger.i(
+          'CompleteProfileDialog: AccountLinkingSuccess → pop + onLinked',
+        );
         if (mounted) {
           // showDialog useRootNavigator:true → rootNavigator requis ; maybePop absorbe la race condition GoRouter si uid change avant le pop.
           Navigator.of(context, rootNavigator: true).maybePop();
@@ -113,6 +148,14 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
         return;
       }
       if (next is AccountLinkingError) {
+        // Linking échoué ou annulé — libérer le verrou router.
+        AppLogger.w(
+          'CompleteProfileDialog: AccountLinkingError '
+          'kind=${next.failure.kind.name} → upgradeInProgress=false',
+        );
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
         final failure = next.failure;
         final msg = switch (failure.kind) {
           AccountLinkingFailureKind.cancelled => null,
@@ -130,7 +173,14 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
 
     return AppDialogCard(
       title: l10n.completeProfileDialogTitle,
-      onClose: () => Navigator.of(context, rootNavigator: true).maybePop(),
+      onClose: () {
+        // Fermeture manuelle sans linking — libérer le verrou si posé.
+        AppLogger.d('CompleteProfileDialog: onClose → upgradeInProgress=false');
+        ref
+            .read(profileUpgradeInProgressProvider.notifier)
+            .setInProgress(false);
+        Navigator.of(context, rootNavigator: true).maybePop();
+      },
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -175,6 +225,12 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
                 ? null
                 : () {
                     setState(() => _errorMessage = null);
+                    // Verrou router : empêche guard profil-incomplet de rediriger
+                    // vers /onboarding pendant la transition isAnonymous→false.
+                    AppLogger.i('CompleteProfileDialog: linkGoogle → upgradeInProgress=true');
+                    ref
+                        .read(profileUpgradeInProgressProvider.notifier)
+                        .setInProgress(true);
                     linkingNotifier.linkGoogle();
                   },
             backgroundColor: AppColors.card,
@@ -192,6 +248,10 @@ class _CompleteProfileDialogState extends ConsumerState<CompleteProfileDialog> {
                   ? null
                   : () {
                       setState(() => _errorMessage = null);
+                      AppLogger.i('CompleteProfileDialog: linkApple → upgradeInProgress=true');
+                      ref
+                          .read(profileUpgradeInProgressProvider.notifier)
+                          .setInProgress(true);
                       linkingNotifier.linkApple();
                     },
               backgroundColor: Colors.black,

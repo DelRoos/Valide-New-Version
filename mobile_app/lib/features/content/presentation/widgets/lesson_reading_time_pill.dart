@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class LessonReadingTimePill extends StatelessWidget {
   const LessonReadingTimePill({
     super.key,
     required this.duration,
-    required this.isFr,
   });
 
   final int duration;
-  final bool isFr;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: AppSpacing.s3,
@@ -30,7 +30,7 @@ class LessonReadingTimePill extends StatelessWidget {
           Icon(Icons.access_time, size: AppIconSize.sm, color: AppColors.muted),
           SizedBox(width: AppSpacing.s1),
           Text(
-            isFr ? '$duration min de lecture' : '$duration min read',
+            l10n.lessonReadingTime(duration),
             style: TextStyle(
               fontFamily: AppTypography.fontFamily,
               fontSize: AppFontSize.meta,

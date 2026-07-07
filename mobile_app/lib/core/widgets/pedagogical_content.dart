@@ -15,6 +15,8 @@ import 'dart:async';
 import 'dart:convert';
 // ignore: unused_import — utilisé par audio_block (part) pour File + writeAsBytes.
 import 'dart:io';
+// ignore: unused_import — utilisé par image_components (part) pour Uint8List (SvgPicture.memory).
+import 'dart:typed_data';
 
 import 'package:audioplayers/audioplayers.dart';
 // ignore: unused_import — utilisé par audio_block (part) pour le téléchargement avec headers.
@@ -30,10 +32,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gpt_markdown/gpt_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+// ignore: unused_import — utilisé par _VideoBlock (part) pour le player YouTube embarqué.
+// PlayerState masqué : conflit avec audioplayers.PlayerState utilisé dans audio_block.
+import 'package:youtube_player_iframe/youtube_player_iframe.dart' hide PlayerState;
 
 // ignore: unused_import — utilisé par les parts (audio_block, image_components, gallery_block) pour les logs.
 import '../logging/app_logger.dart';
 import '../theme/tokens.dart';
+// ignore: unused_import — utilisé par table_block (part) pour l10n.tableLabel.
+import '../../l10n/generated/app_localizations.dart';
 
 part 'pedagogical_content/audio_block.dart';
 part 'pedagogical_content/callout.dart';
@@ -152,10 +159,12 @@ class PedagogicalContent extends StatelessWidget {
               block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
             case 'image':
               final block = _ImageBlock.fromBody(body);
-              block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
+              // Image toujours pleine largeur — pas dans le carousel (260.w trop étroit).
+              block != null ? addBlock(block) : addBlock(_md(m.group(1)!, style));
             case 'video':
               final block = _VideoBlock.fromBody(body);
-              block != null ? addMedia(block) : addBlock(_md(m.group(1)!, style));
+              // Vidéo toujours pleine largeur — pas dans le carousel.
+              block != null ? addBlock(block) : addBlock(_md(m.group(1)!, style));
             case 'gallery':
               // gallery est déjà un carrousel — ne pas grouper avec d'autres médias
               final block = _GalleryBlock.fromBody(body);

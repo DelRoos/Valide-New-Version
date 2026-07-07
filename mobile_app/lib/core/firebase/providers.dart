@@ -70,10 +70,14 @@ final firebaseAuthProvider = Provider<FirebaseAuth>((ref) {
 /// quand `currentUser` change. Resultat : apres `signInAnonymously()` au
 /// step 5, le router restait bloque avec uid=null.
 ///
-/// Maintenant on watch `authStateChanges()` qui est un vrai Stream emis
-/// a chaque transition d'auth, propage via Riverpod.
+/// `userChanges()` (et non `authStateChanges()`) : `authStateChanges` ne
+/// fire PAS lors d'un `linkWithCredential()` car ce n'est pas un
+/// sign-in/sign-out. `userChanges()` couvre signIn, signOut, linkWithCredential,
+/// unlink, updateProfile — nécessaire pour que `_AccountInfoCard` (qui lit
+/// `user.isAnonymous` + `user.providerData`) se mette a jour apres le linking
+/// Google/Apple sur un compte anonyme.
 final currentUserProvider = StreamProvider<User?>((ref) {
-  return ref.watch(firebaseAuthProvider).authStateChanges();
+  return ref.watch(firebaseAuthProvider).userChanges();
 });
 
 /// Taille du cache Firestore en octets. 40 MB borne adaptee aux telephones
