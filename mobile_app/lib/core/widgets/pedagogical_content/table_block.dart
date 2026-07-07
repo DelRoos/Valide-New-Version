@@ -159,10 +159,29 @@ class _TableBlockState extends State<_TableBlock> {
                 builder: (context, constraints) {
                   final minColW = 80.0.w;
                   final minTotal = colCount * minColW;
-                  final tableW = minTotal > constraints.maxWidth
-                      ? minTotal
-                      : constraints.maxWidth;
-                  final colW = tableW / colCount;
+                  final needsScroll = minTotal > constraints.maxWidth;
+                  final tableW =
+                      needsScroll ? minTotal : constraints.maxWidth;
+
+                  // Construit la liste de cellules pour une ligne.
+                  // Quand pas de scroll : Expanded (répartition flex, pas de dépassement).
+                  // Quand scroll : largeur fixe minColW.
+                  List<Widget> buildCells(
+                    List<String> cells,
+                    bool isHeader,
+                  ) =>
+                      cells.asMap().entries.map((e) {
+                        final cell = _TableCell(
+                          content: e.value,
+                          width: needsScroll ? minColW : null,
+                          isHeader: isHeader,
+                          showRightBorder: e.key < cells.length - 1,
+                          textStyle: widget.textStyle,
+                        );
+                        return needsScroll
+                            ? cell
+                            : Expanded(child: cell);
+                      }).toList();
 
                   final tableContent = SingleChildScrollView(
                     controller: _hScroll,
@@ -175,15 +194,7 @@ class _TableBlockState extends State<_TableBlock> {
                           Container(
                             color: AppColors.bg,
                             child: Row(
-                              children: headers.asMap().entries.map((e) {
-                                return _TableCell(
-                                  content: e.value,
-                                  width: colW,
-                                  isHeader: true,
-                                  showRightBorder: e.key < colCount - 1,
-                                  textStyle: widget.textStyle,
-                                );
-                              }).toList(),
+                              children: buildCells(headers, true),
                             ),
                           ),
                           Container(
@@ -209,16 +220,8 @@ class _TableBlockState extends State<_TableBlock> {
                                       ? AppColors.bg
                                       : AppColors.card,
                                   child: Row(
-                                    children: normalised.asMap().entries
-                                        .map((e) => _TableCell(
-                                              content: e.value,
-                                              width: colW,
-                                              isHeader: false,
-                                              showRightBorder:
-                                                  e.key < colCount - 1,
-                                              textStyle: widget.textStyle,
-                                            ))
-                                        .toList(),
+                                    children:
+                                        buildCells(normalised, false),
                                   ),
                                 ),
                               ],
@@ -291,14 +294,15 @@ class _TableBlockState extends State<_TableBlock> {
 class _TableCell extends StatelessWidget {
   const _TableCell({
     required this.content,
-    required this.width,
+    this.width,
     required this.isHeader,
     required this.showRightBorder,
     required this.textStyle,
   });
 
   final String content;
-  final double width;
+  // null → la cellule est dans un Expanded (pas de largeur fixe imposée).
+  final double? width;
   final bool isHeader;
   final bool showRightBorder;
   final TextStyle textStyle;
@@ -407,14 +411,31 @@ class _TableFullscreen extends StatelessWidget {
                 child: LayoutBuilder(
                   builder: (ctx, constraints) {
                     final hPadding = AppSpacing.s3.w;
-                    const innerBorder = 2.0;
-                    final contentW =
-                        constraints.maxWidth - 2 * hPadding - innerBorder;
+                    const borderWidth = 1.0; // Border.all default
+                    final contentW = constraints.maxWidth -
+                        2 * hPadding -
+                        2 * borderWidth;
                     final minColW = 100.0.w;
                     final minTotal = colCount * minColW;
-                    final tableW =
-                        minTotal > contentW ? minTotal : contentW;
-                    final colW = tableW / colCount;
+                    final needsScroll = minTotal > contentW;
+                    final tableW = needsScroll ? minTotal : contentW;
+
+                    List<Widget> buildCells(
+                      List<String> cells,
+                      bool isHeader,
+                    ) =>
+                        cells.asMap().entries.map((e) {
+                          final cell = _TableCell(
+                            content: e.value,
+                            width: needsScroll ? minColW : null,
+                            isHeader: isHeader,
+                            showRightBorder: e.key < cells.length - 1,
+                            textStyle: textStyle,
+                          );
+                          return needsScroll
+                              ? cell
+                              : Expanded(child: cell);
+                        }).toList();
 
                     return SingleChildScrollView(
                       controller: scrollController,
@@ -441,16 +462,8 @@ class _TableFullscreen extends StatelessWidget {
                                   Container(
                                     color: AppColors.bg,
                                     child: Row(
-                                      children: headers.asMap().entries
-                                          .map((e) => _TableCell(
-                                                content: e.value,
-                                                width: colW,
-                                                isHeader: true,
-                                                showRightBorder:
-                                                    e.key < colCount - 1,
-                                                textStyle: textStyle,
-                                              ))
-                                          .toList(),
+                                      children:
+                                          buildCells(headers, true),
                                     ),
                                   ),
                                   Container(
@@ -476,18 +489,8 @@ class _TableFullscreen extends StatelessWidget {
                                               ? AppColors.bg
                                               : AppColors.card,
                                           child: Row(
-                                            children: normalised
-                                                .asMap()
-                                                .entries
-                                                .map((e) => _TableCell(
-                                                      content: e.value,
-                                                      width: colW,
-                                                      isHeader: false,
-                                                      showRightBorder:
-                                                          e.key < colCount - 1,
-                                                      textStyle: textStyle,
-                                                    ))
-                                                .toList(),
+                                            children: buildCells(
+                                                normalised, false),
                                           ),
                                         ),
                                       ],
