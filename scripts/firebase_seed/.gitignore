@@ -20,6 +20,9 @@ __pycache__/
 .coverage
 htmlcov/
 
+# --- Backups Firestore (dump_content.py) ---
+data/backup_content_*.json
+
 # --- IDE local ---
 .vscode/
 .idea/

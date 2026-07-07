@@ -44,7 +44,20 @@ from google.cloud.firestore_v1 import SERVER_TIMESTAMP
 DEFAULT_DATA_PATH = Path(__file__).resolve().parent / "data" / "seed_3e.json"
 
 EXPECTED_SCHEMA = "v2-subcollections"
-VALID_NOTION_TYPES = {"definition", "rule", "method", "formula", "property", "fact"}
+
+# Types callout reconnus par _Callout._styleFor() dans l'app Flutter.
+# Ces valeurs sont les noms des blocs :::type::: du contenu Markdown.
+VALID_NOTION_TYPES = {
+    "definition",
+    "theoreme", "theorem",
+    "demonstration", "demo", "preuve",
+    "propriete", "prop", "property",
+    "methode", "method",
+    "attention", "warning", "danger",
+    "retenir", "recap",
+    "exemple", "example",
+    "figure",
+}
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -191,6 +204,10 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
             ch_id = ch["chapterId"]
             lesson_count = len(ch.get("lessons", []))
 
+            quiz_count = sum(
+                1 for l in ch.get("lessons", []) if l.get("quizzes")
+            )
+
             ch_payload = {
                 "subjectId": subject_id,
                 "levelId": level_id,
@@ -199,6 +216,10 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                 "title": ch["title"],
                 "description": ch.get("description"),
                 "lessonCount": lesson_count,
+                "quizCount": quiz_count,
+                "exerciseCount": 0,    # Pas d'exercices en V1
+                "progressPercent": 0,  # Toujours 0 en V1 — placeholder Epic 3
+                "studentCount": 0,     # Initialisé à 0 — Cloud Function met à jour
                 "updatedAt": SERVER_TIMESTAMP,
                 "createdAt": SERVER_TIMESTAMP,
             }
@@ -212,6 +233,7 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
                 fiche_payload = {
                     "fr": fiche.get("fr", ""),
                     "en": fiche.get("en") or fiche.get("fr", ""),
+                    "updatedAt": SERVER_TIMESTAMP,
                 }
                 if not dry_run:
                     (db.collection("chapters").document(ch_id)
@@ -221,18 +243,20 @@ def seed_content(db, data: dict, dry_run: bool) -> dict[str, int]:
 
             for lesson in ch.get("lessons", []):
                 l_id = lesson["lessonId"]
-                notion_count = len(lesson.get("notions", []))
 
                 # ── Métadonnées leçon (sans Markdown)
+                # Champs lus par LessonModel.fromFirestore :
+                #   lessonId (doc ID), chapterId, order, title, subtitle?, durationMinutes
                 l_payload = {
                     "chapterId": ch_id,
                     "order": lesson["order"],
                     "title": lesson["title"],
                     "durationMinutes": lesson["durationMinutes"],
-                    "notionCount": notion_count,
                     "updatedAt": SERVER_TIMESTAMP,
                     "createdAt": SERVER_TIMESTAMP,
                 }
+                if lesson.get("subtitle"):
+                    l_payload["subtitle"] = lesson["subtitle"]
                 if not dry_run:
                     db.collection("lessons").document(l_id).set(l_payload, merge=True)
                 counts["lessons"] += 1

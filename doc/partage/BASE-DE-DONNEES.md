@@ -33,10 +33,11 @@ Pour chaque collection :
 | `derivation_rules` | Règles dérivation (subSystem, filiere, niveau, serie) → (subjectIds, examTargetIds, canOptOut) | 🟢 | **Stream** |
 | `chapters` | Chapitres par matière | 🟢 | Statique |
 | `chapters/{id}/fiche/main` | Fiche de révision Markdown d'un chapitre (optionnelle) | 🟡 | Statique |
-| `lessons` | Leçons par chapitre | 🟢 | Statique |
+| `lessons` | Leçons par chapitre (métadonnées) | 🟢 | Statique |
+| `lessons/{id}/content/main` | Blob Markdown bilingue d'une leçon (sous-doc séparé) | 🟢 | Statique |
+| `lessons/{id}/quizzes` | Questions QCM d'une leçon (sous-collection) | 🟢 | Statique |
 | `notions` | Notions par leçon (unité atomique d'évaluation) | 🟢 | Statique |
 | `exercises` | Exercices rattachés à une leçon | 🟡 | Statique |
-| `quizzes` | Quiz générés par IA (peuvent être cachés pour réutilisation) | 🔴 | Statique / Mutable selon stratégie |
 | `exam_subjects` | Sujets d'examen complets (Mode examen) | 🟡 | Statique |
 | `users/{uid}/completions` | Marqueurs d'idempotence des exercices/quiz/sujets complétés | 🟡 | Privé à l'utilisateur |
 | `users/{uid}/health/{notionId}` | Niveau de santé scolaire par notion | 🟡 | **Stream** |
@@ -359,29 +360,105 @@ interface ChapterDoc {
   order: number;
   title: { fr: string; en: string };
   description: { fr: string; en: string } | null;
+
+  // ── Champs dénormalisés — écrits par Cloud Function au moment du seed ──────
+  // ⚠️ Accord backend requis (Story 2.4) — présents dans ChapterModel.dart
+  // mais absents du schéma spec original. Fallback `?? 0` côté mobile si absents.
+  lessonCount: number;    // nombre de leçons dans ce chapitre
+  quizCount: number;      // nombre de leçons ayant au moins un quiz
+  exerciseCount: number;  // nombre d'exercices liés (feature exercices, Epic 3+)
+  studentCount: number;   // nb d'élèves ayant commencé ce chapitre (agrégat CF)
+
+  // ── Champ conditionnel — sous validation ─────────────────────────────────
+  // ⚠️ DÉCISION OUVERTE (Story 2.4) : les chapitres d'une même matière
+  // sont-ils partagés entre tous les niveaux (cas A) ou segmentés par niveau (cas B) ?
+  //   Cas A — retirer levelId du modèle Dart et du filtrage chaptersProvider.
+  //   Cas B — documenter l'index (subjectId, levelId, order) + filtrer Firestore-side.
+  // Seed actuel ne renseigne pas ce champ → défaut '' côté mobile → filtrage effectif = 0 résultat.
+  levelId?: string;       // ex. 'francophone_terminale' — absent = chapitre universel
+
+  // ── Champ placeholder (progression) ──────────────────────────────────────
+  // NE PAS utiliser pour la progression per-user : Firestore ne peut pas stocker
+  // un champ par-utilisateur dans un document partagé. Ce champ vaut toujours 0
+  // dans l'état actuel. La progression réelle sera stockée dans
+  // `users/{uid}/progress/chapters/{chapterId}` (Epic 3 — health tracking).
+  progressPercent: number; // TOUJOURS 0 en prod V1 — placeholder Epic 3
 }
 ```
 
 Index : `subjectId` + `order`.
 
+**Lectures Firestore** :
+- `getChapters(subjectId)` → `.where('subjectId').orderBy('order').limit(30).get()` — 1 read.
+- ⚠️ **Dette technique** : `chaptersProvider` filtre ensuite par `levelId` côté Dart au lieu de Firestore-side (CLAUDE.md règle 10d). Acceptable tant que `_kMaxChapters == 30`, à corriger si le catalogue s'étend multi-niveau (Story future : passer `levelId` au repository + index composite).
+
+**Accord backend requis** avant toute modification de ce schéma.
+
 ### `lessons/{lessonId}` 🟢
+
+Métadonnées de la leçon uniquement. Le contenu Markdown lourd vit dans la sous-collection `content/main` — CLAUDE.md règle 10.j (blobs isolés en sous-doc).
 
 ```typescript
 interface LessonDoc {
-  lessonId: string;
-  chapterId: string;
+  lessonId: string;           // = doc ID
+  chapterId: string;          // ref vers chapters/{id}
   order: number;
   title: { fr: string; en: string };
-  content: { fr: string; en: string };    // Markdown avec LaTeX, Mermaid, etc.
-  // Rendu via PedagogicalContent (cf. archi mobile § 17.7)
+  subtitle?: { fr: string; en: string }; // optionnel
+  durationMinutes: number;    // durée estimée de lecture (0 si non renseignée)
 }
 ```
 
 Index : `chapterId` + `order`.
 
+### `lessons/{lessonId}/content/main` 🟢
+
+Blob Markdown bilingue d'une leçon, séparé du document parent pour ne pas charger les blobs lors des listes de leçons (CLAUDE.md règle 10.j).
+
+```typescript
+interface LessonContentDoc {
+  fr: string;   // Markdown complet FR (LaTeX, Mermaid, blocs :::definition, etc.)
+  en: string;   // Markdown complet EN
+}
+```
+
+- Lecture : `.get()` (statique, cache Firestore offline actif). Pas de `snapshots()`.
+- 1 read par session de lecture uniquement si l'onglet leçon est ouvert.
+- Rendu via `PedagogicalContent` (widget wrapper `gpt_markdown` — ADR-014).
+- Pas de nouvel index Firestore (lecture par chemin direct `lessons/{id}/content/main`).
+- Seed : `seed_content.py` écrit `lessons/{id}/content/main` séparément du document parent.
+
+### `lessons/{lessonId}/quizzes` 🟢
+
+Sous-collection de questions QCM rattachées à une leçon. Chaque document regroupe un ensemble de questions (typiquement une dizaine par notion). Lecture complète de la sous-collection (`.get()` sans filtre) — le tri et la sélection se font côté client via `QuizPicker`.
+
+```typescript
+interface LessonQuizDoc {
+  questions: QuizQuestion[];
+}
+
+interface QuizQuestion {
+  id: string;                          // identifiant unique de la question
+  notionId?: string;                   // ref vers notions/{id} — utilisé par QuizPicker (2/notion max)
+  text: { fr: string; en: string };   // énoncé bilingue
+  options: {
+    fr: string[];                      // liste des options FR (ordre stable)
+    en: string[];                      // liste des options EN (même ordre)
+  };
+  correctIndex: number;                // index de la bonne réponse (0-based)
+  explanation?: { fr: string; en: string }; // explication optionnelle (bouton "Besoin d'aide")
+}
+```
+
+- Lecture : `.get()` sur la sous-collection complète par `lessonId`.
+- Session leçon : `QuizPicker.pickLessonSession` → ≤ 15 questions, max 2/notion.
+- Session chapitre : agrégation parallèle via `Future.wait` sur toutes les leçons → `QuizPicker.pickChapterSession` → ≤ 20 questions.
+- Pas de nouvel index Firestore (lecture collection entière, pas de `.where()`).
+- Seed : données statiques versionnées (JSON) — écriture admin uniquement.
+
 ### `notions/{notionId}` 🟢
 
-Plus petite unité d'évaluation.
+Plus petite unité d'évaluation. Chaque notion regroupe les questions de quiz qui lui sont rattachées (filtrées par `notionId` dans `lessons/{id}/quizzes`), et peut afficher un corps pédagogique en fiche d'aide lors d'un quiz.
 
 ```typescript
 interface NotionDoc {
@@ -389,9 +466,34 @@ interface NotionDoc {
   lessonId: string;
   order: number;
   title: { fr: string; en: string };
+
+  // ─── Champs documentés côté mobile (absents de la spec initiale) ──────────
+  type?: string;
+  // Type pédagogique de la notion — détermine l'icône et la couleur dans la
+  // fiche d'aide du quiz. Valeurs reconnues (cf. _Callout._styleFor) :
+  //   'definition' | 'theoreme' | 'theorem' | 'demonstration' | 'demo' | 'preuve'
+  //   'propriete' | 'prop' | 'property' | 'methode' | 'method'
+  //   'attention' | 'warning' | 'danger' | 'retenir' | 'recap'
+  //   'exemple' | 'example' | 'figure'
+  // Défaut côté mobile : 'fact' (rendu neutre, sans callout coloré).
+  // ⚠️ Accord backend requis pour figer la liste exhaustive des valeurs.
+
+  content?: { fr: string; en: string };
+  // Corps pédagogique de la notion, affiché dans la fiche d'aide pendant un
+  // quiz ("Besoin d'aide ?"). Format : Markdown enrichi (mêmes blocs :::<type>
+  // que lessons/{id}/content/main — rendu via PedagogicalContent).
+  // Champ optionnel : absent → aucun contenu affiché dans la fiche d'aide.
+  // ⚠️ Accord backend requis avant ajout en masse (seed) ou modification du format.
+
   // Les questions de quiz sont rattachées à une notion (cf. archi mobile § 6.1)
 }
 ```
+
+**Dette technique — divergence spec / implémentation :**
+
+- Le schéma initial ne prévoyait pas `type` ni `content`. Ces deux champs ont été introduits par le seed `seed_3e_content.py` (Epic 2 — contenu 3e) et sont utilisés côté mobile depuis Story 2.4, sans avoir été documentés ici.
+- Côté mobile (`NotionModel.fromFirestore`), les deux champs sont lus avec `as String?` / `as Map?` et tombent en default silencieux si absents — comportement safe mais non testé explicitement.
+- **Action requise** : valider avec le backend que `type` et `content` font partie du contrat officiel, définir la liste exhaustive des valeurs de `type`, et mettre à jour les règles Firestore en conséquence.
 
 Index : `lessonId` + `order`.
 
@@ -775,7 +877,8 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | `filieres`, `niveaux`, `series`, `exam_targets`, `derivation_rules` (catalogue Story 1.1a) | Authentifié (`request.auth != null`) | **Script Python `seed_catalogue.py` / Console admin uniquement** (`write: if false` côté mobile) |
 | `subjects` (Story 1.1a, schema migré) | Authentifié | **Script Python / Console admin uniquement** |
 | `chapters`, `lessons`, `notions` | Authentifié (`request.auth != null`) — Story 2.1 | Script Python `seed_content.py` / Console admin (`write: false` côté mobile) |
-| `exercises`, `quizzes`, `exam_subjects` | Authentifié, profil complet (filtré par règle — futur Epic 3+) | Admin (via backoffice) |
+| `lessons/{lessonId}/quizzes` | Authentifié (`request.auth != null`) — Story 2.4 | Script Python seed / Console admin (`write: false` côté mobile) |
+| `exercises`, `exam_subjects` | Authentifié, profil complet (filtré par règle — futur Epic 3+) | Admin (via backoffice) |
 | `users/{uid}/completions/*` | `uid` | **Cloud Function uniquement** (dans transaction) |
 | `users/{uid}/health/*` | `uid` | **Cloud Function uniquement** |
 | `users/{uid}/stats` | `uid` | **Cloud Function uniquement** |
@@ -817,7 +920,9 @@ Le détail vit dans [`firestore.rules`](../../firestore.rules) à la racine de c
 | **`exam_targets`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~82 docs v2). |
 | **`derivation_rules`** | `.snapshots()` (Story 1.1c) | ⚠️ **Refactor → `.get()`** | Idem (~104 docs v2). |
 | `chapters`, `lessons`, `notions` | À spécifier Epic 2 | `.get()` + cache | Statique, lecture par chapter/lessonId. |
-| `exercises`, `quizzes` | À spécifier Epic 3 | `.get()` par ID | Lecture déclenchée au lancement quiz. |
+| `lessons/{lessonId}/content/main` | `.get()` par chemin direct | OK Story 2.1/2.4 | 1 read à l'ouverture leçon. Blob Markdown isolé du doc parent (CLAUDE.md règle 10.j). |
+| `lessons/{lessonId}/quizzes` | `.get()` sous-collection complète par lessonId | OK Story 2.4 | Lecture en parallèle via `Future.wait` pour session chapitre. Tri/sélection côté client. |
+| `exercises` | À spécifier Epic 3 | `.get()` par ID | Lecture déclenchée au lancement exercice. |
 | `users/{uid}/health/{notionId}` | À spécifier Epic 5 | `.snapshots()` | Mise à jour live après chaque session. |
 | `users/{uid}/sessions/{sid}` | À spécifier Epic 3 | `.snapshots()` sur session courante uniquement | Mutable durant la session. |
 | `schools` (recherche) | `.get()` + `.where(isValidated)` + `.where(keywords, arrayContains)` + `.limit(10)` + tri client | OK Story 1.5.b | Story 1.7 query prefix range refactoree Story 1.5.b en `arrayContains keywords[]` (case-insensitive + sans accents + abreviations ghs/gbhs/pss/lb/chs). Tri alphabetique cote Dart sur 10 items (orderBy Firestore + arrayContains necessiterait un index complexe — sur-engineering V1). |
@@ -958,5 +1063,7 @@ await _firestore.collection('users').doc(uid).update({
 | 2026-07-01 | DelRoos / Claude (Amelia agent) | Story A.3 — édition profil scolaire (niveau/série/matières) depuis l'onglet Accueil. **Approche B (client direct)** : modification `firestore.rules` UPDATE `users/{uid}` — retrait contraintes immuabilité sur `trackId`, `levelId`, `streamId` (conservés : `subSystem`, `language`, `createdAt`). Table Update patterns mise à jour : `trackId`/`levelId`/`streamId` passent de **Immutable post-création** à **Mutable** (via `updateSchoolProfile()` — 1 `.update()` partiel 8 champs + updatedAt). `derivedSubjects` et `examTargets` également **Mutable** depuis A.3. Nouveau composant `SchoolProfileEditSheet` (bottom sheet multi-étapes PageController : niveau grid → série list → matières chips). Dérivation sujets 100% en mémoire depuis `catalogueProvider` (0 read Firestore supplémentaire). ⚠️ Accord backend requis avant déploiement `firebase deploy --only firestore:rules`. |
 | 2026-06-21 | DelRoos / Claude (Amelia agent) | Story 2.1 — schéma contenu pédagogique finalisé + seed Python démo. Statuts `chapters/{chapterId}`, `lessons/{lessonId}`, `notions/{notionId}` 🟡 → 🟢 (Vue d'ensemble + sections dédiées). **3 nouveaux index Firestore composites** déclarés dans `firestore.indexes.json` + déployés sur `valide-edu` : `chapters(subjectId ASC, order ASC)`, `lessons(chapterId ASC, order ASC)`, `notions(lessonId ASC, order ASC)`. **Règles Firestore** étendues : 3 blocs `match /chapters`, `match /lessons`, `match /notions` avec `read: if request.auth != null` + `write: if false` — tout user authentifié peut lire (profil complet géré côté Flutter router Story 1.5). Table Indexes — section 🟢 Story 2.1 ajoutée, entrées chapters/lessons/notions retirées de 🔴. Table Règles de sécurité résumé mise à jour : ligne chapters/lessons/notions séparée de exercises/quizzes. Script Python [`scripts/firebase_seed/seed_content.py`](../../scripts/firebase_seed/seed_content.py) créé (pattern `seed_catalogue.py` : argparse, `set(merge=True)`, validation cross-collection subjectId, dry-run, idempotent). Données démo versionnées [`scripts/firebase_seed/data/content_demo.json`](../../scripts/firebase_seed/data/content_demo.json) : 2 matières (Maths `francophone_math` Tle D + Physics `anglophone_physics` Upper Sixth) × 4 chapitres × 2 leçons × 2 notions = 8 chapters, 16 lessons, 32 notions. Contenu FR+EN avec LaTeX + Mermaid dans au moins 1 leçon par matière. Seed exécuté sur `valide-edu` + idempotence confirmée. 6 tests pytest verts. |
 | 2026-06-17 | DelRoos / Claude | Boot-sync `subSystem` depuis Firestore — nouveau pattern de lecture au lancement : `splash_page.dart` lit `users/{uid}` via `fetchProfileOnce()` (1 `.get()` non-bloquant) pour corriger `subSystem` stale sur nouveau téléphone. Firestore reste source de vérité. Aucune modification schéma ni index. Notes ajoutées : section `users/{uid}` (note boot-sync), table Read patterns (colonne `users/{uid}` étendue), table Update patterns (annotation `subSystem` Immutable écriture). |
+| 2026-07-07 | DelRoos / Claude (Amelia agent) | Story 2.4 — quiz intégration contenu. **Correction schéma `lessons/{lessonId}`** : retrait champ `content` inline (inexact depuis Story 2.1 — le blob Markdown vit en sous-collection `lessons/{id}/content/main`, jamais dans le doc principal). Ajout champs réels : `subtitle?: {fr,en}`, `durationMinutes`. **Nouvelle sous-collection `lessons/{lessonId}/content/main`** 🟢 (section dédiée avec schema `{fr,en}` + règles). **Nouvelle sous-collection `lessons/{lessonId}/quizzes`** 🟢 avec schema `QuizQuestionDoc` complet (id, notionId, text, options, correctIndex, explanation) + stratégie `QuizPicker` (≤15 q/session leçon, ≤20/chapitre, max 2/notion). **Suppression collection racine `quizzes` 🔴** (était fausse — les quiz sont toujours des sous-collections de leçons). Vue d'ensemble mise à jour (+2 lignes `lessons/{id}/content/main` + `lessons/{id}/quizzes`, suppression ligne `quizzes` racine). Tables Règles de sécurité + Read patterns mises à jour. |
 | 2026-07-03 | DelRoos / Claude (Amelia agent) | Story 2.5 — fiches de révision par chapitre. **Nouvelle sous-collection `chapters/{chapterId}/fiche/main`** 🟡 (document unique `{fr: string, en: string}`). Vue d'ensemble mise à jour (+1 ligne). Section dédiée `### chapters/{chapterId}/fiche/main` ajoutée avec schema TypeScript, règles Firestore identiques aux autres sous-collections contenu (`read: auth != null`, `write: false`). **Aucun nouvel index Firestore** (lecture par ID de document : auto-indexé). Côté Flutter : `ChapterFicheEntity` (domain), `getFiche(chapterId)` dans `ContentRepository` + impl Firestore (retourne `Left(notFound)` si doc absent), `chapterFicheProvider` (FutureProvider.autoDispose.family), `FicheTab` widget (`LayoutBuilder` + `PedagogicalContent` + skeleton/empty state). Côté Python seed : `build_seed_3e.py` étendu pour résoudre le champ `fiche` dans `seed_3e.json`, `seed_3e_content.py` valide + écrit `chapters/{id}/fiche/main` si fiche présente. Tests : 2 nouveaux tests repo `getFiche` (succès + notFound) + 2 tests `lesson_model` corrigés (contenu Markdown vit en sous-doc, pas dans le doc principal). 28 tests verts, flutter analyze 0. ⚠️ Accord backend requis avant merge (règles Firestore `fiche/main`). |
+| 2026-07-07 | DelRoos / Claude (Amelia agent) | Audit schéma Epic 2 — **correction `chapters/{chapterId}`** : ajout 6 champs réels écrits en production par le seed `seed_3e_content.py` mais absents du schéma : `lessonCount`, `quizCount`, `exerciseCount`, `studentCount` (dénormalisés par Cloud Function, entiers), `progressPercent` (toujours 0 en V1, placeholder Epic 3 santé scolaire), `levelId?` (champ optionnel — décision ouverte : chapitres universels vs segmentés par niveau). Note « Dette technique » ajoutée : filtrage client-side `levelId` dans `chaptersProvider` (anti-pattern CLAUDE.md règle 10.d — à refactorer en `.where('levelId', isEqualTo: levelId)` dès que le champ est décidé). **Correction `notions/{notionId}`** : ajout 2 champs réels introduits par seed Epic 2 mais absents du schéma : `type?` (string, type pédagogique callout — valeurs définies par `_Callout._styleFor`, défaut `'fact'` côté mobile) + `content?` ({fr, en} Markdown enrichi affiché dans la fiche d'aide quiz "Besoin d'aide ?"). Note « Dette technique — divergence spec / implémentation » ajoutée + action requise backend. ⚠️ Accord backend requis pour finaliser la liste des valeurs de `type` et le contrat officiel de `content`. |
 | 2026-06-10 | DelRoos / Claude (Amelia agent) | Story 1.5.c — flow demande ajout école production-ready. **Nouvelle collection racine `school_requests/{requestId}`** 🟢 avec schema `SchoolRequestDoc` complet (requestedBy + requestedAt + status + name + city + region? + subSystem? + decidedBy? + decidedAt? + schoolIdCreated? + rejectionReason?). Sous-collection POC `schools/{schoolId}/requests` Story 1.7 **supprimée** (refactor non-breaking : `requestSchool` → `createSchoolRequest({name, city, region?, subSystem?})` dans le repository Dart). Rules Firestore étendues : create par owner (uid match + champs valides + status forcé `'pending'` anti-escalade) + read self (`requestedBy == auth.uid` → futur écran « Mes demandes ») + update/delete refusés côté client (modération admin via Console). Aucun nouvel index Firestore V1 (single-field `requestedBy` auto-indexé). Tests : npm test rules 30/30 verts (baseline 23 + 7 Story 1.5.c : create owner valide, uid d'autrui refusé, name trop court refusé, status != pending refusé, subSystem invalide refusé, subSystem valide accepté, read self OK, read other refusé, update/delete refusés) + Dart `school_repository_test.dart` 15/15 verts (Story 1.7 4 adaptés + Story 1.5.b 6 + Story 1.5.c 4 nouveaux : subSystem renseigné/null, region renseigné/null) + widget `school_picker_page_test.dart` 7/7 verts (Story 1.7 5 + Story 1.5.c 2 : modale rendue avec 4 RadioListTile, submit avec subSystem). UI modale `_AddSchoolDialog` étendue avec `RadioGroup<_SubSystemChoice>` 4 options (Francophone, Anglophone, Bilingue, Je ne sais pas par défaut) + 5 clés ARB FR/EN ajoutées. Cost-benefit V1 : ~42 demandes/mois @10k users = négligeable. Workflow admin modération documenté dans `scripts/firebase_seed/data/README.md`. |
