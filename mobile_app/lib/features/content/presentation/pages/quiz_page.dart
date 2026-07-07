@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
 import '../../domain/entities/quiz_question_entity.dart';
 import '../../providers.dart';
-import '../widgets/quiz_result_screen.dart';
-import '../widgets/quiz_review_screen.dart';
 import '../widgets/quiz_session_view.dart';
 import '../widgets/quiz_support.dart';
+import 'quiz_extra.dart';
 
 class QuizPage extends ConsumerStatefulWidget {
   const QuizPage({
     super.key,
+    required this.subjectId,
     required this.chapterId,
     this.lessonId,
   });
 
-  /// ID du chapitre (toujours présent — nécessaire pour le quiz chapitre).
+  final String subjectId;
   final String chapterId;
-
-  /// ID de la leçon. Si null → quiz chapitre ; sinon → quiz leçon.
   final String? lessonId;
 
   @override
@@ -31,8 +31,6 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   int _currentIndex = 0;
   int? _selectedIndex;
   int _score = 0;
-  bool _showResult = false;
-  bool _showReview = false;
   final List<int?> _answers = [];
 
   bool get _isLessonQuiz => widget.lessonId != null;
@@ -42,24 +40,38 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     final correct = questions[_currentIndex].correctIndex == index;
     setState(() {
       _selectedIndex = index;
-      while (_answers.length <= _currentIndex) { _answers.add(null); }
+      while (_answers.length <= _currentIndex) {
+        _answers.add(null);
+      }
       _answers[_currentIndex] = index;
       if (correct) _score++;
     });
   }
 
-  void _next(List<QuizQuestionEntity> questions) {
+  void _next(BuildContext context, List<QuizQuestionEntity> questions) {
     if (_currentIndex < questions.length - 1) {
       setState(() {
         _currentIndex++;
         _selectedIndex = null;
       });
     } else {
-      setState(() => _showResult = true);
+      final route = _isLessonQuiz
+          ? AppRoutes.lessonQuizResult(
+              widget.subjectId, widget.chapterId, widget.lessonId!)
+          : AppRoutes.chapterQuizResult(widget.subjectId, widget.chapterId);
+      context.push(
+        route,
+        extra: QuizResultExtra(
+          score: _score,
+          total: questions.length,
+          questions: questions,
+          answers: List<int?>.from(_answers),
+        ),
+      );
     }
   }
 
-  void _replay() {
+  void _retryLoad() {
     if (_isLessonQuiz) {
       ref.invalidate(lessonQuizSessionProvider(widget.lessonId!));
     } else {
@@ -69,8 +81,6 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       _currentIndex = 0;
       _selectedIndex = null;
       _score = 0;
-      _showResult = false;
-      _showReview = false;
       _answers.clear();
     });
   }
@@ -82,17 +92,9 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         ? ref.watch(lessonQuizSessionProvider(widget.lessonId!))
         : ref.watch(chapterQuizSessionProvider(widget.chapterId));
 
-    // Peek at questions pour AppBar progress + theming résultat
     final questions =
         sessionAsync.maybeWhen(data: (q) => q, orElse: () => null);
     final total = questions?.length ?? 0;
-    final showProgress =
-        !_showResult && !_showReview && total > 0;
-    final resultPct =
-        _showResult && total > 0 ? (_score / total * 100).round() : -1;
-    final scaffoldBg = resultPct >= 0
-        ? QuizResultScreen.bgFor(resultPct)
-        : AppColors.bg;
 
     return Scaffold(
       appBar: AppBar(
@@ -104,11 +106,11 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             fontWeight: FontWeight.w700,
           ),
         ),
-        backgroundColor: scaffoldBg,
+        backgroundColor: AppColors.bg,
         elevation: 0,
         scrolledUnderElevation: 0,
         foregroundColor: AppColors.ink,
-        bottom: showProgress
+        bottom: total > 0
             ? PreferredSize(
                 preferredSize: const Size.fromHeight(52),
                 child: Padding(
@@ -162,44 +164,23 @@ class _QuizPageState extends ConsumerState<QuizPage> {
               )
             : null,
       ),
-      backgroundColor: scaffoldBg,
+      backgroundColor: AppColors.bg,
       body: SafeArea(
         child: sessionAsync.when(
           loading: () => const QuizLoadingSkeleton(),
           error: (error, _) => ContentErrorView(
             error: error,
-            onRetry: _replay,
+            onRetry: _retryLoad,
           ),
           data: (questions) {
-            if (questions.isEmpty) {
-              return QuizEmptyState(isFr: isFr);
-            }
-            if (_showReview) {
-              return QuizReviewScreen(
-                questions: questions,
-                answers: List<int?>.from(_answers),
-                score: _score,
-                isFr: isFr,
-                onBack: () => setState(() => _showReview = false),
-              );
-            }
-            if (_showResult) {
-              return QuizResultScreen(
-                score: _score,
-                total: questions.length,
-                isFr: isFr,
-                onReplay: _replay,
-                onBack: () => Navigator.of(context).maybePop(),
-                onReview: () => setState(() => _showReview = true),
-              );
-            }
+            if (questions.isEmpty) return QuizEmptyState(isFr: isFr);
             return QuizSessionView(
               questions: questions,
               currentIndex: _currentIndex,
               selectedIndex: _selectedIndex,
               isFr: isFr,
               onSelect: (i) => _selectAnswer(i, questions),
-              onNext: () => _next(questions),
+              onNext: () => _next(context, questions),
             );
           },
         ),

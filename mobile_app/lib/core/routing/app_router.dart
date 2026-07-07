@@ -19,6 +19,9 @@ import '../../features/content/presentation/pages/subject_detail_page.dart';
 import '../../features/content/presentation/pages/chapter_page.dart';
 import '../../features/content/presentation/pages/lesson_page.dart';
 import '../../features/content/presentation/pages/quiz_page.dart';
+import '../../features/content/presentation/pages/quiz_extra.dart';
+import '../../features/content/presentation/pages/quiz_result_page.dart';
+import '../../features/content/presentation/pages/quiz_review_page.dart';
 import '../../features/debug/presentation/ai_smoke_page.dart';
 import '../../features/debug/presentation/content_showcase_page.dart';
 import '../../features/debug/presentation/crash_smoke_page.dart';
@@ -130,8 +133,25 @@ final routerProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: AppRoutes.quizSegment,
                 builder: (context, state) => QuizPage(
+                  subjectId: state.pathParameters['subjectId']!,
                   chapterId: state.pathParameters['chapterId']!,
                 ),
+                routes: [
+                  GoRoute(
+                    path: AppRoutes.quizResultSegment,
+                    builder: (context, state) => QuizResultPage(
+                      subjectId: state.pathParameters['subjectId']!,
+                      chapterId: state.pathParameters['chapterId']!,
+                      extra: state.extra as QuizResultExtra,
+                    ),
+                  ),
+                  GoRoute(
+                    path: AppRoutes.quizReviewSegment,
+                    builder: (context, state) => QuizReviewPage(
+                      extra: state.extra as QuizResultExtra,
+                    ),
+                  ),
+                ],
               ),
               GoRoute(
                 path: AppRoutes.lessonSegment,
@@ -145,9 +165,27 @@ final routerProvider = Provider<GoRouter>((ref) {
                   GoRoute(
                     path: AppRoutes.quizSegment,
                     builder: (context, state) => QuizPage(
+                      subjectId: state.pathParameters['subjectId']!,
                       chapterId: state.pathParameters['chapterId']!,
                       lessonId: state.pathParameters['lessonId']!,
                     ),
+                    routes: [
+                      GoRoute(
+                        path: AppRoutes.quizResultSegment,
+                        builder: (context, state) => QuizResultPage(
+                          subjectId: state.pathParameters['subjectId']!,
+                          chapterId: state.pathParameters['chapterId']!,
+                          lessonId: state.pathParameters['lessonId'],
+                          extra: state.extra as QuizResultExtra,
+                        ),
+                      ),
+                      GoRoute(
+                        path: AppRoutes.quizReviewSegment,
+                        builder: (context, state) => QuizReviewPage(
+                          extra: state.extra as QuizResultExtra,
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
