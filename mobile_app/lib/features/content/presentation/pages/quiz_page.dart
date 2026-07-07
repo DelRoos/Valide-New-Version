@@ -71,6 +71,59 @@ class _QuizPageState extends ConsumerState<QuizPage> {
     }
   }
 
+  Future<void> _confirmExit(BuildContext context) async {
+    final isFr = Localizations.localeOf(context).languageCode == 'fr';
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          isFr ? 'Quitter le quiz ?' : 'Quit quiz?',
+          style: TextStyle(
+            fontFamily: AppTypography.fontFamily,
+            fontSize: AppFontSize.h3,
+            fontWeight: FontWeight.w700,
+            color: AppColors.ink,
+          ),
+        ),
+        content: Text(
+          isFr ? 'Ta progression sera perdue.' : 'Your progress will be lost.',
+          style: TextStyle(
+            fontFamily: AppTypography.fontFamily,
+            fontSize: AppFontSize.body,
+            color: AppColors.muted,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: Text(
+              isFr ? 'Continuer' : 'Continue',
+              style: TextStyle(
+                fontFamily: AppTypography.fontFamily,
+                fontWeight: FontWeight.w600,
+                color: AppColors.primary,
+              ),
+            ),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: Text(
+              isFr ? 'Quitter' : 'Quit',
+              style: TextStyle(
+                fontFamily: AppTypography.fontFamily,
+                fontWeight: FontWeight.w600,
+                color: AppColors.danger,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true && context.mounted) {
+      Navigator.of(context).pop();
+    }
+  }
+
   void _retryLoad() {
     if (_isLessonQuiz) {
       ref.invalidate(lessonQuizSessionProvider(widget.lessonId!));
@@ -96,7 +149,14 @@ class _QuizPageState extends ConsumerState<QuizPage> {
         sessionAsync.maybeWhen(data: (q) => q, orElse: () => null);
     final total = questions?.length ?? 0;
 
-    return Scaffold(
+    return PopScope(
+      // Libre si aucune réponse donnée, confirmation sinon.
+      canPop: _answers.isEmpty,
+      onPopInvokedWithResult: (didPop, _) {
+        if (didPop) return;
+        _confirmExit(context);
+      },
+      child: Scaffold(
       appBar: AppBar(
         title: Text(
           'Quiz',
@@ -184,6 +244,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
             );
           },
         ),
+      ),
       ),
     );
   }
