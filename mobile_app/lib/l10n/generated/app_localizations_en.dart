@@ -1105,4 +1105,67 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get publicProfileNotFoundSubtitle =>
       'This profile doesn\'t exist or has been deleted.';
+
+  @override
+  String get quizPageTitle => 'Quiz';
+
+  @override
+  String get quizQuitDialogTitle => 'Quit quiz?';
+
+  @override
+  String get quizQuitDialogBody => 'Your progress will be lost.';
+
+  @override
+  String get quizQuitLabel => 'Quit';
+
+  @override
+  String quizProgressLabel(int n, int total) {
+    return 'Question $n of $total';
+  }
+
+  @override
+  String get quizResultExcellent => 'Excellent!';
+
+  @override
+  String get quizResultGoodJob => 'Good job!';
+
+  @override
+  String get quizResultKeepStudying => 'Keep studying';
+
+  @override
+  String get quizResultReviewLesson => 'Review the lesson!';
+
+  @override
+  String quizResultCorrectPct(int pct) {
+    return '$pct% correct';
+  }
+
+  @override
+  String get quizResultReviewAnswers => 'Review answers';
+
+  @override
+  String get quizResultReplay => 'Play again';
+
+  @override
+  String get quizResultBackToCourse => 'Back to lesson';
+
+  @override
+  String quizReviewTitle(int score, int total) {
+    return 'My answers — $score / $total';
+  }
+
+  @override
+  String get quizReviewBack => 'Back to result';
+
+  @override
+  String get fichePracticeChapter => 'Practice this chapter';
+
+  @override
+  String get ficheTitle => 'Study Sheet';
+
+  @override
+  String get ficheComingSoon => 'Study sheet coming soon';
+
+  @override
+  String get tableLabel => 'TABLE';
 }

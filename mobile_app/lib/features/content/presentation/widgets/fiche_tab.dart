@@ -10,6 +10,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_skeleton.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
 import '../../../../core/widgets/pedagogical_content.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/failures/content_failure.dart';
 import '../../providers.dart';
 
@@ -70,7 +71,7 @@ class _FicheTabState extends ConsumerState<FicheTab> {
           error: (error, _) {
             if (error is ContentFailure &&
                 error.kind == ContentFailureKind.notFound) {
-              return _FicheEmptyState(languageCode: widget.languageCode);
+              return const _FicheEmptyState();
             }
             return ContentErrorView(
               error: error,
@@ -79,12 +80,12 @@ class _FicheTabState extends ConsumerState<FicheTab> {
             );
           },
           data: (fiche) {
+            final l10n = AppLocalizations.of(context);
             final content = fiche.contentFor(widget.languageCode);
             if (content.isEmpty) {
-              return _FicheEmptyState(languageCode: widget.languageCode);
+              return const _FicheEmptyState();
             }
             final bottomInset = MediaQuery.paddingOf(context).bottom;
-            final isFr = widget.languageCode == 'fr';
             return Column(
               children: [
                 // ── Barre de progression lecture ─────────────────────────
@@ -113,9 +114,7 @@ class _FicheTabState extends ConsumerState<FicheTab> {
                             PedagogicalContent(data: content),
                             SizedBox(height: AppSpacing.s6.h),
                             AppButton.primary(
-                              label: isFr
-                                  ? "S'exercer sur ce chapitre"
-                                  : 'Practice this chapter',
+                              label: l10n.fichePracticeChapter,
                               onPressed: () => context.push(
                                 AppRoutes.chapterQuiz(
                                   widget.subjectId,
@@ -237,13 +236,13 @@ class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final bottomInset = MediaQuery.paddingOf(context).bottom;
-    final isFr = widget.languageCode == 'fr';
 
     return Column(
       children: [
         // ── Header : handle + titre + fermer ────────────────────────────
-        _FicheSheetHeader(isFr: isFr, onClose: widget.onClose),
+        _FicheSheetHeader(onClose: widget.onClose),
 
         // ── Barre de progression lecture ─────────────────────────────────
         LinearProgressIndicator(
@@ -269,9 +268,7 @@ class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
                 PedagogicalContent(data: widget.content),
                 SizedBox(height: AppSpacing.s6.h),
                 AppButton.primary(
-                  label: isFr
-                      ? "S'exercer sur ce chapitre"
-                      : 'Practice this chapter',
+                  label: l10n.fichePracticeChapter,
                   onPressed: widget.onExercise,
                 ),
                 SizedBox(height: AppSpacing.s4.h + bottomInset),
@@ -287,9 +284,8 @@ class _FicheFullscreenSheetState extends State<_FicheFullscreenSheet> {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _FicheSheetHeader extends StatelessWidget {
-  const _FicheSheetHeader({required this.isFr, required this.onClose});
+  const _FicheSheetHeader({required this.onClose});
 
-  final bool isFr;
   final VoidCallback onClose;
 
   @override
@@ -318,7 +314,7 @@ class _FicheSheetHeader extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Text(
-                isFr ? 'Fiche de révision' : 'Study Sheet',
+                AppLocalizations.of(context).ficheTitle,
                 style: AppTypography.h3,
               ),
               Align(
@@ -376,9 +372,7 @@ class _ExpandButton extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _FicheEmptyState extends StatelessWidget {
-  const _FicheEmptyState({required this.languageCode});
-
-  final String languageCode;
+  const _FicheEmptyState();
 
   @override
   Widget build(BuildContext context) {
@@ -393,9 +387,7 @@ class _FicheEmptyState extends StatelessWidget {
           ),
           SizedBox(height: AppSpacing.s3),
           Text(
-            languageCode == 'fr'
-                ? 'Fiche bientôt disponible'
-                : 'Study sheet coming soon',
+            AppLocalizations.of(context).ficheComingSoon,
             style: TextStyle(
               fontFamily: AppTypography.fontFamily,
               fontSize: AppFontSize.body,

@@ -1111,4 +1111,67 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get publicProfileNotFoundSubtitle =>
       'Ce profil n\'existe pas ou a été supprimé.';
+
+  @override
+  String get quizPageTitle => 'Quiz';
+
+  @override
+  String get quizQuitDialogTitle => 'Quitter le quiz ?';
+
+  @override
+  String get quizQuitDialogBody => 'Ta progression sera perdue.';
+
+  @override
+  String get quizQuitLabel => 'Quitter';
+
+  @override
+  String quizProgressLabel(int n, int total) {
+    return 'Question $n sur $total';
+  }
+
+  @override
+  String get quizResultExcellent => 'Excellent !';
+
+  @override
+  String get quizResultGoodJob => 'Bon travail !';
+
+  @override
+  String get quizResultKeepStudying => 'Continue d\'étudier';
+
+  @override
+  String get quizResultReviewLesson => 'Revois le cours !';
+
+  @override
+  String quizResultCorrectPct(int pct) {
+    return '$pct% de réponses correctes';
+  }
+
+  @override
+  String get quizResultReviewAnswers => 'Voir mes réponses';
+
+  @override
+  String get quizResultReplay => 'Rejouer';
+
+  @override
+  String get quizResultBackToCourse => 'Retour au cours';
+
+  @override
+  String quizReviewTitle(int score, int total) {
+    return 'Mes réponses — $score / $total';
+  }
+
+  @override
+  String get quizReviewBack => 'Retour au résultat';
+
+  @override
+  String get fichePracticeChapter => 'S\'exercer sur ce chapitre';
+
+  @override
+  String get ficheTitle => 'Fiche de révision';
+
+  @override
+  String get ficheComingSoon => 'Fiche bientôt disponible';
+
+  @override
+  String get tableLabel => 'TABLEAU';
 }

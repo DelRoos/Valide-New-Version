@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 
 class QuizResultScreen extends StatelessWidget {
   const QuizResultScreen({
     super.key,
     required this.score,
     required this.total,
-    required this.isFr,
     required this.onReplay,
     required this.onBack,
     required this.onReview,
@@ -15,7 +15,6 @@ class QuizResultScreen extends StatelessWidget {
 
   final int score;
   final int total;
-  final bool isFr;
   final VoidCallback onReplay;
   final VoidCallback onBack;
   final VoidCallback onReview;
@@ -30,6 +29,7 @@ class QuizResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final pct = total > 0 ? (score / total * 100).round() : 0;
     final bottomInset = MediaQuery.paddingOf(context).bottom;
 
@@ -40,28 +40,28 @@ class QuizResultScreen extends StatelessWidget {
           AppColors.successSoft,
           AppColors.successInk,
           Icons.emoji_events_rounded,
-          isFr ? 'Excellent !' : 'Excellent!',
+          l10n.quizResultExcellent,
         ),
       >= 60 => (
           AppColors.primary,
           AppColors.primarySoft,
           AppColors.primary,
           Icons.school_rounded,
-          isFr ? 'Bon travail !' : 'Good job!',
+          l10n.quizResultGoodJob,
         ),
       >= 40 => (
           AppColors.warning,
           AppColors.warningSoft,
           AppColors.warningInk,
           Icons.menu_book_rounded,
-          isFr ? 'Continue d\'étudier' : 'Keep studying',
+          l10n.quizResultKeepStudying,
         ),
       _ => (
           AppColors.danger,
           AppColors.dangerSoft,
           AppColors.dangerInk,
           Icons.refresh_rounded,
-          isFr ? 'Revois le cours !' : 'Review the lesson!',
+          l10n.quizResultReviewLesson,
         ),
     };
 
@@ -135,7 +135,7 @@ class QuizResultScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(AppRadius.pill),
                       ),
                       child: Text(
-                        isFr ? '$pct% de réponses correctes' : '$pct% correct',
+                        l10n.quizResultCorrectPct(pct),
                         style: TextStyle(
                           fontFamily: AppTypography.fontFamily,
                           fontSize: AppFontSize.bodySmall,
@@ -169,7 +169,7 @@ class QuizResultScreen extends StatelessWidget {
                     color: accentInk,
                   ),
                   label: Text(
-                    isFr ? 'Voir mes réponses' : 'Review answers',
+                    l10n.quizResultReviewAnswers,
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.body,
@@ -200,7 +200,7 @@ class QuizResultScreen extends StatelessWidget {
                     elevation: 0,
                   ),
                   child: Text(
-                    isFr ? 'Rejouer' : 'Play again',
+                    l10n.quizResultReplay,
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.body,
@@ -216,7 +216,7 @@ class QuizResultScreen extends StatelessWidget {
                     minimumSize: Size(double.infinity, AppSpacing.s10),
                   ),
                   child: Text(
-                    isFr ? 'Retour au cours' : 'Back to lesson',
+                    l10n.quizResultBackToCourse,
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
                       fontSize: AppFontSize.body,

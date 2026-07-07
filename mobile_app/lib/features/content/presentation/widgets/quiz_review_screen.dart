@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/quiz_question_entity.dart';
 
 class QuizReviewScreen extends StatelessWidget {
@@ -24,6 +25,7 @@ class QuizReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -39,9 +41,7 @@ class QuizReviewScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  isFr
-                      ? 'Mes réponses — $score / ${questions.length}'
-                      : 'My answers — $score / ${questions.length}',
+                  l10n.quizReviewTitle(score, questions.length),
                   style: TextStyle(
                     fontFamily: AppTypography.fontFamily,
                     fontSize: AppFontSize.h3Compact,
@@ -99,7 +99,7 @@ class QuizReviewScreen extends StatelessWidget {
               ),
             ),
             child: Text(
-              isFr ? 'Retour au résultat' : 'Back to result',
+              l10n.quizReviewBack,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontSize: AppFontSize.body,

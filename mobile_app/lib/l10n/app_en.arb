@@ -463,5 +463,42 @@
   "publicProfileLessonsRead": "lessons read",
   "publicProfileQuizPassed": "quizzes passed",
   "publicProfileNotFound": "Profile not found",
-  "publicProfileNotFoundSubtitle": "This profile doesn't exist or has been deleted."
+  "publicProfileNotFoundSubtitle": "This profile doesn't exist or has been deleted.",
+
+  "quizPageTitle": "Quiz",
+  "quizQuitDialogTitle": "Quit quiz?",
+  "quizQuitDialogBody": "Your progress will be lost.",
+  "quizQuitLabel": "Quit",
+  "quizProgressLabel": "Question {n} of {total}",
+  "@quizProgressLabel": {
+    "placeholders": {
+      "n": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "quizResultExcellent": "Excellent!",
+  "quizResultGoodJob": "Good job!",
+  "quizResultKeepStudying": "Keep studying",
+  "quizResultReviewLesson": "Review the lesson!",
+  "quizResultCorrectPct": "{pct}% correct",
+  "@quizResultCorrectPct": {
+    "placeholders": {
+      "pct": { "type": "int" }
+    }
+  },
+  "quizResultReviewAnswers": "Review answers",
+  "quizResultReplay": "Play again",
+  "quizResultBackToCourse": "Back to lesson",
+  "quizReviewTitle": "My answers — {score} / {total}",
+  "@quizReviewTitle": {
+    "placeholders": {
+      "score": { "type": "int" },
+      "total": { "type": "int" }
+    }
+  },
+  "quizReviewBack": "Back to result",
+  "fichePracticeChapter": "Practice this chapter",
+  "ficheTitle": "Study Sheet",
+  "ficheComingSoon": "Study sheet coming soon",
+  "tableLabel": "TABLE"
 }

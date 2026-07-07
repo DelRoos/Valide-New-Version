@@ -2035,6 +2035,120 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Ce profil n\'existe pas ou a été supprimé.'**
   String get publicProfileNotFoundSubtitle;
+
+  /// Titre de la page quiz (AppBar).
+  ///
+  /// In fr, this message translates to:
+  /// **'Quiz'**
+  String get quizPageTitle;
+
+  /// Titre du dialog de confirmation de sortie du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter le quiz ?'**
+  String get quizQuitDialogTitle;
+
+  /// Corps du dialog de sortie du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Ta progression sera perdue.'**
+  String get quizQuitDialogBody;
+
+  /// Bouton danger pour quitter le quiz et perdre la progression.
+  ///
+  /// In fr, this message translates to:
+  /// **'Quitter'**
+  String get quizQuitLabel;
+
+  /// Compteur de progression affiché sous l'AppBar du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Question {n} sur {total}'**
+  String quizProgressLabel(int n, int total);
+
+  /// Titre de résultat quand le score est ≥ 80%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Excellent !'**
+  String get quizResultExcellent;
+
+  /// Titre de résultat quand le score est entre 60% et 79%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Bon travail !'**
+  String get quizResultGoodJob;
+
+  /// Titre de résultat quand le score est entre 40% et 59%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Continue d\'étudier'**
+  String get quizResultKeepStudying;
+
+  /// Titre de résultat quand le score est inférieur à 40%.
+  ///
+  /// In fr, this message translates to:
+  /// **'Revois le cours !'**
+  String get quizResultReviewLesson;
+
+  /// Badge pourcentage de réponses correctes sur l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'{pct}% de réponses correctes'**
+  String quizResultCorrectPct(int pct);
+
+  /// Bouton pour voir le détail des réponses depuis l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Voir mes réponses'**
+  String get quizResultReviewAnswers;
+
+  /// Bouton principal pour rejouer le quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rejouer'**
+  String get quizResultReplay;
+
+  /// Lien retour vers la fiche/leçon depuis l'écran de résultat.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au cours'**
+  String get quizResultBackToCourse;
+
+  /// Titre de l'écran de revue des réponses du quiz.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes réponses — {score} / {total}'**
+  String quizReviewTitle(int score, int total);
+
+  /// Bouton pour revenir à l'écran de résultat depuis la revue.
+  ///
+  /// In fr, this message translates to:
+  /// **'Retour au résultat'**
+  String get quizReviewBack;
+
+  /// CTA en bas de la fiche de révision pour lancer le quiz du chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'exercer sur ce chapitre'**
+  String get fichePracticeChapter;
+
+  /// Titre du sheet plein écran de la fiche de révision.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche de révision'**
+  String get ficheTitle;
+
+  /// État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'Fiche bientôt disponible'**
+  String get ficheComingSoon;
+
+  /// Étiquette affichée en en-tête d'un bloc tableau dans le contenu pédagogique.
+  ///
+  /// In fr, this message translates to:
+  /// **'TABLEAU'**
+  String get tableLabel;
 }
 
 class _AppLocalizationsDelegate

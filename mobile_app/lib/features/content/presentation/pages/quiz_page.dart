@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/quiz_question_entity.dart';
 import '../../providers.dart';
 import '../widgets/quiz_session_view.dart';
@@ -72,12 +73,12 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   }
 
   Future<void> _confirmExit(BuildContext context) async {
-    final isFr = Localizations.localeOf(context).languageCode == 'fr';
+    final l10n = AppLocalizations.of(context);
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: Text(
-          isFr ? 'Quitter le quiz ?' : 'Quit quiz?',
+          l10n.quizQuitDialogTitle,
           style: TextStyle(
             fontFamily: AppTypography.fontFamily,
             fontSize: AppFontSize.h3,
@@ -86,7 +87,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           ),
         ),
         content: Text(
-          isFr ? 'Ta progression sera perdue.' : 'Your progress will be lost.',
+          l10n.quizQuitDialogBody,
           style: TextStyle(
             fontFamily: AppTypography.fontFamily,
             fontSize: AppFontSize.body,
@@ -97,7 +98,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
             child: Text(
-              isFr ? 'Continuer' : 'Continue',
+              l10n.continueLabel,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontWeight: FontWeight.w600,
@@ -108,7 +109,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(true),
             child: Text(
-              isFr ? 'Quitter' : 'Quit',
+              l10n.quizQuitLabel,
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
                 fontWeight: FontWeight.w600,
@@ -140,6 +141,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final isFr = Localizations.localeOf(context).languageCode == 'fr';
     final sessionAsync = _isLessonQuiz
         ? ref.watch(lessonQuizSessionProvider(widget.lessonId!))
@@ -159,7 +161,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
       child: Scaffold(
       appBar: AppBar(
         title: Text(
-          'Quiz',
+          l10n.quizPageTitle,
           style: TextStyle(
             fontFamily: AppTypography.fontFamily,
             fontSize: AppFontSize.h3,
@@ -187,9 +189,7 @@ class _QuizPageState extends ConsumerState<QuizPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            isFr
-                                ? 'Question ${_currentIndex + 1} sur $total'
-                                : 'Question ${_currentIndex + 1} of $total',
+                            l10n.quizProgressLabel(_currentIndex + 1, total),
                             style: TextStyle(
                               fontFamily: AppTypography.fontFamily,
                               fontSize: AppFontSize.bodySmall,

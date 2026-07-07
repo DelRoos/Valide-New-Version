@@ -129,7 +129,7 @@ class _TableBlockState extends State<_TableBlock> {
                     SizedBox(width: AppSpacing.s2.w),
                     Expanded(
                       child: Text(
-                        'TABLEAU',
+                        AppLocalizations.of(context).tableLabel,
                         style: TextStyle(
                           fontFamily: AppTypography.fontFamily,
                           fontSize: AppFontSize.eyebrow,
@@ -389,7 +389,7 @@ class _TableFullscreen extends StatelessWidget {
                         size: AppIconSize.md, color: AppColors.primary),
                     SizedBox(width: AppSpacing.s2.w),
                     Text(
-                      'TABLEAU',
+                      AppLocalizations.of(context).tableLabel,
                       style: TextStyle(
                         fontFamily: AppTypography.fontFamily,
                         fontSize: AppFontSize.h3,

@@ -25,7 +25,6 @@ class QuizResultPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isFr = Localizations.localeOf(context).languageCode == 'fr';
     final pct =
         extra.total > 0 ? (extra.score / extra.total * 100).round() : 0;
 
@@ -65,7 +64,6 @@ class QuizResultPage extends ConsumerWidget {
         child: QuizResultScreen(
           score: extra.score,
           total: extra.total,
-          isFr: isFr,
           onReplay: replay,
           onBack: goBack,
           onReview: goReview,

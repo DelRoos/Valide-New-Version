@@ -39,6 +39,8 @@ import 'package:youtube_player_iframe/youtube_player_iframe.dart' hide PlayerSta
 // ignore: unused_import — utilisé par les parts (audio_block, image_components, gallery_block) pour les logs.
 import '../logging/app_logger.dart';
 import '../theme/tokens.dart';
+// ignore: unused_import — utilisé par table_block (part) pour l10n.tableLabel.
+import '../../l10n/generated/app_localizations.dart';
 
 part 'pedagogical_content/audio_block.dart';
 part 'pedagogical_content/callout.dart';

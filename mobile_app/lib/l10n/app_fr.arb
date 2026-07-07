@@ -998,5 +998,79 @@
   "@publicProfileNotFound": { "description": "Titre état vide quand le doc Firestore users/{uid} n'existe pas (Story A.2 AC7)." },
 
   "publicProfileNotFoundSubtitle": "Ce profil n'existe pas ou a été supprimé.",
-  "@publicProfileNotFoundSubtitle": { "description": "Sous-titre état vide profil introuvable (Story A.2 AC7)." }
+  "@publicProfileNotFoundSubtitle": { "description": "Sous-titre état vide profil introuvable (Story A.2 AC7)." },
+
+  "quizPageTitle": "Quiz",
+  "@quizPageTitle": { "description": "Titre de la page quiz (AppBar)." },
+
+  "quizQuitDialogTitle": "Quitter le quiz ?",
+  "@quizQuitDialogTitle": { "description": "Titre du dialog de confirmation de sortie du quiz." },
+
+  "quizQuitDialogBody": "Ta progression sera perdue.",
+  "@quizQuitDialogBody": { "description": "Corps du dialog de sortie du quiz." },
+
+  "quizQuitLabel": "Quitter",
+  "@quizQuitLabel": { "description": "Bouton danger pour quitter le quiz et perdre la progression." },
+
+  "quizProgressLabel": "Question {n} sur {total}",
+  "@quizProgressLabel": {
+    "description": "Compteur de progression affiché sous l'AppBar du quiz.",
+    "placeholders": {
+      "n": { "type": "int", "example": "2" },
+      "total": { "type": "int", "example": "10" }
+    }
+  },
+
+  "quizResultExcellent": "Excellent !",
+  "@quizResultExcellent": { "description": "Titre de résultat quand le score est ≥ 80%." },
+
+  "quizResultGoodJob": "Bon travail !",
+  "@quizResultGoodJob": { "description": "Titre de résultat quand le score est entre 60% et 79%." },
+
+  "quizResultKeepStudying": "Continue d'étudier",
+  "@quizResultKeepStudying": { "description": "Titre de résultat quand le score est entre 40% et 59%." },
+
+  "quizResultReviewLesson": "Revois le cours !",
+  "@quizResultReviewLesson": { "description": "Titre de résultat quand le score est inférieur à 40%." },
+
+  "quizResultCorrectPct": "{pct}% de réponses correctes",
+  "@quizResultCorrectPct": {
+    "description": "Badge pourcentage de réponses correctes sur l'écran de résultat.",
+    "placeholders": {
+      "pct": { "type": "int", "example": "75" }
+    }
+  },
+
+  "quizResultReviewAnswers": "Voir mes réponses",
+  "@quizResultReviewAnswers": { "description": "Bouton pour voir le détail des réponses depuis l'écran de résultat." },
+
+  "quizResultReplay": "Rejouer",
+  "@quizResultReplay": { "description": "Bouton principal pour rejouer le quiz." },
+
+  "quizResultBackToCourse": "Retour au cours",
+  "@quizResultBackToCourse": { "description": "Lien retour vers la fiche/leçon depuis l'écran de résultat." },
+
+  "quizReviewTitle": "Mes réponses — {score} / {total}",
+  "@quizReviewTitle": {
+    "description": "Titre de l'écran de revue des réponses du quiz.",
+    "placeholders": {
+      "score": { "type": "int", "example": "7" },
+      "total": { "type": "int", "example": "10" }
+    }
+  },
+
+  "quizReviewBack": "Retour au résultat",
+  "@quizReviewBack": { "description": "Bouton pour revenir à l'écran de résultat depuis la revue." },
+
+  "fichePracticeChapter": "S'exercer sur ce chapitre",
+  "@fichePracticeChapter": { "description": "CTA en bas de la fiche de révision pour lancer le quiz du chapitre." },
+
+  "ficheTitle": "Fiche de révision",
+  "@ficheTitle": { "description": "Titre du sheet plein écran de la fiche de révision." },
+
+  "ficheComingSoon": "Fiche bientôt disponible",
+  "@ficheComingSoon": { "description": "État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre." },
+
+  "tableLabel": "TABLEAU",
+  "@tableLabel": { "description": "Étiquette affichée en en-tête d'un bloc tableau dans le contenu pédagogique." }
 }
