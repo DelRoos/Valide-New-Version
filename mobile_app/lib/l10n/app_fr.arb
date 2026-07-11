@@ -1076,8 +1076,8 @@
   "fichePracticeChapter": "S'exercer sur ce chapitre",
   "@fichePracticeChapter": { "description": "CTA en bas de la fiche de révision pour lancer le quiz du chapitre." },
 
-  "ficheTitle": "Fiche de révision",
-  "@ficheTitle": { "description": "Titre du sheet plein écran de la fiche de révision." },
+  "ficheTitle": "Fiche de lecture",
+  "@ficheTitle": { "description": "Titre du sheet plein écran de la fiche de lecture (résumé du chapitre)." },
 
   "ficheComingSoon": "Fiche bientôt disponible",
   "@ficheComingSoon": { "description": "État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre." },
@@ -1114,6 +1114,16 @@
 
   "subjectChaptersLabel": "CHAPITRES",
   "@subjectChaptersLabel": { "description": "Label eyebrow du nombre de chapitres dans le header matière (ex. '8 CHAPITRES')." },
+  "subjectTrimesterEyebrow": "TRIMESTRE {n}",
+  "@subjectTrimesterEyebrow": { "description": "Eyebrow du header matière indiquant le trimestre courant (mock : n=1).", "placeholders": { "n": { "type": "int" } } },
+  "sequenceTabLabel": "S{n}",
+  "@sequenceTabLabel": { "description": "Label court d'un onglet séquence (S1, S2, ...).", "placeholders": { "n": { "type": "int" } } },
+  "performanceLevelGood": "Bon",
+  "@performanceLevelGood": { "description": "Chip niveau bon (score quiz >= 70%)." },
+  "performanceLevelMedium": "Moyen",
+  "@performanceLevelMedium": { "description": "Chip niveau moyen (score quiz 40-69%)." },
+  "performanceLevelWeak": "À revoir",
+  "@performanceLevelWeak": { "description": "Chip niveau faible (score quiz < 40%)." },
 
   "lessonLabel": "LEÇON {order}",
   "@lessonLabel": {
@@ -1177,6 +1187,10 @@
 
   "chapterExercisesComingSoon": "Exercices bientôt disponibles",
   "@chapterExercisesComingSoon": { "description": "Placeholder du tab Exercices quand le contenu n'est pas encore disponible." },
+  "chapterFabSummary": "Résumé",
+  "@chapterFabSummary": { "description": "Label du FAB secondaire qui ouvre le bottom sheet du résumé de chapitre (fiche de révision)." },
+  "chapterFabPractice": "S'exercer",
+  "@chapterFabPractice": { "description": "Label du FAB principal qui route vers le quiz du chapitre." },
 
   "chaptersEmptyLabel": "Aucun chapitre disponible",
   "@chaptersEmptyLabel": { "description": "Message vide quand une matière n'a pas encore de chapitres." },

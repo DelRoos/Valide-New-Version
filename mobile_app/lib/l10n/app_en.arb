@@ -503,7 +503,7 @@
   },
   "quizReviewBack": "Back to result",
   "fichePracticeChapter": "Practice this chapter",
-  "ficheTitle": "Study Sheet",
+  "ficheTitle": "Reading Sheet",
   "ficheComingSoon": "Study sheet coming soon",
   "tableLabel": "TABLE",
 
@@ -518,6 +518,11 @@
 
   "subjectProgress": "Progress",
   "subjectChaptersLabel": "CHAPTERS",
+  "subjectTrimesterEyebrow": "TERM {n}",
+  "sequenceTabLabel": "S{n}",
+  "performanceLevelGood": "Good",
+  "performanceLevelMedium": "Fair",
+  "performanceLevelWeak": "Review",
 
   "lessonLabel": "LESSON {order}",
   "@lessonLabel": {
@@ -554,6 +559,8 @@
       "chapterOrder": { "type": "int" }
     }
   },
+  "chapterFabSummary": "Summary",
+  "chapterFabPractice": "Practice",
   "chapterExercisesComingSoon": "Exercises coming soon",
   "chaptersEmptyLabel": "No chapters available",
   "imageUnavailableLabel": "Image unavailable",

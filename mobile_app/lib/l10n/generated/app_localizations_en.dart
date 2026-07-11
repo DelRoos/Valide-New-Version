@@ -1182,7 +1182,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fichePracticeChapter => 'Practice this chapter';
 
   @override
-  String get ficheTitle => 'Study Sheet';
+  String get ficheTitle => 'Reading Sheet';
 
   @override
   String get ficheComingSoon => 'Study sheet coming soon';
@@ -1219,6 +1219,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subjectChaptersLabel => 'CHAPTERS';
+
+  @override
+  String subjectTrimesterEyebrow(int n) {
+    return 'TERM $n';
+  }
+
+  @override
+  String sequenceTabLabel(int n) {
+    return 'S$n';
+  }
+
+  @override
+  String get performanceLevelGood => 'Good';
+
+  @override
+  String get performanceLevelMedium => 'Fair';
+
+  @override
+  String get performanceLevelWeak => 'Review';
 
   @override
   String lessonLabel(int order) {
@@ -1285,6 +1304,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chapterExercisesComingSoon => 'Exercises coming soon';
+
+  @override
+  String get chapterFabSummary => 'Summary';
+
+  @override
+  String get chapterFabPractice => 'Practice';
 
   @override
   String get chaptersEmptyLabel => 'No chapters available';
