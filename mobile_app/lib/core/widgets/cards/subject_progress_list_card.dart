@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../catalogue/domain/models.dart';
 import '../../theme/tokens.dart';
 import '../picker/subject_icon_resolver.dart';
+import 'performance_level.dart';
 import 'subject_palette.dart';
 
 class SubjectProgressListCard extends StatelessWidget {
@@ -16,6 +17,7 @@ class SubjectProgressListCard extends StatelessWidget {
     required this.progressLabel,
     required this.progressValue,
     required this.onTap,
+    this.performanceLevel,
   });
 
   final Subject subject;
@@ -24,38 +26,41 @@ class SubjectProgressListCard extends StatelessWidget {
   final String progressLabel;
   final double progressValue;
   final VoidCallback onTap;
+  final PerformanceLevel? performanceLevel;
 
   @override
   Widget build(BuildContext context) {
-    final color = subjectColorAt(index);
+    final iconColor = subjectColorAt(index);
+    final barColor = performanceLevel?.color ?? iconColor;
     final label = subject.abbreviationFor(langKey) ??
         (subject.name[langKey] ?? subject.name['fr'] ?? subject.subjectId);
 
-    return Material(
-      color: AppColors.card,
-      borderRadius: BorderRadius.circular(AppRadius.lg),
-      child: InkWell(
-        onTap: onTap,
+    return Container(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            boxShadow: AppElevation.soft,
-          ),
-          padding: EdgeInsets.all(AppSpacing.s4.w),
-          child: Row(
+        boxShadow: AppElevation.mid,
+      ),
+      child: Material(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: Padding(
+            padding: EdgeInsets.all(AppSpacing.s4.w),
+            child: Row(
             children: [
               Container(
                 width: AppSpacing.s12,
                 height: AppSpacing.s12,
                 decoration: BoxDecoration(
-                  color: color.withValues(alpha: 0.12),
+                  color: iconColor.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(AppRadius.md),
                 ),
                 child: Icon(
                   subjectIconFor(subject.icon),
                   size: AppIconSize.xl3,
-                  color: color,
+                  color: iconColor,
                 ),
               ),
               SizedBox(width: AppSpacing.s3.w),
@@ -91,8 +96,8 @@ class SubjectProgressListCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                       child: LinearProgressIndicator(
                         value: progressValue,
-                        backgroundColor: color.withValues(alpha: 0.12),
-                        valueColor: AlwaysStoppedAnimation<Color>(color),
+                        backgroundColor: barColor.withValues(alpha: 0.12),
+                        valueColor: AlwaysStoppedAnimation<Color>(barColor),
                         minHeight: 5,
                       ),
                     ),
@@ -106,6 +111,7 @@ class SubjectProgressListCard extends StatelessWidget {
                 color: AppColors.muted,
               ),
             ],
+          ),
           ),
         ),
       ),

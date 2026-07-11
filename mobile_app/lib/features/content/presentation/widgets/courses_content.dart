@@ -5,16 +5,20 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/catalogue/domain/models.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/cards/performance_level.dart';
 import '../../../../core/widgets/cards/subject_progress_list_card.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import 'courses_term_banner.dart';
 
 const List<int> _kFakeTotal = [12, 15, 10, 18, 8, 14, 11, 16];
 const List<int> _kFakeDone = [3, 7, 2, 10, 4, 8, 5, 6];
+// Mock — sera remplacé par le score moyen quiz par matière en Story 2.x.
+const List<int> _kFakeAvgScores = [85, 62, 30, 92, 45, 70, 25, 55];
 
 int _fakeChapterTotal(int i) => _kFakeTotal[i % _kFakeTotal.length];
 int _fakeChapterDone(int i) =>
     _kFakeDone[i % _kFakeDone.length].clamp(0, _fakeChapterTotal(i));
+int _fakeAvgScore(int i) => _kFakeAvgScores[i % _kFakeAvgScores.length];
 
 class CoursesContent extends StatelessWidget {
   const CoursesContent({
@@ -64,6 +68,8 @@ class CoursesContent extends StatelessWidget {
                 langKey: languageCode,
                 progressLabel: l10n.coursesChaptersOf(done, total),
                 progressValue: done / total,
+                performanceLevel:
+                    performanceLevelFromScore(_fakeAvgScore(i)),
                 onTap: () => GoRouter.of(context)
                     .push(AppRoutes.subject(subjects[i].subjectId)),
               );

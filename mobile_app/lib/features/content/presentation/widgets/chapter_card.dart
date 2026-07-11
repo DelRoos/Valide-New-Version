@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/cards/performance_level.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/chapter_entity.dart';
 
@@ -45,6 +46,10 @@ class ChapterCard extends StatelessWidget {
     final pct = chapter.progressPercent.clamp(0, 100);
     final isDone = pct >= 100;
     final isStarted = pct > 0 && pct < 100;
+    // Mock — sera basé sur chapter.avgQuizScore en Story 2.x.
+    final level = isStarted || isDone
+        ? performanceLevelFromScore(pct)
+        : null;
 
     return GestureDetector(
       onTap: onTap,
@@ -84,12 +89,6 @@ class ChapterCard extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: AppSpacing.s2),
-                      Icon(
-                        Icons.star_border_rounded,
-                        size: AppIconSize.xl,
-                        color: AppColors.mute2,
-                      ),
                     ],
                   ),
                   if (countsText.isNotEmpty) ...[
@@ -111,9 +110,11 @@ class ChapterCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(AppRadius.pill),
                           child: LinearProgressIndicator(
                             value: pct / 100,
-                            backgroundColor: AppColors.border,
+                            backgroundColor:
+                                (level?.color ?? AppColors.primary)
+                                    .withValues(alpha: 0.12),
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              isDone ? AppColors.success : AppColors.primary,
+                              level?.color ?? AppColors.primary,
                             ),
                             minHeight: AppDimension.progressBarMed,
                           ),
@@ -126,7 +127,7 @@ class ChapterCard extends StatelessWidget {
                           fontFamily: AppTypography.fontFamily,
                           fontSize: AppFontSize.meta,
                           fontWeight: FontWeight.w700,
-                          color: isDone ? AppColors.success : AppColors.primary,
+                          color: level?.color ?? AppColors.primary,
                         ),
                       ),
                     ],
