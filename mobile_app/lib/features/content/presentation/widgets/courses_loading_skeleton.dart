@@ -3,152 +3,55 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/theme/tokens.dart';
-import 'subject_grid_card.dart';
 
-const double _kBannerHeight = 160;
-const double _kCardLabelH = 14;
-const double _kCardLabelW = 72;
-const double _kCardTinyH = 11;
-const double _kCardTinyW = 30;
+const double _kBannerH = 130;
+const double _kTitleSkeletonW = 140;
+const double _kTitleSkeletonH = 22;
+const double _kItemSkeletonH = 72;
 
 class CoursesLoadingSkeleton extends StatelessWidget {
   const CoursesLoadingSkeleton({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverToBoxAdapter(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              AppSpacing.s4.w,
-              AppSpacing.s2.h,
-              AppSpacing.s4.w,
-              AppSpacing.s5.h,
-            ),
-            child: Container(
-              height: _kBannerHeight.h,
-              decoration: BoxDecoration(
-                color: AppColors.border,
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-              ),
-            )
-                .animate(onPlay: (c) => c.repeat())
-                .shimmer(duration: 1400.ms, color: AppColors.bg),
-          ),
-        ),
-        SliverPadding(
-          padding: EdgeInsets.fromLTRB(
-            AppSpacing.s4.w,
-            0,
-            AppSpacing.s4.w,
-            AppSpacing.s8.h,
-          ),
-          sliver: SliverGrid(
-            delegate: SliverChildBuilderDelegate(
-              (_, i) => _SkeletonCard(color: subjectColorAt(i)),
-              childCount: 6,
-            ),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: AppSpacing.s3.w,
-              mainAxisSpacing: AppSpacing.s3.h,
-              childAspectRatio: 0.77,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _SkeletonCard extends StatelessWidget {
-  const _SkeletonCard({required this.color});
-
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        boxShadow: AppElevation.soft,
+    return SingleChildScrollView(
+      padding: EdgeInsets.fromLTRB(
+        AppSpacing.s4.w, AppSpacing.s2.h, AppSpacing.s4.w, AppSpacing.s8.h,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.xl),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Expanded(
-              flex: 10,
-              child: Container(
-                color: color.withValues(alpha: 0.10),
-                child: Center(
-                  child: Container(
-                    width: AppSpacing.s12,
-                    height: AppSpacing.s12,
-                    decoration: BoxDecoration(
-                      color: AppColors.border,
-                      borderRadius: BorderRadius.circular(AppRadius.lg),
-                    ),
-                  )
-                      .animate(onPlay: (c) => c.repeat())
-                      .shimmer(duration: 1400.ms, color: AppColors.bg),
-                ),
-              ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: _kBannerH.h,
+            decoration: BoxDecoration(
+              color: AppColors.border,
+              borderRadius: BorderRadius.circular(AppRadius.xl),
             ),
-            Expanded(
-              flex: 8,
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(
-                  AppSpacing.s3.w,
-                  AppSpacing.s3.h,
-                  AppSpacing.s3.w,
-                  AppSpacing.s3.h,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      height: _kCardLabelH.h,
-                      width: _kCardLabelW.w,
-                      decoration: BoxDecoration(
-                        color: AppColors.border,
-                        borderRadius: BorderRadius.circular(AppRadius.sm),
-                      ),
-                    )
-                        .animate(onPlay: (c) => c.repeat())
-                        .shimmer(duration: 1400.ms, color: AppColors.bg),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: _kCardTinyH.h,
-                          width: _kCardTinyW.w,
-                          decoration: BoxDecoration(
-                            color: AppColors.border,
-                            borderRadius: BorderRadius.circular(AppRadius.sm),
-                          ),
-                        ),
-                        SizedBox(height: AppSpacing.s1.h),
-                        Container(
-                          height: AppDimension.progressBarMed.h,
-                          decoration: BoxDecoration(
-                            color: AppColors.border,
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.pill),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+          ).animate(onPlay: (c) => c.repeat())
+              .shimmer(duration: 1400.ms, color: AppColors.bg),
+          SizedBox(height: AppSpacing.s6.h),
+          Container(
+            width: _kTitleSkeletonW.w, height: _kTitleSkeletonH.h,
+            decoration: BoxDecoration(
+              color: AppColors.border,
+              borderRadius: BorderRadius.circular(AppRadius.sm),
             ),
-          ],
-        ),
+          ).animate(onPlay: (c) => c.repeat())
+              .shimmer(duration: 1400.ms, color: AppColors.bg),
+          SizedBox(height: AppSpacing.s3.h),
+          ...List.generate(4, (i) => Padding(
+            padding: EdgeInsets.only(bottom: AppSpacing.s3.h),
+            child: Container(
+              height: _kItemSkeletonH.h,
+              decoration: BoxDecoration(
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                boxShadow: AppElevation.soft,
+              ),
+            ).animate(onPlay: (c) => c.repeat())
+                .shimmer(duration: 1400.ms, color: AppColors.bg),
+          )),
+        ],
       ),
     );
   }

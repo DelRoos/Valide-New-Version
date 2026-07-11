@@ -405,6 +405,27 @@ class AppLocalizationsFr extends AppLocalizations {
   String get coursesRecommendedBannerTitle => 'Reprends là où tu t\'es arrêté';
 
   @override
+  String get coursesSectionTitle => 'Mes matières';
+
+  @override
+  String coursesChaptersOf(int done, int total) {
+    return '$done/$total chapitres';
+  }
+
+  @override
+  String coursesTermChip(int n) {
+    return '📚  Trimestre $n';
+  }
+
+  @override
+  String coursesTermChaptersProgress(int done, int total) {
+    return '$done chapitres sur $total terminés';
+  }
+
+  @override
+  String get coursesTermCtaLabel => 'Reprendre la leçon';
+
+  @override
   String get dashboardTabActivities => 'Examen';
 
   @override

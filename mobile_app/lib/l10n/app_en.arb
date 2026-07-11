@@ -166,6 +166,11 @@
   "coursesPageTitle": "My Courses",
   "coursesStartLesson": "Start",
   "coursesRecommendedBannerTitle": "Pick up where you left off",
+  "coursesSectionTitle": "My subjects",
+  "coursesChaptersOf": "{done}/{total} chapters",
+  "coursesTermChip": "📚  Term {n}",
+  "coursesTermChaptersProgress": "{done} of {total} chapters done",
+  "coursesTermCtaLabel": "Resume lesson",
   "dashboardTabActivities": "Exams",
   "dashboardTabProfile": "Profile",
 

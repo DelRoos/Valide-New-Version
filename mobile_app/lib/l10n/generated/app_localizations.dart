@@ -770,6 +770,36 @@ abstract class AppLocalizations {
   /// **'Reprends là où tu t\'es arrêté'**
   String get coursesRecommendedBannerTitle;
 
+  /// Titre de la section liste des matières sur la tab Cours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes matières'**
+  String get coursesSectionTitle;
+
+  /// Compteur chapitres terminés/total sur une carte matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done}/{total} chapitres'**
+  String coursesChaptersOf(int done, int total);
+
+  /// Chip trimestre courant dans le banner Cours.
+  ///
+  /// In fr, this message translates to:
+  /// **'📚  Trimestre {n}'**
+  String coursesTermChip(int n);
+
+  /// Progression chapitres du trimestre.
+  ///
+  /// In fr, this message translates to:
+  /// **'{done} chapitres sur {total} terminés'**
+  String coursesTermChaptersProgress(int done, int total);
+
+  /// CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché).
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre la leçon'**
+  String get coursesTermCtaLabel;
+
   /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:

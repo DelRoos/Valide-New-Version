@@ -389,6 +389,17 @@
   "coursesRecommendedBannerTitle": "Reprends là où tu t'es arrêté",
   "@coursesRecommendedBannerTitle": { "description": "Titre du banner recommandation — générique jusqu'à implémentation du moteur de recommandation." },
 
+  "coursesSectionTitle": "Mes matières",
+  "@coursesSectionTitle": { "description": "Titre de la section liste des matières sur la tab Cours." },
+  "coursesChaptersOf": "{done}/{total} chapitres",
+  "@coursesChaptersOf": { "description": "Compteur chapitres terminés/total sur une carte matière.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "coursesTermChip": "📚  Trimestre {n}",
+  "@coursesTermChip": { "description": "Chip trimestre courant dans le banner Cours.", "placeholders": { "n": { "type": "int" } } },
+  "coursesTermChaptersProgress": "{done} chapitres sur {total} terminés",
+  "@coursesTermChaptersProgress": { "description": "Progression chapitres du trimestre.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "coursesTermCtaLabel": "Reprendre la leçon",
+  "@coursesTermCtaLabel": { "description": "CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché)." },
+
   "dashboardTabActivities": "Examen",
   "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
