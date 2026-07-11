@@ -1,52 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../core/catalogue/domain/models.dart';
-import '../../../../core/routing/app_routes.dart';
-import '../../../../core/theme/tokens.dart';
-import '../../../../core/widgets/picker/subject_icon_resolver.dart';
-import '../../../../l10n/generated/app_localizations.dart';
+import '../../catalogue/domain/models.dart';
+import '../../theme/tokens.dart';
+import '../picker/subject_icon_resolver.dart';
+import 'subject_palette.dart';
 
-// ---------------------------------------------------------------------------
-// Fake exercise counts — remplacés par Firestore en Story 2.x.
-// ---------------------------------------------------------------------------
-
-const List<Color> _kPalette = [
-  Color(0xFF3B82F6), Color(0xFF8B5CF6), Color(0xFF10B981), Color(0xFFF59E0B),
-  Color(0xFFEF4444), Color(0xFF0EA5E9), Color(0xFFF97316), Color(0xFF6366F1),
-];
-
-const List<int> _kFakeTotal = [18, 24, 12, 30, 16, 22, 14, 28];
-const List<int> _kFakeDone = [6, 14, 3, 22, 4, 18, 9, 12];
-
-int _fakeTotal(int i) => _kFakeTotal[i % _kFakeTotal.length];
-int _fakeDone(int i) => _kFakeDone[i % _kFakeDone.length].clamp(0, _fakeTotal(i));
-
-// ---------------------------------------------------------------------------
-// Subject exam card
-// ---------------------------------------------------------------------------
-
-class ExamsSubjectCard extends StatelessWidget {
-  const ExamsSubjectCard({
+class SubjectProgressListCard extends StatelessWidget {
+  const SubjectProgressListCard({
     super.key,
     required this.subject,
     required this.index,
     required this.langKey,
-    required this.l10n,
+    required this.progressLabel,
+    required this.progressValue,
+    required this.onTap,
   });
 
   final Subject subject;
   final int index;
   final String langKey;
-  final AppLocalizations l10n;
+  final String progressLabel;
+  final double progressValue;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final total = _fakeTotal(index);
-    final done = _fakeDone(index);
-    final color = _kPalette[index % _kPalette.length];
+    final color = subjectColorAt(index);
     final label = subject.abbreviationFor(langKey) ??
         (subject.name[langKey] ?? subject.name['fr'] ?? subject.subjectId);
 
@@ -54,8 +35,7 @@ class ExamsSubjectCard extends StatelessWidget {
       color: AppColors.card,
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: InkWell(
-        onTap: () =>
-            GoRouter.of(context).push(AppRoutes.subject(subject.subjectId)),
+        onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Container(
           decoration: BoxDecoration(
@@ -98,7 +78,7 @@ class ExamsSubjectCard extends StatelessWidget {
                         ),
                         SizedBox(width: AppSpacing.s2.w),
                         Text(
-                          l10n.examsExercisesOf(done, total),
+                          progressLabel,
                           style: AppTypography.eyebrow.copyWith(
                             color: AppColors.muted,
                             fontSize: AppFontSize.eyebrow,
@@ -110,7 +90,7 @@ class ExamsSubjectCard extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(AppRadius.pill),
                       child: LinearProgressIndicator(
-                        value: done / total,
+                        value: progressValue,
                         backgroundColor: color.withValues(alpha: 0.12),
                         valueColor: AlwaysStoppedAnimation<Color>(color),
                         minHeight: 5,
