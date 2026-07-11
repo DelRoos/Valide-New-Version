@@ -409,17 +409,29 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String coursesChaptersOf(int done, int total) {
-    return '$done/$total chapitres';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done/$total chapitres',
+      one: '$done/$total chapitre',
+    );
+    return '$_temp0';
   }
 
   @override
   String coursesTermChip(int n) {
-    return '📚  Trimestre $n';
+    return '📚 Trimestre $n';
   }
 
   @override
   String coursesTermChaptersProgress(int done, int total) {
-    return '$done chapitres sur $total terminés';
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done chapitres sur $total terminés',
+      one: '$done chapitre sur $total terminé',
+    );
+    return '$_temp0';
   }
 
   @override
@@ -1116,6 +1128,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get featureComingSoon => 'Bientôt disponible';
+
+  @override
+  String get publicProfilePageTitle => 'Profil';
 
   @override
   String get publicProfileStatsTitle => 'Statistiques';

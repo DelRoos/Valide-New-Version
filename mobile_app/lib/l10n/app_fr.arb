@@ -391,11 +391,11 @@
 
   "coursesSectionTitle": "Mes matières",
   "@coursesSectionTitle": { "description": "Titre de la section liste des matières sur la tab Cours." },
-  "coursesChaptersOf": "{done}/{total} chapitres",
+  "coursesChaptersOf": "{total, plural, =1{{done}/{total} chapitre} other{{done}/{total} chapitres}}",
   "@coursesChaptersOf": { "description": "Compteur chapitres terminés/total sur une carte matière.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
-  "coursesTermChip": "📚  Trimestre {n}",
+  "coursesTermChip": "📚 Trimestre {n}",
   "@coursesTermChip": { "description": "Chip trimestre courant dans le banner Cours.", "placeholders": { "n": { "type": "int" } } },
-  "coursesTermChaptersProgress": "{done} chapitres sur {total} terminés",
+  "coursesTermChaptersProgress": "{total, plural, =1{{done} chapitre sur {total} terminé} other{{done} chapitres sur {total} terminés}}",
   "@coursesTermChaptersProgress": { "description": "Progression chapitres du trimestre.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
   "coursesTermCtaLabel": "Reprendre la leçon",
   "@coursesTermCtaLabel": { "description": "CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché)." },
@@ -996,6 +996,8 @@
   "featureComingSoon": "Bientôt disponible",
   "@featureComingSoon": { "description": "Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs)." },
 
+  "publicProfilePageTitle": "Profil",
+  "@publicProfilePageTitle": { "description": "Titre de la page profil public (utilisé dans l'AppBar / _BackBar sur les states erreur ou not-found)." },
   "publicProfileStatsTitle": "Statistiques",
   "@publicProfileStatsTitle": { "description": "Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4)." },
 

@@ -779,19 +779,19 @@ abstract class AppLocalizations {
   /// Compteur chapitres terminés/total sur une carte matière.
   ///
   /// In fr, this message translates to:
-  /// **'{done}/{total} chapitres'**
+  /// **'{total, plural, =1{{done}/{total} chapitre} other{{done}/{total} chapitres}}'**
   String coursesChaptersOf(int done, int total);
 
   /// Chip trimestre courant dans le banner Cours.
   ///
   /// In fr, this message translates to:
-  /// **'📚  Trimestre {n}'**
+  /// **'📚 Trimestre {n}'**
   String coursesTermChip(int n);
 
   /// Progression chapitres du trimestre.
   ///
   /// In fr, this message translates to:
-  /// **'{done} chapitres sur {total} terminés'**
+  /// **'{total, plural, =1{{done} chapitre sur {total} terminé} other{{done} chapitres sur {total} terminés}}'**
   String coursesTermChaptersProgress(int done, int total);
 
   /// CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché).
@@ -2035,6 +2035,12 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Bientôt disponible'**
   String get featureComingSoon;
+
+  /// Titre de la page profil public (utilisé dans l'AppBar / _BackBar sur les states erreur ou not-found).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil'**
+  String get publicProfilePageTitle;
 
   /// Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4).
   ///
