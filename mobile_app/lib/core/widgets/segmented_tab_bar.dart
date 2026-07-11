@@ -38,8 +38,8 @@ class SegmentedTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: AppSpacing.s9,
-      padding: const EdgeInsets.all(AppSpacing.s1),
+      height: AppSpacing.s9.h,
+      padding: EdgeInsets.all(AppSpacing.s1.w),
       decoration: BoxDecoration(
         color: trackColor ?? AppColors.bg,
         borderRadius: BorderRadius.circular(AppRadius.md),

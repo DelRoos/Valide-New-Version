@@ -58,6 +58,7 @@ class SubjectHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: onBack,
@@ -67,21 +68,6 @@ class SubjectHeader extends StatelessWidget {
                           color: AppColors.card, size: AppIconSize.xl),
                     ),
                   ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.s2),
-                      child: Icon(Icons.search,
-                          color: AppColors.card, size: AppIconSize.xl),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.s1),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
                   Container(
                     width: AppSpacing.s10,
                     height: AppSpacing.s10,
@@ -109,25 +95,33 @@ class SubjectHeader extends StatelessWidget {
                               letterSpacing: 0.5,
                             ),
                           ),
-                        SizedBox(height: AppSpacing.s1),
                         Text(
                           subjectName,
                           style: TextStyle(
                             fontFamily: AppTypography.fontFamily,
-                            fontSize: AppFontSize.h2,
+                            fontSize: AppFontSize.h3,
                             fontWeight: FontWeight.w900,
                             color: AppColors.card,
-                            height: 1.1,
+                            height: 1.15,
                           ),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(width: AppSpacing.s1),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.s2),
+                      child: Icon(Icons.search,
+                          color: AppColors.card, size: AppIconSize.xl),
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: AppSpacing.s4),
+              SizedBox(height: AppSpacing.s3),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

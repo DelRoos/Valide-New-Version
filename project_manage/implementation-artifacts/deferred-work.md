@@ -40,3 +40,18 @@ Findings différés lors des code reviews — à traiter dans des stories future
 - **D9 — `LayoutBuilder` dans `QuizSessionView` au lieu de `QuizPage`** (`quiz_session_view.dart`) : spec AC9 dit que `QuizPage` porte le `LayoutBuilder`. Fonctionnellement équivalent. À réaligner structurellement dans une story refacto si nécessaire.
 - **D10 — `_answers` sans garde sur longueur** (`quiz_session_view.dart`) : race condition fast-tap entre `ref.invalidate` et `setState` en `_replay()` peut laisser `_answers` avec une entrée stale avant le rebuild. Risque faible. Défense : initialiser `_answers` à liste vide dans le `setState` de replay avant l'invalidation.
 - **D11 — `Size.fromHeight(52)` dans AppBar** (`quiz_page.dart`) : valeur numérique brute. Couvert par l'exception AppNavBar (CLAUDE.md règle 7) car la hauteur d'AppBar est une zone de touch physique. Acceptable en V1.
+
+## Deferred from: code review (2026-07-11) — PR #154 feat/courses-tab-alignment-exams
+
+- **Verrouillage portrait sur tablette** — `AndroidManifest.xml`, `Info.plist`, `main.dart` : viole CLAUDE.md règle 3 (« Tablette doit fonctionner en portrait ET paysage »). Fichiers pré-existants dans le working tree, non touchés par cette PR — à trancher hors scope.
+- **Duplication `_kFakeTotal`/`_kFakeDone`** — arrays mock identiques dans `courses_content.dart` et `exams_body.dart`. À résorber en helper mock partagé au moment du branchement Firestore (Story 2.x).
+- **`context` capturé après `Navigator.pop` dans `quiz_page.dart:44-52`** — dette pré-existante (fichier M non touché cette PR). Refonte navigation quiz à traiter à part.
+- **Deep link direct sur quiz page — `Navigator.pop()` sans check `canPop()`** — même fichier `quiz_page.dart:49`. Pile vide en deep link → crash potentiel.
+- **`mockSequenceFor` avec `c.order == 0`** — donnée Firestore mal seedée fausse la répartition (clamp masque). Validation contrat Firestore à ajouter côté data layer quand branchement.
+- **Division par zéro future sur `done/total` dans `SubjectProgressListCard`** — mocks garantissent `total > 0`, mais aucun guard côté widget. Ajouter guard avant branchement Firestore Story 2.x.
+- **`showAccountUpgradeDialog` — `addPostFrameCallback` sans `mounted` check** — `account_upgrade_sheet.dart:139` pré-existant. Dette héritée.
+- **`context.mounted` protège pop mais pas `ref.read` et logs** — même fichier `account_upgrade_sheet.dart:132-142`. Dette héritée.
+- **Import order incohérent dans `quiz_page.dart:8`** — pré-existant, cleanup possible dans une chore PR séparée.
+- **`SegmentedTabBar` edge cases : `labels.isEmpty` et `selectedIndex` hors bornes** — composant réutilisable exposé, mais tous les callers actuels garantissent la validité. Ajouter asserts en durcissement futur.
+- **Rotation écran entre openSummary et startExercise** — cas rare, non testé. À couvrir en Story tests responsives Story A.7 à venir.
+- **Sheet 90% hauteur en paysage phone** — 360dp restant peut être serré avec clavier ouvert. Flutter `viewInsets` compense partiellement. À revoir si feedback utilisateurs.

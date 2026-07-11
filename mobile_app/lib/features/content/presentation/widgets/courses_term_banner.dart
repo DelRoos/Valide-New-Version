@@ -52,6 +52,8 @@ class CoursesTermBanner extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                       height: 1.1,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 SizedBox(width: AppSpacing.s3.w),
@@ -59,7 +61,7 @@ class CoursesTermBanner extends StatelessWidget {
                   '$pct%',
                   style: AppTypography.h1.copyWith(
                     color: Colors.white,
-                    fontSize: 28.sp,
+                    fontSize: AppFontSize.h1,
                     fontWeight: FontWeight.w900,
                     height: 1,
                   ),
@@ -81,7 +83,7 @@ class CoursesTermBanner extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: AppSpacing.s1.h + 2),
+            SizedBox(height: AppSpacing.s2.h),
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.pill),
               child: LinearProgressIndicator(
@@ -95,34 +97,37 @@ class CoursesTermBanner extends StatelessWidget {
             SizedBox(height: AppSpacing.s4.h),
             SizedBox(
               width: double.infinity,
-              child: Material(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(AppRadius.pill),
-                child: InkWell(
-                  onTap: onCtaTap ?? () {},
+              child: Opacity(
+                opacity: onCtaTap == null ? 0.5 : 1,
+                child: Material(
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(AppRadius.pill),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: AppSpacing.s3.h,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          LucideIcons.play,
-                          size: AppIconSize.sm,
-                          color: AppColors.primary,
-                        ),
-                        SizedBox(width: AppSpacing.s2.w),
-                        Text(
-                          l10n.coursesTermCtaLabel,
-                          style: AppTypography.bodyStrong.copyWith(
+                  child: InkWell(
+                    onTap: onCtaTap,
+                    borderRadius: BorderRadius.circular(AppRadius.pill),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        vertical: AppSpacing.s3.h,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            LucideIcons.play,
+                            size: AppIconSize.sm,
                             color: AppColors.primary,
-                            fontWeight: FontWeight.w800,
-                            fontSize: AppFontSize.bodySmall,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: AppSpacing.s2.w),
+                          Text(
+                            l10n.coursesTermCtaLabel,
+                            style: AppTypography.bodyStrong.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.w800,
+                              fontSize: AppFontSize.bodySmall,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

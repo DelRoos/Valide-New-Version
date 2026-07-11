@@ -40,6 +40,7 @@ class ChapterHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: onBack,
@@ -52,7 +53,37 @@ class ChapterHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
+              Container(
+                width: AppSpacing.s6,
+                height: AppSpacing.s6,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '$chapterOrder',
+                  style: TextStyle(
+                    fontFamily: AppTypography.fontFamily,
+                    fontSize: AppFontSize.caption,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.card,
+                  ),
+                ),
+              ),
+              SizedBox(width: AppSpacing.s2),
+              Expanded(
+                child: Text(
+                  l10n.chapterEyebrow(subjectAbbrev, chapterOrder),
+                  style: TextStyle(
+                    fontFamily: AppTypography.fontFamily,
+                    fontSize: AppFontSize.eyebrow,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.muted,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
               GestureDetector(
                 onTap: () {},
                 child: Padding(
@@ -65,43 +96,6 @@ class ChapterHeader extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s2),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: AppSpacing.s6,
-                  height: AppSpacing.s6,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppRadius.xs),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    '$chapterOrder',
-                    style: TextStyle(
-                      fontFamily: AppTypography.fontFamily,
-                      fontSize: AppFontSize.caption,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.card,
-                    ),
-                  ),
-                ),
-                SizedBox(width: AppSpacing.s2),
-                Text(
-                  l10n.chapterEyebrow(subjectAbbrev, chapterOrder),
-                  style: TextStyle(
-                    fontFamily: AppTypography.fontFamily,
-                    fontSize: AppFontSize.eyebrow,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.muted,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
           ),
           SizedBox(height: AppSpacing.s2),
           Padding(

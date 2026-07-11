@@ -62,12 +62,12 @@ class LessonTile extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   if (hasDuration) ...[
-                    SizedBox(height: 2),
+                    SizedBox(height: AppSpacing.s075),
                     Row(
                       children: [
                         Icon(Icons.access_time,
                             size: AppIconSize.xs, color: AppColors.muted),
-                        SizedBox(width: 4),
+                        SizedBox(width: AppSpacing.s1),
                         Text(
                           '${lesson.durationMinutes} min',
                           style: TextStyle(
@@ -79,7 +79,7 @@ class LessonTile extends StatelessWidget {
                         SizedBox(width: AppSpacing.s2),
                         Icon(Icons.check_circle_outline,
                             size: AppIconSize.xs, color: AppColors.muted),
-                        SizedBox(width: 4),
+                        SizedBox(width: AppSpacing.s1),
                         Flexible(
                           child: Text(
                             l10n.lessonLinkedQuiz,
