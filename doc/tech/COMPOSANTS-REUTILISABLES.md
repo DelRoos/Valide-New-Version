@@ -1023,6 +1023,49 @@ SchoolProfileEditSheet.show(
 
 ---
 
+### SubjectProgressListCard
+
+**Path** : `lib/core/widgets/cards/subject_progress_list_card.dart`
+**Story d'origine** : Extrait de `features/dashboard/presentation/widgets/exams_subject_card.dart` (Story 2.5 — unification tabs Cours / Examens, 2026-07-11)
+**Catégorie** : `card`
+**Responsive** : `phone-only` (contrat existant — Row + Expanded, s'étend naturellement à tablette via padding parent)
+
+**Quand l'utiliser** :
+
+- Toute liste verticale de matières avec progression : tab **Cours** (chapitres terminés / total), tab **Examens** (exercices faits / total), et futures listes analytiques par matière (résultats, historique).
+- Card horizontale : icône colorée (palette `subjectColorAt(index)`) + libellé matière + compteur textuel + barre de progression + chevron droit.
+- Palette partagée avec la grille (via `lib/core/widgets/cards/subject_palette.dart`).
+
+**Props (API publique)** :
+
+- `subject: Subject` — Matière catalogue (name, abbreviation, icon).
+- `index: int` — Index dans la liste, sert à choisir la couleur cyclique (`subjectColorAt`).
+- `langKey: String` — Code langue courant (`fr` / `en`) pour résoudre nom + abréviation.
+- `progressLabel: String` — Libellé compteur **déjà localisé** par le caller (ex. `l10n.coursesChaptersOf(3, 12)` ou `l10n.examsExercisesOf(6, 18)`).
+- `progressValue: double` — Progression 0..1 pour la `LinearProgressIndicator`.
+- `onTap: VoidCallback` — Callback tap (typiquement `context.push(AppRoutes.subject(...))`).
+
+**Décision de design** : le libellé du compteur est passé en `String` prêt-à-afficher (pas `done`/`total` bruts) pour que le composant reste agnostique du domaine consommateur (chapitres, exercices, quiz, etc.) et de la logique de pluralisation ICU.
+
+**Exemple** :
+
+```dart
+SubjectProgressListCard(
+  subject: subjects[i],
+  index: i,
+  langKey: 'fr',
+  progressLabel: l10n.coursesChaptersOf(done, total),
+  progressValue: done / total,
+  onTap: () => context.push(AppRoutes.subject(subjects[i].subjectId)),
+)
+```
+
+**Tests associés** :
+
+- À couvrir en Story 2.6+ (dette : goldens phone + tablet, tap → navigation).
+
+---
+
 ### Famille Public Profile (profil public d'un pair — Story A.2)
 
 > Widgets créés en Story A.2 (Profil public). **Feature-specific** à la feature `account` — consomment `PublicProfile` (domain entity) et `catalogueProvider`. Pas conçus pour réutilisation hors de ce contexte en V1.
@@ -1084,3 +1127,4 @@ SchoolProfileEditSheet.show(
 | 2026-06-23 | Story 2.4 livrée — ajout `ContentErrorView` au Catalogue actuel. Widget d'erreur centré pour les pages contenu Firestore : message localisé selon `ContentFailureKind` + bouton retry. Couvert par test intégration T10.1 dans `content_pages_test.dart`. | feat/2-2-subject-navigation-ui | Amelia |
 | 2026-06-24 | Story A.1 livrée — section « Famille Profile sheets » ajoutée au Catalogue actuel : 2 composants feature-specific (`ProfileEditSheet`, `SchoolEditSheet`) dans `features/dashboard/presentation/widgets/`. Consomment `userProfileRepositoryProvider` + `schoolSearchNotifierProvider`. Factory `.show()` statique. Responsive tablette via `ConstrainedBox(maxWidth: 560.w)`. 3 widget tests + 2 goldens profil phone+tablet. | feat/2-2-subject-navigation-ui | Amelia |
 | 2026-06-24 | Story A.2 livrée — section « Famille Public Profile » ajoutée au Catalogue actuel : 2 composants feature-specific (`PublicProfileHeader`, `PublicProfileStatsSection`) dans `features/account/presentation/widgets/`. Firestore rule `users/{uid}` élargie à `request.auth != null` (A.2-DR-01). Route `/user/:uid` hors shell. `_ClassmateRow` rendu tappable dans `home_tab_page.dart`. 4 tests unitaires + 3 tests widget + 2 goldens phone+tablet. | feat/A-2-public-profile | Amelia |
+| 2026-07-11 | Unification tabs Cours / Examens — `SubjectProgressListCard` ajouté au Catalogue actuel (extrait de `exams_subject_card.dart`, désormais supprimé). Palette matière déplacée dans `lib/core/widgets/cards/subject_palette.dart` (partagée). Tab Cours passe d'une grille 2 colonnes (`SubjectGridCard` supprimé) à une liste verticale identique à la tab Examens. Nouveau banner `CoursesTermBanner` (calqué sur `ExamsCountdownBanner`, gradient bleu + CTA « Voir le programme ») remplace `CoursesRecommendationBanner` (supprimé). Données mock — chapitres terminés/total sur les cartes, progression trimestre dans le banner — à brancher sur Firestore en Story 2.x. | chore/tab-cours-alignement-examens | Amelia |

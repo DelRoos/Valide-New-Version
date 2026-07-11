@@ -166,6 +166,11 @@
   "coursesPageTitle": "My Courses",
   "coursesStartLesson": "Start",
   "coursesRecommendedBannerTitle": "Pick up where you left off",
+  "coursesSectionTitle": "My subjects",
+  "coursesChaptersOf": "{total, plural, =1{{done}/{total} chapter} other{{done}/{total} chapters}}",
+  "coursesTermChip": "📚 Term {n}",
+  "coursesTermChaptersProgress": "{total, plural, =1{{done} of {total} chapter done} other{{done} of {total} chapters done}}",
+  "coursesTermCtaLabel": "Resume lesson",
   "dashboardTabActivities": "Exams",
   "dashboardTabProfile": "Profile",
 
@@ -459,6 +464,7 @@
   "profileSchoolRemove": "Remove my school",
   "featureComingSoon": "Coming soon",
 
+  "publicProfilePageTitle": "Profile",
   "publicProfileStatsTitle": "Stats",
   "publicProfileLessonsRead": "lessons read",
   "publicProfileQuizPassed": "quizzes passed",
@@ -498,8 +504,8 @@
   },
   "quizReviewBack": "Back to result",
   "fichePracticeChapter": "Practice this chapter",
-  "ficheTitle": "Study Sheet",
-  "ficheComingSoon": "Study sheet coming soon",
+  "ficheTitle": "Reading Sheet",
+  "ficheComingSoon": "Reading sheet coming soon",
   "tableLabel": "TABLE",
 
   "quizTabTitle": "Test your knowledge",
@@ -513,6 +519,11 @@
 
   "subjectProgress": "Progress",
   "subjectChaptersLabel": "CHAPTERS",
+  "subjectTrimesterEyebrow": "TERM {n}",
+  "sequenceTabLabel": "S{n}",
+  "performanceLevelGood": "Good",
+  "performanceLevelMedium": "Fair",
+  "performanceLevelWeak": "Review",
 
   "lessonLabel": "LESSON {order}",
   "@lessonLabel": {
@@ -549,6 +560,8 @@
       "chapterOrder": { "type": "int" }
     }
   },
+  "chapterFabSummary": "Summary",
+  "chapterFabPractice": "Practice",
   "chapterExercisesComingSoon": "Exercises coming soon",
   "chaptersEmptyLabel": "No chapters available",
   "imageUnavailableLabel": "Image unavailable",

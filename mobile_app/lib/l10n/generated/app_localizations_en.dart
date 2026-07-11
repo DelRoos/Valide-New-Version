@@ -405,6 +405,39 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coursesRecommendedBannerTitle => 'Pick up where you left off';
 
   @override
+  String get coursesSectionTitle => 'My subjects';
+
+  @override
+  String coursesChaptersOf(int done, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done/$total chapters',
+      one: '$done/$total chapter',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String coursesTermChip(int n) {
+    return '📚 Term $n';
+  }
+
+  @override
+  String coursesTermChaptersProgress(int done, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done of $total chapters done',
+      one: '$done of $total chapter done',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get coursesTermCtaLabel => 'Resume lesson';
+
+  @override
   String get dashboardTabActivities => 'Exams';
 
   @override
@@ -1091,6 +1124,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get featureComingSoon => 'Coming soon';
 
   @override
+  String get publicProfilePageTitle => 'Profile';
+
+  @override
   String get publicProfileStatsTitle => 'Stats';
 
   @override
@@ -1161,10 +1197,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fichePracticeChapter => 'Practice this chapter';
 
   @override
-  String get ficheTitle => 'Study Sheet';
+  String get ficheTitle => 'Reading Sheet';
 
   @override
-  String get ficheComingSoon => 'Study sheet coming soon';
+  String get ficheComingSoon => 'Reading sheet coming soon';
 
   @override
   String get tableLabel => 'TABLE';
@@ -1198,6 +1234,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get subjectChaptersLabel => 'CHAPTERS';
+
+  @override
+  String subjectTrimesterEyebrow(int n) {
+    return 'TERM $n';
+  }
+
+  @override
+  String sequenceTabLabel(int n) {
+    return 'S$n';
+  }
+
+  @override
+  String get performanceLevelGood => 'Good';
+
+  @override
+  String get performanceLevelMedium => 'Fair';
+
+  @override
+  String get performanceLevelWeak => 'Review';
 
   @override
   String lessonLabel(int order) {
@@ -1264,6 +1319,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chapterExercisesComingSoon => 'Exercises coming soon';
+
+  @override
+  String get chapterFabSummary => 'Summary';
+
+  @override
+  String get chapterFabPractice => 'Practice';
 
   @override
   String get chaptersEmptyLabel => 'No chapters available';

@@ -4,32 +4,71 @@ import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
-import '../../../../l10n/generated/app_localizations.dart';
 import '../../../../core/widgets/picker/subject_icon_resolver.dart';
+import '../../../../core/widgets/segmented_tab_bar.dart';
+import '../../../../l10n/generated/app_localizations.dart';
 import '../../../onboarding/providers.dart';
 import '../../providers.dart';
-import '../widgets/chapter_list.dart';
 import '../widgets/subject_header.dart';
 import '../widgets/subject_loading_body.dart';
+import '../widgets/subject_sequences_view.dart';
 
-class SubjectDetailPage extends ConsumerWidget {
+class SubjectDetailPage extends ConsumerStatefulWidget {
   const SubjectDetailPage({super.key, required this.subjectId});
 
   final String subjectId;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SubjectDetailPage> createState() => _SubjectDetailPageState();
+}
+
+class _SubjectDetailPageState extends ConsumerState<SubjectDetailPage> {
+  static const int _kInitialIndex = kMockCurrentSequence - 1;
+
+  late final PageController _pageController;
+  int _selectedIndex = _kInitialIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(initialPage: _kInitialIndex);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void _onTabTap(int i) {
+    setState(() => _selectedIndex = i);
+    _pageController.animateToPage(
+      i,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
+    );
+  }
+
+  void _onPageChanged(int i) {
+    if (i != _selectedIndex) {
+      setState(() => _selectedIndex = i);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final langCode = Localizations.localeOf(context).languageCode;
     final l10n = AppLocalizations.of(context);
-    final chaptersAsync = ref.watch(chaptersProvider(subjectId));
+    final chaptersAsync = ref.watch(chaptersProvider(widget.subjectId));
     final subjectsAsync = ref.watch(userSubjectsProvider);
 
     final subject = subjectsAsync.maybeWhen(
-      data: (list) => list.where((s) => s.subjectId == subjectId).firstOrNull,
+      data: (list) =>
+          list.where((s) => s.subjectId == widget.subjectId).firstOrNull,
       orElse: () => null,
     );
     final subjectName =
-        subject?.name[langCode] ?? subject?.name['fr'] ?? subjectId;
+        subject?.name[langCode] ?? subject?.name['fr'] ?? widget.subjectId;
     final subjectIcon = subjectIconFor(subject?.icon ?? '');
 
     return Scaffold(
@@ -53,20 +92,50 @@ class SubjectDetailPage extends ConsumerWidget {
             Expanded(
               child: ContentErrorView(
                 error: error,
-                onRetry: () => ref.invalidate(chaptersProvider(subjectId)),
+                onRetry: () =>
+                    ref.invalidate(chaptersProvider(widget.subjectId)),
               ),
             ),
           ],
         ),
         data: (chapters) {
-          final overallProgress = chapters.isEmpty
-              ? 0
-              : (chapters
-                          .map((c) => c.progressPercent)
-                          .fold(0, (s, p) => s + p) /
-                      chapters.length)
-                  .round();
-          final eyebrow = '${chapters.length} ${l10n.subjectChaptersLabel}';
+          final currentTrim = trimesterForSequence(kMockCurrentSequence);
+          final trimProgress =
+              computeTrimesterProgress(chapters, kMockCurrentSequence);
+          final eyebrow = l10n.subjectTrimesterEyebrow(currentTrim);
+          final labels = List.generate(
+            kSequencesPerYear,
+            (i) => l10n.sequenceTabLabel(i + 1),
+          );
+
+          // Etat vide : matiere sans chapitre du tout. On n'affiche pas les
+          // 6 tabs sequences dans ce cas (redondant et blanc).
+          if (chapters.isEmpty) {
+            return Column(
+              children: [
+                SubjectHeader(
+                  subjectName: subjectName,
+                  subjectIcon: subjectIcon,
+                  eyebrow: eyebrow,
+                  overallProgress: trimProgress,
+                  rank: 0,
+                  onBack: () => context.pop(),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      l10n.chaptersEmptyLabel,
+                      style: TextStyle(
+                        fontFamily: AppTypography.fontFamily,
+                        fontSize: AppFontSize.body,
+                        color: AppColors.muted,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
 
           return Column(
             children: [
@@ -74,35 +143,47 @@ class SubjectDetailPage extends ConsumerWidget {
                 subjectName: subjectName,
                 subjectIcon: subjectIcon,
                 eyebrow: eyebrow,
-                overallProgress: overallProgress,
+                overallProgress: trimProgress,
                 rank: 0,
                 onBack: () => context.pop(),
+                bottomSlot: SegmentedTabBar(
+                  labels: labels,
+                  selectedIndex: _selectedIndex,
+                  currentIndex: _kInitialIndex,
+                  onTap: _onTabTap,
+                  trackColor: Colors.white.withValues(alpha: 0.15),
+                  activeBackgroundColor: AppColors.card,
+                  activeTextColor: AppColors.primary,
+                  inactiveTextColor: Colors.white.withValues(alpha: 0.75),
+                ),
               ),
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final width = constraints.maxWidth;
-                    final list = ChapterList(
+                    final view = SubjectSequencesView(
                       chapters: chapters,
                       languageCode: langCode,
-                      subjectId: subjectId,
+                      subjectId: widget.subjectId,
+                      pageController: _pageController,
+                      onPageChanged: _onPageChanged,
                     );
                     if (width >= 840) {
                       return Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 720),
-                          child: list,
+                          child: view,
                         ),
                       );
                     } else if (width >= 600) {
                       return Center(
                         child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 600),
-                          child: list,
+                          child: view,
                         ),
                       );
                     }
-                    return list;
+                    return view;
                   },
                 ),
               ),

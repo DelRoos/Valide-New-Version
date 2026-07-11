@@ -770,6 +770,36 @@ abstract class AppLocalizations {
   /// **'Reprends là où tu t\'es arrêté'**
   String get coursesRecommendedBannerTitle;
 
+  /// Titre de la section liste des matières sur la tab Cours.
+  ///
+  /// In fr, this message translates to:
+  /// **'Mes matières'**
+  String get coursesSectionTitle;
+
+  /// Compteur chapitres terminés/total sur une carte matière.
+  ///
+  /// In fr, this message translates to:
+  /// **'{total, plural, =1{{done}/{total} chapitre} other{{done}/{total} chapitres}}'**
+  String coursesChaptersOf(int done, int total);
+
+  /// Chip trimestre courant dans le banner Cours.
+  ///
+  /// In fr, this message translates to:
+  /// **'📚 Trimestre {n}'**
+  String coursesTermChip(int n);
+
+  /// Progression chapitres du trimestre.
+  ///
+  /// In fr, this message translates to:
+  /// **'{total, plural, =1{{done} chapitre sur {total} terminé} other{{done} chapitres sur {total} terminés}}'**
+  String coursesTermChaptersProgress(int done, int total);
+
+  /// CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché).
+  ///
+  /// In fr, this message translates to:
+  /// **'Reprendre la leçon'**
+  String get coursesTermCtaLabel;
+
   /// Label onglet 2 du bottom tab bar — révisions et examens.
   ///
   /// In fr, this message translates to:
@@ -2006,6 +2036,12 @@ abstract class AppLocalizations {
   /// **'Bientôt disponible'**
   String get featureComingSoon;
 
+  /// Titre de la page profil public (utilisé dans l'AppBar / _BackBar sur les states erreur ou not-found).
+  ///
+  /// In fr, this message translates to:
+  /// **'Profil'**
+  String get publicProfilePageTitle;
+
   /// Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4).
   ///
   /// In fr, this message translates to:
@@ -2132,10 +2168,10 @@ abstract class AppLocalizations {
   /// **'S\'exercer sur ce chapitre'**
   String get fichePracticeChapter;
 
-  /// Titre du sheet plein écran de la fiche de révision.
+  /// Titre du sheet plein écran de la fiche de lecture (résumé du chapitre).
   ///
   /// In fr, this message translates to:
-  /// **'Fiche de révision'**
+  /// **'Fiche de lecture'**
   String get ficheTitle;
 
   /// État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre.
@@ -2209,6 +2245,36 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'CHAPITRES'**
   String get subjectChaptersLabel;
+
+  /// Eyebrow du header matière indiquant le trimestre courant (mock : n=1).
+  ///
+  /// In fr, this message translates to:
+  /// **'TRIMESTRE {n}'**
+  String subjectTrimesterEyebrow(int n);
+
+  /// Label court d'un onglet séquence (S1, S2, ...).
+  ///
+  /// In fr, this message translates to:
+  /// **'S{n}'**
+  String sequenceTabLabel(int n);
+
+  /// Chip niveau bon (score quiz >= 70%).
+  ///
+  /// In fr, this message translates to:
+  /// **'Bon'**
+  String get performanceLevelGood;
+
+  /// Chip niveau moyen (score quiz 40-69%).
+  ///
+  /// In fr, this message translates to:
+  /// **'Moyen'**
+  String get performanceLevelMedium;
+
+  /// Chip niveau faible (score quiz < 40%).
+  ///
+  /// In fr, this message translates to:
+  /// **'À revoir'**
+  String get performanceLevelWeak;
 
   /// Étiquette eyebrow du numéro de leçon dans la liste des leçons.
   ///
@@ -2293,6 +2359,18 @@ abstract class AppLocalizations {
   /// In fr, this message translates to:
   /// **'Exercices bientôt disponibles'**
   String get chapterExercisesComingSoon;
+
+  /// Label du FAB secondaire qui ouvre le bottom sheet du résumé de chapitre (fiche de révision).
+  ///
+  /// In fr, this message translates to:
+  /// **'Résumé'**
+  String get chapterFabSummary;
+
+  /// Label du FAB principal qui route vers le quiz du chapitre.
+  ///
+  /// In fr, this message translates to:
+  /// **'S\'exercer'**
+  String get chapterFabPractice;
 
   /// Message vide quand une matière n'a pas encore de chapitres.
   ///

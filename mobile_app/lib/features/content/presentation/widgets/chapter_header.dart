@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../core/theme/tokens.dart';
+import '../../../../core/widgets/segmented_tab_bar.dart';
 import '../../../../l10n/generated/app_localizations.dart';
 
 class ChapterHeader extends StatelessWidget {
@@ -39,6 +40,7 @@ class ChapterHeader extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               GestureDetector(
                 onTap: onBack,
@@ -51,7 +53,37 @@ class ChapterHeader extends StatelessWidget {
                   ),
                 ),
               ),
-              const Spacer(),
+              Container(
+                width: AppSpacing.s6,
+                height: AppSpacing.s6,
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  '$chapterOrder',
+                  style: TextStyle(
+                    fontFamily: AppTypography.fontFamily,
+                    fontSize: AppFontSize.caption,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.card,
+                  ),
+                ),
+              ),
+              SizedBox(width: AppSpacing.s2),
+              Expanded(
+                child: Text(
+                  l10n.chapterEyebrow(subjectAbbrev, chapterOrder),
+                  style: TextStyle(
+                    fontFamily: AppTypography.fontFamily,
+                    fontSize: AppFontSize.eyebrow,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.muted,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ),
               GestureDetector(
                 onTap: () {},
                 child: Padding(
@@ -64,43 +96,6 @@ class ChapterHeader extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: AppSpacing.s2),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: AppSpacing.s6,
-                  height: AppSpacing.s6,
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.circular(AppRadius.xs),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    '$chapterOrder',
-                    style: TextStyle(
-                      fontFamily: AppTypography.fontFamily,
-                      fontSize: AppFontSize.caption,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.card,
-                    ),
-                  ),
-                ),
-                SizedBox(width: AppSpacing.s2),
-                Text(
-                  l10n.chapterEyebrow(subjectAbbrev, chapterOrder),
-                  style: TextStyle(
-                    fontFamily: AppTypography.fontFamily,
-                    fontSize: AppFontSize.eyebrow,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.muted,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-              ],
-            ),
           ),
           SizedBox(height: AppSpacing.s2),
           Padding(
@@ -123,7 +118,7 @@ class ChapterHeader extends StatelessWidget {
           SizedBox(height: AppSpacing.s3),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: AppSpacing.s2),
-            child: _ChapterTabBar(
+            child: SegmentedTabBar(
               labels: tabLabels,
               selectedIndex: selectedTabIndex,
               onTap: onTabTap,
@@ -171,56 +166,3 @@ class _ProgressBar extends StatelessWidget {
   }
 }
 
-class _ChapterTabBar extends StatelessWidget {
-  const _ChapterTabBar({
-    required this.labels,
-    required this.selectedIndex,
-    required this.onTap,
-  });
-
-  final List<String> labels;
-  final int selectedIndex;
-  final ValueChanged<int> onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: AppSpacing.s9,
-      padding: const EdgeInsets.all(AppSpacing.s1),
-      decoration: BoxDecoration(
-        color: AppColors.bg,
-        borderRadius: BorderRadius.circular(AppRadius.md),
-      ),
-      child: Row(
-        children: List.generate(labels.length, (i) {
-          final isActive = i == selectedIndex;
-          return Expanded(
-            child: GestureDetector(
-              onTap: () => onTap(i),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 150),
-                decoration: BoxDecoration(
-                  color: isActive ? AppColors.card : Colors.transparent,
-                  borderRadius: BorderRadius.circular(AppRadius.xs),
-                  boxShadow: isActive ? AppElevation.soft : null,
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  labels[i],
-                  style: TextStyle(
-                    fontFamily: AppTypography.fontFamily,
-                    fontSize: AppFontSize.meta,
-                    fontWeight:
-                        isActive ? FontWeight.w700 : FontWeight.w500,
-                    color: isActive ? AppColors.ink : AppColors.muted,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          );
-        }),
-      ),
-    );
-  }
-}

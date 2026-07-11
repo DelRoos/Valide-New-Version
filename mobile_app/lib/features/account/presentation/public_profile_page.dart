@@ -222,18 +222,39 @@ class _NotFoundBody extends StatelessWidget {
 }
 
 class _BackBar extends StatelessWidget {
+  // Largeur nominale d'un IconButton Material (kMinInteractiveDimension = 48dp).
+  static const double _iconButtonBalancer = 48;
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final top = MediaQuery.paddingOf(context).top;
     return Container(
       color: AppColors.primary,
       padding: EdgeInsets.only(top: top),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
             onPressed: () => Navigator.of(context).maybePop(),
           ),
+          Expanded(
+            child: Center(
+              child: Text(
+                l10n.publicProfilePageTitle,
+                style: TextStyle(
+                  fontFamily: AppTypography.fontFamily,
+                  fontSize: AppFontSize.h3,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+          const SizedBox(width: _iconButtonBalancer),
         ],
       ),
     );

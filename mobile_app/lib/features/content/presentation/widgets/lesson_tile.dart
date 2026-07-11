@@ -37,8 +37,8 @@ class LessonTile extends StatelessWidget {
           boxShadow: AppElevation.soft,
         ),
         padding: EdgeInsets.symmetric(
-          horizontal: AppSpacing.s4,
-          vertical: AppSpacing.s3,
+          horizontal: AppSpacing.s3,
+          vertical: AppSpacing.s2,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,31 +51,22 @@ class LessonTile extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    l10n.lessonLabel(lesson.order),
-                    style: TextStyle(
-                      fontFamily: AppTypography.fontFamily,
-                      fontSize: AppFontSize.eyebrow,
-                      fontWeight: FontWeight.w700,
-                      color: AppColors.muted,
-                      letterSpacing: 0.5,
-                    ),
-                  ),
-                  SizedBox(height: AppSpacing.s1),
-                  Text(
                     lesson.titleFor(languageCode),
                     style: TextStyle(
                       fontFamily: AppTypography.fontFamily,
-                      fontSize: AppFontSize.body,
+                      fontSize: AppFontSize.bodySmall,
                       fontWeight: FontWeight.w700,
                       color: AppColors.ink,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
                   if (hasDuration) ...[
-                    SizedBox(height: AppSpacing.s1),
+                    SizedBox(height: AppSpacing.s075),
                     Row(
                       children: [
                         Icon(Icons.access_time,
-                            size: AppIconSize.sm, color: AppColors.muted),
+                            size: AppIconSize.xs, color: AppColors.muted),
                         SizedBox(width: AppSpacing.s1),
                         Text(
                           '${lesson.durationMinutes} min',
@@ -87,7 +78,7 @@ class LessonTile extends StatelessWidget {
                         ),
                         SizedBox(width: AppSpacing.s2),
                         Icon(Icons.check_circle_outline,
-                            size: AppIconSize.sm, color: AppColors.muted),
+                            size: AppIconSize.xs, color: AppColors.muted),
                         SizedBox(width: AppSpacing.s1),
                         Flexible(
                           child: Text(
@@ -128,32 +119,32 @@ class _LessonStateIcon extends StatelessWidget {
     switch (state) {
       case LessonProgressState.done:
         return Container(
-          width: AppSpacing.s10,
-          height: AppSpacing.s10,
+          width: AppSpacing.s8,
+          height: AppSpacing.s8,
           decoration: BoxDecoration(
             color: AppColors.successSoft,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           child: Icon(
             Icons.check,
             color: AppColors.success,
-            size: AppIconSize.xl,
+            size: AppIconSize.lg,
           ),
         );
       case LessonProgressState.current:
         return Container(
-          width: AppSpacing.s10,
-          height: AppSpacing.s10,
+          width: AppSpacing.s8,
+          height: AppSpacing.s8,
           decoration: BoxDecoration(
             color: AppColors.primary,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
           child: Center(
             child: Text(
               '$order',
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
-                fontSize: AppFontSize.body,
+                fontSize: AppFontSize.bodySmall,
                 fontWeight: FontWeight.w800,
                 color: AppColors.card,
               ),
@@ -162,11 +153,11 @@ class _LessonStateIcon extends StatelessWidget {
         );
       case LessonProgressState.locked:
         return Container(
-          width: AppSpacing.s10,
-          height: AppSpacing.s10,
+          width: AppSpacing.s8,
+          height: AppSpacing.s8,
           decoration: BoxDecoration(
             color: AppColors.bg,
-            borderRadius: BorderRadius.circular(AppRadius.md),
+            borderRadius: BorderRadius.circular(AppRadius.sm),
             border: Border.all(color: AppColors.border),
           ),
           child: Center(
@@ -174,7 +165,7 @@ class _LessonStateIcon extends StatelessWidget {
               '$order',
               style: TextStyle(
                 fontFamily: AppTypography.fontFamily,
-                fontSize: AppFontSize.body,
+                fontSize: AppFontSize.bodySmall,
                 fontWeight: FontWeight.w700,
                 color: AppColors.mute2,
               ),

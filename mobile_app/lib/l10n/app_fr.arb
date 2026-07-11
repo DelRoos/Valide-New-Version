@@ -389,6 +389,17 @@
   "coursesRecommendedBannerTitle": "Reprends là où tu t'es arrêté",
   "@coursesRecommendedBannerTitle": { "description": "Titre du banner recommandation — générique jusqu'à implémentation du moteur de recommandation." },
 
+  "coursesSectionTitle": "Mes matières",
+  "@coursesSectionTitle": { "description": "Titre de la section liste des matières sur la tab Cours." },
+  "coursesChaptersOf": "{total, plural, =1{{done}/{total} chapitre} other{{done}/{total} chapitres}}",
+  "@coursesChaptersOf": { "description": "Compteur chapitres terminés/total sur une carte matière.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "coursesTermChip": "📚 Trimestre {n}",
+  "@coursesTermChip": { "description": "Chip trimestre courant dans le banner Cours.", "placeholders": { "n": { "type": "int" } } },
+  "coursesTermChaptersProgress": "{total, plural, =1{{done} chapitre sur {total} terminé} other{{done} chapitres sur {total} terminés}}",
+  "@coursesTermChaptersProgress": { "description": "Progression chapitres du trimestre.", "placeholders": { "done": { "type": "int" }, "total": { "type": "int" } } },
+  "coursesTermCtaLabel": "Reprendre la leçon",
+  "@coursesTermCtaLabel": { "description": "CTA du banner trimestre — ouvre la leçon recommandée par le moteur (mock : première matière tant que le moteur n'est pas branché)." },
+
   "dashboardTabActivities": "Examen",
   "@dashboardTabActivities": { "description": "Label onglet 2 du bottom tab bar — révisions et examens." },
 
@@ -985,6 +996,8 @@
   "featureComingSoon": "Bientôt disponible",
   "@featureComingSoon": { "description": "Toast info affiché quand un item de menu non implémenté est touché (Story A.1 AC7 — stubs)." },
 
+  "publicProfilePageTitle": "Profil",
+  "@publicProfilePageTitle": { "description": "Titre de la page profil public (utilisé dans l'AppBar / _BackBar sur les states erreur ou not-found)." },
   "publicProfileStatsTitle": "Statistiques",
   "@publicProfileStatsTitle": { "description": "Titre de la section stats sur la page profil public d'un pair (Story A.2 AC4)." },
 
@@ -1065,8 +1078,8 @@
   "fichePracticeChapter": "S'exercer sur ce chapitre",
   "@fichePracticeChapter": { "description": "CTA en bas de la fiche de révision pour lancer le quiz du chapitre." },
 
-  "ficheTitle": "Fiche de révision",
-  "@ficheTitle": { "description": "Titre du sheet plein écran de la fiche de révision." },
+  "ficheTitle": "Fiche de lecture",
+  "@ficheTitle": { "description": "Titre du sheet plein écran de la fiche de lecture (résumé du chapitre)." },
 
   "ficheComingSoon": "Fiche bientôt disponible",
   "@ficheComingSoon": { "description": "État vide affiché quand la fiche n'est pas encore disponible pour ce chapitre." },
@@ -1103,6 +1116,16 @@
 
   "subjectChaptersLabel": "CHAPITRES",
   "@subjectChaptersLabel": { "description": "Label eyebrow du nombre de chapitres dans le header matière (ex. '8 CHAPITRES')." },
+  "subjectTrimesterEyebrow": "TRIMESTRE {n}",
+  "@subjectTrimesterEyebrow": { "description": "Eyebrow du header matière indiquant le trimestre courant (mock : n=1).", "placeholders": { "n": { "type": "int" } } },
+  "sequenceTabLabel": "S{n}",
+  "@sequenceTabLabel": { "description": "Label court d'un onglet séquence (S1, S2, ...).", "placeholders": { "n": { "type": "int" } } },
+  "performanceLevelGood": "Bon",
+  "@performanceLevelGood": { "description": "Chip niveau bon (score quiz >= 70%)." },
+  "performanceLevelMedium": "Moyen",
+  "@performanceLevelMedium": { "description": "Chip niveau moyen (score quiz 40-69%)." },
+  "performanceLevelWeak": "À revoir",
+  "@performanceLevelWeak": { "description": "Chip niveau faible (score quiz < 40%)." },
 
   "lessonLabel": "LEÇON {order}",
   "@lessonLabel": {
@@ -1166,6 +1189,10 @@
 
   "chapterExercisesComingSoon": "Exercices bientôt disponibles",
   "@chapterExercisesComingSoon": { "description": "Placeholder du tab Exercices quand le contenu n'est pas encore disponible." },
+  "chapterFabSummary": "Résumé",
+  "@chapterFabSummary": { "description": "Label du FAB secondaire qui ouvre le bottom sheet du résumé de chapitre (fiche de révision)." },
+  "chapterFabPractice": "S'exercer",
+  "@chapterFabPractice": { "description": "Label du FAB principal qui route vers le quiz du chapitre." },
 
   "chaptersEmptyLabel": "Aucun chapitre disponible",
   "@chaptersEmptyLabel": { "description": "Message vide quand une matière n'a pas encore de chapitres." },

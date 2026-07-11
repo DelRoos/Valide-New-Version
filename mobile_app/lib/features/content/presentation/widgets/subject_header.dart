@@ -12,6 +12,7 @@ class SubjectHeader extends StatelessWidget {
     required this.overallProgress,
     required this.rank,
     required this.onBack,
+    this.bottomSlot,
   });
 
   final String subjectName;
@@ -21,53 +22,52 @@ class SubjectHeader extends StatelessWidget {
   final int rank;
   final VoidCallback onBack;
 
+  /// Widget optionnel rendu à l'intérieur du même gradient, sous la barre
+  /// de progression. Quand fourni, le container acquiert des coins bas
+  /// arrondis pour un effet "block header" incluant les onglets.
+  final Widget? bottomSlot;
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Material(
-      color: AppColors.primaryDark,
+    final hasBottom = bottomSlot != null;
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primary, AppColors.primaryDark],
+        ),
+        borderRadius: hasBottom
+            ? const BorderRadius.only(
+                bottomLeft: Radius.circular(AppRadius.xl),
+                bottomRight: Radius.circular(AppRadius.xl),
+              )
+            : null,
+      ),
       child: SafeArea(
         bottom: false,
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [AppColors.primary, AppColors.primaryDark],
-            ),
-          ),
+        child: Padding(
           padding: EdgeInsets.fromLTRB(
             AppSpacing.s2,
             AppSpacing.s1,
             AppSpacing.s4,
-            AppSpacing.s4,
+            hasBottom ? AppSpacing.s3 : AppSpacing.s4,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   GestureDetector(
                     onTap: onBack,
                     child: Padding(
                       padding: EdgeInsets.all(AppSpacing.s2),
-                      child: Icon(Icons.arrow_back, color: AppColors.card, size: AppIconSize.xl),
+                      child: Icon(Icons.arrow_back,
+                          color: AppColors.card, size: AppIconSize.xl),
                     ),
                   ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {},
-                    child: Padding(
-                      padding: EdgeInsets.all(AppSpacing.s2),
-                      child: Icon(Icons.search, color: AppColors.card, size: AppIconSize.xl),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: AppSpacing.s1),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
                   Container(
                     width: AppSpacing.s10,
                     height: AppSpacing.s10,
@@ -75,7 +75,8 @@ class SubjectHeader extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(AppRadius.md),
                     ),
-                    child: Icon(subjectIcon, color: AppColors.card, size: AppIconSize.xl2),
+                    child: Icon(subjectIcon,
+                        color: AppColors.card, size: AppIconSize.xl2),
                   ),
                   SizedBox(width: AppSpacing.s3),
                   Expanded(
@@ -94,25 +95,33 @@ class SubjectHeader extends StatelessWidget {
                               letterSpacing: 0.5,
                             ),
                           ),
-                        SizedBox(height: AppSpacing.s1),
                         Text(
                           subjectName,
                           style: TextStyle(
                             fontFamily: AppTypography.fontFamily,
-                            fontSize: AppFontSize.h2,
+                            fontSize: AppFontSize.h3,
                             fontWeight: FontWeight.w900,
                             color: AppColors.card,
-                            height: 1.1,
+                            height: 1.15,
                           ),
-                          maxLines: 2,
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],
                     ),
                   ),
+                  SizedBox(width: AppSpacing.s1),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Padding(
+                      padding: EdgeInsets.all(AppSpacing.s2),
+                      child: Icon(Icons.search,
+                          color: AppColors.card, size: AppIconSize.xl),
+                    ),
+                  ),
                 ],
               ),
-              SizedBox(height: AppSpacing.s4),
+              SizedBox(height: AppSpacing.s3),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -132,7 +141,8 @@ class SubjectHeader extends StatelessWidget {
                       child: LinearProgressIndicator(
                         value: overallProgress / 100,
                         backgroundColor: Colors.white.withValues(alpha: 0.20),
-                        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.warning),
+                        valueColor: const AlwaysStoppedAnimation<Color>(
+                            AppColors.warning),
                         minHeight: AppDimension.progressBarMed,
                       ),
                     ),
@@ -149,6 +159,10 @@ class SubjectHeader extends StatelessWidget {
                   ),
                 ],
               ),
+              if (hasBottom) ...[
+                SizedBox(height: AppSpacing.s4),
+                bottomSlot!,
+              ],
             ],
           ),
         ),
