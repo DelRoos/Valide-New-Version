@@ -17,6 +17,11 @@ import '../../../dashboard/presentation/widgets/account_upgrade_sheet.dart'
 import '../../domain/failures/content_failure.dart';
 import '../../providers.dart';
 
+// Hauteurs squelettes fiche de lecture — cales de layout pendant le fetch.
+const double _kSkeletonTitleHeight = 28;
+const double _kSkeletonParagraphHeight = 80;
+const double _kSkeletonBlockHeight = 120;
+
 /// Ouvre le bottom sheet "Résumé du chapitre" (fiche de révision) en modal
 /// plein écran. Contient un CTA final "S'exercer" qui route vers le quiz.
 Future<void> showFicheSummarySheet({
@@ -81,6 +86,7 @@ class _FicheSummarySheetBodyState
   }
 
   void _onScroll() {
+    if (!mounted) return;
     if (!_scrollController.hasClients) return;
     final max = _scrollController.position.maxScrollExtent;
     if (max <= 0) return;
@@ -91,18 +97,22 @@ class _FicheSummarySheetBodyState
   }
 
   void _onExercise() {
-    Navigator.of(context, rootNavigator: true).pop();
+    // Capturer router + context racine AVANT le pop pour eviter d'utiliser
+    // un context demonte apres la fermeture du sheet.
+    final router = GoRouter.of(context);
+    final rootContext = Navigator.of(context, rootNavigator: true).context;
     final isAnonymous =
         ref.read(firebaseAuthProvider).currentUser?.isAnonymous ?? true;
+    Navigator.of(context, rootNavigator: true).pop();
     if (isAnonymous) {
       showAccountUpgradeDialog(
-        context,
-        onAccountLinked: () => context.push(
+        rootContext,
+        onAccountLinked: () => router.push(
           AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId),
         ),
       );
     } else {
-      context.push(AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId));
+      router.push(AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId));
     }
   }
 
@@ -143,10 +153,10 @@ class _FicheSummarySheetBodyState
               return SingleChildScrollView(
                 controller: _scrollController,
                 padding: EdgeInsets.fromLTRB(
-                  AppSpacing.s4,
-                  AppSpacing.s4,
-                  AppSpacing.s4,
-                  AppSpacing.s4,
+                  AppSpacing.s4.w,
+                  AppSpacing.s4.h,
+                  AppSpacing.s4.w,
+                  AppSpacing.s4.h,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -199,7 +209,7 @@ class _SheetHeader extends StatelessWidget {
               size: AppIconSize.lg,
               color: AppColors.muted,
             ),
-            padding: EdgeInsets.all(AppSpacing.s2),
+            padding: EdgeInsets.all(AppSpacing.s2.w),
             constraints: const BoxConstraints(),
             splashRadius: AppSpacing.s5,
           ),
@@ -223,7 +233,7 @@ class _SheetEmptyState extends StatelessWidget {
             size: AppIconSize.xl8,
             color: AppColors.mute2,
           ),
-          SizedBox(height: AppSpacing.s3),
+          SizedBox(height: AppSpacing.s3.h),
           Text(
             AppLocalizations.of(context).ficheComingSoon,
             style: TextStyle(
@@ -245,25 +255,25 @@ class _SheetLoadingSkeleton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(AppSpacing.s4),
+      padding: EdgeInsets.all(AppSpacing.s4.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppSkeleton(
             width: double.infinity,
-            height: 28,
+            height: _kSkeletonTitleHeight.h,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          SizedBox(height: AppSpacing.s3),
+          SizedBox(height: AppSpacing.s3.h),
           AppSkeleton(
             width: double.infinity,
-            height: 80,
+            height: _kSkeletonParagraphHeight.h,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
-          SizedBox(height: AppSpacing.s3),
+          SizedBox(height: AppSpacing.s3.h),
           AppSkeleton(
             width: double.infinity,
-            height: 120,
+            height: _kSkeletonBlockHeight.h,
             borderRadius: BorderRadius.circular(AppRadius.sm),
           ),
         ],

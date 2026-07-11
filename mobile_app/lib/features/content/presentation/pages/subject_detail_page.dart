@@ -108,6 +108,35 @@ class _SubjectDetailPageState extends ConsumerState<SubjectDetailPage> {
             (i) => l10n.sequenceTabLabel(i + 1),
           );
 
+          // Etat vide : matiere sans chapitre du tout. On n'affiche pas les
+          // 6 tabs sequences dans ce cas (redondant et blanc).
+          if (chapters.isEmpty) {
+            return Column(
+              children: [
+                SubjectHeader(
+                  subjectName: subjectName,
+                  subjectIcon: subjectIcon,
+                  eyebrow: eyebrow,
+                  overallProgress: trimProgress,
+                  rank: 0,
+                  onBack: () => context.pop(),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      l10n.chaptersEmptyLabel,
+                      style: TextStyle(
+                        fontFamily: AppTypography.fontFamily,
+                        fontSize: AppFontSize.body,
+                        color: AppColors.muted,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+
           return Column(
             children: [
               SubjectHeader(

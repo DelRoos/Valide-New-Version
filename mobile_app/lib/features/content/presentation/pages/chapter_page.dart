@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../core/firebase/providers.dart';
@@ -31,6 +32,7 @@ class ChapterPage extends ConsumerStatefulWidget {
 class _ChapterPageState extends ConsumerState<ChapterPage>
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
+  bool _isNavigating = false;
 
   @override
   void initState() {
@@ -51,15 +53,21 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
   }
 
   void _openSummary(String languageCode) {
+    if (_isNavigating) return;
+    _isNavigating = true;
     showFicheSummarySheet(
       context: context,
       subjectId: widget.subjectId,
       chapterId: widget.chapterId,
       languageCode: languageCode,
-    );
+    ).whenComplete(() {
+      if (mounted) _isNavigating = false;
+    });
   }
 
   void _startExercise() {
+    if (_isNavigating) return;
+    _isNavigating = true;
     final isAnonymous =
         ref.read(firebaseAuthProvider).currentUser?.isAnonymous ?? true;
     if (isAnonymous) {
@@ -68,9 +76,15 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
         onAccountLinked: () => context.push(
           AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId),
         ),
-      );
+      ).whenComplete(() {
+        if (mounted) _isNavigating = false;
+      });
     } else {
-      context.push(AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId));
+      context
+          .push(AppRoutes.chapterQuiz(widget.subjectId, widget.chapterId))
+          .whenComplete(() {
+        if (mounted) _isNavigating = false;
+      });
     }
   }
 
@@ -147,28 +161,31 @@ class _ChapterPageState extends ConsumerState<ChapterPage>
           ),
         ],
       ),
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _ChapterActionButton(
-            label: l10n.chapterFabSummary,
-            icon: Icons.menu_book_outlined,
-            onTap: () => _openSummary(langCode),
-            backgroundColor: AppColors.card,
-            foregroundColor: AppColors.primary,
-            elevation: 2,
-          ),
-          SizedBox(height: AppSpacing.s2),
-          _ChapterActionButton(
-            label: l10n.chapterFabPractice,
-            icon: Icons.play_arrow_rounded,
-            onTap: _startExercise,
-            backgroundColor: AppColors.primary,
-            foregroundColor: AppColors.card,
-            elevation: 4,
-          ),
-        ],
+      floatingActionButton: SafeArea(
+        top: false,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            _ChapterActionButton(
+              label: l10n.chapterFabSummary,
+              icon: Icons.menu_book_outlined,
+              onTap: () => _openSummary(langCode),
+              backgroundColor: AppColors.card,
+              foregroundColor: AppColors.primary,
+              elevation: 2,
+            ),
+            SizedBox(height: AppSpacing.s2.h),
+            _ChapterActionButton(
+              label: l10n.chapterFabPractice,
+              icon: Icons.play_arrow_rounded,
+              onTap: _startExercise,
+              backgroundColor: AppColors.primary,
+              foregroundColor: AppColors.card,
+              elevation: 4,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -203,14 +220,14 @@ class _ChapterActionButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadius.pill),
         child: Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: AppSpacing.s4,
-            vertical: AppSpacing.s2,
+            horizontal: AppSpacing.s4.w,
+            vertical: AppSpacing.s2.h,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Icon(icon, size: AppIconSize.md, color: foregroundColor),
-              SizedBox(width: AppSpacing.s2),
+              SizedBox(width: AppSpacing.s2.w),
               Text(
                 label,
                 style: TextStyle(
