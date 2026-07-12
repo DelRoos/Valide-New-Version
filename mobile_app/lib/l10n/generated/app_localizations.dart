@@ -848,17 +848,161 @@ abstract class AppLocalizations {
   /// **'mois'**
   String get examsCountdownMonths;
 
-  /// Titre de la section sujets à réviser.
-  ///
-  /// In fr, this message translates to:
-  /// **'Fiches de révision'**
-  String get examsSectionTitle;
-
   /// Compteur exercices faits/total.
   ///
   /// In fr, this message translates to:
-  /// **'{done}/{total} exercices'**
+  /// **'{total, plural, =1{{done}/{total} exercice} other{{done}/{total} exercices}}'**
   String examsExercisesOf(int done, int total);
+
+  /// Titre d'un folder séquence sur la tab Examens (S1..S6).
+  ///
+  /// In fr, this message translates to:
+  /// **'Séquence {n}'**
+  String examsFolderSequenceTitle(int n);
+
+  /// Chip 'en cours' sur le folder de la séquence pédagogique actuelle.
+  ///
+  /// In fr, this message translates to:
+  /// **'en cours'**
+  String get examsFolderSequenceCurrent;
+
+  /// Compteur sujets terminés/total sur un folder séquence.
+  ///
+  /// In fr, this message translates to:
+  /// **'{total, plural, =1{{done}/{total} sujet} other{{done}/{total} sujets}}'**
+  String examsFolderSujetsOf(int done, int total);
+
+  /// Compteur annales terminées/total sur le folder Sujets d'examen.
+  ///
+  /// In fr, this message translates to:
+  /// **'{total, plural, =1{{done}/{total} annale} other{{done}/{total} annales}}'**
+  String examsFolderAnnalesOf(int done, int total);
+
+  /// Titre du folder 'Sujets d'examen' (annales nationales) pour les classes d'examen (3e/Terminale/GCE).
+  ///
+  /// In fr, this message translates to:
+  /// **'Sujets d\'examen'**
+  String get examsFolderExamTitle;
+
+  /// Titre de la section qui contient le folder 'Sujets d'examen'.
+  ///
+  /// In fr, this message translates to:
+  /// **'Autres épreuves'**
+  String get examsFolderExamSectionTitle;
+
+  /// Titre du bottom sheet picker matière (déclenché depuis un folder séquence).
+  ///
+  /// In fr, this message translates to:
+  /// **'Choisis ta matière'**
+  String get examsMatierePickerTitle;
+
+  /// Placeholder du champ recherche du picker matière (affiché si > 8 matières).
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher une matière…'**
+  String get examsMatierePickerSearchHint;
+
+  /// État vide du picker matière quand la recherche ne matche rien.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune matière ne correspond'**
+  String get examsMatierePickerEmpty;
+
+  /// Eyebrow du header de la page Sujets d'examen scopée à une séquence.
+  ///
+  /// In fr, this message translates to:
+  /// **'Séquence {n}'**
+  String examSujetsHeaderEyebrow(int n);
+
+  /// Ligne de résumé sous le header : total exercices terminés vs total (tous sujets confondus dans la séquence/matière).
+  ///
+  /// In fr, this message translates to:
+  /// **'{done}/{total} exercices terminés'**
+  String examSujetsSummary(int done, int total);
+
+  /// Titre de la section liste des sujets disponibles pour cette (matière, séquence).
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =1{{count} sujet disponible} other{{count} sujets disponibles}}'**
+  String examSujetsSectionTitle(int count);
+
+  /// Badge affiché sur une card sujet non commencée.
+  ///
+  /// In fr, this message translates to:
+  /// **'Nouveau'**
+  String get examSujetCardMetaNew;
+
+  /// État vide de la page Sujets d'examen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucun sujet disponible pour cette séquence'**
+  String get examSujetsEmpty;
+
+  /// Label du filtre année sur la page Sujets d'examen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Année'**
+  String get examSujetsFilterYearLabel;
+
+  /// Label du filtre école sur la page Sujets d'examen.
+  ///
+  /// In fr, this message translates to:
+  /// **'École'**
+  String get examSujetsFilterSchoolLabel;
+
+  /// Chip 'Toutes' pour désactiver un filtre (année ou école).
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes'**
+  String get examSujetsFilterAll;
+
+  /// Chip d'école pour les sujets sans source (composition interne, harmonisée, etc.).
+  ///
+  /// In fr, this message translates to:
+  /// **'Non renseignée'**
+  String get examSujetsFilterSchoolUnknown;
+
+  /// Label du bouton dropdown 'Toutes les écoles' quand aucun filtre n'est actif.
+  ///
+  /// In fr, this message translates to:
+  /// **'Toutes les écoles'**
+  String get examSujetsFilterSchoolAllChip;
+
+  /// Titre du bottom sheet picker école.
+  ///
+  /// In fr, this message translates to:
+  /// **'Filtrer par école'**
+  String get examSujetsFilterSchoolSheetTitle;
+
+  /// Placeholder du champ recherche dans le picker école.
+  ///
+  /// In fr, this message translates to:
+  /// **'Rechercher une école…'**
+  String get examSujetsFilterSchoolSheetSearchHint;
+
+  /// État vide du picker école quand la recherche ne matche rien.
+  ///
+  /// In fr, this message translates to:
+  /// **'Aucune école ne correspond'**
+  String get examSujetsFilterSchoolSheetEmpty;
+
+  /// Label affiché à droite du slider année : période choisie.
+  ///
+  /// In fr, this message translates to:
+  /// **'{minYear}–{maxYear}'**
+  String examSujetsFilterYearRange(int minYear, int maxYear);
+
+  /// Label estampillé au centre du preview quand le sujet est une épreuve officielle (BEPC blanc, BAC blanc, annales MINESEC).
+  ///
+  /// In fr, this message translates to:
+  /// **'EXAMEN'**
+  String get examSujetCardExamLabel;
+
+  /// Bouton compact pour effacer tous les filtres actifs (année + école) sur la page Sujets d'examen.
+  ///
+  /// In fr, this message translates to:
+  /// **'Effacer'**
+  String get examSujetsResetFilters;
 
   /// Titre du tab profil.
   ///
