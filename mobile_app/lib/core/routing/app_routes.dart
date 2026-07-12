@@ -53,6 +53,21 @@ abstract final class AppRoutes {
   ) =>
       '/subject/$subjectId/chapter/$chapterId/lesson/$lessonId/quiz/review';
 
+  // Examens — sujets d'une matière pour une séquence donnée
+  // (Tab Examens → folder séquence → sheet matière → cette page → sujet → exos).
+  static const examSujetsPath = '/exam-sujets/:sequenceNumber/:subjectId';
+  static String examSujets(int sequenceNumber, String subjectId) =>
+      '/exam-sujets/$sequenceNumber/$subjectId';
+
+  /// Sentinel utilisé sur la route `examSujets` pour désigner le mode
+  /// « Annales officielles » (folder « Sujets d'examen »). Les séquences
+  /// pédagogiques valides sont 1..6 ; 0 indique un contexte hors-séquence.
+  static const int examSujetsAnnalesSequence = 0;
+
+  /// Nombre de séquences pédagogiques par année (calendrier scolaire
+  /// camerounais). Utilisé pour valider les deep links `examSujets`.
+  static const int examSujetsMaxSequence = 6;
+
   // Profil public
   static const userPath = '/user/:uid';
   static String user(String uid) => '/user/$uid';
