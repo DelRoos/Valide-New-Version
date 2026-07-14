@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/firebase/providers.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/errors/content_error_view.dart';
+import '../../../dashboard/presentation/widgets/account_upgrade_sheet.dart' show showAccountUpgradeDialog;
 import '../../../../l10n/generated/app_localizations.dart';
 import '../../domain/entities/quiz_question_entity.dart';
 import '../../providers.dart';
@@ -35,6 +37,20 @@ class _QuizPageState extends ConsumerState<QuizPage> {
   final List<int?> _answers = [];
 
   bool get _isLessonQuiz => widget.lessonId != null;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final isAnonymous =
+          ref.read(firebaseAuthProvider).currentUser?.isAnonymous ?? true;
+      if (isAnonymous) {
+        Navigator.of(context).pop();
+        showAccountUpgradeDialog(context);
+      }
+    });
+  }
 
   void _selectAnswer(int index, List<QuizQuestionEntity> questions) {
     if (_selectedIndex != null) return;

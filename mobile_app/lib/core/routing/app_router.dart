@@ -15,6 +15,7 @@ import '../../features/dashboard/presentation/home_tab_page.dart';
 import '../../features/dashboard/presentation/exams_tab_page.dart';
 import '../../features/dashboard/presentation/profile_tab_page.dart';
 import '../../features/content/presentation/pages/courses_page.dart';
+import '../../features/content/presentation/pages/exam_sujets_page.dart';
 import '../../features/content/presentation/pages/subject_detail_page.dart';
 import '../../features/content/presentation/pages/chapter_page.dart';
 import '../../features/content/presentation/pages/lesson_page.dart';
@@ -113,6 +114,27 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+
+      // Sujets d'examen — page scopée (matière, séquence).
+      GoRoute(
+        path: AppRoutes.examSujetsPath,
+        builder: (context, state) {
+          // Valide le sequenceNumber : accepte 0 (sentinel annales) et 1..6
+          // (séquences pédagogiques). Fallback silencieux à 1 pour tout deep
+          // link malformé (non-numérique ou hors bornes).
+          final rawSeq = state.pathParameters['sequenceNumber'];
+          final parsedSeq = int.tryParse(rawSeq ?? '');
+          final sequenceNumber = (parsedSeq != null &&
+                  parsedSeq >= AppRoutes.examSujetsAnnalesSequence &&
+                  parsedSeq <= AppRoutes.examSujetsMaxSequence)
+              ? parsedSeq
+              : 1;
+          return ExamSujetsPage(
+            sequenceNumber: sequenceNumber,
+            subjectId: state.pathParameters['subjectId']!,
+          );
+        },
       ),
 
       // Navigation contenu — pile hors shell (Story 2.2).

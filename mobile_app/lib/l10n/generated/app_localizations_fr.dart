@@ -464,12 +464,148 @@ class AppLocalizationsFr extends AppLocalizations {
   String get examsCountdownMonths => 'mois';
 
   @override
-  String get examsSectionTitle => 'Fiches de révision';
+  String examsExercisesOf(int done, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done/$total exercices',
+      one: '$done/$total exercice',
+    );
+    return '$_temp0';
+  }
 
   @override
-  String examsExercisesOf(int done, int total) {
-    return '$done/$total exercices';
+  String examsFolderSequenceTitle(int n) {
+    return 'Séquence $n';
   }
+
+  @override
+  String get examsFolderSequenceCurrent => 'en cours';
+
+  @override
+  String examsFolderSujetsOf(int done, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done/$total sujets',
+      one: '$done/$total sujet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String examsFolderAnnalesOf(int done, int total) {
+    String _temp0 = intl.Intl.pluralLogic(
+      total,
+      locale: localeName,
+      other: '$done/$total annales',
+      one: '$done/$total annale',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get examsFolderExamTitle => 'Sujets d\'examen';
+
+  @override
+  String get examsFolderExamSectionTitle => 'Autres épreuves';
+
+  @override
+  String get examsMatierePickerTitle => 'Choisis ta matière';
+
+  @override
+  String get examsMatierePickerSearchHint => 'Rechercher une matière…';
+
+  @override
+  String get examsMatierePickerEmpty => 'Aucune matière ne correspond';
+
+  @override
+  String examSujetsHeaderEyebrow(int n) {
+    return 'Séquence $n';
+  }
+
+  @override
+  String examSujetsSummary(int done, int total) {
+    return '$done/$total exercices terminés';
+  }
+
+  @override
+  String examSujetsSectionTitle(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count sujets disponibles',
+      one: '$count sujet disponible',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get examSujetCardMetaNew => 'Nouveau';
+
+  @override
+  String get examSujetsEmpty => 'Aucun sujet disponible pour cette séquence';
+
+  @override
+  String get examSujetsFilterYearLabel => 'Année';
+
+  @override
+  String get examSujetsFilterSchoolLabel => 'École';
+
+  @override
+  String get examSujetsFilterAll => 'Toutes';
+
+  @override
+  String get examSujetsFilterSchoolUnknown => 'Non renseignée';
+
+  @override
+  String get examSujetsFilterSchoolAllChip => 'Toutes les écoles';
+
+  @override
+  String get examSujetsFilterSchoolSheetTitle => 'Filtrer par école';
+
+  @override
+  String get examSujetsFilterSchoolSheetSearchHint => 'Rechercher une école…';
+
+  @override
+  String get examSujetsFilterSchoolSheetEmpty => 'Aucune école ne correspond';
+
+  @override
+  String examSujetsFilterYearRange(int minYear, int maxYear) {
+    return '$minYear–$maxYear';
+  }
+
+  @override
+  String get examSujetCardExamLabel => 'EXAMEN';
+
+  @override
+  String get examSujetCardAvgLabel => 'moy';
+
+  @override
+  String get examSujetCardMaxLabel => 'meilleure';
+
+  @override
+  String get examSujetCardMinLabel => 'pire';
+
+  @override
+  String examSujetCardParticipantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participants',
+      one: '$count participant',
+      zero: 'Aucun participant pour l\'\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String examSujetCardScoreOver20(String score) {
+    return '$score/20';
+  }
+
+  @override
+  String get examSujetsResetFilters => 'Effacer';
 
   @override
   String get profilePageTitle => 'Mon profil';

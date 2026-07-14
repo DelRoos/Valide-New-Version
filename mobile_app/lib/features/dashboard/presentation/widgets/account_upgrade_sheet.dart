@@ -43,12 +43,39 @@ Future<bool?> showAccountUpgradeSheet(BuildContext context) {
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
     ),
-    builder: (ctx) => const _AccountUpgradeSheet(),
+    builder: (ctx) => const _AccountUpgradeSheet(showHandle: true),
+  );
+}
+
+/// Ouvre un Dialog d'upgrade (sans handle de bottomsheet).
+///
+/// [onAccountLinked] : callback exécuté après un lien réussi quand le profil
+/// est déjà complet, pour relancer l'action que l'utilisateur voulait faire.
+Future<bool?> showAccountUpgradeDialog(
+  BuildContext context, {
+  VoidCallback? onAccountLinked,
+}) {
+  return showDialog<bool>(
+    context: context,
+    barrierDismissible: true,
+    builder: (ctx) => Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+      ),
+      backgroundColor: AppColors.card,
+      child: _AccountUpgradeSheet(
+        showHandle: false,
+        onAccountLinked: onAccountLinked,
+      ),
+    ),
   );
 }
 
 class _AccountUpgradeSheet extends ConsumerStatefulWidget {
-  const _AccountUpgradeSheet();
+  const _AccountUpgradeSheet({this.showHandle = true, this.onAccountLinked});
+
+  final bool showHandle;
+  final VoidCallback? onAccountLinked;
 
   @override
   ConsumerState<_AccountUpgradeSheet> createState() =>
@@ -65,27 +92,53 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
     ref.listen<AccountLinkingState>(accountLinkingNotifierProvider,
         (prev, next) {
       if (next is AccountLinkingSuccess) {
-        AppLogger.i(
-          'account.upgrade success provider=${next.account.provider.id} '
-          '-> starting identity completion (steps 6-9)',
-        );
+        // Si le profil est déjà complet (utilisateur anonyme qui avait
+        // terminé l'onboarding), on ferme simplement le dialog sans
+        // renvoyer vers /onboarding.
+        final isAlreadyComplete =
+            ref.read(profileCompletionProvider).maybeWhen(
+                  data: (s) => s.isComplete,
+                  orElse: () => false,
+                );
 
-        // upgradeInProgress a déjà été posé true par le onPressed du bouton,
-        // AVANT l'appel linkGoogle/linkApple. Le router n'a donc pas pu
-        // auto-rediriger /dashboard -> /onboarding pendant l'auth.
-        // Positionner le notifier au step 6 (saisie nom) avec le
-        // displayName OAuth pré-rempli si disponible.
-        ref.read(onboardingNotifierProvider.notifier).setAuthProvider(
-              next.account.provider == AccountProvider.google
-                  ? OnboardingAuthProvider.google
-                  : OnboardingAuthProvider.apple,
-              displayName: next.account.displayName,
-            );
+        if (!isAlreadyComplete) {
+          AppLogger.i(
+            'account.upgrade success provider=${next.account.provider.id} '
+            '-> starting identity completion (steps 6-9)',
+          );
+          // upgradeInProgress a déjà été posé true par le onPressed du bouton,
+          // AVANT l'appel linkGoogle/linkApple. Le router n'a donc pas pu
+          // auto-rediriger /dashboard -> /onboarding pendant l'auth.
+          // Positionner le notifier au step 6 (saisie nom) avec le
+          // displayName OAuth pré-rempli si disponible.
+          ref.read(onboardingNotifierProvider.notifier).setAuthProvider(
+                next.account.provider == AccountProvider.google
+                    ? OnboardingAuthProvider.google
+                    : OnboardingAuthProvider.apple,
+                displayName: next.account.displayName,
+              );
+        } else {
+          AppLogger.i(
+            'account.upgrade success provider=${next.account.provider.id} '
+            '-> profile already complete, returning to app',
+          );
+          // Profil complet → libérer le flag pour que le router reprenne
+          // ses gardes normales.
+          ref
+              .read(profileUpgradeInProgressProvider.notifier)
+              .setInProgress(false);
+        }
 
-        // Pop le sheet puis naviguer vers le flow de completion d'identité.
         if (context.mounted) {
           Navigator.of(context).pop();
-          context.go(AppRoutes.onboarding);
+          if (!isAlreadyComplete) {
+            context.go(AppRoutes.onboarding);
+          } else {
+            final cb = widget.onAccountLinked;
+            if (cb != null) {
+              WidgetsBinding.instance.addPostFrameCallback((_) => cb());
+            }
+          }
         }
       } else if (next is AccountLinkingError) {
         // Annulation ou erreur : réinitialiser le flag pour que le router
@@ -111,17 +164,19 @@ class _AccountUpgradeSheetState extends ConsumerState<_AccountUpgradeSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Center(
-              child: Container(
-                width: AppSpacing.s10.w,
-                height: AppSpacing.s1.h,
-                decoration: BoxDecoration(
-                  color: AppColors.border,
-                  borderRadius: BorderRadius.circular(AppRadius.hairline),
+            if (widget.showHandle) ...[
+              Center(
+                child: Container(
+                  width: AppSpacing.s10.w,
+                  height: AppSpacing.s1.h,
+                  decoration: BoxDecoration(
+                    color: AppColors.border,
+                    borderRadius: BorderRadius.circular(AppRadius.hairline),
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: AppSpacing.s4.h),
+              SizedBox(height: AppSpacing.s4.h),
+            ],
             Icon(LucideIcons.shieldCheck,
                 size: AppIconSize.xl6, color: AppColors.primary),
             SizedBox(height: AppSpacing.s3.h),

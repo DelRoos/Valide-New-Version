@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../../core/firebase/providers.dart';
 import '../../../../core/routing/app_routes.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import '../../../dashboard/presentation/widgets/account_upgrade_sheet.dart' show showAccountUpgradeDialog;
 
-class LessonCtaRow extends StatelessWidget {
+class LessonCtaRow extends ConsumerWidget {
   const LessonCtaRow({
     super.key,
     required this.subjectId,
@@ -18,14 +21,30 @@ class LessonCtaRow extends StatelessWidget {
   final String lessonId;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: () => context.push(
-          AppRoutes.lessonQuiz(subjectId, chapterId, lessonId),
-        ),
+        onPressed: () {
+          final isAnonymous = ref
+                  .read(firebaseAuthProvider)
+                  .currentUser
+                  ?.isAnonymous ??
+              true;
+          if (isAnonymous) {
+            showAccountUpgradeDialog(
+              context,
+              onAccountLinked: () => context.push(
+                AppRoutes.lessonQuiz(subjectId, chapterId, lessonId),
+              ),
+            );
+          } else {
+            context.push(
+              AppRoutes.lessonQuiz(subjectId, chapterId, lessonId),
+            );
+          }
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primary,
           shape: RoundedRectangleBorder(
