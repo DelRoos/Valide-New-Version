@@ -579,6 +579,32 @@ class AppLocalizationsFr extends AppLocalizations {
   String get examSujetCardExamLabel => 'EXAMEN';
 
   @override
+  String get examSujetCardAvgLabel => 'moy';
+
+  @override
+  String get examSujetCardMaxLabel => 'meilleure';
+
+  @override
+  String get examSujetCardMinLabel => 'pire';
+
+  @override
+  String examSujetCardParticipantsCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count participants',
+      one: '$count participant',
+      zero: 'Aucun participant pour l\'\'instant',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String examSujetCardScoreOver20(String score) {
+    return '$score/20';
+  }
+
+  @override
   String get examSujetsResetFilters => 'Effacer';
 
   @override

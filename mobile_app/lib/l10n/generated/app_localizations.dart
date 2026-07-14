@@ -998,6 +998,36 @@ abstract class AppLocalizations {
   /// **'EXAMEN'**
   String get examSujetCardExamLabel;
 
+  /// Label court 'moyenne' précédant la note moyenne dans la ligne stats du sujet.
+  ///
+  /// In fr, this message translates to:
+  /// **'moy'**
+  String get examSujetCardAvgLabel;
+
+  /// Label 'meilleure note' précédant la note la plus haute obtenue sur ce sujet dans la communauté.
+  ///
+  /// In fr, this message translates to:
+  /// **'meilleure'**
+  String get examSujetCardMaxLabel;
+
+  /// Label 'pire note' précédant la note la plus basse obtenue sur ce sujet dans la communauté.
+  ///
+  /// In fr, this message translates to:
+  /// **'pire'**
+  String get examSujetCardMinLabel;
+
+  /// Compteur de participants ayant traité le sujet.
+  ///
+  /// In fr, this message translates to:
+  /// **'{count, plural, =0{Aucun participant pour l\'\'instant} =1{{count} participant} other{{count} participants}}'**
+  String examSujetCardParticipantsCount(int count);
+
+  /// Format d'une note affichée sur 20 (échelle scolaire camerounaise).
+  ///
+  /// In fr, this message translates to:
+  /// **'{score}/20'**
+  String examSujetCardScoreOver20(String score);
+
   /// Bouton compact pour effacer tous les filtres actifs (année + école) sur la page Sujets d'examen.
   ///
   /// In fr, this message translates to:

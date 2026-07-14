@@ -205,6 +205,11 @@
   "examSujetsFilterSchoolSheetEmpty": "No school matches",
   "examSujetsFilterYearRange": "{minYear}–{maxYear}",
   "examSujetCardExamLabel": "EXAM",
+  "examSujetCardAvgLabel": "avg",
+  "examSujetCardMaxLabel": "best",
+  "examSujetCardMinLabel": "worst",
+  "examSujetCardParticipantsCount": "{count, plural, =0{No participant yet} =1{{count} participant} other{{count} participants}}",
+  "examSujetCardScoreOver20": "{score}/20",
   "examSujetsResetFilters": "Reset",
 
   "profilePageTitle": "My Profile",
