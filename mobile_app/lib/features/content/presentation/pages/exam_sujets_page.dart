@@ -21,11 +21,11 @@ const String _kUnknownSchoolId = '_unknown_school_';
 
 // Mock — sera remplacé par Firestore (exam_sujets/{sujetId} scopé matière/séquence).
 const List<_MockSujet> _kMockSujets = [
-  _MockSujet(title: 'Devoir 1er trimestre', year: 2024, source: 'Lycée Général Leclerc', total: 8, done: 5, score: 78, isExam: false),
-  _MockSujet(title: 'Contrôle continu', year: 2024, source: 'Collège Vogt · Yaoundé', total: 6, done: 3, score: 55, isExam: false),
-  _MockSujet(title: 'Composition harmonisée', year: 2023, source: null, total: 10, done: 8, score: 88, isExam: false),
-  _MockSujet(title: 'BEPC blanc', year: 2023, source: 'MINESEC · Session juin', total: 5, done: 0, score: 0, isExam: true),
-  _MockSujet(title: 'Devoir surveillé', year: 2022, source: 'Lycée Bilingue Yaoundé', total: 7, done: 2, score: 32, isExam: false),
+  _MockSujet(title: 'Devoir 1er trimestre', year: 2024, source: 'Lycée Général Leclerc', total: 8, done: 5, score: 78, isExam: false, participants: 42, avgScore: 13.5, maxScore: 18.5, minScore: 6.0),
+  _MockSujet(title: 'Contrôle continu', year: 2024, source: 'Collège Vogt · Yaoundé', total: 6, done: 3, score: 55, isExam: false, participants: 28, avgScore: 11.2, maxScore: 17.0, minScore: 4.5),
+  _MockSujet(title: 'Composition harmonisée', year: 2023, source: null, total: 10, done: 8, score: 88, isExam: false, participants: 156, avgScore: 12.8, maxScore: 19.5, minScore: 3.0),
+  _MockSujet(title: 'BEPC blanc', year: 2023, source: 'MINESEC · Session juin', total: 5, done: 0, score: 0, isExam: true, participants: 1240, avgScore: 10.4, maxScore: 20.0, minScore: 2.5),
+  _MockSujet(title: 'Devoir surveillé', year: 2022, source: 'Lycée Bilingue Yaoundé', total: 7, done: 2, score: 32, isExam: false, participants: 67, avgScore: 9.8, maxScore: 16.5, minScore: 5.0),
 ];
 
 class ExamSujetsPage extends ConsumerStatefulWidget {
@@ -239,6 +239,10 @@ class _ExamSujetsPageState extends ConsumerState<ExamSujetsPage> {
                           // Mode annales (folder Sujets d'examen) : tout est
                           // examen. Sinon : dépend du champ mock.
                           isExam: _isAnnales || s.isExam,
+                          participants: s.participants,
+                          avgScore: s.avgScore,
+                          maxScore: s.maxScore,
+                          minScore: s.minScore,
                           onTap: () {
                             if (subject == null) return;
                             GoRouter.of(context).push(
@@ -269,6 +273,10 @@ class _MockSujet {
     required this.done,
     required this.score,
     required this.isExam,
+    required this.participants,
+    required this.avgScore,
+    required this.maxScore,
+    required this.minScore,
   });
 
   final String title;
@@ -278,6 +286,13 @@ class _MockSujet {
   final int done;
   final int score;
   final bool isExam;
+
+  // Stats communauté — mockées, seront calculées côté Firestore (agrégat
+  // exam_attempts par sujet) en Story 2.x. Notes sur /20 (échelle camerounaise).
+  final int participants;
+  final double avgScore;
+  final double maxScore;
+  final double minScore;
 }
 
 // ── Filter widgets ────────────────────────────────────────────────────────────

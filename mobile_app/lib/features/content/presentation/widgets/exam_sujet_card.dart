@@ -5,6 +5,7 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/tokens.dart';
 import '../../../../core/widgets/cards/performance_level.dart';
 import '../../../../l10n/generated/app_localizations.dart';
+import 'exam_stats_row.dart';
 
 // Dimensions du preview façon « mini feuille de sujet ».
 const double _kPreviewWidth = 56;
@@ -29,6 +30,10 @@ class ExamSujetCard extends StatelessWidget {
     required this.exosTotal,
     required this.level,
     required this.onTap,
+    required this.participants,
+    required this.avgScore,
+    required this.maxScore,
+    required this.minScore,
     this.source,
     this.isExam = false,
   });
@@ -47,6 +52,13 @@ class ExamSujetCard extends StatelessWidget {
   /// MINESEC). Rend le preview façon PDF rouge avec un tampon « EXAMEN »
   /// au centre.
   final bool isExam;
+
+  // Stats communauté (agrégat calculé côté Firestore en Story 2.x, mock
+  // aujourd'hui). Notes sur /20 (échelle scolaire camerounaise).
+  final int participants;
+  final double avgScore;
+  final double maxScore;
+  final double minScore;
 
   final VoidCallback onTap;
 
@@ -71,79 +83,132 @@ class ExamSujetCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppRadius.lg),
           child: Padding(
             padding: EdgeInsets.all(AppSpacing.s3.w),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                _PaperPreview(year: year, isExam: isExam),
-                SizedBox(width: AppSpacing.s3.w),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    _PaperPreview(year: year, isExam: isExam),
+                    SizedBox(width: AppSpacing.s3.w),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: Text(
-                              title,
-                              style: AppTypography.bodyStrong.copyWith(
-                                fontSize: AppFontSize.bodySmall,
-                                color: AppColors.ink,
-                                height: 1.2,
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  title,
+                                  style: AppTypography.bodyStrong.copyWith(
+                                    fontSize: AppFontSize.bodySmall,
+                                    color: AppColors.ink,
+                                    height: 1.2,
+                                  ),
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                              maxLines: 2,
+                              SizedBox(width: AppSpacing.s2.w),
+                              if (_isNew)
+                                _NewChip(label: l10n.examSujetCardMetaNew)
+                              else
+                                _LevelDot(color: level.color),
+                            ],
+                          ),
+                          if (source != null && source!.isNotEmpty) ...[
+                            SizedBox(height: 2.h),
+                            Text(
+                              source!,
+                              style: AppTypography.caption.copyWith(
+                                color: AppColors.muted,
+                                fontSize: AppFontSize.caption,
+                              ),
+                              maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
+                          ],
+                          SizedBox(height: AppSpacing.s2.h),
+                          ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.pill),
+                            child: LinearProgressIndicator(
+                              value: progress,
+                              backgroundColor:
+                                  barColor.withValues(alpha: 0.12),
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(barColor),
+                              minHeight: AppDimension.progressBarMed,
+                            ),
                           ),
-                          SizedBox(width: AppSpacing.s2.w),
-                          if (_isNew)
-                            _NewChip(label: l10n.examSujetCardMetaNew)
-                          else
-                            _LevelDot(color: level.color),
+                          SizedBox(height: AppSpacing.s1.h),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    LucideIcons.users,
+                                    size: AppIconSize.sm,
+                                    color: AppColors.muted,
+                                  ),
+                                  SizedBox(width: 4.w),
+                                  Text(
+                                    l10n.examSujetCardParticipantsCount(
+                                        participants),
+                                    style: AppTypography.eyebrow.copyWith(
+                                      color: AppColors.muted,
+                                      fontSize: AppFontSize.eyebrow,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                l10n.examsExercisesOf(exosDone, exosTotal),
+                                style: AppTypography.eyebrow.copyWith(
+                                  color: AppColors.muted,
+                                  fontSize: AppFontSize.eyebrow,
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
-                      if (source != null && source!.isNotEmpty) ...[
-                        SizedBox(height: 2.h),
-                        Text(
-                          source!,
-                          style: AppTypography.caption.copyWith(
-                            color: AppColors.muted,
-                            fontSize: AppFontSize.caption,
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                      SizedBox(height: AppSpacing.s2.h),
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(AppRadius.pill),
-                        child: LinearProgressIndicator(
-                          value: progress,
-                          backgroundColor: barColor.withValues(alpha: 0.12),
-                          valueColor: AlwaysStoppedAnimation<Color>(barColor),
-                          minHeight: AppDimension.progressBarMed,
-                        ),
-                      ),
-                      SizedBox(height: AppSpacing.s1.h),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Text(
-                          l10n.examsExercisesOf(exosDone, exosTotal),
-                          style: AppTypography.eyebrow.copyWith(
-                            color: AppColors.muted,
-                            fontSize: AppFontSize.eyebrow,
-                          ),
+                    ),
+                    SizedBox(width: AppSpacing.s2.w),
+                    Icon(
+                      LucideIcons.chevronRight,
+                      size: AppIconSize.md,
+                      color: AppColors.muted,
+                    ),
+                  ],
+                ),
+                // Ligne stats — n'affiche pas la Row 0/20 · 0/20 · 0/20 quand
+                // aucun participant n'a traité le sujet (contradiction avec
+                // le message « Aucun participant » de la ligne au-dessus).
+                if (participants > 0) ...[
+                  SizedBox(height: AppSpacing.s3.h),
+                  Container(
+                    padding: EdgeInsets.only(top: AppSpacing.s2.h),
+                    decoration: BoxDecoration(
+                      border: Border(
+                        top: BorderSide(
+                          color: AppColors.border,
+                          width: AppBorderWidth.hairline,
                         ),
                       ),
-                    ],
+                    ),
+                    child: ExamStatsRow(
+                      avgScore: avgScore,
+                      maxScore: maxScore,
+                      minScore: minScore,
+                    ),
                   ),
-                ),
-                SizedBox(width: AppSpacing.s2.w),
-                Icon(
-                  LucideIcons.chevronRight,
-                  size: AppIconSize.md,
-                  color: AppColors.muted,
-                ),
+                ],
               ],
             ),
           ),
@@ -327,3 +392,5 @@ class _NewChip extends StatelessWidget {
     );
   }
 }
+
+
