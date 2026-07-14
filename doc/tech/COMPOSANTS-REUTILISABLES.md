@@ -1103,6 +1103,44 @@ SubjectProgressListCard(
 
 ---
 
+### Famille Exam Circuit — cards + preview + stats (feat/exam-circuit-refonte)
+
+**Path** : `lib/features/content/presentation/widgets/exam_sujet_card.dart` + `exam_stats_row.dart`
+**Story d'origine** : `feat/exam-circuit-refonte` (2026-07-13) — refonte tab Examens (folders séquences + folder annales) + page Sujets d'examen
+**Catégorie** : `card` + `feedback`
+**Responsive** : `phone-only` — dette golden test tablet ≥ 840 dp à traiter en story tests dédiée
+
+**Widgets exposés** :
+
+- **`ExamSujetCard`** — card d'un sujet d'examen dans la liste `ExamSujetsPage`. Composition : preview « mini-feuille » (`_PaperPreview`) à gauche, titre + source + progress bar + participants/exos + stats. Support `isExam: bool` → variant rouge PDF avec tampon « EXAMEN » incliné -10° pour les épreuves officielles (BEPC blanc, BAC blanc, MINESEC).
+
+**Props (API publique)** :
+
+- `title: String`, `year: int` (badge preview `'YY`), `source: String?` (établissement/session, optionnel)
+- `exosDone: int`, `exosTotal: int` — progression user propre
+- `level: PerformanceLevel` — bon/moyen/faible (dot coloré)
+- `isExam: bool = false` — active preview rouge PDF + tampon EXAMEN
+- `participants: int`, `avgScore: double`, `maxScore: double`, `minScore: double` — stats communauté (agrégat Firestore Story 2.x)
+- `onTap: VoidCallback`
+
+**Comportement conditionnel** : la Row stats (`ExamStatsRow`) est masquée si `participants == 0` — évite d'afficher « 0/20 · 0/20 · 0/20 » quand aucune donnée communauté n'existe.
+
+- **`ExamStatsRow`** — 3 blocs égaux (pire / moyenne / meilleure) séparés par `_VerticalDivider` hairline, chaque note formatée /20 via ARB `examSujetCardScoreOver20`. Guard `isFinite` + `clamp([0, 20])` sur toute valeur — robuste aux données Firestore corrompues.
+
+**Props (API publique)** :
+
+- `avgScore: double`, `maxScore: double`, `minScore: double` — notes /20 (échelle scolaire camerounaise)
+
+**Décisions design** :
+
+- Label neutre `AppColors.muted` + valeur colorée (danger pour pire, success pour meilleure, ink pour moyenne) → préserve la hiérarchie visuelle
+- `IntrinsicHeight` + `Row(crossAxisAlignment: CrossAxisAlignment.stretch)` requis pour que les `_VerticalDivider` (Container width:1 sans height) ne soient pas collapsed
+- `Flexible` + `maxLines: 1` + `TextOverflow.ellipsis` sur label ET valeur → protège contre overflow sur écrans étroits avec labels FR longs
+
+**Tests associés** : dette — à créer (story tests exam circuit) : golden phone + tablet, unit tests sur `_formatScoreValue` (NaN/∞/négatif/> 20/entier vs décimal).
+
+---
+
 ## Historique des composants extraits (post-création)
 
 > **✅ Résorbée Story 1.18 (2026-06-10)** — voir [Catalogue actuel](#catalogue-actuel) ci-dessus. Les 4 widgets privés `_LegacyOptOutBody`, `_FreeWithObligatoryBody`, `_SeriesPlusOptionalBody`, `_TvePickerBody` ont été supprimés de `subjects_picker_page.dart` (1309 → 621 lignes, -52%) et remplacés par compositions de 4 composants extraits (`PickerSectionScaffold` + `ObligatorySubjectCheckboxList` + `OptionalSubjectCheckboxList` + `PickerValidateBar`) + un wrapper privé `_PickerStreamGate` qui factorise le StreamBuilder + init state. La 5e candidate `PickerToastFeedback` a été **skippée** (`AppToast` existant Stories 0.14 suffit, pattern déjà unifié dans le source d'origine).
